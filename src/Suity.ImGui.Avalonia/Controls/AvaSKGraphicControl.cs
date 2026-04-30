@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using SkiaSharp;
 using Suity.Views.Graphics;
@@ -88,7 +89,7 @@ public class AvaSKGraphicControl : AvaSKCompositionControl
     protected override void OnUnloaded(RoutedEventArgs e)
     {
         _loaded = false;
-        _context.HandleReleased();
+        Dispatcher.UIThread.Post(_context.HandleReleased);
     }
 
     /// <inheritdoc/>

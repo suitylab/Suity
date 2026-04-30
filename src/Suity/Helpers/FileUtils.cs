@@ -8,6 +8,12 @@ namespace Suity.Helpers;
 /// </summary>
 public static class FileUtils
 {
+    /// <summary>
+    /// UTF-8 encoding without BOM.
+    /// </summary>
+    public static Encoding UTF8NoBom { get; } = new UTF8Encoding(false);
+
+
     public static string Read(string fileName)
     {
         return Read(fileName, Encoding.UTF8);

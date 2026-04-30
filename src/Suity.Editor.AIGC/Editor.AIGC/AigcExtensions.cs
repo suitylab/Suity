@@ -532,7 +532,7 @@ public static class AigcExtensions
 
         string fileFullPath = workSpace.MakeMasterFullPath(filePath);
 
-        FileUtils.Write(fileFullPath, content);
+        FileUtils.Write(fileFullPath, content, FileUtils.UTF8NoBom);
     }
 
     /// <summary>
