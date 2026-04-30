@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	<LangVersion>Latest</LangVersion>
+	<Nullable>enable</Nullable>
+	<RootNamespace>Suity.Editor</RootNamespace>
+	<Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="PolySharp" Version="1.15.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\OpenAI_API\OpenAI_API\OpenAI_API.csproj" />
+	  <ProjectReference Include="..\Suity.DataSync\Suity.DataSync.csproj" />
+	  <ProjectReference Include="..\Suity.Editor.AIGC\Suity.Editor.AIGC.csproj" />
+	  <ProjectReference Include="..\Suity.Editor\Suity.Editor.csproj" />
+	  <ProjectReference Include="..\Suity\Suity.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Properties\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+</Project>
