@@ -1,0 +1,508 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="AigcFlow">
+  <AssetId>2227f644-841a-41b5-a135-cdd91a0ea60a</AssetId>
+  <NameSpace>TaskTaskPage002</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageDefinitionDiagramItem" X="-400" Y="-110" Width="170" Height="160">
+      <Name>CodingSummary</Name>
+      <AssetId>23fd6b7e-70ab-43d3-89db-b2c49371b67e</AssetId>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageDefinitionNode">
+        <Name>CodingSummary</Name>
+        <Description>
+        </Description>
+        <Icon>
+          <Id>a8007591-9021-4cf9-a7df-69f1a6bc2205</Id>
+        </Icon>
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Creating software development technical specification document.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <Tools />
+        <UseParentArticle>True</UseParentArticle>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageResultDiagramItem" X="630" Y="-110" Width="140" Height="150">
+      <Name>CodingSummaryResult</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageResultNode">
+        <Name>CodingSummaryResult</Name>
+        <Description>
+        </Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-390" Y="0" Width="65" Height="17">
+      <Name>InputFileResult</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
+        <Name>InputFileResult</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Coding File Overview Document.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <History>True</History>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>f5064946-0263-4a31-bfca-df4166373552</Id>
+          <Prefix>&amp;</Prefix>
+        </ValueType>
+        <Value type="SAssetKey" base="&amp;f5064946-0263-4a31-bfca-df4166373552">
+          <Value />
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageEventDiagramItem" X="-390" Y="20" Width="60" Height="17">
+      <Name>FileSpecStart</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageEventNode">
+        <Name>FileSpecStart</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="110" Y="-110" Width="136" Height="107">
+      <Name>###CallLLm01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.CallLLm">
+        <DialogName>
+        </DialogName>
+        <ChatModel />
+        <Functions />
+        <FunctionCall />
+        <CombineMessages>True</CombineMessages>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-130" Y="-10" Width="44" Height="17">
+      <Name>###GetSpeechLanguage01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.GetSpeechLanguage" />
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-390" Y="-60" Width="59" Height="17">
+      <Name>ProjectName</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
+        <Name>ProjectName</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>The project name in Pascal-Case</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <History>True</History>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </ValueType>
+        <Value type="System.String">
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-40" Y="-100" Width="103" Height="85">
+      <Name>###BuildPrompts01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.BuildPrompt">
+        <PromptTemplate>
+          <Id>8c27361f-1240-44f1-8b4e-4ad28fa1b8af</Id>
+        </PromptTemplate>
+        <Keywords>
+          <Item>PROJECT_NAME</Item>
+          <Item>REQUIREMENT</Item>
+          <Item>GENERATED_CODE</Item>
+          <Item>SPEECH_LANGUAGE</Item>
+        </Keywords>
+        <MissingContent>---</MissingContent>
+        <UpdateKeywords>False</UpdateKeywords>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageCommitDiagramItem" X="640" Y="-70" Width="58" Height="17">
+      <Name>FileCodeEnd</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageCommitNode">
+        <Name>FileCodeEnd</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitType>TaskFinished</CommitType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-390" Y="-40" Width="86" Height="17">
+      <Name>RequirementDocument</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
+        <Name>RequirementDocument</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Requirement document from previous task, fill in the Full Asset URL.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <History>True</History>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>f5064946-0263-4a31-bfca-df4166373552</Id>
+          <Prefix>&amp;</Prefix>
+        </ValueType>
+        <Value type="SAssetKey" base="&amp;f5064946-0263-4a31-bfca-df4166373552">
+          <Value />
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-200" Y="-50" Width="76" Height="17">
+      <Name>###ArticleFullContent03</Name>
+      <Node type="Suity.Editor.AIGC.Flows.ArticleFullContent" />
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageArticleOutputItem" X="640" Y="-50" Width="43" Height="25">
+      <Name>Summary</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageArticleOutputNode">
+        <Name>Summary</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <TaskCommit>True</TaskCommit>
+        <History>True</History>
+        <ArticlePath>Summary</ArticlePath>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-390" Y="-20" Width="65" Height="17">
+      <Name>InputTechSpec</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
+        <Name>InputTechSpec</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Technical Specification Document, fill in the Full Asset URL.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <History>True</History>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>f5064946-0263-4a31-bfca-df4166373552</Id>
+          <Prefix>&amp;</Prefix>
+        </ValueType>
+        <Value type="SAssetKey" base="&amp;f5064946-0263-4a31-bfca-df4166373552">
+          <Value />
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-250" Y="140" Width="112" Height="52">
+      <Name>###LinqSelect01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.LinqSelect">
+        <InType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>356b2763-5681-445d-946c-09831536f55d</Id>
+        </InType>
+        <OutType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </OutType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-90" Y="150" Width="70" Height="28">
+      <Name>###DataActionDecompose01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.DataActionDecompose">
+        <DataType>
+          <Id>356b2763-5681-445d-946c-09831536f55d</Id>
+        </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="390" Y="130" Width="76" Height="52">
+      <Name>###Return01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.Return" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-90" Y="190" Width="147" Height="63">
+      <Name>###GetArticleInformation01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.GetArticleInformation">
+        <ContentProps>False</ContentProps>
+        <HierarchyProps>False</HierarchyProps>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-430" Y="130" Width="147" Height="96">
+      <Name>###GetArticleInformation02</Name>
+      <Node type="Suity.Editor.AIGC.Flows.GetArticleInformation">
+        <BasicProps>False</BasicProps>
+        <ContentProps>False</ContentProps>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="100" Y="280" Width="88" Height="28">
+      <Name>###ReadWorkSpaceFile01</Name>
+      <Node type="Suity.Editor.AIGC.WorkSpaces.Flows.ReadWorkSpaceFile">
+        <WorkSpace />
+        <FilePath>
+        </FilePath>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="110" Y="250" Width="59" Height="17">
+      <Name>###GetTaskWorkSpace01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.GetTaskWorkSpace" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="200" Y="200" Width="144" Height="63">
+      <Name>###MultiTextReplace01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.MultiTextReplace">
+        <Input>
+          <Text>&lt;file path='{0}'&gt;
+{1}
+&lt;/file&gt;</Text>
+        </Input>
+        <FindStrings>
+          <Item>{0}</Item>
+          <Item>{1}</Item>
+        </FindStrings>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="120" Width="93" Height="17">
+      <Name>###JoinString01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.JoinString">
+        <Separator>\r\n\r\n</Separator>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-90" Width="115" Height="63">
+      <Name>###ExtractXmlsTagNode01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.ExtractXmlsTagNode">
+        <TagNames>
+          <Item>summary</Item>
+          <Item>overview</Item>
+        </TagNames>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="-140" Width="51" Height="25">
+      <Name>###PageParameterReference01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterReference">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>356b2763-5681-445d-946c-09831536f55d</Id>
+        </ValueType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="500" Y="-90" Width="91" Height="107">
+      <Name>###SetArticle01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.SetArticle" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="420" Y="-50" Width="28" Height="17">
+      <Name>###GetXmlTagContentNode01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.GetXmlTagContentNode" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="420" Y="-30" Width="28" Height="17">
+      <Name>###GetXmlTagContentNode02</Name>
+      <Node type="Suity.Editor.AIGC.Flows.GetXmlTagContentNode" />
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-390" Y="-80" Width="63" Height="17">
+      <Name>LanguageRule</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
+        <Name>LanguageRule</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Programing language rule, Fill in full asset key.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>e4f266c7-5634-4d59-81a9-d56bbe2d9fdb</Id>
+          <Prefix>&amp;</Prefix>
+        </ValueType>
+        <Value type="SAssetKey" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb">
+          <Value />
+        </Value>
+      </Node>
+    </Item>
+  </Nodes>
+  <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+  <Links>
+    <Item>
+      <FromNode>CodingSummaryResult</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>CodingSummary</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>FileSpecStart</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetSpeechLanguage01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_SPEECH_LANGUAGE</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###BuildPrompts01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###BuildPrompts01</FromNode>
+      <FromConnector>PromptOut</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>ProjectName</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_PROJECT_NAME</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>RequirementDocument</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ArticleFullContent03</ToNode>
+      <ToConnector>ArticleIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ArticleFullContent03</FromNode>
+      <FromConnector>Content</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_REQUIREMENT</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###LinqSelect01</FromNode>
+      <FromConnector>Func</FromConnector>
+      <ToNode>###DataActionDecompose01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose01</FromNode>
+      <FromConnector>DataOut</FromConnector>
+      <ToNode>###GetArticleInformation01</ToNode>
+      <ToConnector>ArticleIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose01</FromNode>
+      <FromConnector>ActionOut</FromConnector>
+      <ToNode>###Return01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetArticleInformation02</FromNode>
+      <FromConnector>ChildArticles</FromConnector>
+      <ToNode>###LinqSelect01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>InputFileResult</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###GetArticleInformation02</ToNode>
+      <ToConnector>ArticleIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskWorkSpace01</FromNode>
+      <FromConnector>TaskWorkSpace</FromConnector>
+      <ToNode>###ReadWorkSpaceFile01</ToNode>
+      <ToConnector>WorkSpace</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetArticleInformation01</FromNode>
+      <FromConnector>Title</FromConnector>
+      <ToNode>###ReadWorkSpaceFile01</ToNode>
+      <ToConnector>FilePath</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetArticleInformation01</FromNode>
+      <FromConnector>Title</FromConnector>
+      <ToNode>###MultiTextReplace01</ToNode>
+      <ToConnector>find-{0}</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ReadWorkSpaceFile01</FromNode>
+      <FromConnector>Content</FromConnector>
+      <ToNode>###MultiTextReplace01</ToNode>
+      <ToConnector>find-{1}</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###MultiTextReplace01</FromNode>
+      <FromConnector>Output</FromConnector>
+      <ToNode>###Return01</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###LinqSelect01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###JoinString01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###JoinString01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_GENERATED_CODE</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ExtractXmlsTagNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Result</FromConnector>
+      <ToNode>###ExtractXmlsTagNode01</ToNode>
+      <ToConnector>DataIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PageParameterReference01</FromNode>
+      <FromConnector>RefOut</FromConnector>
+      <ToNode>Summary</ToNode>
+      <ToConnector>RefIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagNode01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetArticle01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SetArticle01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>FileCodeEnd</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PageParameterReference01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetArticle01</ToNode>
+      <ToConnector>ArticleIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagNode01</FromNode>
+      <FromConnector>Tag-summary</FromConnector>
+      <ToNode>###GetXmlTagContentNode01</ToNode>
+      <ToConnector>TagIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagContentNode01</FromNode>
+      <FromConnector>ContentOut</FromConnector>
+      <ToNode>###SetArticle01</ToNode>
+      <ToConnector>Content</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagNode01</FromNode>
+      <FromConnector>Tag-overview</FromConnector>
+      <ToNode>###GetXmlTagContentNode02</ToNode>
+      <ToConnector>TagIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagContentNode02</FromNode>
+      <FromConnector>ContentOut</FromConnector>
+      <ToNode>###SetArticle01</ToNode>
+      <ToConnector>Overview</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

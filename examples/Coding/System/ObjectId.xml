@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ObjectId>
+  <Object id="56023507-40c3-4a2d-8724-6e2f912ae583" name="Workflows/_Common/SkillRunner.sprompt" />
+  <Object id="750c3fd0-3af6-4321-bac6-83a3bbc516ce" name="Workflows/Coding/CodingMultipleCode.sprompt" />
+  <Object id="b7afaec3-7741-4ac4-af8b-3dc41b8f5397" name="Workflows/Coding/CodingPlanning.sprompt" />
+  <Object id="5a5d53fe-0133-4c31-9fb4-913f868a715c" name="Workflows/Coding/CodingSkill.sprompt" />
+  <Object id="8c27361f-1240-44f1-8b4e-4ad28fa1b8af" name="Workflows/Coding/CodingSummary.sprompt" />
+  <Object id="aa326c64-227d-4b5f-a671-903583cb1940" name="Workflows/Coding/CodingTechSpec.sprompt" />
+  <Object id="8305c75f-8edd-4629-af1e-10cee50dd0a1" name="Workflows/Overview/SectionOverview.sprompt" />
+  <Object id="cb6c4215-f640-42b9-97bd-af7d714cdb20" name="Workflows/Rules/Html_JavaScript.sprompt" />
+  <Object id="97aad715-53a3-4bbf-aea4-187df3fcd97b" name="Workflows/Rules/Html_Simple.sprompt" />
+  <Object id="d72d41bc-39bc-4de3-80d7-7d5f17d37ded" name="Workflows/Rules/Html_TypeScript.sprompt" />
+</ObjectId>

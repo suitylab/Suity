@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectSetting>
+  <Plugin name="ViewPlugin">
+    <Language>zh_cn</Language>
+  </Plugin>
+  <Plugin name="LLmModelPlugin">
+    <LowLLmPreset>
+      <Default />
+      <Planning />
+      <ToolCalling />
+      <WebSearch />
+      <Coding />
+      <Lightweight />
+      <DefaultParameters />
+    </LowLLmPreset>
+    <MediumLLmPreset>
+      <Default />
+      <Planning />
+      <ToolCalling />
+      <WebSearch />
+      <Coding />
+      <Lightweight />
+      <DefaultParameters />
+    </MediumLLmPreset>
+    <HighLLmPreset>
+      <Default />
+      <Planning />
+      <ToolCalling />
+      <WebSearch />
+      <Coding />
+      <Lightweight />
+      <DefaultParameters />
+    </HighLLmPreset>
+    <DefaultEmbedding />
+    <LowImageGenModel />
+    <MediumImageGenModel />
+    <HighImageGenModel />
+    <LocalizedLanguage>
+    </LocalizedLanguage>
+  </Plugin>
+  <Plugin name="AIAssistantPlugin">
+    <DefaultModel />
+    <ChatModel />
+    <BriefModel />
+    <SummaryModel />
+    <IdentifierModel />
+    <QueryKeywordModel />
+    <ClassifyModel>
+      <ModelType>Lightweight</ModelType>
+    </ClassifyModel>
+    <ToolCallingModel>
+      <ModelType>ToolCalls</ModelType>
+    </ToolCallingModel>
+    <CreativeToolCallingModel>
+      <ModelType>ToolCalls</ModelType>
+    </CreativeToolCallingModel>
+    <ExactToolCallingModel>
+      <ModelType>ToolCalls</ModelType>
+    </ExactToolCallingModel>
+    <CreativeWritingModel />
+    <DesignWritingModel />
+    <TechnicalWritingModel />
+    <DataGenerateModel />
+    <AnswerQuestionModel />
+    <SelectionModel />
+    <CodingModel>
+      <ModelType>Coding</ModelType>
+    </CodingModel>
+    <CodeRepairModel>
+      <ModelType>Coding</ModelType>
+    </CodeRepairModel>
+    <SpeechLanguage>
+    </SpeechLanguage>
+    <PromptOverrides base="@f966dd49-78ab-4231-a830-07c832999fb7[]" />
+  </Plugin>
+  <Plugin name="AIHubMixPlugin">
+    <ApiKey>
+    </ApiKey>
+    <BaseUrl>https://aihubmix.com</BaseUrl>
+  </Plugin>
+  <Plugin name="DashScopePlugin">
+    <ApiKey>
+    </ApiKey>
+    <BaseUrl>https://dashscope.aliyuncs.com/compatible-mode</BaseUrl>
+  </Plugin>
+  <Plugin name="DeepSeekPlugin">
+    <ApiKey>
+    </ApiKey>
+    <BaseUrl>https://api.deepseek.com</BaseUrl>
+  </Plugin>
+  <Plugin name="LmStudioPlugin">
+    <ApiKey>
+    </ApiKey>
+    <BaseUrl>http://127.0.0.1:1234</BaseUrl>
+  </Plugin>
+  <Plugin name="OpenAIPlugin">
+    <ApiKey>
+    </ApiKey>
+    <BaseUrl>https://api.openai.com</BaseUrl>
+  </Plugin>
+  <Plugin name="OpenRouterPlugin">
+    <ApiKey>
+    </ApiKey>
+    <BaseUrl>https://openrouter.ai/api</BaseUrl>
+  </Plugin>
+  <Plugin name="SiliconFlowPlugin">
+    <ApiKey>
+    </ApiKey>
+    <BaseUrl>https://api.siliconflow.cn</BaseUrl>
+  </Plugin>
+</ProjectSetting>

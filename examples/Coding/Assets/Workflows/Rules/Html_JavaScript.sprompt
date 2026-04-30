@@ -1,0 +1,107 @@
+# Technical Specification: Vanilla HTML/CSS/JS Web Application
+
+## Project Overview
+This document outlines the technical standards and architecture for a modern, framework-agnostic web application built using standard HTML5, CSS3, and JavaScript (ES6+). The application prioritizes semantic markup, maintainable styling, modular JavaScript, performance, and strict separation of concerns.
+
+## Technology Stack
+- **Markup:** HTML5 (Semantic)
+- **Styling:** CSS3 (Custom Properties, Flexbox/Grid, Responsive Design)
+- **Scripting:** JavaScript (ES6+ / Latest stable ECMAScript)
+- **Development Server:** Vite / Live Server / `npx serve` (recommended for HMR & local preview)
+- **Linting & Formatting:** ESLint + Prettier
+- **Package Manager:** npm / yarn / pnpm (for dev tooling only)
+
+## Project Structure Example
+- This project should use **Multiple File Structure**, as follows:
+
+```text
+/
+├── assets/
+│   ├── images/
+│   └── fonts/
+├── css/
+│   ├── main.css          # Global styles & CSS variables
+│   └── components/       # (Optional) Feature-specific styles
+├── js/
+│   ├── main.js           # Entry point
+│   └── modules/          # (Optional) Modular feature scripts
+├── index.html            # Root HTML
+├── .eslintrc.cjs         # ESLint configuration
+├── .prettierrc           # Prettier configuration
+├── package.json          # Dev tooling & scripts
+└── .gitignore
+```
+
+## Entry Point Specification (`index.html`)
+The root HTML file must adhere strictly to the following structure. It serves as the single entry point for the application.
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="(App description)" />
+    <title>(App Title)</title>
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body>
+    <header>...</header>
+    <main id="app">...</main>
+    <footer>...</footer>
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>
+```
+
+**Requirements:**
+- **Encoding:** Must be `UTF-8`.
+- **Viewport:** Must include responsive meta tag.
+- **Semantic Structure:** Use proper HTML5 semantic tags (`header`, `main`, `section`, `nav`, `footer`, etc.). Avoid excessive `div` nesting.
+- **Resource Loading:** Styles must be linked in `<head>`. The main script must be loaded as an ES module (`type="module"`) at the end of `<body>` or in `<head>` with `defer`.
+- **Clean Markup:** Do not include inline styles, inline scripts, or layout logic in this file.
+
+## .gitignore file initialization (`.gitignore`)
+```text
+node_modules/
+dist/
+.DS_Store
+*.log
+.env*
+!.env.example
+```
+
+## Configuration & Tooling
+- **ESLint:** Configure for modern JavaScript (`ecmaVersion: latest`, `sourceType: "module"`). Enforce rules: `no-var`, `prefer-const`, `no-unused-vars`, `eqeqeq`.
+- **Prettier:** Single quotes, trailing commas, 2-space indentation, print width 80.
+- **Module System:** Use native ES Modules (`import`/`export`) for JavaScript. Avoid global scope pollution.
+- **CSS Architecture:** Use CSS Custom Properties (`:root {}`) for theming. Prefer logical properties, modern layout (Flexbox/Grid), and mobile-first media queries.
+
+## Coding Standards
+- **Separation of Concerns:** HTML for structure, CSS for presentation, JS for behavior. No inline styles or inline event handlers (`onclick`, etc.).
+- **Naming Conventions:**
+  - HTML/CSS Classes: `kebab-case` or BEM (`block__element--modifier`, e.g., `nav__link--active`)
+  - JS Variables/Functions: `camelCase` (e.g., `fetchUserData`, `initCarousel`)
+  - JS Modules/Files: `kebab-case.js` (e.g., `api-client.js`, `form-validator.js`)
+  - Images/Assets: `kebab-case.ext` (e.g., `hero-banner.webp`)
+- **JavaScript Best Practices:** Use `const`/`let`, arrow functions, template literals, destructuring, and `async/await`. Avoid `var`. Strict mode is implicitly enabled via ES modules.
+- **CSS Best Practices:** Reset/normalize base styles. Use `rem`/`em` for typography, `vh`/`vw` or `%` for responsive sizing. Avoid `!important`.
+- **Formatting & Linting:** Code must be formatted using Prettier and pass ESLint before commit. Zero warnings/errors allowed in the pipeline.
+
+## Build & Development
+- **Development:** `npm run dev` (Starts local dev server with live reload/HMR)
+- **Lint & Format:** `npm run lint` / `npm run format`
+- **Production Deployment:** No build step required. Commit/push static files directly, or use `npm run build` (if using a minifier/bundler) to output optimized assets to `/dist`.
+- **Preview:** `npx serve dist/` or open `index.html` directly in a browser (note: ES modules require a local server to avoid CORS restrictions).
+
+## Dependencies
+- All dependencies must be listed in `package.json`.
+- Keep `dependencies` empty unless using third-party libraries. Place all tooling (ESLint, Prettier, dev server) under `devDependencies`.
+- Use lockfiles (`package-lock.json`, `yarn.lock`, or `pnpm-lock.yaml`) to ensure consistent dev environments.
+- Prefer native browser APIs over external libraries when possible.
+
+## **Important Notice**
+- The `index.html` file must strictly follow the Entry Point Specification. **Do NOT** write logical, layout, or interactive code inside `index.html`.
+- Maintain strict separation: Structure in `/index.html`, styling in `/css/`, behavior in `/js/`.
+- All asset paths must be relative and consistent (e.g., `/css/main.css`, `/js/main.js`) to ensure reliable local and production deployment.
+- Test across modern browsers (Chrome, Firefox, Safari, Edge) and ensure graceful degradation for older environments if required.
