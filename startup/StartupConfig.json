@@ -1,0 +1,22 @@
+{
+  "ProjectTemplates": [
+    {
+      "Id": "blank-project",
+      "Name": "Blank Project",
+      "TemplateUsage": "Preset",
+      "Description": "Start with a clean, empty project",
+      "DownloadUrl": "",
+      "CustomImageFileName": "",
+      "InitialOpenDocument": ""
+    },
+    {
+        "Id": "coding-project",
+        "Name": "Coding Project",
+        "TemplateUsage": "Example",
+        "Description": "A example project for coding and development workflows",
+        "DownloadUrl": "https://storage.suitylab.com/SuityAgentic/Templates/CodingExample-1.0.suitypackage",
+        "CustomImageFileName": "",
+        "InitialOpenDocument": ""
+    }
+  ]
+}

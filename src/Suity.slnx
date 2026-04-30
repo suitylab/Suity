@@ -1,0 +1,25 @@
+<Solution>
+  <Project Path="Crypto.Client/Crypto.Client.csproj" />
+  <Project Path="OpenAI_API/OpenAI_API/OpenAI_API.csproj" />
+  <Project Path="Suity.Agentic/Suity.Agentic.csproj" />
+  <Project Path="Suity.DataSync/Suity.DataSync.csproj" />
+  <Project Path="Suity.Editor.AIGC.API/Suity.Editor.AIGC.API.csproj" />
+  <Project Path="Suity.Editor.AIGC.Flows/Suity.Editor.AIGC.Flows.csproj" />
+  <Project Path="Suity.Editor.AIGC.LLm/Suity.Editor.AIGC.LLm.csproj" />
+  <Project Path="Suity.Editor.AIGC/Suity.Editor.AIGC.csproj" />
+  <Project Path="Suity.Editor.CodeRender/Suity.Editor.CodeRender.csproj" />
+  <Project Path="Suity.Editor.Documents/Suity.Editor.Documents.csproj" />
+  <Project Path="Suity.Editor.Flows/Suity.Editor.Flows.csproj" />
+  <Project Path="Suity.Editor.ImGui/Suity.Editor.ImGui.csproj" />
+  <Project Path="Suity.Editor.Internal/Suity.Editor.Internal.csproj" />
+  <Project Path="Suity.Editor.Packaging/Suity.Editor.Packaging.csproj" />
+  <Project Path="Suity.Editor.ProjectGui/Suity.Editor.ProjectGui.csproj" />
+  <Project Path="Suity.Editor.VirtualTree/Suity.Editor.VirtualTree.csproj" />
+  <Project Path="Suity.Editor/Suity.Editor.csproj" />
+  <Project Path="Suity.Graphics/Suity.Graphics.csproj" />
+  <Project Path="Suity.ImGui.Avalonia/Suity.ImGui.Avalonia.csproj" />
+  <Project Path="Suity.ImGui.BuildIn/Suity.ImGui.BuildIn.csproj" />
+  <Project Path="Suity.ImGui/Suity.ImGui.csproj" />
+  <Project Path="Suity.Rex/Suity.Rex.csproj" />
+  <Project Path="Suity/Suity.csproj" />
+</Solution>
