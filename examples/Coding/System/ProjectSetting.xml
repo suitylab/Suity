@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ProjectSetting>
-  <Plugin name="ViewPlugin">
-    <Language>zh_cn</Language>
-  </Plugin>
+  <Plugin name="ViewPlugin" />
   <Plugin name="LLmModelPlugin">
     <LowLLmPreset>
       <Default />
