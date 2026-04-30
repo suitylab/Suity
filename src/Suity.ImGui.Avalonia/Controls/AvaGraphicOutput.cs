@@ -236,7 +236,7 @@ internal class AvaGraphicOutput : IGraphicOutput
     /// <inheritdoc/>
     public SizeF MeasureString(string text, Font font)
     {
-        var size = AvaDrawingHelper.MeasureTextArea(text, font, float.PositiveInfinity);
+        var size = AvaDrawingHelper.MeasureSingleLineString(text, font);
         size.Width += font.Size * 0.2f;
         return size;
     }

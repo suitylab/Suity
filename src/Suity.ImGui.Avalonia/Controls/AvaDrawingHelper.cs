@@ -301,6 +301,32 @@ public static class AvaDrawingHelper
     }
 
     /// <summary>
+    /// Measures the size of text as a single line, ignoring line breaks.
+    /// </summary>
+    public static System.Drawing.SizeF MeasureSingleLineString(string text, System.Drawing.Font font)
+    {
+        var typeface = new Typeface(font.FontFamily.Name,
+            font.Italic ? FontStyle.Italic : FontStyle.Normal,
+            font.Bold ? FontWeight.Bold : FontWeight.Normal);
+
+        if (string.IsNullOrEmpty(text))
+        {
+            text = "";
+        }
+
+        var key = new TextCacheKey(text, typeface.FontFamily.Name, font.Size,
+                                   typeface.Style, typeface.Weight,
+                                   TextAlignment.Left, TextWrapping.NoWrap, double.PositiveInfinity);
+
+        var textLayout = LayoutCache.GetOrCreate(key, () =>
+            new TextLayout(text, typeface, font.Size, Brushes.Black,
+                           TextAlignment.Left, TextWrapping.NoWrap, maxWidth: double.PositiveInfinity)
+        );
+
+        return new System.Drawing.SizeF((float)textLayout.Width, (float)textLayout.Height);
+    }
+
+    /// <summary>
     /// Measures the size of text within a constrained width.
     /// </summary>
     public static System.Drawing.SizeF MeasureTextArea(string text, System.Drawing.Font font, float maxLineWidth)
