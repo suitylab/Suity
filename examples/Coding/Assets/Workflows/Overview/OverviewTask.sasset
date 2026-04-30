@@ -36,7 +36,7 @@
       <Name>###GetSpeechLanguage02</Name>
       <Node type="Suity.Editor.AIGC.Flows.GetSpeechLanguage" />
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageDefinitionDiagramItem" X="-740" Y="-150" Width="250" Height="130">
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageDefinitionDiagramItem" X="-760" Y="-150" Width="250" Height="130">
       <Name>ArticleOverview</Name>
       <AssetId>dafd7758-4543-4702-9def-5c115ac9a7d7</AssetId>
       <Node type="Suity.Editor.AIGC.Flows.Pages.PageDefinitionNode">
@@ -49,7 +49,7 @@
         <UseParentArticle>True</UseParentArticle>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageResultDiagramItem" X="300" Y="-100" Width="140" Height="130">
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageResultDiagramItem" X="350" Y="-80" Width="140" Height="130">
       <Name>End</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.PageResultNode">
         <Name>End</Name>
@@ -59,7 +59,7 @@
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-730" Y="-70" Width="45" Height="17">
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-750" Y="-70" Width="45" Height="17">
       <Name>SentenceCount</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
         <Name>SentenceCount</Name>
@@ -72,7 +72,7 @@
         <Value type="System.Int32">5</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterOutputItem" X="310" Y="-40" Width="50" Height="17">
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterOutputItem" X="360" Y="-20" Width="50" Height="17">
       <Name>Overview</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterOutputNode">
         <Name>Overview</Name>
@@ -97,7 +97,7 @@
         </TagNames>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="370" Y="110" Width="142" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="380" Y="110" Width="142" Height="111">
       <Name>###CreateArticle01</Name>
       <Node type="Suity.Editor.AIGC.Flows.GetOrCreateArticle">
         <Id>
@@ -122,7 +122,7 @@
       <Name>###GetXmlTagContentNode01</Name>
       <Node type="Suity.Editor.AIGC.Flows.GetXmlTagContentNode" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="130" Width="143" Height="89">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="60" Y="150" Width="143" Height="89">
       <Name>###ForeachArray01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ForeachArray">
         <OutputValueType type="Suity.Editor.Types.TypeDesignSelection">
@@ -138,7 +138,7 @@
       <Name>###If01</Name>
       <Node type="Suity.Editor.Flows.Nodes.If" />
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-730" Y="-90" Width="89" Height="17">
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-750" Y="-90" Width="89" Height="17">
       <Name>FullDocument</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
         <Name>FullDocument</Name>
@@ -221,7 +221,7 @@
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-430" Y="-370" Width="440" Height="285">
       <Name>###GroupFlowNode01</Name>
       <Node type="Suity.Editor.Flows.GroupFlowNode">
-        <GroupName>Article</GroupName>
+        <GroupName>Get Article</GroupName>
         <Icon />
       </Node>
     </Item>
@@ -233,7 +233,7 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageArticleOutputItem" X="310" Y="-20" Width="34" Height="25">
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageArticleOutputItem" X="360" Y="0" Width="34" Height="25">
       <Name>Article</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.PageArticleOutputNode">
         <Name>Article</Name>
@@ -264,7 +264,7 @@
         </ValueType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageEventDiagramItem" X="-730" Y="-110" Width="50" Height="17">
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageEventDiagramItem" X="-750" Y="-110" Width="50" Height="17">
       <Name>TaskStart</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.PageEventNode">
         <Name>TaskStart</Name>
@@ -281,7 +281,7 @@
         <Type>Lightweight</Type>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageCommitDiagramItem" X="310" Y="-60" Width="47" Height="17">
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageCommitDiagramItem" X="360" Y="-40" Width="47" Height="17">
       <Name>TaskEnd</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.PageCommitNode">
         <Name>TaskEnd</Name>

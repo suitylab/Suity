@@ -74,7 +74,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="110" Y="-110" Width="136" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="110" Y="-110" Width="136" Height="111">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.AIGC.Flows.CallLLm">
         <DialogName>
@@ -111,7 +111,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-40" Y="-100" Width="103" Height="85">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-40" Y="-100" Width="107" Height="89">
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.AIGC.Flows.BuildPrompt">
         <PromptTemplate>
@@ -200,7 +200,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-250" Y="140" Width="112" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-180" Y="150" Width="116" Height="56">
       <Name>###LinqSelect01</Name>
       <Node type="Suity.Editor.Flows.Nodes.LinqSelect">
         <InType type="Suity.Editor.Types.TypeDesignSelection">
@@ -211,7 +211,7 @@
         </OutType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-90" Y="150" Width="70" Height="28">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-20" Y="160" Width="70" Height="28">
       <Name>###DataActionDecompose01</Name>
       <Node type="Suity.Editor.Flows.Nodes.DataActionDecompose">
         <DataType>
@@ -219,25 +219,25 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="390" Y="130" Width="76" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="460" Y="140" Width="80" Height="56">
       <Name>###Return01</Name>
       <Node type="Suity.Editor.Flows.Nodes.Return" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-90" Y="190" Width="147" Height="63">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-20" Y="200" Width="151" Height="67">
       <Name>###GetArticleInformation01</Name>
       <Node type="Suity.Editor.AIGC.Flows.GetArticleInformation">
         <ContentProps>False</ContentProps>
         <HierarchyProps>False</HierarchyProps>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-430" Y="130" Width="147" Height="96">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-360" Y="140" Width="151" Height="100">
       <Name>###GetArticleInformation02</Name>
       <Node type="Suity.Editor.AIGC.Flows.GetArticleInformation">
         <BasicProps>False</BasicProps>
         <ContentProps>False</ContentProps>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="100" Y="280" Width="88" Height="28">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="170" Y="290" Width="88" Height="28">
       <Name>###ReadWorkSpaceFile01</Name>
       <Node type="Suity.Editor.AIGC.WorkSpaces.Flows.ReadWorkSpaceFile">
         <WorkSpace />
@@ -245,11 +245,11 @@
         </FilePath>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="110" Y="250" Width="59" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="180" Y="260" Width="59" Height="17">
       <Name>###GetTaskWorkSpace01</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.GetTaskWorkSpace" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="200" Y="200" Width="144" Height="63">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="270" Y="210" Width="148" Height="67">
       <Name>###MultiTextReplace01</Name>
       <Node type="Suity.Editor.Flows.Nodes.MultiTextReplace">
         <Input>
@@ -263,13 +263,13 @@
         </FindStrings>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="120" Width="93" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="130" Width="93" Height="17">
       <Name>###JoinString01</Name>
       <Node type="Suity.Editor.Flows.Nodes.JoinString">
         <Separator>\r\n\r\n</Separator>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-90" Width="115" Height="63">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-90" Width="119" Height="67">
       <Name>###ExtractXmlsTagNode01</Name>
       <Node type="Suity.Editor.AIGC.Flows.ExtractXmlsTagNode">
         <TagNames>
@@ -286,7 +286,7 @@
         </ValueType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="500" Y="-90" Width="91" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="500" Y="-90" Width="95" Height="111">
       <Name>###SetArticle01</Name>
       <Node type="Suity.Editor.AIGC.Flows.SetArticle" />
     </Item>

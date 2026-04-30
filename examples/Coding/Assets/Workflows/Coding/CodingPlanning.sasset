@@ -87,10 +87,6 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-40" Y="-110" Width="92" Height="17">
-      <Name>###GetTaskChatHistoryNode01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.GetTaskChatHistory" />
-    </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-160" Y="-10" Width="44" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.AIGC.Flows.GetSpeechLanguage" />
@@ -219,7 +215,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="-320" Width="95" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-320" Width="95" Height="111">
       <Name>###SetArticle02</Name>
       <Node type="Suity.Editor.AIGC.Flows.SetArticle" />
     </Item>
