@@ -190,7 +190,7 @@ public abstract class BaseOpenAIPlugin<TLLm, TImage> : BaseOpenAIPlugin, IViewOb
 
             if (sync.IsSetterOf("#UpdateModelList"))
             {
-                DownloadModelList();
+                DownloadModelList(context);
             }
         }
     }
@@ -224,7 +224,7 @@ public abstract class BaseOpenAIPlugin<TLLm, TImage> : BaseOpenAIPlugin, IViewOb
     /// <summary>
     /// Asynchronously downloads the available model list from the API provider.
     /// </summary>
-    public async void DownloadModelList()
+    public async void DownloadModelList(ISyncContext context)
     {
         var modelList = await OkGoDoItHelper.DownloadModelList(BaseUrl, ApiKeyProperty.Text);
         if (modelList is null || modelList.Count == 0)
@@ -239,6 +239,8 @@ public abstract class BaseOpenAIPlugin<TLLm, TImage> : BaseOpenAIPlugin, IViewOb
             OkGoDoItHelper.SaveModelList(ManufacturerId, modelList);
 
             DialogUtility.ShowMessageBoxAsync("Model list update successful.");
+
+            context.DoServiceAction<IViewRefresh>(o => o.QueueRefreshView());
         });
     }
 

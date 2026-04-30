@@ -286,7 +286,7 @@ public class ImSubPropertyGrid : IPropertyGrid, IDrawExpandedImGui
 
         _rootTarget = new RootPropertyTarget(_objs)
         {
-            ServiceProvider = context,
+            ServiceProvider = context ?? (IServiceProvider)this,
             Styles = styles
         };
     }

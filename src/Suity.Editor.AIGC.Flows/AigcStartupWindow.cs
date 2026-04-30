@@ -42,6 +42,8 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
         Instance ??= this;
 
         _startupAssetSel.Target = _startupAssetSel.GetList()?.GetItems()?.FirstOrDefault() as IAigcToolAsset;
+        _startupAssetSel.TargetUpdated += (s, e, ref handled) => { _guiRef.QueueRefresh(); };
+        _startupAssetSel.ListenEnabled = true;
         _startupAssetTarget = PropertyTargetUtility.CreatePropertyTarget(_startupAssetSel, "Select Startup Agent");
     }
 

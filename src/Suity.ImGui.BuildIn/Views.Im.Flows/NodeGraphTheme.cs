@@ -63,6 +63,11 @@ public class NodeGraphTheme : ThemeBase
             .SetCornerRound(6)
             .SetPadding(4);
 
+        this.ClassStyle("commentText")
+            .SetFont(new Font(ImGuiTheme.DefaultFont, 6), Color.White)
+            .SetBorder(0)
+            .SetPadding(0);
+
         this.ClassStyle("titleText")
             .SetFont(new Font(ImGuiTheme.DefaultFont, 10), Color.White)
             .SetVerticalAlignment(GuiAlignment.Center)

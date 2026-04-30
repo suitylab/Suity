@@ -73,8 +73,8 @@ public abstract class ImGraphCommentNode : ImGraphNode, IDrawNodeContext
 
         var node = _nodeRef.Node = NodeGraphExternalBK.Instance.ResizableNodeFrame(gui, this)
         .SetSize(this._width, this._height)
-        .OverridePadding(5)
-        .OverrideColor(color)
+        .OverridePadding(3)
+        //.OverrideColor(color)
         .OnContent(n =>
         {
             if (_connectors.HasControlOuputConnector)
@@ -83,8 +83,15 @@ public abstract class ImGraphCommentNode : ImGraphNode, IDrawNodeContext
             }
 
             _CommentNodeRef.Node = gui.DoubleClickTextAreaInput("#comment", CommentText)
-            .InitSizeRest()
-            .InitOverrideBorder(0)
+            .OnInitialize(n =>
+            {
+                n.InitClass("commentText");
+                n.InitClass("debug");
+                n.InitSizeRest();
+                n.InitOverrideBorder(0);
+                n.InitFont(new Font(ImGuiTheme.DefaultFont, 6));
+                n.InitPadding(1);
+            })
             .OverrideColor(color)
             .OnEdited(n => 
             {

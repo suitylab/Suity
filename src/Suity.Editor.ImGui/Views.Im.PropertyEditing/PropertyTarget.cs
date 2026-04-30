@@ -632,6 +632,21 @@ public abstract class PropertyTarget : IValueTarget, ISupportStyle, IDrawContext
 
     #endregion
 
+    /// <summary>
+    /// Get service in hierarchy
+    /// </summary>
+    /// <param name="serviceType">The type of service to retrieve.</param>
+    /// <returns>The service instance, or null if not found.</returns>
+    public object? GetServiceInHierarchy(Type serviceType)
+    {
+        if (serviceType is null)
+        {
+            return null;
+        }
+
+        return ServiceProvider?.GetService(serviceType) ?? Parent?.GetServiceInHierarchy(serviceType);
+    }
+
     /// <inheritdoc/>
     public override string ToString()
     {

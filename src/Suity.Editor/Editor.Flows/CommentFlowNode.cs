@@ -9,13 +9,15 @@ namespace Suity.Editor.Flows;
 /// </summary>
 public class CommentFlowNode : FlowNode
 {
+    private readonly Color DefaultBackgroundColor = ColorTranslator.FromHtml("#223322");
+
     private readonly TextBlockProperty _comment = new("Comment", "Comment");
-    private readonly ColorProperty _color = new("Color", "Color");
+    private readonly ColorProperty _bgColor = new("Color", "Color");
 
     /// <summary>
     /// Gets the background color of the comment node.
     /// </summary>
-    public override Color? BackgroundColor => _color;
+    public override Color? BackgroundColor => _bgColor;
 
 
     /// <summary>
@@ -33,6 +35,7 @@ public class CommentFlowNode : FlowNode
     public CommentFlowNode()
     {
         _comment.Text = "Comment";
+        _bgColor.Value = DefaultBackgroundColor;
     }
 
     /// <summary>
@@ -43,7 +46,7 @@ public class CommentFlowNode : FlowNode
         base.OnSync(sync, context);
 
         _comment.Sync(sync);
-        _color.Sync(sync);
+        _bgColor.Sync(sync);
     }
 
     /// <summary>
@@ -54,6 +57,6 @@ public class CommentFlowNode : FlowNode
         base.OnSetupView(setup);
 
         _comment.InspectorField(setup);
-        _color.InspectorField(setup);
+        _bgColor.InspectorField(setup);
     }
 }

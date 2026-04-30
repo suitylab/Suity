@@ -30,6 +30,6 @@ public class ButtonSetterContext : ISyncContext, ISetterContext
     /// <inheritdoc/>
     public object? GetService(Type serviceType)
     {
-        return _node.GetValueInHierarchy(serviceType);
+        return _target.GetServiceInHierarchy(serviceType) ?? _node.GetValueInHierarchy(serviceType);
     }
 }
