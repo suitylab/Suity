@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	  <LangVersion>Latest</LangVersion>
+	  <Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Ionic.Zlib.Core" Version="1.0.0" />
+		<PackageReference Include="PolySharp" Version="1.15.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.Text.Json" Version="10.0.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Suity.DataSync\Suity.DataSync.csproj" />
+	  <ProjectReference Include="..\Suity.Editor.AIGC\Suity.Editor.AIGC.csproj" />
+	  <ProjectReference Include="..\Suity.Editor.ImGui\Suity.Editor.ImGui.csproj" />
+	  <ProjectReference Include="..\Suity.Editor\Suity.Editor.csproj" />
+	  <ProjectReference Include="..\Suity\Suity.csproj" />
+	</ItemGroup>
+
+</Project>
