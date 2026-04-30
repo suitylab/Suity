@@ -341,19 +341,25 @@ Please ensure your code follows the existing code style and includes appropriate
 
 ## License
 
-Suity is licensed under a **modified version of the Apache License 2.0**.
+Suity is licensed under a **modified version of the Apache License 2.0**, with additional conditions.
 
 ### 📜 Summary of Terms
 
 * **Free for Individuals & Enterprises**: You can freely use, modify, and self-host Suity for internal business logic and personal projects.
-* **Commercial Restrictions**:
-    * **No Multi-tenancy**: Unless explicitly authorized in writing, you may not use the Suity source code to operate a multi-tenant environment or a public "Agent-as-a-Service" cloud platform.
-    * **Brand Integrity**: Modification or removal of Suity’s **LOGO** and copyright information within the **Main Menu Bar**, **Startup/Splash Screen**, **App Icon**, or **About Us** window is strictly prohibited.
-* **Contributor Agreement**: By contributing to this repository, you agree that Suity reserves the right to adjust license terms and use contributed code for commercial operations.
+* **Commercial Restrictions**: A commercial license must be obtained from Suity if any of the following conditions are met:
+    * **Multi-tenant Service**: Unless explicitly authorized in writing, you may not use the Suity source code to operate a multi-tenant environment (e.g., providing a public "Agent-as-a-Service" cloud platform).
+    * **Public Cloud & Remote AI Deployment**: Unless explicitly authorized in writing, you may not deploy, operate, or provide any AI computing services (including but not limited to model inference, fine-tuning, or agent execution) powered by or based on Suity in a public cloud, remote server, or managed service environment for third parties.
+    * **Commercial Asset Sales Prohibition**: Unless explicitly authorized in writing, you may not sell, distribute for a fee, or commercially license any asset packs, templates, workflows, or extension packages designed for Suity to any third party.
+    * **LOGO and Copyright Information**: You may not remove or modify the LOGO or copyright information in the Suity application icon, startup/splash screen, main menu bar, and 'about us' window.
+* **Contributor Agreement**: By contributing to this repository, you agree that:
+    * Suity reserves the right to adjust license terms to be more strict or relaxed as deemed necessary.
+    * Suity may use contributed code for commercial purposes, including but not limited to Suity's cloud business operations.
 
-Apart from the specific conditions mentioned above, all other rights and restrictions follow the **Apache License 2.0**.
+Apart from the specific conditions mentioned above, all other rights and restrictions follow the **Apache License 2.0**. Detailed information can be found at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
-> **Note**: The interactive design, including the Node-Graph architecture and Task Page workflow, is protected by appearance patents.
+> **Note**: The interactive design (including the Node-Graph, Agent Prefab architecture, and Task Page layout) of this product is protected by appearance patent and trade secret laws.
+>
+> © 2026 Suity. All rights reserved.
 
 ---
 

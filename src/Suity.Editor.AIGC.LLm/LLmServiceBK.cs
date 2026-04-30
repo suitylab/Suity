@@ -53,7 +53,7 @@ internal class LLmServiceBK : LLmService
 
 
     /// <inheritdoc/>
-    public override bool CheckCurrentModelConfig()
+    public override async Task<bool> CheckCurrentModelConfig()
     {
         List<string> msgs = null;
         if (LLmModelPlugin.Instance.GetCurrentModelConfigValid(ref msgs))
@@ -67,7 +67,7 @@ internal class LLmServiceBK : LLmService
             msg += "\n\n" + string.Join("\n", msgs);
         }
 
-        DialogUtility.ShowMessageBoxAsync(msg);
+        await DialogUtility.ShowMessageBoxAsync(msg);
         EditorUtility.ShowProjectSetting();
 
         return false;

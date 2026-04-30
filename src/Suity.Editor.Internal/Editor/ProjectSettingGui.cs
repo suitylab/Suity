@@ -44,10 +44,6 @@ public class ProjectSettingGui : IDrawImGui, IViewRefresh, IViewSave
         }
     }
 
-    /// <summary>
-    /// Gets the current instance of <see cref="ProjectSettingGui"/>.
-    /// </summary>
-    public static ProjectSettingGui Instance { get; private set; }
 
     private readonly ImGuiTheme _theme;
     private readonly ImGuiPathTreeModel _treeModel;
@@ -64,8 +60,6 @@ public class ProjectSettingGui : IDrawImGui, IViewRefresh, IViewSave
     /// </summary>
     public ProjectSettingGui()
     {
-        Instance = this;
-
         _theme = CreateTheme();
 
         _treeModel = new();
@@ -157,7 +151,6 @@ public class ProjectSettingGui : IDrawImGui, IViewRefresh, IViewSave
     {
         if (gui is null)
         {
-            Instance = null;
             return;
         }
 

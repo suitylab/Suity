@@ -232,6 +232,11 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
     private async void ProcessInput()
     {
+        if (!await LLmService.Instance.CheckCurrentModelConfig())
+        {
+            return;
+        }
+
         var startupPage = _startupAssetSel.Target;
         if (startupPage is null)
         {

@@ -28,7 +28,7 @@ public abstract class LLmService
     /// Checks whether the current model configuration is valid and ready for use.
     /// </summary>
     /// <returns>True if the current model configuration is valid; otherwise, false.</returns>
-    public abstract bool CheckCurrentModelConfig();
+    public abstract Task<bool> CheckCurrentModelConfig();
 
 
 

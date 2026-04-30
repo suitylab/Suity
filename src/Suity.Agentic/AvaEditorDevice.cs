@@ -2,6 +2,7 @@ using Avalonia.Threading;
 using Suity.Collections;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
+using Suity.Editor.MenuCommands.AppMenus;
 using Suity.Editor.Services;
 using Suity.Editor.Values;
 using Suity.Networking;
@@ -27,8 +28,6 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
     readonly Dictionary<Type, object> _services = [];
     readonly Dictionary<Type, object> _fallBackServices = [];
 
-
-
     private AvaEditorDevice()
     {
         
@@ -52,6 +51,7 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
         EditorRexes.FindReference.AddActionListener(o => Navigator.FindReference(o));
         EditorRexes.FindImplement.AddActionListener(o => Navigator.FindImplement(o));
         EditorRexes.GlobalSearch.AddActionListener((str, option) => Navigator.GlobalSearch(str, option));
+        EditorRexes.ShowProjectSetting.AddActionListener(ProjectSettingMenuCommand.OpenProjectSetting);
         EditorCommands.Mapper.ProvideHandler<NavigateVReq>(this);
         EditorCommands.Mapper.ProvideHandler<LocateInCanvasVReq>(this);
 

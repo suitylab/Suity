@@ -1096,10 +1096,7 @@ public static class EditorUtility
     /// <summary>
     /// Shows the project settings window.
     /// </summary>
-    public static void ShowProjectSetting()
-    {
-        EditorRexes.ShowProjectSetting.Invoke();
-    }
+    public static void ShowProjectSetting() => EditorRexes.ShowProjectSetting.Invoke();
 
     #endregion
 
