@@ -1,0 +1,103 @@
+{
+  "type": "object",
+  "properties": {
+	"@format": {
+	  "type": "string",
+	  "enum": ["SuityJson"]
+	},
+	"@doc": {
+	  "type": "string",
+	  "enum": ["TypeEdit"]
+	},
+	"NameSpace": {
+	  "type": "string",
+	  "enum": ["{{NameSpace}}"]
+	},
+	"Types": {
+	  "type": "array",
+	  "items": {
+		"type": "object",
+		"oneOf": [
+		  {
+			"properties": {
+			  "@type": {
+				"type": "string",
+				"enum": ["StructType", "AbstractType"],
+				"description": "StructType表示一个普通结构或、派生结构或者实现结构。若为派生结构，应该指定Base参数。AbstractType表示一个抽象结构。"
+			  },
+			  "Name": {
+				"type": "string",
+				"description" : "表示结构的名字，使用英语Identifier，需要以'{{NameSpace}}.结构名'的格式组合成一个完整的全名称。"
+			  },
+			  "Description": {
+				"type": "string",
+				"description" : "结构的描述文本，使用中文对参数进行详细描述"
+			  },
+			  "Base": {
+				"type": "string",
+				"description" : "指定一个抽象结构作为其基类，需要以'名域.结构名'的格式组合成一个完整的全名称。"
+			  },
+			  "Parameters": {
+				"type": "array",
+				"items": {
+				  "type": "object",
+				  "properties": {
+					"Name": {
+					  "type": "string",
+					  "description" : "字段名，使用英文Identifier"
+					},
+					"Description": {
+					  "type": "string",
+					  "description" : "参数的描述文本，使用中文对参数进行详细描述"
+					},
+					"Type": {
+					  "type": "string",
+					  "description": "1. 基础类型：bool, string, int, float。\r\n2. 子结构：需要用'文档名域.结构名称'的全名来表示。\r\n3. 枚举：需要用'文档名域.枚举名称'的全名来表示。\r\n4. 数组：在后面添加'[]'。\r\n5. 外部引用、数据引用、数据链接：前面添加'@'，需要用'@文档名域.结构名称'的全名来表示。\r\n6. 外部引用数组，应该以'@文档名域.结构名称[]'的全名来表示。"
+					}
+				  },
+				  "required": ["Name", "Description", "Type"]
+				}
+			  }
+			},
+			"required": ["@type", "Name", "Description", "Parameters"]
+		  },
+		  {
+			"properties": {
+			  "@type": {
+				"type": "string",
+				"enum": ["EnumType"]
+			  },
+			  "Name": {
+				"type": "string",
+				"description" : "表示枚举的名字，使用英语Identifier，需要以'{{NameSpace}}.枚举名'的格式组合成一个完整的全名称。"
+			  },
+			  "Description": {
+				"type": "string",
+				"description" : "枚举的描述文本，使用中文对参数进行详细描述"
+			  },
+			  "Items": {
+				"type": "array",
+				"items": {
+				  "type": "object",
+				  "properties": {
+					"Name": {
+					  "type": "string",
+					  "description" : "枚举项名，使用英文Identifier"
+					},
+					"Description": {
+					  "type": "string",
+					  "description" : "枚举项的描述文本，使用中文对参数进行详细描述"
+					}
+				  },
+				  "required": ["Name", "Description"]
+				}
+			  }
+			},
+			"required": ["@type", "Name", "Description", "Parameters"]
+		  }
+		]
+	  }
+	}
+  },
+  "required": ["@format", "@doc", "NameSpace", "Types"]
+}
