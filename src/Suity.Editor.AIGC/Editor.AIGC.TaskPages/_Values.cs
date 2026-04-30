@@ -1,0 +1,60 @@
+using Suity.Editor.Types;
+
+namespace Suity.Editor.AIGC.TaskPages;
+
+/// <summary>
+/// Represents a wrapper for chat history text content with implicit conversion support.
+/// </summary>
+[NativeType(CodeBase = "AIGC")]
+public record ChatHistoryText
+{
+    /// <summary>
+    /// Gets an empty <see cref="ChatHistoryText"/> instance.
+    /// </summary>
+    public static ChatHistoryText Empty { get; } = new ChatHistoryText(string.Empty);
+
+    /// <summary>
+    /// Gets the underlying text content.
+    /// </summary>
+    public string Text { get; init; }
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="ChatHistoryText"/> with the specified text.
+    /// </summary>
+    public ChatHistoryText(string text)
+    {
+        Text = text ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Returns the text content as a string representation.
+    /// </summary>
+    public override string ToString()
+    {
+        return Text;
+    }
+
+    /// <summary>
+    /// Implicitly converts a <see cref="ChatHistoryText"/> to a <see cref="string"/>.
+    /// </summary>
+    public static implicit operator string(ChatHistoryText text)
+    {
+        return text.Text;
+    }
+
+    /// <summary>
+    /// Implicitly converts a <see cref="string"/> to a <see cref="ChatHistoryText"/>. Returns <see cref="Empty"/> if the text is null or whitespace.
+    /// </summary>
+    public static implicit operator ChatHistoryText(string text)
+    {
+        if (!string.IsNullOrWhiteSpace(text))
+        {
+            return new ChatHistoryText(text);
+        }
+        else
+        {
+            return Empty;
+        }
+    }
+}
+
