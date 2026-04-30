@@ -1,0 +1,7 @@
+{
+  "model": "{AsstId}",
+  "messages": [
+    {"role": "system", "content": "{System}"},
+    {"role": "user", "content": "{User}"}
+  ]
+}

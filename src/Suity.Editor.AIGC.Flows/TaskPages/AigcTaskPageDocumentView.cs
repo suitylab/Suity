@@ -1,0 +1,699 @@
+using Suity.Collections;
+using Suity.Editor.Documents;
+using Suity.Editor.Documents.Linked;
+using Suity.Editor.Flows;
+using Suity.Editor.Flows.Gui;
+using Suity.Editor.Selecting;
+using Suity.Editor.Services;
+using Suity.Helpers;
+using Suity.Synchonizing;
+using Suity.Synchonizing.Core;
+using Suity.UndoRedos;
+using Suity.Views;
+using Suity.Views.Graphics;
+using Suity.Views.Im;
+using Suity.Views.Im.PropertyEditing;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using static Suity.Helpers.GlobalLocalizer;
+
+namespace Suity.Editor.AIGC.TaskPages;
+
+/// <summary>
+/// Document view for <see cref="AigcTaskPageDocument"/>, providing tree-based navigation, property editing, and AI task interaction UI.
+/// </summary>
+[DocumentViewUsage(typeof(AigcTaskPageDocument))]
+public class AigcTaskPageDocumentView : IDocumentView,
+    IHasSubDocumentView,
+    IDrawImGui,
+    IDrawContext, 
+    IViewRefresh, 
+    ISyncStateRecord
+{
+    private readonly ImGuiNodeRef _guiRef = new();
+
+    private readonly IUndoableViewObjectImGui _treeView;
+    private readonly IInspectorContext _inspectorContext;
+    private readonly SubDocumentView _subView;
+
+    private UndoRedoManager _undoManager;
+    private AigcTaskPageDocument _document;
+    private PropertyTarget _startupPageTarget;
+
+    private readonly IPropertyGrid _propGrid;
+
+    private AigcTaskPage _currentTask;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AigcTaskPageDocumentView"/> class.
+    /// </summary>
+    public AigcTaskPageDocumentView()
+    {
+        var option = new HeaderlessTreeOptions
+        {
+            ShowDisplayText = true,
+        };
+        _treeView = EditorUtility.CreateSimpleTreeImGui(option);
+
+        _treeView.SelectionChanged += _treeView_SelectionChanged;
+        _treeView.Dirty += View_Dirty;
+        _treeView.Edited += View_Edited;
+
+        _inspectorContext = _treeView.GetService<IInspectorContext>();
+
+        _subView = new(this);
+
+        _propGrid = PropertyGridExtensions.CreatePropertyGrid("AIBuilder");
+
+        _propGrid.ShowContextMenu = false;
+        _propGrid.ShowToolBar = false;
+
+        _propGrid.AddService<IViewRefresh>(this);
+        _propGrid.AddService<IViewSave>(_subView);
+        _propGrid.Edited += _grid_Edited;
+    }
+
+    #region IHasSubDocumentView
+
+    /// <summary>
+    /// Gets the currently active sub-view object.
+    /// </summary>
+    public object CurrentSubView => _subView.CurrentSubView;
+
+    /// <summary>
+    /// Opens a sub-view for the specified document.
+    /// </summary>
+    /// <param name="document">The document to open a sub-view for.</param>
+    /// <returns>The opened sub-view object.</returns>
+    public object OpenSubView(Document document) => _subView.OpenSubView(document);
+
+    #endregion
+
+    #region IServiceProvider
+
+    /// <inheritdoc/>
+    public object GetService(Type serviceType)
+    {
+        if (serviceType is null)
+        {
+            return null;
+        }
+
+        if (serviceType.IsInstanceOfType(this))
+        {
+            return this;
+        }
+
+        if (serviceType.IsInstanceOfType(_subView))
+        {
+            return _subView;
+        }
+
+        return _treeView.GetService(serviceType);
+    }
+
+    #endregion
+
+    #region IDocumentView
+
+    /// <summary>
+    /// Gets the target document object displayed by this view.
+    /// </summary>
+    public object TargetObject => _document;
+
+
+    /// <inheritdoc/>
+    public void StartView(Document document, IDocumentViewHost host)
+    {
+        if (document == null)
+        {
+            throw new ArgumentNullException(nameof(document));
+        }
+
+        if (document is not AssetDocument)
+        {
+            throw new ArgumentException("Document must be a LinkedDocument", nameof(document));
+        }
+
+        if (_document != null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        _document = (AigcTaskPageDocument)document;
+        _subView.Document = document;
+        _startupPageTarget = PropertyTargetUtility.CreatePropertyTarget(_document.StartupPageSelection);
+
+        if (_document.StartupPage is null)
+        {
+            _document.StartupPage = _document.StartupPageSelection?.GetList()?.GetItems()?.FirstOrDefault() as IAigcToolAsset;
+        }
+
+        _undoManager = host.GetService<UndoRedoManager>() ?? new UndoRedoManager();
+
+        _treeView.UndoManager = _undoManager;
+        _treeView.Target = _document;
+        _treeView.ExpandAll();
+
+        string formatName = _document.Entry?.Format?.FormatName;
+        if (!string.IsNullOrWhiteSpace(formatName))
+        {
+            _treeView.CreateMenu("#" + formatName);
+        }
+
+        RestoreDocumentViewState(_document);
+    }
+
+    /// <inheritdoc/>
+    public void StopView()
+    {
+        SaveDocumentViewState(_document);
+
+        _treeView.Target = null;
+        _document = null;
+        _startupPageTarget = null;
+        _subView.Document = null;
+        _undoManager = null;
+        _treeView.UndoManager = null;
+        _guiRef.Node = null;
+
+        _subView.ExitAll();
+        _subView.ClearGui();
+    }
+
+    /// <inheritdoc/>
+    public object GetUIObject()
+    {
+        return this;
+    }
+
+    /// <inheritdoc/>
+    public void SetDataToDocument()
+    {
+    }
+
+    /// <inheritdoc/>
+    public void GetDataFromDocument()
+    {
+        _treeView.Target = _document;
+    }
+
+    /// <inheritdoc/>
+    public void ActivateView(bool focus)
+    {
+        if (focus)
+        {
+            _treeView.FocusView(false);
+        }
+
+        _treeView.UpdateAnalysis();
+    }
+
+    /// <inheritdoc/>
+    public void RefreshView()
+    {
+        _treeView?.UpdateDisplayedObject();
+    }
+
+    #endregion
+
+    #region IDrawImGui
+
+    /// <inheritdoc/>
+    public void OnGui(ImGui gui)
+    {
+        _subView.OnGui(gui, n => { }, MainGui);
+    }
+
+    private void MainGui(ImGui gui)
+    {
+        _guiRef.Node = gui.HorizontalFrame("main_ui")
+        .InitTheme(_subView.Theme)
+        .InitClass("editorBg")
+        .InitFullSize()
+        .OnContent(() =>
+        {
+            gui.VerticalLayout("left")
+            .InitFullHeight()
+            .InitWidthPercentage(30)
+            .OnContent(() => 
+            {
+                gui.Frame("toolBar")
+                .InitClass("toolBar")
+                .InitOverridePadding(3)
+                .InitFullWidth()
+                .InitFitVertical()
+                .OnContent(() => 
+                {
+                    gui.Button("btnResume", "Resume", CoreIconCache.Play)
+                    .InitClass("simpleBtn")
+                    .SetToolTipsL("Start generating")
+                    .OnClick(() =>
+                    {
+                        ProcessInput("resume");
+                    });
+                });
+
+                _treeView.OnNodeGui(gui)
+                .InitHeightRest();
+            });
+
+            gui.HorizontalResizer(40, null)
+            .InitFullHeight()
+            .InitClass("resizer_h");
+
+            var sel = _treeView.SelectedObjects;
+
+            if (sel.CountOne() && sel.FirstOrDefault() is AigcTaskPageDocument doc)
+            {
+                OnDocumentGui(gui, doc);
+            }
+            else if (sel.Any())
+            {
+                if (sel.CountOne() && sel.FirstOrDefault() is AigcTaskPage page)
+                {
+                    OnTaskPageGui(gui, page);
+                }
+                else
+                {
+                    gui.VerticalLayout("#blank")
+                    .InitFullHeight()
+                    .InitWidthRest();
+                }
+            }
+            else if (_document != null)
+            {
+                OnDocumentGui(gui, _document);
+            }
+        });
+    }
+
+    private void OnTaskPageGui(ImGui gui, AigcTaskPage page)
+    {
+        gui.VerticalLayout("#task_page")
+        .InitFullHeight()
+        .InitWidthRest()
+        .OnContent(() =>
+        {
+            gui.HorizontalFrame("title")
+            .InitFullWidth()
+            //.InitHeight(80)
+            .InitFitVertical()
+            .OnContent(() =>
+            {
+                gui.HorizontalLayout("#left")
+                .InitWidthRest(64)
+                .InitPadding(10)
+                //.InitVerticalAlignment(GuiAlignment.Center)
+                .OnContent(() =>
+                {
+                    if (page.Instance?.GetAllStatusIcon() is { } statusIcon)
+                    {
+                        gui.Image("#statusIcon", statusIcon).InitClass("icon");
+                    }
+
+                    if (page.Icon is { } icon)
+                    {
+                        gui.Image("#icon", icon).InitClass("icon");
+                    }
+
+                    gui.Text($"#title", page.DisplayText ?? "---");
+
+                    if (page.Instance?.SkillAssetSelection?.Target is { } skill)
+                    {
+                        gui.Text($" (Skill: {skill.ToDisplayText()})");
+                    }
+                });
+
+                gui.HorizontalLayout("#right")
+                .InitWidthRest()
+                .InitPadding(10)
+                //.InitVerticalAlignment(GuiAlignment.Center)
+                .OnContent(() =>
+                {
+                    gui.Button("Navigate", CoreIconCache.GotoDefination)
+                    .InitClass("configBtn")
+                    .InitToolTips("Go to diagram")
+                    .OnClick(() =>
+                    {
+                        HandleNavigateDiagram();
+                    });
+                });
+            });
+
+            _propGrid.OnGui(gui);
+        });
+    }
+
+    private void OnDocumentGui(ImGui gui, AigcTaskPageDocument doc)
+    {
+        if (doc.IsTaskEmpty)
+        {
+            OnStartupGui(gui, doc);
+        }
+        else if (doc.GetLastRunningTask() is null)
+        {
+            // Previous task completed.
+            OnStartupGui(gui, doc);
+        }
+        else
+        {
+            OnResumeGui(gui, doc);
+        }
+    }
+
+    private void OnStartupGui(ImGui gui, AigcTaskPageDocument doc)
+    {
+        gui.Frame("#startup")
+        .InitClass("editorBg")
+        .InitSizeRest()
+        .OnContent(() =>
+        {
+            gui.HorizontalLayout()
+            .InitFullHeight()
+            .InitWidthPercentage(75)
+            .InitCenter()
+            .OnContent(() =>
+            {
+                gui.VerticalLayout("vert")
+                .InitFullWidth()
+                .InitHeight(500)
+                .InitCenter()
+                .OnContent(() =>
+                {
+                    bool configured = doc.IsStartupConfigured == true;
+
+                    if (!configured)
+                    {
+                        gui.HorizontalLayout("#warning")
+                        .InitFullWidth()
+                        .InitFitVertical()
+                        .OnContent(() =>
+                        {
+                            gui.Image(CoreIconCache.Warning).InitClass("icon");
+                            gui.Text("#title", "Please configure startup parameters first.");
+                        });
+                    }
+
+                    gui.HorizontalLayout("#sel")
+                    .InitWidth(400)
+                    .InitHeight(32)
+                    .InitVerticalAlignment(GuiAlignment.Center)
+                    .InitTextAlignment(GuiAlignment.Center)
+                    .OnContent(() => 
+                    {
+                        gui.Text(L("Startup")).InitFit();
+                        gui.PropertyEditor(_startupPageTarget, act =>
+                        {
+                            act.DoAction();
+                            doc.StartupPageSelection = _startupPageTarget.GetValues().FirstOrDefault() as AssetSelection<IAigcToolAsset> ?? doc.StartupPageSelection;
+
+                            // doc.StartupPageSelection.Target ??= null;
+                            _guiRef.QueueRefresh();
+                        });
+                    });
+
+                    gui.Text("#title", L("Please enter AI prompt words"));
+                    doc.InitialTaskPrompt = gui.TextAreaInput("input", doc.InitialTaskPrompt, autoFit: false, submitMode: TextBoxEditSubmitMode.Enter)
+                    .InitFullWidth()
+                    .InitHeight(270)
+                    .InitInputFunctionChain(TextInput)
+                    .SetHintText(L("Prompt words input"))
+                    .SetEnabled(configured)
+                    .Text;
+
+                    gui.HorizontalReverseLayout("input_bar")
+                    //.SetEnabled(started)
+                    .InitFullWidth()
+                    .InitHeight(30)
+                    .OnContent(() =>
+                    {
+                        gui.Button("btnRun", "Run", CoreIconCache.Send)
+                        .InitClass("simpleBtn")
+                        .InitFullHeight()
+                        .SetToolTipsL("Start generating")
+                        .SetEnabled(configured)
+                        .OnClick(() =>
+                        {
+                            if (doc.InitialTaskPrompt is { } prompt && !string.IsNullOrWhiteSpace(prompt))
+                            {
+                                ProcessInput(prompt);
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    }
+
+    private void OnResumeGui(ImGui gui, AigcTaskPageDocument doc)
+    {
+        gui.Frame("#resume")
+        .InitClass("editorBg")
+        .InitSizeRest()
+        .OnContent(() =>
+        {
+            gui.HorizontalLayout()
+            .InitFullHeight()
+            .InitWidthPercentage(75)
+            .InitCenter()
+            .OnContent(() =>
+            {
+                gui.VerticalLayout("vert")
+                .InitFullWidth()
+                .InitHeight(500)
+                .InitCenter()
+                .OnContent(() =>
+                {
+                    gui.Button("btnResume", "Resume", CoreIconCache.Play)
+                    .InitClass("simpleBtn")
+                    .InitHeight(30)
+                    .InitCenterHorizontal()
+                    .SetToolTipsL("Start generating")
+                    .OnClick(() =>
+                    {
+                        ProcessInput("resume");
+                    });
+                });
+            });
+        });
+    }
+
+    private GuiInputState TextInput(GuiPipeline pipeline, ImGuiNode node, IGraphicInput input, ChildInputFunction baseAction)
+    {
+        var state = baseAction(pipeline);
+
+        if (input.EventType == GuiEventTypes.KeyDown && input.KeyCode == "Return" && node.IsMouseInClickRect)
+        {
+            ProcessInput(_document?.InitialTaskPrompt);
+        }
+
+        return state;
+    }
+
+    private Task ProcessInput(string msg)
+    {
+        if (_document is not { } doc)
+        {
+            return Task.CompletedTask;
+        }
+
+        if (string.IsNullOrWhiteSpace(msg))
+        {
+            return Task.CompletedTask;
+        }
+
+        var runner = new AigcTaskPageRunner(doc);
+
+        return LLmService.Instance.InputMainChat(msg, runner);
+    }
+
+    #endregion
+
+    #region IDropTarget
+
+    /// <inheritdoc/>
+    public void DragOver(IDragEvent e)
+    {
+        // DragDrop event is initiated by GraphicViewControl, can only route
+        if (_subView.CurrentSubView is IDropTarget dropTarget && dropTarget != this)
+        {
+            dropTarget.DragOver(e);
+        }
+        else
+        {
+            //TODO
+        }
+    }
+
+    /// <inheritdoc/>
+    public void DragDrop(IDragEvent e)
+    {
+        // DragDrop event is initiated by GraphicViewControl, can only route
+        if (_subView.CurrentSubView is IDropTarget dropTarget && dropTarget != this)
+        {
+            dropTarget.DragDrop(e);
+        }
+        else
+        {
+            //TODO
+        }
+    }
+
+    #endregion
+
+    #region IViewRefresh
+
+    /// <inheritdoc/>
+    public void QueueRefreshView() => this.RefreshView();
+
+    #endregion
+
+    #region ISyncStateRecord
+
+    /// <inheritdoc/>
+    void ISyncStateRecord.Record(ISyncObject obj)
+    {
+        _undoManager?.Do(new SnapshotObjectUndoAction(obj, null, this));
+    }
+
+    /// <inheritdoc/>
+    void ISyncStateRecord.Record(ISyncList list)
+    {
+        _undoManager?.Do(new SnapshotListUndoAction(list, null, this));
+    }
+
+    #endregion
+
+    #region Events
+
+    private void View_Dirty(object sender, EventArgs e)
+    {
+        _document?.MarkDirty(this);
+    }
+
+    private void View_Edited(object sender, object[] objs)
+    {
+        //_edit.QueueRefresh();
+        _guiRef.QueueRefresh();
+    }
+
+    #endregion
+
+    #region State
+
+    private void RestoreDocumentViewState(Document document)
+    {
+        var asset = document?.GetAsset();
+        if (asset != null)
+        {
+            object config = EditorServices.PluginService.GetPlugin<GuiStatePlugin>().GetGuiState<object>(asset);
+
+            _treeView.RestoreViewState(config);
+        }
+    }
+
+    private void SaveDocumentViewState(Document document)
+    {
+        var asset = document?.GetAsset();
+        if (asset != null)
+        {
+            var config = _treeView.SaveViewState();
+            if (config != null)
+            {
+                EditorServices.PluginService.GetPlugin<GuiStatePlugin>().SetGuiState<object>(asset, config);
+            }
+        }
+    }
+
+    #endregion
+
+    private void _treeView_SelectionChanged(object sender, EventArgs e)
+    {
+        if (_treeView.SelectedObjects.CountMoreThanOne())
+        {
+            _currentTask = null;
+            _propGrid.InspectObjects([], context: _inspectorContext);
+        }
+        else if (_treeView.SelectedObjects.FirstOrDefault() is AigcTaskPage pageNode && pageNode.Instance is { } root)
+        {
+            _currentTask = pageNode;
+            _propGrid.InspectObjects([root], context: _inspectorContext);
+        }
+        else
+        {
+            _currentTask = null;
+            _propGrid.InspectObjects([], context: _inspectorContext);
+        }
+
+        _treeView.QueueRefresh();
+        _guiRef.QueueRefresh();
+    }
+
+    private void _grid_Edited(object sender, ObjectPropertyEventArgs e)
+    {
+    }
+
+    /// <summary>
+    /// Navigates to the diagram associated with the currently selected task.
+    /// </summary>
+    internal void HandleNavigateDiagram() => HandleNavigateDiagram(_currentTask);
+
+    /// <summary>
+    /// Navigates to the diagram associated with the specified task.
+    /// </summary>
+    /// <param name="task">The task whose diagram to navigate to.</param>
+    internal void HandleNavigateDiagram(AigcTaskPage task)
+    {
+        if (task is null)
+        {
+            return;
+        }
+
+        if (task.GetDocument() != _document)
+        {
+            return;
+        }
+
+        if (task.GetDefinitionItem()?.GetDocument() is not { } diagramDoc)
+        {
+            return;
+        }
+
+        if (_document is not { } document)
+        {
+            return;
+        }
+
+        var currentView = _subView.CurrentSubView as IFlowView;
+        if (_subView.OpenSubView(diagramDoc) is not { } view)
+        {
+            return;
+        }
+
+        if (view is IFlowView flowView)
+        {
+            if (currentView?.GetViewNode(task.Name) is { } viewNode && viewNode.NodeComputation is { } nodeCompute)
+            {
+                flowView.Computation = nodeCompute;
+            }
+            else if (task.Instance?.LastComputation is { } lastCompute)
+            {
+                flowView.Computation = lastCompute;
+            }
+        }
+
+        if ((view as IServiceProvider)?.GetService<IViewSelectable>() is { } sel && task.GetDefinitionItem() is { } page)
+        {
+            QueuedAction.Do(() =>
+            {
+                sel.SetSelection(new ViewSelection(page));
+            });
+        }
+
+        _guiRef.QueueRefresh();
+    }
+
+
+}
