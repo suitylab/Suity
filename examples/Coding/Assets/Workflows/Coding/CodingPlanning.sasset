@@ -144,11 +144,12 @@
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageArticleOutputItem" X="520" Y="-40" Width="42" Height="25">
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageArticleOutputItem" X="520" Y="-40" Width="78" Height="25">
       <Name>RequirementDocument</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.PageArticleOutputNode">
         <Name>RequirementDocument</Name>
-        <Description>需求文档</Description>
+        <Description>
+        </Description>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
           <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
