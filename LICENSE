@@ -1,0 +1,24 @@
+# Suity Open Source License
+
+Suity is licensed under a modified version of the Apache License 2.0, with the following additional conditions:
+
+1. Suity may be utilized commercially, including as a local development tool or an internal enterprise platform. However, a commercial license must be obtained from Suity if any of the following conditions are met:
+
+    a. Multi-tenant service: Unless explicitly authorized by Suity in writing, you may not use the Suity source code to operate a multi-tenant environment (e.g., providing a public "Agent-as-a-Service" cloud platform).
+       - Tenant Definition: Within the context of Suity, one tenant corresponds to one independent workspace or isolated agent execution environment.
+
+    b. Public Cloud & Remote AI Deployment: Unless explicitly authorized by Suity in writing, you may not deploy, operate, or provide any AI computing services (including but not limited to model inference, fine-tuning, or agent execution) powered by or based on Suity in a public cloud, remote server, or managed service environment for third parties.
+
+    c. Commercial Asset Sales Prohibition: Unless explicitly authorized by Suity in writing, you may not sell, distribute for a fee, or commercially license any asset packs, templates, workflows, or extension packages designed for Suity to any third party.
+
+    d. LOGO and copyright information: In the process of using Suity's frontend (including the Agentic Editor GUI), you may not remove or modify the LOGO or copyright information in the Suity application icon, startup/splash screen, main menu bar, and 'about us' window.
+
+2. As a contributor, you agree that:
+   a. The producer (Suity) can adjust the open-source agreement to be more strict or relaxed as deemed necessary. 
+   b. Your contributed code may be used for commercial purposes, including but not limited to Suity’s cloud business operations.
+
+Apart from the specific conditions mentioned above, all other rights and restrictions follow the Apache License 2.0. Detailed information can be found at http://www.apache.org/licenses/LICENSE-2.0.
+
+The interactive design (including the Node-Graph, Agent Prefab architecture, and Task Page layout) of this product is protected by appearance patent and trade secret laws.
+
+© 2026 Suity. All rights reserved.
