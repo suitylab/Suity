@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ae="using:AvaloniaEdit"
+             xmlns:editing="using:AvaloniaEdit.Editing"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Suity.Editor.Views.TextEditing.AvaTextDocumentView">
+      <Grid RowDefinitions="*, Auto">
+        <ae:TextEditor Name="Editor"
+                    FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
+                    FontSize="14"
+                    FontWeight="Light"
+                    HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Visible"
+                    LineNumbersMargin="10,0,20,0"
+                    ShowLineNumbers="True"
+                    >
+          <ae:TextEditor.Styles>
+            <Style Selector="editing|LineNumberMargin">
+              <Setter Property="MinWidthInDigits" Value="3" />
+            </Style>
+          </ae:TextEditor.Styles>
+        </ae:TextEditor>
+    </Grid>
+</UserControl>

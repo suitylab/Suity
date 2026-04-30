@@ -1,0 +1,150 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Suity.Editor.SuityApp"
+             xmlns:core="using:Dock.Model.Core"
+             xmlns:local="using:Suity.Editor"
+             xmlns:controls="using:Suity.Editor.Controls"
+             xmlns:themes="using:Dock.Avalonia.Themes.Browser"
+             RequestedThemeVariant="Dark">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+  <Application.DataTemplates>
+    <local:ViewLocator />
+  </Application.DataTemplates>
+
+  <Application.Resources>
+    <ControlRecycling x:Key="ControlRecyclingKey" />
+  </Application.Resources>
+
+  <Application.Styles>
+
+    <FluentTheme>
+        <FluentTheme.Palettes>
+            <ColorPaletteResources x:Key="Dark" 
+                RegionColor="#FF313338" 
+                BaseLow="#FF1F2124" 
+                ListLow="#FF35537A" 
+                AltHigh="Black"/>
+        </FluentTheme.Palettes>
+    </FluentTheme>
+
+    <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
+
+    <!--<StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />-->
+    <DockFluentTheme DensityStyle="Compact" />
+
+    <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+
+    <Style Selector="DockControl">
+      <Setter Property="(ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+    </Style>
+
+    <Style Selector="DocumentControl">
+        <Setter Property="IconTemplate">
+            <DataTemplate DataType="controls:EditorDocumentDockable">
+                <ContentControl Content="{Binding IconSource}">
+                    <ContentControl.DataTemplates>
+                        <DataTemplate DataType="Bitmap">
+                            <Image Source="{Binding}" Width="16" Height="16"/>
+                        </DataTemplate>
+                        <DataTemplate DataType="x:String">
+                            <PathIcon Data="{Binding}" Width="16" Height="16"/>
+                        </DataTemplate>
+                    </ContentControl.DataTemplates>
+                </ContentControl>
+            </DataTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="DocumentControl">
+      <Setter Property="HeaderTemplate">
+        <DataTemplate DataType="core:IDockable">
+          <TextBlock Text="{Binding Title}" 
+                     VerticalAlignment="Center"
+                     Padding="2"  />
+        </DataTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="DocumentTabStripItem">
+        <Setter Property="CornerRadius" Value="6,6,0,0" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="1,1,1,0" />
+        <Setter Property="Background" Value="#2D2D2D" />
+        <Setter Property="Margin" Value="4,0,0,0" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style Selector="DocumentTabStripItem:pointerover">
+        <Setter Property="Background" Value="#3E3E40" />
+    </Style>
+
+    <Style Selector="DocumentTabStripItem:selected">
+        <Setter Property="Background" Value="#4C9FFF" />
+        <Setter Property="BorderBrush" Value="Black" /> 
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style Selector="DocumentTabStripItem:selected:pointerover">
+        <Setter Property="Background" Value="#64ACFF" />
+        <Setter Property="BorderBrush" Value="Black" />
+    </Style>
+
+    <Style Selector="DocumentTabStripItem /template/ Border#PART_SelectedPipe">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="ToolControl">
+        <Setter Property="IconTemplate">
+            <DataTemplate DataType="controls:EditorToolDockable">
+                <ContentControl Content="{Binding IconSource}">
+                    <ContentControl.DataTemplates>
+                        <DataTemplate DataType="Bitmap">
+                            <Image Source="{Binding}" Width="16" Height="16"/>
+                        </DataTemplate>
+                        <DataTemplate DataType="x:String">
+                            <PathIcon Data="{Binding}" Width="16" Height="16"/>
+                        </DataTemplate>
+                    </ContentControl.DataTemplates>
+                </ContentControl>
+            </DataTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="ToolControl">
+      <Setter Property="HeaderTemplate">
+        <DataTemplate DataType="core:IDockable">
+          <TextBlock Text="{Binding Title}" Padding="2" />
+        </DataTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="ToolTabStripItem">
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Background" Value="#313338" />
+        <Setter Property="Padding" Value="10,5" />
+    </Style>
+
+    <Style Selector="ToolTabStripItem:pointerover">
+        <Setter Property="Background" Value="#292b2f" />
+    </Style>
+
+    <Style Selector="ToolTabStripItem:selected">
+        <Setter Property="Background" Value="#242424" />
+        <Setter Property="Padding" Value="10,5" />
+    </Style>
+
+    <Style Selector="ToolTabStripItem:selected:pointerover">
+        <Setter Property="Background" Value="#242424" />
+    </Style>
+
+    <Style Selector="ToolTabStripItem /template/ Border#PART_SelectedPipe">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="ToolChromeControl">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+  </Application.Styles>
+</Application>

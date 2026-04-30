@@ -1,0 +1,71 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="576"
+        x:Class="Suity.Editor.SplashWindow"
+        Title="Suity"
+        Width="1024" Height="576"
+        SystemDecorations="None"
+        CanResize="False"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterScreen"
+        Topmost="False"
+        TransparencyLevelHint="Transparent"
+        Background="Transparent">
+
+    <Window.Styles>
+        <Style Selector="Border#MainPanel">
+            <Style.Animations>
+                <Animation Duration="0:0:0.4" FillMode="Forward">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0.0"/>
+                        <Setter Property="ScaleTransform.ScaleX" Value="0.8"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="0.8"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="1.0"/>
+                        <Setter Property="ScaleTransform.ScaleX" Value="1.0"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="1.0"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </Window.Styles>
+
+    <Border Name="MainPanel" CornerRadius="60" ClipToBounds="True">
+        <Grid>
+            <Image Source="/Assets/splash-bg-01.png" 
+                   Stretch="UniformToFill" />
+
+            <StackPanel VerticalAlignment="Bottom" Margin="0,0,0,15">
+                <TextBlock x:Name="StatusText" 
+                           IsVisible="False"
+                           Text="..." 
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,15"
+                           FontSize="14">
+                    <TextBlock.Effect>
+                        <DropShadowEffect BlurRadius="5" Opacity="0.7"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+
+                <ProgressBar x:Name="LoadProgressBar" 
+                             Height="10" Width="800" HorizontalAlignment="Center" 
+                             Minimum="0" Maximum="100" Value="0"
+                             Background="#33FFFFFF" Foreground="#FF007ACC"
+                             BorderThickness="0">
+                    <ProgressBar.Styles>
+                        <Style Selector="ProgressBar /template/ Border#PART_Indicator">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                        <Style Selector="ProgressBar">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </ProgressBar.Styles>
+                </ProgressBar>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

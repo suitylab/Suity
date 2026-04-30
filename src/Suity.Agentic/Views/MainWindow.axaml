@@ -1,0 +1,29 @@
+﻿<Window x:Class="Suity.Editor.Views.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:vm="using:Suity.Editor.ViewModels"
+        xmlns:views="using:Suity.Editor.Views"
+        mc:Ignorable="d"
+        d:DesignWidth="900" d:DesignHeight="600"
+        x:Name="MainWindowView"
+        x:CompileBindings="True" x:DataType="vm:MainWindowViewModel"
+        Width="1024" Height="768" 
+        Title="Suity"
+        Icon="/Assets/suity-logo.ico"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        ExtendClientAreaChromeHints="Default, PreferSystemChrome, OSXThickTitleBar"
+        >
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Panel>
+        <views:MainView Name="View" Background="{x:Null}" />
+    </Panel>
+
+</Window>

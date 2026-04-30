@@ -1,0 +1,19 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ae="using:AvaloniaEdit"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Suity.Editor.TestAvaEdit"
+        Title="TestAvaEdit">
+    <Grid RowDefinitions="*, Auto">
+        <ae:TextEditor Name="Editor"
+                                 FontFamily="Cascadia Code, Consolas, DejaVu Sans Mono, Monospace"
+                                 FontSize="14"
+                                 HorizontalScrollBarVisibility="Auto"
+                                 VerticalScrollBarVisibility="Visible"
+                                 ShowLineNumbers="True" />
+        
+        <Button Grid.Row="1" Content="获取文本" Click="OnGetTextClick" Margin="5"/>
+    </Grid>
+</Window>

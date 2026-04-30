@@ -1,0 +1,92 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+	<RootNamespace>Suity.Editor</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+	<Configurations>Debug;Release</Configurations>
+	<AssemblyTitle>Suity.Agentic</AssemblyTitle>
+	<Product>Suity.Agentic</Product>
+	<ApplicationIcon>Assets\suity-logo.ico</ApplicationIcon>
+	<Version>1.0.0.0</Version>
+  </PropertyGroup>
+	
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <AvaloniaResource Include="Assets\**" />
+    <AvaloniaXaml Remove="Views\Startup\StartupConfig.json\**" />
+    <Content Include="Assets\suity-logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.13" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.4.1" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.13" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.13" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.13" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.13">
+      <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+      <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.4.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Dock.Avalonia" Version="11.3.11.22" />
+    <PackageReference Include="Dock.Avalonia.Diagnostics" Version="11.3.11.22" />
+    <PackageReference Include="Dock.Avalonia.Themes.Fluent" Version="11.3.11.22" />
+    <PackageReference Include="Dock.Model" Version="11.3.11.22" />
+    <PackageReference Include="Dock.Model.Avalonia" Version="11.3.11.22" />
+    <PackageReference Include="Dock.Serializer.Newtonsoft" Version="11.3.11.22" />
+    <PackageReference Include="FastFuzzyStringMatcher" Version="1.0.0" />
+    <PackageReference Include="FuzzySharp" Version="2.0.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
+    <PackageReference Include="MessageBox.Avalonia" Version="3.3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="Skia.Controls.Avalonia" Version="11.3.9.5" />
+    <PackageReference Include="System.Reactive" Version="6.1.0" />
+    <PackageReference Include="System.Resources.Extensions" Version="10.0.5" />
+    <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Suity.DataSync\Suity.DataSync.csproj" />
+    <ProjectReference Include="..\Suity.Editor.AIGC.API\Suity.Editor.AIGC.API.csproj" />
+    <ProjectReference Include="..\Suity.Editor.AIGC.Flows\Suity.Editor.AIGC.Flows.csproj" />
+    <ProjectReference Include="..\Suity.Editor.AIGC.LLm\Suity.Editor.AIGC.LLm.csproj" />
+    <ProjectReference Include="..\Suity.Editor.AIGC\Suity.Editor.AIGC.csproj" />
+    <ProjectReference Include="..\Suity.Editor.Documents\Suity.Editor.Documents.csproj" />
+    <ProjectReference Include="..\Suity.Editor.Internal\Suity.Editor.Internal.csproj" />
+    <ProjectReference Include="..\Suity.Editor.Packaging\Suity.Editor.Packaging.csproj" />
+    <ProjectReference Include="..\Suity.Editor.ProjectGui\Suity.Editor.ProjectGui.csproj" />
+    <ProjectReference Include="..\Suity.Editor\Suity.Editor.csproj" />
+    <ProjectReference Include="..\Suity.Graphics\Suity.Graphics.csproj" />
+    <ProjectReference Include="..\Suity.ImGui.Avalonia\Suity.ImGui.Avalonia.csproj" />
+    <ProjectReference Include="..\Suity.ImGui.BuildIn\Suity.ImGui.BuildIn.csproj" />
+    <ProjectReference Include="..\Suity.ImGui\Suity.ImGui.csproj" />
+    <ProjectReference Include="..\Suity\Suity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="SuityApp.axaml.cs">
+      <DependentUpon>SuityApp.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SimpleWindow.axaml.cs">
+      <DependentUpon>SimpleWindow.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
