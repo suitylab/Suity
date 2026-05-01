@@ -21,34 +21,34 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.13" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.4.1" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.13" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.13" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.13" />
+    <PackageReference Include="Avalonia" Version="12.0.2" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="12.0.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.0.2" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.2" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="12.0.2" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.13">
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.14">
       <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.4.1" />
+    <PackageReference Include="AvaloniaEdit.TextMate" Version="12.0.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageReference Include="Dock.Avalonia" Version="11.3.11.22" />
-    <PackageReference Include="Dock.Avalonia.Diagnostics" Version="11.3.11.22" />
-    <PackageReference Include="Dock.Avalonia.Themes.Fluent" Version="11.3.11.22" />
-    <PackageReference Include="Dock.Model" Version="11.3.11.22" />
-    <PackageReference Include="Dock.Model.Avalonia" Version="11.3.11.22" />
-    <PackageReference Include="Dock.Serializer.Newtonsoft" Version="11.3.11.22" />
+    <PackageReference Include="Dock.Avalonia" Version="12.0.0.2" />
+    <PackageReference Include="Dock.Avalonia.Diagnostics" Version="12.0.0.2" />
+    <PackageReference Include="Dock.Avalonia.Themes.Fluent" Version="12.0.0.2" />
+    <PackageReference Include="Dock.Model" Version="12.0.0.2" />
+    <PackageReference Include="Dock.Model.Avalonia" Version="12.0.0.2" />
+    <PackageReference Include="Dock.Serializer.Newtonsoft" Version="12.0.0.2" />
     <PackageReference Include="FastFuzzyStringMatcher" Version="1.0.0" />
     <PackageReference Include="FuzzySharp" Version="2.0.2" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-    <PackageReference Include="MessageBox.Avalonia" Version="3.3.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.5" />
+    <PackageReference Include="MessageBox.Avalonia" Version="12.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="Skia.Controls.Avalonia" Version="11.3.9.5" />
+    <PackageReference Include="Skia.Controls.Avalonia" Version="12.0.0.5" />
     <PackageReference Include="System.Reactive" Version="6.1.0" />
-    <PackageReference Include="System.Resources.Extensions" Version="10.0.5" />
-    <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.3" />
+    <PackageReference Include="System.Resources.Extensions" Version="10.0.7" />
+    <PackageReference Include="Tmds.DBus.Protocol" Version="0.93.0" />
   </ItemGroup>
 
   <ItemGroup>

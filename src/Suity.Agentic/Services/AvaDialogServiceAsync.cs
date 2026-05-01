@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
@@ -153,7 +154,8 @@ internal class AvaDialogServiceAsync : IDialogServiceAsync
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
 
             // If no WindowProperties, write directly here:
-            SystemDecorations = SystemDecorations.Full,
+            WindowDecorations = WindowDecorations.Full,
+            
             CanResize = false,
         });
 

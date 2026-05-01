@@ -353,7 +353,7 @@ public class ImExpandableNode : ImGraphNode, IDrawContext
         gui.HorizontalLayout("#control-" + direction.ToString())
         .OnInitialize(n =>
         {
-            n.InitClass("debug");
+            n.InitClass("debug_draw");
             n.InitFit();
             n.InitHorizontalAlignment(GuiAlignment.Center);
             n.InitPadding(1);

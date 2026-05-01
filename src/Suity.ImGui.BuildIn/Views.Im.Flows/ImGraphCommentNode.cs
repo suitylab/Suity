@@ -86,7 +86,7 @@ public abstract class ImGraphCommentNode : ImGraphNode, IDrawNodeContext
             .OnInitialize(n =>
             {
                 n.InitClass("commentText");
-                n.InitClass("debug");
+                n.InitClass("debug_draw");
                 n.InitSizeRest();
                 n.InitOverrideBorder(0);
                 n.InitFont(new Font(ImGuiTheme.DefaultFont, 6));
@@ -121,7 +121,7 @@ public abstract class ImGraphCommentNode : ImGraphNode, IDrawNodeContext
         gui.HorizontalLayout("#control-" + direction.ToString())
         .OnInitialize(n =>
         {
-            n.InitClass("debug");
+            n.InitClass("debug_draw");
             n.InitFit();
             n.InitHorizontalAlignment(GuiAlignment.Center);
             n.InitPadding(1);

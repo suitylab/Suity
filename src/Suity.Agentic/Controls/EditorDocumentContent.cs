@@ -277,7 +277,7 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
         DocumentView?.ActivateView(false);
     }
 
-    protected override void OnGotFocus(GotFocusEventArgs e)
+    protected override void OnGotFocus(FocusChangedEventArgs e)
     {
         base.OnGotFocus(e);
 

@@ -173,7 +173,7 @@ public static class GuiThemeExtensions
     /// <returns>The same <see cref="ImGuiTheme"/> instance for fluent chaining.</returns>
     public static ImGuiTheme SetLayoutFunctionChain(this ImGuiTheme theme, LayoutFunction func)
     {
-        theme.SetStyle(new GuiLayoutFunctionStyle() { Function = func });
+        theme.SetStyle(new GuiLayoutFunctionStyle { Function = func });
         return theme;
     }
 
@@ -197,7 +197,7 @@ public static class GuiThemeExtensions
     /// <returns>The same <see cref="ImGuiTheme"/> instance for fluent chaining.</returns>
     public static ImGuiTheme SetFitFunctionChain(this ImGuiTheme theme, FitFunction func)
     {
-        theme.SetStyle(new GuiFitFunctionStyle() { Function = func });
+        theme.SetStyle(new GuiFitFunctionStyle { Function = func });
         return theme;
     }
 
@@ -221,7 +221,7 @@ public static class GuiThemeExtensions
     /// <returns>The same <see cref="ImGuiTheme"/> instance for fluent chaining.</returns>
     public static ImGuiTheme SetRenderFunctionChain(this ImGuiTheme theme, RenderFunction func)
     {
-        theme.SetStyle(new GuiRenderFunctionStyle() { Function = func });
+        theme.SetStyle(new GuiRenderFunctionStyle { Function = func });
         return theme;
     }
 

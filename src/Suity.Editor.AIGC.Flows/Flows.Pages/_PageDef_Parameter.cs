@@ -149,7 +149,7 @@ public class PageParameterInputNode : AigcPageTypeDefNode
             gui.HorizontalLayout("#control-input")
             .OnInitialize(n =>
             {
-                n.InitClass("debug");
+                n.InitClass("debug_draw");
                 n.InitFit();
                 n.InitHorizontalAlignment(GuiAlignment.Center);
                 n.InitPadding(1);
@@ -338,7 +338,7 @@ public class PageSkillParameterNode : AigcPageTypeDefNode
             gui.HorizontalLayout("#control-input")
             .OnInitialize(n =>
             {
-                n.InitClass("debug");
+                n.InitClass("debug_draw");
                 n.InitFit();
                 n.InitHorizontalAlignment(GuiAlignment.Center);
                 n.InitPadding(1);
@@ -712,7 +712,7 @@ public class PageParameterOutputNode : AigcPageTypeDefNode
             gui.HorizontalLayout("#control-input")
             .OnInitialize(n =>
             {
-                n.InitClass("debug");
+                n.InitClass("debug_draw");
                 n.InitFit();
                 n.InitHorizontalAlignment(GuiAlignment.Center);
                 n.InitPadding(1);
@@ -889,7 +889,7 @@ public class PageArticleOutputNode : AigcPageTypeDefNode
             gui.HorizontalLayout("#control-input")
             .OnInitialize(n =>
             {
-                n.InitClass("debug");
+                n.InitClass("debug_draw");
                 n.InitFit();
                 n.InitHorizontalAlignment(GuiAlignment.Center);
                 n.InitPadding(1);
@@ -1050,7 +1050,7 @@ public class PageFileOutputNode : AigcPageTypeDefNode
             gui.HorizontalLayout("#control-input")
             .OnInitialize(n =>
             {
-                n.InitClass("debug");
+                n.InitClass("debug_draw");
                 n.InitFit();
                 n.InitHorizontalAlignment(GuiAlignment.Center);
                 n.InitPadding(1);
@@ -1208,7 +1208,7 @@ public class PageSubTaskOutputNode : AigcPageTypeDefNode
             gui.HorizontalLayout("#control-input")
             .OnInitialize(n =>
             {
-                n.InitClass("debug");
+                n.InitClass("debug_draw");
                 n.InitFit();
                 n.InitHorizontalAlignment(GuiAlignment.Center);
                 n.InitPadding(1);

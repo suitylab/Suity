@@ -14,8 +14,7 @@
         Icon="/Assets/suity-logo.ico"
         WindowStartupLocation="CenterScreen"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaTitleBarHeightHint="-1"
-        ExtendClientAreaChromeHints="Default, PreferSystemChrome, OSXThickTitleBar"
+        ExtendClientAreaTitleBarHeightHint="0"
         >
 
     <Design.DataContext>

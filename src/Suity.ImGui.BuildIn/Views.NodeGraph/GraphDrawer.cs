@@ -1,5 +1,6 @@
 using Suity.Helpers;
 using Suity.Views.Graphics;
+using Suity.Views.Im.Flows;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -439,8 +440,12 @@ public class GraphDrawer
             linkArrow = Theme.LinkArrowError;
         }
 
-        var scale = _control.Viewport.ScaledViewZoom;
+        float scale = _control.Viewport.ScaledViewZoom;
         var dashStyle = link.IsConverted ? DashStyle.Dot : DashStyle.Solid;
+        if (scale < ImGraphExtensions.ThresholdMedium)
+        {
+            dashStyle = DashStyle.Solid;
+        }
 
         switch (LinkVisualStyle)
         {

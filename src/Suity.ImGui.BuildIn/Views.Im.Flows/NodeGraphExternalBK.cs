@@ -57,11 +57,11 @@ internal class NodeGraphExternalBK : NodeGraphExternal
         {
             if (fit)
             {
-                n.InitClass("headerFrameFit", "left-right", "debug");
+                n.InitClass("headerFrameFit", "left-right", "debug_draw");
             }
             else
             {
-                n.InitClass("headerFrame", "left-right", "debug");
+                n.InitClass("headerFrame", "left-right", "debug_draw");
             }
         })
         .OverrideColor(context.TitleColor);
@@ -73,13 +73,13 @@ internal class NodeGraphExternalBK : NodeGraphExternal
         if (context.DisplayStatus is { } status && status.ToStatusIcon() is { } statusIcon)
         {
             gui.Image("statusIcon", statusIcon)
-            .InitClass("icon", "debug");
+            .InitClass("icon", "scaleHiddenMedium");
         }
 
         if (context.DisplayIcon is Image icon)
         {
             gui.Image("icon", icon)
-            .InitClass("icon", "debug");
+            .InitClass("icon", "scaleHiddenMedium");
         }
 
         // Prevent text from being too long
@@ -90,7 +90,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
         }
 
         gui.Text("text", text)
-         .InitClass("titleText", "debug");
+         .InitClass("titleText");
          //.OverrideFont(null, context.TitleColor);
     }
 
@@ -112,7 +112,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
         if (!isValid)
         {
             return gui.Image("invalid", CoreIconCache.Warning)
-            .InitClass("icon", "debug");
+            .InitClass("icon", "scaleHiddenMedium");
         }
         else
         {
@@ -128,11 +128,11 @@ internal class NodeGraphExternalBK : NodeGraphExternal
         {
             if (fit)
             {
-                n.InitClass("sideBoxFit", "debug");
+                n.InitClass("sideBoxFit", "debug_draw");
             }
             else
             {
-                n.InitClass("sideBoxHori", "debug");
+                n.InitClass("sideBoxHori", "debug_draw");
             }
         });
     }
@@ -145,11 +145,11 @@ internal class NodeGraphExternalBK : NodeGraphExternal
         {
             if (fit)
             {
-                n.InitClass("sideBoxFit", "debug");
+                n.InitClass("sideBoxFit", "debug_draw");
             }
             else
             {
-                n.InitClass("sideBoxVert", "debug");
+                n.InitClass("sideBoxVert", "debug_draw");
             }
         });
     }
@@ -158,7 +158,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
     public override ImGuiNode BodyFrame(ImGui gui, string id)
     {
         return gui.HorizontalLayout("body")
-            .InitClass("bodyFit", "left-right", "debug");
+            .InitClass("bodyFit", "left-right", "debug_draw");
     }
 
     /// <inheritdoc/>
@@ -167,7 +167,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
         return gui.OverlayLayout("body")
         .OnInitialize(n =>
         {
-            n.InitClass("body", "left-right", "debug");
+            n.InitClass("body", "left-right", "debug_draw");
             n.InitFit(GuiOrientation.Vertical);
             n.InitFullWidth();
         });
@@ -185,7 +185,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
         string cls = input ? "inputRow" : "outputRow";
 
         node
-        .InitClass(cls, "debug");
+        .InitClass(cls, "debug_draw");
 
         return node;
     }
@@ -210,7 +210,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
         string cls = input ? "inputRow" : "outputRow";
 
         node
-        .InitClass(cls, "debug")
+        .InitClass(cls, "debug_draw")
         .OnContent(() =>
         {
             ConnectorPoint(gui, connector, "connector");
@@ -253,7 +253,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
         string multipleText = connector.ShowMultiple() ? " " + L("Multiple connections allowed") : string.Empty;
 
         var node = gui.ConnectorPoint(id)
-            .InitClass("connectorPoint", "debug")
+            .InitClass("connectorPoint", "debug_draw")
             .InitValue(connector)
             .SetToolTips($"{L(connector.DisplayName)} {connector.DataType}{multipleText}");
 
@@ -289,14 +289,14 @@ internal class NodeGraphExternalBK : NodeGraphExternal
     public void ConnectorTextSection(ImGui gui, GraphConnector connector)
     {
         gui.Text(connector.DisplayName)
-            .InitClass("connectorText", "debug");
+            .InitClass("connectorText");
     }
 
     /// <inheritdoc/>
     public override void ConnectorTextSection(ImGui gui, FlowNodeConnector connector)
     {
         gui.Text(connector.DisplayName)
-            .InitClass("connectorText", "debug");
+            .InitClass("connectorText");
     }
 
     /// <inheritdoc/>
@@ -358,19 +358,19 @@ internal class NodeGraphExternalBK : NodeGraphExternal
                     if (image != null)
                     {
                         gui.Image("icon", image)
-                        .InitClass("iconSmall");
+                        .InitClass("iconSmall", "scaleHiddenMedium");
                     }
 
                     if (drawContext.DisplayStatus is { } status && status.ToStatusIcon() is { } statusIcon)
                     {
                         gui.Image("statusIcon", statusIcon)
-                        .InitClass("icon", "debug");
+                        .InitClass("icon", "scaleHiddenMedium");
                     }
 
                     if (!string.IsNullOrWhiteSpace(text))
                     {
                         gui.Text(text.ToShortcutString(30))
-                        .InitClass("connectorText", "debug");
+                        .InitClass("connectorText");
                     }
                 });
             });
@@ -399,20 +399,20 @@ internal class NodeGraphExternalBK : NodeGraphExternal
                     if (!string.IsNullOrWhiteSpace(textV))
                     {
                         gui.Text(textV.ToShortcutString(30))
-                            .InitClass("connectorText", "debug");
+                            .InitClass("connectorText");
                     }
 
                     if (drawContext.DisplayStatus is { } status && status.ToStatusIcon() is { } statusIcon)
                     {
                         gui.Image("statusIcon", statusIcon)
-                        .InitClass("icon", "debug");
+                        .InitClass("icon", "scaleHiddenMedium");
                     }
 
                     image ??= drawContext.DisplayIcon as Image;
                     if (image != null)
                     {
                         gui.Image("icon", image)
-                        .InitClass("iconSmall");
+                        .InitClass("iconSmall", "scaleHiddenMedium");
                     }
                 });
             });

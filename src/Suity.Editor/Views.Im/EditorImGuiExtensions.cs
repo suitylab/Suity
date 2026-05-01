@@ -84,20 +84,20 @@ public static class EditorImGuiExtensions
     public static ImGuiNode NumberBox(this ImGui gui, string id, string text, Color? color = null, Image icon = null, bool iconDark = false, string tooltips = null)
     {
         var node = gui.HorizontalFrame(id)
-        .InitClass("refBox", "debug")
+        .InitClass("refBox", "debug_draw")
         .OverrideColor(color)
         .OnContent(() =>
         {
             if (icon != null)
             {
-                gui.Image("icon", icon).InitClass(iconDark ? "iconDark" : "icon", "debug");
+                gui.Image("icon", icon).InitClass(iconDark ? "iconDark" : "icon", "debug_draw");
             }
 
             gui.Frame("inner")
-            .InitClass("numBoxDark", "debug")
+            .InitClass("numBoxDark", "debug_draw")
             .OnContent(() =>
             {
-                gui.Text("text", text).InitClass("numBoxText", "debug");
+                gui.Text("text", text).InitClass("numBoxText", "debug_draw");
             });
         });
 

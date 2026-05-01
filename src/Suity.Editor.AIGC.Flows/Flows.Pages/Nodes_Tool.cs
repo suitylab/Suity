@@ -1368,7 +1368,7 @@ public class PageParameterReference : AigcPageNode
             gui.HorizontalLayout("#control-input")
             .OnInitialize(n =>
             {
-                n.InitClass("debug");
+                n.InitClass("debug_draw");
                 n.InitFit();
                 n.InitHorizontalAlignment(GuiAlignment.Center);
                 n.InitPadding(1);

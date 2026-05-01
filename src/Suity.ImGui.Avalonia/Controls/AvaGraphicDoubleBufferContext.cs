@@ -66,6 +66,8 @@ internal class AvaGraphicDoubleBufferContext :
     private int _bufferWidth;
     private int _bufferHeight;
 
+    private PointerPressedEventArgs _lastPointerPressed;
+
     private EmptyFrameOperations _emptyFrameOperations = EmptyFrameOperations.RepaintAll;
 
     /// <summary>
@@ -393,7 +395,7 @@ internal class AvaGraphicDoubleBufferContext :
         }
 
         //var eventArgs = ParentPointerGetter?.Invoke();
-        var eventArgs = _input.LastEventArgs as PointerEventArgs;
+        var eventArgs = _lastPointerPressed;
         if (eventArgs is null)
         {
             return;
@@ -673,6 +675,11 @@ internal class AvaGraphicDoubleBufferContext :
                 ToolTip.SetIsOpen(_control, false);
                 ToolTip.SetTip(_control, null);
             }
+        }
+
+        if (e is PointerPressedEventArgs pressed)
+        {
+            _lastPointerPressed = pressed;
         }
     }
 

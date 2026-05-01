@@ -47,6 +47,8 @@ internal class AvaGraphicSingleBufferContext :
     private bool _supportDirtyRect;
     private bool _mouseIn;
 
+    private PointerPressedEventArgs _lastPointerPressed;
+
     private EmptyFrameOperations _emptyFrameOperations = EmptyFrameOperations.RepaintAll;
 
     /// <summary>
@@ -352,7 +354,7 @@ internal class AvaGraphicSingleBufferContext :
             return;
         }
 
-        var eventArgs = _input.LastEventArgs as PointerEventArgs;
+        var eventArgs = _lastPointerPressed;
         if (eventArgs is null)
         {
             return;
@@ -550,6 +552,11 @@ internal class AvaGraphicSingleBufferContext :
                 ToolTip.SetIsOpen(_control, false);
                 ToolTip.SetTip(_control, null);
             }
+        }
+
+        if (e is PointerPressedEventArgs pressedArgs)
+        {
+            _lastPointerPressed = pressedArgs;
         }
     }
 

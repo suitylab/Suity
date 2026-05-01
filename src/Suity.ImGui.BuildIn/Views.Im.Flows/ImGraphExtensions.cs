@@ -37,7 +37,7 @@ public static class ImGraphExtensions
         var node = gui.VerticalFrame(id);
         if (node.IsInitializing)
         {
-            node.InitInputFunctionChain(ScaleInputBlocker35);
+            node.InitInputFunctionChain(ScaleInputBlockerFar);
             node.SetRenderFunction(DrawNodeFrame);
         }
 
@@ -265,6 +265,10 @@ public static class ImGraphExtensions
         return GuiInputState.None;
     }
 
+    public const float ThresholdVeryFar = 0.25f;
+    public const float ThresholdFar = 0.5f;
+    public const float ThresholdMedium = 0.750f;
+    public const float ThresholdNear = 1f;
 
     /// <summary>
     /// Input blocker that prevents interaction when node scale is below 0.20.
@@ -274,9 +278,9 @@ public static class ImGraphExtensions
     /// <param name="input">The graphic input event.</param>
     /// <param name="childAction">The base input function to call for child processing.</param>
     /// <returns>The input state indicating how to proceed.</returns>
-    public static GuiInputState ScaleInputBlocker20(GuiPipeline pipeline, ImGuiNode node, IGraphicInput input, ChildInputFunction childAction)
+    public static GuiInputState ScaleInputBlockerVeryFar(GuiPipeline pipeline, ImGuiNode node, IGraphicInput input, ChildInputFunction childAction)
     {
-        if (node.GlobalScale < 0.20f)
+        if (node.GlobalScale < ThresholdVeryFar)
         {
             childAction(GuiPipeline.Blocked);
             return GuiInputState.None;
@@ -295,9 +299,9 @@ public static class ImGraphExtensions
     /// <param name="input">The graphic input event.</param>
     /// <param name="childAction">The base input function to call for child processing.</param>
     /// <returns>The input state indicating how to proceed.</returns>
-    public static GuiInputState ScaleInputBlocker35(GuiPipeline pipeline, ImGuiNode node, IGraphicInput input, ChildInputFunction childAction)
+    public static GuiInputState ScaleInputBlockerFar(GuiPipeline pipeline, ImGuiNode node, IGraphicInput input, ChildInputFunction childAction)
     {
-        if (node.GlobalScale < 0.35f)
+        if (node.GlobalScale < ThresholdFar)
         {
             childAction(GuiPipeline.Blocked);
             return GuiInputState.None;
@@ -316,9 +320,9 @@ public static class ImGraphExtensions
     /// <param name="input">The graphic input event.</param>
     /// <param name="childAction">The base input function to call for child processing.</param>
     /// <returns>The input state indicating how to proceed.</returns>
-    public static GuiInputState ScaleInputBlocker50(GuiPipeline pipeline, ImGuiNode node, IGraphicInput input, ChildInputFunction childAction)
+    public static GuiInputState ScaleInputBlockerMedium(GuiPipeline pipeline, ImGuiNode node, IGraphicInput input, ChildInputFunction childAction)
     {
-        if (node.GlobalScale < 0.5f)
+        if (node.GlobalScale < ThresholdMedium)
         {
             childAction(GuiPipeline.Blocked);
             return GuiInputState.None;
@@ -337,9 +341,9 @@ public static class ImGraphExtensions
     /// <param name="input">The graphic input event.</param>
     /// <param name="childAction">The base input function to call for child processing.</param>
     /// <returns>The input state indicating how to proceed.</returns>
-    public static GuiInputState ScaleInputBlocker80(GuiPipeline pipeline, ImGuiNode node, IGraphicInput input, ChildInputFunction childAction)
+    public static GuiInputState ScaleInputBlockerNear(GuiPipeline pipeline, ImGuiNode node, IGraphicInput input, ChildInputFunction childAction)
     {
-        if (node.GlobalScale < 0.8f)
+        if (node.GlobalScale < ThresholdNear)
         {
             childAction(GuiPipeline.Blocked);
             return GuiInputState.None;
@@ -359,9 +363,9 @@ public static class ImGraphExtensions
     /// <param name="output">The graphic output to render to.</param>
     /// <param name="dirtyMode">Indicates whether rendering in dirty (partial) mode.</param>
     /// <param name="childAction">The base render function to call for child rendering.</param>
-    public static void ScaleRenderBlocker20(GuiPipeline pipeline, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction childAction)
+    public static void ScaleRenderBlockerVeryFar(GuiPipeline pipeline, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction childAction)
     {
-        if (node.GlobalScale < 0.20f)
+        if (node.GlobalScale < ThresholdVeryFar)
         {
             childAction(GuiPipeline.Blocked);
         }
@@ -379,9 +383,9 @@ public static class ImGraphExtensions
     /// <param name="output">The graphic output to render to.</param>
     /// <param name="dirtyMode">Indicates whether rendering in dirty (partial) mode.</param>
     /// <param name="childAction">The base render function to call for child rendering.</param>
-    public static void ScaleRenderBlocker35(GuiPipeline pipeline, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction childAction)
+    public static void ScaleRenderBlockerFar(GuiPipeline pipeline, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction childAction)
     {
-        if (node.GlobalScale < 0.35f)
+        if (node.GlobalScale < ThresholdFar)
         {
             childAction(GuiPipeline.Blocked);
         }
@@ -399,9 +403,9 @@ public static class ImGraphExtensions
     /// <param name="output">The graphic output to render to.</param>
     /// <param name="dirtyMode">Indicates whether rendering in dirty (partial) mode.</param>
     /// <param name="childAction">The base render function to call for child rendering.</param>
-    public static void ScaleRenderBlocker50(GuiPipeline pipeline, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction childAction)
+    public static void ScaleRenderBlockerMedium(GuiPipeline pipeline, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction childAction)
     {
-        if (node.GlobalScale < 0.5f)
+        if (node.GlobalScale < ThresholdMedium)
         {
             childAction(GuiPipeline.Blocked);
         }
@@ -419,9 +423,9 @@ public static class ImGraphExtensions
     /// <param name="output">The graphic output to render to.</param>
     /// <param name="dirtyMode">Indicates whether rendering in dirty (partial) mode.</param>
     /// <param name="childAction">The base render function to call for child rendering.</param>
-    public static void ScaleRenderBlocker80(GuiPipeline pipeline, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction childAction)
+    public static void ScaleRenderBlockerNear(GuiPipeline pipeline, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction childAction)
     {
-        if (node.GlobalScale < 0.8f)
+        if (node.GlobalScale < ThresholdNear)
         {
             childAction(GuiPipeline.Blocked);
         }

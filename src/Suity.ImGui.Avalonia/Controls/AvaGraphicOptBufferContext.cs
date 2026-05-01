@@ -52,6 +52,8 @@ internal class AvaGraphicOptBufferContext :
     private int _bufferHeight;
     private bool _hasCachedGraphics;
 
+    private PointerPressedEventArgs _lastPointerPressed;
+
     private EmptyFrameOperations _emptyFrameOperations = EmptyFrameOperations.RepaintAll;
 
     /// <summary>
@@ -379,7 +381,7 @@ internal class AvaGraphicOptBufferContext :
         }
 
         //var eventArgs = ParentPointerGetter?.Invoke();
-        var eventArgs = _input.LastEventArgs as PointerEventArgs;
+        var eventArgs = _lastPointerPressed;
         if (eventArgs is null)
         {
             return;
@@ -657,6 +659,11 @@ internal class AvaGraphicOptBufferContext :
                 ToolTip.SetIsOpen(_control, false);
                 ToolTip.SetTip(_control, null);
             }
+        }
+
+        if (e is PointerPressedEventArgs pressedArgs)
+        {
+            _lastPointerPressed = pressedArgs;
         }
     }
 

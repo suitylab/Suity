@@ -94,7 +94,7 @@ namespace Suity.Editor
 
             base.OnFrameworkInitializationCompleted();
 #if DEBUG
-            this.AttachDevTools();
+            // this.AttachDevTools();
 #endif
         }
 
@@ -163,7 +163,7 @@ namespace Suity.Editor
 
         public void CreateSimpleWindow(IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
-            DisableAvaloniaDataAnnotationValidation();
+            //DisableAvaloniaDataAnnotationValidation();
             desktopLifetime.MainWindow = new SimpleWindow
             {
                 DataContext = new SimpleWindowViewModel(),
@@ -172,13 +172,13 @@ namespace Suity.Editor
 
         public void CreateSplashWindow(IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
-            DisableAvaloniaDataAnnotationValidation();
+            //DisableAvaloniaDataAnnotationValidation();
             desktopLifetime.MainWindow = new SplashWindow();
         }
 
         public void CreateTestAvaEdit(IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
-            DisableAvaloniaDataAnnotationValidation();
+            //DisableAvaloniaDataAnnotationValidation();
             desktopLifetime.MainWindow = new TestAvaEdit();
         }
 
@@ -508,18 +508,18 @@ namespace Suity.Editor
             }
         }
 
-        private static void DisableAvaloniaDataAnnotationValidation()
-        {
-            // Get an array of plugins to remove
-            var dataValidationPluginsToRemove =
-                BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
+        //private static void DisableAvaloniaDataAnnotationValidation()
+        //{
+        //    // Get an array of plugins to remove
+        //    var dataValidationPluginsToRemove =
+        //        BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
 
-            // remove each entry found
-            foreach (var plugin in dataValidationPluginsToRemove)
-            {
-                BindingPlugins.DataValidators.Remove(plugin);
-            }
-        }
+        //    // remove each entry found
+        //    foreach (var plugin in dataValidationPluginsToRemove)
+        //    {
+        //        BindingPlugins.DataValidators.Remove(plugin);
+        //    }
+        //}
 
         private static Assembly? CurrentDomain_AssemblyResolve(object? sender, ResolveEventArgs args)
         {

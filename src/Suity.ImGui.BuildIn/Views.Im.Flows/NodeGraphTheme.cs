@@ -71,8 +71,8 @@ public class NodeGraphTheme : ThemeBase
         this.ClassStyle("titleText")
             .SetFont(new Font(ImGuiTheme.DefaultFont, 10), Color.White)
             .SetVerticalAlignment(GuiAlignment.Center)
-            .SetInputFunctionChain(ImGraphExtensions.ScaleInputBlocker50)
-            .SetRenderFunctionChain(ImGraphExtensions.ScaleRenderBlocker50);
+            .SetInputFunctionChain(ImGraphExtensions.ScaleInputBlockerMedium)
+            .SetRenderFunctionChain(ImGraphExtensions.ScaleRenderBlockerMedium);
 
         this.ClassStyle("bodyFit")
             .SetFitOrientation(GuiOrientation.Both)
@@ -108,8 +108,8 @@ public class NodeGraphTheme : ThemeBase
         this.ClassStyle("connectorText")
             .SetFont(new Font(ImGuiTheme.DefaultFont, 6), Color.White)
             .SetCenterVertical()
-            .SetInputFunctionChain(ImGraphExtensions.ScaleInputBlocker80)
-            .SetRenderFunctionChain(ImGraphExtensions.ScaleRenderBlocker80);
+            .SetInputFunctionChain(ImGraphExtensions.ScaleInputBlockerNear)
+            .SetRenderFunctionChain(ImGraphExtensions.ScaleRenderBlockerNear);
 
         this.ClassStyle("connectorPoint")
             .SetSize(6, 6)
@@ -167,17 +167,17 @@ public class NodeGraphTheme : ThemeBase
             .SetImageFilterColor(ColorScheme.ButtonText.Multiply(0.8f));
 
 
-        this.ClassStyle("scaleHiddenNear")
-            .SetInputFunctionChain(ImGraphExtensions.ScaleInputBlocker50)
-            .SetRenderFunctionChain(ImGraphExtensions.ScaleRenderBlocker50);
-
-        this.ClassStyle("scaleHidden")
-            .SetInputFunctionChain(ImGraphExtensions.ScaleInputBlocker35)
-            .SetRenderFunctionChain(ImGraphExtensions.ScaleRenderBlocker35);
+        this.ClassStyle("scaleHiddenMedium")
+            .SetInputFunctionChain(ImGraphExtensions.ScaleInputBlockerMedium)
+            .SetRenderFunctionChain(ImGraphExtensions.ScaleRenderBlockerMedium);
 
         this.ClassStyle("scaleHiddenFar")
-            .SetInputFunctionChain(ImGraphExtensions.ScaleInputBlocker20)
-            .SetRenderFunctionChain(ImGraphExtensions.ScaleRenderBlocker20);
+            .SetInputFunctionChain(ImGraphExtensions.ScaleInputBlockerFar)
+            .SetRenderFunctionChain(ImGraphExtensions.ScaleRenderBlockerFar);
+
+        this.ClassStyle("scaleHiddenVeryFar")
+            .SetInputFunctionChain(ImGraphExtensions.ScaleInputBlockerVeryFar)
+            .SetRenderFunctionChain(ImGraphExtensions.ScaleRenderBlockerVeryFar);
 
         this.ClassStyle("toolBtn")
             .SetSize(12, 12)
@@ -199,7 +199,7 @@ public class NodeGraphTheme : ThemeBase
         this.PseudoMouseDown()
             .SetColor(ColorScheme.ToolButton.Multiply(0.8f));
 
-        this.ClassStyle("debug")
+        this.ClassStyle("debug_draw")
             .SetRenderFunctionChain(RenderDebug);
     }
 

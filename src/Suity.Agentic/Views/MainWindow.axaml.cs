@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Suity.Editor.Views;
+
 public class WindowSettings
 {
     public WindowState WindowState { get; set; } = WindowState.Normal;
@@ -164,6 +165,8 @@ public partial class MainWindow : Window
         string windowSettingFile = project.UserDirectory.PathAppend(WindowSettingFile);
 
         WindowStateManager.LoadSettings(this, windowSettingFile);
-    } 
+    }
+
+
     #endregion
 }
