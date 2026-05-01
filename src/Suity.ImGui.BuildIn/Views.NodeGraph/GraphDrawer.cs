@@ -8,6 +8,25 @@ using System.Linq;
 namespace Suity.Views.NodeGraph;
 
 /// <summary>
+/// Represents a complete Bezier curve shape for link rendering.
+/// </summary>
+public struct LinkShape
+{
+    public PointF StartPos;
+    public PointF EndPos;
+    public PointF StartPosBezier;
+    public PointF EndPosBezier;
+
+    public LinkShape(PointF startPos, PointF endPos, PointF startPosBezier, PointF endPosBezier)
+    {
+        StartPos = startPos;
+        EndPos = endPos;
+        StartPosBezier = startPosBezier;
+        EndPosBezier = endPosBezier;
+    }
+}
+
+/// <summary>
 /// Responsible for rendering the node graph, including grid, links, nodes, selection box, and debug information.
 /// </summary>
 public class GraphDrawer
@@ -382,11 +401,9 @@ public class GraphDrawer
         }
     }
 
-    private void DrawLink(IGraphicOutput output, PointF startPos, PointF endPos, GraphLink link, ConnectorType connectorType)
+    private LinkShape CreateLinkShape(PointF startPos, PointF endPos, ConnectorType connectorType)
     {
         PointF startPosBezier, endPosBezier;
-        Pen linkPen;
-        Brush linkArrow;
 
         float minD = 70 * _control.Viewport.ScaledViewZoom;
 
@@ -423,21 +440,26 @@ public class GraphDrawer
             endPosBezier = new PointF(endPos.X, endPos.Y - (d / LinkHardness) - f);
         }
 
+        return new LinkShape(startPos, endPos, startPosBezier, endPosBezier);
+    }
+
+    private void DrawLink(IGraphicOutput output, PointF startPos, PointF endPos, GraphLink link, ConnectorType connectorType)
+    {
+        LinkShape shape = CreateLinkShape(startPos, endPos, connectorType);
+        Pen linkPen;
+
         if (UseLinkColoring)
         {
             linkPen = link.DataType.LinkPen;
-            linkArrow = link.DataType.LinkArrowBrush;
         }
         else
         {
             linkPen = Theme.Link;
-            linkArrow = Theme.LinkArrow;
         }
 
         if (!link.CheckLink(Diagram.DataTypeProvider))
         {
             linkPen = Theme.LinkError;
-            linkArrow = Theme.LinkArrowError;
         }
 
         float scale = _control.Viewport.ScaledViewZoom;
@@ -454,29 +476,29 @@ public class GraphDrawer
                 {
                     var colorInput = link.Input.DataType.LinkPen.Color;
                     var colorOutput = link.Output.DataType.LinkPen.Color;
-                    output.DrawBezier(colorInput, colorOutput, 5f * scale, startPos, startPosBezier, endPosBezier, endPos, dashStyle);
+                    output.DrawBezier(colorInput, colorOutput, 5f * scale, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos, dashStyle);
 
                     Theme.CombinedLinkPen.Width = 2f * scale;
-                    output.DrawBezier(Theme.CombinedLinkPen, startPos, startPosBezier, endPosBezier, endPos);
+                    output.DrawBezier(Theme.CombinedLinkPen, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos);
                 }
                 else
                 {
                     var colorInput = link.Input.DataType.LinkPen.Color;
                     var colorOutput = link.Output.DataType.LinkPen.Color;
-                    output.DrawBezier(colorInput, colorOutput, 3f * scale, startPos, startPosBezier, endPosBezier, endPos, dashStyle);
+                    output.DrawBezier(colorInput, colorOutput, 3f * scale, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos, dashStyle);
                 }
                 break;
 
             case LinkVisualStyle.Direct:
                 linkPen.Width = 3f * scale;
-                output.DrawLine(linkPen, startPos, endPos);
+                output.DrawLine(linkPen, shape.StartPos, shape.EndPos);
                 break;
 
             case LinkVisualStyle.Rectangle:
                 linkPen.Width = 3f * scale;
-                output.DrawLine(linkPen, startPos, startPosBezier);
-                output.DrawLine(linkPen, startPosBezier, endPosBezier);
-                output.DrawLine(linkPen, endPosBezier, endPos);
+                output.DrawLine(linkPen, shape.StartPos, shape.StartPosBezier);
+                output.DrawLine(linkPen, shape.StartPosBezier, shape.EndPosBezier);
+                output.DrawLine(linkPen, shape.EndPosBezier, shape.EndPos);
                 break;
 
             default: break;
