@@ -14,6 +14,11 @@ namespace Suity.Views.Im.Flows;
 /// </summary>
 public static class ImGraphExtensions
 {
+    public const float ThresholdVeryFar = 0.25f;
+    public const float ThresholdFar = 0.5f;
+    public const float ThresholdMedium = 0.750f;
+    public const float ThresholdNear = 1f;
+
     /// <summary>
     /// Scale threshold below which nodes are hidden from interaction and rendering.
     /// </summary>
@@ -265,13 +270,8 @@ public static class ImGraphExtensions
         return GuiInputState.None;
     }
 
-    public const float ThresholdVeryFar = 0.25f;
-    public const float ThresholdFar = 0.5f;
-    public const float ThresholdMedium = 0.750f;
-    public const float ThresholdNear = 1f;
-
     /// <summary>
-    /// Input blocker that prevents interaction when node scale is below 0.20.
+    /// Input blocker that prevents interaction when node scale is at the Very Far threshold.
     /// </summary>
     /// <param name="pipeline">The current GUI pipeline.</param>
     /// <param name="node">The ImGui node being processed.</param>
@@ -292,7 +292,7 @@ public static class ImGraphExtensions
     }
 
     /// <summary>
-    /// Input blocker that prevents interaction when node scale is below 0.35.
+    /// Input blocker that prevents interaction when node scale is at the Far threshold.
     /// </summary>
     /// <param name="pipeline">The current GUI pipeline.</param>
     /// <param name="node">The ImGui node being processed.</param>
@@ -313,7 +313,7 @@ public static class ImGraphExtensions
     }
 
     /// <summary>
-    /// Input blocker that prevents interaction when node scale is below 0.50.
+    /// Input blocker that prevents interaction when node scale is at the Medium threshold.
     /// </summary>
     /// <param name="pipeline">The current GUI pipeline.</param>
     /// <param name="node">The ImGui node being processed.</param>
@@ -334,7 +334,7 @@ public static class ImGraphExtensions
     }
 
     /// <summary>
-    /// Input blocker that prevents interaction when node scale is below 0.80.
+    /// Input blocker that prevents interaction when node scale is at the Near threshold.
     /// </summary>
     /// <param name="pipeline">The current GUI pipeline.</param>
     /// <param name="node">The ImGui node being processed.</param>
@@ -356,7 +356,7 @@ public static class ImGraphExtensions
 
 
     /// <summary>
-    /// Render blocker that skips rendering when node scale is below 0.20.
+    /// Render blocker that skips rendering when node scale is at the Very Far threshold.
     /// </summary>
     /// <param name="pipeline">The current GUI pipeline.</param>
     /// <param name="node">The ImGui node being rendered.</param>
@@ -376,7 +376,7 @@ public static class ImGraphExtensions
     }
 
     /// <summary>
-    /// Render blocker that skips rendering when node scale is below 0.35.
+    /// Render blocker that skips rendering when node scale is at the Far threshold.
     /// </summary>
     /// <param name="pipeline">The current GUI pipeline.</param>
     /// <param name="node">The ImGui node being rendered.</param>
@@ -396,7 +396,7 @@ public static class ImGraphExtensions
     }
 
     /// <summary>
-    /// Render blocker that skips rendering when node scale is below 0.50.
+    /// Render blocker that skips rendering when node scale is at the Medium threshold.
     /// </summary>
     /// <param name="pipeline">The current GUI pipeline.</param>
     /// <param name="node">The ImGui node being rendered.</param>
@@ -416,7 +416,7 @@ public static class ImGraphExtensions
     }
 
     /// <summary>
-    /// Render blocker that skips rendering when node scale is below 0.80.
+    /// Render blocker that skips rendering when node scale is at the Near threshold.
     /// </summary>
     /// <param name="pipeline">The current GUI pipeline.</param>
     /// <param name="node">The ImGui node being rendered.</param>
