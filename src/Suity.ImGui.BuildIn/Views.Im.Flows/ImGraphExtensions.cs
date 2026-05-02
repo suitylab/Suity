@@ -246,32 +246,35 @@ public static class ImGraphExtensions
                     }
                 }
             }
-            else if (connector?.DataType?.IsArray == true)
-            {
-                var outerRect = rect.Scale(0.8f);
-                var innerRect = rect.Scale(0.45f);
-                var penWidth = rect.Width * 0.15f;
-
-                if (isLinked)
-                {
-                    output.DrawEllipse(new Pen(colorV, penWidth), outerRect);
-                    output.FillEllipse(brush, innerRect);
-                }
-                else
-                {
-                    output.DrawEllipse(new Pen(colorV, penWidth), outerRect);
-                    output.DrawEllipse(new Pen(colorV, penWidth), innerRect);
-                }
-            }
             else
             {
-                if (isLinked)
+                if (connector?.DataType?.IsArray == true)
                 {
-                    output.FillEllipse(brush, rect);
+                    var outerRect = rect.Scale(0.8f);
+                    var innerRect = rect.Scale(0.45f);
+                    var penWidth = rect.Width * 0.15f;
+
+                    if (isLinked)
+                    {
+                        output.DrawEllipse(new Pen(colorV, penWidth), outerRect);
+                        output.FillEllipse(brush, innerRect);
+                    }
+                    else
+                    {
+                        output.DrawEllipse(new Pen(colorV, penWidth), outerRect);
+                        output.DrawEllipse(new Pen(colorV, penWidth), innerRect);
+                    }
                 }
                 else
                 {
-                    output.DrawEllipse(new Pen(colorV, rect.Width * 0.2f), rect.Scale(0.8f));
+                    if (isLinked)
+                    {
+                        output.FillEllipse(brush, rect);
+                    }
+                    else
+                    {
+                        output.DrawEllipse(new Pen(colorV, rect.Width * 0.2f), rect.Scale(0.8f));
+                    }
                 }
             }
         }
@@ -325,32 +328,35 @@ public static class ImGraphExtensions
                     }
                 }
             }
-            else if (connector.DataType?.IsArray == true)
-            {
-                var outerRect = rect.Scale(0.9f);
-                var innerRect = rect.Scale(0.5f);
-                var penWidth = rect.Width * 0.1f;
-
-                if (isLinked)
-                {
-                    output.DrawEllipse(new Pen(Color.White, penWidth), outerRect);
-                    output.FillEllipse(new SolidBrush(Color.White), innerRect);
-                }
-                else
-                {
-                    output.DrawEllipse(new Pen(Color.White, penWidth), outerRect);
-                    output.DrawEllipse(new Pen(Color.White, penWidth), innerRect);
-                }
-            }
             else
             {
-                if (isLinked)
+                if (connector.DataType?.IsArray == true)
                 {
-                    output.FillEllipse(new SolidBrush(Color.White), combinedRect);
+                    var outerRect = rect.Scale(0.9f);
+                    var innerRect = rect.Scale(0.5f);
+                    var penWidth = rect.Width * 0.1f;
+
+                    if (isLinked)
+                    {
+                        output.DrawEllipse(new Pen(Color.White, penWidth), outerRect);
+                        output.FillEllipse(new SolidBrush(Color.White), innerRect);
+                    }
+                    else
+                    {
+                        output.DrawEllipse(new Pen(Color.White, penWidth), outerRect);
+                        output.DrawEllipse(new Pen(Color.White, penWidth), innerRect);
+                    }
                 }
                 else
                 {
-                    output.DrawEllipse(new Pen(Color.White, rect.Width * 0.1f), combinedRect);
+                    if (isLinked)
+                    {
+                        output.FillEllipse(new SolidBrush(Color.White), combinedRect);
+                    }
+                    else
+                    {
+                        output.DrawEllipse(new Pen(Color.White, rect.Width * 0.1f), combinedRect);
+                    }
                 }
             }
         }
