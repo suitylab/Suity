@@ -1,3 +1,4 @@
+using MarkedNet;
 using Suity;
 using Suity.Collections;
 using Suity.Editor;
@@ -1249,10 +1250,8 @@ public abstract class FlowViewImGui :
 
         if (links.Length > 0)
         {
-            foreach (var link in links)
-            {
-                actions.Add(new DeleteLinkAction(this, link.Input.Parent.Name, link.Input.Name, link.Output.Parent.Name, link.Output.Name));
-            }
+            var nodeLinks = links.Select(o => new NodeLink(o.Input.Parent.Name, o.Input.Name, o.Output.Parent.Name, o.Output.Name)).ToArray();
+            actions.Add(new DeleteLinkAction(this, nodeLinks));
         }
 
         var macroAction = new UndoRedoMacroAction("Delete Selected", actions);
@@ -1316,25 +1315,11 @@ public abstract class FlowViewImGui :
 
     private void GraphPanel_LinkDestroyed(object sender, GraphLinkEventArgs args)
     {
-        if (args.Links.Count > 1)
-        {
-            List<UndoRedoAction> actions = [];
-            foreach (var link in args.Links)
-            {
-                actions.Add(new DeleteLinkAction(this, link.Input.Parent.Name, link.Input.Name, link.Output.Parent.Name, link.Output.Name));
-            }
-
-            var macroAction = new UndoRedoMacroAction("Delete Links", actions);
-            OnFlowDoAction(macroAction);
-        }
-        else if (args.Links.Count == 1)
-        {
-            var link = args.Links[0];
-            OnFlowDoAction(new DeleteLinkAction(this, link.Input.Parent.Name, link.Input.Name, link.Output.Parent.Name, link.Output.Name));
-        }
-
         if (args.Links.Count > 0)
         {
+            var nodeLinks = args.Links.Select(o => new NodeLink(o.Input.Parent.Name, o.Input.Name, o.Output.Parent.Name, o.Output.Name)).ToArray();
+            OnFlowDoAction(new DeleteLinkAction(this, nodeLinks));
+
             OnDirty();
             EditorUtility.Inspector.UpdateInspector();
         }

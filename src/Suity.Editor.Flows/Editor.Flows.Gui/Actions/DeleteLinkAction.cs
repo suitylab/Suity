@@ -1,10 +1,11 @@
 using static Suity.Helpers.GlobalLocalizer;
 using Suity.UndoRedos;
+using System.Collections.Generic;
 
 namespace Suity.Editor.Flows.Gui.Actions;
 
 /// <summary>
-/// Undo/redo action that removes a link between two flow node connectors.
+/// Undo/redo action that removes links between flow node connectors.
 /// </summary>
 internal class DeleteLinkAction : UndoRedoAction
 {
@@ -12,11 +13,11 @@ internal class DeleteLinkAction : UndoRedoAction
     public override string Name => L("Delete Links");
 
     /// <summary>
-    /// The flow view that contains the link.
+    /// The flow view that contains the links.
     /// </summary>
     private readonly IFlowView _view;
 
-    private readonly NodeLink _link;
+    private readonly NodeLink[] _links;
 
     /// <summary>
     /// Initializes a new instance of <see cref="DeleteLinkAction"/> from an existing <see cref="NodeLink"/>.
@@ -26,7 +27,18 @@ internal class DeleteLinkAction : UndoRedoAction
     public DeleteLinkAction(IFlowView view, NodeLink link)
     {
         _view = view;
-        _link = link.Clone();
+        _links = [link.Clone()];
+    }
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="DeleteLinkAction"/> from multiple <see cref="NodeLink"/>s.
+    /// </summary>
+    /// <param name="view">The flow view that contains the links.</param>
+    /// <param name="links">The links to remove.</param>
+    public DeleteLinkAction(IFlowView view, IEnumerable<NodeLink> links)
+    {
+        _view = view;
+        _links = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(links, l => l.Clone()));
     }
 
     /// <summary>
@@ -40,21 +52,28 @@ internal class DeleteLinkAction : UndoRedoAction
     public DeleteLinkAction(IFlowView view, string inputNode, string inputConnector, string outputNode, string outputConnector)
     {
         _view = view;
-        _link = new NodeLink(inputNode, inputConnector, outputNode, outputConnector);
+        _links = [new NodeLink(inputNode, inputConnector, outputNode, outputConnector)];
     }
 
     /// <inheritdoc/>
     public override void Do()
     {
-        _view.Diagram.RemoveLink(_link.FromNode, _link.FromConnector, _link.ToNode, _link.ToConnector);
+        foreach (var link in _links)
+        {
+            _view.Diagram.RemoveLink(link.FromNode, link.FromConnector, link.ToNode, link.ToConnector);
+        }
         _view.Diagram.RefreshView();
         _view.Diagram.QueueComputeData();
 
         QueuedAction.Do(() => 
         {
-            var inputNode = _view.GetViewNode(_link.FromNode);
-            var outputNode = _view.GetViewNode(_link.ToNode);
-            _view.RefreshNodes([inputNode, outputNode]);
+            var nodesToRefresh = new HashSet<IFlowViewNode>();
+            foreach (var link in _links)
+            {
+                nodesToRefresh.Add(_view.GetViewNode(link.FromNode));
+                nodesToRefresh.Add(_view.GetViewNode(link.ToNode));
+            }
+            _view.RefreshNodes(nodesToRefresh);
 
             EditorUtility.Inspector.UpdateInspector();
         });
@@ -63,15 +82,22 @@ internal class DeleteLinkAction : UndoRedoAction
     /// <inheritdoc/>
     public override void Undo()
     {
-        _view.Diagram.AddLink(_link.FromNode, _link.FromConnector, _link.ToNode, _link.ToConnector);
+        foreach (var link in _links)
+        {
+            _view.Diagram.AddLink(link.FromNode, link.FromConnector, link.ToNode, link.ToConnector);
+        }
         _view.Diagram.RefreshView();
         _view.Diagram.QueueComputeData();
 
         QueuedAction.Do(() => 
         {
-            var inputNode = _view.GetViewNode(_link.FromNode);
-            var outputNode = _view.GetViewNode(_link.ToNode);
-            _view.RefreshNodes([inputNode, outputNode]);
+            var nodesToRefresh = new HashSet<IFlowViewNode>();
+            foreach (var link in _links)
+            {
+                nodesToRefresh.Add(_view.GetViewNode(link.FromNode));
+                nodesToRefresh.Add(_view.GetViewNode(link.ToNode));
+            }
+            _view.RefreshNodes(nodesToRefresh);
 
             EditorUtility.Inspector.UpdateInspector();
         });
