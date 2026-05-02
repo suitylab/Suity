@@ -180,15 +180,15 @@ public class GraphInputManager
                 break;
 
             case GuiEventTypes.MouseDown:
-                ProcessMouseDown(input);
+                HandleMouseDown(input);
                 break;
 
             case GuiEventTypes.MouseUp:
-                ProcessMouseUp(input);
+                HandleMouseUp(input);
                 break;
 
             case GuiEventTypes.MouseMove:
-                ProcessMouseMove(input);
+                HandleMouseMove(input);
                 break;
 
             case GuiEventTypes.MouseDoubleClick:
@@ -199,20 +199,20 @@ public class GraphInputManager
                 break;
 
             case GuiEventTypes.KeyDown:
-                ProcessKeyDown(input);
+                HandleKeyDown(input);
                 break;
 
             case GuiEventTypes.KeyUp:
-                ProcessKeyUp(input);
+                HandleKeyUp(input);
                 break;
 
             case GuiEventTypes.MouseWheel:
-                ProcessMouseWheel(input);
+                HandleMouseWheel(input);
                 break;
         }
     }
 
-    private void ProcessMouseDown(IGraphicInput input)
+    private void HandleMouseDown(IGraphicInput input)
     {
         if (input.MouseLocation is not Point pos)
         {
@@ -314,7 +314,7 @@ public class GraphInputManager
         _control.RequestOutput();
     }
 
-    private void ProcessMouseWheel(IGraphicInput input)
+    private void HandleMouseWheel(IGraphicInput input)
     {
         if (input.MouseLocation is not Point pos)
         {
@@ -356,7 +356,7 @@ public class GraphInputManager
         _control.OnViewZoomedInternal();
     }
 
-    private void ProcessMouseUp(IGraphicInput input)
+    private void HandleMouseUp(IGraphicInput input)
     {
         if (input.MouseLocation is not Point pos)
         {
@@ -460,7 +460,7 @@ public class GraphInputManager
         }
     }
 
-    private void ProcessMouseMove(IGraphicInput input)
+    private void HandleMouseMove(IGraphicInput input)
     {
         if (input.MouseLocation is not Point pos)
         {
@@ -604,7 +604,7 @@ public class GraphInputManager
         }
     }
 
-    private void ProcessKeyDown(IGraphicInput input)
+    private void HandleKeyDown(IGraphicInput input)
     {
         if (input.AltKey) _altPressed = true;
         if (input.ControlKey) _ctrlPressed = true;
@@ -658,7 +658,7 @@ public class GraphInputManager
         }
     }
 
-    private void ProcessKeyUp(IGraphicInput input)
+    private void HandleKeyUp(IGraphicInput input)
     {
         if (!input.AltKey) _altPressed = false;
         if (!input.ControlKey) _ctrlPressed = false;
