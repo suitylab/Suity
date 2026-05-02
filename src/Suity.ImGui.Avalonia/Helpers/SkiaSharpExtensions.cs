@@ -1,9 +1,10 @@
 using SkiaSharp;
+using Suity;
 using Suity.Collections;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace Suity.Controls;
+namespace Suity.Helpers;
 
 /// <summary>
 /// Cache key for typeface lookups.

@@ -1,6 +1,6 @@
 using SkiaSharp;
 
-namespace Suity.Controls;
+namespace Suity.Helpers;
 
 /// <summary>
 /// Provides utility methods and extension methods for SkiaSharp type conversions.

@@ -2,11 +2,13 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using SkiaSharp;
+using Suity.Controls;
+using Suity.Helpers;
 using Suity.Views.Graphics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace Suity.Controls;
+namespace Suity.Contexts;
 
 /// <summary>
 /// Avalonia-specific implementation of the graphic output interface for rendering to SkiaSharp canvases.

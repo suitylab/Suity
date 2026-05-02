@@ -2,11 +2,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Suity.Controls;
 using Suity.Views;
 using Suity.Views.Graphics;
-using System.Diagnostics;
 
-namespace Suity.Controls;
+namespace Suity.Contexts;
 
 /// <summary>
 /// Avalonia-specific implementation of the graphic input interface.

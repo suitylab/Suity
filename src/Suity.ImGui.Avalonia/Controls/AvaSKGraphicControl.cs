@@ -6,6 +6,7 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using SkiaSharp;
+using Suity.Contexts;
 using Suity.Views.Graphics;
 using System.Diagnostics;
 

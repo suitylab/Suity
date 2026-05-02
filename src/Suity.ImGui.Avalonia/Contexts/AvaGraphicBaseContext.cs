@@ -9,8 +9,9 @@ using Suity.Helpers;
 using System.Diagnostics;
 using System.Drawing;
 using Suity.Views;
+using Suity.Controls;
 
-namespace Suity.Controls;
+namespace Suity.Contexts;
 
 /// <summary>
 /// Specifies operations to perform when a frame has no dirty regions to repaint.
@@ -28,9 +29,9 @@ public enum EmptyFrameOperations
 }
 
 /// <summary>
-/// Double-buffered graphics context for Avalonia controls implementing various graphic interfaces.
+/// Abstract base class for Avalonia graphics contexts implementing various graphic interfaces.
 /// </summary>
-internal class AvaGraphicDoubleBufferContext :
+internal abstract class AvaGraphicBaseContext :
     IGraphicContext,
     IGraphicTextBoxEdit,
     IGraphicDropDownEdit,
@@ -41,7 +42,6 @@ internal class AvaGraphicDoubleBufferContext :
 {
     private readonly AvaGraphicInput _input;
     private readonly AvaGraphicOutput _output;
-
     private readonly AvaSKGraphicControl _control;
     private AvaContextMenuBinder _contextMenuBinder;
     private IGraphicObject? _graphicObject;
@@ -54,27 +54,17 @@ internal class AvaGraphicDoubleBufferContext :
     private int _toolTipShowing;
 
     private bool _refreshAction = false;
-
     private bool _supportDirtyRect;
-
     private bool _mouseIn;
 
-
-    // Off-screen buffer for partial repaint support
-    private object _offScreenLock = new();
-    private SKSurface? _bufferSurface;
-    private int _bufferWidth;
-    private int _bufferHeight;
-
     private PointerPressedEventArgs _lastPointerPressed;
-
     private EmptyFrameOperations _emptyFrameOperations = EmptyFrameOperations.RepaintAll;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AvaGraphicDoubleBufferContext"/> class.
+    /// Initializes a new instance of the <see cref="AvaGraphicBaseContext"/> class.
     /// </summary>
     /// <param name="control">The parent Avalonia control.</param>
-    public AvaGraphicDoubleBufferContext(AvaSKGraphicControl control)
+    protected AvaGraphicBaseContext(AvaSKGraphicControl control)
     {
         _control = control ?? throw new ArgumentNullException(nameof(control));
 
@@ -96,10 +86,44 @@ internal class AvaGraphicDoubleBufferContext :
     /// Gets the Avalonia-specific graphic input handler.
     /// </summary>
     public AvaGraphicInput AvaInput => _input;
+
     /// <summary>
     /// Gets the Avalonia-specific graphic output handler.
     /// </summary>
     public AvaGraphicOutput AvaOutput => _output;
+
+    /// <summary>
+    /// Gets the parent Avalonia control.
+    /// </summary>
+    protected AvaSKGraphicControl Control => _control;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to repaint all.
+    /// </summary>
+    protected bool RepaintAllFlag
+    {
+        get => _repaintAll;
+        set => _repaintAll = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the dirty rectangles.
+    /// </summary>
+    protected RectangleF[]? DirtyRects
+    {
+        get => _dirtyRects;
+        set => _dirtyRects = value;
+    }
+
+    /// <summary>
+    /// Gets the text box edit overlay.
+    /// </summary>
+    protected AvaTextBoxOverlayEdit TextBoxEdit => _textBoxEdit;
+
+    /// <summary>
+    /// Gets the drop down context menu edit.
+    /// </summary>
+    protected AvaDropDownContextMenuEdit DropDownEdit => _dropDownEdit;
 
     /// <summary>
     /// Event raised when a cleanup of the view context is requested.
@@ -129,11 +153,6 @@ internal class AvaGraphicDoubleBufferContext :
             if (_graphicObject != null)
             {
                 _graphicObject.GraphicContext = this;
-
-                // Try to refresh
-                //_input.SetRefreshEvent();
-                //_graphicObject.HandleGraphicInput(_input);
-                //RequestOutput();
             }
         }
     }
@@ -157,6 +176,7 @@ internal class AvaGraphicDoubleBufferContext :
     }
 
     #region IGraphicContext
+
     /// <inheritdoc/>
     public IGraphicInput Input => _input;
 
@@ -192,25 +212,7 @@ internal class AvaGraphicDoubleBufferContext :
     }
 
     /// <inheritdoc/>
-    public void RequestOutput(IEnumerable<RectangleF> clipRects)
-    {
-        if (!_repaintAll && _supportDirtyRect)
-        {
-            _dirtyRects = clipRects.ToArray();
-            //if (_dirtyRects.Length == 0)
-            //{
-            //    Logs.LogError("RequestOutput but no dirty rect");
-            //}
-
-            _control.Invalidate();
-        }
-        else
-        {
-            _dirtyRects = null;
-            _repaintAll = true;
-            _control.Invalidate();
-        }
-    }
+    public abstract void RequestOutput(IEnumerable<RectangleF> clipRects);
 
     /// <inheritdoc/>
     public void RequestRefreshInput(bool atOnce)
@@ -220,18 +222,14 @@ internal class AvaGraphicDoubleBufferContext :
         void action()
         {
             _refreshAction = false;
-
             var stack = stackTrace.GetFrames();
 
             if (_graphicObject != null)
             {
-                // Need to make a judgment to prevent continuously creating new objects after setting GraphicContext.
                 if (!ReferenceEquals(_graphicObject.GraphicContext, this))
                 {
                     _graphicObject.GraphicContext = this;
                 }
-
-                //_input.SetRefreshEvent();
                 _graphicObject.HandleGraphicInput(CommonGraphicInput.Refresh);
             }
         }
@@ -269,23 +267,18 @@ internal class AvaGraphicDoubleBufferContext :
     {
         _control.Invalidate();
     }
+
     #endregion
 
     #region IGraphicTextBoxEdit
-
 
     /// <inheritdoc/>
     public void BeginTextEdit(Rectangle rect, string text, TextBoxEditOptions option)
     {
         Dispatcher.UIThread.Post(() =>
         {
-            // For some reason the actual displayed Size is larger.
-            //font = GetConvertedFont(font);
-
             _dirtyRects = null;
             _repaintAll = true;
-
-            //_control.Invalidate();
             _textBoxEdit.BeginTextEdit(rect, text, option);
         });
     }
@@ -295,7 +288,6 @@ internal class AvaGraphicDoubleBufferContext :
     {
         _dirtyRects = null;
         _repaintAll = true;
-
         _control.Invalidate();
         _textBoxEdit.EndTextEdit();
     }
@@ -323,11 +315,8 @@ internal class AvaGraphicDoubleBufferContext :
     /// <inheritdoc/>
     public void ShowToolTip(string toolTip, int x, int y)
     {
-        // Set ToolTip content (can be a string or a complex Control)
         ToolTip.SetTip(_control, toolTip);
-        ToolTip.SetPlacement(_control, PlacementMode.Pointer); // Follow pointer position
-
-        // Key: Manually open
+        ToolTip.SetPlacement(_control, PlacementMode.Pointer);
         ToolTip.SetIsOpen(_control, true);
         _toolTipShowing = 10;
     }
@@ -362,21 +351,16 @@ internal class AvaGraphicDoubleBufferContext :
         }
 
         var binder = _contextMenuBinder ??= new();
-
         var menu = binder.PrepareContextMenu(m, selectedItems);
         if (menu is null)
         {
             return;
         }
 
-        // Set popup position offset relative to parent control
         menu.PlacementTarget = _control;
-        menu.Placement = PlacementMode.Pointer; // Use this point as reference
-
-        // Set specific coordinate values
+        menu.Placement = PlacementMode.Pointer;
         menu.HorizontalOffset = 0;
         menu.VerticalOffset = 0;
-
         menu.Open(_control);
     }
 
@@ -387,14 +371,11 @@ internal class AvaGraphicDoubleBufferContext :
     /// <inheritdoc/>
     public void DoDragDrop(object obj)
     {
-        //TODO: Request a mouse event from the top-level Window.
-
         if (obj is null)
         {
             return;
         }
 
-        //var eventArgs = ParentPointerGetter?.Invoke();
         var eventArgs = _lastPointerPressed;
         if (eventArgs is null)
         {
@@ -402,13 +383,10 @@ internal class AvaGraphicDoubleBufferContext :
         }
 
         string dataId = AvaDragEvent.Global.SetInternalData(obj);
-
         var dataTransfer = new DataTransfer();
         dataTransfer.Add(DataTransferItem.CreateText(dataId));
-
         var effect = DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
 
-        // Important: Must re-execute action from source, otherwise HandleGraphicInput will block input.
         Dispatcher.UIThread.Post(async () =>
         {
             try
@@ -429,11 +407,13 @@ internal class AvaGraphicDoubleBufferContext :
     #endregion
 
     #region IGraphicColorPicker
+
     /// <inheritdoc/>
     public void ShowColorPicker(Rectangle rect, System.Drawing.Color color, Action<System.Drawing.Color, bool> selected)
     {
         _colorPickerEdit.Show(rect, color.ToAvaloniaColor(), (c, final) => selected.Invoke(c.ToSystemDrawingColor(), final));
     }
+
     #endregion
 
     /// <summary>
@@ -444,165 +424,24 @@ internal class AvaGraphicDoubleBufferContext :
         Dispatcher.UIThread.Post(() =>
         {
             var bound = _control.Bounds;
-
             _output.SetSize((int)bound.Width, (int)bound.Height);
             _input.SetRefreshEvent();
-
             _graphicObject?.HandleGraphicInput(_input);
         });
     }
 
     /// <summary>
-    /// Handles the control released event, releasing internal resources and off-screen buffers.
+    /// Handles the control released event, releasing internal resources.
     /// </summary>
-    public void HandleReleased()
-    {
-        lock (_offScreenLock)
-        {
-            _output.InternalRelease();
-
-            // Dispose off-screen buffer
-            _bufferSurface?.Dispose();
-            _bufferSurface = null;
-            _bufferWidth = 0;
-            _bufferHeight = 0;
-        }
-    }
+    public abstract void HandleReleased();
 
     /// <summary>
-    /// Renders the graphic object to the specified canvas using double-buffering.
+    /// Renders the graphic object to the specified canvas.
     /// </summary>
     /// <param name="context">The Avalonia immediate drawing context.</param>
     /// <param name="canvas">The SkiaSharp canvas to draw on.</param>
     /// <param name="rect">The bounding rectangle for rendering.</param>
-    public void Paint(ImmediateDrawingContext? context, SKCanvas canvas, Avalonia.Rect rect)
-    {
-        if (_graphicObject is not { } graphicObject)
-        {
-            return;
-        }
-
-        if (canvas.Handle == nint.Zero)
-        {
-            return;
-        }
-
-        // 1. Ensure Off-Screen Surface matches target canvas size
-        // Use DeviceClipBounds to get pixel dimensions for the buffer
-        //var deviceBounds = canvas.DeviceClipBounds;
-        int width = (int)rect.Width;
-        int height = (int)rect.Height;
-
-        //Debug.WriteLine($"{_control.Name} {width} {height}");
-        
-        // Fallback to control size if bounds are empty (initialization)
-        if (width <= 0 || height <= 0)
-        {
-            width = (int)_control.Width;
-            height = (int)_control.Height;
-        }
-
-        if (_bufferSurface == null || _bufferSurface.Handle == nint.Zero || _bufferWidth != width || _bufferHeight != height)
-        {
-            _bufferSurface?.Dispose();
-            var info = new SKImageInfo(width, height, SKImageInfo.PlatformColorType, SKAlphaType.Premul);
-            _bufferSurface = SKSurface.Create(info);
-            _bufferWidth = width;
-            _bufferHeight = height;
-            _repaintAll = true; // Force full repaint on resize/recreate
-        }
-
-        var bufferCanvas = _bufferSurface.Canvas;
-
-        // 2. Prepare Buffer Canvas (Clear or Clip)
-        if (_repaintAll || !_supportDirtyRect || _dirtyRects is null)
-        {
-            // Full repaint: Clear the entire buffer
-            //bufferCanvas.Clear();
-            _output.RepaintAll = true;
-        }
-        else
-        {
-            // Partial repaint: Keep existing content (Snapshot), Clip, and Draw
-            _output.RepaintAll = false;
-        }
-
-        if (!_repaintAll && _dirtyRects is null)
-        {
-            //Logs.LogInfo($"Partial repaint but no dirty rect!!!");
-
-            switch (_emptyFrameOperations)
-            {
-                case EmptyFrameOperations.RepaintAll:
-                    _repaintAll = true;
-                    _output.RepaintAll = true;
-                    break;
-
-                case EmptyFrameOperations.Bypass:
-                default:
-                    DrawBuffer(canvas);
-                    return;
-            }
-        }
-
-        lock (_offScreenLock)
-        {
-            if (_bufferSurface is null || _bufferSurface.Handle == nint.Zero)
-            {
-                _input.Clear();
-                _repaintAll = true;
-                _dirtyRects = null;
-                return;
-            }
-
-            // 3. Update Output to use the Off-Screen Canvas
-            _output.UpdateCanvas(context, bufferCanvas);
-
-            // 4. Perform Drawing
-            if (_supportDirtyRect && !_repaintAll && _dirtyRects != null)
-            {
-                // Save state before clipping
-                //int saveCount = bufferCanvas.Save();
-
-                // Set Clip Rects based on dirty regions
-                bufferCanvas.SetClipRects(_dirtyRects);
-
-                // Draw the graphic object
-                graphicObject.HandleGraphicOutput(_output);
-
-                bufferCanvas.Restore();
-
-                // Restore state after clipping
-                //bufferCanvas.RestoreToCount(saveCount);
-            }
-            else
-            {
-                // Full draw
-                graphicObject.HandleGraphicOutput(_output);
-            }
-
-            DrawBuffer(canvas);
-        }
-    }
-
-    private void DrawBuffer(SKCanvas canvas)
-    {
-        lock (_offScreenLock)
-        {
-            if (_bufferSurface is null || _bufferSurface.Handle == nint.Zero)
-            {
-                return;
-            }
-
-            using var snapshot = _bufferSurface.Snapshot();
-            canvas.DrawImage(snapshot, 0, 0);
-
-            _input.Clear();
-            _repaintAll = false;
-            _dirtyRects = null;
-        }
-    }
-
+    public abstract void Paint(ImmediateDrawingContext? context, SKCanvas canvas, Avalonia.Rect rect);
 
     /// <summary>
     /// Clears all pending input events.
@@ -669,7 +508,6 @@ internal class AvaGraphicDoubleBufferContext :
         if (eventType == GuiEventTypes.MouseMove && _toolTipShowing > 0)
         {
             _toolTipShowing--;
-
             if (_toolTipShowing == 0)
             {
                 ToolTip.SetIsOpen(_control, false);
@@ -677,9 +515,9 @@ internal class AvaGraphicDoubleBufferContext :
             }
         }
 
-        if (e is PointerPressedEventArgs pressed)
+        if (e is PointerPressedEventArgs pressedArgs)
         {
-            _lastPointerPressed = pressed;
+            _lastPointerPressed = pressedArgs;
         }
     }
 
@@ -712,7 +550,6 @@ internal class AvaGraphicDoubleBufferContext :
         if (eventType == GuiEventTypes.MouseMove && _toolTipShowing > 0)
         {
             _toolTipShowing--;
-
             if (_toolTipShowing == 0)
             {
                 ToolTip.SetIsOpen(_control, false);
@@ -743,14 +580,10 @@ internal class AvaGraphicDoubleBufferContext :
     public void HandleResizeEvent()
     {
         _textBoxEdit.EndTextEdit();
-
         _input.SetResizeEvent();
         var bounds = _control.Bounds;
         _output.SetSize((int)bounds.Width, (int)bounds.Height);
-
-        // Force full repaint on resize
         _repaintAll = true;
-
         _graphicObject?.HandleGraphicInput(_input);
     }
 
@@ -776,19 +609,17 @@ internal class AvaGraphicDoubleBufferContext :
 
     private void OnDragEnter(object? sender, DragEventArgs e)
     {
-        // Debug.WriteLine("Context OnDragEnter");
         _input.DragEvent = AvaDragEvent.Global;
     }
+
     private void OnDragLeave(object? sender, DragEventArgs e)
     {
-        //Debug.WriteLine("Context OnDragLeave");
         _input.DragEvent = null;
     }
 
     private void OnDragOver(object? sender, DragEventArgs e)
     {
         AvaDragEvent? dropEvent = null;
-
         try
         {
             AvaDragEvent.Global.UpdateEventArgs(e);
@@ -798,18 +629,6 @@ internal class AvaGraphicDoubleBufferContext :
             if (!_control.IsFocused)
             {
                 _control.Focus();
-            }
-
-            if (AvaDragEvent.Global.Handled)
-            {
-                // e.DragEffects = DragDropEffects.Link;
-            }
-            else
-            {
-                if (_graphicObject is IDropTarget dropTarget)
-                {
-                    dropTarget.DragOver(dropEvent);
-                }
             }
         }
         catch (Exception err)
@@ -825,7 +644,6 @@ internal class AvaGraphicDoubleBufferContext :
     private void OnDragDrop(object? sender, DragEventArgs e)
     {
         AvaDragEvent? dropEvent = null;
-
         try
         {
             AvaDragEvent.Global.UpdateEventArgs(e);
@@ -835,18 +653,6 @@ internal class AvaGraphicDoubleBufferContext :
             if (!_control.IsFocused)
             {
                 _control.Focus();
-            }
-
-            if (AvaDragEvent.Global.Handled)
-            {
-                // e.DragEffects = DragDropEffects.Link;
-            }
-            else
-            {
-                if (_graphicObject is IDropTarget dropTarget)
-                {
-                    dropTarget.DragDrop(dropEvent);
-                }
             }
         }
         catch (Exception err)
@@ -860,9 +666,7 @@ internal class AvaGraphicDoubleBufferContext :
         }
     }
 
-
     #endregion
-
 
     /// <summary>
     /// Converts a GUI cursor type to an Avalonia standard cursor type.
@@ -880,13 +684,11 @@ internal class AvaGraphicDoubleBufferContext :
             case GuiCursorTypes.VSplit: return StandardCursorType.SizeWestEast;
             case GuiCursorTypes.NoMoveVert: return StandardCursorType.No;
             case GuiCursorTypes.NoMoveHoriz: return StandardCursorType.No;
-
             case GuiCursorTypes.SizeAll: return StandardCursorType.SizeAll;
             case GuiCursorTypes.SizeNS: return StandardCursorType.SizeNorthSouth;
             case GuiCursorTypes.SizeWE: return StandardCursorType.SizeWestEast;
             case GuiCursorTypes.SizeNWSE: return StandardCursorType.BottomRightCorner;
             case GuiCursorTypes.SizeNESW: return StandardCursorType.BottomLeftCorner;
-
             default: return StandardCursorType.Arrow;
         }
     }
@@ -903,10 +705,7 @@ internal class AvaGraphicDoubleBufferContext :
             return RectangleF.Empty;
         }
 
-        // Initialize with first rectangle
         RectangleF bounds = clipRects.First();
-
-        // Iterate and continuously merge
         foreach (var rect in clipRects.Skip(1))
         {
             bounds = RectangleF.Union(bounds, rect);
@@ -914,5 +713,4 @@ internal class AvaGraphicDoubleBufferContext :
 
         return bounds;
     }
-
 }
