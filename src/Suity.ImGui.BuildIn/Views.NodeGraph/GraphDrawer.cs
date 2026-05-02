@@ -408,8 +408,8 @@ public class GraphDrawer
 
         foreach (GraphLink link in Diagram.Links.Where(o => o.ConnectorType == ConnectorType.Associate))
         {
-            startPos = link.Input.GetPosition();
-            endPos = link.Output.GetPosition();
+            startPos = link.From.GetPosition();
+            endPos = link.To.GetPosition();
 
             float minX = System.Math.Min(startPos.X, endPos.X);
             float minY = System.Math.Min(startPos.Y, endPos.Y);
@@ -430,8 +430,8 @@ public class GraphDrawer
 
         foreach (GraphLink link in Diagram.Links)
         {
-            startPos = link.Input.GetPosition();
-            endPos = link.Output.GetPosition();
+            startPos = link.From.GetPosition();
+            endPos = link.To.GetPosition();
 
             float minX = System.Math.Min(startPos.X, endPos.X);
             float minY = System.Math.Min(startPos.Y, endPos.Y);
@@ -481,7 +481,7 @@ public class GraphDrawer
         switch (LinkVisualStyle)
         {
             case LinkVisualStyle.Curve:
-                if (link.Input.IsCombined)
+                if (link.From.IsCombined)
                 {
                     if (link.Highlighted)
                     {
@@ -489,8 +489,8 @@ public class GraphDrawer
                         output.DrawBezier(Theme.LinkSelectedCombinedPen, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos);
                     }
 
-                    var colorInput = link.Input.DataType.LinkPen.Color;
-                    var colorOutput = link.Output.DataType.LinkPen.Color;
+                    var colorInput = link.From.DataType.LinkPen.Color;
+                    var colorOutput = link.To.DataType.LinkPen.Color;
                     output.DrawBezier(colorInput, colorOutput, 5f * scale, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos, dashStyle);
 
                     Theme.LinkCombinedPen.Width = 2f * scale;
@@ -504,8 +504,8 @@ public class GraphDrawer
                         output.DrawBezier(Theme.LinkSelectedPen, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos);
                     }
 
-                    var colorInput = link.Input.DataType.LinkPen.Color;
-                    var colorOutput = link.Output.DataType.LinkPen.Color;
+                    var colorInput = link.From.DataType.LinkPen.Color;
+                    var colorOutput = link.To.DataType.LinkPen.Color;
                     output.DrawBezier(colorInput, colorOutput, 3f * scale, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos, dashStyle);
                 }
                 break;

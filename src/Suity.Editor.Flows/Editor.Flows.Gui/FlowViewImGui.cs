@@ -369,17 +369,6 @@ public abstract class FlowViewImGui :
     public Point LastMousePosition => _graphControl.Viewport.ControlToView(_graphControl.LastMousePos);
 
     /// <summary>
-    /// Sets the selection to the specified nodes.
-    /// </summary>
-    /// <param name="nodes">The nodes to select.</param>
-    public void SetSelection(IEnumerable<FlowNode> nodes)
-    {
-        var viewNodes = nodes.Select(o => o.GetViewNode(this)).OfType<GraphNode>();
-        this._graphControl.SetNodeSelection(viewNodes);
-        InspectSelection();
-    }
-
-    /// <summary>
     /// Inspects the currently selected nodes in the inspector panel.
     /// </summary>
     public void InspectSelection()
@@ -477,25 +466,13 @@ public abstract class FlowViewImGui :
     }
 
     /// <inheritdoc/>
-    public void SetSelection(FlowNode node)
+    public void SetNodeSelection(IEnumerable<FlowNode> nodes)
     {
-        if (node?.GetViewNode(this) is not GraphNode viewNode)
+        var viewNodes = nodes.Select(o => o?.GetViewNode(this)).OfType<GraphNode>().ToArray();
+        if (viewNodes.Length == 0)
         {
             return;
         }
-
-        _nodeSelectionBefore.Clear();
-        _nodeSelectionBefore.AddRange(this._graphControl.Diagram.SelectedNodes);
-        OnFlowDoAction(new NodeSmartSelectionAction(this, _nodeSelectionBefore, [viewNode]));
-        _nodeSelectionBefore.Clear();
-
-        this._graphControl.Viewport.FocusSelection();
-    }
-
-    /// <inheritdoc/>
-    public void SetSelections(IEnumerable<FlowNode> nodes)
-    {
-        var viewNodes = nodes.Select(o => o?.GetViewNode(this)).OfType<GraphNode>();
 
         _nodeSelectionBefore.Clear();
         _nodeSelectionBefore.AddRange(this._graphControl.Diagram.SelectedNodes);
@@ -505,6 +482,21 @@ public abstract class FlowViewImGui :
         this._graphControl.Viewport.FocusSelection();
     }
 
+    public void SetLinkSelection(IEnumerable<NodeLink> links)
+    {
+        var viewLinks = links.Select(o => _graphControl.Diagram.FindLink(o.FromNode, o.FromConnector, o.ToNode, o.ToConnector)).ToArray();
+        if (viewLinks.Length == 0)
+        {
+            return;
+        }
+
+        _linkSelectionBefore.Clear();
+        _linkSelectionBefore.AddRange(this._graphControl.Diagram.SelectedLinks);
+        OnFlowDoAction(new NodeSmartSelectionAction(this, [], [], _linkSelectionBefore, viewLinks));
+        _linkSelectionBefore.Clear();
+
+        this._graphControl.Viewport.FocusSelection();
+    }
 
     //public bool IsDisposed { get; }
     /// <inheritdoc/>
@@ -807,15 +799,15 @@ public abstract class FlowViewImGui :
         switch (selection.Selection)
         {
             case IFlowDiagramItem diagramItem:
-                SetSelection(diagramItem.Node);
+                SetNodeSelection([diagramItem.Node]);
                 return true;
 
             case List<IFlowDiagramItem> list:
-                SetSelections(list.Select(o => o.Node));
+                SetNodeSelection(list.Select(o => o.Node));
                 return true;
 
             case FlowNode node:
-                SetSelection(node);
+                SetNodeSelection([node]);
                 return true;
 
             case SyncPath path:
@@ -1225,6 +1217,7 @@ public abstract class FlowViewImGui :
     /// </summary>
     private void GraphPanel_SelectionDeleting(object sender, GraphSelectionEventArgs args)
     {
+        OnFlowBeginMacro("Delete Selected");
     }
 
     private void GraphPanel_SelectionDeleted(object sender, GraphSelectionEventArgs args)
@@ -1242,20 +1235,18 @@ public abstract class FlowViewImGui :
             return;
         }
 
-        List<UndoRedoAction> actions = [];
         if (nodes.Length > 0)
         {
-            actions.Add(new DeleteNodeAction(this, nodes));
+            OnFlowDoAction(new DeleteNodeAction(this, nodes));
         }
 
         if (links.Length > 0)
         {
-            var nodeLinks = links.Select(o => new NodeLink(o.Input.Parent.Name, o.Input.Name, o.Output.Parent.Name, o.Output.Name)).ToArray();
-            actions.Add(new DeleteLinkAction(this, nodeLinks));
+            var nodeLinks = links.Select(o => new NodeLink(o.From.Parent.Name, o.From.Name, o.To.Parent.Name, o.To.Name)).ToArray();
+            OnFlowDoAction(new DeleteLinkAction(this, nodeLinks));
         }
 
-        var macroAction = new UndoRedoMacroAction("Delete Selected", actions);
-        OnFlowDoAction(macroAction);
+        OnFlowEndMacro("Delete Selected");
 
         OnDirty();
     }
@@ -1294,7 +1285,7 @@ public abstract class FlowViewImGui :
             List<UndoRedoAction> actions = [];
             foreach (var link in args.Links)
             {
-                actions.Add(new CreateLinkAction(this, link.Input.Parent.Name, link.Input.Name, link.Output.Parent.Name, link.Output.Name));
+                actions.Add(new CreateLinkAction(this, link.From.Parent.Name, link.From.Name, link.To.Parent.Name, link.To.Name));
             }
 
             var macroAction = new UndoRedoMacroAction("Create Links", actions);
@@ -1303,7 +1294,7 @@ public abstract class FlowViewImGui :
         else if (args.Links.Count == 1)
         {
             var link = args.Links[0];
-            OnFlowDoAction(new CreateLinkAction(this, link.Input.Parent.Name, link.Input.Name, link.Output.Parent.Name, link.Output.Name));
+            OnFlowDoAction(new CreateLinkAction(this, link.From.Parent.Name, link.From.Name, link.To.Parent.Name, link.To.Name));
         }
 
         if (args.Links.Count > 0)
@@ -1317,7 +1308,7 @@ public abstract class FlowViewImGui :
     {
         if (args.Links.Count > 0)
         {
-            var nodeLinks = args.Links.Select(o => new NodeLink(o.Input.Parent.Name, o.Input.Name, o.Output.Parent.Name, o.Output.Name)).ToArray();
+            var nodeLinks = args.Links.Select(o => new NodeLink(o.From.Parent.Name, o.From.Name, o.To.Parent.Name, o.To.Name)).ToArray();
             OnFlowDoAction(new DeleteLinkAction(this, nodeLinks));
 
             OnDirty();
@@ -1525,7 +1516,7 @@ public abstract class FlowViewImGui :
             .OfType<FlowNode>()
             .Where(o => o.GetType() == type);
 
-        SetSelection(nodes);
+        SetNodeSelection(nodes);
     }
 
     /// <summary>
@@ -1699,7 +1690,7 @@ public abstract class FlowViewImGui :
             return false;
         }
 
-        SetSelection(node);
+        SetNodeSelection([node]);
 
         if (!SyncPath.IsNullOrEmpty(rest) && rest.Length >= 1)
         {
@@ -1714,7 +1705,7 @@ public abstract class FlowViewImGui :
         var node = _document.GetDiagramItem(name)?.Node;
         if (node != null)
         {
-            SetSelection(node);
+            SetNodeSelection([node]);
 
             return true;
         }

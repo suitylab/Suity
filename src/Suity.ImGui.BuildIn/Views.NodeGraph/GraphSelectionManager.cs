@@ -33,7 +33,8 @@ public class GraphSelectionManager
     /// <param name="additional">True to preserve existing highlights; otherwise, unhit nodes are unhighlighted.</param>
     /// <param name="selectBoxOrigin">The origin of the selection box in view space.</param>
     /// <param name="selectBoxCurrent">The current corner of the selection box in view space.</param>
-    public void UpdateNodeHighlights(bool multiple, bool additional, Point selectBoxOrigin, Point selectBoxCurrent)
+    /// <returns>True if a new node was selected; otherwise, false.</returns>
+    public bool UpdateNodeHighlights(bool multiple, bool additional, Point selectBoxOrigin, Point selectBoxCurrent, bool normalNode = true, bool groupNode = true)
     {
         var ViewRectangle = new Rectangle();
         if (selectBoxOrigin.X > selectBoxCurrent.X)
@@ -58,15 +59,29 @@ public class GraphSelectionManager
         }
 
         bool flag = true;
+        bool selected = false;
 
         if (ViewRectangle.Width == 0 && ViewRectangle.Height == 0)
         {
             for (int i = Diagram.NodeCollection.Count - 1; i >= 0; i--)
             {
                 var node = Diagram.NodeCollection[i];
+                if (normalNode && node.IsGroup)
+                {
+                    continue;
+                }
+                if (groupNode && !node.IsGroup)
+                {
+                    continue;
+                }
+
                 if (ViewRectangle.IntersectsWith(node.HitRectangle) && node.CanBeSelected && flag)
                 {
-                    node.Highlighted = true;
+                    if (!node.Highlighted)
+                    {
+                        node.Highlighted = true;
+                        selected = true;
+                    }
                     if (!multiple)
                     {
                         flag = false;
@@ -83,9 +98,22 @@ public class GraphSelectionManager
             for (int i = Diagram.NodeCollection.Count - 1; i >= 0; i--)
             {
                 var node = Diagram.NodeCollection[i];
+                if (normalNode && node.IsGroup)
+                {
+                    continue;
+                }
+                if (groupNode && !node.IsGroup)
+                {
+                    continue;
+                }
+
                 if (!node.IsGroup && ViewRectangle.IntersectsWith(node.HitRectangle) && node.CanBeSelected && flag)
                 {
-                    node.Highlighted = true;
+                    if (!node.Highlighted)
+                    {
+                        node.Highlighted = true;
+                        selected = true;
+                    }
                     if (!multiple)
                     {
                         flag = false;
@@ -93,7 +121,11 @@ public class GraphSelectionManager
                 }
                 else if (node.IsGroup && ViewRectangle.Contains(node.HitRectangle) && node.CanBeSelected && flag)
                 {
-                    node.Highlighted = true;
+                    if (!node.Highlighted)
+                    {
+                        node.Highlighted = true;
+                        selected = true;
+                    }
                     if (!multiple)
                     {
                         flag = false;
@@ -105,6 +137,8 @@ public class GraphSelectionManager
                 }
             }
         }
+
+        return selected;
     }
 
     /// <summary>
@@ -126,8 +160,8 @@ public class GraphSelectionManager
 
         foreach (GraphLink link in Diagram.Links.Where(o => o.ConnectorType != ConnectorType.Associate))
         {
-            startPos = link.Input.GetPosition();
-            endPos = link.Output.GetPosition();
+            startPos = link.From.GetPosition();
+            endPos = link.To.GetPosition();
 
             float minX = System.Math.Min(startPos.X, endPos.X);
             float minY = System.Math.Min(startPos.Y, endPos.Y);
@@ -142,7 +176,8 @@ public class GraphSelectionManager
             }
 
             LinkShape shape = drawer.CreateLinkShape(startPos, endPos, link.ConnectorType);
-            bool hit = shape.IsPointNearBezierRecursive(position);
+            float tolerance = 3.5f * _control.Viewport.ScaledViewZoom;
+            bool hit = shape.IsPointNearBezierRecursive(position, tolerance);
 
             if (hit && flag)
             {

@@ -350,8 +350,8 @@ public class GraphLinkCollection : IEnumerable<GraphLink>
     {
         _links.Add(link);
 
-        _linkDic.Add(link.Input, link);
-        _linkDic.Add(link.Output, link);
+        _linkDic.Add(link.From, link);
+        _linkDic.Add(link.To, link);
     }
 
     /// <summary>
@@ -362,8 +362,8 @@ public class GraphLinkCollection : IEnumerable<GraphLink>
     {
         _links.Remove(link);
 
-        _linkDic.Remove(link.Input, link);
-        _linkDic.Remove(link.Output, link);
+        _linkDic.Remove(link.From, link);
+        _linkDic.Remove(link.To, link);
     }
 
     /// <summary>
@@ -403,14 +403,14 @@ public class GraphLinkCollection : IEnumerable<GraphLink>
     /// </summary>
     /// <param name="output">The output connector.</param>
     /// <returns>A collection of input connectors.</returns>
-    public IEnumerable<GraphConnector> GetInputs(GraphConnector output) => _linkDic[output].Select(o => o.Input);
+    public IEnumerable<GraphConnector> GetInputs(GraphConnector output) => _linkDic[output].Select(o => o.From);
 
     /// <summary>
     /// Gets all output connectors connected to the specified input connector.
     /// </summary>
     /// <param name="input">The input connector.</param>
     /// <returns>A collection of output connectors.</returns>
-    public IEnumerable<GraphConnector> GetOutput(GraphConnector input) => _linkDic[input].Select(o => o.Output);
+    public IEnumerable<GraphConnector> GetOutput(GraphConnector input) => _linkDic[input].Select(o => o.To);
 
     /// <summary>
     /// Determines whether the specified connector has any links.
@@ -429,7 +429,7 @@ public class GraphLinkCollection : IEnumerable<GraphLink>
     {
         var links = GetLinks(connector1);
 
-        return links.Any(o => o.Input == connector2 || o.Output == connector2);
+        return links.Any(o => o.From == connector2 || o.To == connector2);
     }
 
     /// <summary>

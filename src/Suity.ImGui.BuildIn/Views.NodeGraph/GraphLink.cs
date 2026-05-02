@@ -5,8 +5,8 @@ namespace Suity.Views.NodeGraph;
 /// </summary>
 public class GraphLink
 {
-    private readonly GraphConnector _inputConnector;
-    private readonly GraphConnector _outputConnector;
+    private readonly GraphConnector _from;
+    private readonly GraphConnector _to;
     private readonly ConnectorType _connectorType;
     private GraphDataType _nodeGraphDataType;
 
@@ -14,12 +14,12 @@ public class GraphLink
     /// <summary>
     /// The first end of the link, that's connected to an Output Connector
     /// </summary>
-    public GraphConnector Input => _inputConnector;
+    public GraphConnector From => _from;
 
     /// <summary>
     /// The last end of the link, that's connected to an Input Connector
     /// </summary>
-    public GraphConnector Output => _outputConnector;
+    public GraphConnector To => _to;
 
     /// <summary>
     /// Gets the type of the connector (data, action, associate, or control).
@@ -44,12 +44,12 @@ public class GraphLink
     /// <summary>
     /// Creates a new Link, given input and output Connectors
     /// </summary>
-    /// <param name="input"></param>
-    /// <param name="output"></param>
-    public GraphLink(GraphConnector input, GraphConnector output, ConnectorType connectorType, GraphDataType dataType)
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    public GraphLink(GraphConnector from, GraphConnector to, ConnectorType connectorType, GraphDataType dataType)
     {
-        _inputConnector = input;
-        _outputConnector = output;
+        _from = from;
+        _to = to;
         _connectorType = connectorType;
         _nodeGraphDataType = dataType;
     }
@@ -61,19 +61,19 @@ public class GraphLink
     /// <returns>True if the link is valid; otherwise, false.</returns>
     public bool CheckLink(IGraphDataTypeProvider provider)
     {
-        if (_inputConnector == null || _outputConnector == null)
+        if (_from == null || _to == null)
         {
             return false;
         }
 
-        if (!provider.GetCanConnectTo(_inputConnector.DataType, _outputConnector.DataType, _outputConnector.AllowMultipleConnection == true, out bool converted))
+        if (!provider.GetCanConnectTo(_from.DataType, _to.DataType, _to.AllowMultipleConnection == true, out bool converted))
         {
             return false;
         }
 
-        if (_nodeGraphDataType != _inputConnector.DataType)
+        if (_nodeGraphDataType != _from.DataType)
         {
-            _nodeGraphDataType = _inputConnector.DataType;
+            _nodeGraphDataType = _from.DataType;
         }
 
         IsConverted = converted;
@@ -83,6 +83,6 @@ public class GraphLink
 
     public override string ToString()
     {
-        return $"{Input} -> {Output}";
+        return $"{From} -> {To}";
     }
 }

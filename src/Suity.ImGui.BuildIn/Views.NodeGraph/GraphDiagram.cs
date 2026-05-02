@@ -73,6 +73,13 @@ public class GraphDiagram
         return _nodeCollection.FirstOrDefault(o => o.Name == name);
     }
 
+    public GraphLink FindLink(string fromNode, string fromConnector, string toNode, string toConnector)
+    {
+        return _links.FirstOrDefault(o =>
+            o.From.Parent.Name == fromNode && o.From.Name == fromConnector &&
+            o.To.Parent.Name == toNode && o.To.Name == toConnector);
+    }
+
     /// <summary>
     /// Returns the Node Index of the GraphNode in this diagram's current selection
     /// </summary>

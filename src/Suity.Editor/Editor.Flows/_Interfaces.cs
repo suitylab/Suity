@@ -405,16 +405,12 @@ public interface IFlowView
     Point LastMousePosition { get; }
 
     /// <summary>
-    /// Sets the node selection.
-    /// </summary>
-    /// <param name="node">The node to select.</param>
-    void SetSelection(FlowNode node);
-
-    /// <summary>
     /// Sets the node selections.
     /// </summary>
     /// <param name="nodes">Nodes to select.</param>
-    void SetSelection(IEnumerable<FlowNode> nodes);
+    void SetNodeSelection(IEnumerable<FlowNode> nodes);
+
+    void SetLinkSelection(IEnumerable<NodeLink> links);
 
     /// <summary>
     /// Inspects the selection.

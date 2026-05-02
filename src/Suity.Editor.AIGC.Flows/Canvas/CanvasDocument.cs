@@ -142,7 +142,7 @@ public class CanvasDocument : FlowDocument<CanvasAssetBuilder>,
         diagram.RefreshView();
         diagram.QueueComputeData();
 
-        (this.View as IFlowView)?.SetSelection(node);
+        (this.View as IFlowView)?.SetNodeSelection([node]);
 
         this.MarkDirty(this);
 
@@ -206,7 +206,7 @@ public class CanvasDocument : FlowDocument<CanvasAssetBuilder>,
         diagram.RefreshView();
         diagram.QueueComputeData();
 
-        (this.View as IFlowView)?.SetSelection(node);
+        (this.View as IFlowView)?.SetNodeSelection([node]);
 
         this.MarkDirty(this);
 

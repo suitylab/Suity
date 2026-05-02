@@ -35,32 +35,36 @@ class DeleteNodeAction : UndoRedoAction
     /// <inheritdoc/>
     public override void Do()
     {
-        if (_view.Diagram is { } diagram)
+        if (_view.Diagram is not { } diagram)
         {
-            foreach (var node in _nodes)
-            {
-                diagram.RemoveNode(node);
-            }
-
-            _view.SetSelection([]);
-            diagram.RefreshView();
-            diagram.QueueComputeData();
+            return;
         }
+
+        foreach (var node in _nodes)
+        {
+            diagram.RemoveNode(node);
+        }
+
+        _view.SetNodeSelection([]);
+        diagram.RefreshView();
+        diagram.QueueComputeData();
     }
 
     /// <inheritdoc/>
     public override void Undo()
     {
-        if (_view.Diagram is { } diagram)
+        if (_view.Diagram is not { } diagram)
         {
-            foreach (var node in _nodes)
-            {
-                diagram.AddNode(node);
-            }
-
-            _view.SetSelection(_nodes);
-            diagram.RefreshView();
-            diagram.QueueComputeData();
+            return;
         }
+
+        foreach (var node in _nodes)
+        {
+            diagram.AddNode(node);
+        }
+
+        _view.SetNodeSelection(_nodes);
+        diagram.RefreshView();
+        diagram.QueueComputeData();
     }
 }

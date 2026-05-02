@@ -219,7 +219,7 @@ public class GraphLinkManager
     /// <returns>The link if found; otherwise, null.</returns>
     public GraphLink? FindLink(GraphConnector input, GraphConnector output)
     {
-        return Diagram.Links.FirstOrDefault(o => o.Input == input && o.Output == output);
+        return Diagram.Links.FirstOrDefault(o => o.From == input && o.To == output);
     }
 
     /// <summary>
@@ -289,10 +289,10 @@ public class GraphLinkManager
     public void DeleteLink(string fromNodeName, string fromConnectorName, string toNodeName, string toConnectorName)
     {
         var link = Diagram.Links.FirstOrDefault(
-            o => o.Input.Parent.Name == fromNodeName &&
-            o.Input.Name == fromConnectorName &&
-            o.Output.Parent.Name == toNodeName &&
-            o.Output.Name == toConnectorName);
+            o => o.From.Parent.Name == fromNodeName &&
+            o.From.Name == fromConnectorName &&
+            o.To.Parent.Name == toNodeName &&
+            o.To.Name == toConnectorName);
 
         if (link != null)
         {

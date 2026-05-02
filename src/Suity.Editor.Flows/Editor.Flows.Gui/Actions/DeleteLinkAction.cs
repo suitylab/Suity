@@ -58,12 +58,17 @@ internal class DeleteLinkAction : UndoRedoAction
     /// <inheritdoc/>
     public override void Do()
     {
+        if (_view.Diagram is not { } diagram)
+        {
+            return;
+        }
+
         foreach (var link in _links)
         {
-            _view.Diagram.RemoveLink(link.FromNode, link.FromConnector, link.ToNode, link.ToConnector);
+            diagram.RemoveLink(link.FromNode, link.FromConnector, link.ToNode, link.ToConnector);
         }
-        _view.Diagram.RefreshView();
-        _view.Diagram.QueueComputeData();
+        diagram.RefreshView();
+        diagram.QueueComputeData();
 
         QueuedAction.Do(() => 
         {
@@ -82,12 +87,17 @@ internal class DeleteLinkAction : UndoRedoAction
     /// <inheritdoc/>
     public override void Undo()
     {
+        if (_view.Diagram is not { } diagram)
+        {
+            return;
+        }
+
         foreach (var link in _links)
         {
-            _view.Diagram.AddLink(link.FromNode, link.FromConnector, link.ToNode, link.ToConnector);
+            diagram.AddLink(link.FromNode, link.FromConnector, link.ToNode, link.ToConnector);
         }
-        _view.Diagram.RefreshView();
-        _view.Diagram.QueueComputeData();
+        diagram.RefreshView();
+        diagram.QueueComputeData();
 
         QueuedAction.Do(() => 
         {
@@ -97,6 +107,8 @@ internal class DeleteLinkAction : UndoRedoAction
                 nodesToRefresh.Add(_view.GetViewNode(link.FromNode));
                 nodesToRefresh.Add(_view.GetViewNode(link.ToNode));
             }
+
+            _view.SetLinkSelection(_links);
             _view.RefreshNodes(nodesToRefresh);
 
             EditorUtility.Inspector.UpdateInspector();

@@ -74,7 +74,7 @@ internal class CreateNodeAction : UndoRedoAction
             }
 
             _selectionAction.Do();
-            _view.SetSelection(_nodes);
+            _view.SetNodeSelection(_nodes);
             diagram.RefreshView();
             diagram.QueueComputeData();
         }

@@ -273,14 +273,29 @@ public class GraphInputManager
                             EditMode = GraphEditMode.Selecting;
 
                             SelectBoxOrigin = SelectBoxCurrent = viewport.ControlToView(pos);
-                            bool linkSelected = _control.SelectionManager.UpdateLinkHighlights(false, _shiftPressed, pos);
-                            if (!linkSelected)
+
+                            bool selected = _control.SelectionManager.UpdateNodeHighlights(false, _shiftPressed, SelectBoxOrigin, SelectBoxCurrent, true, false);
+                            if (selected && !_shiftPressed)
                             {
-                                _control.SelectionManager.UpdateNodeHighlights(false, _shiftPressed, SelectBoxOrigin, SelectBoxCurrent);
+                                _control.SelectionManager.ClearLinkHighlights();
                             }
-                            else if (!_shiftPressed)
+
+                            if (!selected)
                             {
-                                _control.SelectionManager.ClearNodeHighlights();
+                                selected = _control.SelectionManager.UpdateLinkHighlights(false, _shiftPressed, pos);
+                                if (selected && !_shiftPressed)
+                                {
+                                    _control.SelectionManager.ClearNodeHighlights();
+                                }
+                            }
+
+                            if (!selected)
+                            {
+                                selected = _control.SelectionManager.UpdateNodeHighlights(false, _shiftPressed, SelectBoxOrigin, SelectBoxCurrent, false, true);
+                                if (selected && !_shiftPressed)
+                                {
+                                    _control.SelectionManager.ClearLinkHighlights();
+                                }
                             }
                             
                             CreateSelection();

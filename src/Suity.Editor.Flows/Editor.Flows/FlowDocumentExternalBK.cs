@@ -631,7 +631,7 @@ internal class FlowDocumentExternalBK : FlowDocumentExternal
                 if (report)
                 {
                     string nodeName = ResolveNodeName(link.ToNode);
-                    Logs.LogWarning($"Target node of connection line missing:{nodeName}");
+                    Logs.LogWarning($"Target connection missing:{nodeName}");
                 }
 
                 (removes ??= []).Add(link);
@@ -645,7 +645,7 @@ internal class FlowDocumentExternalBK : FlowDocumentExternal
                 {
                     string nodeName = ResolveNodeName(link.FromNode);
                     string cName = ResolveConnectorName(link.FromConnector);
-                    Logs.LogWarning($"Source port of connection line missing:{nodeName}.{cName}");
+                    Logs.LogWarning($"Source connection missing:{nodeName}.{cName}");
                 }
 
                 (removes ??= []).Add(link);

@@ -269,6 +269,10 @@ public class GraphViewport
     public void FocusSelection()
     {
         var diagram = _control.Diagram;
+        if (diagram == null || diagram.SelectedNodes.Count == 0)
+        {
+            return;
+        }
 
         int avgX = (int)diagram.SelectedNodes.Average(o => o._x + o.Width * 0.5f);
         int avgY = (int)diagram.SelectedNodes.Average(o => o._y + o.Height * 0.5f);
