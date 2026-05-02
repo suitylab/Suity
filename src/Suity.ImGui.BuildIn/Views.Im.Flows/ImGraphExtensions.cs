@@ -203,15 +203,13 @@ public static class ImGraphExtensions
 
             if (connector?.ConnectorType == ConnectorType.Action)
             {
-                var triangle = BuildActionTriangle(rect);
-
                 if (isLinked)
                 {
-                    output.FillPolygon(brush, triangle);
+                    output.FillPolygon(brush, BuildActionTriangle(rect));
                 }
                 else
                 {
-                    output.DrawPolygon(new Pen(colorV, rect.Width * 0.2f), triangle);
+                    output.DrawPolygon(new Pen(colorV, rect.Width * 0.15f), BuildActionTriangle(rect.Scale(0.75f)));
                 }
             }
             else if (connector?.DataType?.IsKey == true)
@@ -219,8 +217,8 @@ public static class ImGraphExtensions
                 if (connector.DataType.IsArray)
                 {
                     var outerDiamond = BuildKeyDiamond(rect.Scale(0.8f));
-                    var innerDiamond = BuildKeyDiamond(rect.Scale(0.45f));
-                    var penWidth = rect.Width * 0.15f;
+                    var innerDiamond = BuildKeyDiamond(isLinked ? rect.Scale(0.45f) : rect.Scale(0.35f));
+                    var penWidth = rect.Width * 0.1f;
 
                     if (isLinked)
                     {
@@ -235,7 +233,8 @@ public static class ImGraphExtensions
                 }
                 else
                 {
-                    var diamond = BuildKeyDiamond(rect.Scale(0.8f));
+                    var diamondRect = isLinked ? rect : rect.Scale(0.75f);
+                    var diamond = BuildKeyDiamond(diamondRect);
 
                     if (isLinked)
                     {
@@ -283,15 +282,13 @@ public static class ImGraphExtensions
 
             if (connector.ConnectorType == ConnectorType.Action)
             {
-                var triangle = BuildActionTriangle(combinedRect);
-
                 if (isLinked)
                 {
-                    output.FillPolygon(new SolidBrush(Color.White), triangle);
+                    output.FillPolygon(new SolidBrush(Color.White), BuildActionTriangle(combinedRect));
                 }
                 else
                 {
-                    output.DrawPolygon(new Pen(Color.White, rect.Width * 0.1f), triangle);
+                    output.DrawPolygon(new Pen(Color.White, rect.Width * 0.1f), BuildActionTriangle(combinedRect.Scale(0.75f)));
                 }
             }
             else if (connector.DataType?.IsKey == true)
@@ -299,7 +296,7 @@ public static class ImGraphExtensions
                 if (connector.DataType.IsArray)
                 {
                     var outerDiamond = BuildKeyDiamond(rect.Scale(0.7f));
-                    var innerDiamond = BuildKeyDiamond(rect.Scale(0.35f));
+                    var innerDiamond = BuildKeyDiamond(isLinked ? rect.Scale(0.45f) : rect.Scale(0.35f));
                     var penWidth = rect.Width * 0.1f;
 
                     if (isLinked)
@@ -315,7 +312,8 @@ public static class ImGraphExtensions
                 }
                 else
                 {
-                    var diamond = BuildKeyDiamond(combinedRect);
+                    var diamondRect = isLinked ? combinedRect.Scale(1.1f) : combinedRect;
+                    var diamond = BuildKeyDiamond(diamondRect);
 
                     if (isLinked)
                     {
@@ -363,13 +361,11 @@ public static class ImGraphExtensions
 
             if (connector?.ConnectorType == ConnectorType.Action)
             {
-                var triangle = BuildActionTriangle(borderRect);
-                output.DrawPolygon(new Pen(borderColor, border), triangle);
+                output.DrawPolygon(new Pen(borderColor, border), BuildActionTriangle(borderRect));
             }
             else if (connector?.DataType?.IsKey == true)
             {
-                var outerDiamond = BuildKeyDiamond(borderRect);
-                output.DrawPolygon(new Pen(borderColor, border), outerDiamond);
+                output.DrawPolygon(new Pen(borderColor, border), BuildKeyDiamond(borderRect));
 
                 if (connector.DataType.IsArray)
                 {

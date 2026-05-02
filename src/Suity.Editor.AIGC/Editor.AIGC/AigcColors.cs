@@ -60,7 +60,7 @@ public class AigcColors
     /// <summary>
     /// Hex color value for LLM (Large Language Model) elements.
     /// </summary>
-    public const string LLm = "#3584C9";
+    public const string LLm = "#135375"; // "#3584C9";
 
     /// <summary>
     /// Hex color value for workflow elements.
