@@ -1,12 +1,10 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Platform;
 using Avalonia.Rendering.Composition;
 using Avalonia.Skia;
 using SkiaSharp;
 using Suity.Helpers;
-using System.Diagnostics;
 using System.Numerics;
 
 namespace Suity.Controls;

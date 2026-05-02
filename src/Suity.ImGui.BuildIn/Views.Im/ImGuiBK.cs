@@ -449,83 +449,77 @@ internal class ImGuiBK : ImGui, IFloatTime
 
     public override void HandleGraphicInput(IGraphicInput input, Action<ImGui> onGui)
     {
-        lock (_processLock)
+        if (_isInputProcessing)
         {
-            if (_isInputProcessing)
+            //throw new InvalidOperationException("ImGui is running.");
+            //Debug.WriteLine("Skip event:" + input.EventType);
+            return;
+        }
+
+        HandleQueuedAction();
+
+        IGraphicInput? current = _tempInput;
+
+        try
+        {
+            _isInputProcessing = true;
+            _tempInput = input;
+
+            HandleGuiInput(input, onGui);
+
+            _statistic.InputFrame++;
+        }
+        finally
+        {
+            _tempInput = current;
+            _isInputProcessing = false;
+
+            if (_queuedRefresh)
             {
-                //throw new InvalidOperationException("ImGui is running.");
-                //Debug.WriteLine("Skip event:" + input.EventType);
-                return;
+                _queuedRefresh = false;
+                _context.RequestRefreshInput(false);
             }
-
-            HandleQueuedAction();
-
-            IGraphicInput? current = _tempInput;
-
-            try
+            else if (input.EventType == GuiEventTypes.Refresh)
             {
-                _isInputProcessing = true;
-                _tempInput = input;
-
-                HandleGuiInput(input, onGui);
-
-                _statistic.InputFrame++;
-            }
-            finally
-            {
-                _tempInput = current;
-                _isInputProcessing = false;
-
-                if (_queuedRefresh)
+                // If there are no subsequent queued input requests, clear the refreshing node
+                if (_refreshingNode != null)
                 {
-                    _queuedRefresh = false;
-                    _context.RequestRefreshInput(false);
+                    _refreshingNode = null;
                 }
-                else if (input.EventType == GuiEventTypes.Refresh)
-                {
-                    // If there are no subsequent queued input requests, clear the refreshing node
-                    if (_refreshingNode != null)
-                    {
-                        _refreshingNode = null;
-                    }
 
-                    _refreshCallerInfo = default;
-                }
+                _refreshCallerInfo = default;
             }
         }
     }
 
     public override void HandleGraphicOutput(IGraphicOutput output)
     {
-        lock (_processLock)
+        if (_isOutputProcessing)
         {
-            if (_isOutputProcessing)
+            //throw new InvalidOperationException("ImGui is running.");
+            return;
+        }
+
+        try
+        {
+            _isOutputProcessing = true;
+
+            if (_context.RepaintAll)
             {
-                //throw new InvalidOperationException("ImGui is running.");
-                return;
+                RenderFull(output);
+            }
+            else
+            {
+                RenderPartial(output);
             }
 
-            try
-            {
-                _isOutputProcessing = true;
-
-                if (_context.RepaintAll)
-                {
-                    RenderFull(output);
-                }
-                else
-                {
-                    RenderPartial(output);
-                }
-
-                _dirtyRects.Clear();
-                _theme.ClearDirty();
-                _statistic.OutputFrame++;
-            }
-            finally
-            {
-                _isOutputProcessing = false;
-            }
+            _dirtyRects.Clear();
+            _theme.ClearDirty();
+            _statistic.OutputFrame++;
+        }
+        finally
+        {
+            _isOutputProcessing = false;
         }
     }
 

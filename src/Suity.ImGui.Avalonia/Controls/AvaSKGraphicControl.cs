@@ -15,9 +15,9 @@ namespace Suity.Controls;
 /// <summary>
 /// Avalonia control that provides a double-buffered SkiaSharp rendering surface with full input handling.
 /// </summary>
-public class AvaSKGraphicControl : AvaSKCompositionControl
+public class AvaSKGraphicControl : AvaSKBitmapControl
 {
-    private readonly AvaGraphicDoubleBufferContext _context;
+    private readonly AvaGraphicBitmapBufferContext _context;
 
     bool _loaded;
 
@@ -104,6 +104,12 @@ public class AvaSKGraphicControl : AvaSKCompositionControl
         _context.Paint(context, canvas, bounds);
 
         //TestSkDraw(context, canvas);
+    }
+
+    public override void Render(DrawingContext context)
+    {
+        var rect = this.Bounds;
+        _context.Paint(context, rect);
     }
 
     /// <inheritdoc/>

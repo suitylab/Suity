@@ -58,7 +58,7 @@ internal abstract class AvaGraphicBaseContext :
     private bool _mouseIn;
 
     private PointerPressedEventArgs _lastPointerPressed;
-    private EmptyFrameOperations _emptyFrameOperations = EmptyFrameOperations.RepaintAll;
+    private EmptyFrameOperations _emptyFrameOperations = EmptyFrameOperations.Bypass;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AvaGraphicBaseContext"/> class.
