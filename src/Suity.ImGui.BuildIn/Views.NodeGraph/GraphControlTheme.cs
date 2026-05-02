@@ -138,6 +138,7 @@ public class GraphControlTheme
     /// Gets or sets the brush for link arrows.
     /// </summary>
     public SolidBrush LinkArrow { get; set; }
+
     /// <summary>
     /// Gets or sets the brush for error link arrows.
     /// </summary>
@@ -148,64 +149,88 @@ public class GraphControlTheme
     /// Gets or sets the pen for node outlines.
     /// </summary>
     public Pen NodeOutline { get; set; }
+
     /// <summary>
     /// Gets or sets the pen for selected node outlines.
     /// </summary>
     public Pen NodeOutlineSelected { get; set; }
+
     /// <summary>
     /// Gets or sets the pen for connector outlines.
     /// </summary>
     public Pen ConnectorOutline { get; set; }
+
     /// <summary>
     /// Gets or sets the pen for selected connector outlines.
     /// </summary>
     public Pen ConnectorOutlineSelected { get; set; }
+
     /// <summary>
     /// Gets or sets the pen for selection box outlines.
     /// </summary>
     public Pen SelectionOutline { get; set; }
+
     /// <summary>
     /// Gets or sets the pen for links.
     /// </summary>
     public Pen Link { get; set; }
+
     /// <summary>
     /// Gets or sets the pen for editable links.
     /// </summary>
     public Pen LinkEditable { get; set; }
+
     /// <summary>
     /// Gets or sets the pen for error links.
     /// </summary>
     public Pen LinkError { get; set; }
+
     /// <summary>
     /// Gets or sets the pen for combined connectors.
     /// </summary>
-    public Pen CombinedConnectorPen { get; set; }
+    public Pen ConnectorCombinedPen { get; set; }
+
     /// <summary>
     /// Gets or sets the pen for combined links.
     /// </summary>
-    public Pen CombinedLinkPen { get; set; }
+    public Pen LinkCombinedPen { get; set; }
+
+    /// <summary>
+    /// Gets or sets the pen for selected links.
+    /// </summary>
+    public Pen LinkSelectedPen { get; set; }
+
+    /// <summary>
+    /// Gets or sets the pen for selected combined links.
+    /// </summary>
+    public Pen LinkSelectedCombinedPen { get; set; }
 
     // Fonts
     /// <summary>
     /// Gets or sets the font for node titles.
     /// </summary>
     public Font NodeTitleFont { get; set; }
+
     /// <summary>
     /// Gets or sets the font for node preview text.
     /// </summary>
     public Font NodePreviewFont { get; set; }
+
     /// <summary>
     /// Gets or sets the font for connector labels.
     /// </summary>
     public Font NodeConnectorFont { get; set; }
+
     /// <summary>
     /// Gets or sets the scaled font for node titles.
     /// </summary>
     public Font NodeScaledTitleFont { get; set; }
+
     /// <summary>
     /// Gets or sets the scaled font for node preview text.
     /// </summary>
     public Font NodeScaledPreviewFont { get; set; }
+
     /// <summary>
     /// Gets or sets the scaled font for connector labels.
     /// </summary>
@@ -216,7 +241,7 @@ public class GraphControlTheme
     /// </summary>
     public GraphControlTheme()
     {
-        InitializeBrushesAndPens();
+        UpdateBrushesAndPens();
     }
 
     /// <summary>
@@ -244,7 +269,10 @@ public class GraphControlTheme
         NodeScaledConnectorFont = new Font(NodeConnectorFont.Name, NodeConnectorFont.Size * zoom);
     }
 
-    private void InitializeBrushesAndPens()
+    /// <summary>
+    /// Updates the brushes and pens based on the current theme colors.
+    /// </summary>
+    public void UpdateBrushesAndPens()
     {
         NodeText = new SolidBrush(NodeTextColor);
         NodeTextShadow = new SolidBrush(NodeTextShadowColor);
@@ -269,8 +297,11 @@ public class GraphControlTheme
         Link = new Pen(LinkColor, 3f);
         LinkEditable = new Pen(LinkEditableColor, 3f);
         LinkError = new Pen(NodeSignalInvalidColor, 3);
-        CombinedConnectorPen = new Pen(Color.White, 2);
-        CombinedLinkPen = new Pen(Color.White, 5);
+        ConnectorCombinedPen = new Pen(Color.White, 2);
+        LinkCombinedPen = new Pen(Color.White, 5);
+
+        LinkSelectedPen = new Pen(NodeOutlineSelectedColor, 5);
+        LinkSelectedCombinedPen = new Pen(NodeOutlineSelectedColor, 7);
     }
 
     public void UpdateNodeTextColor(Color color)

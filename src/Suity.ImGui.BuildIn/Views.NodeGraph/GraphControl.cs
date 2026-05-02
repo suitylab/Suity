@@ -60,7 +60,6 @@ public class GraphControl : IGraphicObject
     public event EventHandler? GroupCreateRequesting;
     public event GraphSelectionEventHandler? SelectionChanging;
     public event GraphSelectionEventHandler? SelectionChanged;
-    public event GraphSelectionEventHandler? SelectionCleared;
     public event GraphSelectionEventHandler? SelectionDeleting;
     public event GraphSelectionEventHandler? SelectionDeleted;
     public event GraphNodeMoveEventHandler? SelectionMoved;
@@ -92,8 +91,7 @@ public class GraphControl : IGraphicObject
         if (Drawer.ParentControl != this) throw new InvalidOperationException("Drawer's parent control is not set to this instance.");
 
         InputManager.SelectionChanging += (s, e) => SelectionChanging?.Invoke(this, e);
-        InputManager.SelectionChanged += (s, e) => OnSelectionChanged(e.NewSelectionCount);
-        InputManager.SelectionCleared += (s, e) => SelectionCleared?.Invoke(this, e);
+        InputManager.SelectionChanged += (s, e) => SelectionChanged?.Invoke(this, e);
         InputManager.SelectionDeleting += (s, e) => SelectionDeleting?.Invoke(this, e);
         InputManager.SelectionDeleted += (s, e) => SelectionDeleted?.Invoke(this, e);
         InputManager.SelectionMoved += (s, e) => SelectionMoved?.Invoke(this, e);
@@ -165,39 +163,17 @@ public class GraphControl : IGraphicObject
     #region Selection
 
     /// <summary>
-    /// Creates the current selection based on highlighted nodes.
-    /// </summary>
-    public void CreateSelection()
-    {
-        SelectionChanging?.Invoke(this, new GraphSelectionEventArgs(Diagram.SelectedItems.Count));
-
-        Diagram.SelectedItems.Clear();
-        int i = 0;
-        foreach (GraphNode n in Diagram.NodeCollection)
-        {
-            if (n.Highlighted)
-            {
-                i++;
-                Diagram.SelectedItems.Add(n);
-            }
-        }
-
-        Diagram.SelectionBringToFront();
-        OnSelectionChanged(i);
-    }
-
-    /// <summary>
     /// Deletes all currently selected nodes.
     /// </summary>
     /// <returns>The number of nodes deleted.</returns>
     public int DeleteSelected()
     {
-        int count = Diagram.SelectedItems.Count(o => o.CanBeSelected);
+        int count = Diagram.SelectedNodes.Count(o => o.CanBeSelected);
         if (count == 0) return 0;
 
-        SelectionDeleting?.Invoke(this, new GraphSelectionEventArgs(0));
+        SelectionDeleting?.Invoke(this, new GraphSelectionEventArgs());
 
-        foreach (GraphNode n in Diagram.SelectedItems)
+        foreach (GraphNode n in Diagram.SelectedNodes)
         {
             if (!n.CanBeDeleted) continue;
 
@@ -214,8 +190,8 @@ public class GraphControl : IGraphicObject
             count++;
         }
 
-        SelectionDeleted?.Invoke(this, new GraphSelectionEventArgs(0));
-        Diagram.SelectedItems.Clear();
+        SelectionDeleted?.Invoke(this, new GraphSelectionEventArgs());
+        Diagram.SelectedNodes.Clear();
         RefreshView();
 
         return count;
@@ -225,7 +201,7 @@ public class GraphControl : IGraphicObject
     /// Sets the selection to the specified nodes.
     /// </summary>
     /// <param name="nodes">The nodes to select.</param>
-    public void SetSelection(IEnumerable<GraphNode> nodes)
+    public void SetNodeSelection(IEnumerable<GraphNode> nodes)
     {
         foreach (GraphNode n in Diagram.NodeCollection)
         {
@@ -233,19 +209,47 @@ public class GraphControl : IGraphicObject
         }
 
         int i = 0;
-        Diagram.SelectedItems.Clear();
+        Diagram.SelectedNodes.Clear();
         foreach (GraphNode node in nodes)
         {
             if (Diagram.NodeCollection.Contains(node))
             {
                 node.Highlighted = true;
-                Diagram.SelectedItems.AddRange(nodes);
+                Diagram.SelectedNodes.AddRange(nodes);
                 i++;
             }
         }
 
         Diagram.SelectionBringToFront();
-        OnSelectionChanged(i);
+        OnSelectionChanged(i, 0);
+        RefreshView();
+    }
+
+    /// <summary>
+    /// Sets the selection to the specified links.
+    /// </summary>
+    /// <param name="links">The links to select.</param>
+    public void SetLinkSelection(IEnumerable<GraphLink> links)
+    {
+        foreach (GraphLink link in Diagram.Links)
+        {
+            link.Highlighted = false;
+        }
+
+        int i = 0;
+        Diagram.SelectedLinks.Clear();
+        foreach (GraphLink link in links)
+        {
+            if (Diagram.Links.Contains(link))
+            {
+                link.Highlighted = true;
+                Diagram.SelectedLinks.Add(link);
+                i++;
+            }
+        }
+
+        Diagram.SelectionBringToFront();
+        OnSelectionChanged(0, i);
         RefreshView();
     }
 
@@ -426,16 +430,9 @@ public class GraphControl : IGraphicObject
     /// Called when the selection changes. Override to customize.
     /// </summary>
     /// <param name="count">The number of selected nodes.</param>
-    protected virtual void OnSelectionChanged(int count)
+    protected virtual void OnSelectionChanged(int nodeCount, int linkCount)
     {
-        if (count > 0)
-        {
-            SelectionChanged?.Invoke(this, new GraphSelectionEventArgs(count));
-        }
-        else
-        {
-            SelectionCleared?.Invoke(this, new GraphSelectionEventArgs(0));
-        }
+        SelectionChanged?.Invoke(this, new GraphSelectionEventArgs(nodeCount, linkCount));
     }
 
     /// <summary>

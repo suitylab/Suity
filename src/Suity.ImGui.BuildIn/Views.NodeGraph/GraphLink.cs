@@ -37,6 +37,11 @@ public class GraphLink
     public bool IsConverted { get; set; }
 
     /// <summary>
+    /// Whether the link is highlighted
+    /// </summary>
+    public bool Highlighted { get; set; }
+
+    /// <summary>
     /// Creates a new Link, given input and output Connectors
     /// </summary>
     /// <param name="input"></param>

@@ -122,17 +122,34 @@ public delegate void GraphSelectionEventHandler(object sender, GraphSelectionEve
 public class GraphSelectionEventArgs : EventArgs
 {
     /// <summary>
-    /// The number of items in the new selection.
+    /// The number of nodes in the new selection.
     /// </summary>
-    public int NewSelectionCount;
+    public int NodeCount { get; }
+
+    /// <summary>
+    /// The number of links in the new selection.
+    /// </summary>
+    public int LinkCount { get; }
+
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GraphSelectionEventArgs"/> class.
     /// </summary>
-    /// <param name="count">The number of selected items.</param>
-    public GraphSelectionEventArgs(int count)
+    public GraphSelectionEventArgs()
     {
-        this.NewSelectionCount = count;
+        NodeCount = 0;
+        LinkCount = 0;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GraphSelectionEventArgs"/> class.
+    /// </summary>
+    /// <param name="nodeCount">The number of selected nodes.</param>
+    /// <param name="linkCount">The number of selected links.</param>
+    public GraphSelectionEventArgs(int nodeCount, int linkCount)
+    {
+        this.NodeCount = nodeCount;
+        this.LinkCount = linkCount;
     }
 }
 

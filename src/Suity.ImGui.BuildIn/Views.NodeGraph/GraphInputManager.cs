@@ -98,10 +98,6 @@ public class GraphInputManager
     /// </summary>
     public event GraphSelectionEventHandler? SelectionChanged;
     /// <summary>
-    /// Occurs when the selection is cleared.
-    /// </summary>
-    public event GraphSelectionEventHandler? SelectionCleared;
-    /// <summary>
     /// Occurs before the selection is deleted.
     /// </summary>
     public event GraphSelectionEventHandler? SelectionDeleting;
@@ -192,9 +188,9 @@ public class GraphInputManager
                 break;
 
             case GuiEventTypes.MouseDoubleClick:
-                if (Diagram.SelectedItems.Count == 1)
+                if (Diagram.SelectedNodes.Count == 1)
                 {
-                    Diagram.SelectedItems[0].HandleDoubleClick();
+                    Diagram.SelectedNodes[0].HandleDoubleClick();
                 }
                 break;
 
@@ -257,17 +253,17 @@ public class GraphInputManager
                             ResizeSide = side;
                             _moveLastPosition = viewport.ControlToView(pos);
 
-                            Diagram.SelectedItems[0].MarkMovingPosition(Snapping);
-                            Diagram.SelectedItems[0].MarkResizingSize(Snapping);
+                            Diagram.SelectedNodes[0].MarkMovingPosition(Snapping);
+                            Diagram.SelectedNodes[0].MarkResizingSize(Snapping);
                         }
-                        else if (!_shiftPressed && Diagram.SelectedItems.Count > 0 && _control.Viewport.HitSelected(pos, out node) == HitType.NodeMoveArea)
+                        else if (!_shiftPressed && Diagram.SelectedNodes.Count > 0 && _control.Viewport.HitSelected(pos, out node) == HitType.NodeMoveArea)
                         {
                             EditMode = GraphEditMode.MovingSelection;
                             _moveLastPosition = viewport.ControlToView(pos);
 
                             _control.SelectionManager.CollectDrivenItems();
 
-                            foreach (GraphNode n in Diagram.SelectedItems.Concat(Diagram.DrivenItems))
+                            foreach (GraphNode n in Diagram.SelectedNodes.Concat(Diagram.DrivenNodes))
                             {
                                 n.MarkMovingPosition(Snapping);
                             }
@@ -276,19 +272,27 @@ public class GraphInputManager
                         {
                             EditMode = GraphEditMode.Selecting;
 
-                            SelectBoxCurrent = viewport.ControlToView(pos);
-                            SelectBoxOrigin = viewport.ControlToView(pos);
-                            _control.SelectionManager.UpdateHighlights(false, _shiftPressed, SelectBoxOrigin, SelectBoxCurrent);
+                            SelectBoxOrigin = SelectBoxCurrent = viewport.ControlToView(pos);
+                            bool linkSelected = _control.SelectionManager.UpdateLinkHighlights(false, _shiftPressed, pos);
+                            if (!linkSelected)
+                            {
+                                _control.SelectionManager.UpdateNodeHighlights(false, _shiftPressed, SelectBoxOrigin, SelectBoxCurrent);
+                            }
+                            else if (!_shiftPressed)
+                            {
+                                _control.SelectionManager.ClearNodeHighlights();
+                            }
+                            
                             CreateSelection();
 
-                            if (Diagram.SelectedItems.Count > 0 && !_shiftPressed && Diagram.SelectedItems.Any(o => _control.Viewport.HitMovableArea(pos, o)))
+                            if (Diagram.SelectedNodes.Count > 0 && !_shiftPressed && Diagram.SelectedNodes.Any(o => _control.Viewport.HitMovableArea(pos, o)))
                             {
                                 EditMode = GraphEditMode.MovingSelection;
                                 _moveLastPosition = viewport.ControlToView(pos);
 
                                 _control.SelectionManager.CollectDrivenItems();
 
-                                foreach (GraphNode n in Diagram.SelectedItems.Concat(Diagram.DrivenItems))
+                                foreach (GraphNode n in Diagram.SelectedNodes.Concat(Diagram.DrivenNodes))
                                 {
                                     n.MarkMovingPosition(Snapping);
                                 }
@@ -416,7 +420,7 @@ public class GraphInputManager
 
                         draw = false;
 
-                        Diagram.DrivenItems.Clear();
+                        Diagram.DrivenNodes.Clear();
                     }
 
                     EditMode = GraphEditMode.Idle;
@@ -433,11 +437,11 @@ public class GraphInputManager
                 {
                     _control.GraphicContext?.SetCursor(GuiCursorTypes.Default);
 
-                    _control.RefreshNode(Diagram.SelectedItems);
+                    _control.RefreshNode(Diagram.SelectedNodes);
 
-                    if (Diagram.SelectedItems.Count > 0)
+                    if (Diagram.SelectedNodes.Count > 0)
                     {
-                        var node = Diagram.SelectedItems[0];
+                        var node = Diagram.SelectedNodes[0];
 
                         var oldBound = new Rectangle(node._movingPoint, node._resizingSize);
                         var newBound = node.HitRectangle;
@@ -507,7 +511,7 @@ public class GraphInputManager
             case GraphEditMode.Selecting:
                 EditMode = GraphEditMode.SelectingBox;
                 SelectBoxCurrent = viewport.ControlToView(pos);
-                _control.SelectionManager.UpdateHighlights(false, _shiftPressed, SelectBoxOrigin, SelectBoxCurrent);
+                _control.SelectionManager.UpdateNodeHighlights(false, _shiftPressed, SelectBoxOrigin, SelectBoxCurrent);
 
                 _control.RequestOutput();
                 break;
@@ -519,7 +523,7 @@ public class GraphInputManager
                 }
 
                 SelectBoxCurrent = viewport.ControlToView(pos);
-                _control.SelectionManager.UpdateHighlights(true, _shiftPressed, SelectBoxOrigin, SelectBoxCurrent);
+                _control.SelectionManager.UpdateNodeHighlights(true, _shiftPressed, SelectBoxOrigin, SelectBoxCurrent);
 
                 _control.RequestOutput();
                 break;
@@ -583,7 +587,7 @@ public class GraphInputManager
                 }
 
             default:
-                if (Diagram.SelectedItems.Count == 1)
+                if (Diagram.SelectedNodes.Count == 1)
                 {
                     var side = _control.Viewport.HitSide(pos);
                     if (side != LastResizeSide)
@@ -622,7 +626,7 @@ public class GraphInputManager
                 break;
 
             case GraphControl.KEY_ESCAPE:
-                _control.SetSelection([]);
+                _control.SetNodeSelection([]);
                 break;
 
             case GraphControl.KEY_INSERT:
@@ -633,9 +637,9 @@ public class GraphInputManager
             case "F":
                 if (_control.Viewport.IsMouseInside)
                 {
-                    if (Diagram.SelectedItems.Count > 0)
+                    if (Diagram.SelectedNodes.Count > 0)
                     {
-                        var rect = GraphHelper.GetBoundingBox(Diagram.SelectedItems.Select(o => o.HitRectangle));
+                        var rect = GraphHelper.GetBoundingBox(Diagram.SelectedNodes.Select(o => o.HitRectangle));
                         _control.Viewport.FocusToRect(rect);
                     }
                     else
@@ -649,7 +653,7 @@ public class GraphInputManager
                 break;
 
             case "G" when input.GetOnlyControlKey():
-                if (Diagram.SelectedItems.Count > 0)
+                if (Diagram.SelectedNodes.Count > 0)
                 {
                     GroupCreateRequesting?.Invoke(this, EventArgs.Empty);
                     input.Handled = true;
@@ -743,21 +747,32 @@ public class GraphInputManager
 
     private void CreateSelection()
     {
-        SelectionChanging?.Invoke(this, new GraphSelectionEventArgs(Diagram.SelectedItems.Count));
+        SelectionChanging?.Invoke(this, new GraphSelectionEventArgs(Diagram.SelectedNodes.Count, Diagram.SelectedLinks.Count));
 
-        Diagram.SelectedItems.Clear();
-        int i = 0;
-        foreach (GraphNode n in Diagram.NodeCollection)
+        Diagram.SelectedNodes.Clear();
+        int numNodes = 0;
+        foreach (GraphNode node in Diagram.NodeCollection)
         {
-            if (n.Highlighted)
+            if (node.Highlighted)
             {
-                i++;
-                Diagram.SelectedItems.Add(n);
+                numNodes++;
+                Diagram.SelectedNodes.Add(node);
             }
         }
 
+        Diagram.SelectedLinks.Clear();
+        int numLinks = 0;
+        foreach (GraphLink link in Diagram.Links)
+        {
+            if (link.Highlighted)
+            {
+                numLinks++;
+                Diagram.SelectedLinks.Add(link);
+            }
+        }
+        
         Diagram.SelectionBringToFront();
 
-        SelectionChanged?.Invoke(this, new GraphSelectionEventArgs(i));
+        SelectionChanged?.Invoke(this, new GraphSelectionEventArgs(numNodes, numLinks));
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -11,7 +10,7 @@ namespace Suity.Views.NodeGraph;
 public class GraphSelectionManager
 {
     private readonly GraphControl _control;
-    private GraphDiagram View => _control.Diagram;
+    private GraphDiagram Diagram => _control.Diagram;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GraphSelectionManager"/> class.
@@ -34,7 +33,7 @@ public class GraphSelectionManager
     /// <param name="additional">True to preserve existing highlights; otherwise, unhit nodes are unhighlighted.</param>
     /// <param name="selectBoxOrigin">The origin of the selection box in view space.</param>
     /// <param name="selectBoxCurrent">The current corner of the selection box in view space.</param>
-    public void UpdateHighlights(bool multiple, bool additional, Point selectBoxOrigin, Point selectBoxCurrent)
+    public void UpdateNodeHighlights(bool multiple, bool additional, Point selectBoxOrigin, Point selectBoxCurrent)
     {
         var ViewRectangle = new Rectangle();
         if (selectBoxOrigin.X > selectBoxCurrent.X)
@@ -62,9 +61,9 @@ public class GraphSelectionManager
 
         if (ViewRectangle.Width == 0 && ViewRectangle.Height == 0)
         {
-            for (int i = View.NodeCollection.Count - 1; i >= 0; i--)
+            for (int i = Diagram.NodeCollection.Count - 1; i >= 0; i--)
             {
-                var node = View.NodeCollection[i];
+                var node = Diagram.NodeCollection[i];
                 if (ViewRectangle.IntersectsWith(node.HitRectangle) && node.CanBeSelected && flag)
                 {
                     node.Highlighted = true;
@@ -81,9 +80,9 @@ public class GraphSelectionManager
         }
         else
         {
-            for (int i = View.NodeCollection.Count - 1; i >= 0; i--)
+            for (int i = Diagram.NodeCollection.Count - 1; i >= 0; i--)
             {
-                var node = View.NodeCollection[i];
+                var node = Diagram.NodeCollection[i];
                 if (!node.IsGroup && ViewRectangle.IntersectsWith(node.HitRectangle) && node.CanBeSelected && flag)
                 {
                     node.Highlighted = true;
@@ -109,6 +108,86 @@ public class GraphSelectionManager
     }
 
     /// <summary>
+    /// Updates the highlighted state of links based on proximity to a given position.
+    /// </summary>
+    /// <param name="multiple">True to allow multiple selections; otherwise, only the first hit is selected.</param>
+    /// <param name="additional">True to preserve existing highlights; otherwise, unhit links are unhighlighted.</param>
+    /// <param name="position">The cursor position in view space to test against link paths.</param>
+    /// <returns>True if a new link was selected; otherwise, false.</returns>
+    public bool UpdateLinkHighlights(bool multiple, bool additional, Point position)
+    {
+        PointF startPos, endPos;
+        RectangleF screenRect = ParentControl.Viewport.GlobalViewRect;
+
+        var drawer = ParentControl.Drawer;
+
+        bool flag = true;
+        bool selected = false;
+
+        foreach (GraphLink link in Diagram.Links.Where(o => o.ConnectorType != ConnectorType.Associate))
+        {
+            startPos = link.Input.GetPosition();
+            endPos = link.Output.GetPosition();
+
+            float minX = System.Math.Min(startPos.X, endPos.X);
+            float minY = System.Math.Min(startPos.Y, endPos.Y);
+            var viewRectangle = new RectangleF(minX, minY, System.Math.Abs(endPos.X - startPos.X), System.Math.Abs(endPos.Y - startPos.Y));
+            if (!viewRectangle.IntersectsWith(screenRect))
+            {
+                if (!additional)
+                {
+                    link.Highlighted = false;
+                }
+                continue;
+            }
+
+            LinkShape shape = drawer.CreateLinkShape(startPos, endPos, link.ConnectorType);
+            bool hit = shape.IsPointNearBezierRecursive(position);
+
+            if (hit && flag)
+            {
+                if (!link.Highlighted)
+                {
+                    link.Highlighted = true;
+                    selected = true;
+                }
+                if (!multiple)
+                {
+                    flag = false;
+                }
+            }
+            else if (!additional)
+            {
+                link.Highlighted = false;
+            }
+        }
+
+        return selected;
+    }
+
+    /// <summary>
+    /// Clears the highlighted state of all links in the diagram.
+    /// </summary>
+    public void ClearLinkHighlights()
+    {
+        foreach (GraphLink link in Diagram.Links)
+        {
+            link.Highlighted = false;
+        }
+    }
+
+    /// <summary>
+    /// Clears the highlighted state of all nodes in the diagram.
+    /// </summary>
+    public void ClearNodeHighlights()
+    {
+        foreach (GraphNode node in Diagram.NodeCollection)
+        {
+            node.Highlighted = false;
+        }
+    }
+
+    /// <summary>
     /// Moves the selected nodes by the offset between origin and target.
     /// </summary>
     /// <param name="origin">The starting cursor position in view space.</param>
@@ -119,7 +198,7 @@ public class GraphSelectionManager
         int ox = target.X - origin.X;
         int oy = target.Y - origin.Y;
 
-        foreach (var n in View.SelectedItems.Concat(View.DrivenItems))
+        foreach (var n in Diagram.SelectedNodes.Concat(Diagram.DrivenNodes))
         {
             var p = n._movingPoint;
 
@@ -153,7 +232,7 @@ public class GraphSelectionManager
         int minX = 30;
         int minY = 30;
 
-        foreach (var n in View.SelectedItems)
+        foreach (var n in Diagram.SelectedNodes)
         {
             var p = n._movingPoint;
             var s = n._resizingSize;
@@ -264,24 +343,24 @@ public class GraphSelectionManager
     /// </summary>
     public void CollectDrivenItems()
     {
-        View.DrivenItems.Clear();
+        Diagram.DrivenNodes.Clear();
 
-        foreach (var item in View.SelectedItems.Where(o => o.IsGroup))
+        foreach (var item in Diagram.SelectedNodes.Where(o => o.IsGroup))
         {
-            foreach (var test in View.NodeCollection.Where(o => o != item))
+            foreach (var test in Diagram.NodeCollection.Where(o => o != item))
             {
                 if (test.IsGroup)
                 {
                     if (item.HitRectangle.Contains(test.HitRectangle))
                     {
-                        View.DrivenItems.Add(test);
+                        Diagram.DrivenNodes.Add(test);
                     }
                 }
                 else
                 {
                     if (item.HitRectangle.IntersectsWith(test.HitRectangle))
                     {
-                        View.DrivenItems.Add(test);
+                        Diagram.DrivenNodes.Add(test);
                     }
                 }
             }

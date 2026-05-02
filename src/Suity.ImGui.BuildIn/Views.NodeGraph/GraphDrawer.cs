@@ -35,7 +35,7 @@ public class GraphDrawer
 {
     private readonly GraphControl _control;
     private GraphDiagram Diagram => _control.Diagram;
-    private GraphViewport View => _control.Viewport;
+    private GraphViewport Viewport => _control.Viewport;
     private GraphControlTheme Theme => _control.Theme;
     private GraphInputManager InputManager => _control.InputManager;
 
@@ -114,10 +114,10 @@ public class GraphDrawer
 
         if (SmoothBehavior)
         {
-            View.SmoothViewZoom += (View.ViewZoom - View.SmoothViewZoom) * 0.08f;
-            if (System.Math.Abs(View.SmoothViewZoom - View.ViewZoom) < 0.005)
+            Viewport.SmoothViewZoom += (Viewport.ViewZoom - Viewport.SmoothViewZoom) * 0.08f;
+            if (System.Math.Abs(Viewport.SmoothViewZoom - Viewport.ViewZoom) < 0.005)
             {
-                View.SmoothViewZoom = View.ViewZoom;
+                Viewport.SmoothViewZoom = Viewport.ViewZoom;
                 _control.UpdateFontSize();
             }
             else
@@ -127,7 +127,7 @@ public class GraphDrawer
         }
         else
         {
-            View.SmoothViewZoom = View.ViewZoom;
+            Viewport.SmoothViewZoom = Viewport.ViewZoom;
             _control.UpdateFontSize();
         }
 
@@ -169,6 +169,55 @@ public class GraphDrawer
         }
     }
 
+    /// <summary>
+    /// Creates a link shape between two points with a specified connector type.
+    /// </summary>
+    /// <param name="startPos">Start position of the link.</param>
+    /// <param name="endPos">End position of the link.</param>
+    /// <param name="connectorType">Connector type for the link.</param>
+    /// <returns>Returns a new LinkShape object.</returns>
+    public LinkShape CreateLinkShape(PointF startPos, PointF endPos, ConnectorType connectorType)
+    {
+        PointF startPosBezier, endPosBezier;
+
+        float minD = 70 * _control.Viewport.ScaledViewZoom;
+
+        if (connectorType.GetIsNormalConnector())
+        {
+            float d = endPos.X - startPos.X;
+            if (d > 0)
+            {
+                if (d < minD) d = minD;
+            }
+            else
+            {
+                if (d > -minD) d = -minD;
+            }
+
+            float f = endPos.X < startPos.X ? -d : 0;
+            startPosBezier = new PointF(startPos.X + (d / LinkHardness) + f, startPos.Y);
+            endPosBezier = new PointF(endPos.X - (d / LinkHardness) - f, endPos.Y);
+        }
+        else
+        {
+            float d = endPos.Y - startPos.Y;
+            if (d > 0)
+            {
+                if (d < minD) d = minD;
+            }
+            else
+            {
+                if (d > -minD) d = -minD;
+            }
+
+            float f = endPos.Y > startPos.Y ? -d : 0;
+            startPosBezier = new PointF(startPos.X, startPos.Y + (d / LinkHardness) + f);
+            endPosBezier = new PointF(endPos.X, endPos.Y - (d / LinkHardness) - f);
+        }
+
+        return new LinkShape(startPos, endPos, startPosBezier, endPosBezier);
+    }
+
     private void DrawGrid(IGraphicOutput output)
     {
         if (!ShowGrid)
@@ -192,7 +241,7 @@ public class GraphDrawer
 
         var gridPen = new Pen(gridColor);
 
-        var globalRect = View.GlobalViewRect;
+        var globalRect = Viewport.GlobalViewRect;
         int minGridX, maxGridX, minGridY, maxGridY;
         PointF viewTopLeft = viewport.ControlToView(new PointF(globalRect.X, globalRect.Y));
         PointF viewBottomRight = viewport.ControlToView(new PointF(globalRect.X + globalRect.Width, globalRect.Y + globalRect.Height));
@@ -320,10 +369,10 @@ public class GraphDrawer
                 case LinkVisualStyle.Curve:
                     if (InputManager.FromConnector.IsCombined)
                     {
-                        if (Theme.CombinedLinkPen != null)
+                        if (Theme.LinkCombinedPen != null)
                         {
-                            Theme.CombinedLinkPen.Width = 5f * scale;
-                            output.DrawBezier(Theme.CombinedLinkPen, startPos, startPosBezier, endPosBezier, endPos);
+                            Theme.LinkCombinedPen.Width = 5f * scale;
+                            output.DrawBezier(Theme.LinkCombinedPen, startPos, startPosBezier, endPosBezier, endPos);
                         }
                     }
                     output.DrawBezier(InputManager.FromConnector.DataType.LinkPen, startPos, startPosBezier, endPosBezier, endPos);
@@ -355,7 +404,7 @@ public class GraphDrawer
     private void DrawAllAssociateLinks(IGraphicOutput output)
     {
         PointF startPos, endPos;
-        RectangleF screenRect = View.GlobalViewRect;
+        RectangleF screenRect = Viewport.GlobalViewRect;
 
         foreach (GraphLink link in Diagram.Links.Where(o => o.ConnectorType == ConnectorType.Associate))
         {
@@ -377,7 +426,7 @@ public class GraphDrawer
     private void DrawAllLinks(IGraphicOutput output)
     {
         PointF startPos, endPos;
-        RectangleF screenRect = View.GlobalViewRect;
+        RectangleF screenRect = Viewport.GlobalViewRect;
 
         foreach (GraphLink link in Diagram.Links)
         {
@@ -401,48 +450,6 @@ public class GraphDrawer
                     break;
             }
         }
-    }
-
-    private LinkShape CreateLinkShape(PointF startPos, PointF endPos, ConnectorType connectorType)
-    {
-        PointF startPosBezier, endPosBezier;
-
-        float minD = 70 * _control.Viewport.ScaledViewZoom;
-
-        if (connectorType.GetIsNormalConnector())
-        {
-            float d = endPos.X - startPos.X;
-            if (d > 0)
-            {
-                if (d < minD) d = minD;
-            }
-            else
-            {
-                if (d > -minD) d = -minD;
-            }
-
-            float f = endPos.X < startPos.X ? -d : 0;
-            startPosBezier = new PointF(startPos.X + (d / LinkHardness) + f, startPos.Y);
-            endPosBezier = new PointF(endPos.X - (d / LinkHardness) - f, endPos.Y);
-        }
-        else
-        {
-            float d = endPos.Y - startPos.Y;
-            if (d > 0)
-            {
-                if (d < minD) d = minD;
-            }
-            else
-            {
-                if (d > -minD) d = -minD;
-            }
-
-            float f = endPos.Y > startPos.Y ? -d : 0;
-            startPosBezier = new PointF(startPos.X, startPos.Y + (d / LinkHardness) + f);
-            endPosBezier = new PointF(endPos.X, endPos.Y - (d / LinkHardness) - f);
-        }
-
-        return new LinkShape(startPos, endPos, startPosBezier, endPosBezier);
     }
 
     private void DrawLink(IGraphicOutput output, PointF startPos, PointF endPos, GraphLink link, ConnectorType connectorType)
@@ -476,15 +483,27 @@ public class GraphDrawer
             case LinkVisualStyle.Curve:
                 if (link.Input.IsCombined)
                 {
+                    if (link.Highlighted)
+                    {
+                        Theme.LinkSelectedCombinedPen.Width = 7f * scale;
+                        output.DrawBezier(Theme.LinkSelectedCombinedPen, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos);
+                    }
+
                     var colorInput = link.Input.DataType.LinkPen.Color;
                     var colorOutput = link.Output.DataType.LinkPen.Color;
                     output.DrawBezier(colorInput, colorOutput, 5f * scale, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos, dashStyle);
 
-                    Theme.CombinedLinkPen.Width = 2f * scale;
-                    output.DrawBezier(Theme.CombinedLinkPen, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos);
+                    Theme.LinkCombinedPen.Width = 2f * scale;
+                    output.DrawBezier(Theme.LinkCombinedPen, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos);
                 }
                 else
                 {
+                    if (link.Highlighted)
+                    {
+                        Theme.LinkSelectedPen.Width = 5f * scale;
+                        output.DrawBezier(Theme.LinkSelectedPen, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos);
+                    }
+
                     var colorInput = link.Input.DataType.LinkPen.Color;
                     var colorOutput = link.Output.DataType.LinkPen.Color;
                     output.DrawBezier(colorInput, colorOutput, 3f * scale, shape.StartPos, shape.StartPosBezier, shape.EndPosBezier, shape.EndPos, dashStyle);
@@ -542,9 +561,9 @@ public class GraphDrawer
 
         var debugFont = new Font(System.Drawing.FontFamily.GenericSansSerif, 8.0f);
         output.DrawString("Edit Mode:" + InputManager.EditMode.ToString(), debugFont, Theme.NodeText, new PointF(0.0f, 0.0f));
-        output.DrawString("ViewX: " + View.ViewX.ToString(), debugFont, Theme.NodeText, new PointF(0.0f, 10.0f));
-        output.DrawString("ViewY: " + View.ViewY.ToString(), debugFont, Theme.NodeText, new PointF(0.0f, 20.0f));
-        output.DrawString("ViewZoom: " + View.ViewZoom.ToString(), debugFont, Theme.NodeText, new PointF(0.0f, 30.0f));
+        output.DrawString("ViewX: " + Viewport.ViewX.ToString(), debugFont, Theme.NodeText, new PointF(0.0f, 10.0f));
+        output.DrawString("ViewY: " + Viewport.ViewY.ToString(), debugFont, Theme.NodeText, new PointF(0.0f, 20.0f));
+        output.DrawString("ViewZoom: " + Viewport.ViewZoom.ToString(), debugFont, Theme.NodeText, new PointF(0.0f, 30.0f));
 
         output.DrawString("ViewSpace Cursor Location:" + InputManager.ViewSpaceCursorLocation.X.ToString() + " : " + InputManager.ViewSpaceCursorLocation.Y.ToString(), debugFont, Theme.NodeText, new PointF(0.0f, 50.0f));
 

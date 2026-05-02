@@ -581,7 +581,7 @@ public class ImExpandableNode : ImGraphNode, IDrawContext
 
         var rect = node.GlobalRect;
         var panel = Diagram.ParentControl;
-        var selectedItems = panel.Diagram.SelectedItems;
+        var selectedItems = panel.Diagram.SelectedNodes;
         var onlySelectedMe = selectedItems.Count == 1 && selectedItems[0] == this; // Whether the current item is the only selected one
         bool optimizing;
 

@@ -21,13 +21,22 @@ internal class NodeSmartSelectionAction : UndoRedoAction
     readonly GraphControl _panel;
 
     /// <summary>
-    /// The selection state before the action.
+    /// The node selection state before the action.
     /// </summary>
-    readonly GraphNode[] _selectionBefore;
+    readonly GraphNode[] _nodeSelectionBefore;
     /// <summary>
-    /// The selection state after the action.
+    /// The node selection state after the action.
     /// </summary>
-    GraphNode[] _selectionAfter;
+    GraphNode[] _nodeSelectionAfter;
+
+    /// <summary>
+    /// The link selection state before the action.
+    /// </summary>
+    readonly GraphLink[] _linkSelectionBefore;
+    /// <summary>
+    /// The link selection state after the action.
+    /// </summary>
+    GraphLink[] _linkSelectionAfter;
 
     /// <summary>
     /// Initializes a new instance of <see cref="NodeSmartSelectionAction"/> capturing the current selection.
@@ -37,31 +46,38 @@ internal class NodeSmartSelectionAction : UndoRedoAction
     {
         _view = view ?? throw new ArgumentNullException(nameof(view));
         _panel = _view.UIObject as GraphControl;
-        _selectionBefore = [.. _panel.Diagram.SelectedItems];
+        _nodeSelectionBefore = [.. _panel.Diagram.SelectedNodes];
+        _linkSelectionBefore = [.. _panel.Diagram.SelectedLinks];
     }
     /// <summary>
     /// Initializes a new instance of <see cref="NodeSmartSelectionAction"/> with a known previous selection.
     /// </summary>
     /// <param name="view">The flow view.</param>
-    /// <param name="selectionBefore">The selection state before the change.</param>
-    public NodeSmartSelectionAction(IFlowView view, IEnumerable<GraphNode> selectionBefore)
+    /// <param name="nodeSelectionBefore">The node selection state before the change.</param>
+    /// <param name="linkSelectionBefore">The link selection state before the change.</param>
+    public NodeSmartSelectionAction(IFlowView view, IEnumerable<GraphNode> nodeSelectionBefore, IEnumerable<GraphLink>? linkSelectionBefore = null)
     {
         _view = view ?? throw new ArgumentNullException(nameof(view));
         _panel = _view.UIObject as GraphControl;
-        _selectionBefore = [.. selectionBefore];
+        _nodeSelectionBefore = [.. nodeSelectionBefore];
+        _linkSelectionBefore = linkSelectionBefore != null ? [.. linkSelectionBefore] : [];
     }
     /// <summary>
     /// Initializes a new instance of <see cref="NodeSmartSelectionAction"/> with known before and after selections.
     /// </summary>
     /// <param name="view">The flow view.</param>
-    /// <param name="selectionBefore">The selection state before the change.</param>
-    /// <param name="selectionAfter">The selection state after the change.</param>
-    public NodeSmartSelectionAction(IFlowView view, IEnumerable<GraphNode> selectionBefore, IEnumerable<GraphNode> selectionAfter)
+    /// <param name="nodeSelectionBefore">The node selection state before the change.</param>
+    /// <param name="nodeSelectionAfter">The node selection state after the change.</param>
+    /// <param name="linkSelectionBefore">The link selection state before the change.</param>
+    /// <param name="linkSelectionAfter">The link selection state after the change.</param>
+    public NodeSmartSelectionAction(IFlowView view, IEnumerable<GraphNode> nodeSelectionBefore, IEnumerable<GraphNode> nodeSelectionAfter, IEnumerable<GraphLink>? linkSelectionBefore = null, IEnumerable<GraphLink>? linkSelectionAfter = null)
     {
         _view = view ?? throw new ArgumentNullException(nameof(view));
         _panel = _view.UIObject as GraphControl;
-        _selectionBefore = [.. selectionBefore];
-        _selectionAfter = [.. selectionAfter];
+        _nodeSelectionBefore = [.. nodeSelectionBefore];
+        _nodeSelectionAfter = [.. nodeSelectionAfter];
+        _linkSelectionBefore = linkSelectionBefore != null ? [.. linkSelectionBefore] : [];
+        _linkSelectionAfter = linkSelectionAfter != null ? [.. linkSelectionAfter] : [];
     }
 
     /// <summary>
@@ -77,9 +93,14 @@ internal class NodeSmartSelectionAction : UndoRedoAction
     /// <inheritdoc/>
     public override void Do()
     {
-        if (_selectionAfter != null)
+        if (_nodeSelectionAfter != null)
         {
-            _panel?.SetSelection(_selectionAfter);
+            _panel?.SetNodeSelection(_nodeSelectionAfter);
+        }
+
+        if (_linkSelectionAfter != null)
+        {
+            _panel?.SetLinkSelection(_linkSelectionAfter);
         }
 
         _view.InspectSelection();
@@ -88,9 +109,11 @@ internal class NodeSmartSelectionAction : UndoRedoAction
     /// <inheritdoc/>
     public override void Undo()
     {
-        _selectionAfter ??= [.. _panel.Diagram.SelectedItems];
+        _nodeSelectionAfter ??= [.. _panel.Diagram.SelectedNodes];
+        _linkSelectionAfter ??= [.. _panel.Diagram.SelectedLinks];
 
-        _panel?.SetSelection(_selectionBefore);
+        _panel?.SetNodeSelection(_nodeSelectionBefore);
+        _panel?.SetLinkSelection(_linkSelectionBefore);
         _view.InspectSelection();
     }
 }

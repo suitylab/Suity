@@ -9,12 +9,19 @@ namespace Suity.Views.NodeGraph;
 /// </summary>
 public class GraphDiagram
 {
-    private readonly LayeredGraphNodeCollection _nodeCollection = [];
-    private readonly List<GraphNode> _selectedItems = [];
-    private readonly List<GraphNode> _drivenItems = [];
-    private readonly GraphLinkCollection _links = [];
-
     private GraphControl _control;
+
+    private readonly LayeredGraphNodeCollection _nodeCollection = [];
+    private readonly List<GraphNode> _selectedNodes = [];
+    private readonly List<GraphNode> _drivenNodes = [];
+    private readonly GraphLinkCollection _links = [];
+    private readonly List<GraphLink> _selectedLinks = [];
+
+    /// <summary>
+    /// The control that contains this diagram
+    /// </summary>
+    public GraphControl ParentControl => _control;
+
 
     /// <summary>
     /// The node Collection contained in this diagram
@@ -24,22 +31,22 @@ public class GraphDiagram
     /// <summary>
     /// The collection of currently Selected nodes in this diagram
     /// </summary>
-    public List<GraphNode> SelectedItems => _selectedItems;
+    public List<GraphNode> SelectedNodes => _selectedNodes;
 
     /// <summary>
-    /// Gets the collection of driven items (nodes inside groups that move with the group).
+    /// Gets the collection of driven nodes (nodes inside groups that move with the group).
     /// </summary>
-    public List<GraphNode> DrivenItems => _drivenItems;
+    public List<GraphNode> DrivenNodes => _drivenNodes;
 
     /// <summary>
-    /// The collection of Links created in this view
+    /// The collection of Links created in this diagram
     /// </summary>
     public GraphLinkCollection Links => _links;
 
     /// <summary>
-    /// The control that contains this view
+    /// The collection of currently selected links in this diagram
     /// </summary>
-    public GraphControl ParentControl => _control;
+    public List<GraphLink > SelectedLinks => _selectedLinks;
 
     /// <summary>
     /// The list of Known Data Types
@@ -67,28 +74,33 @@ public class GraphDiagram
     }
 
     /// <summary>
-    /// Returns the Node Index of the GraphNode in this view's current selection
+    /// Returns the Node Index of the GraphNode in this diagram's current selection
     /// </summary>
     /// <param name="node"></param>
     /// <returns></returns>
     public int GetSelectionNodeIndex(GraphNode node)
     {
-        for (int i = 0; i < _selectedItems.Count; i++)
+        for (int i = 0; i < _selectedNodes.Count; i++)
         {
-            if (_selectedItems[i] == node) return i;
+            if (_selectedNodes[i] == node) return i;
         }
 
         return -1;
     }
 
     /// <summary>
-    /// Bring selection nodes to front
+    /// Bring selection nodes and links to front
     /// </summary>
     public void SelectionBringToFront()
     {
-        if (_selectedItems.Count > 0)
+        if (_selectedNodes.Count > 0)
         {
-            _nodeCollection.BringToFront(_selectedItems);
+            _nodeCollection.BringToFront(_selectedNodes);
+        }
+
+        if (_selectedLinks.Count > 0)
+        {
+            _links.BringToFront(_selectedLinks);
         }
     }
 
@@ -101,8 +113,8 @@ public class GraphDiagram
         if (node is null) return;
 
         _nodeCollection.Remove(node);
-        _selectedItems.Remove(node);
-        _drivenItems.Remove(node);
+        _selectedNodes.Remove(node);
+        _drivenNodes.Remove(node);
     }
 
     /// <summary>
@@ -111,8 +123,8 @@ public class GraphDiagram
     public void Clear()
     {
         _nodeCollection.Clear();
-        _selectedItems.Clear();
-        _drivenItems.Clear();
+        _selectedNodes.Clear();
+        _drivenNodes.Clear();
         _links.Clear();
     }
 }

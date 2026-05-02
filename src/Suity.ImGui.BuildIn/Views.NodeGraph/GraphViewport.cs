@@ -149,7 +149,7 @@ public class GraphViewport
     {
         var HitTest = ControlToView(cursorLocation);
 
-        foreach (var n in _control.Diagram.SelectedItems)
+        foreach (var n in _control.Diagram.SelectedNodes)
         {
             if (n.HitRectangle.Contains(HitTest))
             {
@@ -222,12 +222,12 @@ public class GraphViewport
     /// <returns>The resize side that is being hovered.</returns>
     public GraphResizeSide HitSide(Point cursorLocation)
     {
-        if (_control.Diagram.SelectedItems.Count != 1)
+        if (_control.Diagram.SelectedNodes.Count != 1)
         {
             return GraphResizeSide.Outside;
         }
 
-        var item = _control.Diagram.SelectedItems[0];
+        var item = _control.Diagram.SelectedNodes[0];
         if (!item.Resizable)
         {
             return GraphResizeSide.Outside;
@@ -270,8 +270,8 @@ public class GraphViewport
     {
         var diagram = _control.Diagram;
 
-        int avgX = (int)diagram.SelectedItems.Average(o => o._x + o.Width * 0.5f);
-        int avgY = (int)diagram.SelectedItems.Average(o => o._y + o.Height * 0.5f);
+        int avgX = (int)diagram.SelectedNodes.Average(o => o._x + o.Width * 0.5f);
+        int avgY = (int)diagram.SelectedNodes.Average(o => o._y + o.Height * 0.5f);
 
         ViewX = -avgX;
         ViewY = -avgY;

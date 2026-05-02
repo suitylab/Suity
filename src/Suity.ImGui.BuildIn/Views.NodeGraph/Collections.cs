@@ -455,6 +455,21 @@ public class GraphLinkCollection : IEnumerable<GraphLink>
         _linkDic.Clear();
     }
 
+    /// <summary>
+    /// Moves the specified links to the end of the collection (front in z-order).
+    /// </summary>
+    /// <param name="links">The links to bring to front.</param>
+    public void BringToFront(IEnumerable<GraphLink> links)
+    {
+        foreach (var link in links)
+        {
+            if (_links.Remove(link))
+            {
+                _links.Add(link);
+            }
+        }
+    }
+
     public IEnumerator<GraphLink> GetEnumerator() => ((IEnumerable<GraphLink>)_links).GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_links).GetEnumerator();

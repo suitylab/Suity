@@ -444,11 +444,11 @@ public class ImGuiGraphControl : GraphControl, IDrawContext
 
     /// <inheritdoc/>
     // Resolve setting node order to front after rendering
-    protected override void OnSelectionChanged(int count)
+    protected override void OnSelectionChanged(int nodeCount, int linkCount)
     {
-        base.OnSelectionChanged(count);
+        base.OnSelectionChanged(nodeCount, linkCount);
 
-        if (Diagram.SelectedItems.Count > 0)
+        if (Diagram.SelectedNodes.Count > 0 || Diagram.SelectedLinks.Count > 0)
         {
             //TODO: How to achieve PartialSync to improve rendering efficiency?
 

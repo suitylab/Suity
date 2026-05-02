@@ -49,7 +49,9 @@ public abstract class FlowViewImGui :
     private FlowDocument _document;
 
 
-    private readonly List<GraphNode> _selectionBefore = [];
+    private readonly List<GraphNode> _nodeSelectionBefore = [];
+
+    private readonly List<GraphLink> _linkSelectionBefore = [];
 
     private readonly ComputeDataAction _computeDataAction;
 
@@ -187,11 +189,12 @@ public abstract class FlowViewImGui :
         theme.SelectionFillColor = Color.FromArgb(64, 0, 142, 255);
         theme.SelectionOutlineColor = Color.FromArgb(192, 0, 142, 255);
 
+        theme.UpdateBrushesAndPens();
+
         this._graphPanel.NodeCreateRequesting += GraphPanel_NodeCreateRequesting;
         this._graphPanel.GroupCreateRequesting += GraphPanel_GroupCreateRequesting;
         this._graphPanel.SelectionChanging += GraphPanel_SelectionChanging;
         this._graphPanel.SelectionChanged += GraphPanel_SelectionChanged;
-        this._graphPanel.SelectionCleared += GraphPanel_SelectionCleared;
         this._graphPanel.SelectionDeleting += GraphPanel_SelectionDeleting;
         this._graphPanel.SelectionDeleted += GraphPanel_SelectionDeleted;
         this._graphPanel.SelectionMoved += GraphPanel_SelectionMoved;
@@ -264,7 +267,7 @@ public abstract class FlowViewImGui :
     /// Gets the collection of currently selected flow nodes in the view.
     /// </summary>
     public IEnumerable<FlowNode> SelectedNodes =>
-        this._graphPanel.Diagram.SelectedItems
+        this._graphPanel.Diagram.SelectedNodes
             .OfType<IFlowViewNode>()
             .Select(o => o.Node)
             .SkipNull();
@@ -367,7 +370,7 @@ public abstract class FlowViewImGui :
     public void SetSelection(IEnumerable<FlowNode> nodes)
     {
         var viewNodes = nodes.Select(o => o.GetViewNode(this)).OfType<GraphNode>();
-        this._graphPanel.SetSelection(viewNodes);
+        this._graphPanel.SetNodeSelection(viewNodes);
         InspectSelection();
     }
 
@@ -376,7 +379,7 @@ public abstract class FlowViewImGui :
     /// </summary>
     public void InspectSelection()
     {
-        var nodes = this._graphPanel.Diagram.SelectedItems.OfType<IFlowViewNode>().Select(o => o.Node);
+        var nodes = this._graphPanel.Diagram.SelectedNodes.OfType<IFlowViewNode>().Select(o => o.Node);
 
         if (nodes.Any())
         {
@@ -476,10 +479,10 @@ public abstract class FlowViewImGui :
             return;
         }
 
-        _selectionBefore.Clear();
-        _selectionBefore.AddRange(this._graphPanel.Diagram.SelectedItems);
-        OnFlowDoAction(new NodeSmartSelectionAction(this, _selectionBefore, [viewNode]));
-        _selectionBefore.Clear();
+        _nodeSelectionBefore.Clear();
+        _nodeSelectionBefore.AddRange(this._graphPanel.Diagram.SelectedNodes);
+        OnFlowDoAction(new NodeSmartSelectionAction(this, _nodeSelectionBefore, [viewNode]));
+        _nodeSelectionBefore.Clear();
 
         this._graphPanel.Viewport.FocusSelection();
     }
@@ -489,10 +492,10 @@ public abstract class FlowViewImGui :
     {
         var viewNodes = nodes.Select(o => o?.GetViewNode(this)).OfType<GraphNode>();
 
-        _selectionBefore.Clear();
-        _selectionBefore.AddRange(this._graphPanel.Diagram.SelectedItems);
-        OnFlowDoAction(new NodeSmartSelectionAction(this, _selectionBefore, viewNodes));
-        _selectionBefore.Clear();
+        _nodeSelectionBefore.Clear();
+        _nodeSelectionBefore.AddRange(this._graphPanel.Diagram.SelectedNodes);
+        OnFlowDoAction(new NodeSmartSelectionAction(this, _nodeSelectionBefore, viewNodes));
+        _nodeSelectionBefore.Clear();
 
         this._graphPanel.Viewport.FocusSelection();
     }
@@ -636,7 +639,7 @@ public abstract class FlowViewImGui :
         });
 
         // Update selected nodes.
-        _graphPanel.RefreshNode(_graphPanel.Diagram.SelectedItems);
+        _graphPanel.RefreshNode(_graphPanel.Diagram.SelectedNodes);
     }
 
     /// <inheritdoc/>
@@ -679,7 +682,7 @@ public abstract class FlowViewImGui :
     public void ClipboardCopy()
     {
         // If a single node is selected, expanded, and supports clipboard operations, pass the operation to the node.
-        if (_graphPanel.Diagram.SelectedItems.OnlyOneOfDefault() is ImExpandableNode node
+        if (_graphPanel.Diagram.SelectedNodes.OnlyOneOfDefault() is ImExpandableNode node
             && node.IsMouseInsideExpandedArea
             && node.ExpandedView is IViewClipboard clipboard)
         {
@@ -687,7 +690,7 @@ public abstract class FlowViewImGui :
             return;
         }
 
-        var selected = this._graphPanel.Diagram.SelectedItems
+        var selected = this._graphPanel.Diagram.SelectedNodes
             .OfType<IFlowViewNode>()
             .Where(o => o.CanBeDeleted)
             .Select(o => o.Node?.DiagramItem)
@@ -715,7 +718,7 @@ public abstract class FlowViewImGui :
     public void ClipboardCut()
     {
         // If a single node is selected, expanded, and supports clipboard operations, pass the operation to the node.
-        if (_graphPanel.Diagram.SelectedItems.OnlyOneOfDefault() is ImExpandableNode node
+        if (_graphPanel.Diagram.SelectedNodes.OnlyOneOfDefault() is ImExpandableNode node
             && node.IsMouseInsideExpandedArea
             && node.ExpandedView is IViewClipboard clipboard)
         {
@@ -723,7 +726,7 @@ public abstract class FlowViewImGui :
             return;
         }
 
-        var selected = this._graphPanel.Diagram.SelectedItems.OfType<IFlowViewNode>().Where(o => o.CanBeDeleted);
+        var selected = this._graphPanel.Diagram.SelectedNodes.OfType<IFlowViewNode>().Where(o => o.CanBeDeleted);
         if (!selected.Any())
         {
             return;
@@ -754,7 +757,7 @@ public abstract class FlowViewImGui :
     public void ClipboardPaste()
     {
         // If a single node is selected, expanded, and supports clipboard operations, pass the operation to the node.
-        if (_graphPanel.Diagram.SelectedItems.OnlyOneOfDefault() is ImExpandableNode node
+        if (_graphPanel.Diagram.SelectedNodes.OnlyOneOfDefault() is ImExpandableNode node
             && node.IsMouseInsideExpandedArea
             && node.ExpandedView is IViewClipboard clipboard)
         {
@@ -784,7 +787,7 @@ public abstract class FlowViewImGui :
     /// <inheritdoc/>
     public ViewSelection GetSelection()
     {
-        List<IFlowDiagramItem> list = this._graphPanel.Diagram.SelectedItems
+        List<IFlowDiagramItem> list = this._graphPanel.Diagram.SelectedNodes
             .OfType<IFlowViewNode>()
             .Select(o => o.Node?.DiagramItem)
             .SkipNull()
@@ -827,7 +830,7 @@ public abstract class FlowViewImGui :
 
     /// <inheritdoc/>
     public IEnumerable<object> SelectedObjects =>
-        this._graphPanel.Diagram.SelectedItems
+        this._graphPanel.Diagram.SelectedNodes
             .OfType<IFlowViewNode>()
             .Select(o => o.Node?.DiagramItem)
             .SkipNull();
@@ -837,13 +840,13 @@ public abstract class FlowViewImGui :
     {
         if (distinct)
         {
-            return this._graphPanel.Diagram.SelectedItems.OfType<IFlowViewNode>()
+            return this._graphPanel.Diagram.SelectedNodes.OfType<IFlowViewNode>()
                 .Select(o => o.Node?.DiagramItem)
                 .OfType<T>();
         }
         else
         {
-            return this._graphPanel.Diagram.SelectedItems.OfType<IFlowViewNode>()
+            return this._graphPanel.Diagram.SelectedNodes.OfType<IFlowViewNode>()
                 .Select(o => o.Node?.DiagramItem)
                 .As<T>();
         }
@@ -1035,7 +1038,7 @@ public abstract class FlowViewImGui :
                     foreach (var node in nodes)
                     {
                         node.Highlighted = true;
-                        node.Diagram.SelectedItems.Add(node);
+                        node.Diagram.SelectedNodes.Add(node);
                     }
                 }
 
@@ -1072,7 +1075,7 @@ public abstract class FlowViewImGui :
                 ExpandState = _expandState.GetExpandedPaths().Select(o => o.ToString()).ToArray(),
             };
 
-            foreach (var item in _graphPanel.Diagram.SelectedItems.OfType<IFlowViewNode>().Select(o => o.Node?.DiagramItem).OfType<NamedItem>())
+            foreach (var item in _graphPanel.Diagram.SelectedNodes.OfType<IFlowViewNode>().Select(o => o.Node?.DiagramItem).OfType<NamedItem>())
             {
                 config.SelectedNodes.Add(item.Name);
             }
@@ -1188,27 +1191,27 @@ public abstract class FlowViewImGui :
     //}
     private void GraphPanel_SelectionChanging(object sender, GraphSelectionEventArgs args)
     {
-        _selectionBefore.Clear();
-        _selectionBefore.AddRange(this._graphPanel.Diagram.SelectedItems);
+        _nodeSelectionBefore.Clear();
+        _nodeSelectionBefore.AddRange(this._graphPanel.Diagram.SelectedNodes);
+
+        _linkSelectionBefore.Clear();
+        _linkSelectionBefore.AddRange(this._graphPanel.Diagram.SelectedLinks);
     }
 
     private void GraphPanel_SelectionChanged(object sender, GraphSelectionEventArgs args)
     {
-        if (!_selectionBefore.ElementEquals(_graphPanel.Diagram.SelectedItems))
+        if (!_nodeSelectionBefore.ElementEquals(_graphPanel.Diagram.SelectedNodes)
+            || !_linkSelectionBefore.ElementEquals(_graphPanel.Diagram.SelectedLinks)
+            )
         {
-            OnFlowDoAction(new NodeSmartSelectionAction(this, _selectionBefore));
-            _selectionBefore.Clear();
+            OnFlowDoAction(new NodeSmartSelectionAction(this, _nodeSelectionBefore, _linkSelectionBefore));
+            _nodeSelectionBefore.Clear();
+            _linkSelectionBefore.Clear();
 
-            NavigationService.Current.AddRecord(_document);
-        }
-    }
-
-    private void GraphPanel_SelectionCleared(object sender, GraphSelectionEventArgs args)
-    {
-        if (!_selectionBefore.ElementEquals(_graphPanel.Diagram.SelectedItems))
-        {
-            OnFlowDoAction(new NodeSmartSelectionAction(this, _selectionBefore));
-            _selectionBefore.Clear();
+            if (args.NodeCount > 0 || args.LinkCount > 0)
+            {
+                NavigationService.Current.AddRecord(_document);
+            }
         }
     }
 
@@ -1224,7 +1227,7 @@ public abstract class FlowViewImGui :
 
     private void GraphPanel_SelectionDeleted(object sender, GraphSelectionEventArgs args)
     {
-        var nodes = this._graphPanel.Diagram.SelectedItems.OfType<IFlowViewNode>().Select(o => o.Node).Where(o => o?.CanBeDeleted ?? true);
+        var nodes = this._graphPanel.Diagram.SelectedNodes.OfType<IFlowViewNode>().Select(o => o.Node).Where(o => o?.CanBeDeleted ?? true);
         if (!nodes.Any())
         {
             return;
@@ -1238,8 +1241,8 @@ public abstract class FlowViewImGui :
 
     private void GraphPanel_SelectionMoved(object sender, GraphNodeMoveEventArgs args)
     {
-        var items = this._graphPanel.Diagram.SelectedItems
-            .Concat(this._graphPanel.Diagram.DrivenItems)
+        var items = this._graphPanel.Diagram.SelectedNodes
+            .Concat(this._graphPanel.Diagram.DrivenNodes)
             .OfType<IFlowViewNode>()
             .Select(o => o.Node?.DiagramItem)
             .SkipNull();
@@ -1254,7 +1257,7 @@ public abstract class FlowViewImGui :
     /// </summary>
     private void GraphPanel_SelectionResized(object sender, GraphNodeResizeEventArgs args)
     {
-        var node = this._graphPanel.Diagram.SelectedItems
+        var node = this._graphPanel.Diagram.SelectedNodes
             .OnlyOneOfDefault() as IFlowViewNode;
 
         if (node?.Node?.DiagramItem is { } item)
@@ -1309,7 +1312,7 @@ public abstract class FlowViewImGui :
 
     private void GraphPanel_ContextMenuShowing(object sender, GraphicContextEventArgs e)
     {
-        var items = this._graphPanel.Diagram.SelectedItems
+        var items = this._graphPanel.Diagram.SelectedNodes
             .OfType<IFlowViewNode>();
 
         _contextMenuCommand.ApplySender(this);
@@ -1399,7 +1402,7 @@ public abstract class FlowViewImGui :
     /// <param name="forceCreate">If <c>true</c>, creates a group even when no items are selected.</param>
     internal void HandleCreateGroup(bool forceCreate = false)
     {
-        var selectedItems = _graphPanel.Diagram.SelectedItems;
+        var selectedItems = _graphPanel.Diagram.SelectedNodes;
         if (selectedItems.Count > 0)
         {
             var rect = GraphHelper.GetBoundingBox(selectedItems.Select(o => o.HitRectangle));
@@ -1435,7 +1438,7 @@ public abstract class FlowViewImGui :
 
     internal void HandleDeleteNode()
     {
-        var nodes = _graphPanel.Diagram.SelectedItems
+        var nodes = _graphPanel.Diagram.SelectedNodes
             .OfType<IFlowViewNode>()
             .Select(o => o.Node)
             .SkipNull();
@@ -1455,7 +1458,7 @@ public abstract class FlowViewImGui :
     /// </summary>
     internal void HandleCloneSelectedNodes()
     {
-        var selected = this._graphPanel.Diagram.SelectedItems
+        var selected = this._graphPanel.Diagram.SelectedNodes
             .OfType<IFlowViewNode>()
             .Where(o => o.CanBeDeleted)
             .Select(o => o.Node?.DiagramItem)
@@ -1494,7 +1497,7 @@ public abstract class FlowViewImGui :
     /// </summary>
     internal void HandleFindReference()
     {
-        var items = this._graphPanel.Diagram.SelectedItems
+        var items = this._graphPanel.Diagram.SelectedNodes
         .OfType<IFlowViewNode>()
         .Select(o => o.Node?.DiagramItem)
         .SkipNull();
@@ -1525,7 +1528,7 @@ public abstract class FlowViewImGui :
 
     internal void HandleGotoDefinition()
     {
-        var items = this._graphPanel.Diagram.SelectedItems
+        var items = this._graphPanel.Diagram.SelectedNodes
         .OfType<IFlowViewNode>()
         .Select(o => o.Node?.DiagramItem)
         .SkipNull();
