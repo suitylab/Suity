@@ -153,6 +153,7 @@ public class StyledDataType : GraphDataType
         _connectorOutlinePen = _style.ConnectorOutlinePen;
         _connectorFillBrush = _style.ConnectorFillBrush;
         _typeName = _style.TypeName;
+        _isArray = _style.IsArray;
     }
 
     /// <inheritdoc/>

@@ -472,6 +472,14 @@ public static class SkiaSharpExtensions
     }
 
     /// <summary>
+    /// Draws a polygon outline on the canvas using the specified pen.
+    /// </summary>
+    public static void DrawPolygon(this SKCanvas canvas, Pen pen, PointF[] points)
+    {
+        canvas.DrawPath(points.ToPolygonPath(), pen.ToSKPaint());
+    }
+
+    /// <summary>
     /// Fills a polygon on the canvas using the specified brush.
     /// </summary>
     public static void FillPolygon(this SKCanvas canvas, Brush brush, PointF[] points)

@@ -542,6 +542,11 @@ public interface IFlowDataStyle
     string TypeName { get; }
 
     /// <summary>
+    /// Indicates whether this data type represents an array, which may affect visual style and connection rules.
+    /// </summary>
+    bool IsArray { get; }
+
+    /// <summary>
     /// Data display name
     /// </summary>
     string DisplayName { get; }

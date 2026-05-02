@@ -199,32 +199,138 @@ public static class ImGraphExtensions
                 }
             }
 
-            if (isLinked)
+            var brush = new SolidBrush(colorV);
+
+            if (connector?.ConnectorType == ConnectorType.Action)
             {
-                output.FillEllipse(new SolidBrush(colorV), rect);
+                var triangle = BuildActionTriangle(rect);
+
+                if (isLinked)
+                {
+                    output.FillPolygon(brush, triangle);
+                }
+                else
+                {
+                    output.DrawPolygon(new Pen(colorV, rect.Width * 0.2f), triangle);
+                }
+            }
+            else if (connector?.DataType?.IsArray == true)
+            {
+                var outerRect = rect.Scale(0.8f);
+                var innerRect = rect.Scale(0.45f);
+                var penWidth = rect.Width * 0.15f;
+
+                if (isLinked)
+                {
+                    output.DrawEllipse(new Pen(colorV, penWidth), outerRect);
+                    output.FillEllipse(brush, innerRect);
+                }
+                else
+                {
+                    output.DrawEllipse(new Pen(colorV, penWidth), outerRect);
+                    output.DrawEllipse(new Pen(colorV, penWidth), innerRect);
+                }
             }
             else
             {
-                output.DrawEllipse(new Pen(colorV, rect.Width * 0.2f), rect.Scale(0.8f));
+                if (isLinked)
+                {
+                    output.FillEllipse(brush, rect);
+                }
+                else
+                {
+                    output.DrawEllipse(new Pen(colorV, rect.Width * 0.2f), rect.Scale(0.8f));
+                }
             }
         }
 
         if (connector?.IsCombined == true)
         {
-            if (isLinked)
+            var combinedRect = isLinked ? rect.Scale(0.5f) : rect.Scale(0.6f);
+
+            if (connector.ConnectorType == ConnectorType.Action)
             {
-                output.FillEllipse(new SolidBrush(Color.White), rect.Scale(0.5f));
+                var triangle = BuildActionTriangle(combinedRect);
+
+                if (isLinked)
+                {
+                    output.FillPolygon(new SolidBrush(Color.White), triangle);
+                }
+                else
+                {
+                    output.DrawPolygon(new Pen(Color.White, rect.Width * 0.1f), triangle);
+                }
+            }
+            else if (connector.DataType?.IsArray == true)
+            {
+                var outerRect = rect.Scale(0.9f);
+                var innerRect = rect.Scale(0.5f);
+                var penWidth = rect.Width * 0.1f;
+
+                if (isLinked)
+                {
+                    output.DrawEllipse(new Pen(Color.White, penWidth), outerRect);
+                    output.FillEllipse(new SolidBrush(Color.White), innerRect);
+                }
+                else
+                {
+                    output.DrawEllipse(new Pen(Color.White, penWidth), outerRect);
+                    output.DrawEllipse(new Pen(Color.White, penWidth), innerRect);
+                }
             }
             else
             {
-                output.DrawEllipse(new Pen(Color.White, rect.Width * 0.1f), rect.Scale(0.6f));
+                if (isLinked)
+                {
+                    output.FillEllipse(new SolidBrush(Color.White), combinedRect);
+                }
+                else
+                {
+                    output.DrawEllipse(new Pen(Color.White, rect.Width * 0.1f), combinedRect);
+                }
             }
         }
 
         if (border > 0)
         {
-            output.DrawEllipse(new Pen(borderColor, border), rect.Offset(-border * 0.5f));
+            var borderRect = rect.Offset(-border * 0.5f);
+
+            if (connector?.ConnectorType == ConnectorType.Action)
+            {
+                var triangle = BuildActionTriangle(borderRect);
+                output.DrawPolygon(new Pen(borderColor, border), triangle);
+            }
+            else if (connector?.DataType?.IsArray == true)
+            {
+                output.DrawEllipse(new Pen(borderColor, border), borderRect);
+                output.DrawEllipse(new Pen(borderColor, border * 0.5f), borderRect.Scale(0.6f));
+            }
+            else
+            {
+                output.DrawEllipse(new Pen(borderColor, border), borderRect);
+            }
         }
+    }
+
+    /// <summary>
+    /// Builds a right-pointing equilateral triangle for action connector points.
+    /// </summary>
+    /// <param name="rect">The bounding rectangle for the triangle.</param>
+    /// <returns>An array of three points defining the triangle.</returns>
+    private static PointF[] BuildActionTriangle(RectangleF rect)
+    {
+        var cx = rect.X + rect.Width / 2;
+        var cy = rect.Y + rect.Height / 2;
+        var r = rect.Width / 2;
+        var h = r * 1.5f;
+        var halfBase = h * 0.57735f;
+
+        return
+        [
+            new PointF(cx + r, cy),
+            new PointF(cx - h / 2, cy - halfBase),
+            new PointF(cx - h / 2, cy + halfBase),
+        ];
     }
 
 

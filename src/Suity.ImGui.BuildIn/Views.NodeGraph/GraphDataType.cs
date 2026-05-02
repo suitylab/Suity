@@ -44,6 +44,11 @@ public abstract class GraphDataType
     /// </summary>
     public string TypeName => _typeName;
 
+    /// <summary>
+    /// Gets a value indicating whether this data type represents an array.
+    /// </summary>
+    public bool IsArray => _isArray;
+
     protected bool _allowMultipleFromConnection;
     protected bool _allowMultipleToConnection;
 
@@ -53,6 +58,7 @@ public abstract class GraphDataType
     protected SolidBrush _connectorFillBrush;
 
     protected string _typeName;
+    protected bool _isArray;
 }
 
 /// <summary>

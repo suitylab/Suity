@@ -74,6 +74,13 @@ public interface IGraphicOutput
     void DrawArc(Pen pen, RectangleF rect, float startAngle, float sweepAngle, bool useCenter);
 
     /// <summary>
+    /// Draws a polygon outline.
+    /// </summary>
+    /// <param name="pen">The pen to use.</param>
+    /// <param name="points">The points defining the polygon.</param>
+    void DrawPolygon(Pen pen, PointF[] points);
+
+    /// <summary>
     /// Draws a Bezier curve.
     /// </summary>
     /// <param name="pen">The pen used to draw the curve.</param>
@@ -342,6 +349,10 @@ public class EmptyGraphicOutput : IGraphicOutput
 
     /// <inheritdoc/>
     public void FillEllipse(Brush brush, RectangleF rect)
+    { }
+
+    /// <inheritdoc/>
+    public void DrawPolygon(Pen pen, PointF[] points)
     { }
 
     /// <inheritdoc/>

@@ -213,6 +213,12 @@ internal class AvaGraphicOutput : IGraphicOutput
     }
 
     /// <inheritdoc/>
+    public void DrawPolygon(Pen pen, PointF[] points)
+    {
+        _canvas.DrawPolygon(pen, points);
+    }
+
+    /// <inheritdoc/>
     public void FillPolygon(Brush brush, PointF[] points)
     {
         _canvas.FillPolygon(brush, points);
