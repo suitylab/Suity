@@ -75,4 +75,9 @@ public class GraphLink
 
         return true;
     }
+
+    public override string ToString()
+    {
+        return $"{Input} -> {Output}";
+    }
 }

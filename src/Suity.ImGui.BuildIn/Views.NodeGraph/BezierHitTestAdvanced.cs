@@ -9,13 +9,42 @@ public static class BezierHitTestAdvanced
     /// <summary>
     /// Determines if a point is near the curve using recursive subdivision
     /// </summary>
-    public static bool IsPointNearBezierRecursive(PointF point, LinkShape linkShape,
+    public static bool IsPointNearBezierRecursive(this LinkShape linkShape, PointF point,
         float tolerance = 10f, float flatness = 0.5f)
     {
+        if (QuickReject(point, linkShape, tolerance))
+            return false;
+
         return CheckSegment(point,
             linkShape.StartPos, linkShape.StartPosBezier,
             linkShape.EndPosBezier, linkShape.EndPos,
             tolerance, flatness);
+    }
+
+    /// <summary>
+    /// Quick bounding box rejection test - conservative but 100% safe
+    /// </summary>
+    private static bool QuickReject(PointF point, LinkShape shape, float tolerance)
+    {
+        // 包含所有控制点的最小/最大坐标
+        float minX = Math.Min(Math.Min(Math.Min(
+            shape.StartPos.X, shape.EndPos.X),
+            shape.StartPosBezier.X), shape.EndPosBezier.X) - tolerance;
+
+        float maxX = Math.Max(Math.Max(Math.Max(
+            shape.StartPos.X, shape.EndPos.X),
+            shape.StartPosBezier.X), shape.EndPosBezier.X) + tolerance;
+
+        float minY = Math.Min(Math.Min(Math.Min(
+            shape.StartPos.Y, shape.EndPos.Y),
+            shape.StartPosBezier.Y), shape.EndPosBezier.Y) - tolerance;
+
+        float maxY = Math.Max(Math.Max(Math.Max(
+            shape.StartPos.Y, shape.EndPos.Y),
+            shape.StartPosBezier.Y), shape.EndPosBezier.Y) + tolerance;
+
+        // 点在包围盒外则快速返回false
+        return point.X < minX || point.X > maxX || point.Y < minY || point.Y > maxY;
     }
 
     private static bool CheckSegment(PointF pt, PointF p0, PointF p1, PointF p2, PointF p3,

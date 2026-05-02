@@ -1771,7 +1771,7 @@ internal class ImGuiNodeBK : ImGuiNode
         set
         {
             var prop = _border.GetOrCreateValue();
-            if (!prop.Color.HasValue || prop.Color.Value != value)
+            if (prop.Color != value)
             {
                 prop.Color = value;
                 MarkRenderDirty();
@@ -1785,7 +1785,7 @@ internal class ImGuiNodeBK : ImGuiNode
         set
         {
             var prop = _border.GetOrCreateValue();
-            if (!prop.Color.HasValue || prop.Color.Value != value)
+            if (prop.Color != value)
             {
                 prop.Color = value;
                 MarkRenderDirty();
