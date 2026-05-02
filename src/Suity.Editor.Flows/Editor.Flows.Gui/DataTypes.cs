@@ -154,6 +154,7 @@ public class StyledDataType : GraphDataType
         _connectorFillBrush = _style.ConnectorFillBrush;
         _typeName = _style.TypeName;
         _isArray = _style.IsArray;
+        _isKey = _style.IsKey;
     }
 
     /// <inheritdoc/>

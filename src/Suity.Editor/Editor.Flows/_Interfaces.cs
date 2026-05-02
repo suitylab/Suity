@@ -547,6 +547,11 @@ public interface IFlowDataStyle
     bool IsArray { get; }
 
     /// <summary>
+    /// Indicates whether this data type represents a key, which may affect visual style and connection rules.
+    /// </summary>
+    bool IsKey { get; }
+
+    /// <summary>
     /// Data display name
     /// </summary>
     string DisplayName { get; }

@@ -214,6 +214,39 @@ public static class ImGraphExtensions
                     output.DrawPolygon(new Pen(colorV, rect.Width * 0.2f), triangle);
                 }
             }
+            else if (connector?.DataType?.IsKey == true)
+            {
+                if (connector.DataType.IsArray)
+                {
+                    var outerDiamond = BuildKeyDiamond(rect.Scale(0.8f));
+                    var innerDiamond = BuildKeyDiamond(rect.Scale(0.45f));
+                    var penWidth = rect.Width * 0.15f;
+
+                    if (isLinked)
+                    {
+                        output.DrawPolygon(new Pen(colorV, penWidth), outerDiamond);
+                        output.FillPolygon(brush, innerDiamond);
+                    }
+                    else
+                    {
+                        output.DrawPolygon(new Pen(colorV, penWidth), outerDiamond);
+                        output.DrawPolygon(new Pen(colorV, penWidth), innerDiamond);
+                    }
+                }
+                else
+                {
+                    var diamond = BuildKeyDiamond(rect.Scale(0.8f));
+
+                    if (isLinked)
+                    {
+                        output.FillPolygon(brush, diamond);
+                    }
+                    else
+                    {
+                        output.DrawPolygon(new Pen(colorV, rect.Width * 0.2f), diamond);
+                    }
+                }
+            }
             else if (connector?.DataType?.IsArray == true)
             {
                 var outerRect = rect.Scale(0.8f);
@@ -261,6 +294,39 @@ public static class ImGraphExtensions
                     output.DrawPolygon(new Pen(Color.White, rect.Width * 0.1f), triangle);
                 }
             }
+            else if (connector.DataType?.IsKey == true)
+            {
+                if (connector.DataType.IsArray)
+                {
+                    var outerDiamond = BuildKeyDiamond(rect.Scale(0.7f));
+                    var innerDiamond = BuildKeyDiamond(rect.Scale(0.35f));
+                    var penWidth = rect.Width * 0.1f;
+
+                    if (isLinked)
+                    {
+                        output.DrawPolygon(new Pen(Color.White, penWidth), outerDiamond);
+                        output.FillPolygon(new SolidBrush(Color.White), innerDiamond);
+                    }
+                    else
+                    {
+                        output.DrawPolygon(new Pen(Color.White, penWidth), outerDiamond);
+                        output.DrawPolygon(new Pen(Color.White, penWidth), innerDiamond);
+                    }
+                }
+                else
+                {
+                    var diamond = BuildKeyDiamond(combinedRect);
+
+                    if (isLinked)
+                    {
+                        output.FillPolygon(new SolidBrush(Color.White), diamond);
+                    }
+                    else
+                    {
+                        output.DrawPolygon(new Pen(Color.White, rect.Width * 0.1f), diamond);
+                    }
+                }
+            }
             else if (connector.DataType?.IsArray == true)
             {
                 var outerRect = rect.Scale(0.9f);
@@ -300,6 +366,17 @@ public static class ImGraphExtensions
                 var triangle = BuildActionTriangle(borderRect);
                 output.DrawPolygon(new Pen(borderColor, border), triangle);
             }
+            else if (connector?.DataType?.IsKey == true)
+            {
+                var outerDiamond = BuildKeyDiamond(borderRect);
+                output.DrawPolygon(new Pen(borderColor, border), outerDiamond);
+
+                if (connector.DataType.IsArray)
+                {
+                    var innerDiamond = BuildKeyDiamond(borderRect.Scale(0.6f));
+                    output.DrawPolygon(new Pen(borderColor, border * 0.5f), innerDiamond);
+                }
+            }
             else if (connector?.DataType?.IsArray == true)
             {
                 output.DrawEllipse(new Pen(borderColor, border), borderRect);
@@ -330,6 +407,27 @@ public static class ImGraphExtensions
             new PointF(cx + r, cy),
             new PointF(cx - h / 2, cy - halfBase),
             new PointF(cx - h / 2, cy + halfBase),
+        ];
+    }
+
+    /// <summary>
+    /// Builds a diamond shape for key connector points.
+    /// </summary>
+    /// <param name="rect">The bounding rectangle for the diamond.</param>
+    /// <returns>An array of four points defining the diamond.</returns>
+    private static PointF[] BuildKeyDiamond(RectangleF rect)
+    {
+        var cx = rect.X + rect.Width / 2;
+        var cy = rect.Y + rect.Height / 2;
+        var hw = rect.Width / 2;
+        var hh = rect.Height / 2;
+
+        return
+        [
+            new PointF(cx, cy - hh),
+            new PointF(cx + hw, cy),
+            new PointF(cx, cy + hh),
+            new PointF(cx - hw, cy),
         ];
     }
 
@@ -595,7 +693,7 @@ public static class ImGraphExtensions
             gui.Image("multiple", CoreIconCache.Multiple)
             .SetImageFilter(connector.DataType.ConnectorFillBrush.Color)
             .InitClass("iconSmall")
-            .SetToolTipsL("Can connect to multiple, sorted by Y axis.");
+            .SetToolTipsL("Supports multiple connections, sorted by Y axis.");
 
             return true;
         }

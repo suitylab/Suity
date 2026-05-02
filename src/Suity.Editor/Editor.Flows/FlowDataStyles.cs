@@ -52,6 +52,8 @@ public class TypeDefinitionFlowDataStyle : IFlowDataStyle
 
     public bool IsArray { get; private set; }
 
+    public bool IsKey { get; private set; }
+
     public string DisplayName { get; private set; }
 
     public bool MultipleFromConnection { get; protected set; }
@@ -75,6 +77,7 @@ public class TypeDefinitionFlowDataStyle : IFlowDataStyle
     {
         TypeName = _dataType.ToTypeName();
         IsArray = _dataType.IsArray;
+        IsKey = _dataType.IsLink || (_dataType.IsArray && _dataType.ElementType.IsLink);
         DisplayName = _dataType.ToDisplayString();
 
         OnUpdateStyle();
@@ -264,6 +267,8 @@ public class TypeFlowDataStyle : IFlowDataStyle
     public string TypeName => TargetType.FullName;
 
     public bool IsArray => TargetType.IsArray;
+
+    public bool IsKey => false;
 
     public string DisplayName => TypeName.ToDisplayTextL();
 

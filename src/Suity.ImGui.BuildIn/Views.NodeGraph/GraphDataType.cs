@@ -49,6 +49,11 @@ public abstract class GraphDataType
     /// </summary>
     public bool IsArray => _isArray;
 
+    /// <summary>
+    /// Gets a value indicating whether this data type represents a key.
+    /// </summary>
+    public bool IsKey => _isKey;
+
     protected bool _allowMultipleFromConnection;
     protected bool _allowMultipleToConnection;
 
@@ -59,6 +64,7 @@ public abstract class GraphDataType
 
     protected string _typeName;
     protected bool _isArray;
+    protected bool _isKey;
 }
 
 /// <summary>
