@@ -6,7 +6,7 @@ namespace Suity.Editor.Flows;
 /// <summary>
 /// Flow chart node connection
 /// </summary>
-public class NodeLink : ISyncObject
+public sealed class NodeLink : ISyncObject
 {
     /// <summary>
     /// Gets or sets the source node name.
@@ -55,6 +55,15 @@ public class NodeLink : ISyncObject
         FromConnector = sync.Sync("FromConnector", FromConnector, SyncFlag.NotNull);
         ToNode = sync.Sync("ToNode", ToNode, SyncFlag.NotNull);
         ToConnector = sync.Sync("ToConnector", ToConnector, SyncFlag.NotNull);
+    }
+
+    /// <summary>
+    /// Clones the link.
+    /// </summary>
+    /// <returns>A new instance of <see cref="NodeLink"/> with the same properties.</returns>
+    public NodeLink Clone()
+    {
+        return new NodeLink(FromNode, FromConnector, ToNode, ToConnector);
     }
 
     /// <summary>

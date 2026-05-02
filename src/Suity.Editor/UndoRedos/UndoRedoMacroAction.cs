@@ -2,6 +2,7 @@ using Suity.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.UndoRedos;
 
@@ -10,23 +11,23 @@ namespace Suity.UndoRedos;
 /// </summary>
 public class UndoRedoMacroAction : UndoRedoAction
 {
-    private readonly UndoRedoAction[] macro = null;
-    private readonly string name = null;
+    private readonly UndoRedoAction[] _macro = null;
+    private readonly string _name = null;
 
     /// <summary>
     /// Gets the name of this macro action.
     /// </summary>
-    public override string Name => this.name;
+    public override string Name => L(this._name);
 
     /// <summary>
     /// Gets a value indicating whether this macro action contains no actions.
     /// </summary>
-    public override bool IsVoid => this.macro == null || this.macro.Length == 0;
+    public override bool IsVoid => this._macro == null || this._macro.Length == 0;
 
     /// <summary>
     /// Gets a value indicating whether any action in this macro modifies the document.
     /// </summary>
-    public override bool Modifying => this.macro?.Any(o => o.Modifying) == true;
+    public override bool Modifying => this._macro?.Any(o => o.Modifying) == true;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UndoRedoMacroAction"/> class.
@@ -36,15 +37,15 @@ public class UndoRedoMacroAction : UndoRedoAction
     public UndoRedoMacroAction(string name, IEnumerable<UndoRedoAction> actions)
     {
         if (actions == null) throw new ArgumentNullException(nameof(actions));
-        this.macro = actions.Where(o => o != null && !o.IsVoid).ToArray();
+        this._macro = actions.Where(o => o != null && !o.IsVoid).ToArray();
 
-        if (this.macro.Length == 1)
+        if (this._macro.Length == 1)
         {
-            this.name = this.macro[0].Name;
+            this._name = this._macro[0].Name;
         }
         else
         {
-            this.name = name ?? string.Format("Macro: {0} Actions", this.macro.Length);
+            this._name = name ?? string.Format("Macro: {0} Actions", this._macro.Length);
         }
     }
 
@@ -67,10 +68,10 @@ public class UndoRedoMacroAction : UndoRedoAction
         UndoRedoMacroAction castAction = action as UndoRedoMacroAction;
 
         if (castAction == null) return false;
-        if (castAction.macro.Length != this.macro.Length) return false;
-        for (int i = 0; i < this.macro.Length; i++)
+        if (castAction._macro.Length != this._macro.Length) return false;
+        for (int i = 0; i < this._macro.Length; i++)
         {
-            if (!this.macro[i].CanAppend(castAction.macro[i])) return false;
+            if (!this._macro[i].CanAppend(castAction._macro[i])) return false;
         }
 
         return true;
@@ -86,9 +87,9 @@ public class UndoRedoMacroAction : UndoRedoAction
         base.Append(action, performAction);
         UndoRedoMacroAction castAction = action as UndoRedoMacroAction;
 
-        for (int i = 0; i < this.macro.Length; i++)
+        for (int i = 0; i < this._macro.Length; i++)
         {
-            this.macro[i].Append(castAction.macro[i], performAction);
+            this._macro[i].Append(castAction._macro[i], performAction);
         }
     }
 
@@ -97,7 +98,7 @@ public class UndoRedoMacroAction : UndoRedoAction
     /// </summary>
     public override void Do()
     {
-        foreach (UndoRedoAction action in this.macro)
+        foreach (UndoRedoAction action in this._macro)
         {
             action.Do();
         }
@@ -108,7 +109,7 @@ public class UndoRedoMacroAction : UndoRedoAction
     /// </summary>
     public override void Undo()
     {
-        foreach (UndoRedoAction action in this.macro.ReverseEnumerable())
+        foreach (UndoRedoAction action in this._macro.ReverseEnumerable())
         {
             action.Undo();
         }

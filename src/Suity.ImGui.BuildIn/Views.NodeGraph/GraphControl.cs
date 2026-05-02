@@ -166,18 +166,23 @@ public class GraphControl : IGraphicObject
     /// Deletes all currently selected nodes.
     /// </summary>
     /// <returns>The number of nodes deleted.</returns>
-    public int DeleteSelected()
+    public void DeleteSelected()
     {
-        int count = Diagram.SelectedNodes.Count(o => o.CanBeSelected);
-        if (count == 0) return 0;
+        int numNode = Diagram.SelectedNodes.Count(o => o.CanBeSelected);
+        int numLink = Diagram.SelectedLinks.Count;
 
-        SelectionDeleting?.Invoke(this, new GraphSelectionEventArgs());
-
-        foreach (GraphNode n in Diagram.SelectedNodes)
+        if (numNode == 0 && numLink == 0)
         {
-            if (!n.CanBeDeleted) continue;
+            return;
+        }
 
-            if (n.Connectors is { } connector)
+        SelectionDeleting?.Invoke(this, GraphSelectionEventArgs.Empty);
+
+        foreach (var node in Diagram.SelectedNodes)
+        {
+            if (!node.CanBeDeleted) continue;
+
+            if (node.Connectors is { } connector)
             {
                 foreach (GraphConnector c in connector.ToArray())
                 {
@@ -185,16 +190,21 @@ public class GraphControl : IGraphicObject
                 }
             }
 
-            Diagram.NodeCollection.Remove(n);
-            n.OnMarkDeleted();
-            count++;
+            Diagram.NodeCollection.Remove(node);
+            node.OnMarkDeleted();
         }
 
-        SelectionDeleted?.Invoke(this, new GraphSelectionEventArgs());
-        Diagram.SelectedNodes.Clear();
-        RefreshView();
+        foreach (var link in Diagram.SelectedLinks)
+        {
+            Diagram.Links.Remove(link);
+        }
 
-        return count;
+        SelectionDeleted?.Invoke(this, GraphSelectionEventArgs.Empty);
+        
+        Diagram.SelectedNodes.Clear();
+        Diagram.SelectedLinks.Clear();
+
+        RefreshView();
     }
 
     /// <summary>

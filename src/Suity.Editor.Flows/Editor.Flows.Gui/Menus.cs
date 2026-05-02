@@ -88,7 +88,7 @@ internal class DeleteNodeMenuCommand : MenuCommand
     /// <inheritdoc/>
     public override void DoCommand()
     {
-        (Sender as FlowViewImGui)?.HandleDeleteNode();
+        (Sender as FlowViewImGui)?.GraphControl?.DeleteSelected();
     }
 }
 

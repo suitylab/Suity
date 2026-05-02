@@ -121,6 +121,8 @@ public delegate void GraphSelectionEventHandler(object sender, GraphSelectionEve
 /// </summary>
 public class GraphSelectionEventArgs : EventArgs
 {
+    public static GraphSelectionEventArgs Empty { get; } = new();
+
     /// <summary>
     /// The number of nodes in the new selection.
     /// </summary>
@@ -135,7 +137,7 @@ public class GraphSelectionEventArgs : EventArgs
     /// <summary>
     /// Initializes a new instance of the <see cref="GraphSelectionEventArgs"/> class.
     /// </summary>
-    public GraphSelectionEventArgs()
+    private GraphSelectionEventArgs()
     {
         NodeCount = 0;
         LinkCount = 0;
