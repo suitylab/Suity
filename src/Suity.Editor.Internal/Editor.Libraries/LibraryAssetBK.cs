@@ -27,7 +27,7 @@ public class LibraryAssetBK : LibraryAsset
     private string _libraryName;
     private string _libraryVersion;
     private readonly Dictionary<string, LibraryEntry> _contentAssets = [];
-    private readonly Dictionary<string, Asset> _contentAssetsByAssetKey = new(IgnoreCaseStringComparer.Instance);
+    private readonly Dictionary<string, Asset> _contentAssetsByAssetKey = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<Guid, Asset> _contentAssetsByGuid = [];
 
     /// <inheritdoc/>

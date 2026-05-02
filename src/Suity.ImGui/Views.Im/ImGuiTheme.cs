@@ -13,41 +13,13 @@ public class ImGuiTheme : StyleCollection
     /// <summary>
     /// Gets or sets the default font family used across the UI.
     /// </summary>
-    public static FontFamily DefaultFont { get; set; }
+    public static FontFamily DefaultFont { get; set; } = new FontFamily("Tahoma");
 
     /// <summary>
     /// Gets or sets the default color used for drag operations.
     /// </summary>
     public static Color DefaultDragColor { get; set; } = Color.FromArgb(76, 159, 255);
 
-    static ImGuiTheme()
-    {
-        DefaultFont = GetBestAvailableFont("Tahoma", "Segoe UI", "Arial");
-    }
-
-    /// <summary>
-    /// Selects the best available font from the provided list of font names.
-    /// </summary>
-    /// <param name="fontNames">Ordered list of preferred font names.</param>
-    /// <returns>The first available FontFamily, or GenericMonospace as fallback.</returns>
-    public static FontFamily GetBestAvailableFont(params string[] fontNames)
-    {
-        /*        using (var installedFonts = new InstalledFontCollection())
-                {
-                    foreach (var name in fontNames)
-                    {
-                        if (installedFonts.Families.Any(f => f.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
-                        {
-                            return new FontFamily(name);
-                        }
-                    }
-                }
-                return FontFamily.GenericMonospace;*/
-
-        //TODO: Get font family
-
-        return new FontFamily(fontNames[0]);
-    }
 
     private IColorConfig? _colors;
     private Font? _font;

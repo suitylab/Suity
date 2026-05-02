@@ -21,7 +21,7 @@ public class ProjectAnalysis
     private readonly string _projectName;
 
     private ProjectSetting _setting;
-    private readonly Dictionary<string, WorkSpaceAnalysis> _workSpaces = new(IgnoreCaseStringComparer.Instance);
+    private readonly Dictionary<string, WorkSpaceAnalysis> _workSpaces = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Gets the unique GUID identifier for this project.

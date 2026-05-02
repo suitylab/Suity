@@ -21,7 +21,7 @@ public abstract class PathTreeModel : IPathTreeModel
     protected PathTreeModel()
     {
         _rootNode = new DummyNode(this);
-        _pathToNodes = new(IgnoreCaseStringComparer.Instance);
+        _pathToNodes = new(StringComparer.OrdinalIgnoreCase);
     }
 
     /// <summary>

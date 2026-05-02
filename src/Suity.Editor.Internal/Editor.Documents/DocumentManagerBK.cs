@@ -37,8 +37,8 @@ internal sealed class DocumentManagerBK : DocumentManager
 
     private readonly Dictionary<string, DocumentFormat> _formats = [];
     private readonly Dictionary<string, IDocumentFormatResolver> _resolvers = [];
-    private readonly UniqueMultiDictionary<string, DocumentFormat> _documentFormatByExt = new(IgnoreCaseStringComparer.Instance);
-    private readonly Dictionary<string, DocumentEntryBK> _namedDocuments = new(IgnoreCaseStringComparer.Instance);
+    private readonly UniqueMultiDictionary<string, DocumentFormat> _documentFormatByExt = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, DocumentEntryBK> _namedDocuments = new(StringComparer.OrdinalIgnoreCase);
     private readonly HashSet<DocumentEntryBK> _allDocuments = [];
 
     private readonly object _sync = new();

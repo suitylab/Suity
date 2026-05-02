@@ -1,3 +1,4 @@
+using Suity.Editor.Services;
 using Suity.Views.Graphics;
 using Suity.Views.Im;
 using Suity.Views.Im.Flows;
@@ -5,6 +6,7 @@ using Suity.Views.Im.PropertyEditing;
 using Suity.Views.Im.PropertyEditing.Targets;
 using Suity.Views.Im.PropertyEditing.ViewObjects;
 using Suity.Views.Im.TreeEditing;
+using System.Drawing;
 
 namespace Suity;
 
@@ -45,6 +47,12 @@ public static class ImGuiServices
         SValueEditorTemplates._external = SValueEditorExternalBK.Instance;
         ImGuiPathTreeExternal._external = ImGuiPathTreeExternalBK.Instance;
         NodeGraphExtensions._external = NodeGraphExternalBK.Instance;
+
+        string? bestFont = EditorServices.DrawingService?.GetBestAvailableFont("Tahoma", "Segoe UI", "Arial");
+        if (bestFont != null)
+        {
+            ImGuiTheme.DefaultFont = new FontFamily(bestFont);
+        }
     }
 
     /// <summary>

@@ -74,6 +74,7 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
         AddService<IProgressService>(AvaProgressService.Instance);
         AddService<IJsonResourceService>(JsonResourceService.Instance);
         AddService<DocumentViewManager>(AvaDocumentViewManager.Instance);
+        AddService<IDrawingService>(AvaDrawingService.Instance);
 
         AddService<IDialogService>(AvaDialogService.Instance);
         AddService<IDialogExService>(AvaDialogService.Instance);

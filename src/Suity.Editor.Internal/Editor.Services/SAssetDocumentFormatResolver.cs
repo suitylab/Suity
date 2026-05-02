@@ -20,7 +20,7 @@ public class SAssetDocumentFormatResolver : IDocumentFormatResolver
     const string SuityHeader = "<SuityAsset version=\"1.0\" format=\"";
 
     private readonly Dictionary<string, DocumentFormat> _factories = [];
-    private readonly UniqueMultiDictionary<string, DocumentFormat> _documentFormatByExt = new(IgnoreCaseStringComparer.Instance);
+    private readonly UniqueMultiDictionary<string, DocumentFormat> _documentFormatByExt = new(StringComparer.OrdinalIgnoreCase);
 
     /// <inheritdoc/>
     public string Extension => "sasset";
