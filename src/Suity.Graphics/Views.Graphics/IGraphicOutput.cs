@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace Suity.Views.Graphics;
 
@@ -236,6 +235,13 @@ public interface IGraphicOutput
     SizeF MeasureTextArea(string text, Font font, float maxLineWidth);
 
     /// <summary>
+    /// Measures the size of an image.
+    /// </summary>
+    /// <param name="image">The image to measure.</param>
+    /// <returns>The measured size.</returns>
+    SizeF MeasureImage(Image image);
+
+    /// <summary>
     /// Creates a snapshot of the entire output surface.
     /// </summary>
     /// <returns>The snapshot object.</returns>
@@ -372,6 +378,9 @@ public class EmptyGraphicOutput : IGraphicOutput
 
     /// <inheritdoc/>
     public SizeF MeasureTextArea(string text, Font font, float maxLineWidth) => SizeF.Empty;
+
+    /// <inheritdoc/>
+    public SizeF MeasureImage(Image image) => SizeF.Empty;
 
     /// <inheritdoc/>
     public void SetClipRect(RectangleF rect)

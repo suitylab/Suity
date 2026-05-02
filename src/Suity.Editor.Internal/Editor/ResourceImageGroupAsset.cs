@@ -38,7 +38,7 @@ public class ResourceImageGroupAsset : GroupAsset
                 else if (entry.Value is byte[] bytes)
                 {
                     string name = entry.Key.ToString();
-                    var bmp = new Bitmap(new MemoryStream(bytes));
+                    var bmp = new Bitmap(bytes);
                     var asset = new ImageAsset(bmp, name);
 
                     AddOrUpdateChildAsset(asset);

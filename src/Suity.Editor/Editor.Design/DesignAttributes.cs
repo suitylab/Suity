@@ -828,8 +828,8 @@ public class PreviewFieldAttribute : DesignAttribute, IViewObject
 [NativeType(CodeBase = "*Design", Name = "NumericRange", Description = "Numeric Range", Icon = "*CoreIcon|Range")]
 public class NumericRangeAttribute : DesignAttribute, IViewObject
 {
-    static readonly Color DefaultColor1 = ColorTranslator.FromHtml("#0094FF");
-    static readonly Color DefaultColor2 = ColorTranslator.FromHtml("#FF00DC");
+    static readonly Color DefaultColor1 = ColorTranslators.FromHtml("#0094FF");
+    static readonly Color DefaultColor2 = ColorTranslators.FromHtml("#FF00DC");
 
     /// <summary>
     /// Gets or sets the minimum value.
@@ -1032,7 +1032,7 @@ public class ColorAttribute : DesignAttribute, IViewObject, IViewColor
 
     public override string ToString()
     {
-        return ColorTranslator.ToHtml(_color);
+        return ColorTranslators.ToHtml(_color);
     }
 }
 #endregion

@@ -1,7 +1,6 @@
 using Suity.Views.Graphics;
 using System;
 using System.Drawing;
-using System.Drawing.Text;
 using System.Linq;
 
 namespace Suity.Views.Im;
@@ -33,17 +32,21 @@ public class ImGuiTheme : StyleCollection
     /// <returns>The first available FontFamily, or GenericMonospace as fallback.</returns>
     public static FontFamily GetBestAvailableFont(params string[] fontNames)
     {
-        using (var installedFonts = new InstalledFontCollection())
-        {
-            foreach (var name in fontNames)
-            {
-                if (installedFonts.Families.Any(f => f.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+        /*        using (var installedFonts = new InstalledFontCollection())
                 {
-                    return new FontFamily(name);
+                    foreach (var name in fontNames)
+                    {
+                        if (installedFonts.Families.Any(f => f.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            return new FontFamily(name);
+                        }
+                    }
                 }
-            }
-        }
-        return FontFamily.GenericMonospace;
+                return FontFamily.GenericMonospace;*/
+
+        //TODO: Get font family
+
+        return new FontFamily(fontNames[0]);
     }
 
     private IColorConfig? _colors;

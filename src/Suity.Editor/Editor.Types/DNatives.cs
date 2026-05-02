@@ -357,7 +357,7 @@ public class DNativeType : DType, INativeType
         {
             try
             {
-                this.ViewColor = ColorTranslator.FromHtml(attr.Color);
+                this.ViewColor = ColorTranslators.FromHtml(attr.Color);
             }
             catch (Exception)
             {

@@ -44,7 +44,7 @@ internal class AvaDialogServiceAsync : IDialogServiceAsync
                 using (var ms = new MemoryStream())
                 {
                     // Use PNG format to preserve transparency
-                    icon.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    icon.Save(ms);
                     ms.Seek(0, SeekOrigin.Begin);
                     avaloniaIcon = new WindowIcon(ms);
                 }

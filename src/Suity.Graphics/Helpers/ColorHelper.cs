@@ -188,7 +188,7 @@ public static class ColorHelper
         try
         {
             // Use ColorTranslator to handle HTML color parsing
-            color = ColorTranslator.FromHtml(htmlColor);
+            color = ColorTranslators.FromHtml(htmlColor);
             return true;
         }
         catch

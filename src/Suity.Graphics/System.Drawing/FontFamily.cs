@@ -1,6 +1,4 @@
-using System;
-
-namespace Suity.Views.Drawing;
+namespace System.Drawing;
 
 /// <summary>
 /// Represents a font family data structure. Contains font family properties without actual rendering functionality.

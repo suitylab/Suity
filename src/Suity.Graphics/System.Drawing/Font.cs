@@ -1,6 +1,4 @@
-using System;
-
-namespace Suity.Views.Drawing;
+namespace System.Drawing;
 
 /// <summary>
 /// Represents a font data structure used for rendering text. Contains font properties without actual rendering functionality.
@@ -11,6 +9,11 @@ public sealed class Font
     /// Gets the <see cref="FontFamily"/> of this <see cref="Font"/>.
     /// </summary>
     public FontFamily FontFamily { get; }
+
+    /// <summary>
+    /// Gets the face name of this <see cref="Font"/>.
+    /// </summary>
+    public string Name => FontFamily.Name;
 
     /// <summary>
     /// Gets the size of this <see cref="Font"/> in the units specified by the <see cref="Unit"/> property.

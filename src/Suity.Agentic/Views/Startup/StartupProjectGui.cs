@@ -19,6 +19,12 @@ namespace Suity.Editor.Views.Startup;
 
 internal class StartupProjectGui : IDrawImGuiNode, IDisposable
 {
+    public static Bitmap BmpUsageTemplate { get; } = Suity.Editor.Properties.Resources.UsageTemplate.ToBitmap();
+    public static Bitmap BmpUsageExample { get; } = Suity.Editor.Properties.Resources.UsageExample.ToBitmap();
+    public static Bitmap BmpUsageLearning { get; } = Suity.Editor.Properties.Resources.UsageLearning.ToBitmap();
+    public static Bitmap BmpUsagePreset { get; } = Suity.Editor.Properties.Resources.UsagePreset.ToBitmap();
+    public static Bitmap BmpCloudDownload { get; } = Suity.Editor.Properties.Resources.CloudDownload.ToBitmap();
+
     private enum Pages
     {
         None,
@@ -447,6 +453,7 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
         });
     }
 
+
     private void ConfigProjectTemplate(ImGui gui, int i, ProjectTemplateInfo template)
     {
         var item = gui.HorizontalButton($"item{i}")
@@ -458,26 +465,26 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
             switch (template.TemplateUsage)
             {
                 case ProjectTemplateUsages.Template:
-                    gui.Image(Suity.Editor.Properties.Resources.UsageTemplate).InitClass()
+                    gui.Image(BmpUsageTemplate).InitClass()
                     .InitClass("icon32")
                     .SetToolTipsL("Template");
                     break;
 
                 case ProjectTemplateUsages.Example:
-                    gui.Image(Suity.Editor.Properties.Resources.UsageSample).InitClass()
+                    gui.Image(BmpUsageExample).InitClass()
                     .InitClass("icon32")
                     .SetToolTipsL("Example");
                     break;
 
                 case ProjectTemplateUsages.Learning:
-                    gui.Image(Suity.Editor.Properties.Resources.UsageLearning).InitClass()
+                    gui.Image(BmpUsageLearning).InitClass()
                     .InitClass("icon32")
                     .SetToolTipsL("Learning");
                     break;
 
                 case ProjectTemplateUsages.Preset:
                 default:
-                    gui.Image(Suity.Editor.Properties.Resources.UsagePreset).InitClass()
+                    gui.Image(BmpUsagePreset).InitClass()
                     .InitClass("icon32")
                     .SetToolTipsL("Preset");
                     break;
@@ -515,7 +522,7 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
 
                     if (!File.Exists(tFileName))
                     {
-                        gui.Image("CloudDownload", Suity.Editor.Properties.Resources.CloudDownload)
+                        gui.Image("CloudDownload", BmpCloudDownload)
                         .InitClass("icon32")
                         .SetToolTipsL("File not downloaded");
                     }

@@ -81,9 +81,8 @@ namespace Suity.Editor
             //        DataContext = new SimpleWindowViewModel(),
             //    };
             //}
-
+            
             // DockManager.s_enableSplitToWindow = true;
-
 
             switch (ApplicationLifetime)
             {

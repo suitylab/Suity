@@ -39,7 +39,7 @@ internal class DialogItem : IDialogMessage
     private static readonly Color ColorUser = EditorColorScheme.Default.EditorBG;  //ColorTranslator.FromHtml("#3F8ABF");
     private static readonly Color ColorRemote = EditorColorScheme.Default.EditorBG;
     private static readonly Color ColorSystem = EditorColorScheme.Default.EditorBG;
-    private static readonly Color ColorDebug = ColorTranslator.FromHtml("#963FBF");
+    private static readonly Color ColorDebug = ColorTranslators.FromHtml("#963FBF");
 
     private List<DialogElement> _elements;
 

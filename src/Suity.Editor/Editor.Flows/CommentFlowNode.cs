@@ -9,7 +9,7 @@ namespace Suity.Editor.Flows;
 /// </summary>
 public class CommentFlowNode : FlowNode
 {
-    private readonly Color DefaultBackgroundColor = ColorTranslator.FromHtml("#223322");
+    private readonly Color DefaultBackgroundColor = ColorTranslators.FromHtml("#223322");
 
     private readonly TextBlockProperty _comment = new("Comment", "Comment");
     private readonly ColorProperty _bgColor = new("Color", "Color");

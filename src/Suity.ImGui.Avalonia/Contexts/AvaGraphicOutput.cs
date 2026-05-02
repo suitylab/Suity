@@ -257,6 +257,20 @@ internal class AvaGraphicOutput : IGraphicOutput
     }
 
     /// <inheritdoc/>
+    public SizeF MeasureImage(System.Drawing.Image image)
+    {
+        var skImg = image.ToSKImage();
+        if (skImg != null)
+        {
+            return new SizeF(skImg.Width, skImg.Height);
+        }
+        else
+        {
+            return SizeF.Empty;
+        }
+    }
+
+    /// <inheritdoc/>
     public int ClipDepth => _clipDepth;
 
     /// <inheritdoc/>

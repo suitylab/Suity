@@ -13,6 +13,7 @@ using Suity.Views.Graphics;
 using Suity.Views.Named;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Suity.Editor;
 
@@ -42,6 +43,10 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
         // ObjectType.RegisterTypeInfoResolver(SValueTypeInfoResolver.Instance);
         RexGlobalResolve.Current = this;
         SyncTypes.InitializeGlobalResolver(EditorSyncTypeResolver.Instance);
+        SyncTypes.SetValueResolver(typeof(Color), 
+            s => ColorTranslators.FromHtmlSafe(s), 
+            o => o is Color c ? ColorTranslators.ToHtml(c) : string.Empty);
+
         NamedExternalBK.Instance._globalResolver = EditorSyncTypeResolver.Instance;
 
         EditorRexes.EnsureInMainThread.AddActionListener(() => EnsureInMainThread());

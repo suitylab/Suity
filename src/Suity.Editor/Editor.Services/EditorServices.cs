@@ -254,6 +254,17 @@ public static class EditorServices
 
     #endregion
 
+    #region IDrawingService
+
+    private static readonly ServiceStore<IDrawingService> _drawingService = new();
+
+    /// <summary>
+    /// Drawing service
+    /// </summary>
+    public static IDrawingService DrawingService => _drawingService.Get();
+
+    #endregion
+
     #region IImGuiService
 
     private static readonly ServiceStore<IImGuiService> _imgui = new();

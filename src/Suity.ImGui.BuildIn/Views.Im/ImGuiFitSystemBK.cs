@@ -403,9 +403,12 @@ public class ImGuiFitSystemBK : ImGuiFitSystem
     {
         var image = node.Image;
 
+        // Due to the image is only a data representation, it may not be loaded when fitting, so we need to check if it's loaded before measuring it.
+        var size = node.Gui.Output.MeasureImage(image);
+
         if (image is { })
         {
-            node.SetSize(image.Width, image.Height);
+            node.SetSize(size.Width, size.Height);
             node.Layout();
         }
     }

@@ -1,3 +1,4 @@
+using Avalonia.Media;
 using SkiaSharp;
 
 namespace Suity.Helpers;
@@ -124,136 +125,37 @@ public static class SkiaSharpUtils
     public static System.Drawing.Size ToDrawingSize(this SKSizeI size) 
 		=> new System.Drawing.Size(size.Width, size.Height);
 
-    // System.Drawing.Image
-
-    /// <summary>
-    /// Converts a <see cref="SKPicture"/> to a <see cref="System.Drawing.Image"/> with specified dimensions.
-    /// </summary>
-    /// <param name="picture">The SkiaSharp picture.</param>
-    /// <param name="dimensions">The target dimensions.</param>
-    /// <returns>A System.Drawing.Image representation.</returns>
-    public static System.Drawing.Image ToBitmap(this SKPicture picture, SKSizeI dimensions)
-	{
-        using var image = SKImage.FromPicture(picture, dimensions);
-        return image.ToBitmap();
-    }
-
-	/// <summary>
-	/// Converts a <see cref="SKImage"/> to a <see cref="System.Drawing.Image"/>.
-	/// </summary>
-	/// <param name="skiaImage">The SkiaSharp image.</param>
-	/// <returns>A System.Drawing.Image representation.</returns>
-	public static System.Drawing.Image ToBitmap(this SKImage skiaImage)
-	{
-		// TODO: maybe keep the same color types where we can, instead of just going to the platform default
-
-		var bitmap = new System.Drawing.Bitmap(skiaImage.Width, skiaImage.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
-		var data = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, bitmap.PixelFormat);
-
-		// copy
-		using (var pixmap = new SKPixmap(new SKImageInfo(data.Width, data.Height), data.Scan0, data.Stride))
-		{
-			skiaImage.ReadPixels(pixmap, 0, 0);
-		}
-
-		bitmap.UnlockBits(data);
-		return bitmap;
-	}
-
-	/// <summary>
-	/// Converts a <see cref="SKBitmap"/> to a <see cref="System.Drawing.Image"/>.
-	/// </summary>
-	/// <param name="skiaBitmap">The SkiaSharp bitmap.</param>
-	/// <returns>A System.Drawing.Image representation.</returns>
-	public static System.Drawing.Image ToBitmap(this SKBitmap skiaBitmap)
-	{
-        using var pixmap = skiaBitmap.PeekPixels();
-        using var image = SKImage.FromPixels(pixmap);
-        var bmp = image.ToBitmap();
-        GC.KeepAlive(skiaBitmap);
-        return bmp;
-    }
-
-	/// <summary>
-	/// Converts a <see cref="SKPixmap"/> to a <see cref="System.Drawing.Image"/>.
-	/// </summary>
-	/// <param name="pixmap">The SkiaSharp pixmap.</param>
-	/// <returns>A System.Drawing.Image representation.</returns>
-	public static System.Drawing.Image ToBitmap(this SKPixmap pixmap)
-	{
-        using var image = SKImage.FromPixels(pixmap);
-        return image.ToBitmap();
-    }
-
-	/// <summary>
-	/// Converts a <see cref="System.Drawing.Image"/> to a <see cref="SKBitmap"/>.
-	/// </summary>
-	/// <param name="bitmap">The System.Drawing image.</param>
-	/// <returns>A SkiaSharp bitmap.</returns>
-	public static SKBitmap ToSKBitmap(this System.Drawing.Image bitmap)
-	{
-		// TODO: maybe keep the same color types where we can, instead of just going to the platform default
-
-		var info = new SKImageInfo(bitmap.Width, bitmap.Height);
-		var skiaBitmap = new SKBitmap(info);
-		using (var pixmap = skiaBitmap.PeekPixels())
-		{
-			bitmap.ToSKPixmap(pixmap);
-		}
-		return skiaBitmap;
-	}
-
 	/// <summary>
 	/// Converts a <see cref="System.Drawing.Image"/> to a <see cref="SKImage"/>.
 	/// </summary>
 	/// <param name="bitmap">The System.Drawing image.</param>
 	/// <returns>A SkiaSharp image.</returns>
-	public static SKImage ToSKImage(this System.Drawing.Image bitmap)
+	public static SKImage? ToSKImage(this System.Drawing.Image drawingImage)
 	{
-		// TODO: maybe keep the same color types where we can, instead of just going to the platform default
+        if (drawingImage is not System.Drawing.Bitmap bmp || bmp.Data is null)
+        {
+            return null;
+        }
 
-		var info = new SKImageInfo(bitmap.Width, bitmap.Height);
-		var image = SKImage.Create(info);
-		using (var pixmap = image.PeekPixels())
-		{
-			bitmap.ToSKPixmap(pixmap);
-		}
-		return image;
-	}
+        var resolver = bmp.Resolver as AvaBitmapResolver;
+        if (resolver?.SKImg is { } skImg)
+        {
+            return skImg;
+        }
 
-	/// <summary>
-	/// Converts a <see cref="System.Drawing.Image"/> to a <see cref="SKPixmap"/>.
-	/// </summary>
-	/// <param name="bitmap">The System.Drawing image.</param>
-	/// <param name="pixmap">The target SkiaSharp pixmap to write pixels into.</param>
-	public static void ToSKPixmap(this System.Drawing.Image bitmap, SKPixmap pixmap)
-	{
-		// TODO: maybe keep the same color types where we can, instead of just going to the platform default
+		using SKData data = SKData.CreateCopy(bmp.Data);
+        skImg = SKImage.FromEncodedData(data);
 
-		if (pixmap.ColorType == SKImageInfo.PlatformColorType)
-		{
-			var info = pixmap.Info;
-			using (var tempBitmap = new System.Drawing.Bitmap(info.Width, info.Height, info.RowBytes, System.Drawing.Imaging.PixelFormat.Format32bppPArgb, pixmap.GetPixels()))
-			using (var gr = System.Drawing.Graphics.FromImage(tempBitmap))
-			{
-				// Clear graphic to prevent display artifacts with transparent bitmaps					
-				gr.Clear(System.Drawing.Color.Transparent);
-				
-				gr.DrawImageUnscaled(bitmap, 0, 0);
-				//gr.DrawImage(bitmap, 0, 0);
-			}
-		}
-		else
-		{
-			// we have to copy the pixels into a format that we understand
-			// and then into a desired format
-			// TODO: we can still do a bit more for other cases where the color types are the same
-			using (var tempImage = bitmap.ToSKImage())
-			{
-				tempImage.ReadPixels(pixmap, 0, 0);
-			}
-		}
-	}
+        if (resolver is null)
+        {
+            resolver = new AvaBitmapResolver(skImg);
+            bmp.Resolver = resolver;
+        }
+
+        resolver.SKImg = skImg;
+
+        return skImg;
+    }
 
     // System.Drawing.Color
 

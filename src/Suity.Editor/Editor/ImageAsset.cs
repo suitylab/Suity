@@ -2,7 +2,6 @@
 using Suity.Helpers;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace Suity.Editor;
 
@@ -27,7 +26,7 @@ public class ImageAsset : Asset
         if (image is Bitmap bitmap)
         {
             // Set to standard resolution
-            bitmap.SetResolution(100, 100);
+            // bitmap.SetResolution(100, 100);
         }
 
         LocalName = assetKey;
@@ -71,13 +70,13 @@ public class ImageAsset : Asset
 
                 if (_image is Bitmap bmp)
                 {
-                    if (bmp.Width <= IconHelper.SmallSize)
+                    if (bmp.Width <= ImageHelper.SmallSize)
                     {
                         _iconSmall = bmp;
                         return _iconSmall;
                     }
 
-                    _iconSmall = bmp.Resize(IconHelper.SmallSize, IconHelper.SmallSize);
+                    _iconSmall = bmp.Resize(ImageHelper.SmallSize, ImageHelper.SmallSize);
                     if (path != null)
                     {
                         _image.Dispose();
@@ -104,7 +103,7 @@ public class ImageAsset : Asset
         try
         {
             using var stroage = fileName.GetStorageItem();
-            return Image.FromStream(stroage.GetInputStream());
+            return ImageHelper.FromStream(stroage.GetInputStream());
         }
         catch (Exception err)
         {
@@ -131,14 +130,16 @@ public class ImageAsset : Asset
     /// </summary>
     public static Image ImageResize(Bitmap source, int width, int height)
     {
-        var bitmap = new Bitmap(width, height, source.PixelFormat);
-        var graphicsImage = Graphics.FromImage(bitmap);
-        graphicsImage.SmoothingMode = SmoothingMode.HighQuality;
-        graphicsImage.InterpolationMode = InterpolationMode.HighQualityBicubic;
-        graphicsImage.DrawImage(source, 0, 0, bitmap.Width, bitmap.Height);
-        graphicsImage.Dispose();
+        /*        var bitmap = new Bitmap(width, height, source.PixelFormat);
+                var graphicsImage = Graphics.FromImage(bitmap);
+                graphicsImage.SmoothingMode = SmoothingMode.HighQuality;
+                graphicsImage.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphicsImage.DrawImage(source, 0, 0, bitmap.Width, bitmap.Height);
+                graphicsImage.Dispose();
 
-        return bitmap;
+                return bitmap;*/
+
+        return source;
     }
 
     public override bool CanExportToLibrary => true;

@@ -248,7 +248,7 @@ public class TypeFlowDataStyle : IFlowDataStyle
 
         if (!string.IsNullOrWhiteSpace(colorCode))
         {
-            color = ColorTranslator.FromHtml(colorCode);
+            color = ColorTranslators.FromHtml(colorCode);
         }
         else
         {

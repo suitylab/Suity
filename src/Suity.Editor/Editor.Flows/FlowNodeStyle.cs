@@ -229,7 +229,7 @@ class AttributedFlowNodeStyle : FlowNodeStyle
         {
             try
             {
-                Color color = ColorTranslator.FromHtml(attr.Color);
+                Color color = ColorTranslators.FromHtml(attr.Color);
                 _brush = new SolidBrush(color);
                 _color = color;
             }

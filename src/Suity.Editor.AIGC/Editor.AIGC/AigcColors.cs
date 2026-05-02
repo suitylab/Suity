@@ -98,28 +98,28 @@ public class AigcColors
     /// <summary>
     /// Color object for error states.
     /// </summary>
-    public static Color ErrorColor { get; } = ColorTranslator.FromHtml(Error);
+    public static Color ErrorColor { get; } = ColorTranslators.FromHtml(Error);
 
     /// <summary>
     /// Color object for plan background.
     /// </summary>
-    public static Color PlanBgColor { get; } = ColorTranslator.FromHtml(PlanBg);
+    public static Color PlanBgColor { get; } = ColorTranslators.FromHtml(PlanBg);
 
     /// <summary>
     /// Color object for agent background.
     /// </summary>
-    public static Color AgentBgColor { get; } = ColorTranslator.FromHtml(AgentBg);
+    public static Color AgentBgColor { get; } = ColorTranslators.FromHtml(AgentBg);
 
 
     /// <summary>
     /// Color object for code design background.
     /// </summary>
-    public static Color CodeDesignBgColor { get; } = ColorTranslator.FromHtml(CodeDesignBg);
+    public static Color CodeDesignBgColor { get; } = ColorTranslators.FromHtml(CodeDesignBg);
 
     /// <summary>
     /// Color object for workflow elements.
     /// </summary>
-    public static Color WorkflowColor { get; } = ColorTranslator.FromHtml(Workflow);
+    public static Color WorkflowColor { get; } = ColorTranslators.FromHtml(Workflow);
 
 
     /// <summary>

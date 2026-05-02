@@ -1,6 +1,4 @@
-using System;
-
-namespace Suity.Views.Drawing;
+namespace System.Drawing;
 
 /// <summary>
 /// Represents a brush data structure used for filling the interiors of shapes. Contains fill properties without actual rendering functionality.

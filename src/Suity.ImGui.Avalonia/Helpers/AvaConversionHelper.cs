@@ -1,5 +1,6 @@
 using Avalonia.Media.Imaging;
 using SkiaSharp;
+using Suity.Editor.Services;
 using System.Drawing.Imaging;
 
 namespace Suity.Helpers;
@@ -9,38 +10,39 @@ namespace Suity.Helpers;
 /// </summary>
 public static class AvaConversionHelper
 {
-    // Cache dictionary: Key is the original Image object, Value is the converted Avalonia Bitmap
-    // Note: If your Image is loaded from a file, it's recommended to use the file path as Key.
-    // If it's an in-memory object, using WeakReference here would be safer to prevent memory leaks.
-    private static readonly Dictionary<System.Drawing.Image, Bitmap> _bitmapCache = [];
 
     /// <summary>
     /// Converts a System.Drawing.Image to an Avalonia Bitmap with caching.
     /// </summary>
     /// <param name="drawingImage">The source image.</param>
     /// <returns>The cached Avalonia bitmap.</returns>
-    public static Bitmap ToAvaloniaBitmapCached(this System.Drawing.Image drawingImage)
+    public static Bitmap? ToAvaloniaBitmapCached(this System.Drawing.Image drawingImage)
     {
-        if (drawingImage == null) return null;
-
-        // 1. Try to get from cache
-        if (_bitmapCache.TryGetValue(drawingImage, out var cachedBitmap))
+        if (drawingImage is not System.Drawing.Bitmap bmp || bmp.Data is null)
         {
-            return cachedBitmap;
+            return null;
         }
 
-        // 2. Execute conversion logic
-        using var ms = new MemoryStream();
-        // Save System.Drawing.Image to memory stream (PNG recommended to preserve transparency)
-        drawingImage.Save(ms, ImageFormat.Png);
+        var resolver = bmp.Resolver as AvaBitmapResolver;
+        if (resolver?.AvaBmp is { } avaBmp)
+        {
+            return avaBmp;
+        }
+
+        using var ms = new MemoryStream(bmp.Data);
         ms.Seek(0, SeekOrigin.Begin);
 
-        var bitmap = new Bitmap(ms);
+        avaBmp = new Bitmap(ms);
 
-        // 3. Store in cache
-        _bitmapCache[drawingImage] = bitmap;
+        if (resolver is null)
+        {
+            resolver = new AvaBitmapResolver(avaBmp);
+            bmp.Resolver = resolver;
+        }
 
-        return bitmap;
+        resolver.AvaBmp = avaBmp;
+
+        return avaBmp;
     }
 
     /// <summary>
@@ -94,15 +96,4 @@ public static class AvaConversionHelper
         return new SKRect((float)rect.Left, (float)rect.Top, (float)rect.Right, (float)rect.Bottom);
     }
 
-    /// <summary>
-    /// Clear cache to prevent memory overflow
-    /// </summary>
-    public static void ClearCache()
-    {
-        foreach (var bitmap in _bitmapCache.Values)
-        {
-            bitmap.Dispose();
-        }
-        _bitmapCache.Clear();
-    }
 }

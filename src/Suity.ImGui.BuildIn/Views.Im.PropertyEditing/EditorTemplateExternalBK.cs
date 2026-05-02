@@ -390,7 +390,7 @@ internal class EditorTemplateExternalBK : EditorTemplateExternal
         string str;
         if (!target.ValueMultiple || values.Any())
         {
-            str = ColorTranslator.ToHtml(values.First());
+            str = ColorTranslators.ToHtml(values.First());
         }
         else
         {
@@ -411,7 +411,7 @@ internal class EditorTemplateExternalBK : EditorTemplateExternal
             {
                 try
                 {
-                    c = ColorTranslator.FromHtml(v);
+                    c = ColorTranslators.FromHtml(v);
                 }
                 catch (Exception err)
                 {
@@ -425,7 +425,7 @@ internal class EditorTemplateExternalBK : EditorTemplateExternal
             handler(action);
             n.SetClass(PropertyGridThemes.ClassPropertyInput);
 
-            n.Text = c != Color.Empty ? ColorTranslator.ToHtml(c) : string.Empty;
+            n.Text = c != Color.Empty ? ColorTranslators.ToHtml(c) : string.Empty;
         });
 
         void ApplyValue(Color c, bool final)

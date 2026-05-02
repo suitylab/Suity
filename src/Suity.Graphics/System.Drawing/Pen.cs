@@ -1,6 +1,4 @@
-using System;
-
-namespace Suity.Views.Drawing;
+namespace System.Drawing;
 
 /// <summary>
 /// Represents a pen data structure used for drawing lines and curves. Contains stroke properties without actual rendering functionality.

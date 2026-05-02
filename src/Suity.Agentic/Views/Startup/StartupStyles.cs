@@ -26,9 +26,9 @@ public class StartupStyles
     public readonly Color _colorFormBody = Color.FromArgb(34, 38, 39);
 
 
-    public Bitmap Icon { get; } = Suity.Editor.Properties.Resources.LogoText48;
-
     public ImGuiTheme Theme { get; }
+
+    public Bitmap Icon { get; } = Suity.Editor.Properties.Resources.LogoText48.ToBitmap();
 
     private StartupStyles()
     {

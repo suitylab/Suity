@@ -93,17 +93,19 @@ public static class SyncTypes
                 return ButtonValue.Empty;
             }
         });
-        _valueResolvers[typeof(Color)] = new ValueResolver(s =>
+    }
+
+    public static void SetValueResolver(Type type, Func<string, object> valueResolver, Func<object, string> stringResolver = null)
+    {
+        if (type is null)
         {
-            try
-            {
-                return ColorTranslator.FromHtml(s);
-            }
-            catch (Exception)
-            {
-                return Color.Empty;
-            }
-        }, o => o is Color c ? ColorTranslator.ToHtml(c) : string.Empty);
+            throw new ArgumentNullException(nameof(type));
+        }
+        if (valueResolver is null)
+        {
+            throw new ArgumentNullException(nameof(valueResolver));
+        }
+        _valueResolvers[type] = new ValueResolver(valueResolver, stringResolver);
     }
 
     public static ISyncTypeResolver GlobalResolver => _globalResolver;

@@ -2,7 +2,6 @@ using Suity.Collections;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
 
 namespace Suity.Helpers;
@@ -11,7 +10,7 @@ namespace Suity.Helpers;
 /// Provides utility methods for icon and image operations, including resizing,
 /// grayscale conversion, and bitmap manipulation.
 /// </summary>
-public static class IconHelper
+public static class ImageHelper
 {
     /// <summary>
     /// The standard dimension (in pixels) for small icons.
@@ -29,10 +28,16 @@ public static class IconHelper
     /// <returns>A new <see cref="Bitmap"/> created from the byte array.</returns>
     public static Bitmap ToBitmap(this byte[] b, int dpi = 100)
     {
-        var bmp = new Bitmap((new MemoryStream(b)), true);
-        bmp.SetResolution(dpi, dpi);
+        var bmp = new Bitmap(b);
+        //bmp.SetResolution(dpi, dpi);
 
         return bmp;
+    }
+
+    public static Image FromStream(Stream stream)
+    {
+        byte[] b = stream.StreamToBytes();
+        return ToBitmap(b);
     }
 
     /// <summary>
@@ -45,7 +50,7 @@ public static class IconHelper
     {
         return image;
 
-        if (image == null)
+/*        if (image == null)
         {
             return null;
         }
@@ -60,7 +65,7 @@ public static class IconHelper
             bitmap = new Bitmap(image);
         }
 
-        return _sizeSmalls.GetOrAdd(bitmap, _ => bitmap.Resize(SmallSize, SmallSize));
+        return _sizeSmalls.GetOrAdd(bitmap, _ => bitmap.Resize(SmallSize, SmallSize));*/
     }
 
     /// <summary>
@@ -123,13 +128,15 @@ public static class IconHelper
     /// </summary>
     public static Bitmap Resize(this Bitmap source, Int32 width, Int32 height)
     {
-        Bitmap bitmap = new Bitmap(width, height, source.PixelFormat);
-        Graphics graphicsImage = Graphics.FromImage(bitmap);
-        graphicsImage.SmoothingMode = SmoothingMode.HighQuality;
-        graphicsImage.InterpolationMode = InterpolationMode.HighQualityBicubic;
-        graphicsImage.DrawImage(source, 0, 0, bitmap.Width, bitmap.Height);
-        graphicsImage.Dispose();
-        return bitmap;
+        /*        Bitmap bitmap = new Bitmap(width, height, source.PixelFormat);
+                Graphics graphicsImage = Graphics.FromImage(bitmap);
+                graphicsImage.SmoothingMode = SmoothingMode.HighQuality;
+                graphicsImage.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphicsImage.DrawImage(source, 0, 0, bitmap.Width, bitmap.Height);
+                graphicsImage.Dispose();
+                return bitmap;*/
+
+        return source;
     }
 
     /// <summary>
@@ -139,18 +146,20 @@ public static class IconHelper
     /// <returns>The same bitmap instance with all pixels converted to grayscale.</returns>
     public static Bitmap ToGray(this Bitmap bmp)
     {
-        for (int i = 0; i < bmp.Width; i++)
-        {
-            for (int j = 0; j < bmp.Height; j++)
-            {
-                // Obtain the RGB color of the pixel
-                Color color = bmp.GetPixel(i, j);
-                // Using formulas to calculate grayscale values
-                int gray = (int)(color.R * 0.3 + color.G * 0.59 + color.B * 0.11);
-                Color newColor = Color.FromArgb(gray, gray, gray);
-                bmp.SetPixel(i, j, newColor);
-            }
-        }
+        /*        for (int i = 0; i < bmp.Width; i++)
+                {
+                    for (int j = 0; j < bmp.Height; j++)
+                    {
+                        // Obtain the RGB color of the pixel
+                        Color color = bmp.GetPixel(i, j);
+                        // Using formulas to calculate grayscale values
+                        int gray = (int)(color.R * 0.3 + color.G * 0.59 + color.B * 0.11);
+                        Color newColor = Color.FromArgb(gray, gray, gray);
+                        bmp.SetPixel(i, j, newColor);
+                    }
+                }
+                return bmp;*/
+
         return bmp;
     }
 }

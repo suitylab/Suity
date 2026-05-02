@@ -437,7 +437,7 @@ public class LabelProperty : IValueProperty
 {
     public ViewProperty Property { get; }
 
-    public LabelProperty(string name, string description = null, string toolTips = null, Image icon = null)
+    public LabelProperty(string name, string description = null, string toolTips = null, object icon = null)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -477,7 +477,7 @@ public class ButtonProperty : IValueProperty
 
     public ViewProperty Property { get; }
 
-    public ButtonProperty(string name, string description = null, string toolTips = null, Image icon = null)
+    public ButtonProperty(string name, string description = null, string toolTips = null, object icon = null)
     {
         if (string.IsNullOrWhiteSpace(name))
         {

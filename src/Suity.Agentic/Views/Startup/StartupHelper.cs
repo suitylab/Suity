@@ -65,6 +65,6 @@ internal static class StartupHelper
         //float dpiX = bitmap.Width / (bitmap.HorizontalResolution / 25.4f);
         //float dpiY = bitmap.Height / (bitmap.VerticalResolution / 25.4f);
 
-        bitmap.SetResolution(dpi, dpi);
+        // bitmap.SetResolution(dpi, dpi);
     }
 }

@@ -1,6 +1,6 @@
-using System;
+using System.IO;
 
-namespace Suity.Views.Drawing;
+namespace System.Drawing;
 
 /// <summary>
 /// Represents an abstract image data structure.
@@ -28,4 +28,6 @@ public abstract class Image : IDisposable
     public virtual void Dispose()
     {
     }
+
+    public virtual void Save(Stream stream) { }
 }

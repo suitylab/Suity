@@ -158,7 +158,7 @@ public class GuiFontStyle : IValueTransition<GuiFontStyle>
         if (Font is { } && v2.Font is { })
         {
             float size = MathHelper.Lerp(Font.Size, v2.Font.Size, t);
-            v.Font = new Font(Font.FontFamily, size, Font.Style, Font.Unit, Font.GdiCharSet, Font.GdiVerticalFont);
+            v.Font = new Font(Font.FontFamily, size, Font.Style, Font.Unit/*, Font.GdiCharSet, Font.GdiVerticalFont*/);
         }
         else { v.Font = Font; }
         if (Color.HasValue && v2.Color.HasValue)

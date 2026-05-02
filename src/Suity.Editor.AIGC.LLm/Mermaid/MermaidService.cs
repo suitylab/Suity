@@ -218,10 +218,13 @@ internal class MermaidService : IMermaidService
         {
             try
             {
-                cachedBitmap = new Bitmap(cachePath);
-                lock (_cachedImages)
+                cachedBitmap = Bitmap.FromPath(cachePath);
+                if (cachedBitmap != null)
                 {
-                    _cachedImages[hashCode] = cachedBitmap;
+                    lock (_cachedImages)
+                    {
+                        _cachedImages[hashCode] = cachedBitmap;
+                    }
                 }
 
                 return cachedBitmap;
@@ -253,12 +256,9 @@ internal class MermaidService : IMermaidService
             // 1. Send request to get byte array
             byte[] imageBytes = await httpClient.GetByteArrayAsync(url);
 
-            // 2. Convert byte array to memory stream
-            using var ms = new MemoryStream(imageBytes);
 
-            // 3. Create Bitmap from stream
-            // Note: In .NET Core environment, need to install System.Drawing.Common
-            return new Bitmap(ms);
+            // 3. Create Bitmap from byte[]
+            return new Bitmap(imageBytes);
         }
         catch (Exception ex)
         {

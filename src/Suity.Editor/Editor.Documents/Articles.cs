@@ -241,7 +241,7 @@ public class ArticleAsset : Asset, IArticleAsset
     /// <summary>
     /// Gets the background color for articles.
     /// </summary>
-    public static Color ArticleBgColor { get; } = ColorTranslator.FromHtml(ArticleBgColorCode);
+    public static Color ArticleBgColor { get; } = ColorTranslators.FromHtml(ArticleBgColorCode);
 
     /// <summary>
     /// Gets the article type definition.
