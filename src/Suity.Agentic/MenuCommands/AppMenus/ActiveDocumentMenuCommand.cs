@@ -1,9 +1,9 @@
-﻿using Suity.Editor.Documents;
+﻿using Suity.Drawing;
+using Suity.Editor.Documents;
 using Suity.Helpers;
 using Suity.Views.Menu;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace Suity.Editor.MenuCommands.AppMenus;
 
@@ -14,11 +14,11 @@ public abstract class ActiveDocumentMenuCommand<T> : MenuCommand
     {
     }
 
-    protected ActiveDocumentMenuCommand(string text, Image? icon = null) : base(text, icon)
+    protected ActiveDocumentMenuCommand(string text, ImageDef? icon = null) : base(text, icon)
     {
     }
 
-    protected ActiveDocumentMenuCommand(string key, string text, Image? icon = null) : base(key, text, icon)
+    protected ActiveDocumentMenuCommand(string key, string text, ImageDef? icon = null) : base(key, text, icon)
     {
     }
 

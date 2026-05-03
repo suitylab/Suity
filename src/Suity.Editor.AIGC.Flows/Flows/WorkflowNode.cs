@@ -1,9 +1,9 @@
+using Suity.Drawing;
 using Suity.Editor.Flows;
 using Suity.Editor.Selecting;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
-using System.Drawing;
 
 namespace Suity.Editor.AIGC.Flows;
 
@@ -161,7 +161,7 @@ public class WorkflowAsset : Asset, ILLmChatProvider
     /// <summary>
     /// Gets the default icon for this asset.
     /// </summary>
-    public override Image DefaultIcon => CoreIconCache.Workflow;
+    public override ImageDef DefaultIcon => CoreIconCache.Workflow;
 
     /// <summary>
     /// Creates a chat instance for this workflow.

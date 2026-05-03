@@ -1,4 +1,5 @@
-﻿using Suity.Editor.Services;
+﻿using Suity.Drawing;
+using Suity.Editor.Services;
 using Suity.Helpers;
 using Suity.Views.Im;
 using Suity.Views.Menu;
@@ -26,10 +27,10 @@ class AboutMenuCommand : MenuCommand
 
 class AboutWindowImGui : IDrawImGui
 {
-    static readonly Image LOGO = Suity.Editor.Properties.Resources.Logo196.ToBitmap();
-    static readonly Font BIG_FONT = new Font(ImGuiTheme.DefaultFont, 42, FontStyle.Bold);
-    static readonly Font MEDIDUM_FONT = new Font(ImGuiTheme.DefaultFont, 22);
-    static readonly Font SMALL_FONT = new Font(ImGuiTheme.DefaultFont, 14);
+    static readonly ImageDef LOGO = Suity.Editor.Properties.Resources.Logo196.ToBitmap();
+    static readonly FontDef BIG_FONT = new FontDef(ImGuiTheme.DefaultFont, 42, FontStyle.Bold);
+    static readonly FontDef MEDIDUM_FONT = new FontDef(ImGuiTheme.DefaultFont, 22);
+    static readonly FontDef SMALL_FONT = new FontDef(ImGuiTheme.DefaultFont, 14);
 
     public void OnGui(ImGui gui)
     {

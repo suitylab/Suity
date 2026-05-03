@@ -1,6 +1,6 @@
+using Suity.Drawing;
 using Suity.Synchonizing;
 using Suity.Views;
-using System.Drawing;
 
 namespace Suity.Editor.AIGC.Flows;
 
@@ -50,7 +50,7 @@ public class AIgcFlowPlugin : EditorPlugin, IViewObject
     /// <summary>
     /// Gets the icon for the plugin.
     /// </summary>
-    public override Image Icon => CoreIconCache.Workflow;
+    public override ImageDef Icon => CoreIconCache.Workflow;
 
     /// <summary>
     /// Gets a value indicating whether task subdivision is prioritized over task submission.

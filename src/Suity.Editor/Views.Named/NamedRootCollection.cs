@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Synchonizing;
 using Suity.Synchonizing.Core;
@@ -315,7 +316,7 @@ public class NamedRootCollection :
     /// <summary>
     /// Gets the icon to display for this collection.
     /// </summary>
-    protected internal virtual Image OnGetIcon() => CoreIconCache.FolderDesign;
+    protected internal virtual ImageDef OnGetIcon() => CoreIconCache.FolderDesign;
 
     /// <summary>
     /// Gets the display text for this collection.

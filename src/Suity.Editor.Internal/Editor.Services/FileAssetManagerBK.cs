@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
@@ -163,14 +164,14 @@ internal sealed class FileAssetManagerBK : FileAssetManager
     }
 
     /// <inheritdoc/>
-    public override Image GetIcon(string fullPath)
+    public override ImageDef GetIcon(string fullPath)
     {
         if (string.IsNullOrEmpty(fullPath))
         {
             return null;
         }
 
-        Image image;
+        ImageDef image;
         do
         {
             Asset asset = GetAsset(fullPath);

@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Views.Graphics;
 using System;
 using System.Collections.Generic;
@@ -1793,7 +1794,7 @@ internal class ImGuiNodeBK : ImGuiNode
         }
     }
 
-    public override Font? Font
+    public override FontDef? Font
     {
         get => _font.GetValue(_flags, _animation)?.Font ?? Theme.Font;
         set
@@ -1821,7 +1822,7 @@ internal class ImGuiNodeBK : ImGuiNode
         }
     }
 
-    public override Image? Image
+    public override ImageDef? Image
     {
         get => _image.GetValue(_flags, _animation)?.Image;
         set

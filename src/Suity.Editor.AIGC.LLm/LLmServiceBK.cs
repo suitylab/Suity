@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.AIGC.Flows;
 using Suity.Editor.Flows;
@@ -8,7 +9,6 @@ using Suity.Helpers;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -654,7 +654,7 @@ The last generation is as follows:
     }
 
     /// <inheritdoc/>
-    public override async Task<Bitmap> GenerateImage(string input, AigcModelLevel level = AigcModelLevel.Default, ImageAspectRatio aspectRatio = ImageAspectRatio.Default)
+    public override async Task<BitmapDef> GenerateImage(string input, AigcModelLevel level = AigcModelLevel.Default, ImageAspectRatio aspectRatio = ImageAspectRatio.Default)
     {
         var option = new ImageGenOptions
         {
@@ -664,7 +664,7 @@ The last generation is as follows:
 
         var assistant = new ImageGenAssistant();
         var result = (await LLmService.Instance.InputMainChat(input, assistant, option)) as AICallResult;
-        if (result?.Result is Bitmap img)
+        if (result?.Result is BitmapDef img)
         {
             return img;
         }

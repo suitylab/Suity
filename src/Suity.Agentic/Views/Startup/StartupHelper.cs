@@ -1,6 +1,5 @@
-﻿using Suity.Helpers;
+﻿using Suity.Drawing;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -35,7 +34,7 @@ internal static class StartupHelper
         await contentStream.CopyToAsync(fileStream);
     }
 
-    public static async Task<Bitmap> DownloadLandingImage(string rFileName)
+    public static async Task<BitmapDef> DownloadLandingImage(string rFileName)
     {
         return null;
     }
@@ -45,17 +44,17 @@ internal static class StartupHelper
         return null;
     }
 
-    public static async Task<Bitmap> DownloadCachedImage(string rFileName, string downloadBaseUrl, string imgDir, int? dpi = null)
+    public static async Task<BitmapDef> DownloadCachedImage(string rFileName, string downloadBaseUrl, string imgDir, int? dpi = null)
     {
         return null;
     }
 
-    public static async Task<Bitmap> DownloadImageAsync(string imageUrl, string filePath = null, int? dpi = null)
+    public static async Task<BitmapDef> DownloadImageAsync(string imageUrl, string filePath = null, int? dpi = null)
     {
         return null;
     }
 
-    public static void AdjustDpiToMatchSize(Bitmap bitmap, int dpi)
+    public static void AdjustDpiToMatchSize(BitmapDef bitmap, int dpi)
     {
         if (bitmap is null)
         {

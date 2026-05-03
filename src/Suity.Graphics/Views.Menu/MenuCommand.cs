@@ -1,7 +1,7 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,7 +20,7 @@ public abstract class MenuCommand : MenuBase
     /// <summary>
     /// Icon associated with the menu command.
     /// </summary>
-    private Image _icon;
+    private ImageDef _icon;
     /// <summary>
     /// Hot key for the menu command.
     /// </summary>
@@ -66,7 +66,7 @@ public abstract class MenuCommand : MenuBase
     /// </summary>
     /// <param name="text">Text to display for the menu command</param>
     /// <param name="icon">Optional icon to display with the menu command</param>
-    public MenuCommand(string text, Image icon = null)
+    public MenuCommand(string text, ImageDef icon = null)
     {
         _text = text ?? string.Empty;
         _icon = icon;
@@ -79,7 +79,7 @@ public abstract class MenuCommand : MenuBase
     /// <param name="key">Unique identifier for the menu command</param>
     /// <param name="text">Text to display for the menu command</param>
     /// <param name="icon">Optional icon to display with the menu command</param>
-    public MenuCommand(string key, string text, Image icon = null)
+    public MenuCommand(string key, string text, ImageDef icon = null)
     {
         Id = key ?? throw new ArgumentNullException(nameof(key));
         _text = text ?? string.Empty;
@@ -113,7 +113,7 @@ public abstract class MenuCommand : MenuBase
     /// <summary>
     /// Gets or sets the icon associated with the menu command
     /// </summary>
-    public Image Icon
+    public ImageDef Icon
     {
         get => _icon;
         protected set
@@ -277,7 +277,7 @@ public abstract class MenuCommand : MenuBase
     /// <param name="action">The action to execute.</param>
     /// <param name="checkPopState">The optional popup state check action.</param>
     /// <returns>The added command.</returns>
-    public MenuCommand AddCommand(string text, Image icon, Action<MenuCommand> action = null, CheckPopStateAction checkPopState = null)
+    public MenuCommand AddCommand(string text, ImageDef icon, Action<MenuCommand> action = null, CheckPopStateAction checkPopState = null)
     {
         var cmd = new SimpleMenuCommand(text, icon, action, checkPopState);
         AddCommand(cmd);
@@ -294,7 +294,7 @@ public abstract class MenuCommand : MenuBase
     /// <param name="action">The action to execute.</param>
     /// <param name="checkPopState">The optional popup state check action.</param>
     /// <returns>The added command.</returns>
-    public MenuCommand AddCommand(string text, Image icon, bool oneItem, Action<MenuCommand> action = null, CheckPopStateAction checkPopState = null)
+    public MenuCommand AddCommand(string text, ImageDef icon, bool oneItem, Action<MenuCommand> action = null, CheckPopStateAction checkPopState = null)
     {
         var cmd = new SimpleMenuCommand(text, icon, action, checkPopState)
         {
@@ -315,7 +315,7 @@ public abstract class MenuCommand : MenuBase
     /// <param name="action">The action to execute.</param>
     /// <param name="checkPopState">The optional popup state check action.</param>
     /// <returns>The added command.</returns>
-    public MenuCommand AddCommand(string text, Type commentType, Image icon, bool oneItem, Action<MenuCommand> action = null, CheckPopStateAction checkPopState = null)
+    public MenuCommand AddCommand(string text, Type commentType, ImageDef icon, bool oneItem, Action<MenuCommand> action = null, CheckPopStateAction checkPopState = null)
     {
         var cmd = new SimpleMenuCommand(text, icon, action, checkPopState)
         {
@@ -351,7 +351,7 @@ public abstract class MenuCommand : MenuBase
     /// <param name="action">The async action to execute.</param>
     /// <param name="checkPopState">The optional popup state check action.</param>
     /// <returns>The added command.</returns>
-    public MenuCommand AddCommand(string text, Image icon, Func<MenuCommand, Task> action, CheckPopStateAction checkPopState = null)
+    public MenuCommand AddCommand(string text, ImageDef icon, Func<MenuCommand, Task> action, CheckPopStateAction checkPopState = null)
     {
         var cmd = new SimpleMenuCommand(text, icon, ConvertAsyncAction(action), checkPopState);
         AddCommand(cmd);
@@ -368,7 +368,7 @@ public abstract class MenuCommand : MenuBase
     /// <param name="action">The async action to execute.</param>
     /// <param name="checkPopState">The optional popup state check action.</param>
     /// <returns>The added command.</returns>
-    public MenuCommand AddCommand(string text, Image icon, bool oneItem, Func<MenuCommand, Task> action, CheckPopStateAction checkPopState = null)
+    public MenuCommand AddCommand(string text, ImageDef icon, bool oneItem, Func<MenuCommand, Task> action, CheckPopStateAction checkPopState = null)
     {
         var cmd = new SimpleMenuCommand(text, icon, ConvertAsyncAction(action), checkPopState)
         {
@@ -389,7 +389,7 @@ public abstract class MenuCommand : MenuBase
     /// <param name="action">The async action to execute.</param>
     /// <param name="checkPopState">The optional popup state check action.</param>
     /// <returns>The added command.</returns>
-    public MenuCommand AddCommand(string text, Type commentType, Image icon, bool oneItem, Func<MenuCommand, Task> action, CheckPopStateAction checkPopState = null)
+    public MenuCommand AddCommand(string text, Type commentType, ImageDef icon, bool oneItem, Func<MenuCommand, Task> action, CheckPopStateAction checkPopState = null)
     {
         var cmd = new SimpleMenuCommand(text, icon, ConvertAsyncAction(action), checkPopState)
         {
@@ -724,7 +724,7 @@ public abstract class MenuCommand<T> : MenuCommand where T : class
     /// <param name="target">The target object.</param>
     /// <param name="text">Text to display for the menu command.</param>
     /// <param name="icon">Optional icon to display with the menu command.</param>
-    public MenuCommand(T target, string text, Image icon = null)
+    public MenuCommand(T target, string text, ImageDef icon = null)
         : base(text, icon)
     {
         Target = target ?? throw new ArgumentNullException(nameof(target));

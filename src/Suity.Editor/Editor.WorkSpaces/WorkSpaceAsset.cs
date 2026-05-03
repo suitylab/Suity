@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ public class WorkSpaceManagerAsset : Asset
     /// <summary>
     /// Gets the default icon for this asset
     /// </summary>
-    public override Image DefaultIcon => CoreIconCache.WorkSpace;
+    public override ImageDef DefaultIcon => CoreIconCache.WorkSpace;
 
     /// <summary>
     /// Releases this asset
@@ -74,7 +75,7 @@ public class WorkSpaceAsset : Asset, ICodeLibrary
     /// Gets the icon for this asset
     /// </summary>
     /// <returns>The workspace icon</returns>
-    public override Image GetIcon() => base.GetIcon() ?? _workSpace.Icon;
+    public override ImageDef GetIcon() => base.GetIcon() ?? _workSpace.Icon;
 
     /// <summary>
     /// Releases this asset

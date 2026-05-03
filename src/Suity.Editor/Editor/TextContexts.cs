@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Documents;
 using Suity.Editor.Types;
@@ -39,9 +40,9 @@ public abstract class TextAsset : ValueAsset,
         UpdateAssetTypes(typeof(IPagedTextAsset), typeof(ITextAsset), typeof(IRenderable), typeof(IArticleAsset));
     }
 
-    public override Image DefaultIcon => CoreIconCache.Text;
+    public override ImageDef DefaultIcon => CoreIconCache.Text;
 
-    public override Image GetIcon() => EditorUtility.GetIconForFile(FileName?.FullPath);
+    public override ImageDef GetIcon() => EditorUtility.GetIconForFile(FileName?.FullPath);
 
     public override bool CanExportToLibrary => true;
 

@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.AIGC.Mermaid;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
@@ -11,7 +12,6 @@ using Suity.Synchonizing.Core;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
@@ -453,7 +453,7 @@ public class AIAssistantPlugin : BackendPlugin, IAIAssistantConfig, IViewObject
     public override string Description => "AI Assistant";
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Assistant;
+    public override ImageDef Icon => CoreIconCache.Assistant;
 
     /// <inheritdoc/>
     public override int Order => 950;

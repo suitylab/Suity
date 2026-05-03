@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Properties;
 using Suity.Helpers;
 using System.Drawing;
@@ -22,7 +23,7 @@ public class SiliconFlowPlugin : BaseOpenAIPlugin<SiliconFlowLLmModelAsset, Sili
     /// <summary>
     /// Gets the icon image for SiliconFlow.
     /// </summary>
-    public static Bitmap SiliconFlowIcon { get; } = Resources.SiliconFlow.ToBitmap();
+    public static BitmapDef SiliconFlowIcon { get; } = Resources.SiliconFlow.ToBitmap();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SiliconFlowPlugin"/> class.
@@ -61,7 +62,7 @@ public class SiliconFlowLLmModelAsset : ThirdPartyLLmModelAsset
     /// <summary>
     /// Gets the default icon for SiliconFlow models.
     /// </summary>
-    public override Image DefaultIcon => SiliconFlowPlugin.SiliconFlowIcon;
+    public override ImageDef DefaultIcon => SiliconFlowPlugin.SiliconFlowIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.
@@ -88,7 +89,7 @@ public class SiliconFlowImageGenModelAsset : ThirdPartyImageGenAsset
     /// <summary>
     /// Gets the default icon for SiliconFlow image models.
     /// </summary>
-    public override Image DefaultIcon => SiliconFlowPlugin.SiliconFlowIcon;
+    public override ImageDef DefaultIcon => SiliconFlowPlugin.SiliconFlowIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.

@@ -1,4 +1,5 @@
 ﻿using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Design;
 using Suity.Editor.Types;
@@ -27,7 +28,7 @@ public abstract class DataTableAsset : GroupAsset,
         UpdateAssetTypes(typeof(IRenderable), typeof(IDataTableAsset));
     }
 
-    public override Image DefaultIcon => CoreIconCache.DataGrid;
+    public override ImageDef DefaultIcon => CoreIconCache.DataGrid;
 
     public override bool CanExportToLibrary => true;
 

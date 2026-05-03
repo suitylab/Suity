@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Design;
 using Suity.Editor.Documents.Linked;
@@ -82,7 +83,7 @@ public class DTypeFamily : GroupAsset,
     }
 
     /// <inheritdoc />
-    public override Image DefaultIcon => CoreIconCache.Class;
+    public override ImageDef DefaultIcon => CoreIconCache.Class;
 
     /// <inheritdoc />
     public override bool CanExportToLibrary => true;

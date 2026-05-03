@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Suity.Drawing;
+using System;
 using System.Drawing;
 
 namespace Suity.Selecting;
@@ -41,5 +42,5 @@ public class SelectionOption
     /// <summary>
     /// Icon
     /// </summary>
-    public Image Icon { get; set; }
+    public ImageDef Icon { get; set; }
 }

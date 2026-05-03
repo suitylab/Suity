@@ -1,40 +1,42 @@
-namespace System.Drawing;
+using System.Drawing;
+
+namespace Suity.Drawing;
 
 /// <summary>
 /// Represents a brush data structure used for filling the interiors of shapes. Contains fill properties without actual rendering functionality.
 /// </summary>
-public abstract class Brush
+public abstract class BrushDef
 {
     /// <summary>
-    /// Creates a clone of this <see cref="Brush"/> object.
+    /// Creates a clone of this <see cref="BrushDef"/> object.
     /// </summary>
-    /// <returns>A new <see cref="Brush"/> object with the same properties as this one.</returns>
-    public abstract Brush Clone();
+    /// <returns>A new <see cref="BrushDef"/> object with the same properties as this one.</returns>
+    public abstract BrushDef Clone();
 }
 
 /// <summary>
 /// Represents a solid fill brush with a single color.
 /// </summary>
-public sealed class SolidBrush : Brush
+public sealed class SolidBrushDef : BrushDef
 {
     /// <summary>
-    /// Gets or sets the color of this <see cref="SolidBrush"/>.
+    /// Gets or sets the color of this <see cref="SolidBrushDef"/>.
     /// </summary>
     public Color Color { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SolidBrush"/> class with the specified color.
+    /// Initializes a new instance of the <see cref="SolidBrushDef"/> class with the specified color.
     /// </summary>
     /// <param name="color">A <see cref="Color"/> structure that represents the color of this brush.</param>
-    public SolidBrush(Color color)
+    public SolidBrushDef(Color color)
     {
         Color = color;
     }
 
     /// <inheritdoc/>
-    public override Brush Clone()
+    public override BrushDef Clone()
     {
-        return new SolidBrush(Color);
+        return new SolidBrushDef(Color);
     }
 
     /// <inheritdoc/>
@@ -47,7 +49,7 @@ public sealed class SolidBrush : Brush
 /// <summary>
 /// Represents a brush that fills an area with a linear gradient.
 /// </summary>
-public sealed class LinearGradientBrush : Brush
+public sealed class LinearGradientBrushDef : BrushDef
 {
     /// <summary>
     /// Gets the starting point of the gradient.
@@ -80,13 +82,13 @@ public sealed class LinearGradientBrush : Brush
     public LinearGradientMode Mode { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="LinearGradientBrush"/> class with two colors and a direction vector.
+    /// Initializes a new instance of the <see cref="LinearGradientBrushDef"/> class with two colors and a direction vector.
     /// </summary>
     /// <param name="point1">A <see cref="PointF"/> that represents the starting point of the gradient.</param>
     /// <param name="point2">A <see cref="PointF"/> that represents the ending point of the gradient.</param>
     /// <param name="color1">A <see cref="Color"/> that represents the starting color of the gradient.</param>
     /// <param name="color2">A <see cref="Color"/> that represents the ending color of the gradient.</param>
-    public LinearGradientBrush(PointF point1, PointF point2, Color color1, Color color2)
+    public LinearGradientBrushDef(PointF point1, PointF point2, Color color1, Color color2)
     {
         Point1 = point1;
         Point2 = point2;
@@ -97,13 +99,13 @@ public sealed class LinearGradientBrush : Brush
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="LinearGradientBrush"/> class with a rectangle, two colors, and an angle.
+    /// Initializes a new instance of the <see cref="LinearGradientBrushDef"/> class with a rectangle, two colors, and an angle.
     /// </summary>
     /// <param name="rect">A <see cref="RectangleF"/> that specifies the bounds of the gradient.</param>
     /// <param name="color1">A <see cref="Color"/> that represents the starting color of the gradient.</param>
     /// <param name="color2">A <see cref="Color"/> that represents the ending color of the gradient.</param>
     /// <param name="angle">The angle, in degrees, of the gradient direction.</param>
-    public LinearGradientBrush(RectangleF rect, Color color1, Color color2, float angle)
+    public LinearGradientBrushDef(RectangleF rect, Color color1, Color color2, float angle)
     {
         Point1 = new PointF(rect.Left, rect.Top);
         Point2 = new PointF(rect.Right, rect.Bottom);
@@ -114,9 +116,9 @@ public sealed class LinearGradientBrush : Brush
     }
 
     /// <inheritdoc/>
-    public override Brush Clone()
+    public override BrushDef Clone()
     {
-        return new LinearGradientBrush(Point1, Point2, Color1, Color2)
+        return new LinearGradientBrushDef(Point1, Point2, Color1, Color2)
         {
             Angle = Angle,
             Mode = Mode,
@@ -133,29 +135,29 @@ public sealed class LinearGradientBrush : Brush
 /// <summary>
 /// Represents a brush that fills an area with a hatch pattern.
 /// </summary>
-public sealed class HatchBrush : Brush
+public sealed class HatchBrushDef : BrushDef
 {
     /// <summary>
-    /// Gets the hatch style of this <see cref="HatchBrush"/>.
+    /// Gets the hatch style of this <see cref="HatchBrushDef"/>.
     /// </summary>
     public HatchStyle HatchStyle { get; }
 
     /// <summary>
-    /// Gets or sets the foreground color of this <see cref="HatchBrush"/>.
+    /// Gets or sets the foreground color of this <see cref="HatchBrushDef"/>.
     /// </summary>
     public Color ForegroundColor { get; set; }
 
     /// <summary>
-    /// Gets or sets the background color of this <see cref="HatchBrush"/>.
+    /// Gets or sets the background color of this <see cref="HatchBrushDef"/>.
     /// </summary>
     public Color BackgroundColor { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="HatchBrush"/> class with the specified hatch style and foreground color.
+    /// Initializes a new instance of the <see cref="HatchBrushDef"/> class with the specified hatch style and foreground color.
     /// </summary>
     /// <param name="hatchStyle">A <see cref="HatchStyle"/> that represents the pattern of this brush.</param>
     /// <param name="foreColor">A <see cref="Color"/> that represents the foreground color of this brush.</param>
-    public HatchBrush(HatchStyle hatchStyle, Color foreColor)
+    public HatchBrushDef(HatchStyle hatchStyle, Color foreColor)
     {
         HatchStyle = hatchStyle;
         ForegroundColor = foreColor;
@@ -163,12 +165,12 @@ public sealed class HatchBrush : Brush
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="HatchBrush"/> class with the specified hatch style, foreground color, and background color.
+    /// Initializes a new instance of the <see cref="HatchBrushDef"/> class with the specified hatch style, foreground color, and background color.
     /// </summary>
     /// <param name="hatchStyle">A <see cref="HatchStyle"/> that represents the pattern of this brush.</param>
     /// <param name="foreColor">A <see cref="Color"/> that represents the foreground color of this brush.</param>
     /// <param name="backColor">A <see cref="Color"/> that represents the background color of this brush.</param>
-    public HatchBrush(HatchStyle hatchStyle, Color foreColor, Color backColor)
+    public HatchBrushDef(HatchStyle hatchStyle, Color foreColor, Color backColor)
     {
         HatchStyle = hatchStyle;
         ForegroundColor = foreColor;
@@ -176,9 +178,9 @@ public sealed class HatchBrush : Brush
     }
 
     /// <inheritdoc/>
-    public override Brush Clone()
+    public override BrushDef Clone()
     {
-        return new HatchBrush(HatchStyle, ForegroundColor, BackgroundColor);
+        return new HatchBrushDef(HatchStyle, ForegroundColor, BackgroundColor);
     }
 
     /// <inheritdoc/>
@@ -189,7 +191,7 @@ public sealed class HatchBrush : Brush
 }
 
 /// <summary>
-/// Specifies the pattern of a <see cref="HatchBrush"/> object.
+/// Specifies the pattern of a <see cref="HatchBrushDef"/> object.
 /// </summary>
 public enum HatchStyle
 {

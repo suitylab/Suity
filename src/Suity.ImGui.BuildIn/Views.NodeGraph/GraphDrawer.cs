@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views.Graphics;
 using Suity.Views.Im.Flows;
@@ -236,7 +237,7 @@ public class GraphDrawer
             gridColor = Color.FromArgb(GridAlpha, 0, 0, 0);
         }
 
-        var gridPen = new Pen(gridColor);
+        var gridPen = new PenDef(gridColor);
 
         var globalRect = Viewport.GlobalViewRect;
         int minGridX, maxGridX, minGridY, maxGridY;
@@ -452,7 +453,7 @@ public class GraphDrawer
     private void DrawLink(IGraphicOutput output, PointF startPos, PointF endPos, GraphLink link, ConnectorType connectorType)
     {
         LinkShape shape = CreateLinkShape(startPos, endPos, connectorType);
-        Pen linkPen;
+        PenDef linkPen;
 
         if (UseLinkColoring)
         {
@@ -536,14 +537,14 @@ public class GraphDrawer
             color = Theme.Link.Color;
         }
 
-        Pen linkPen;
+        PenDef linkPen;
         if (!link.CheckLink(Diagram.DataTypeProvider))
         {
             linkPen = Theme.LinkError;
         }
         else
         {
-            linkPen = new Pen(color.MultiplyAlpha(0.3f), 7f * _control.Viewport.ScaledViewZoom)
+            linkPen = new PenDef(color.MultiplyAlpha(0.3f), 7f * _control.Viewport.ScaledViewZoom)
             {
                 DashStyle = DashStyle.Dash
             };
@@ -556,7 +557,7 @@ public class GraphDrawer
     {
         var viewport = _control.Viewport;
 
-        var debugFont = new Font(System.Drawing.FontFamily.GenericSansSerif, 8.0f);
+        var debugFont = new FontDef(FontFamilyDef.GenericSansSerif, 8.0f);
         output.DrawString("Edit Mode:" + InputManager.EditMode.ToString(), debugFont, Theme.NodeText, new PointF(0.0f, 0.0f));
         output.DrawString("ViewX: " + Viewport.ViewX.ToString(), debugFont, Theme.NodeText, new PointF(0.0f, 10.0f));
         output.DrawString("ViewY: " + Viewport.ViewY.ToString(), debugFont, Theme.NodeText, new PointF(0.0f, 20.0f));
@@ -564,7 +565,7 @@ public class GraphDrawer
 
         output.DrawString("ViewSpace Cursor Location:" + InputManager.ViewSpaceCursorLocation.X.ToString() + " : " + InputManager.ViewSpaceCursorLocation.Y.ToString(), debugFont, Theme.NodeText, new PointF(0.0f, 50.0f));
 
-        var originPen = new Pen(Color.Lime);
+        var originPen = new PenDef(Color.Lime);
         output.DrawLine(originPen, viewport.ViewToControl(new Point(-100, 0)), viewport.ViewToControl(new Point(100, 0)));
         output.DrawLine(originPen, viewport.ViewToControl(new Point(0, -100)), viewport.ViewToControl(new Point(0, 100)));
 

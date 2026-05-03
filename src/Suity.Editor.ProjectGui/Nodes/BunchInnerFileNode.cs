@@ -1,7 +1,7 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Helpers;
 using Suity.Views.PathTree;
-using System.Drawing;
 
 namespace Suity.Editor.ProjectGui.Nodes;
 
@@ -22,7 +22,7 @@ public class BunchInnerFileNode : PathNode
     }
 
     /// <inheritdoc/>
-    public override Image Image => EditorUtility.GetIconForFileExact(Terminal)?.ToIconSmall();
+    public override ImageDef Image => EditorUtility.GetIconForFileExact(Terminal)?.ToIconSmall();
 
     /// <inheritdoc/>
     protected override string OnGetText() => _fileId;

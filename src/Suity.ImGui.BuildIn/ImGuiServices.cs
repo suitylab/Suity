@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Services;
 using Suity.Views.Graphics;
 using Suity.Views.Im;
@@ -6,7 +7,6 @@ using Suity.Views.Im.PropertyEditing;
 using Suity.Views.Im.PropertyEditing.Targets;
 using Suity.Views.Im.PropertyEditing.ViewObjects;
 using Suity.Views.Im.TreeEditing;
-using System.Drawing;
 
 namespace Suity;
 
@@ -51,7 +51,7 @@ public static class ImGuiServices
         string? bestFont = EditorServices.DrawingService?.GetBestAvailableFont("Tahoma", "Segoe UI", "Arial");
         if (bestFont != null)
         {
-            ImGuiTheme.DefaultFont = new FontFamily(bestFont);
+            ImGuiTheme.DefaultFont = new FontFamilyDef(bestFont);
         }
     }
 

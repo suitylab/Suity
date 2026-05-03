@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Analyzing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Design;
@@ -222,7 +223,7 @@ public class StructField : StructFieldItem,
     protected override void OnDrawPreviewImGui(ImGui gui)
     {
         TypeDefinition type = _fieldType.BaseType.GetTypeDefinition();
-        Image icon = _fieldType.Icon;
+        ImageDef icon = _fieldType.Icon;
         Color color = type?.Target?.ViewColor ?? type?.Target?.TypeColor ?? EditorServices.ColorConfig.GetStatusColor(TextStatus.Preview);
         string text = _fieldType.DisplayText;
 

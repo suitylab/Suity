@@ -1,7 +1,7 @@
+using Suity.Drawing;
 using Suity.Editor.Flows;
-using System.Threading.Tasks;
 using System.Threading;
-using System.Drawing;
+using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.WorkSpaces.Flows;
 
@@ -13,7 +13,7 @@ namespace Suity.Editor.AIGC.WorkSpaces.Flows;
 public abstract class AigcWorkSpaceNode : FlowNode, IFlowNodeComputeAsync
 {
     /// <inheritdoc/>
-    public override Image Icon => GetType().ToDisplayIcon() ?? CoreIconCache.WorkSpace;
+    public override ImageDef Icon => GetType().ToDisplayIcon() ?? CoreIconCache.WorkSpace;
 
     /// <summary>
     /// Asynchronously computes the node's output.

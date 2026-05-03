@@ -1,6 +1,6 @@
-using static Suity.Helpers.GlobalLocalizer;
 using Suity;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Expressions;
 using Suity.Editor.Services;
@@ -10,9 +10,9 @@ using Suity.Synchonizing.Core;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
+using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.WorkSpaces;
 
@@ -260,7 +260,7 @@ public class WorkSpaceBK : WorkSpace,
     public override RenderRecordCollection Records => _renderRecord;
 
     /// <inheritdoc/>
-    public override Image Icon
+    public override ImageDef Icon
     {
         get
         {

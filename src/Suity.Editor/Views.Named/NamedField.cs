@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Helpers;
 using Suity.Synchonizing;
@@ -198,7 +199,7 @@ public abstract class NamedField :
     /// <summary>
     /// Gets the icon to display for this field.
     /// </summary>
-    protected virtual Image OnGetIcon() => CoreIconCache.Field;
+    protected virtual ImageDef OnGetIcon() => CoreIconCache.Field;
 
     /// <summary>
     /// Gets the text status for display purposes.

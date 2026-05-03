@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Analyzing;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
@@ -88,7 +89,7 @@ public class FunctionParameter : ParameterField, IVariable
         }
     }
 
-    protected override Image OnGetIcon()
+    protected override ImageDef OnGetIcon()
     {
         ImageAsset icon = IconSelection.Target;
         if (icon != null)

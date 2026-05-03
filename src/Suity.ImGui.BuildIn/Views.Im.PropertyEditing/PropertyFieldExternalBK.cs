@@ -7,6 +7,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using Suity.Editor;
+using Suity.Drawing;
 
 namespace Suity.Views.Im.PropertyEditing;
 
@@ -839,7 +840,7 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
         return state;
     }
 
-    private static readonly Brush _dragDropBrush = new SolidBrush(ImGuiTheme.DefaultDragColor);
+    private static readonly BrushDef _dragDropBrush = new SolidBrushDef(ImGuiTheme.DefaultDragColor);
 
     /// <summary>
     /// Renders visual feedback for array item drag-and-drop operations, drawing an insertion indicator line.

@@ -126,13 +126,13 @@ public static class SkiaSharpUtils
 		=> new System.Drawing.Size(size.Width, size.Height);
 
 	/// <summary>
-	/// Converts a <see cref="System.Drawing.Image"/> to a <see cref="SKImage"/>.
+	/// Converts a <see cref="System.Drawing.ImageDef"/> to a <see cref="SKImage"/>.
 	/// </summary>
 	/// <param name="bitmap">The System.Drawing image.</param>
 	/// <returns>A SkiaSharp image.</returns>
-	public static SKImage? ToSKImage(this System.Drawing.Image drawingImage)
+	public static SKImage? ToSKImage(this Suity.Drawing.ImageDef drawingImage)
 	{
-        if (drawingImage is not System.Drawing.Bitmap bmp || bmp.Data is null)
+        if (drawingImage is not Suity.Drawing.BitmapDef bmp || bmp.Data is null)
         {
             return null;
         }

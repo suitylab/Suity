@@ -1,5 +1,5 @@
+using Suity.Drawing;
 using Suity.Views;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -18,7 +18,7 @@ public abstract class Document : IViewListener, ICommit
     /// <summary>
     /// Gets the icon for this document.
     /// </summary>
-    public virtual Image Icon { get; }
+    public virtual ImageDef Icon { get; }
 
     /// <summary>
     /// Always keep opened state
@@ -43,7 +43,7 @@ public abstract class Document : IViewListener, ICommit
     /// <summary>
     /// Gets the default icon based on the document type.
     /// </summary>
-    public virtual Image DefaultIcon => this.GetType().ToDisplayIcon();
+    public virtual ImageDef DefaultIcon => this.GetType().ToDisplayIcon();
 
     /// <summary>
     /// Forces the document to be saved immediately.

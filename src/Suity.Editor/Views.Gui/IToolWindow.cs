@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using Suity.Drawing;
+using System.Drawing;
 
 namespace Suity.Views.Gui;
 
@@ -23,7 +24,7 @@ public interface IToolWindow
     /// <summary>
     /// Gets the icon displayed in the tool window's title bar.
     /// </summary>
-    Image Icon { get; }
+    ImageDef Icon { get; }
 
     /// <summary>
     /// Gets the preferred docking position for the tool window.

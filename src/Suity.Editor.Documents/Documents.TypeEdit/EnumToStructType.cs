@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Selecting;
 using Suity.Editor.Types;
@@ -213,7 +214,7 @@ public class EnumToStructType : StructTypeBase<EnumToStructBuilder>
     }
 
     /// <inheritdoc/>
-    protected override Image OnGetIcon()
+    protected override ImageDef OnGetIcon()
     {
         return base.OnGetIcon() ?? _baseEnum.Target?.GetIcon() ?? CoreIconCache.Box;
     }
@@ -225,7 +226,7 @@ public class EnumToStructType : StructTypeBase<EnumToStructBuilder>
     public override Color? TypeColor => DStruct.StructTypeColor;
 
     /// <inheritdoc/>
-    public override Image TypeIcon => CoreIconCache.Box;
+    public override ImageDef TypeIcon => CoreIconCache.Box;
 
     /// <summary>
     /// Gets or sets the base enum type selection.

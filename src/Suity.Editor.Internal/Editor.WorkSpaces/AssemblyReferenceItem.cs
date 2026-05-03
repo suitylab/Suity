@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Synchonizing;
 using Suity.Synchonizing.Core;
 using System;
@@ -48,7 +49,7 @@ public class AssetAssemblyReferenceItem : IAssemblyReferenceItem, ISyncObject, I
     public string HintPath => AssetManager.Instance.GetAsset(Id)?.FileName?.PhysicFileName;
 
     /// <inheritdoc/>
-    public Image Icon => _assemblyRef.TargetAsset?.Icon;
+    public ImageDef Icon => _assemblyRef.TargetAsset?.Icon;
 
     /// <inheritdoc/>
     public bool IsValid => _assemblyRef.Target is not null;
@@ -120,7 +121,7 @@ public class SystemAssemblyReferenceItem : IAssemblyReferenceItem, ISyncObject
     public string HintPath => Key;
 
     /// <inheritdoc/>
-    public Image Icon => CoreIconCache.System;
+    public ImageDef Icon => CoreIconCache.System;
 
     /// <inheritdoc/>
     public bool IsValid => !string.IsNullOrEmpty(Key);
@@ -178,7 +179,7 @@ public class DisabledAssemblyReferenceItem : IAssemblyReferenceItem, ISyncObject
     public string HintPath => Key;
 
     /// <inheritdoc/>
-    public Image Icon => CoreIconCache.Disable;
+    public ImageDef Icon => CoreIconCache.Disable;
 
     /// <inheritdoc/>
     public bool IsValid => !string.IsNullOrEmpty(Key);

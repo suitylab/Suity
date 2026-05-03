@@ -1,6 +1,6 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views.PathTree;
-using System.Drawing;
 
 namespace Suity.Editor.ProjectGui.Nodes;
 
@@ -14,9 +14,9 @@ public class RenderTargetNode : FileNode, IRenderTargetNode
     /// </summary>
     public string WorkSpaceName { get; set; }
 
-    private Image _icon;
-    private Image _iconEx;
-    private Image _iconStatus;
+    private ImageDef _icon;
+    private ImageDef _iconEx;
+    private ImageDef _iconStatus;
     private string _text;
 
     /// <summary>
@@ -57,7 +57,7 @@ public class RenderTargetNode : FileNode, IRenderTargetNode
     public override bool CanUserDrag => false;
 
     /// <inheritdoc/>
-    public override Image Image => _icon;
+    public override ImageDef Image => _icon;
 
     /// <inheritdoc/>
     protected override string OnGetText() => _text;
@@ -68,10 +68,10 @@ public class RenderTargetNode : FileNode, IRenderTargetNode
     /// <summary>
     /// Gets the extended image indicating rendering status.
     /// </summary>
-    public Image ImageEx => _iconEx;
+    public ImageDef ImageEx => _iconEx;
 
     /// <summary>
     /// Gets the status image for this node (always null).
     /// </summary>
-    public Image ImageStatus => null;
+    public ImageDef ImageStatus => null;
 }

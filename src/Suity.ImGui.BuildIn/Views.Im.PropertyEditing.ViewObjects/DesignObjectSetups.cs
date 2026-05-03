@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
@@ -577,7 +578,7 @@ public static class DesignObjectSetups
         return state;
     }
 
-    private static readonly Brush _dragDropBrush = new SolidBrush(ImGuiTheme.DefaultDragColor);
+    private static readonly BrushDef _dragDropBrush = new SolidBrushDef(ImGuiTheme.DefaultDragColor);
 
     private static void ArrayItemDragDropRender(GuiPipeline pipeline, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction baseAction)
     {

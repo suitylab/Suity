@@ -1,4 +1,6 @@
-namespace System.Drawing.Imaging;
+using System;
+
+namespace Suity.Drawing;
 
 /// <summary>
 /// Specifies the format of the image.

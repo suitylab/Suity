@@ -1,4 +1,5 @@
 ﻿using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Design;
 using Suity.Editor.Types;
@@ -46,7 +47,7 @@ namespace Suity.Editor
             }
         }
 
-        public override Image DefaultIcon => CoreIconCache.Row;
+        public override ImageDef DefaultIcon => CoreIconCache.Row;
 
         public override RenderType RenderType => RenderType.Data;
 

@@ -1,6 +1,6 @@
+using Suity.Drawing;
 using Suity.Editor.Flows;
 using System;
-using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,7 +14,7 @@ namespace Suity.Editor.AIGC.Flows;
 public abstract class AigcFlowNode : FlowNode, IFlowNodeComputeAsync
 {
     /// <inheritdoc/>
-    public override Image Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.AI;
+    public override ImageDef Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.AI;
 
     /// <inheritdoc/>
     public virtual Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views.Graphics;
 using System;
 using System.Collections.Generic;
@@ -729,7 +730,7 @@ public abstract class ImGuiNode
     /// <summary>
     /// Get or set font
     /// </summary>
-    public abstract Font? Font { get; set; }
+    public abstract FontDef? Font { get; set; }
 
     /// <summary>
     /// Get or set font color
@@ -739,7 +740,7 @@ public abstract class ImGuiNode
     /// <summary>
     /// Get or set image
     /// </summary>
-    public abstract Image? Image { get; set; }
+    public abstract ImageDef? Image { get; set; }
 
     /// <summary>
     /// Get or set image filter color

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Analyzing;
 using Suity.Editor.Design;
 using Suity.Editor.Selecting;
@@ -64,12 +65,12 @@ public abstract class DesignFlowNode : FlowNode,
     /// <summary>
     /// Gets the default icon for the node when no custom icon is set.
     /// </summary>
-    public virtual Image DefaultIcon => base.Icon;
+    public virtual ImageDef DefaultIcon => base.Icon;
 
     /// <summary>
     /// Gets the icon for the node, using custom icon if available.
     /// </summary>
-    public override Image Icon => _iconSelection.Icon ?? DefaultIcon;
+    public override ImageDef Icon => _iconSelection.Icon ?? DefaultIcon;
 
     /// <summary>
     /// Gets the default color for the node title.
@@ -317,20 +318,20 @@ public abstract class DesignFlowNode : FlowNode,
 
     private Color _refColorDark = Color.FromArgb(36, 36, 36);
 
-    private Brush _refBrush;
-    private Font _refFont;
-    private Brush _refTextBrush;
-    private Brush _refBrushDark;
+    private BrushDef _refBrush;
+    private FontDef _refFont;
+    private BrushDef _refTextBrush;
+    private BrushDef _refBrushDark;
 
     /// <summary>
     /// Draws the reference count indicator.
     /// </summary>
     private void DrawRef(IGraphicOutput output, float zoom, Rectangle rect, AnalysisResult analysis)
     {
-        _refBrush ??= new SolidBrush(TextStatus.Reference.ToColor());
-        _refFont ??= new Font(ImGuiTheme.DefaultFont, 12);
-        _refBrushDark ??= new SolidBrush(_refColorDark);
-        _refTextBrush ??= new SolidBrush(TextStatus.Normal.ToColor());
+        _refBrush ??= new SolidBrushDef(TextStatus.Reference.ToColor());
+        _refFont ??= new FontDef(ImGuiTheme.DefaultFont, 12);
+        _refBrushDark ??= new SolidBrushDef(_refColorDark);
+        _refTextBrush ??= new SolidBrushDef(TextStatus.Normal.ToColor());
 
         string text = analysis.ReferenceCount.ToString();
         SizeF textSize = output.MeasureString(text, _refFont);
@@ -387,7 +388,7 @@ public abstract class RenderFlowNode : FlowNode
     /// <summary>
     /// Gets the icon for the node.
     /// </summary>
-    public override Image Icon => CoreIconCache.Render;
+    public override ImageDef Icon => CoreIconCache.Render;
     //public override bool PreviewValue => false;
 
     /// <summary>
@@ -413,7 +414,7 @@ public abstract class ValueFlowNode : FlowNode
     /// <summary>
     /// Gets the icon for the node.
     /// </summary>
-    public override Image Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Value;
+    public override ImageDef Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Value;
 }
 
 #endregion
@@ -466,7 +467,7 @@ public abstract class JsonFlowNode : FlowNode
     /// <summary>
     /// Gets the icon for the node.
     /// </summary>
-    public override Image Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Json;
+    public override ImageDef Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Json;
 
     /// <summary>
     /// Converts a JsonContentTypes to a data type string.
@@ -494,7 +495,7 @@ public abstract class SValueFlowNode : FlowNode
     /// <summary>
     /// Gets the icon for the node.
     /// </summary>
-    public override Image Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.SValue;
+    public override ImageDef Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.SValue;
 }
 
 #endregion
@@ -511,7 +512,7 @@ public abstract class ActionFlowNode : FlowNode, IFlowNodeComputeAsync
     /// <summary>
     /// Gets the icon for the node.
     /// </summary>
-    public override Image Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Action;
+    public override ImageDef Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Action;
 
     /// <summary>
     /// Computes the action asynchronously.
@@ -533,7 +534,7 @@ public abstract class DialogFlowNode : FlowNode, IFlowNodeComputeAsync
     /// <summary>
     /// Gets the icon for the node.
     /// </summary>
-    public override Image Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Conversation;
+    public override ImageDef Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Conversation;
 
     /// <summary>
     /// Computes the dialog asynchronously.
@@ -555,7 +556,7 @@ public abstract class VariableFlowNode : FlowNode
     /// <summary>
     /// Gets the icon for the node.
     /// </summary>
-    public override Image Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Variable;
+    public override ImageDef Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Variable;
 
     /// <summary>
     /// Gets the function context for the specified scope.
@@ -595,7 +596,7 @@ public abstract class TextFlowNode : FlowNode
     /// <summary>
     /// Gets the icon for the node.
     /// </summary>
-    public override Image Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Text;
+    public override ImageDef Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Text;
 }
 
 #endregion
@@ -612,7 +613,7 @@ public abstract class LinqFlowNode : FlowNode
     /// <summary>
     /// Gets the icon for the node.
     /// </summary>
-    public override Image Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Array;
+    public override ImageDef Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Array;
 }
 
 #endregion

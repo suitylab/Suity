@@ -1,4 +1,4 @@
-using System.Drawing;
+using Suity.Drawing;
 
 namespace Suity.Views.Menu;
 
@@ -19,7 +19,7 @@ public class MainMenuCommand : MenuCommand
     /// </summary>
     /// <param name="text">The text to display.</param>
     /// <param name="icon">The optional icon.</param>
-    public MainMenuCommand(string text, Image icon = null) : base(text, icon)
+    public MainMenuCommand(string text, ImageDef icon = null) : base(text, icon)
     {
     }
 
@@ -29,7 +29,7 @@ public class MainMenuCommand : MenuCommand
     /// <param name="key">The unique identifier.</param>
     /// <param name="text">The text to display.</param>
     /// <param name="icon">The optional icon.</param>
-    public MainMenuCommand(string key, string text, Image icon = null) : base(key, text, icon)
+    public MainMenuCommand(string key, string text, ImageDef icon = null) : base(key, text, icon)
     {
     }
 

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using System;
 using System.Drawing;
@@ -10,7 +11,7 @@ namespace Suity.Editor.Types;
 [AssetTypeBinding(AssetDefNames.Asset, "Asset Link")]
 public class DAssetLink : DType
 {
-    Image _icon;
+    ImageDef _icon;
 
     /// <summary>
     /// Initializes a new instance of the DAssetLink class.
@@ -62,7 +63,7 @@ public class DAssetLink : DType
     public override Color? TypeColor => this.ViewColor;
 
     /// <inheritdoc />
-    public override Image GetIcon() => _icon ?? base.GetIcon();
+    public override ImageDef GetIcon() => _icon ?? base.GetIcon();
 
     private void UpdateStyle(Type type)
     {

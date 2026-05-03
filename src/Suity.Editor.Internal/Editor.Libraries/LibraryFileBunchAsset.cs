@@ -1,4 +1,5 @@
 using ICSharpCode.SharpZipLib.Zip;
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
@@ -37,7 +38,7 @@ public sealed class LibFileBunchAsset : GroupAsset, IFileBunch
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.FileBunch;
+    public override ImageDef DefaultIcon => CoreIconCache.FileBunch;
 
     /// <inheritdoc/>
     public IEnumerable<RenderTarget> GetRenderTargets(RenderFileName basePath, bool uploadMode)
@@ -147,7 +148,7 @@ public sealed class LibFileBunchElementAsset : Asset, IFileBunchElement
     public int Index => _entry.Index;
 
     /// <inheritdoc/>
-    public override Image GetIcon() => EditorUtility.GetIconForFileExact(_entry.Location);
+    public override ImageDef GetIcon() => EditorUtility.GetIconForFileExact(_entry.Location);
 
     /// <inheritdoc/>
     public void SaveToFile(string fileName)

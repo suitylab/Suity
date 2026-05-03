@@ -4,6 +4,7 @@ using Suity.Views.Im;
 using System;
 using System.Drawing;
 using Suity.Editor.Services;
+using Suity.Drawing;
 
 namespace Suity.Editor.VirtualTree;
 
@@ -155,7 +156,7 @@ public partial class VirtualNode : IDrawEditorImGui, IDrawContext
                 .InitOverridePadding(2, 2, 5, 5)
                 .OnContent(() =>
                 {
-                    if (GetPreviewIcon() is Image icon)
+                    if (GetPreviewIcon() is ImageDef icon)
                     {
                         gui.Image("icon", icon).InitClass("icon");
                     }

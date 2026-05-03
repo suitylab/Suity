@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Design;
 using Suity.Editor.Documents.Linked;
@@ -31,7 +32,7 @@ public class DController : DCompond, IRenderable
     }
 
     /// <inheritdoc />
-    public override Image DefaultIcon => CoreIconCache.Controller;
+    public override ImageDef DefaultIcon => CoreIconCache.Controller;
 
     /// <inheritdoc />
     public override RenderType RenderType => RenderType.TriggerController;

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Selecting;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -51,7 +52,7 @@ public class GroupFlowNode : FlowNode, IGroupFlowNode
     /// <summary>
     /// Gets the icon for the node.
     /// </summary>
-    public override Image Icon => _icon.Target?.GetIconSmall();
+    public override ImageDef Icon => _icon.Target?.GetIconSmall();
 
     /// <summary>
     /// Initializes a new instance of the GroupFlowNode.

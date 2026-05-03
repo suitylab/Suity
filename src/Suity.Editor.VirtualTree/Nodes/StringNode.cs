@@ -1,4 +1,4 @@
-using System.Drawing;
+using Suity.Drawing;
 
 namespace Suity.Editor.VirtualTree.Nodes;
 
@@ -9,7 +9,7 @@ namespace Suity.Editor.VirtualTree.Nodes;
 public class StringNode : VirtualNode
 {
     private string _value = string.Empty;
-    private readonly Image _icon;
+    private readonly ImageDef _icon;
 
     /// <inheritdoc/>
     public override object DisplayedValue => _value;
@@ -22,7 +22,7 @@ public class StringNode : VirtualNode
     }
 
     /// <inheritdoc/>
-    protected override Image GetMainIcon() => _icon;
+    protected override ImageDef GetMainIcon() => _icon;
 
     /// <inheritdoc/>
     protected override string GetPreviewText() => _value;

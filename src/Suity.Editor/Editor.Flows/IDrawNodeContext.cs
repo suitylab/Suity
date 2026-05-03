@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views;
 using Suity.Views.Graphics;
 using Suity.Views.Im;
@@ -61,42 +62,42 @@ public interface IDrawNodeContext : IDrawContext, ITextDisplay
     /// <summary>
     /// Gets the node fill brush.
     /// </summary>
-    Brush NodeFillBrush { get; }
+    BrushDef NodeFillBrush { get; }
 
     /// <summary>
     /// Gets the node header fill brush.
     /// </summary>
-    Brush NodeHeaderFillBrush { get; }
+    BrushDef NodeHeaderFillBrush { get; }
 
     /// <summary>
     /// Gets the node outline pen.
     /// </summary>
-    Pen NodeOutlinePen { get; }
+    PenDef NodeOutlinePen { get; }
 
     /// <summary>
     /// Gets the node outline when selected.
     /// </summary>
-    Pen NodeOutlineSelected { get; }
+    PenDef NodeOutlineSelected { get; }
 
     /// <summary>
     /// Gets the scaled preview font.
     /// </summary>
-    Font NodeScaledPreviewFont { get; }
+    FontDef NodeScaledPreviewFont { get; }
 
     /// <summary>
     /// Gets the scaled title font.
     /// </summary>
-    Font NodeScaledTitleFont { get; }
+    FontDef NodeScaledTitleFont { get; }
 
     /// <summary>
     /// Gets the node text brush.
     /// </summary>
-    Brush NodeText { get; }
+    BrushDef NodeText { get; }
 
     /// <summary>
     /// Gets the node text shadow brush.
     /// </summary>
-    Brush NodeTextShadow { get; }
+    BrushDef NodeTextShadow { get; }
 
     /// <summary>
     /// Draws shadow.

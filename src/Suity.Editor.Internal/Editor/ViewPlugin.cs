@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Flows;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -81,7 +82,7 @@ public class ViewPlugin : EditorPlugin, IViewObject
     /// <inheritdoc/>
     public override string Description => "View";
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.View;
+    public override ImageDef Icon => CoreIconCache.View;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ViewPlugin"/> class.

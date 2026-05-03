@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views;
 using System;
 using System.Drawing;
@@ -56,7 +57,7 @@ public class ToStringNode : VirtualNode
     }
 
     /// <inheritdoc/>
-    protected override Image GetMainIcon()
+    protected override ImageDef GetMainIcon()
     {
         var icon = _value is ITextDisplay display ? EditorUtility.GetIcon(display.DisplayIcon) : null;
 
@@ -94,7 +95,7 @@ public class ToStringNode : VirtualNode
     }
 
     /// <inheritdoc/>
-    protected override Image GetPreviewIcon()
+    protected override ImageDef GetPreviewIcon()
     {
         var icon = _value is IPreviewDisplay display ? EditorUtility.GetIcon(display.PreviewIcon) : null;
 

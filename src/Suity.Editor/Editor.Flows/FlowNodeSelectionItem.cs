@@ -1,4 +1,5 @@
-﻿using Suity.Helpers;
+﻿using Suity.Drawing;
+using Suity.Helpers;
 using Suity.Selecting;
 using Suity.Views;
 using System;
@@ -38,7 +39,7 @@ public class FlowNodeSelectionItem<T> : FlowNodeSelectionItem
 
 public class FlowNodeSelectionNode : SelectionNode
 {
-    public FlowNodeSelectionNode(string key = null, string displayText = null, Image icon = null)
+    public FlowNodeSelectionNode(string key = null, string displayText = null, ImageDef icon = null)
         : base(key, displayText, icon)
     {
     }
@@ -117,7 +118,7 @@ public class FlowNodeSelectionNode : SelectionNode
 public class FlowNodeSelectionNode<T> : FlowNodeSelectionNode, IPreviewDisplay
     //where T : FlowNode
 {
-    public FlowNodeSelectionNode(string key = null, string displayText = null, Image icon = null, Predicate<Type> condition = null)
+    public FlowNodeSelectionNode(string key = null, string displayText = null, ImageDef icon = null, Predicate<Type> condition = null)
          : base(key, displayText, icon)
     {
         AddDerivedType(typeof(T),  t => 

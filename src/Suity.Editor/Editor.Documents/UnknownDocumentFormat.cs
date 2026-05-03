@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ public class UnknownDocumentFormat : DocumentFormat
     /// <summary>
     /// Gets the icon for this format (none for unknown format).
     /// </summary>
-    public override Image Icon => null;
+    public override ImageDef Icon => null;
 
     /// <summary>
     /// Gets whether new documents of this format can be created.

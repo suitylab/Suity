@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
@@ -69,7 +70,7 @@ public abstract class CanvasFlowNode : FlowNode
     /// <summary>
     /// Gets the icon.
     /// </summary>
-    public override Image Icon => CoreIconCache.Canvas;
+    public override ImageDef Icon => CoreIconCache.Canvas;
 
     /// <summary>
     /// Gets the connector value.
@@ -222,7 +223,7 @@ public class CanvasAssetNode : CanvasFlowNode,
     /// <summary>
     /// Gets the icon.
     /// </summary>
-    public override Image Icon => _assetRef?.Target?.Icon;
+    public override ImageDef Icon => _assetRef?.Target?.Icon;
 
     /// <summary>
     /// Gets the title color.

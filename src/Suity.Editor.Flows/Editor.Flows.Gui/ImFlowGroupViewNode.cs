@@ -6,6 +6,7 @@ using Suity.Views.Im.Flows;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Suity.Drawing;
 
 namespace Suity.Editor.Flows.Gui;
 
@@ -103,13 +104,13 @@ public class ImFlowGroupViewNode : ImGraphGroupNode, IFlowViewNode
     public override Color? TitleColor => _node.TitleColor;
 
     /// <inheritdoc/>
-    public override Brush NodeFillBrush
+    public override BrushDef NodeFillBrush
     {
         get
         {
             if (Node.TitleColor is Color c && c != Color.Empty)
             {
-                return new SolidBrush(c);
+                return new SolidBrushDef(c);
             }
 
             return _style?.NodeFillBrush ?? base.NodeFillBrush;
@@ -117,9 +118,9 @@ public class ImFlowGroupViewNode : ImGraphGroupNode, IFlowViewNode
     }
 
     /// <inheritdoc/>
-    public override Brush NodeHeaderFillBrush => _style?.NodeHeaderFillBrush ?? base.NodeHeaderFillBrush;
+    public override BrushDef NodeHeaderFillBrush => _style?.NodeHeaderFillBrush ?? base.NodeHeaderFillBrush;
     /// <inheritdoc/>
-    public override Pen NodeOutlinePen => _style?.NodeOutlinePen ?? base.NodeOutlinePen;
+    public override PenDef NodeOutlinePen => _style?.NodeOutlinePen ?? base.NodeOutlinePen;
 
     /// <inheritdoc/>
     public override string DisplayText
@@ -151,7 +152,7 @@ public class ImFlowGroupViewNode : ImGraphGroupNode, IFlowViewNode
     /// <inheritdoc/>
     public override string PreviewText => _previewText;
     /// <inheritdoc/>
-    public override Image Icon => _node.Icon;
+    public override ImageDef Icon => _node.Icon;
 
     /// <inheritdoc/>
     public override void UpdateHitRectangle(bool notifyPosition = false, bool notifySize = false)

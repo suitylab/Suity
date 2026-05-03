@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Suity.Drawing;
 using Suity.Editor.Services;
 using Suity.Selecting;
 using Suity.Views;
@@ -52,7 +53,7 @@ public partial class SelectionWindow : Window, IDrawImGui
         Color textColor = colorConfig.GetStatusColor(TextStatus.Normal);
         Color bg = colorConfig.GetColor(ColorStyle.Background);
 
-        var bgColorBrush = new SolidBrush(bg);
+        var bgColorBrush = new SolidBrushDef(bg);
 
         _list = selList ?? throw new ArgumentNullException();
         _option = option;

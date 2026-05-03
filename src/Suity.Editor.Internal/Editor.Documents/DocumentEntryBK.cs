@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Services;
 using Suity.Helpers;
 using Suity.Reflecting;
@@ -149,7 +150,7 @@ internal sealed class DocumentEntryBK : DocumentEntry, IViewListener
     }
 
     /// <inheritdoc/>
-    public override Image Icon => _content?.Icon ?? _format?.Icon;
+    public override ImageDef Icon => _content?.Icon ?? _format?.Icon;
 
     /// <summary>
     /// Gets the underlying storage item for this document.

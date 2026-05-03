@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Services;
 using System;
 using System.Drawing;
@@ -41,7 +42,7 @@ internal class AttributedDocumentFormat : DocumentFormat
     public override string DisplayText => _attribute.DisplayText;
 
     /// <inheritdoc/>
-    public override Image Icon => EditorUtility.GetIconByAssetKey(_attribute.Icon);
+    public override ImageDef Icon => EditorUtility.GetIconByAssetKey(_attribute.Icon);
 
     /// <inheritdoc/>
     public override bool CanCreate => _attribute.CanCreate;

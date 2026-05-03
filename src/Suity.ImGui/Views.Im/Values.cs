@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Helpers;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ public class GuiImageValue
     /// <summary>
     /// The image to display.
     /// </summary>
-    public Image? Image { get; set; }
+    public ImageDef? Image { get; set; }
 }
 
 /// <summary>

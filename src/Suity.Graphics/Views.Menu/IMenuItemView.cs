@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using System;
 using System.Drawing;
 
@@ -16,7 +17,7 @@ public interface IMenuItemView
     /// <summary>
     /// Gets or sets the icon displayed for the menu item.
     /// </summary>
-    Image Image { get; set; }
+    ImageDef Image { get; set; }
 
     /// <summary>
     /// Gets or sets the hot key text for the menu item.
@@ -79,7 +80,7 @@ public class EmptyMenuItemView : IMenuItemView
     public string Text { get => string.Empty; set { } }
 
     /// <inheritdoc/>
-    public Image Image { get => null; set { } }
+    public ImageDef Image { get => null; set { } }
 
     /// <inheritdoc/>
     public string HotKey { get => string.Empty; set { } }

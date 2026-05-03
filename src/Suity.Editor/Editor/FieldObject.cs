@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Selecting;
 using Suity.Synchonizing;
@@ -61,7 +62,7 @@ public abstract class FieldObject : EditorObject,
     /// Gets the icon associated with this field.
     /// </summary>
     /// <returns>The Image icon for this field.</returns>
-    public virtual Image GetIcon() => CoreIconCache.Field;
+    public virtual ImageDef GetIcon() => CoreIconCache.Field;
 
     #region ISelectionItem
 

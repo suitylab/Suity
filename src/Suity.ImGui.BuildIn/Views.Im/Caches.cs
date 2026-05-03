@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,15 +14,15 @@ internal class FontSizeCache
     /// <summary>
     /// Gets the base font used for scaling.
     /// </summary>
-    public Font BaseFont { get; }
+    public FontDef BaseFont { get; }
 
-    private readonly Dictionary<float, Font> _sizeCache = [];
+    private readonly Dictionary<float, FontDef> _sizeCache = [];
 
     /// <summary>
     /// Initializes a new font size cache with the specified base font.
     /// </summary>
     /// <param name="baseFont">The base font to scale from.</param>
-    public FontSizeCache(Font baseFont)
+    public FontSizeCache(FontDef baseFont)
     {
         BaseFont = baseFont ?? throw new ArgumentNullException(nameof(baseFont));
     }
@@ -31,14 +32,14 @@ internal class FontSizeCache
     /// </summary>
     /// <param name="scale">The scale factor. Returns the base font if null or 1.</param>
     /// <returns>A scaled font instance.</returns>
-    public Font GetFont(float? scale)
+    public FontDef GetFont(float? scale)
     {
         var baseFont = BaseFont;
 
         if (scale is { } s && s != 1f)
         {
             float size = s * baseFont.Size;
-            return _sizeCache.GetOrAdd(size, _ => new Font(BaseFont.Name, size, BaseFont.Style));
+            return _sizeCache.GetOrAdd(size, _ => new FontDef(BaseFont.Name, size, BaseFont.Style));
         }
 
         return baseFont;

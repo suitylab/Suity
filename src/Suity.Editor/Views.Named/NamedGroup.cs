@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Helpers;
 using Suity.Synchonizing;
@@ -48,7 +49,7 @@ public abstract class NamedGroup : NamedNode
     /// <summary>
     /// Gets the icon to display for this group.
     /// </summary>
-    protected override Image OnGetIcon() => CoreIconCache.FolderDesign;
+    protected override ImageDef OnGetIcon() => CoreIconCache.FolderDesign;
 
     /// <summary>
     /// Gets the display text for this group, which is the group name.

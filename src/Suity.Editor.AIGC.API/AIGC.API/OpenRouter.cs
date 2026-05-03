@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Properties;
 using Suity.Helpers;
 using System.Drawing;
@@ -22,7 +23,7 @@ public class OpenRouterPlugin : BaseOpenAIPlugin<OpenRouterLLmModelAsset, OpenRo
     /// <summary>
     /// Gets the icon image for OpenRouter.
     /// </summary>
-    public static Bitmap OpenRouterIcon { get; } = Resources.OpenRouter.ToBitmap();
+    public static BitmapDef OpenRouterIcon { get; } = Resources.OpenRouter.ToBitmap();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="OpenRouterPlugin"/> class.
@@ -61,7 +62,7 @@ public class OpenRouterLLmModelAsset : ThirdPartyLLmModelAsset
     /// <summary>
     /// Gets the default icon for OpenRouter models.
     /// </summary>
-    public override Image DefaultIcon => OpenRouterPlugin.OpenRouterIcon;
+    public override ImageDef DefaultIcon => OpenRouterPlugin.OpenRouterIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.
@@ -88,7 +89,7 @@ public class OpenRouterImageGenModelAsset : ThirdPartyImageGenAsset
     /// <summary>
     /// Gets the default icon for OpenRouter image models.
     /// </summary>
-    public override Image DefaultIcon => OpenRouterPlugin.OpenRouterIcon;
+    public override ImageDef DefaultIcon => OpenRouterPlugin.OpenRouterIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.

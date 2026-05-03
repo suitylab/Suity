@@ -11,7 +11,7 @@ namespace Suity.Controls;
 /// </summary>
 public class AvaMenuItemView : IMenuItemView
 {
-    private System.Drawing.Image? _image;
+    private Suity.Drawing.ImageDef? _image;
     private readonly MenuItem _menuItem;
     private readonly ItemCollection _items;
 
@@ -53,9 +53,9 @@ public class AvaMenuItemView : IMenuItemView
     }
 
     /// <inheritdoc/>
-    public System.Drawing.Image? Image
+    public Suity.Drawing.ImageDef? Image
     {
-        get => _image; // System.Drawing.Image is rarely used directly in cross-platform scenarios
+        get => _image; 
         set
         {
             _image = value;
@@ -163,7 +163,7 @@ internal class AvaloniaSeparatorView : IMenuItemView
     /// <inheritdoc/>
     public string Text { get; set; }
     /// <inheritdoc/>
-    public System.Drawing.Image Image { get; set; }
+    public Suity.Drawing.ImageDef Image { get; set; }
     /// <inheritdoc/>
     public string HotKey { get; set; }
     /// <inheritdoc/>

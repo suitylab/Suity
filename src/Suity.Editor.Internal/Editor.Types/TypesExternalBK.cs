@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Values;
 using Suity.Helpers;
 using Suity.Selecting;
@@ -821,7 +822,7 @@ internal class TypesExternalBK : TypesExternal
     }
 
     /// <inheritdoc/>
-    public override Image GetIcon(TypeDefinition typeInfo)
+    public override ImageDef GetIcon(TypeDefinition typeInfo)
     {
         if (typeInfo.IsNative)
         {

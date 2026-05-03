@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Types;

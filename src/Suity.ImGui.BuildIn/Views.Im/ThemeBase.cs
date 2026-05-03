@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using System;
 using System.Drawing;
@@ -67,7 +68,7 @@ public abstract class ThemeBase : ImGuiTheme
             .SetColor(ColorScheme.EditorBG);
 
         this.ClassStyle("numBoxText")
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 10), Color.White)
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 10), Color.White)
             .SetHorizontalAlignment(GuiAlignment.Center)
             .SetVerticalAlignment(GuiAlignment.Center);
 
@@ -100,15 +101,15 @@ public abstract class ThemeBase : ImGuiTheme
             .SetPadding(5);
 
         this.ClassStyle("toolTipText")
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 10), ColorScheme.ButtonText);
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 10), ColorScheme.ButtonText);
 
         this.ClassStyle("placement")
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 12), ColorScheme.PlacementText);
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 12), ColorScheme.PlacementText);
 
         this.ClassStyle("brief")
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 12), ColorScheme.BriefText);
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 12), ColorScheme.BriefText);
 
         this.ClassStyle("briefMultiple")
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 12), ColorScheme.BriefTextMultiple);
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 12), ColorScheme.BriefTextMultiple);
     }
 }

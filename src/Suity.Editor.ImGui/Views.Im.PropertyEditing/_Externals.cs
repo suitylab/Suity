@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Synchonizing.Core;
 using Suity.Views.Graphics;
 using System;
@@ -126,7 +127,7 @@ internal abstract class PropertyGridExternal
     /// <param name="rowAction">An optional row action handler.</param>
     /// <param name="rowData">An optional row data configuration.</param>
     /// <returns>An <see cref="ImGuiNode"/> representing the property label.</returns>
-    public abstract ImGuiNode PropertyLabel(ImGui gui, string id, string title, Image? icon = null, TextStatus? status = null, PropertyRowAction? rowAction = null, PropertyRowData? rowData = null);
+    public abstract ImGuiNode PropertyLabel(ImGui gui, string id, string title, ImageDef? icon = null, TextStatus? status = null, PropertyRowAction? rowAction = null, PropertyRowData? rowData = null);
 
     /// <summary>
     /// Renders a property label frame with optional action and data.
@@ -158,7 +159,7 @@ internal abstract class PropertyGridExternal
     /// <param name="rowAction">An optional row action handler.</param>
     /// <param name="rowData">An optional row data configuration.</param>
     /// <returns>An <see cref="ImGuiNode"/> representing the property tooltips.</returns>
-    public abstract ImGuiNode PropertyTooltips(ImGui gui, string id, string title, Image? icon = null, TextStatus? status = null, PropertyRowAction? rowAction = null, PropertyRowData? rowData = null);
+    public abstract ImGuiNode PropertyTooltips(ImGui gui, string id, string title, ImageDef? icon = null, TextStatus? status = null, PropertyRowAction? rowAction = null, PropertyRowData? rowData = null);
 
     /// <summary>
     /// Renders a property button bound to a target.
@@ -179,7 +180,7 @@ internal abstract class PropertyGridExternal
     /// <param name="rowAction">An optional row action handler.</param>
     /// <param name="onClick">An optional click action callback.</param>
     /// <returns>An <see cref="ImGuiNode"/> representing the property button.</returns>
-    public abstract ImGuiNode PropertyButton(ImGui gui, string id, string title, Image? icon = null, PropertyRowAction? rowAction = null, Action? onClick = null);
+    public abstract ImGuiNode PropertyButton(ImGui gui, string id, string title, ImageDef? icon = null, PropertyRowAction? rowAction = null, Action? onClick = null);
 
     /// <summary>
     /// Renders a property button with a node-based click action callback.
@@ -191,7 +192,7 @@ internal abstract class PropertyGridExternal
     /// <param name="rowAction">An optional row action handler.</param>
     /// <param name="onClick">An optional click action callback receiving an <see cref="ImGuiNode"/>.</param>
     /// <returns>An <see cref="ImGuiNode"/> representing the property button.</returns>
-    public abstract ImGuiNode PropertyButton(ImGui gui, string id, string title, Image? icon = null, PropertyRowAction? rowAction = null, Action<ImGuiNode>? onClick = null);
+    public abstract ImGuiNode PropertyButton(ImGui gui, string id, string title, ImageDef? icon = null, PropertyRowAction? rowAction = null, Action<ImGuiNode>? onClick = null);
 
     /// <summary>
     /// Renders a property button that supports multiple selection targets.

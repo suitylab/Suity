@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
@@ -452,7 +453,7 @@ public class GetSelfTask : AigcPageNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Task;
+    public override ImageDef Icon => CoreIconCache.Task;
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
@@ -495,7 +496,7 @@ public class GetLastSubTask : AigcPageNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Task;
+    public override ImageDef Icon => CoreIconCache.Task;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)

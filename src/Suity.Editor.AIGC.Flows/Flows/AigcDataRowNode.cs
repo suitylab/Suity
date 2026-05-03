@@ -1,5 +1,5 @@
+using Suity.Drawing;
 using Suity.Editor.Flows;
-using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +13,7 @@ namespace Suity.Editor.AIGC.Flows;
 public abstract class AigcDataRowNode : FlowNode, IFlowNodeComputeAsync
 {
     /// <inheritdoc/>
-    public override Image Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Row;
+    public override ImageDef Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Row;
 
     /// <inheritdoc/>
     public virtual Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)

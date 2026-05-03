@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views.Graphics;
 using System.Drawing;
 
@@ -39,7 +40,7 @@ public static class AxisEditorExtensions
         rect.Width = style.Width;
         rect.X -= style.Offset;
 
-        var brush = new SolidBrush(style.Color);
+        var brush = new SolidBrushDef(style.Color);
         output.FillRectangle(brush, rect);
     }
 }

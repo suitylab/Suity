@@ -6,6 +6,7 @@ using Suity.Reflecting;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Suity.Drawing;
 
 namespace Suity.Editor.Flows.Gui;
 
@@ -27,10 +28,10 @@ public class ActionNodeGraphDataType : GraphDataType
     public ActionNodeGraphDataType()
     {
         _allowMultipleToConnection = true;
-        _linkPen = new Pen(Color.FromArgb(255, 255, 255), 4);
-        _linkArrowBrush = new SolidBrush(Color.FromArgb(255, 255, 255));
-        _connectorOutlinePen = new Pen(Color.FromArgb(255, 255, 255), 3);
-        _connectorFillBrush = new SolidBrush(Color.FromArgb(255, 255, 255));
+        _linkPen = new PenDef(Color.FromArgb(255, 255, 255), 4);
+        _linkArrowBrush = new SolidBrushDef(Color.FromArgb(255, 255, 255));
+        _connectorOutlinePen = new PenDef(Color.FromArgb(255, 255, 255), 3);
+        _connectorFillBrush = new SolidBrushDef(Color.FromArgb(255, 255, 255));
         _typeName = FlowNode.ACTION_TYPE;
     }
 
@@ -61,10 +62,10 @@ public class EventNodeGraphDataType : GraphDataType
     public EventNodeGraphDataType()
     {
         _allowMultipleToConnection = true;
-        _linkPen = new Pen(Color.FromArgb(255, 255, 0), 4);
-        _linkArrowBrush = new SolidBrush(Color.FromArgb(255, 255, 0));
-        _connectorOutlinePen = new Pen(Color.FromArgb(255, 255, 0), 3);
-        _connectorFillBrush = new SolidBrush(Color.FromArgb(255, 255, 0));
+        _linkPen = new PenDef(Color.FromArgb(255, 255, 0), 4);
+        _linkArrowBrush = new SolidBrushDef(Color.FromArgb(255, 255, 0));
+        _connectorOutlinePen = new PenDef(Color.FromArgb(255, 255, 0), 3);
+        _connectorFillBrush = new SolidBrushDef(Color.FromArgb(255, 255, 0));
         _typeName = FlowNode.EVENT_TYPE;
     }
 
@@ -94,10 +95,10 @@ public class UnknownNodeGraphDataType : GraphDataType
     /// </summary>
     public UnknownNodeGraphDataType()
     {
-        _linkPen = new Pen(Color.FromArgb(255, 0, 0), 3);
-        _linkArrowBrush = new SolidBrush(Color.FromArgb(255, 0, 0));
-        _connectorOutlinePen = new Pen(Color.FromArgb(255, 0, 0), 3);
-        _connectorFillBrush = new SolidBrush(Color.FromArgb(180, 0, 0));
+        _linkPen = new PenDef(Color.FromArgb(255, 0, 0), 3);
+        _linkArrowBrush = new SolidBrushDef(Color.FromArgb(255, 0, 0));
+        _connectorOutlinePen = new PenDef(Color.FromArgb(255, 0, 0), 3);
+        _connectorFillBrush = new SolidBrushDef(Color.FromArgb(180, 0, 0));
         _typeName = FlowNode.UNKNOWN_TYPE;
     }
 

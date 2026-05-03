@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -46,21 +47,21 @@ public interface IGraphicOutput
     /// <param name="pen">The pen used to draw the line.</param>
     /// <param name="pt1">The starting point.</param>
     /// <param name="pt2">The ending point.</param>
-    void DrawLine(Pen pen, PointF pt1, PointF pt2);
+    void DrawLine(PenDef pen, PointF pt1, PointF pt2);
 
     /// <summary>
     /// Draws a rectangle.
     /// </summary>
     /// <param name="pen">The pen used to draw the rectangle.</param>
     /// <param name="rect">The rectangle to draw.</param>
-    void DrawRectangle(Pen pen, RectangleF rect);
+    void DrawRectangle(PenDef pen, RectangleF rect);
 
     /// <summary>
     /// Draws an ellipse.
     /// </summary>
     /// <param name="pen">The pen used to draw the ellipse.</param>
     /// <param name="rect">The bounding rectangle for the ellipse.</param>
-    void DrawEllipse(Pen pen, RectangleF rect);
+    void DrawEllipse(PenDef pen, RectangleF rect);
 
     /// <summary>
     /// Draws an arc.
@@ -70,14 +71,14 @@ public interface IGraphicOutput
     /// <param name="startAngle">The starting angle in degrees.</param>
     /// <param name="sweepAngle">The sweep angle in degrees.</param>
     /// <param name="useCenter">Whether to connect to the center.</param>
-    void DrawArc(Pen pen, RectangleF rect, float startAngle, float sweepAngle, bool useCenter);
+    void DrawArc(PenDef pen, RectangleF rect, float startAngle, float sweepAngle, bool useCenter);
 
     /// <summary>
     /// Draws a polygon outline.
     /// </summary>
     /// <param name="pen">The pen to use.</param>
     /// <param name="points">The points defining the polygon.</param>
-    void DrawPolygon(Pen pen, PointF[] points);
+    void DrawPolygon(PenDef pen, PointF[] points);
 
     /// <summary>
     /// Draws a Bezier curve.
@@ -87,7 +88,7 @@ public interface IGraphicOutput
     /// <param name="pt2">The second control point.</param>
     /// <param name="pt3">The third control point.</param>
     /// <param name="pt4">The fourth control point.</param>
-    void DrawBezier(Pen pen, PointF pt1, PointF pt2, PointF pt3, PointF pt4);
+    void DrawBezier(PenDef pen, PointF pt1, PointF pt2, PointF pt3, PointF pt4);
 
     /// <summary>
     /// Draws a Bezier curve with gradient colors.
@@ -110,7 +111,7 @@ public interface IGraphicOutput
     /// <param name="font">The font to use.</param>
     /// <param name="brush">The brush to use.</param>
     /// <param name="point">The position to draw at.</param>
-    void DrawString(string s, Font font, Brush brush, PointF point);
+    void DrawString(string s, FontDef font, BrushDef brush, PointF point);
 
     /// <summary>
     /// Draws a string at the specified coordinates.
@@ -120,7 +121,7 @@ public interface IGraphicOutput
     /// <param name="brush">The brush to use.</param>
     /// <param name="x">The x-coordinate.</param>
     /// <param name="y">The y-coordinate.</param>
-    void DrawString(string s, Font font, Brush brush, float x, float y);
+    void DrawString(string s, FontDef font, BrushDef brush, float x, float y);
 
     /// <summary>
     /// Draws a string with a specific format.
@@ -130,7 +131,7 @@ public interface IGraphicOutput
     /// <param name="brush">The brush to use.</param>
     /// <param name="point">The position to draw at.</param>
     /// <param name="format">The string format.</param>
-    void DrawString(string s, Font font, Brush brush, PointF point, StringFormat format);
+    void DrawString(string s, FontDef font, BrushDef brush, PointF point, StringFormat format);
 
     /// <summary>
     /// Draws text within a rectangular area.
@@ -139,7 +140,7 @@ public interface IGraphicOutput
     /// <param name="font">The font to use.</param>
     /// <param name="color">The color of the text.</param>
     /// <param name="rect">The bounding rectangle.</param>
-    void DrawTextArea(string s, Font font, Color color, RectangleF rect);
+    void DrawTextArea(string s, FontDef font, Color color, RectangleF rect);
 
     /// <summary>
     /// Draws an image with caching support.
@@ -147,7 +148,7 @@ public interface IGraphicOutput
     /// <param name="bitmap">The image to draw.</param>
     /// <param name="rect">The destination rectangle.</param>
     /// <param name="color">Optional tint color.</param>
-    void DrawImageCached(Image bitmap, RectangleF rect, Color? color);
+    void DrawImageCached(ImageDef bitmap, RectangleF rect, Color? color);
 
     /// <summary>
     /// Draws an image.
@@ -155,7 +156,7 @@ public interface IGraphicOutput
     /// <param name="bitmap">The image to draw.</param>
     /// <param name="rect">The destination rectangle.</param>
     /// <param name="color">Optional tint color.</param>
-    void DrawImage(Image bitmap, RectangleF rect, Color? color);
+    void DrawImage(ImageDef bitmap, RectangleF rect, Color? color);
 
     /// <summary>
     /// Fills a rounded rectangle.
@@ -163,7 +164,7 @@ public interface IGraphicOutput
     /// <param name="brush">The brush to use.</param>
     /// <param name="rect">The rectangle to fill.</param>
     /// <param name="cornerRadius">The corner radius.</param>
-    void FillRoundRectangle(Brush brush, RectangleF rect, float cornerRadius);
+    void FillRoundRectangle(BrushDef brush, RectangleF rect, float cornerRadius);
 
     /// <summary>
     /// Draws a rounded rectangle outline.
@@ -171,28 +172,28 @@ public interface IGraphicOutput
     /// <param name="pen">The pen to use.</param>
     /// <param name="rect">The rectangle to draw.</param>
     /// <param name="cornerRadius">The corner radius.</param>
-    void DrawRoundRectangle(Pen pen, RectangleF rect, float cornerRadius);
+    void DrawRoundRectangle(PenDef pen, RectangleF rect, float cornerRadius);
 
     /// <summary>
     /// Fills a rectangle.
     /// </summary>
     /// <param name="brush">The brush to use.</param>
     /// <param name="rect">The rectangle to fill.</param>
-    void FillRectangle(Brush brush, RectangleF rect);
+    void FillRectangle(BrushDef brush, RectangleF rect);
 
     /// <summary>
     /// Fills an ellipse.
     /// </summary>
     /// <param name="brush">The brush to use.</param>
     /// <param name="rect">The bounding rectangle for the ellipse.</param>
-    void FillEllipse(Brush brush, RectangleF rect);
+    void FillEllipse(BrushDef brush, RectangleF rect);
 
     /// <summary>
     /// Fills a polygon.
     /// </summary>
     /// <param name="brush">The brush to use.</param>
     /// <param name="points">The points defining the polygon.</param>
-    void FillPolygon(Brush brush, PointF[] points);
+    void FillPolygon(BrushDef brush, PointF[] points);
 
     /// <summary>
     /// Sets a clipping rectangle.
@@ -223,7 +224,7 @@ public interface IGraphicOutput
     /// <param name="text">The text to measure.</param>
     /// <param name="font">The font to use.</param>
     /// <returns>The measured size.</returns>
-    SizeF MeasureString(string text, Font font);
+    SizeF MeasureString(string text, FontDef font);
 
     /// <summary>
     /// Measures the size of text within a constrained width.
@@ -232,14 +233,14 @@ public interface IGraphicOutput
     /// <param name="font">The font to use.</param>
     /// <param name="maxLineWidth">The maximum line width.</param>
     /// <returns>The measured size.</returns>
-    SizeF MeasureTextArea(string text, Font font, float maxLineWidth);
+    SizeF MeasureTextArea(string text, FontDef font, float maxLineWidth);
 
     /// <summary>
     /// Measures the size of an image.
     /// </summary>
     /// <param name="image">The image to measure.</param>
     /// <returns>The measured size.</returns>
-    SizeF MeasureImage(Image image);
+    SizeF MeasureImage(ImageDef image);
 
     /// <summary>
     /// Creates a snapshot of the entire output surface.
@@ -302,7 +303,7 @@ public class EmptyGraphicOutput : IGraphicOutput
     { }
 
     /// <inheritdoc/>
-    public void DrawBezier(Pen pen, PointF pt1, PointF pt2, PointF pt3, PointF pt4)
+    public void DrawBezier(PenDef pen, PointF pt1, PointF pt2, PointF pt3, PointF pt4)
     { }
 
     /// <inheritdoc/>
@@ -310,77 +311,77 @@ public class EmptyGraphicOutput : IGraphicOutput
     { }
 
     /// <inheritdoc/>
-    public void DrawImage(Image bitmap, RectangleF rect, Color? color)
+    public void DrawImage(ImageDef bitmap, RectangleF rect, Color? color)
     { }
 
     /// <inheritdoc/>
-    public void DrawImageCached(Image bitmap, RectangleF rect, Color? color)
+    public void DrawImageCached(ImageDef bitmap, RectangleF rect, Color? color)
     { }
 
     /// <inheritdoc/>
-    public void DrawLine(Pen pen, PointF pt1, PointF pt2)
+    public void DrawLine(PenDef pen, PointF pt1, PointF pt2)
     { }
 
     /// <inheritdoc/>
-    public void DrawRectangle(Pen pen, RectangleF rect)
+    public void DrawRectangle(PenDef pen, RectangleF rect)
     { }
 
     /// <inheritdoc/>
-    public void DrawEllipse(Pen pen, RectangleF rect)
+    public void DrawEllipse(PenDef pen, RectangleF rect)
     { }
 
     /// <inheritdoc/>
-    public void DrawArc(Pen pen, RectangleF rect, float startAngle, float sweepAngle, bool useCenter)
+    public void DrawArc(PenDef pen, RectangleF rect, float startAngle, float sweepAngle, bool useCenter)
     { }
 
     /// <inheritdoc/>
-    public void DrawRoundRectangle(Pen pen, RectangleF rect, float cornerRadius)
+    public void DrawRoundRectangle(PenDef pen, RectangleF rect, float cornerRadius)
     { }
 
     /// <inheritdoc/>
-    public void DrawString(string s, Font font, Brush brush, PointF point)
+    public void DrawString(string s, FontDef font, BrushDef brush, PointF point)
     { }
 
     /// <inheritdoc/>
-    public void DrawString(string s, Font font, Brush brush, float x, float y)
+    public void DrawString(string s, FontDef font, BrushDef brush, float x, float y)
     { }
 
     /// <inheritdoc/>
-    public void DrawString(string s, Font font, Brush brush, PointF point, StringFormat format)
+    public void DrawString(string s, FontDef font, BrushDef brush, PointF point, StringFormat format)
     { }
 
     /// <inheritdoc/>
-    public void DrawTextArea(string s, Font font, Color color, RectangleF rect)
+    public void DrawTextArea(string s, FontDef font, Color color, RectangleF rect)
     { }
 
     /// <inheritdoc/>
-    public void FillEllipse(Brush brush, RectangleF rect)
+    public void FillEllipse(BrushDef brush, RectangleF rect)
     { }
 
     /// <inheritdoc/>
-    public void DrawPolygon(Pen pen, PointF[] points)
+    public void DrawPolygon(PenDef pen, PointF[] points)
     { }
 
     /// <inheritdoc/>
-    public void FillPolygon(Brush brush, PointF[] points)
+    public void FillPolygon(BrushDef brush, PointF[] points)
     { }
 
     /// <inheritdoc/>
-    public void FillRectangle(Brush brush, RectangleF rect)
+    public void FillRectangle(BrushDef brush, RectangleF rect)
     { }
 
     /// <inheritdoc/>
-    public void FillRoundRectangle(Brush brush, RectangleF rect, float cornerRadius)
+    public void FillRoundRectangle(BrushDef brush, RectangleF rect, float cornerRadius)
     { }
 
     /// <inheritdoc/>
-    public SizeF MeasureString(string text, Font font) => SizeF.Empty;
+    public SizeF MeasureString(string text, FontDef font) => SizeF.Empty;
 
     /// <inheritdoc/>
-    public SizeF MeasureTextArea(string text, Font font, float maxLineWidth) => SizeF.Empty;
+    public SizeF MeasureTextArea(string text, FontDef font, float maxLineWidth) => SizeF.Empty;
 
     /// <inheritdoc/>
-    public SizeF MeasureImage(Image image) => SizeF.Empty;
+    public SizeF MeasureImage(ImageDef image) => SizeF.Empty;
 
     /// <inheritdoc/>
     public void SetClipRect(RectangleF rect)

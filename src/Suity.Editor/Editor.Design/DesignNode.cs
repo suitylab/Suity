@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
@@ -167,7 +168,7 @@ public abstract class DesignNode : SNamedNode,
     /// <summary>
     /// Gets the selected icon for this node.
     /// </summary>
-    public Image SelectedIcon => _iconSelection.Target?.GetIconSmall();
+    public ImageDef SelectedIcon => _iconSelection.Target?.GetIconSmall();
 
     /// <summary>
     /// Gets or sets the color for this node.
@@ -386,7 +387,7 @@ setup.ExtendedField(_attributes.Array, new ViewProperty("Attributes", "Property"
         }
     }
 
-    protected override Image OnGetIcon() => SelectedIcon;
+    protected override ImageDef OnGetIcon() => SelectedIcon;
 
     #endregion
 

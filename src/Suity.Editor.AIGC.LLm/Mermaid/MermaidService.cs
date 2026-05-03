@@ -1,11 +1,11 @@
 using Ionic.Zlib;
+using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.Services;
 using Suity.Helpers;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -23,7 +23,7 @@ internal class MermaidService : IMermaidService
     /// Gets the singleton instance of the <see cref="MermaidService"/>.
     /// </summary>
     public static MermaidService Instance { get; } = new();
-    readonly Dictionary<int, Bitmap> _cachedImages = [];
+    readonly Dictionary<int, BitmapDef> _cachedImages = [];
 
     bool _generating;
     DateTime _genTime;
@@ -125,7 +125,7 @@ internal class MermaidService : IMermaidService
     }
 
     /// <inheritdoc/>
-    public async Task<Bitmap> GenerateMermaidBitmap(string input)
+    public async Task<BitmapDef> GenerateMermaidBitmap(string input)
     {
         if (GetCachedMermaidBitmap(input) is { } cachedImg)
         {
@@ -193,7 +193,7 @@ internal class MermaidService : IMermaidService
     }
 
     /// <inheritdoc/>
-    public Bitmap GetCachedMermaidBitmap(string input)
+    public BitmapDef GetCachedMermaidBitmap(string input)
     {
         input = TrimMermaid(input);
         if (string.IsNullOrWhiteSpace(input))
@@ -201,7 +201,7 @@ internal class MermaidService : IMermaidService
             return null;
         }
 
-        Bitmap cachedBitmap = null;
+        BitmapDef cachedBitmap = null;
 
         int hashCode = input.GetHashCode();
         lock (_cachedImages)
@@ -218,7 +218,7 @@ internal class MermaidService : IMermaidService
         {
             try
             {
-                cachedBitmap = Bitmap.FromPath(cachePath);
+                cachedBitmap = BitmapDef.FromPath(cachePath);
                 if (cachedBitmap != null)
                 {
                     lock (_cachedImages)
@@ -243,11 +243,11 @@ internal class MermaidService : IMermaidService
     #endregion
 
     /// <summary>
-    /// Downloads and creates a <see cref="Bitmap"/> from the specified URL.
+    /// Downloads and creates a <see cref="BitmapDef"/> from the specified URL.
     /// </summary>
     /// <param name="url">The URL of the image to download.</param>
-    /// <returns>A <see cref="Bitmap"/> object if successful; otherwise, null.</returns>
-    public static async Task<Bitmap> GnerateMermaidBitmapByUrl(string url)
+    /// <returns>A <see cref="BitmapDef"/> object if successful; otherwise, null.</returns>
+    public static async Task<BitmapDef> GnerateMermaidBitmapByUrl(string url)
     {
         try
         {
@@ -258,7 +258,7 @@ internal class MermaidService : IMermaidService
 
 
             // 3. Create Bitmap from byte[]
-            return new Bitmap(imageBytes);
+            return new BitmapDef(imageBytes);
         }
         catch (Exception ex)
         {

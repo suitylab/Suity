@@ -1,5 +1,5 @@
+using Suity.Drawing;
 using System;
-using System.Drawing;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.Services;
@@ -15,7 +15,7 @@ public interface IDialogService
     /// <param name="text">The text content.</param>
     /// <param name="title">The window title.</param>
     /// <param name="icon">Optional icon.</param>
-    void CreateTextWindow(string text, string title, Image icon);
+    void CreateTextWindow(string text, string title, ImageDef icon);
 
     /// <summary>
     /// Shows a simple message dialog.
@@ -108,7 +108,7 @@ public interface IDialogServiceAsync
     /// <param name="title">The window title.</param>
     /// <param name="icon">Optional icon.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    Task CreateTextWindowAsync(string text, string title, Image icon);
+    Task CreateTextWindowAsync(string text, string title, ImageDef icon);
 
     /// <summary>
     /// Shows a dialog asynchronously.

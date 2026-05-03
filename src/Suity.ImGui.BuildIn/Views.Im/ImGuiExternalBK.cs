@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views.Graphics;
 using System;
@@ -13,7 +14,7 @@ namespace Suity.Views.Im;
 /// </summary>
 internal class ImGuiExternalBK : ImGuiExternal
 {
-    private static readonly Font _DefaultFont = new(ImGuiTheme.DefaultFont, 12f); //new(SystemFonts.DefaultFont.FontFamily, 12f);
+    private static readonly FontDef _DefaultFont = new(ImGuiTheme.DefaultFont, 12f); //new(SystemFonts.DefaultFont.FontFamily, 12f);
 
     /// <summary>
     /// Gets the singleton instance.
@@ -24,7 +25,7 @@ internal class ImGuiExternalBK : ImGuiExternal
     { }
 
     private bool _isInit;
-    private static readonly Dictionary<Font, FontSizeCache> _sizedFonts = [];
+    private static readonly Dictionary<FontDef, FontSizeCache> _sizedFonts = [];
 
     /// <summary>
     /// Initializes the external BK and sets up the empty path singleton.
@@ -679,14 +680,14 @@ internal class ImGuiExternalBK : ImGuiExternal
 
     #region Font
 
-    public override Font DefaultFont => _DefaultFont;
+    public override FontDef DefaultFont => _DefaultFont;
 
-    public override Font GetFont(ImGuiNode node)
+    public override FontDef GetFont(ImGuiNode node)
     {
         return node.Font ?? DefaultFont;
     }
 
-    public override Font GetScaledFont(ImGuiNode node)
+    public override FontDef GetScaledFont(ImGuiNode node)
     {
         var font = node.Font ?? DefaultFont;
         if (node.GlobalScale is { } scale && scale != 1f)

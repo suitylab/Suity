@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -50,7 +51,7 @@ public class ColumnConfig<T>
     /// <summary>
     /// Gets or sets an optional icon associated with this column.
     /// </summary>
-    public Image? Icon { get; set; }
+    public ImageDef? Icon { get; set; }
 
     /// <summary>
     /// Gets or sets an arbitrary object tag for storing custom data associated with this column.

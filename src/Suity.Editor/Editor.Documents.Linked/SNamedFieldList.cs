@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Synchonizing.Core;
 using Suity.Views.Named;
 using System;
@@ -59,13 +60,13 @@ public abstract class SNamedFieldList : NamedFieldList
     /// <summary>
     /// Gets or sets the field icon.
     /// </summary>
-    public Image FieldIcon { get; set; }
+    public ImageDef FieldIcon { get; set; }
 
     public override SyncPath GetPath() => ParentItem?.GetPath().Append(_fieldName) ?? SyncPath.Empty;
 
     protected override string OnGetText() => FieldDescription ?? base.OnGetText();
 
-    protected override Image OnGetIcon() => FieldIcon ?? base.OnGetIcon();
+    protected override ImageDef OnGetIcon() => FieldIcon ?? base.OnGetIcon();
 }
 
 /// <summary>

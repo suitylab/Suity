@@ -3,6 +3,7 @@ using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using System.Drawing;
+using Suity.Drawing;
 
 namespace Suity.Views.Named;
 
@@ -51,7 +52,7 @@ public class NamedComment : NamedItem
     /// <summary>
     /// Gets the icon to display for this comment (always null).
     /// </summary>
-    protected override Image OnGetIcon() => null;
+    protected override ImageDef OnGetIcon() => null;
 
     /// <summary>
     /// Gets the text status indicating this is a comment.

@@ -4,6 +4,7 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Drawing;
+using Suity.Drawing;
 
 namespace Suity.Editor.VirtualTree.Nodes;
 
@@ -151,13 +152,13 @@ public abstract class BaseObjectNode : VirtualNode, ISyncContext
     }
 
     /// <inheritdoc/>
-    protected override Image GetMainIcon()
+    protected override ImageDef GetMainIcon()
     {
         return DisplayedValue is ITextDisplay ext ? EditorUtility.GetIcon(ext.DisplayIcon) : base.GetMainIcon();
     }
 
     /// <inheritdoc/>
-    protected override Image GetCustomIcon()
+    protected override ImageDef GetCustomIcon()
     {
         return DisplayedValue is ICustomIcon customIcon ? customIcon.CustomIcon : base.GetCustomIcon();
     }
@@ -206,7 +207,7 @@ public abstract class BaseObjectNode : VirtualNode, ISyncContext
     }
 
     /// <inheritdoc/>
-    protected override Image GetPreviewIcon()
+    protected override ImageDef GetPreviewIcon()
     {
         var customIcon = GetCustomPreviewIcon();
         if (customIcon != null)
@@ -236,7 +237,7 @@ public abstract class BaseObjectNode : VirtualNode, ISyncContext
     /// <param name="icon">Optional main icon for the field.</param>
     /// <param name="previewText">Optional preview text.</param>
     /// <param name="previewIcon">Optional preview icon.</param>
-    protected void FieldSimpleText(string name, string text, Image icon = null, string previewText = null, Image previewIcon = null)
+    protected void FieldSimpleText(string name, string text, ImageDef icon = null, string previewText = null, ImageDef previewIcon = null)
     {
         var node = new SimpleTextNode(text, icon, previewText, previewIcon);
         InternalAddNode(node, new ViewProperty(name));
@@ -334,7 +335,7 @@ public abstract class BaseObjectNode : VirtualNode, ISyncContext
 
         VirtualNode node = null;
 
-        Image icon = EditorUtility.GetIcon(property.Icon);
+        ImageDef icon = EditorUtility.GetIcon(property.Icon);
 
         if (_setupNodeIndex < _setupNodes.Length)
         {
@@ -383,8 +384,8 @@ public abstract class BaseObjectNode : VirtualNode, ISyncContext
             return;
         }
 
-        Image icon = null;
-        if (property.Icon is Image image)
+        ImageDef icon = null;
+        if (property.Icon is ImageDef image)
         {
             icon = image;
         }

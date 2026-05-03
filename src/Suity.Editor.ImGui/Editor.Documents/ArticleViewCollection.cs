@@ -1,10 +1,10 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using static Suity.Helpers.GlobalLocalizer;
@@ -35,7 +35,7 @@ public interface IFeatureSelector
 /// </summary>
 /// <param name="article">The article to get an icon for.</param>
 /// <returns>The icon image for the article.</returns>
-public delegate Image ArticleIconGetter(IArticle article);
+public delegate ImageDef ArticleIconGetter(IArticle article);
 
 
 /// <summary>

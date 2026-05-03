@@ -29,6 +29,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Suity.Drawing;
 
 namespace Suity.Editor;
 
@@ -186,7 +187,7 @@ public static class EditorUtility
     /// </summary>
     /// <param name="assetKey">The key of the asset to retrieve the icon for.</param>
     /// <returns>An Image object representing the icon, or null if not found.</returns>
-    public static Image GetIconByAssetKey(string assetKey)
+    public static ImageDef GetIconByAssetKey(string assetKey)
     {
         return EditorServices.IconService?.GetIconById(GlobalIdResolver.Resolve(assetKey));
     }
@@ -196,7 +197,7 @@ public static class EditorUtility
     /// </summary>
     /// <param name="id">The unique identifier of the icon to retrieve.</param>
     /// <returns>An Image object representing the icon, or null if not found.</returns>
-    public static Image GetIconById(Guid id)
+    public static ImageDef GetIconById(Guid id)
     {
         return EditorServices.IconService?.GetIconById(id);
     }
@@ -206,7 +207,7 @@ public static class EditorUtility
     /// </summary>
     /// <param name="path">The file path to retrieve the icon for.</param>
     /// <returns>An Image object representing the file icon, or null if not found.</returns>
-    public static Image GetIconForFileExact(string path)
+    public static ImageDef GetIconForFileExact(string path)
     {
         return EditorServices.IconService?.GetIconForFileExact(path);
     }
@@ -216,7 +217,7 @@ public static class EditorUtility
     /// </summary>
     /// <param name="path">The file path to retrieve the icon for.</param>
     /// <returns>An Image object representing the file icon, or null if not found.</returns>
-    public static Image GetIconForFile(string path)
+    public static ImageDef GetIconForFile(string path)
     {
         return EditorServices.IconService?.GetIconForFile(path);
     }
@@ -233,14 +234,14 @@ public static class EditorUtility
     /// - The object type is not supported
     /// - No icon can be resolved from the provided object
     /// </returns>
-    public static Image GetIcon(object iconObject)
+    public static ImageDef GetIcon(object iconObject)
     {
         if (iconObject is null)
         {
             return null;
         }
 
-        if (iconObject is Image image)
+        if (iconObject is ImageDef image)
         {
             return image;
         }
@@ -764,7 +765,7 @@ public static class EditorUtility
     /// <param name="icon">The icon to be displayed in the window.</param>
     /// <param name="menu">Optional root menu command for the window.</param>
     /// <returns>A window handle for the created window, or an empty handle if creation fails.</returns>
-    public static IWindowHandle CreateViewObjectWindow(object uiObject, string title, Image icon, RootMenuCommand menu = null)
+    public static IWindowHandle CreateViewObjectWindow(object uiObject, string title, ImageDef icon, RootMenuCommand menu = null)
     {
         var window = new SimpleViewObjectWindow(uiObject, title, icon, menu);
         return EditorServices.ToolWindow?.CreateViewObjectWindow(window) ?? EmptyWindowHandle.Empty;
@@ -1604,10 +1605,10 @@ public static class EditorUtility
 
     #region To
 
-    class TypeDisplayInfo(string displayText, Image icon, string previewText, string toolTips)
+    class TypeDisplayInfo(string displayText, ImageDef icon, string previewText, string toolTips)
     {
         public string DisplayText { get; } = displayText;
-        public Image Icon { get; } = icon;
+        public ImageDef Icon { get; } = icon;
         public string PreviewText { get; } = previewText;
         public string ToolTips { get; } = toolTips;
     }
@@ -1623,7 +1624,7 @@ public static class EditorUtility
         return _staticDisplayInfo.GetOrAdd(type, t =>
         {
             string displayText = null;
-            Image icon = null;
+            ImageDef icon = null;
             string previewText = null;
             string toolTipsText = null;
 
@@ -1855,7 +1856,7 @@ public static class EditorUtility
     /// </summary>
     /// <param name="obj">The object to convert.</param>
     /// <returns>An Image representing the object's icon, or null if the object is null.</returns>
-    public static Image ToDisplayIcon(this object obj)
+    public static ImageDef ToDisplayIcon(this object obj)
     {
         if (obj is null)
         {
@@ -1981,7 +1982,7 @@ public static class EditorUtility
     /// </summary>
     /// <param name="type">The Type to get display icon for</param>
     /// <returns>The display icon of the Type, or null if no display info is available</returns>
-    public static Image ToDisplayIcon(this Type type)
+    public static ImageDef ToDisplayIcon(this Type type)
     {
         return GetTypeDisplayInfo(type)?.Icon;
     }
@@ -2109,7 +2110,7 @@ public static class EditorUtility
         return s;
     }
 
-    public static Image ToStatusIcon(this TextStatus status) => status switch
+    public static ImageDef ToStatusIcon(this TextStatus status) => status switch
     {
         TextStatus.Info => CoreIconCache.LogInfo,
         TextStatus.Warning => CoreIconCache.Warning,

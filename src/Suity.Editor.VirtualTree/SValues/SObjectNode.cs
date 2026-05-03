@@ -1,4 +1,5 @@
 using ComputerBeacon.Json;
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Analyzing;
 using Suity.Editor.Services;
@@ -251,7 +252,7 @@ public class SObjectNode : BaseObjectNode<SObject>,
     #region Display
 
     /// <inheritdoc/>
-    protected override Image GetMainIcon()
+    protected override ImageDef GetMainIcon()
     {
         var obj = DisplayedObject;
 
@@ -377,7 +378,7 @@ public class SObjectNode : BaseObjectNode<SObject>,
     }
 
     /// <inheritdoc/>
-    protected override Image GetPreviewIcon()
+    protected override ImageDef GetPreviewIcon()
     {
         var customIcon = GetCustomPreviewIcon();
         if (customIcon != null)

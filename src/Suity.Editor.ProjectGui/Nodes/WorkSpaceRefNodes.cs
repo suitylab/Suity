@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.CodeRender;
 using Suity.Editor.WorkSpaces;
@@ -7,7 +8,6 @@ using Suity.Views.PathTree;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -30,7 +30,7 @@ public class WorkSpaceReferenceGroupNode : PopulatePathNode, IWorkSpaceReference
     }
 
     /// <inheritdoc/>
-    public override Image Image => CoreIconCache.Code.ToIconSmall();
+    public override ImageDef Image => CoreIconCache.Code.ToIconSmall();
 
     /// <inheritdoc/>
     public override bool Reusable => true;
@@ -156,7 +156,7 @@ public class WorkSpaceReferenceNode : PathNode, IWorkSpaceReferenceNode, IDropTa
     public Guid Id { get; }
 
     /// <inheritdoc/>
-    public override Image Image
+    public override ImageDef Image
     {
         get
         {
@@ -175,7 +175,7 @@ public class WorkSpaceReferenceNode : PathNode, IWorkSpaceReferenceNode, IDropTa
     /// <summary>
     /// Gets the extended image indicating special reference properties.
     /// </summary>
-    public Image ImageEx
+    public ImageDef ImageEx
     {
         get
         {
@@ -355,7 +355,7 @@ public class WorkSpaceAssemblyGroupNode : PopulatePathNode, IDropTarget
     }
 
     /// <inheritdoc/>
-    public override Image Image => CoreIconCache.Assembly.ToIconSmall();
+    public override ImageDef Image => CoreIconCache.Assembly.ToIconSmall();
 
     /// <inheritdoc/>
     public override bool Reusable => true;
@@ -481,7 +481,7 @@ public class WorkSpaceAssemblyNode : PathNode
     public IAssemblyReferenceItem RefItem { get; }
 
     /// <inheritdoc/>
-    public override Image Image
+    public override ImageDef Image
     {
         get
         {
@@ -499,7 +499,7 @@ public class WorkSpaceAssemblyNode : PathNode
     /// <summary>
     /// Gets the extended image for this node (always null).
     /// </summary>
-    public Image ImageEx => null;
+    public ImageDef ImageEx => null;
 
     /// <inheritdoc/>
     public override bool Reusable => true;

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Types;
@@ -50,7 +51,7 @@ public class StructType : StructTypeBase<DStructBuilder>,
     public override Color? TypeColor => DStruct.StructTypeColor;
 
     /// <inheritdoc/>
-    public override Image TypeIcon => CoreIconCache.Box;
+    public override ImageDef TypeIcon => CoreIconCache.Box;
 
     /// <inheritdoc/>
     protected override void OnIsValueTypeChanged()
@@ -108,7 +109,7 @@ public class StructType : StructTypeBase<DStructBuilder>,
     }
 
     /// <inheritdoc/>
-    protected override Image OnGetIcon() => base.OnGetIcon() ?? CoreIconCache.Box;
+    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? CoreIconCache.Box;
 
     /// <summary>
     /// Gets the field list for this struct type.

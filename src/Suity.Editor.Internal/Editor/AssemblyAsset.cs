@@ -1,5 +1,5 @@
+using Suity.Drawing;
 using Suity.Editor.WorkSpaces;
-using System.Drawing;
 
 namespace Suity.Editor;
 
@@ -18,7 +18,7 @@ public class AssemblyAsset : Asset, IAssemblyReference
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Assembly;
+    public override ImageDef DefaultIcon => CoreIconCache.Assembly;
 }
 
 /// <summary>

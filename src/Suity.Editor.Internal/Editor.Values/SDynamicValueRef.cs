@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Selecting;
 using Suity.Helpers;
 using Suity.Synchonizing;
@@ -8,7 +9,6 @@ using Suity.Views.Im;
 using Suity.Views.Im.PropertyEditing;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace Suity.Editor.Values;
@@ -42,7 +42,7 @@ public class SDynamicValueRef : SDynamic, INavigable
     }
 
     /// <inheritdoc/>
-    public override Image Icon => _selection.Target?.Icon ?? CoreIconCache.Value;
+    public override ImageDef Icon => _selection.Target?.Icon ?? CoreIconCache.Value;
 
     /// <summary>
     /// Gets the internal value selection.

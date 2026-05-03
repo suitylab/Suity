@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Design;
 using System;
@@ -47,10 +48,10 @@ public class DStruct : DCompond, IDataAsset
     }
 
     /// <inheritdoc />
-    public override Image GetIcon() => base.GetIcon() ?? _baseType.Target?.GetIcon();
+    public override ImageDef GetIcon() => base.GetIcon() ?? _baseType.Target?.GetIcon();
 
     /// <inheritdoc />
-    public override Image DefaultIcon => CoreIconCache.Box;
+    public override ImageDef DefaultIcon => CoreIconCache.Box;
 
     /// <inheritdoc />
     public override Color? TypeColor => StructTypeColor;

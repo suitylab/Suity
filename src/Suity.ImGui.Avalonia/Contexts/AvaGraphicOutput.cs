@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using SkiaSharp;
 using Suity.Controls;
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views.Graphics;
 using System.Drawing;
@@ -73,7 +74,7 @@ internal class AvaGraphicOutput : IGraphicOutput
     }
 
     /// <inheritdoc/>
-    public void DrawBezier(Pen pen, PointF pt1, PointF pt2, PointF pt3, PointF pt4)
+    public void DrawBezier(PenDef pen, PointF pt1, PointF pt2, PointF pt3, PointF pt4)
     {
         _canvas.DrawBezier(pen, pt1, pt2, pt3, pt4);
     }
@@ -139,63 +140,63 @@ internal class AvaGraphicOutput : IGraphicOutput
     }
 
     /// <inheritdoc/>
-    public void DrawImage(System.Drawing.Image bitmap, RectangleF rect, Color? color)
+    public void DrawImage(Suity.Drawing.ImageDef bitmap, RectangleF rect, Color? color)
     {
         _canvas.DrawImage(bitmap, rect, color);
     }
 
     /// <inheritdoc/>
-    public void DrawImageCached(System.Drawing.Image bitmap, RectangleF rect, Color? color)
+    public void DrawImageCached(Suity.Drawing.ImageDef bitmap, RectangleF rect, Color? color)
     {
         _canvas.DrawImageCached(bitmap, rect, color);
     }
 
     /// <inheritdoc/>
-    public void DrawLine(Pen pen, PointF pt1, PointF pt2)
+    public void DrawLine(PenDef pen, PointF pt1, PointF pt2)
     {
         _canvas.DrawLine(pen, pt1, pt2);
     }
 
     /// <inheritdoc/>
-    public void DrawRectangle(Pen pen, RectangleF rect)
+    public void DrawRectangle(PenDef pen, RectangleF rect)
     {
         _canvas.DrawRectangle(pen, rect);
     }
 
     /// <inheritdoc/>
-    public void DrawRoundRectangle(Pen pen, RectangleF rect, float cornerRadius)
+    public void DrawRoundRectangle(PenDef pen, RectangleF rect, float cornerRadius)
     {
         _canvas.DrawRoundRectangle(pen, rect, cornerRadius);
     }
 
     /// <inheritdoc/>
-    public void DrawEllipse(Pen pen, RectangleF rect)
+    public void DrawEllipse(PenDef pen, RectangleF rect)
     {
         _canvas.DrawEllipse(pen, rect);
     }
 
     /// <inheritdoc/>
-    public void DrawArc(Pen pen, RectangleF rect, float startAngle, float sweepAngle, bool useCenter)
+    public void DrawArc(PenDef pen, RectangleF rect, float startAngle, float sweepAngle, bool useCenter)
     {
         _canvas.DrawArc(rect.ToSKRect(), startAngle, sweepAngle, useCenter, pen.ToSKPaint());
     }
 
     /// <inheritdoc/>
-    public void DrawString(string s, Font font, Brush brush, PointF point)
+    public void DrawString(string s, FontDef font, BrushDef brush, PointF point)
     {
         //_canvas.DrawString(s, font, brush, point);
         _canvas.DrawRichSingleLineText(s, font, brush, new SKPoint(point.X, point.Y), StringAlignment.Near);
     }
 
     /// <inheritdoc/>
-    public void DrawString(string s, Font font, Brush brush, float x, float y)
+    public void DrawString(string s, FontDef font, BrushDef brush, float x, float y)
     {
         //_canvas.DrawString(s, font, brush, x, y);
         _canvas.DrawRichSingleLineText(s, font, brush, new SKPoint(x, y), StringAlignment.Near);
     }
 
     /// <inheritdoc/>
-    public void DrawString(string s, Font font, Brush brush, PointF point, StringFormat format)
+    public void DrawString(string s, FontDef font, BrushDef brush, PointF point, StringFormat format)
     {
         //_canvas.DrawString(s, font, brush, point, format);
         var alignment = format.Alignment;
@@ -203,37 +204,37 @@ internal class AvaGraphicOutput : IGraphicOutput
     }
 
     /// <inheritdoc/>
-    public void DrawTextArea(string s, Font font, Color color, RectangleF rect)
+    public void DrawTextArea(string s, FontDef font, Color color, RectangleF rect)
     {
         _canvas.DrawRichTextArea(s, font, color, rect);
     }
 
     /// <inheritdoc/>
-    public void FillEllipse(Brush brush, RectangleF rect)
+    public void FillEllipse(BrushDef brush, RectangleF rect)
     {
         _canvas.FillEllipse(brush, rect);
     }
 
     /// <inheritdoc/>
-    public void DrawPolygon(Pen pen, PointF[] points)
+    public void DrawPolygon(PenDef pen, PointF[] points)
     {
         _canvas.DrawPolygon(pen, points);
     }
 
     /// <inheritdoc/>
-    public void FillPolygon(Brush brush, PointF[] points)
+    public void FillPolygon(BrushDef brush, PointF[] points)
     {
         _canvas.FillPolygon(brush, points);
     }
 
     /// <inheritdoc/>
-    public void FillRectangle(Brush brush, RectangleF rect)
+    public void FillRectangle(BrushDef brush, RectangleF rect)
     {
         _canvas.FillRectangle(brush, rect);
     }
 
     /// <inheritdoc/>
-    public void FillRoundRectangle(Brush brush, RectangleF rect, float cornerRadius)
+    public void FillRoundRectangle(BrushDef brush, RectangleF rect, float cornerRadius)
     {
         _canvas.FillRoundRectangle(brush, rect, cornerRadius);
 
@@ -242,7 +243,7 @@ internal class AvaGraphicOutput : IGraphicOutput
     }
 
     /// <inheritdoc/>
-    public SizeF MeasureString(string text, Font font)
+    public SizeF MeasureString(string text, FontDef font)
     {
         var size = AvaDrawingHelper.MeasureSingleLineString(text, font);
         size.Width += font.Size * 0.2f;
@@ -250,14 +251,14 @@ internal class AvaGraphicOutput : IGraphicOutput
     }
 
     /// <inheritdoc/>
-    public SizeF MeasureTextArea(string text, Font font, float maxLineWidth)
+    public SizeF MeasureTextArea(string text, FontDef font, float maxLineWidth)
     {
         var size = AvaDrawingHelper.MeasureTextArea(text, font, maxLineWidth);
         return size;
     }
 
     /// <inheritdoc/>
-    public SizeF MeasureImage(System.Drawing.Image image)
+    public SizeF MeasureImage(Suity.Drawing.ImageDef image)
     {
         var skImg = image.ToSKImage();
         if (skImg != null)

@@ -1,4 +1,5 @@
 ﻿using Suity.Collections;
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Reflecting;
 using System;
@@ -36,7 +37,7 @@ public abstract class FlowNodeStyle
     /// <summary>
     /// Icon
     /// </summary>
-    public virtual Image Icon => null;
+    public virtual ImageDef Icon => null;
 
     /// <summary>
     /// Whether to display header
@@ -55,9 +56,9 @@ public abstract class FlowNodeStyle
 
     public virtual Color? BackgroundColor => null;
 
-    public virtual Brush NodeFillBrush => null;
-    public virtual Brush NodeHeaderFillBrush => null;
-    public virtual Pen NodeOutlinePen => null;
+    public virtual BrushDef NodeFillBrush => null;
+    public virtual BrushDef NodeHeaderFillBrush => null;
+    public virtual PenDef NodeOutlinePen => null;
 
     public virtual FlowNodeDrawDelegate CustomDraw
     {
@@ -209,8 +210,8 @@ class AttributedFlowNodeStyle : FlowNodeStyle
     readonly SimpleFlowNodeStyleAttribute _attr;
 
     readonly Color? _color;
-    readonly Image _icon;
-    readonly Brush _brush;
+    readonly ImageDef _icon;
+    readonly BrushDef _brush;
     readonly int? _width;
     readonly int? _height;
     readonly bool _inputMultiple;
@@ -230,7 +231,7 @@ class AttributedFlowNodeStyle : FlowNodeStyle
             try
             {
                 Color color = ColorTranslators.FromHtml(attr.Color);
-                _brush = new SolidBrush(color);
+                _brush = new SolidBrushDef(color);
                 _color = color;
             }
             catch (Exception)
@@ -245,7 +246,7 @@ class AttributedFlowNodeStyle : FlowNodeStyle
         _outputMultiple = attr.RenderOutputMultiple;
     }
 
-    public override Image Icon => _icon;
+    public override ImageDef Icon => _icon;
 
     public override bool HasHeader => _attr.HasHeader;
 
@@ -255,7 +256,7 @@ class AttributedFlowNodeStyle : FlowNodeStyle
 
     public override Color? BackgroundColor => _color;
 
-    public override Brush NodeFillBrush => _brush;
+    public override BrushDef NodeFillBrush => _brush;
 
     public override bool RenderInputMultiple => _inputMultiple;
 

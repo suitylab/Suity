@@ -1,10 +1,10 @@
+using Suity.Drawing;
 using Suity.Editor.Analyzing;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Synchonizing.Core;
 using Suity.Views;
-using System.Drawing;
 using System.Linq;
 using static Suity.Helpers.GlobalLocalizer;
 
@@ -36,7 +36,7 @@ public class SDynamicLink : SDynamic, ITextDisplay, ISupportAnalysis
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Link;
+    public override ImageDef Icon => CoreIconCache.Link;
 
     /// <inheritdoc/>
     public override object GetValue(ICondition condition = null)

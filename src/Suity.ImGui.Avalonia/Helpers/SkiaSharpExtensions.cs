@@ -1,6 +1,7 @@
 using SkiaSharp;
 using Suity;
 using Suity.Collections;
+using Suity.Drawing;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -29,8 +30,8 @@ public static class SkiaSharpExtensions
     /// </summary>
     public static float FontScale = 1f;
 
-    private static readonly Dictionary<Font, SKFont> _fontCache = [];
-    private static readonly Dictionary<Image, SKImage> _imageCache = [];
+    private static readonly Dictionary<FontDef, SKFont> _fontCache = [];
+    private static readonly Dictionary<ImageDef, SKImage> _imageCache = [];
 
     private static SKTypeface _defaultTypeFace;
     private static SKFont _defaultFont;
@@ -123,11 +124,11 @@ public static class SkiaSharpExtensions
     [ThreadStatic]
     private static SKPaint? _penPaint;
     /// <summary>
-    /// Converts a <see cref="Pen"/> to a <see cref="SKPaint"/> for stroking operations.
+    /// Converts a <see cref="PenDef"/> to a <see cref="SKPaint"/> for stroking operations.
     /// </summary>
     /// <param name="pen">The System.Drawing pen.</param>
     /// <returns>A SkiaSharp paint configured for stroking.</returns>
-    public static SKPaint ToSKPaint(this Pen pen)
+    public static SKPaint ToSKPaint(this PenDef pen)
     {
         // Add .Handle check to prevent unmanaged objects from holding references after being accidentally released
         if (_penPaint == null || _penPaint.Handle == nint.Zero)
@@ -200,11 +201,11 @@ public static class SkiaSharpExtensions
     [ThreadStatic]
     private static SKPaint? _brushPaint;
     /// <summary>
-    /// Converts a <see cref="SolidBrush"/> to a <see cref="SKPaint"/> for filling operations.
+    /// Converts a <see cref="SolidBrushDef"/> to a <see cref="SKPaint"/> for filling operations.
     /// </summary>
     /// <param name="brush">The System.Drawing solid brush.</param>
     /// <returns>A SkiaSharp paint configured for filling.</returns>
-    public static SKPaint ToSKPaint(this SolidBrush brush)
+    public static SKPaint ToSKPaint(this SolidBrushDef brush)
     {
         // Add .Handle check to prevent unmanaged objects from holding references after being accidentally released
         if (_brushPaint == null || _brushPaint.Handle == nint.Zero)
@@ -223,13 +224,13 @@ public static class SkiaSharpExtensions
     }
 
     /// <summary>
-    /// Converts a <see cref="Brush"/> to a <see cref="SKPaint"/>, handling solid brushes specially.
+    /// Converts a <see cref="BrushDef"/> to a <see cref="SKPaint"/>, handling solid brushes specially.
     /// </summary>
     /// <param name="brush">The System.Drawing brush.</param>
     /// <returns>A SkiaSharp paint configured for the brush type.</returns>
-    public static SKPaint ToSKPaint(this Brush brush)
+    public static SKPaint ToSKPaint(this BrushDef brush)
     {
-        if (brush is SolidBrush solidBrush)
+        if (brush is SolidBrushDef solidBrush)
         {
             return solidBrush.ToSKPaint();
         }
@@ -280,11 +281,11 @@ public static class SkiaSharpExtensions
     }
 
     /// <summary>
-    /// Converts a <see cref="Font"/> to a <see cref="SKFont"/>, using caching for performance.
+    /// Converts a <see cref="FontDef"/> to a <see cref="SKFont"/>, using caching for performance.
     /// </summary>
     /// <param name="font">The System.Drawing font.</param>
     /// <returns>A cached SkiaSharp font.</returns>
-    public static SKFont ToSKFont(this Font font)
+    public static SKFont ToSKFont(this FontDef font)
     {
         if (font == null)
         {
@@ -330,11 +331,11 @@ public static class SkiaSharpExtensions
     }
 
     /// <summary>
-    /// Converts an <see cref="Image"/> to a <see cref="SKImage"/>, using caching for performance.
+    /// Converts an <see cref="ImageDef"/> to a <see cref="SKImage"/>, using caching for performance.
     /// </summary>
     /// <param name="bitmap">The System.Drawing image.</param>
     /// <returns>A cached SkiaSharp image.</returns>
-    public static SKImage ToSKImageCached(this Image bitmap)
+    public static SKImage ToSKImageCached(this ImageDef bitmap)
     {
         return _imageCache.GetOrAdd(bitmap, _ => bitmap.ToSKImage());
     }
@@ -342,7 +343,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Draws a line on the canvas using the specified pen and points.
     /// </summary>
-    public static void DrawLine(this SKCanvas canvas, Pen pen, PointF pt1, PointF pt2)
+    public static void DrawLine(this SKCanvas canvas, PenDef pen, PointF pt1, PointF pt2)
     {
         canvas.DrawLine(pt1.X, pt1.Y, pt2.X, pt2.Y, pen.ToSKPaint());
     }
@@ -350,7 +351,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Fills a rectangle on the canvas using the specified brush.
     /// </summary>
-    public static void FillRectangle(this SKCanvas canvas, Brush brush, RectangleF rect)
+    public static void FillRectangle(this SKCanvas canvas, BrushDef brush, RectangleF rect)
     {
         canvas.DrawRect(rect.ToSKRect(), brush.ToSKPaint());
     }
@@ -358,7 +359,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Draws a rectangle outline on the canvas using the specified pen.
     /// </summary>
-    public static void DrawRectangle(this SKCanvas canvas, Pen pen, RectangleF rect)
+    public static void DrawRectangle(this SKCanvas canvas, PenDef pen, RectangleF rect)
     {
         canvas.DrawRect(rect.ToSKRect(), pen.ToSKPaint());
     }
@@ -366,7 +367,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Fills a rounded rectangle on the canvas using the specified brush.
     /// </summary>
-    public static void FillRoundRectangle(this SKCanvas canvas, Brush brush, RectangleF rect, float cornerRadius)
+    public static void FillRoundRectangle(this SKCanvas canvas, BrushDef brush, RectangleF rect, float cornerRadius)
     {
         canvas.DrawRoundRect(rect.ToSKRect(), cornerRadius, cornerRadius, brush.ToSKPaint());
     }
@@ -374,7 +375,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Draws a rounded rectangle outline on the canvas using the specified pen.
     /// </summary>
-    public static void DrawRoundRectangle(this SKCanvas canvas, Pen pen, RectangleF rect, float cornerRadius)
+    public static void DrawRoundRectangle(this SKCanvas canvas, PenDef pen, RectangleF rect, float cornerRadius)
     {
         canvas.DrawRoundRect(rect.ToSKRect(), cornerRadius, cornerRadius, pen.ToSKPaint());
     }
@@ -382,7 +383,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Draws an ellipse outline on the canvas using the specified pen.
     /// </summary>
-    public static void DrawEllipse(this SKCanvas canvas, Pen pen, RectangleF rect)
+    public static void DrawEllipse(this SKCanvas canvas, PenDef pen, RectangleF rect)
     {
         canvas.DrawOval(rect.ToSKRect(), pen.ToSKPaint());
     }
@@ -390,7 +391,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Fills an ellipse on the canvas using the specified brush.
     /// </summary>
-    public static void FillEllipse(this SKCanvas canvas, Brush brush, RectangleF rect)
+    public static void FillEllipse(this SKCanvas canvas, BrushDef brush, RectangleF rect)
     {
         canvas.DrawOval(rect.ToSKRect(), brush.ToSKPaint());
     }
@@ -398,7 +399,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Draws a Bezier curve on the canvas using the specified pen.
     /// </summary>
-    public static void DrawBezier(this SKCanvas canvas, Pen pen, PointF pt1, PointF pt2, PointF pt3, PointF pt4)
+    public static void DrawBezier(this SKCanvas canvas, PenDef pen, PointF pt1, PointF pt2, PointF pt3, PointF pt4)
     {
         SKPath path = GetBezierPath(pt1, pt2, pt3, pt4);
         canvas.DrawPath(path, pen.ToSKPaint());
@@ -407,7 +408,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Draws a string on the canvas at the specified point.
     /// </summary>
-    public static void DrawString(this SKCanvas canvas, string s, Font font, Brush brush, PointF point)
+    public static void DrawString(this SKCanvas canvas, string s, FontDef font, BrushDef brush, PointF point)
     {
         if (string.IsNullOrEmpty(s))
         {
@@ -424,7 +425,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Draws a string on the canvas at the specified coordinates.
     /// </summary>
-    public static void DrawString(this SKCanvas canvas, string s, Font font, Brush brush, float x, float y)
+    public static void DrawString(this SKCanvas canvas, string s, FontDef font, BrushDef brush, float x, float y)
     {
         if (string.IsNullOrEmpty(s))
         {
@@ -441,7 +442,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Draws a string on the canvas with the specified alignment.
     /// </summary>
-    public static void DrawString(this SKCanvas canvas, string s, Font font, Brush brush, PointF point, StringFormat format)
+    public static void DrawString(this SKCanvas canvas, string s, FontDef font, BrushDef brush, PointF point, StringFormat format)
     {
         if (string.IsNullOrEmpty(s))
         {
@@ -475,7 +476,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Draws a polygon outline on the canvas using the specified pen.
     /// </summary>
-    public static void DrawPolygon(this SKCanvas canvas, Pen pen, PointF[] points)
+    public static void DrawPolygon(this SKCanvas canvas, PenDef pen, PointF[] points)
     {
         canvas.DrawPath(points.ToPolygonPath(), pen.ToSKPaint());
     }
@@ -483,7 +484,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Fills a polygon on the canvas using the specified brush.
     /// </summary>
-    public static void FillPolygon(this SKCanvas canvas, Brush brush, PointF[] points)
+    public static void FillPolygon(this SKCanvas canvas, BrushDef brush, PointF[] points)
     {
         //canvas.DrawPoints(SKPointMode.Polygon, points.ToSKPoints(), brush.ToSKPaint());
         canvas.DrawPath(points.ToPolygonPath(), brush.ToSKPaint());
@@ -494,7 +495,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Draws an image on the canvas with optional color tint, using cached image conversion.
     /// </summary>
-    public static void DrawImageCached(this SKCanvas canvas, Image bitmap, RectangleF rect, Color? color)
+    public static void DrawImageCached(this SKCanvas canvas, ImageDef bitmap, RectangleF rect, Color? color)
     {
         // Add .Handle check to prevent unmanaged objects from holding references after being accidentally released
         if (_imagePaint == null || _imagePaint.Handle == nint.Zero)
@@ -527,7 +528,7 @@ public static class SkiaSharpExtensions
     /// <summary>
     /// Draws an image on the canvas with optional color tint.
     /// </summary>
-    public static void DrawImage(this SKCanvas canvas, Image bitmap, RectangleF rect, Color? color)
+    public static void DrawImage(this SKCanvas canvas, ImageDef bitmap, RectangleF rect, Color? color)
     {
         // Add .Handle check to prevent unmanaged objects from holding references after being accidentally released
         if (_imagePaint == null || _imagePaint.Handle == nint.Zero)
@@ -608,7 +609,7 @@ public static class SkiaSharpExtensions
     /// <param name="text">The text to measure.</param>
     /// <param name="font">The font.</param>
     /// <returns>The measured size of the text.</returns>
-    public static SizeF MeasureString(this SKCanvas canvas, string text, Font font)
+    public static SizeF MeasureString(this SKCanvas canvas, string text, FontDef font)
     {
         if (string.IsNullOrEmpty(text)) return System.Drawing.SizeF.Empty;
 

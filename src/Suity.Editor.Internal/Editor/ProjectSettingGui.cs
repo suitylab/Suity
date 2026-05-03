@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Services;
 using Suity.Helpers;
 using Suity.Views;
@@ -95,10 +96,10 @@ public class ProjectSettingGui : IDrawImGui, IViewRefresh, IViewSave
     {
         var theme = new ImGuiTheme();
         theme.ClassStyle("titleText")
-        .SetFont(new Font(ImGuiTheme.DefaultFont, 36), Color.White);
+        .SetFont(new FontDef(ImGuiTheme.DefaultFont, 36), Color.White);
 
         theme.ClassStyle("descText")
-        .SetFont(new Font(ImGuiTheme.DefaultFont, 16), Color.White);
+        .SetFont(new FontDef(ImGuiTheme.DefaultFont, 16), Color.White);
 
         theme.ClassStyle("mainBtn")
             .SetCornerRound(5)
@@ -313,7 +314,7 @@ public class ProjectSettingGui : IDrawImGui, IViewRefresh, IViewSave
         }
 
         /// <inheritdoc/>
-        public override Image TextStatusIcon => Plugin.Plugin.Icon;
+        public override ImageDef TextStatusIcon => Plugin.Plugin.Icon;
     }
     #endregion
 }

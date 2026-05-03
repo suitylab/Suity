@@ -3,6 +3,7 @@ using Suity.Views.Graphics;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using Suity.Drawing;
 
 namespace Suity.Views.Im;
 
@@ -26,19 +27,19 @@ public static class GuiButtonExtensions
     /// <summary>
     /// Creates a button with an image and auto-generated ID.
     /// </summary>
-    public static ImGuiNode Button(this ImGui gui, Image? initImage, [CallerLineNumber] int line = 0, [CallerMemberName] string? member = null)
+    public static ImGuiNode Button(this ImGui gui, ImageDef? initImage, [CallerLineNumber] int line = 0, [CallerMemberName] string? member = null)
         => Button(gui, $"##button#{member}#{line}", null, initImage);
 
     /// <summary>
     /// Creates a button with text and image with auto-generated ID.
     /// </summary>
-    public static ImGuiNode Button(this ImGui gui, string text, Image? initImage, [CallerLineNumber] int line = 0, [CallerMemberName] string? member = null)
+    public static ImGuiNode Button(this ImGui gui, string text, ImageDef? initImage, [CallerLineNumber] int line = 0, [CallerMemberName] string? member = null)
         => Button(gui, $"##button#{member}#{line}", text, initImage);
 
     /// <summary>
     /// Creates a button with an image.
     /// </summary>
-    public static ImGuiNode Button(this ImGui gui, string id, Image? initImage)
+    public static ImGuiNode Button(this ImGui gui, string id, ImageDef? initImage)
         => gui.Button(id, null, initImage);
 
     /// <summary>
@@ -49,7 +50,7 @@ public static class GuiButtonExtensions
     /// <param name="text">The text to display on the button.</param>
     /// <param name="initImage">The optional image to display on the button.</param>
     /// <returns>The created <see cref="ImGuiNode"/> representing the button.</returns>
-    public static ImGuiNode Button(this ImGui gui, string id, string? text, Image? initImage = null)
+    public static ImGuiNode Button(this ImGui gui, string id, string? text, ImageDef? initImage = null)
     {
         ImGuiNode node = gui.BeginCurrentNode(id);
         if (node.IsInitializing)
@@ -147,7 +148,7 @@ public static class GuiButtonExtensions
     /// <summary>
     /// Creates an expand/collapse button with the specified ID.
     /// </summary>
-    public static ImGuiNode ExpandButton(this ImGui gui, string id, string? text = null, Image? initImage = null, bool initExpand = false)
+    public static ImGuiNode ExpandButton(this ImGui gui, string id, string? text = null, ImageDef? initImage = null, bool initExpand = false)
     {
         ImGuiNode node = gui.BeginCurrentNode(id);
         if (node.IsInitializing)
@@ -174,7 +175,7 @@ public static class GuiButtonExtensions
     /// <summary>
     /// Creates an expand/collapse button with a shared expandable value.
     /// </summary>
-    public static ImGuiNode ExpandButton(this ImGui gui, string id, string? text = null, Image? initImage = null, GuiExpandableValue? expandValue = null)
+    public static ImGuiNode ExpandButton(this ImGui gui, string id, string? text = null, ImageDef? initImage = null, GuiExpandableValue? expandValue = null)
     {
         ImGuiNode node = gui.BeginCurrentNode(id);
         if (node.IsInitializing)
@@ -201,7 +202,7 @@ public static class GuiButtonExtensions
     /// <summary>
     /// Creates a switch button that toggles active state among siblings.
     /// </summary>
-    public static ImGuiNode SwitchButton(this ImGui gui, string id, string? text, Image? initImage = null, GuiOptionalValue? value = null)
+    public static ImGuiNode SwitchButton(this ImGui gui, string id, string? text, ImageDef? initImage = null, GuiOptionalValue? value = null)
     {
         ImGuiNode node = gui.BeginCurrentNode(id);
         if (node.IsInitializing)
@@ -275,7 +276,7 @@ public static class GuiButtonExtensions
     /// <summary>
     /// Creates a dropdown button with the specified text and image.
     /// </summary>
-    public static ImGuiNode DropDownButton(this ImGui gui, string? text, Image? initImage, GuiDropDownValue? initValue = null, [CallerLineNumber] int line = 0, [CallerMemberName] string? member = null)
+    public static ImGuiNode DropDownButton(this ImGui gui, string? text, ImageDef? initImage, GuiDropDownValue? initValue = null, [CallerLineNumber] int line = 0, [CallerMemberName] string? member = null)
         => DropDownButton(gui, $"##d_button#{member}#{line}", text, initImage, initValue);
 
     /// <summary>
@@ -287,7 +288,7 @@ public static class GuiButtonExtensions
     /// <param name="initImage">The optional image to display on the button.</param>
     /// <param name="initValue">The optional initial dropdown value.</param>
     /// <returns>The created <see cref="ImGuiNode"/> representing the dropdown button.</returns>
-    public static ImGuiNode DropDownButton(this ImGui gui, string id, string? text, Image? initImage = null, GuiDropDownValue? initValue = null)
+    public static ImGuiNode DropDownButton(this ImGui gui, string id, string? text, ImageDef? initImage = null, GuiDropDownValue? initValue = null)
     {
         ImGuiNode node = gui.BeginCurrentNode(id);
         if (node.IsInitializing)

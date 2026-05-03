@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using System.Drawing;
 
 namespace Suity.Editor.AIGC;

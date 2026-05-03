@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Helpers;
@@ -117,7 +118,7 @@ public class TextAssetRef : TextFlowNode, INavigable
     //public string Text => _selection.BaseTarget?.GetText() ?? string.Empty;
 
     /// <inheritdoc/>
-    public override Image Icon => _selection.BaseTarget?.ToDisplayIcon() ?? base.Icon;
+    public override ImageDef Icon => _selection.BaseTarget?.ToDisplayIcon() ?? base.Icon;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)
@@ -205,7 +206,7 @@ public class PagedTextAssetRef : TextFlowNode, INavigable
     //public string Text => _selection.BaseTarget?.GetText() ?? string.Empty;
 
     /// <inheritdoc/>
-    public override Image Icon => _selection.BaseTarget?.ToDisplayIcon() ?? base.Icon;
+    public override ImageDef Icon => _selection.BaseTarget?.ToDisplayIcon() ?? base.Icon;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)

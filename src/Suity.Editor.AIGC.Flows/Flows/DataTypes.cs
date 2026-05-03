@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Flows.Gui;
 using System.Drawing;
 
@@ -15,10 +16,10 @@ public class ConversationThreadDataType : CustomGraphDataType
     {
         _typeName = "<ConversationThread>";
         this._allowMultipleToConnection = true;
-        this._linkPen = new Pen(Color.FromArgb(255, 0, 255), 3);
-        this._linkArrowBrush = new SolidBrush(Color.FromArgb(255, 0, 255));
-        this._connectorOutlinePen = new Pen(Color.FromArgb(255, 0, 255), 3);
-        this._connectorFillBrush = new SolidBrush(Color.FromArgb(255, 0, 255));
+        this._linkPen = new PenDef(Color.FromArgb(255, 0, 255), 3);
+        this._linkArrowBrush = new SolidBrushDef(Color.FromArgb(255, 0, 255));
+        this._connectorOutlinePen = new PenDef(Color.FromArgb(255, 0, 255), 3);
+        this._connectorFillBrush = new SolidBrushDef(Color.FromArgb(255, 0, 255));
     }
 
     /// <inheritdoc/>

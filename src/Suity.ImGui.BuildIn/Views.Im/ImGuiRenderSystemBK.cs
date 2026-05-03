@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views.Graphics;
 using System;
@@ -115,7 +116,7 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
 
     private void RenderImage(GuiPipeline pipeline, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction baseAction)
     {
-        Image? img = node.Image;
+        ImageDef? img = node.Image;
         if (img is null)
         {
             return;
@@ -177,7 +178,7 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
 
     private void RenderTextArea(GuiPipeline pipeline, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction baseAction)
     {
-        Font? font = ImGuiExternalBK.Instance.GetScaledFont(node);
+        FontDef? font = ImGuiExternalBK.Instance.GetScaledFont(node);
         Color fontColor = node.GetFontColor();
 
         if (node.IsDisabled)
@@ -389,7 +390,7 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
         float x2 = rect.Right;
         float y = rect.Y + rect.Height * 0.5f;
 
-        var pen = new Pen(color, border);
+        var pen = new PenDef(color, border);
 
         output.DrawLine(pen, new PointF(x1, y), new PointF(x2, y));
 
@@ -411,7 +412,7 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
         float y2 = rect.Bottom;
         float x = rect.X + rect.Width * 0.5f;
 
-        var pen = new Pen(color, border);
+        var pen = new PenDef(color, border);
 
         output.DrawLine(pen, new PointF(x, y1), new PointF(x, y2));
 
@@ -477,7 +478,7 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
                 output.RestoreClip();
             }
 
-            Image? img = node.Image;
+            ImageDef? img = node.Image;
             if (img is null)
             {
                 return;
@@ -520,7 +521,7 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
             bool gradient = value is { MinColor: { } minColor, MaxColor: { } maxColor }; // value.MinColor.HasValue && value.MaxColor.HasValue;
             var baseColor = value.Color ?? node.GetProgressColor(() => node.FontColor);
 
-            SolidBrush brush;
+            SolidBrushDef brush;
             if (gradient)
             {
                 float rate = (float)((v - min) / span);
@@ -537,11 +538,11 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
                     color = ColorHelper.Lerp(minColor, maxColor, rate);
                 }
 
-                brush = new SolidBrush(color);
+                brush = new SolidBrushDef(color);
             }
             else
             {
-                brush = new SolidBrush(baseColor);
+                brush = new SolidBrushDef(baseColor);
             }
 
             float py, ph;
@@ -823,7 +824,7 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
             output.DrawString(
                 text,
                 font,
-                new SolidBrush(fontColor),
+                new SolidBrushDef(fontColor),
                 new PointF(tx, ty),
                 new StringFormat { Alignment = StringAlignment.Near });
         }
@@ -840,11 +841,11 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
         {
             if (cornerRound > 0)
             {
-                output.FillRoundRectangle(new SolidBrush(color.Value), rect, cornerRound);
+                output.FillRoundRectangle(new SolidBrushDef(color.Value), rect, cornerRound);
             }
             else
             {
-                output.FillRectangle(new SolidBrush(color.Value), rect);
+                output.FillRectangle(new SolidBrushDef(color.Value), rect);
             }
         }
 
@@ -852,26 +853,26 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
         {
             if (cornerRound > 0)
             {
-                output.DrawRoundRectangle(new Pen(borderColor, borderWidth), rect, cornerRound);
+                output.DrawRoundRectangle(new PenDef(borderColor, borderWidth), rect, cornerRound);
             }
             else
             {
-                output.DrawRectangle(new Pen(borderColor, borderWidth), rect);
+                output.DrawRectangle(new PenDef(borderColor, borderWidth), rect);
             }
         }
     }
 
-    private void RenderText(IGraphicOutput output, string text, Font font, Color color, float x, float y)
+    private void RenderText(IGraphicOutput output, string text, FontDef font, Color color, float x, float y)
     {
         output.DrawString(
             text,
             font,
-            new SolidBrush(color),
+            new SolidBrushDef(color),
             new PointF(x, y),
             new StringFormat { Alignment = StringAlignment.Near });
     }
 
-    private void RenderText(IGraphicOutput output, ImGuiNode node, string text, Font font, Color color, RectangleF rect, GuiAlignment alignment)
+    private void RenderText(IGraphicOutput output, ImGuiNode node, string text, FontDef font, Color color, RectangleF rect, GuiAlignment alignment)
     {
         float x = 0, y = 0;
         StringAlignment a = StringAlignment.Near;
@@ -905,7 +906,7 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
         output.DrawString(
             text,
             font,
-            new SolidBrush(color),
+            new SolidBrushDef(color),
             new PointF(x, y),
             new StringFormat { Alignment = a });
     }
@@ -937,7 +938,7 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
         var fontColor = node.GetFontColor();
 
         Color color = node.GetButtonColor();
-        Image? image = node.Image;
+        ImageDef? image = node.Image;
         Color? imgColor = node.ImageFilterColor;
 
         var rect = node.GlobalRect;
@@ -1030,7 +1031,7 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
             output.DrawString(
                 text,
                 font,
-                new SolidBrush(fontColor),
+                new SolidBrushDef(fontColor),
                 new PointF(x, y),
                 new StringFormat { Alignment = dropDown ? StringAlignment.Near : StringAlignment.Center });
         }

@@ -1,6 +1,7 @@
 using static Suity.Helpers.GlobalLocalizer;
 using Suity.Editor.Types;
 using System.Drawing;
+using Suity.Drawing;
 
 namespace Suity.Editor.AIGC;
 
@@ -31,7 +32,7 @@ public abstract class ImageGenAsset : StandaloneAsset<IImageGenModel>, IImageGen
     /// <summary>
     /// Gets the default icon for this image generation asset.
     /// </summary>
-    public override Image DefaultIcon => CoreIconCache.Image;
+    public override ImageDef DefaultIcon => CoreIconCache.Image;
 
     /// <summary>
     /// Gets or sets the unique identifier for the AI model used for image generation.

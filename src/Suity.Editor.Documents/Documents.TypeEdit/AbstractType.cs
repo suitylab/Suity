@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
@@ -68,7 +69,7 @@ public class AbstractType : StructTypeBase<DAbstractBuilder>
     public override Color? TypeColor => DAbstract.AbstractTypeColor;
 
     /// <inheritdoc/>
-    public override Image TypeIcon => CoreIconCache.Abstract;
+    public override ImageDef TypeIcon => CoreIconCache.Abstract;
 
     /// <inheritdoc/>
     protected override string OnGetSuggestedPrefix()
@@ -109,7 +110,7 @@ public class AbstractType : StructTypeBase<DAbstractBuilder>
     }
 
     /// <inheritdoc/>
-    protected override Image OnGetIcon()
+    protected override ImageDef OnGetIcon()
     {
         return base.OnGetIcon() ?? CoreIconCache.Abstract;
     }

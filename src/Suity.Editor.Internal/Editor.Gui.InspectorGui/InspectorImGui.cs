@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.VirtualTree;
@@ -14,7 +15,6 @@ using Suity.Views.Im.PropertyEditing;
 using Suity.Views.Im.TreeEditing;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace Suity.Editor.Gui.InspectorGui;
@@ -168,7 +168,7 @@ public partial class InspectorImGui : IDrawImGui, IInspector, IToolWindow
     string IToolWindow.Title => "Property Inspector";
 
     /// <inheritdoc/>
-    Image IToolWindow.Icon => IconCache.inspector;
+    ImageDef IToolWindow.Icon => IconCache.inspector;
 
     /// <inheritdoc/>
     DockHint IToolWindow.DockHint => DockHint.Right;

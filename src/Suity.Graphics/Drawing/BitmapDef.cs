@@ -1,6 +1,7 @@
+using System;
 using System.IO;
 
-namespace System.Drawing;
+namespace Suity.Drawing;
 
 public interface IBitmapResovler : IDisposable
 {
@@ -12,7 +13,7 @@ public interface IBitmapResovler : IDisposable
 /// Represents a bitmap image containing raw byte data.
 /// This class stores image data as a byte array without parsing its content.
 /// </summary>
-public sealed class Bitmap : Image
+public sealed class BitmapDef : ImageDef
 {
     /// <summary>
     /// Gets the raw byte data of the bitmap.
@@ -28,12 +29,12 @@ public sealed class Bitmap : Image
     public IBitmapResovler Resolver { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Bitmap"/> class with the specified dimensions and data.
+    /// Initializes a new instance of the <see cref="BitmapDef"/> class with the specified dimensions and data.
     /// </summary>
     /// <param name="width">The width of the bitmap.</param>
     /// <param name="height">The height of the bitmap.</param>
     /// <param name="data">The raw byte data.</param>
-    public Bitmap(byte[] data)
+    public BitmapDef(byte[] data)
     {
         Data = data ?? throw new ArgumentNullException(nameof(data));
     }
@@ -53,16 +54,16 @@ public sealed class Bitmap : Image
     }
 
     /// <summary>
-    /// Creates a <see cref="Bitmap"/> from the specified file path.
+    /// Creates a <see cref="BitmapDef"/> from the specified file path.
     /// </summary>
     /// <param name="path">The path to the image file.</param>
-    /// <returns>A new <see cref="Bitmap"/> containing the file's byte data.</returns>
-    public static Bitmap FromPath(string path)
+    /// <returns>A new <see cref="BitmapDef"/> containing the file's byte data.</returns>
+    public static BitmapDef FromPath(string path)
     {
         if (string.IsNullOrEmpty(path))
             throw new ArgumentNullException(nameof(path));
 
-        return new Bitmap(File.ReadAllBytes(path));
+        return new BitmapDef(File.ReadAllBytes(path));
     }
 
     /// <summary>

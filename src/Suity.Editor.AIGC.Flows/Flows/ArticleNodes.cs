@@ -1,4 +1,5 @@
 using Suity;
+using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows;
@@ -24,7 +25,7 @@ namespace Suity.Editor.AIGC.Flows;
 public abstract class AigcArticleNode : FlowNode, IFlowNodeComputeAsync
 {
     /// <inheritdoc/>
-    public override Image Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Article;
+    public override ImageDef Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Article;
 
     /// <inheritdoc/>
     public virtual Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)
@@ -40,7 +41,7 @@ public abstract class AigcArticleNode : FlowNode, IFlowNodeComputeAsync
 /// </summary>
 public class AigcArtcitlesStyle : FlowNodeBaseStyle<AigcArticleNode>
 {
-    private Brush _nodeFillBrush;
+    private BrushDef _nodeFillBrush;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AigcArtcitlesStyle"/> class.
@@ -48,14 +49,14 @@ public class AigcArtcitlesStyle : FlowNodeBaseStyle<AigcArticleNode>
     public AigcArtcitlesStyle()
     {
         Color color = ArticleAsset.ArticleBgColor;
-        _nodeFillBrush = new SolidBrush(color);
+        _nodeFillBrush = new SolidBrushDef(color);
     }
 
     /// <inheritdoc/>
     public override Color? BackgroundColor => ArticleAsset.ArticleBgColor;
 
     /// <inheritdoc/>
-    public override Brush NodeFillBrush => _nodeFillBrush;
+    public override BrushDef NodeFillBrush => _nodeFillBrush;
 }
 
 #region GetArticle

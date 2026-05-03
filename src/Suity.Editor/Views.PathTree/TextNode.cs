@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using System.Drawing;
 
@@ -14,7 +15,7 @@ public class TextNode : PathNode
     public override bool CanUserDrag => false;
 
     private string _text;
-    private Image _image;
+    private ImageDef _image;
     private TextStatus _textStatus;
 
     /// <summary>
@@ -30,7 +31,7 @@ public class TextNode : PathNode
     /// <param name="text">The display text for the node.</param>
     /// <param name="image">An optional image to display alongside the text.</param>
     /// <param name="status">The text status used for coloring.</param>
-    public TextNode(string text, Image image = null, TextStatus status = TextStatus.Normal)
+    public TextNode(string text, ImageDef image = null, TextStatus status = TextStatus.Normal)
     {
         _text = text ?? string.Empty;
         _image = image?.ToIconSmall();
@@ -41,7 +42,7 @@ public class TextNode : PathNode
     /// Sets the image displayed by this node.
     /// </summary>
     /// <param name="image">The image to display.</param>
-    public void SetImage(Image image)
+    public void SetImage(ImageDef image)
     {
         _image = image.ToIconSmall();
     }
@@ -76,7 +77,7 @@ public class TextNode : PathNode
     /// <summary>
     /// Gets the image displayed by this node.
     /// </summary>
-    public override Image Image => _image;
+    public override ImageDef Image => _image;
 
     /// <summary>
     /// Gets the text color status for this node.

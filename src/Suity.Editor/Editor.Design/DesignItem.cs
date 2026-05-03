@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Suity.Editor.Services;
+using Suity.Drawing;
 
 namespace Suity.Editor.Design;
 
@@ -89,7 +90,7 @@ public abstract class DesignItem : SNamedItem,
     /// <summary>
     /// Gets the type icon for this item.
     /// </summary>
-    public virtual Image TypeIcon => null;
+    public virtual ImageDef TypeIcon => null;
 
     /// <summary>
     /// Gets the type color for this item.
@@ -169,7 +170,7 @@ public abstract class DesignItem : SNamedItem,
     /// <summary>
     /// Gets the selected icon for this item.
     /// </summary>
-    public Image SelectedIcon => _iconSelection.Target?.GetIconSmall();
+    public ImageDef SelectedIcon => _iconSelection.Target?.GetIconSmall();
 
     /// <summary>
     /// Gets or sets the color for this item.
@@ -340,7 +341,7 @@ public abstract class DesignItem : SNamedItem,
             .WithColor(_color != Color.Empty ? _color : (Color?)null));
     }
 
-    protected override Image OnGetIcon() => SelectedIcon;
+    protected override ImageDef OnGetIcon() => SelectedIcon;
 
     protected override IEnumerable<Guid> OnFilterUsingList(IEnumerable<Guid> ids)
     {

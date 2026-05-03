@@ -1,7 +1,7 @@
+using Suity.Drawing;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
-using System.Drawing;
 using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.Values;
@@ -49,7 +49,7 @@ public class SAIGeneration : SDynamic, ITextDisplay
     /// <summary>
     /// Gets the icon representing this AI generation value.
     /// </summary>
-    public override Image Icon => CoreIconCache.Prompt;
+    public override ImageDef Icon => CoreIconCache.Prompt;
 
     /// <summary>
     /// Synchronizes the prompt property with the sync context.

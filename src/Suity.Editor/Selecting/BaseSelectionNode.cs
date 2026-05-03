@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Views;
 using Suity.Views.Named;
@@ -98,7 +99,7 @@ public class SelectionNode : BaseSelectionNode
 
     private readonly string _selectionKey;
     private readonly string _displayText;
-    private readonly Image _icon;
+    private readonly ImageDef _icon;
 
     private readonly Dictionary<string, SelectionStore> _items = [];
 
@@ -108,7 +109,7 @@ public class SelectionNode : BaseSelectionNode
     /// <param name="key">The unique selection key.</param>
     /// <param name="displayText">The display text for this node.</param>
     /// <param name="icon">The icon for this node.</param>
-    public SelectionNode(string key = null, string displayText = null, Image icon = null)
+    public SelectionNode(string key = null, string displayText = null, ImageDef icon = null)
     {
         _selectionKey = key;
         _displayText = displayText;

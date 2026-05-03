@@ -37,7 +37,7 @@ public static class AvaDrawingHelper
     /// <summary>
     /// Draws rich single-line text with dynamic color support on a SkiaSharp canvas.
     /// </summary>
-    public static void DrawRichSingleLineText(this SKCanvas canvas, string text, System.Drawing.Font font, System.Drawing.Brush brush, SKPoint origin, System.Drawing.StringAlignment alignment)
+    public static void DrawRichSingleLineText(this SKCanvas canvas, string text, Suity.Drawing.FontDef font, Suity.Drawing.BrushDef brush, SKPoint origin, Suity.Drawing.StringAlignment alignment)
     {
         if (string.IsNullOrEmpty(text)) return;
 
@@ -77,16 +77,16 @@ public static class AvaDrawingHelper
             // 4. Calculate offset
             float offsetX = alignment switch
             {
-                System.Drawing.StringAlignment.Near => 0,
-                System.Drawing.StringAlignment.Center => -(float)(line.Width / 2),
-                System.Drawing.StringAlignment.Far => -(float)line.Width,
+                Suity.Drawing.StringAlignment.Near => 0,
+                Suity.Drawing.StringAlignment.Center => -(float)(line.Width / 2),
+                Suity.Drawing.StringAlignment.Far => -(float)line.Width,
                 _ => 0
             };
 
             // 5. Get real-time color from current animation
             // Convert System.Drawing.Brush to Skia's SKColor (or extract directly from SolidBrush)
             SKColor dynamicColor = SKColors.Black;
-            if (brush is System.Drawing.SolidBrush solidBrush)
+            if (brush is Suity.Drawing.SolidBrushDef solidBrush)
             {
                 var c = solidBrush.Color;
                 dynamicColor = new SKColor(c.R, c.G, c.B, c.A);
@@ -121,7 +121,7 @@ public static class AvaDrawingHelper
     /// <summary>
     /// Draws rich text within a rectangular area with dynamic color support.
     /// </summary>
-    public static void DrawRichTextArea(this SKCanvas canvas, string text, System.Drawing.Font font, System.Drawing.Color color, System.Drawing.RectangleF rect, System.Drawing.StringAlignment alignment = System.Drawing.StringAlignment.Near)
+    public static void DrawRichTextArea(this SKCanvas canvas, string text, Suity.Drawing.FontDef font, System.Drawing.Color color, System.Drawing.RectangleF rect, Suity.Drawing.StringAlignment alignment = Suity.Drawing.StringAlignment.Near)
     {
         if (string.IsNullOrEmpty(text)) return;
 
@@ -270,10 +270,10 @@ public static class AvaDrawingHelper
     /// <summary>
     /// Converts a System.Drawing brush to an Avalonia IBrush.
     /// </summary>
-    public static IBrush ToAvaloniaBrush(System.Drawing.Brush drawingBrush)
+    public static IBrush ToAvaloniaBrush(Suity.Drawing.BrushDef drawingBrush)
     {
         // Check if it's the most common solid brush
-        if (drawingBrush is System.Drawing.SolidBrush solidBrush)
+        if (drawingBrush is Suity.Drawing.SolidBrushDef solidBrush)
         {
             var sColor = solidBrush.Color;
             var avColor = Avalonia.Media.Color.FromArgb(sColor.A, sColor.R, sColor.G, sColor.B);
@@ -288,13 +288,13 @@ public static class AvaDrawingHelper
     /// <summary>
     /// Converts a System.Drawing string alignment to an Avalonia TextAlignment.
     /// </summary>
-    public static TextAlignment ToAvaloniaAlignment(System.Drawing.StringAlignment alignment)
+    public static TextAlignment ToAvaloniaAlignment(Suity.Drawing.StringAlignment alignment)
     {
         return alignment switch
         {
-            System.Drawing.StringAlignment.Near => TextAlignment.Left,
-            System.Drawing.StringAlignment.Center => TextAlignment.Center,
-            System.Drawing.StringAlignment.Far => TextAlignment.Right,
+            Suity.Drawing.StringAlignment.Near => TextAlignment.Left,
+            Suity.Drawing.StringAlignment.Center => TextAlignment.Center,
+            Suity.Drawing.StringAlignment.Far => TextAlignment.Right,
             // StringAlignment also has baseline alignment, but in TextAlignment it usually maps to Left/Right
             _ => TextAlignment.Left
         };
@@ -303,7 +303,7 @@ public static class AvaDrawingHelper
     /// <summary>
     /// Measures the size of text as a single line, ignoring line breaks.
     /// </summary>
-    public static System.Drawing.SizeF MeasureSingleLineString(string text, System.Drawing.Font font)
+    public static System.Drawing.SizeF MeasureSingleLineString(string text, Suity.Drawing.FontDef font)
     {
         var typeface = new Typeface(font.FontFamily.Name,
             font.Italic ? FontStyle.Italic : FontStyle.Normal,
@@ -329,7 +329,7 @@ public static class AvaDrawingHelper
     /// <summary>
     /// Measures the size of text within a constrained width.
     /// </summary>
-    public static System.Drawing.SizeF MeasureTextArea(string text, System.Drawing.Font font, float maxLineWidth)
+    public static System.Drawing.SizeF MeasureTextArea(string text, Suity.Drawing.FontDef font, float maxLineWidth)
     {
         var typeface = new Typeface(font.FontFamily.Name,
             font.Italic ? FontStyle.Italic : FontStyle.Normal,

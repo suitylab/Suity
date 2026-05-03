@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Properties;
 using Suity.Helpers;
 using System.Drawing;
@@ -22,7 +23,7 @@ public class DashScopePlugin : BaseOpenAIPlugin<DashScopeLLmModelAsset, DashScop
     /// <summary>
     /// Gets the icon image for DashScope.
     /// </summary>
-    public static Bitmap DashScopeIcon { get; } = Resources.Bailian.ToBitmap();
+    public static BitmapDef DashScopeIcon { get; } = Resources.Bailian.ToBitmap();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DashScopePlugin"/> class.
@@ -61,7 +62,7 @@ public class DashScopeLLmModelAsset : ThirdPartyLLmModelAsset
     /// <summary>
     /// Gets the default icon for DashScope models.
     /// </summary>
-    public override Image DefaultIcon => DashScopePlugin.DashScopeIcon;
+    public override ImageDef DefaultIcon => DashScopePlugin.DashScopeIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.
@@ -88,7 +89,7 @@ public class DashScopeImageGenModelAsset : ThirdPartyImageGenAsset
     /// <summary>
     /// Gets the default icon for DashScope image models.
     /// </summary>
-    public override Image DefaultIcon => DashScopePlugin.DashScopeIcon;
+    public override ImageDef DefaultIcon => DashScopePlugin.DashScopeIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.

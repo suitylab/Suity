@@ -1,4 +1,4 @@
-using System.Drawing;
+using Suity.Drawing;
 
 namespace Suity.Editor;
 
@@ -8,9 +8,9 @@ namespace Suity.Editor;
 [AssetTypeBinding(AssetDefNames.ValueFamily)]
 public class ValueFamily : GroupAsset
 {
-    internal Image _icon = CoreIconCache.Value;
+    internal ImageDef _icon = CoreIconCache.Value;
 
-    public override Image DefaultIcon => _icon;
+    public override ImageDef DefaultIcon => _icon;
 }
 
 /// <summary>

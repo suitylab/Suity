@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views.Graphics;
 using System;
 using System.Drawing;
@@ -13,7 +14,7 @@ public class ImGuiTheme : StyleCollection
     /// <summary>
     /// Gets or sets the default font family used across the UI.
     /// </summary>
-    public static FontFamily DefaultFont { get; set; } = new FontFamily("Tahoma");
+    public static FontFamilyDef DefaultFont { get; set; } = new FontFamilyDef("Tahoma");
 
     /// <summary>
     /// Gets or sets the default color used for drag operations.
@@ -22,7 +23,7 @@ public class ImGuiTheme : StyleCollection
 
 
     private IColorConfig? _colors;
-    private Font? _font;
+    private FontDef? _font;
 
     private bool _themeBuilt = false;
     private string? _currentName;
@@ -63,7 +64,7 @@ public class ImGuiTheme : StyleCollection
     /// </summary>
     /// <param name="colors">The color configuration to use.</param>
     /// <param name="font">The default font to use.</param>
-    public ImGuiTheme(IColorConfig colors, Font font)
+    public ImGuiTheme(IColorConfig colors, FontDef font)
         : base()
     {
         _colors = colors;
@@ -384,7 +385,7 @@ public class ImGuiTheme : StyleCollection
     /// <summary>
     /// Gets or sets the default font for this theme.
     /// </summary>
-    public Font Font
+    public FontDef Font
     {
         get => _font ?? ImGuiExternal._external.DefaultFont;
         set => _font = value;
@@ -425,35 +426,35 @@ public class ImGuiTheme : StyleCollection
     /// <summary>
     /// Gets or sets the image used for empty/placeholder states.
     /// </summary>
-    public Image EmptyImage { get; set; } = ImGuiIcons.Empty;
+    public ImageDef EmptyImage { get; set; } = ImGuiIcons.Empty;
 
     /// <summary>
     /// Gets or sets the image used for expand indicators.
     /// </summary>
-    public Image ExpandImage { get; set; } = ImGuiIcons.Expand;
+    public ImageDef ExpandImage { get; set; } = ImGuiIcons.Expand;
 
     /// <summary>
     /// Gets or sets the image used for collapse indicators.
     /// </summary>
-    public Image CollapseImage { get; set; } = ImGuiIcons.Collapse;
+    public ImageDef CollapseImage { get; set; } = ImGuiIcons.Collapse;
 
     /// <summary>
     /// Gets or sets the image used for dropdown indicators.
     /// </summary>
-    public Image DropDownImage { get; set; } = ImGuiIcons.Row;
+    public ImageDef DropDownImage { get; set; } = ImGuiIcons.Row;
 
     /// <summary>
     /// Gets or sets the image used for checked checkbox states.
     /// </summary>
-    public Image CheckBoxCheckedImage { get; set; } = ImGuiIcons.Checked;
+    public ImageDef CheckBoxCheckedImage { get; set; } = ImGuiIcons.Checked;
 
     /// <summary>
     /// Gets or sets the image used for pending/indeterminate checkbox states.
     /// </summary>
-    public Image CheckBoxPendingImage { get; set; } = ImGuiIcons.Pending;
+    public ImageDef CheckBoxPendingImage { get; set; } = ImGuiIcons.Pending;
 
     /// <summary>
     /// Gets or sets the warning icon image.
     /// </summary>
-    public Image Warning { get; set; } = ImGuiIcons.Warning;
+    public ImageDef Warning { get; set; } = ImGuiIcons.Warning;
 }

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Services;
 using System.Drawing;
 
@@ -81,7 +82,7 @@ public static class EditorImGuiExtensions
     /// <param name="iconDark">Whether to use dark styling for the icon.</param>
     /// <param name="tooltips">Optional tooltip text to display on hover.</param>
     /// <returns>The created ImGuiNode representing the number box.</returns>
-    public static ImGuiNode NumberBox(this ImGui gui, string id, string text, Color? color = null, Image icon = null, bool iconDark = false, string tooltips = null)
+    public static ImGuiNode NumberBox(this ImGui gui, string id, string text, Color? color = null, ImageDef icon = null, bool iconDark = false, string tooltips = null)
     {
         var node = gui.HorizontalFrame(id)
         .InitClass("refBox", "debug_draw")

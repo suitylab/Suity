@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Design;
 using Suity.Editor.Values;
@@ -288,7 +289,7 @@ public class DStructField : DField, INavigableRoute
     public override AssetAccessMode AccessMode => _accessMode;
 
     /// <inheritdoc />
-    public override Image GetIcon()
+    public override ImageDef GetIcon()
     {
         //Do not display system icon
         if (!FieldType.IsValue)

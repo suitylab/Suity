@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Services;
 using Suity.Helpers;
@@ -577,7 +578,7 @@ internal class PropertyGridExternalBK : PropertyGridExternal
     }
 
     /// <inheritdoc/>
-    public override ImGuiNode PropertyLabel(ImGui gui, string id, string title, Image? icon = null, TextStatus? status = null, PropertyRowAction? rowAction = null, PropertyRowData? value = null)
+    public override ImGuiNode PropertyLabel(ImGui gui, string id, string title, ImageDef? icon = null, TextStatus? status = null, PropertyRowAction? rowAction = null, PropertyRowData? value = null)
     {
         return PropertyLabelFrame(gui, id, (n, column, pipeline) =>
         {
@@ -719,7 +720,7 @@ internal class PropertyGridExternalBK : PropertyGridExternal
     }
 
     /// <inheritdoc/>
-    public override ImGuiNode PropertyTooltips(ImGui gui, string id, string title, Image? icon = null, TextStatus? status = null, PropertyRowAction? rowAction = null, PropertyRowData? value = null)
+    public override ImGuiNode PropertyTooltips(ImGui gui, string id, string title, ImageDef? icon = null, TextStatus? status = null, PropertyRowAction? rowAction = null, PropertyRowData? value = null)
     {
         if (icon is null)
         {
@@ -841,7 +842,7 @@ internal class PropertyGridExternalBK : PropertyGridExternal
     }
 
     /// <inheritdoc/>
-    public override ImGuiNode PropertyButton(ImGui gui, string id, string title, Image? icon = null, PropertyRowAction? rowAction = null, Action? onClick = null)
+    public override ImGuiNode PropertyButton(ImGui gui, string id, string title, ImageDef? icon = null, PropertyRowAction? rowAction = null, Action? onClick = null)
     {
         var node = gui.VerticalFrame(id)
         .InitClass(PropertyGridThemes.ClassBG)
@@ -869,7 +870,7 @@ internal class PropertyGridExternalBK : PropertyGridExternal
     }
 
     /// <inheritdoc/>
-    public override ImGuiNode PropertyButton(ImGui gui, string id, string title, Image? icon = null, PropertyRowAction? rowAction = null, Action<ImGuiNode>? onClick = null)
+    public override ImGuiNode PropertyButton(ImGui gui, string id, string title, ImageDef? icon = null, PropertyRowAction? rowAction = null, Action<ImGuiNode>? onClick = null)
     {
         var node = gui.VerticalFrame(id)
         .InitClass(PropertyGridThemes.ClassBG)
@@ -916,7 +917,7 @@ internal class PropertyGridExternalBK : PropertyGridExternal
 
                 foreach (var btn in buttons)
                 {
-                    Image img = EditorUtility.GetIcon(btn.Image);
+                    ImageDef img = EditorUtility.GetIcon(btn.Image);
 
                     var btnNode = gui.Button(btn.Key, L(btn.Title), img)
                     .InitClass("simpleBtn")

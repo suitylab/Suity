@@ -1,11 +1,11 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Helpers;
 using Suity.NodeQuery;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -302,7 +302,7 @@ internal class SAssetDocumentFormat : DocumentFormat
     public override string DisplayText => _attribute.DisplayText;
 
     /// <inheritdoc/>
-    public override Image Icon => EditorUtility.GetIconByAssetKey(_attribute.Icon);
+    public override ImageDef Icon => EditorUtility.GetIconByAssetKey(_attribute.Icon);
 
     /// <inheritdoc/>
     public override bool CanCreate => _attribute.CanCreate;

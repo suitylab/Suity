@@ -1,4 +1,5 @@
 using Suity;
+using Suity.Drawing;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Views;
@@ -387,7 +388,7 @@ public class SArrayNode : VirtualNode, IVirtualNodeListOperation
     }
 
     /// <inheritdoc/>
-    protected override Image GetMainIcon()
+    protected override ImageDef GetMainIcon()
     {
         SArray ary = DisplayedArray;
         if (ary != null)

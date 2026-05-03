@@ -1,4 +1,5 @@
-﻿using Suity.Editor.Documents;
+﻿using Suity.Drawing;
+using Suity.Editor.Documents;
 using System.Drawing;
 using System.Threading.Tasks;
 
@@ -199,14 +200,14 @@ public interface IMermaidService
     /// <param name="input">The Mermaid diagram definition as a string. Cannot be null or empty.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains a bitmap image of the rendered
     /// Mermaid diagram.</returns>
-    Task<Bitmap> GenerateMermaidBitmap(string input);
+    Task<BitmapDef> GenerateMermaidBitmap(string input);
 
     /// <summary>
     /// Retrieves a cached bitmap image for the specified Mermaid diagram definition if available.
     /// </summary>
     /// <param name="input">The Mermaid diagram definition as a string to look up in the cache.</param>
     /// <returns>A bitmap image of the Mermaid diagram if found in cache; otherwise, implementation-specific behavior.</returns>
-    Bitmap GetCachedMermaidBitmap(string input);
+    BitmapDef GetCachedMermaidBitmap(string input);
 
     bool IsImageGenerating();
 }

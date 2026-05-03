@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views.Graphics;
 using System;
 using System.Drawing;
@@ -110,7 +111,7 @@ public static class GuiToggleExtensions
     /// <param name="value">The optional bound value. If null, the toggle button maintains its own state.</param>
     /// <param name="initValue">The initial checked state when the toggle button is first created.</param>
     /// <returns>The created <see cref="ImGuiNode"/> representing the toggle button.</returns>
-    public static ImGuiNode ToggleButton(this ImGui gui, string id, Image? initImage, bool? value = null, bool initValue = false)
+    public static ImGuiNode ToggleButton(this ImGui gui, string id, ImageDef? initImage, bool? value = null, bool initValue = false)
     {
         CheckState? state = null;
         if (value.HasValue)
@@ -131,7 +132,7 @@ public static class GuiToggleExtensions
     /// <param name="value">The optional bound value. If null, the toggle button maintains its own state.</param>
     /// <param name="initValue">The initial checked state when the toggle button is first created.</param>
     /// <returns>The created <see cref="ImGuiNode"/> representing the toggle button.</returns>
-    public static ImGuiNode ToggleButton(this ImGui gui, string id, string? initText, Image? initImage, bool? value = null, bool initValue = false)
+    public static ImGuiNode ToggleButton(this ImGui gui, string id, string? initText, ImageDef? initImage, bool? value = null, bool initValue = false)
     {
         CheckState? state = null;
         if (value.HasValue)
@@ -152,7 +153,7 @@ public static class GuiToggleExtensions
     /// <param name="value">The optional bound <see cref="CheckState"/> value. Supports Checked, Unchecked, and Indeterminate states.</param>
     /// <param name="initValue">The initial <see cref="CheckState"/> when the toggle button is first created.</param>
     /// <returns>The created <see cref="ImGuiNode"/> representing the toggle button.</returns>
-    public static ImGuiNode ToggleButton(this ImGui gui, string id, string? initText, Image? initImage, CheckState? value = null, CheckState initValue = CheckState.Unchecked)
+    public static ImGuiNode ToggleButton(this ImGui gui, string id, string? initText, ImageDef? initImage, CheckState? value = null, CheckState initValue = CheckState.Unchecked)
     {
         ImGuiNode node = gui.BeginCurrentNode(id);
         if (node.IsInitializing)

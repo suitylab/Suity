@@ -1,4 +1,5 @@
-﻿using Suity.Editor.Services;
+﻿using Suity.Drawing;
+using Suity.Editor.Services;
 using Suity.Helpers;
 using System;
 using System.Drawing;
@@ -10,20 +11,20 @@ namespace Suity.Editor;
 /// </summary>
 public class ImageAsset : Asset
 {
-    private Image _image;
-    private Image _iconSmall;
+    private ImageDef _image;
+    private ImageDef _iconSmall;
 
     public ImageAsset()
     {
-        UpdateAssetTypes(typeof(Image));
+        UpdateAssetTypes(typeof(ImageDef));
     }
 
-    public ImageAsset(Image image, string assetKey)
+    public ImageAsset(ImageDef image, string assetKey)
         : this()
     {
         _image = image ?? throw new ArgumentNullException(nameof(image));
 
-        if (image is Bitmap bitmap)
+        if (image is BitmapDef bitmap)
         {
             // Set to standard resolution
             // bitmap.SetResolution(100, 100);
@@ -32,7 +33,7 @@ public class ImageAsset : Asset
         LocalName = assetKey;
     }
 
-    public Image GetImage()
+    public ImageDef GetImage()
     {
         if (_image is null)
         {
@@ -51,7 +52,7 @@ public class ImageAsset : Asset
     /// Get a picture with a size of 32
     /// </summary>
     /// <returns></returns>
-    public Image GetIconSmall()
+    public ImageDef GetIconSmall()
     {
         lock (this)
         {
@@ -68,7 +69,7 @@ public class ImageAsset : Asset
                     _image = LoadImage(path);
                 }
 
-                if (_image is Bitmap bmp)
+                if (_image is BitmapDef bmp)
                 {
                     if (bmp.Width <= ImageHelper.SmallSize)
                     {
@@ -93,7 +94,7 @@ public class ImageAsset : Asset
         }
     }
 
-    private Image LoadImage(StorageLocation fileName)
+    private ImageDef LoadImage(StorageLocation fileName)
     {
         if (fileName is null)
         {
@@ -113,7 +114,7 @@ public class ImageAsset : Asset
         return null;
     }
 
-    public override Image GetIcon()
+    public override ImageDef GetIcon()
     {
         return GetIconSmall();
     }
@@ -128,7 +129,7 @@ public class ImageAsset : Asset
     /// <summary>
     /// Resize image with GDI+ so that image is nice and clear with required size.
     /// </summary>
-    public static Image ImageResize(Bitmap source, int width, int height)
+    public static ImageDef ImageResize(BitmapDef source, int width, int height)
     {
         /*        var bitmap = new Bitmap(width, height, source.PixelFormat);
                 var graphicsImage = Graphics.FromImage(bitmap);

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Design;
 using System;
@@ -40,7 +41,7 @@ namespace Suity.Editor.Types
     }
 
     /// <inheritdoc />
-    public override Image DefaultIcon => CoreIconCache.Abstract;
+    public override ImageDef DefaultIcon => CoreIconCache.Abstract;
 
     /// <inheritdoc />
     public override Color? TypeColor => AbstractTypeColor;

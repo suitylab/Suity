@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Synchonizing.Core;
 using Suity.Views;
 using Suity.Views.Im;
@@ -23,7 +24,7 @@ public class SNamedRootCollection : NamedRootCollection,
     private readonly SNamedDocument _document;
     private string _fieldName = "Model";
     private string _fieldDescription = null;
-    private Image _fieldIcon;
+    private ImageDef _fieldIcon;
     private SyncPath _rootPath = SyncPath.Empty;
     private readonly AssetBuilder _builder;
 
@@ -92,7 +93,7 @@ public class SNamedRootCollection : NamedRootCollection,
     /// <summary>
     /// Gets or sets the field icon.
     /// </summary>
-    public Image FieldIcon
+    public ImageDef FieldIcon
     {
         get => _fieldIcon;
         set => _fieldIcon = value;
@@ -250,7 +251,7 @@ public class SNamedRootCollection : NamedRootCollection,
 
     protected internal override string OnGetText() => _fieldDescription ?? _fieldName ?? string.Empty;
 
-    protected internal override Image OnGetIcon() => _fieldIcon ?? base.OnGetIcon();
+    protected internal override ImageDef OnGetIcon() => _fieldIcon ?? base.OnGetIcon();
 
     #region IViewRedirect
     object IViewRedirect.GetRedirectedObject(int viewId)

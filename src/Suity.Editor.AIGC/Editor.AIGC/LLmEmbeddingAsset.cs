@@ -1,5 +1,5 @@
+using Suity.Drawing;
 using Suity.Editor.Types;
-using System.Drawing;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
@@ -18,7 +18,7 @@ public abstract class LLmEmbeddingAsset : StandaloneAsset<IEmbeddingModel>, IEmb
     /// <summary>
     /// Gets the default icon displayed for this embedding asset in the editor.
     /// </summary>
-    public override Image DefaultIcon => CoreIconCache.AI;
+    public override ImageDef DefaultIcon => CoreIconCache.AI;
 
     /// <summary>
     /// Gets or sets the unique identifier for the embedding model.

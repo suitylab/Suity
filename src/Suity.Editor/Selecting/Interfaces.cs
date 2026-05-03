@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Synchonizing;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,7 @@ public sealed class EmptySelectionList : MarshalByRefObject, ISelectionList
     /// <summary>
     /// Gets the icon associated with this selection list (always null).
     /// </summary>
-    public Image Icon => null;
+    public ImageDef Icon => null;
 
     /// <summary>
     /// Gets all selection items in this list (always empty).

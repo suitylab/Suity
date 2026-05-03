@@ -1,10 +1,10 @@
+using Suity.Drawing;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
-using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using Suity.Views.Im;
@@ -45,7 +45,7 @@ public class PageParameterInputNode : AigcPageTypeDefNode
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Parameter;
+    public override ImageDef DefaultIcon => CoreIconCache.Parameter;
 
     /// <inheritdoc/>
     public override Color? BackgroundColor => TitleColor;
@@ -231,7 +231,7 @@ public class PageSkillParameterNode : AigcPageTypeDefNode
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Skill;
+    public override ImageDef DefaultIcon => CoreIconCache.Skill;
 
     /// <inheritdoc/>
     public override Color? BackgroundColor => TitleColor;
@@ -416,7 +416,7 @@ public class PagePromptParameterInputNode : AigcPageTypeDefNode
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Prompt;
+    public override ImageDef DefaultIcon => CoreIconCache.Prompt;
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
@@ -508,7 +508,7 @@ public class PageMessageParameterNode : AigcPageTypeDefNode
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Comment;
+    public override ImageDef DefaultIcon => CoreIconCache.Comment;
 
     /// <inheritdoc/>
     public override Color? BackgroundColor => TitleColor;
@@ -623,7 +623,7 @@ public class PageParameterOutputNode : AigcPageTypeDefNode
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Parameter;
+    public override ImageDef DefaultIcon => CoreIconCache.Parameter;
 
     /// <inheritdoc/>
     public override Color? BackgroundColor => TitleColor;
@@ -796,7 +796,7 @@ public class PageArticleOutputNode : AigcPageTypeDefNode
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Article;
+    public override ImageDef DefaultIcon => CoreIconCache.Article;
 
     /// <inheritdoc/>
     public override Color? BackgroundColor => TitleColor;
@@ -972,7 +972,7 @@ public class PageFileOutputNode : AigcPageTypeDefNode
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.File;
+    public override ImageDef DefaultIcon => CoreIconCache.File;
 
     /// <inheritdoc/>
     public override Color? BackgroundColor => TitleColor;
@@ -1129,7 +1129,7 @@ public class PageSubTaskOutputNode : AigcPageTypeDefNode
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Task;
+    public override ImageDef DefaultIcon => CoreIconCache.Task;
 
     /// <inheritdoc/>
     public override Color? BackgroundColor => TitleColor;

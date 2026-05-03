@@ -1,4 +1,6 @@
-namespace System.Drawing;
+using System;
+
+namespace Suity.Drawing;
 
 /// <summary>
 /// Encapsulates text layout information such as alignment, line spacing, and display manipulations.

@@ -1,6 +1,6 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views.PathTree;
-using System.Drawing;
 
 namespace Suity.Editor.ProjectGui.Nodes;
 
@@ -21,7 +21,7 @@ public class UserCodeFileNode : PathNode
     }
 
     /// <inheritdoc/>
-    public override Image Image => EditorUtility.GetIconForFileExact(Terminal)?.ToIconSmall();
+    public override ImageDef Image => EditorUtility.GetIconForFileExact(Terminal)?.ToIconSmall();
 
     /// <inheritdoc/>
     protected override string OnGetText()

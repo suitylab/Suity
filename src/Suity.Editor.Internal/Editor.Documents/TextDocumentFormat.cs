@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Services;
 using System;
 using System.Drawing;
@@ -56,7 +57,7 @@ public class TextDocumentFormat : DocumentFormat
     public override string DisplayText => "Text Document";
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Text;
+    public override ImageDef Icon => CoreIconCache.Text;
 
     /// <inheritdoc/>
     public override bool CanCreate => true;

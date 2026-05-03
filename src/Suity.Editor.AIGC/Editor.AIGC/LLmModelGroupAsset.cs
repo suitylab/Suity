@@ -1,6 +1,6 @@
-using static Suity.Helpers.GlobalLocalizer;
+using Suity.Drawing;
 using System;
-using System.Drawing;
+using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.AIGC;
 
@@ -9,7 +9,7 @@ namespace Suity.Editor.AIGC;
 /// </summary>
 public class LLmModelGroupAsset : GroupAsset
 {
-    internal Image _manufatureIcon;
+    internal ImageDef _manufatureIcon;
 
     /// <summary>
     /// Gets or sets the name of the model manufacturer/provider.
@@ -19,7 +19,7 @@ public class LLmModelGroupAsset : GroupAsset
     /// <summary>
     /// Gets the default icon associated with this model group.
     /// </summary>
-    public override Image DefaultIcon => _manufatureIcon;
+    public override ImageDef DefaultIcon => _manufatureIcon;
 }
 
 /// <summary>
@@ -34,7 +34,7 @@ public class LLmModelAssetGroupBuilder : GroupAssetBuilder<LLmModelGroupAsset>
     /// <param name="description">An optional description for the model group.</param>
     /// <param name="icon">An optional icon image for the model group.</param>
     /// <exception cref="ArgumentException">Thrown when <paramref name="manufacture"/> is null or whitespace.</exception>
-    public LLmModelAssetGroupBuilder(string manufacture, string description = null, Image icon = null)
+    public LLmModelAssetGroupBuilder(string manufacture, string description = null, ImageDef icon = null)
     {
         if (string.IsNullOrWhiteSpace(manufacture))
         {

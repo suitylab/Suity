@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using System.Drawing;
 
 namespace Suity.Views.NodeGraph;
@@ -22,22 +23,22 @@ public abstract class GraphDataType
     /// <summary>
     /// Gets the pen used for drawing links of this data type.
     /// </summary>
-    public Pen LinkPen => _linkPen;
+    public PenDef LinkPen => _linkPen;
 
     /// <summary>
     /// Gets the brush used for drawing link arrows of this data type.
     /// </summary>
-    public SolidBrush LinkArrowBrush => _linkArrowBrush;
+    public SolidBrushDef LinkArrowBrush => _linkArrowBrush;
 
     /// <summary>
     /// Gets the pen used for drawing connector outlines of this data type.
     /// </summary>
-    public Pen ConnectorOutlinePen => _connectorOutlinePen;
+    public PenDef ConnectorOutlinePen => _connectorOutlinePen;
 
     /// <summary>
     /// Gets the brush used for filling connectors of this data type.
     /// </summary>
-    public SolidBrush ConnectorFillBrush => _connectorFillBrush;
+    public SolidBrushDef ConnectorFillBrush => _connectorFillBrush;
 
     /// <summary>
     /// Gets the name of this data type.
@@ -57,10 +58,10 @@ public abstract class GraphDataType
     protected bool _allowMultipleFromConnection;
     protected bool _allowMultipleToConnection;
 
-    protected Pen _linkPen;
-    protected SolidBrush _linkArrowBrush;
-    protected Pen _connectorOutlinePen;
-    protected SolidBrush _connectorFillBrush;
+    protected PenDef _linkPen;
+    protected SolidBrushDef _linkArrowBrush;
+    protected PenDef _connectorOutlinePen;
+    protected SolidBrushDef _connectorFillBrush;
 
     protected string _typeName;
     protected bool _isArray;
@@ -77,10 +78,10 @@ public class GraphDataTypeBase : GraphDataType
 
     public GraphDataTypeBase()
     {
-        _linkPen = new Pen(Color.FromArgb(120, 120, 120));
-        _linkArrowBrush = new SolidBrush(Color.FromArgb(120, 120, 120));
-        _connectorOutlinePen = new Pen(Color.FromArgb(60, 60, 60));
-        _connectorFillBrush = new SolidBrush(Color.FromArgb(40, 40, 40));
+        _linkPen = new PenDef(Color.FromArgb(120, 120, 120));
+        _linkArrowBrush = new SolidBrushDef(Color.FromArgb(120, 120, 120));
+        _connectorOutlinePen = new PenDef(Color.FromArgb(60, 60, 60));
+        _connectorFillBrush = new SolidBrushDef(Color.FromArgb(40, 40, 40));
         _typeName = "Generic";
     }
 

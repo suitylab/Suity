@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views.Graphics;
 using System.Drawing;
@@ -142,7 +143,7 @@ public class PropertyGridTheme : ThemeBase
             .SetColor(ColorScheme.ComponentBG)
             .SetBorder(0, ColorScheme.ScrollBar)
             .SetCornerRound(0)
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 12), ColorScheme.ButtonText)
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 12), ColorScheme.ButtonText)
             .SetImageFilterColor(ColorScheme.ButtonText)
             .SetPadding(0)
             .SetChildSpacing(1);
@@ -214,7 +215,7 @@ public class PropertyGridTheme : ThemeBase
             .SetColor(ColorScheme.ButtonBG)
             .SetImageFilterColor(ColorScheme.ButtonText)
             .SetPadding(5)
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 14, FontStyle.Bold), Color.White);
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 14, FontStyle.Bold), Color.White);
 
         this.ClassStyle(PropertyGridThemes.ClassPropertyCell)
             .SetBorder(0)
@@ -233,7 +234,7 @@ public class PropertyGridTheme : ThemeBase
             .SetColor(ColorScheme.ButtonBG)
             .SetImageFilterColor(ColorScheme.ButtonText)
             .SetPadding(5)
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 12), ColorScheme.ButtonText)
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 12), ColorScheme.ButtonText)
             .SetCenterVertical(true);
 
         this.ClassStyle(PropertyGridThemes.ClassPropertyInputMultiple)
@@ -242,7 +243,7 @@ public class PropertyGridTheme : ThemeBase
             .SetColor(ColorScheme.ValueMultiple)
             .SetImageFilterColor(ColorScheme.ButtonText)
             .SetPadding(5)
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 12), ColorScheme.ButtonText)
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 12), ColorScheme.ButtonText)
             .SetCenterVertical(true);
 
         this.ClassStyle(PropertyGridThemes.ClassPropertyInputReadonly)
@@ -251,7 +252,7 @@ public class PropertyGridTheme : ThemeBase
             .SetColor(ColorScheme.ValueReadonly)
             .SetImageFilterColor(ColorScheme.ButtonText)
             .SetPadding(5)
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 12), ColorScheme.ButtonText)
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 12), ColorScheme.ButtonText)
             .SetCenterVertical(true);
 
         this.ClassStyle("axisX")
@@ -275,7 +276,7 @@ public class PropertyGridTheme : ThemeBase
             .SetColor(ColorScheme.ButtonBG)
             .SetImageFilterColor(ColorScheme.ButtonText)
             .SetPadding(5)
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 12), ColorScheme.ButtonText)
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 12), ColorScheme.ButtonText)
             .SetCenterVertical(true)
             .SetTextAlignment(GuiAlignment.Center);
 
@@ -287,7 +288,7 @@ public class PropertyGridTheme : ThemeBase
             .SetPadding(0, 0, 2, 2);
     }
 
-    private static readonly SolidBrush _labelBrush = new(Color.Black.MultiplyAlpha(0.15f));
+    private static readonly SolidBrushDef _labelBrush = new(Color.Black.MultiplyAlpha(0.15f));
 
     /// <summary>
     /// Renders a subtle label indicator at the top of label nodes.

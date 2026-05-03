@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Documents;
@@ -103,7 +104,7 @@ public class AssetFileNode : FileNode,
     }
 
     /// <inheritdoc/>
-    public override Image Image => GetAsset()?.Icon ?? EditorUtility.GetIconForFileExact(NodePath)?.ToIconSmall();
+    public override ImageDef Image => GetAsset()?.Icon ?? EditorUtility.GetIconForFileExact(NodePath)?.ToIconSmall();
 
     /// <summary>
     /// Gets the list of attached file nodes associated with this asset.
@@ -361,7 +362,7 @@ public class AssetFileNode : FileNode,
     /// <summary>
     /// Gets the extended image indicating rendering status.
     /// </summary>
-    public Image ImageEx
+    public ImageDef ImageEx
     {
         get
         {
@@ -386,7 +387,7 @@ public class AssetFileNode : FileNode,
     /// <summary>
     /// Gets the status image indicating errors or warnings.
     /// </summary>
-    public Image ImageStatus
+    public ImageDef ImageStatus
     {
         get
         {

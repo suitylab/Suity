@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views.Graphics;
 using System;
 using System.Drawing;
@@ -255,8 +256,8 @@ public static class GuiTreeViewExtensions
         return node;
     }
 
-    private static readonly Brush _dragDropBrush = new SolidBrush(ImGuiTheme.DefaultDragColor);
-    private static readonly Pen _dragDropPen = new(ImGuiTheme.DefaultDragColor, 3);
+    private static readonly BrushDef _dragDropBrush = new SolidBrushDef(ImGuiTheme.DefaultDragColor);
+    private static readonly PenDef _dragDropPen = new(ImGuiTheme.DefaultDragColor, 3);
 
     private static void TreeNodeDragDropRender(GuiPipeline pipeline, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction baseAction)
     {

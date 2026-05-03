@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Services;
 using Suity.Helpers;
@@ -369,12 +370,12 @@ public abstract class PathNode
     /// <summary>
     /// Gets the image icon associated with this node.
     /// </summary>
-    public virtual Image Image => null;
+    public virtual ImageDef Image => null;
 
     /// <summary>
     /// Gets the status icon displayed alongside this node's text.
     /// </summary>
-    public virtual Image TextStatusIcon
+    public virtual ImageDef TextStatusIcon
     {
         get
         {
@@ -434,7 +435,7 @@ public abstract class PathNode
     /// <summary>
     /// Gets a custom image for this node, overriding the default image.
     /// </summary>
-    public virtual Image CustomImage => null;
+    public virtual ImageDef CustomImage => null;
 
     #endregion
 

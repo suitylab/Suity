@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
@@ -198,7 +199,7 @@ public class FieldTypeDesign : ITypeDesign, ISyncObject, IViewObject, INavigable
     /// <summary>
     /// Gets the icon representing the current field type.
     /// </summary>
-    public Image Icon => FieldType.GetIcon();
+    public ImageDef Icon => FieldType.GetIcon();
 
 
     #region ISyncObject

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.AIGC;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -64,12 +65,12 @@ public class NodeGraphTheme : ThemeBase
             .SetPadding(4);
 
         this.ClassStyle("commentText")
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 6), Color.White)
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 6), Color.White)
             .SetBorder(0)
             .SetPadding(0);
 
         this.ClassStyle("titleText")
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 10), Color.White)
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 10), Color.White)
             .SetVerticalAlignment(GuiAlignment.Center)
             .SetInputFunctionChain(ImGraphExtensions.ScaleInputBlockerMedium)
             .SetRenderFunctionChain(ImGraphExtensions.ScaleRenderBlockerMedium);
@@ -106,7 +107,7 @@ public class NodeGraphTheme : ThemeBase
             .SetHorizontalAlignment(GuiAlignment.Far);
 
         this.ClassStyle("connectorText")
-            .SetFont(new Font(ImGuiTheme.DefaultFont, 6), Color.White)
+            .SetFont(new FontDef(ImGuiTheme.DefaultFont, 6), Color.White)
             .SetCenterVertical()
             .SetInputFunctionChain(ImGraphExtensions.ScaleInputBlockerNear)
             .SetRenderFunctionChain(ImGraphExtensions.ScaleRenderBlockerNear);
@@ -266,11 +267,11 @@ public class NodeGraphTheme : ThemeBase
 
         var rect = node.GlobalRect;
 
-        var pen = new Pen(Color.Green, 1);
+        var pen = new PenDef(Color.Green, 1);
         output.DrawRectangle(pen, rect);
 
-        var font = new Font(ImGuiTheme.DefaultFont, 12);
-        var brush = new SolidBrush(Color.White);
+        var font = new FontDef(ImGuiTheme.DefaultFont, 12);
+        var brush = new SolidBrushDef(Color.White);
         output.DrawString($"{node.Id} {(int)rect.Width}x{(int)rect.Height}", font, brush, new PointF(rect.X, rect.Y + 12));
     }
 }

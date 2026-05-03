@@ -1,5 +1,5 @@
-using static Suity.Helpers.GlobalLocalizer;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Services;
 using Suity.Editor.WorkSpaces;
@@ -7,7 +7,6 @@ using Suity.Helpers;
 using Suity.Views;
 using Suity.Views.PathTree;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,7 +32,7 @@ public class AssetRootNode : RootDirectoryNode, IProjectAssetRootNode, IDropTarg
     protected override string OnGetText() => "Assets";
 
     /// <inheritdoc/>
-    public override Image Image => CoreIconCache.Project.ToIconSmall();
+    public override ImageDef Image => CoreIconCache.Project.ToIconSmall();
 
     /// <inheritdoc/>
     protected override DirectoryNode CreateDirectoryNode() => new AssetDirectoryNode();

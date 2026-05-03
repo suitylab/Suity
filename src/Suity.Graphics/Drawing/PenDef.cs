@@ -1,42 +1,44 @@
-namespace System.Drawing;
+using System.Drawing;
+
+namespace Suity.Drawing;
 
 /// <summary>
 /// Represents a pen data structure used for drawing lines and curves. Contains stroke properties without actual rendering functionality.
 /// </summary>
-public sealed class Pen
+public sealed class PenDef
 {
     /// <summary>
-    /// Gets or sets the color of this <see cref="Pen"/>.
+    /// Gets or sets the color of this <see cref="PenDef"/>.
     /// </summary>
     public Color Color { get; set; }
 
     /// <summary>
-    /// Gets or sets the width of this <see cref="Pen"/>, in units of the graphics object.
+    /// Gets or sets the width of this <see cref="PenDef"/>, in units of the graphics object.
     /// </summary>
     public float Width { get; set; }
 
     /// <summary>
-    /// Gets or sets the dash style for lines drawn by this <see cref="Pen"/>.
+    /// Gets or sets the dash style for lines drawn by this <see cref="PenDef"/>.
     /// </summary>
     public DashStyle DashStyle { get; set; }
 
     /// <summary>
-    /// Gets or sets the custom dash pattern for lines drawn by this <see cref="Pen"/>.
+    /// Gets or sets the custom dash pattern for lines drawn by this <see cref="PenDef"/>.
     /// </summary>
     public float[] DashPattern { get; set; }
 
     /// <summary>
-    /// Gets or sets the line cap style for the start of lines drawn by this <see cref="Pen"/>.
+    /// Gets or sets the line cap style for the start of lines drawn by this <see cref="PenDef"/>.
     /// </summary>
     public LineCap StartCap { get; set; }
 
     /// <summary>
-    /// Gets or sets the line cap style for the end of lines drawn by this <see cref="Pen"/>.
+    /// Gets or sets the line cap style for the end of lines drawn by this <see cref="PenDef"/>.
     /// </summary>
     public LineCap EndCap { get; set; }
 
     /// <summary>
-    /// Gets or sets the line join style for the ends of lines drawn by this <see cref="Pen"/>.
+    /// Gets or sets the line join style for the ends of lines drawn by this <see cref="PenDef"/>.
     /// </summary>
     public LineJoin LineJoin { get; set; }
 
@@ -51,10 +53,10 @@ public sealed class Pen
     public PenAlignment Alignment { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Pen"/> class with the specified color.
+    /// Initializes a new instance of the <see cref="PenDef"/> class with the specified color.
     /// </summary>
     /// <param name="color">A <see cref="Color"/> structure that indicates the color of this pen.</param>
-    public Pen(Color color)
+    public PenDef(Color color)
     {
         Color = color;
         Width = 1f;
@@ -67,11 +69,11 @@ public sealed class Pen
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Pen"/> class with the specified color and width.
+    /// Initializes a new instance of the <see cref="PenDef"/> class with the specified color and width.
     /// </summary>
     /// <param name="color">A <see cref="Color"/> structure that indicates the color of this pen.</param>
     /// <param name="width">A value indicating the width of this pen.</param>
-    public Pen(Color color, float width)
+    public PenDef(Color color, float width)
     {
         Color = color;
         Width = width;
@@ -91,7 +93,7 @@ public sealed class Pen
 }
 
 /// <summary>
-/// Specifies the style of dashed lines drawn with a <see cref="Pen"/> object.
+/// Specifies the style of dashed lines drawn with a <see cref="PenDef"/> object.
 /// </summary>
 public enum DashStyle
 {
@@ -127,7 +129,7 @@ public enum DashStyle
 }
 
 /// <summary>
-/// Specifies the line cap style for the start or end of a line drawn with a <see cref="Pen"/> object.
+/// Specifies the line cap style for the start or end of a line drawn with a <see cref="PenDef"/> object.
 /// </summary>
 public enum LineCap
 {
@@ -214,7 +216,7 @@ public enum LineJoin
 }
 
 /// <summary>
-/// Specifies the alignment of a <see cref="Pen"/> object relative to the path being drawn.
+/// Specifies the alignment of a <see cref="PenDef"/> object relative to the path being drawn.
 /// </summary>
 public enum PenAlignment
 {

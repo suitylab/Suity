@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Synchonizing;
@@ -5,7 +6,6 @@ using Suity.Synchonizing.Core;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
@@ -132,7 +132,7 @@ public class LLmModelPlugin : EditorPlugin, IViewObject
     public override string Description => "AI Model";
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Model;
+    public override ImageDef Icon => CoreIconCache.Model;
 
     /// <inheritdoc/>
     public override int Order => 1000;

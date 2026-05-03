@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Synchonizing;
 using Suity.Views;
 using System.Drawing;

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using System.Drawing;
 
 namespace Suity.Editor.Types;
@@ -62,7 +63,7 @@ public class DSystemAbstractFunction : DType
     }
 
     /// <inheritdoc />
-    public override Image DefaultIcon => CoreIconCache.Function;
+    public override ImageDef DefaultIcon => CoreIconCache.Function;
 
     /// <inheritdoc />
     public override TypeRelationships Relationship => TypeRelationships.AbstractFunction;

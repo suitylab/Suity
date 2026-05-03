@@ -1,4 +1,5 @@
 using ComputerBeacon.Json;
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Documents;
 using Suity.Editor.Services;
@@ -59,7 +60,7 @@ public class EntityExInfo
     /// <summary>
     /// Gets or sets the entity image.
     /// </summary>
-    public Image EntityImageEx { get; set; }
+    public ImageDef EntityImageEx { get; set; }
 }
 
 #endregion
@@ -320,7 +321,7 @@ public class LogNode : PopulatePathNode
     /// </summary>
     /// <param name="dir">The network direction.</param>
     /// <returns>The icon image for the direction, or null if none.</returns>
-    public static Image GetLogIcon(NetworkDirection dir) => dir switch
+    public static ImageDef GetLogIcon(NetworkDirection dir) => dir switch
     {
         NetworkDirection.None => null,
         NetworkDirection.Upload => CoreIconCache.Upload,
@@ -333,7 +334,7 @@ public class LogNode : PopulatePathNode
     /// </summary>
     /// <param name="type">The log message type.</param>
     /// <returns>The icon image for the log level.</returns>
-    public static Image GetLogIcon(LogMessageType type) => type switch
+    public static ImageDef GetLogIcon(LogMessageType type) => type switch
     {
         LogMessageType.Debug => CoreIconCache.LogDebug,
         LogMessageType.Info => CoreIconCache.LogInfo,
@@ -348,7 +349,7 @@ public class LogNode : PopulatePathNode
     /// <param name="type">The log message type.</param>
     /// <param name="direction">The network direction.</param>
     /// <returns>The icon image for the log level and direction.</returns>
-    public static Image GetLogIcon(LogMessageType type, NetworkDirection direction) => type switch
+    public static ImageDef GetLogIcon(LogMessageType type, NetworkDirection direction) => type switch
     {
         LogMessageType.Debug => GetLogIcon(direction) ?? CoreIconCache.LogDebug,
         LogMessageType.Info => GetLogIcon(direction) ?? CoreIconCache.LogInfo,
@@ -376,7 +377,7 @@ public class LogNode : PopulatePathNode
     /// </summary>
     /// <param name="actionType">The entity action type.</param>
     /// <returns>The icon image for the action type, or null if none.</returns>
-    public static Image GetLogIcon(EntityActionTypes actionType) => actionType switch
+    public static ImageDef GetLogIcon(EntityActionTypes actionType) => actionType switch
     {
         EntityActionTypes.CreateEntity or EntityActionTypes.DestroyEntity => CoreIconCache.Entity,
         EntityActionTypes.AddOrReplaceValue or EntityActionTypes.RemoveValue => CoreIconCache.Component,
@@ -389,7 +390,7 @@ public class LogNode : PopulatePathNode
     /// </summary>
     /// <param name="actionType">The entity action type.</param>
     /// <returns>The icon image for the action type, or null if none.</returns>
-    public static Image GetLogIconEx(EntityActionTypes actionType) => actionType switch
+    public static ImageDef GetLogIconEx(EntityActionTypes actionType) => actionType switch
     {
         EntityActionTypes.CreateEntity or EntityActionTypes.AddOrReplaceValue or EntityActionTypes.AddedToLogic => CoreIconCache.Add,
         EntityActionTypes.DestroyEntity or EntityActionTypes.RemoveValue or EntityActionTypes.RemovedFromLogic => CoreIconCache.Disable,
@@ -406,9 +407,9 @@ public class LogNode : PopulatePathNode
 /// <summary>
 /// Represents a log node that displays plain text with an optional image and text color status.
 /// </summary>
-public class LogNodeTextNode(string text, Image image = null, TextStatus status = TextStatus.Normal) : LogNode(text)
+public class LogNodeTextNode(string text, ImageDef image = null, TextStatus status = TextStatus.Normal) : LogNode(text)
 {
-    private readonly Image _image = image;
+    private readonly ImageDef _image = image;
     private readonly TextStatus _textStatus = status;
 
     /// <summary>
@@ -419,7 +420,7 @@ public class LogNodeTextNode(string text, Image image = null, TextStatus status 
     /// <summary>
     /// Gets the image displayed alongside the text.
     /// </summary>
-    public override Image Image => _image?.ToIconSmall();
+    public override ImageDef Image => _image?.ToIconSmall();
 
     /// <summary>
     /// Gets the text color status used for rendering the text.
@@ -446,7 +447,7 @@ public class LogObjectNode : LogNode
 {
     private readonly object _obj;
     private readonly string _text;
-    private readonly Image _image;
+    private readonly ImageDef _image;
     private readonly TextStatus _textStatus = TextStatus.Normal;
 
     /// <summary>
@@ -529,7 +530,7 @@ public class LogObjectNode : LogNode
     /// <summary>
     /// Gets the image displayed alongside the text.
     /// </summary>
-    public override Image Image => _image?.ToIconSmall();
+    public override ImageDef Image => _image?.ToIconSmall();
 
     /// <summary>
     /// Gets the text color status used for rendering the text.
@@ -563,7 +564,7 @@ public class DoubleClickTextNode : LogNodeTextNode, IViewDoubleClickAction
     /// <param name="detail">The detailed text shown on double-click.</param>
     /// <param name="image">The optional image to display.</param>
     /// <param name="status">The text color status.</param>
-    public DoubleClickTextNode(string text, string detail, Image image = null, TextStatus status = TextStatus.Normal)
+    public DoubleClickTextNode(string text, string detail, ImageDef image = null, TextStatus status = TextStatus.Normal)
         : base(text, image, status)
     {
         _detail = detail;
@@ -589,7 +590,7 @@ public class LogJsonNode : LogNode
 {
     private readonly string _name;
     private readonly object _obj;
-    private readonly Image _image;
+    private readonly ImageDef _image;
     private readonly string _typeName;
 
     private SItem _sitem;
@@ -600,7 +601,7 @@ public class LogJsonNode : LogNode
     /// <param name="name">The name of the JSON property or null for root.</param>
     /// <param name="obj">The JSON object or array to display.</param>
     /// <param name="image">The icon image to display.</param>
-    public LogJsonNode(string name, object obj, Image image)
+    public LogJsonNode(string name, object obj, ImageDef image)
     {
         _name = name;
         _obj = obj;
@@ -778,7 +779,7 @@ public class LogJsonNode : LogNode
     /// <summary>
     /// Gets the icon image for this JSON node based on its value type.
     /// </summary>
-    public override Image Image
+    public override ImageDef Image
     {
         get
         {
@@ -824,7 +825,7 @@ public class LogJsonNode : LogNode
     /// <param name="value">The JSON value.</param>
     /// <param name="image">The optional icon image.</param>
     /// <returns>A new <see cref="LogJsonNode"/> or <see cref="DoubleClickJsonNode"/> for the value.</returns>
-    public LogJsonNode CreateJsonNode(string name, object value, Image image)
+    public LogJsonNode CreateJsonNode(string name, object value, ImageDef image)
     {
         if (value is JsonObject obj)
         {
@@ -864,7 +865,7 @@ public class DoubleClickJsonNode : LogJsonNode, IViewDoubleClickAction
     /// <param name="value">The JSON value.</param>
     /// <param name="image">The icon image.</param>
     /// <param name="content">The detailed content shown on double-click.</param>
-    public DoubleClickJsonNode(string name, object value, Image image, string content)
+    public DoubleClickJsonNode(string name, object value, ImageDef image, string content)
         : base(name, value, image)
     {
         _content = content ?? string.Empty;
@@ -922,7 +923,7 @@ public class LogExceptionNode : LogNode
     /// <summary>
     /// Gets the error icon image for this exception node.
     /// </summary>
-    public override Image Image => CoreIconCache.LogError.ToIconSmall();
+    public override ImageDef Image => CoreIconCache.LogError.ToIconSmall();
 
     /// <summary>
     /// Gets a value indicating whether this node can be populated with child details.
@@ -999,7 +1000,7 @@ public class LogResourceNode : LogNode, IViewDoubleClickAction
     /// <summary>
     /// Gets the icon image from the resolved asset, if available.
     /// </summary>
-    public override Image Image
+    public override ImageDef Image
     {
         get
         {
@@ -1178,7 +1179,7 @@ public class ReaderInfoPathNode : LogNode
     private readonly string _preview;
     private readonly string _info;
     private readonly TextStatus _textStatus;
-    private readonly Image _image;
+    private readonly ImageDef _image;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ReaderInfoPathNode"/> class.
@@ -1186,7 +1187,7 @@ public class ReaderInfoPathNode : LogNode
     /// <param name="reader">The node reader to display.</param>
     /// <param name="image">The optional icon image.</param>
     /// <param name="status">The optional text color status.</param>
-    public ReaderInfoPathNode(INodeReader reader, Image image = null, TextStatus? status = null)
+    public ReaderInfoPathNode(INodeReader reader, ImageDef image = null, TextStatus? status = null)
     {
         _reader = reader ?? throw new ArgumentNullException(nameof(reader));
 
@@ -1258,7 +1259,7 @@ public class ReaderInfoPathNode : LogNode
     /// <summary>
     /// Gets the icon image for this reader node.
     /// </summary>
-    public override Image Image => _image?.ToIconSmall();
+    public override ImageDef Image => _image?.ToIconSmall();
 
     /// <summary>
     /// Gets a value indicating whether this node can be populated with child readers.

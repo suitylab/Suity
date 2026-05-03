@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using System;
 using System.Drawing;
@@ -34,7 +35,7 @@ public class DFunction : DCompond
     { }
 
     /// <inheritdoc />
-    public override Image DefaultIcon => CoreIconCache.Function;
+    public override ImageDef DefaultIcon => CoreIconCache.Function;
 
     /// <inheritdoc />
     public override Color? TypeColor => FunctionTypeColor;

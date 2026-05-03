@@ -1,9 +1,9 @@
-using static Suity.Helpers.GlobalLocalizer;
-using Suity.Views.NodeGraph;
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Flows;
+using Suity.Views.NodeGraph;
 using System;
-using System.Drawing;
+using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Views.Im.Flows;
 
@@ -76,7 +76,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
             .InitClass("icon", "scaleHiddenMedium");
         }
 
-        if (context.DisplayIcon is Image icon)
+        if (context.DisplayIcon is ImageDef icon)
         {
             gui.Image("icon", icon)
             .InitClass("icon", "scaleHiddenMedium");
@@ -337,7 +337,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
     }
 
     /// <inheritdoc/>
-    public override ImGuiNode SimpleFrame(ImGui gui, FlowDirections direction, IDrawNodeContext drawContext, string? text = null, Image? image = null, DrawEditorImGui? editorGui = null)
+    public override ImGuiNode SimpleFrame(ImGui gui, FlowDirections direction, IDrawNodeContext drawContext, string? text = null, ImageDef? image = null, DrawEditorImGui? editorGui = null)
     {
         return FittedNodeFrame(gui, drawContext)
         .OnContent(() =>
@@ -354,7 +354,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
                 .InitHorizontalAlignment(GuiAlignment.Near)
                 .OnContent(() => 
                 {
-                    image ??= drawContext.DisplayIcon as Image;
+                    image ??= drawContext.DisplayIcon as ImageDef;
                     if (image != null)
                     {
                         gui.Image("icon", image)
@@ -381,7 +381,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
 
     /// <inheritdoc/>
     public override ImGuiNode SingleConnectorFrame(ImGui gui, FlowNodeConnector connector, IDrawNodeContext drawContext,
-        string? text = null, Image? image = null, DrawEditorImGui? editorGui = null)
+        string? text = null, ImageDef? image = null, DrawEditorImGui? editorGui = null)
     {
         return FittedNodeFrame(gui, drawContext)
         .OnContent(() =>
@@ -408,7 +408,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
                         .InitClass("icon", "scaleHiddenMedium");
                     }
 
-                    image ??= drawContext.DisplayIcon as Image;
+                    image ??= drawContext.DisplayIcon as ImageDef;
                     if (image != null)
                     {
                         gui.Image("icon", image)

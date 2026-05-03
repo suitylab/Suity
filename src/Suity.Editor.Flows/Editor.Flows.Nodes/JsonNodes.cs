@@ -1,4 +1,5 @@
 using MarkedNet;
+using Suity.Drawing;
 using Suity.Editor.Flows.Gui;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
@@ -27,10 +28,10 @@ internal class JsonDataType : CustomGraphDataType
     {
         _typeName = JsonFlowNode.JsonData;
         this._allowMultipleToConnection = true;
-        this._linkPen = new Pen(Color.FromArgb(0, 255, 255), 3);
-        this._linkArrowBrush = new SolidBrush(Color.FromArgb(0, 255, 255));
-        this._connectorOutlinePen = new Pen(Color.FromArgb(0, 255, 255), 3);
-        this._connectorFillBrush = new SolidBrush(Color.FromArgb(0, 255, 255));
+        this._linkPen = new PenDef(Color.FromArgb(0, 255, 255), 3);
+        this._linkArrowBrush = new SolidBrushDef(Color.FromArgb(0, 255, 255));
+        this._connectorOutlinePen = new PenDef(Color.FromArgb(0, 255, 255), 3);
+        this._connectorFillBrush = new SolidBrushDef(Color.FromArgb(0, 255, 255));
     }
 
     /// <inheritdoc/>

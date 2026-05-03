@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using System.Drawing;
 
@@ -39,7 +40,7 @@ public class DEvent : DType, ICodeRenderElement
     }
 
     /// <inheritdoc />
-    public override Image DefaultIcon => CoreIconCache.Event;
+    public override ImageDef DefaultIcon => CoreIconCache.Event;
 }
 
 /// <summary>

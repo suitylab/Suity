@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Flows;
 using System;
 using System.Drawing;
@@ -154,7 +155,7 @@ internal abstract class NodeGraphExternal
     /// <param name="editorGui">Optional editor GUI callback.</param>
     /// <returns>An ImGui node representing the simple frame.</returns>
     public abstract ImGuiNode SimpleFrame(ImGui gui, FlowDirections direction, IDrawNodeContext context,
-        string? text = null, Image? image = null, DrawEditorImGui? editorGui = null);
+        string? text = null, ImageDef? image = null, DrawEditorImGui? editorGui = null);
 
     /// <summary>
     /// Creates a frame for a single connector with optional text, image, and editor GUI content.
@@ -167,5 +168,5 @@ internal abstract class NodeGraphExternal
     /// <param name="editorGui">Optional editor GUI callback.</param>
     /// <returns>An ImGui node representing the single connector frame.</returns>
     public abstract ImGuiNode SingleConnectorFrame(ImGui gui, FlowNodeConnector connector, IDrawNodeContext context, 
-        string? text = null, Image? image = null, DrawEditorImGui? editorGui = null);
+        string? text = null, ImageDef? image = null, DrawEditorImGui? editorGui = null);
 }

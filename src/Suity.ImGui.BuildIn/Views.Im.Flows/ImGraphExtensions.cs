@@ -6,6 +6,7 @@ using Suity.Helpers;
 using Suity.Views.Graphics;
 using System.Drawing;
 using System.Linq;
+using Suity.Drawing;
 
 namespace Suity.Views.Im.Flows;
 
@@ -24,7 +25,7 @@ public static class ImGraphExtensions
     /// </summary>
     public static float NodeHiddenScale = 0.35f;
 
-    readonly static Brush _NodeBG = new SolidBrush(EditorColorScheme.Default.Background);
+    readonly static BrushDef _NodeBG = new SolidBrushDef(EditorColorScheme.Default.Background);
 
     readonly static Color ColorRunning = Color.Cyan.MultiplyAlpha(0.5f);
     readonly static Color ColorFinished = Color.DarkGreen.MultiplyAlpha(0.5f);
@@ -99,12 +100,12 @@ public static class ImGraphExtensions
             if (cornerRound > 0)
             {
                 output.FillRoundRectangle(_NodeBG, rect, cornerRound);
-                output.FillRoundRectangle(new SolidBrush(color.Value), rect_1, cornerRound);
+                output.FillRoundRectangle(new SolidBrushDef(color.Value), rect_1, cornerRound);
             }
             else
             {
                 output.FillRectangle(_NodeBG, rect);
-                output.FillRectangle(new SolidBrush(color.Value), rect_1);
+                output.FillRectangle(new SolidBrushDef(color.Value), rect_1);
             }
         }
 
@@ -140,11 +141,11 @@ public static class ImGraphExtensions
 
                 if (cornerRound > 0)
                 {
-                    output.DrawRoundRectangle(new Pen(colorV, 6), rectV, cornerRound);
+                    output.DrawRoundRectangle(new PenDef(colorV, 6), rectV, cornerRound);
                 }
                 else
                 {
-                    output.DrawRectangle(new Pen(colorV, 6), rectV);
+                    output.DrawRectangle(new PenDef(colorV, 6), rectV);
                 }
             }
         }
@@ -153,11 +154,11 @@ public static class ImGraphExtensions
         {
             if (cornerRound > 0)
             {
-                output.DrawRoundRectangle(new Pen(borderColor, borderWidth), rect_1, cornerRound);
+                output.DrawRoundRectangle(new PenDef(borderColor, borderWidth), rect_1, cornerRound);
             }
             else
             {
-                output.DrawRectangle(new Pen(borderColor, borderWidth), rect_1);
+                output.DrawRectangle(new PenDef(borderColor, borderWidth), rect_1);
             }
         }
     }
@@ -199,7 +200,7 @@ public static class ImGraphExtensions
                 }
             }
 
-            var brush = new SolidBrush(colorV);
+            var brush = new SolidBrushDef(colorV);
 
             if (connector?.ConnectorType == ConnectorType.Action)
             {
@@ -209,7 +210,7 @@ public static class ImGraphExtensions
                 }
                 else
                 {
-                    output.DrawPolygon(new Pen(colorV, rect.Width * 0.15f), BuildActionTriangle(rect.Scale(0.75f)));
+                    output.DrawPolygon(new PenDef(colorV, rect.Width * 0.15f), BuildActionTriangle(rect.Scale(0.75f)));
                 }
             }
             else if (connector?.DataType?.IsKey == true)
@@ -222,13 +223,13 @@ public static class ImGraphExtensions
 
                     if (isLinked)
                     {
-                        output.DrawPolygon(new Pen(colorV, penWidth), outerDiamond);
+                        output.DrawPolygon(new PenDef(colorV, penWidth), outerDiamond);
                         output.FillPolygon(brush, innerDiamond);
                     }
                     else
                     {
-                        output.DrawPolygon(new Pen(colorV, penWidth), outerDiamond);
-                        output.DrawPolygon(new Pen(colorV, penWidth), innerDiamond);
+                        output.DrawPolygon(new PenDef(colorV, penWidth), outerDiamond);
+                        output.DrawPolygon(new PenDef(colorV, penWidth), innerDiamond);
                     }
                 }
                 else
@@ -242,7 +243,7 @@ public static class ImGraphExtensions
                     }
                     else
                     {
-                        output.DrawPolygon(new Pen(colorV, rect.Width * 0.2f), diamond);
+                        output.DrawPolygon(new PenDef(colorV, rect.Width * 0.2f), diamond);
                     }
                 }
             }
@@ -256,13 +257,13 @@ public static class ImGraphExtensions
 
                     if (isLinked)
                     {
-                        output.DrawEllipse(new Pen(colorV, penWidth), outerRect);
+                        output.DrawEllipse(new PenDef(colorV, penWidth), outerRect);
                         output.FillEllipse(brush, innerRect);
                     }
                     else
                     {
-                        output.DrawEllipse(new Pen(colorV, penWidth), outerRect);
-                        output.DrawEllipse(new Pen(colorV, penWidth), innerRect);
+                        output.DrawEllipse(new PenDef(colorV, penWidth), outerRect);
+                        output.DrawEllipse(new PenDef(colorV, penWidth), innerRect);
                     }
                 }
                 else
@@ -273,7 +274,7 @@ public static class ImGraphExtensions
                     }
                     else
                     {
-                        output.DrawEllipse(new Pen(colorV, rect.Width * 0.2f), rect.Scale(0.8f));
+                        output.DrawEllipse(new PenDef(colorV, rect.Width * 0.2f), rect.Scale(0.8f));
                     }
                 }
             }
@@ -287,11 +288,11 @@ public static class ImGraphExtensions
             {
                 if (isLinked)
                 {
-                    output.FillPolygon(new SolidBrush(Color.White), BuildActionTriangle(combinedRect));
+                    output.FillPolygon(new SolidBrushDef(Color.White), BuildActionTriangle(combinedRect));
                 }
                 else
                 {
-                    output.DrawPolygon(new Pen(Color.White, rect.Width * 0.1f), BuildActionTriangle(combinedRect.Scale(0.75f)));
+                    output.DrawPolygon(new PenDef(Color.White, rect.Width * 0.1f), BuildActionTriangle(combinedRect.Scale(0.75f)));
                 }
             }
             else if (connector.DataType?.IsKey == true)
@@ -304,13 +305,13 @@ public static class ImGraphExtensions
 
                     if (isLinked)
                     {
-                        output.DrawPolygon(new Pen(Color.White, penWidth), outerDiamond);
-                        output.FillPolygon(new SolidBrush(Color.White), innerDiamond);
+                        output.DrawPolygon(new PenDef(Color.White, penWidth), outerDiamond);
+                        output.FillPolygon(new SolidBrushDef(Color.White), innerDiamond);
                     }
                     else
                     {
-                        output.DrawPolygon(new Pen(Color.White, penWidth), outerDiamond);
-                        output.DrawPolygon(new Pen(Color.White, penWidth), innerDiamond);
+                        output.DrawPolygon(new PenDef(Color.White, penWidth), outerDiamond);
+                        output.DrawPolygon(new PenDef(Color.White, penWidth), innerDiamond);
                     }
                 }
                 else
@@ -320,11 +321,11 @@ public static class ImGraphExtensions
 
                     if (isLinked)
                     {
-                        output.FillPolygon(new SolidBrush(Color.White), diamond);
+                        output.FillPolygon(new SolidBrushDef(Color.White), diamond);
                     }
                     else
                     {
-                        output.DrawPolygon(new Pen(Color.White, rect.Width * 0.1f), diamond);
+                        output.DrawPolygon(new PenDef(Color.White, rect.Width * 0.1f), diamond);
                     }
                 }
             }
@@ -338,24 +339,24 @@ public static class ImGraphExtensions
 
                     if (isLinked)
                     {
-                        output.DrawEllipse(new Pen(Color.White, penWidth), outerRect);
-                        output.FillEllipse(new SolidBrush(Color.White), innerRect);
+                        output.DrawEllipse(new PenDef(Color.White, penWidth), outerRect);
+                        output.FillEllipse(new SolidBrushDef(Color.White), innerRect);
                     }
                     else
                     {
-                        output.DrawEllipse(new Pen(Color.White, penWidth), outerRect);
-                        output.DrawEllipse(new Pen(Color.White, penWidth), innerRect);
+                        output.DrawEllipse(new PenDef(Color.White, penWidth), outerRect);
+                        output.DrawEllipse(new PenDef(Color.White, penWidth), innerRect);
                     }
                 }
                 else
                 {
                     if (isLinked)
                     {
-                        output.FillEllipse(new SolidBrush(Color.White), combinedRect);
+                        output.FillEllipse(new SolidBrushDef(Color.White), combinedRect);
                     }
                     else
                     {
-                        output.DrawEllipse(new Pen(Color.White, rect.Width * 0.1f), combinedRect);
+                        output.DrawEllipse(new PenDef(Color.White, rect.Width * 0.1f), combinedRect);
                     }
                 }
             }
@@ -367,26 +368,26 @@ public static class ImGraphExtensions
 
             if (connector?.ConnectorType == ConnectorType.Action)
             {
-                output.DrawPolygon(new Pen(borderColor, border), BuildActionTriangle(borderRect));
+                output.DrawPolygon(new PenDef(borderColor, border), BuildActionTriangle(borderRect));
             }
             else if (connector?.DataType?.IsKey == true)
             {
-                output.DrawPolygon(new Pen(borderColor, border), BuildKeyDiamond(borderRect));
+                output.DrawPolygon(new PenDef(borderColor, border), BuildKeyDiamond(borderRect));
 
                 if (connector.DataType.IsArray)
                 {
                     var innerDiamond = BuildKeyDiamond(borderRect.Scale(0.6f));
-                    output.DrawPolygon(new Pen(borderColor, border * 0.5f), innerDiamond);
+                    output.DrawPolygon(new PenDef(borderColor, border * 0.5f), innerDiamond);
                 }
             }
             else if (connector?.DataType?.IsArray == true)
             {
-                output.DrawEllipse(new Pen(borderColor, border), borderRect);
-                output.DrawEllipse(new Pen(borderColor, border * 0.5f), borderRect.Scale(0.6f));
+                output.DrawEllipse(new PenDef(borderColor, border), borderRect);
+                output.DrawEllipse(new PenDef(borderColor, border * 0.5f), borderRect.Scale(0.6f));
             }
             else
             {
-                output.DrawEllipse(new Pen(borderColor, border), borderRect);
+                output.DrawEllipse(new PenDef(borderColor, border), borderRect);
             }
         }
     }

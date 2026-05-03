@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.AIGC;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -565,22 +566,22 @@ public interface IFlowDataStyle
     /// <summary>
     /// Gets the link pen.
     /// </summary>
-    Pen LinkPen { get; }
+    PenDef LinkPen { get; }
 
     /// <summary>
     /// Gets the link arrow brush.
     /// </summary>
-    SolidBrush LinkArrowBrush { get; }
+    SolidBrushDef LinkArrowBrush { get; }
 
     /// <summary>
     /// Gets the connector outline pen.
     /// </summary>
-    Pen ConnectorOutlinePen { get; }
+    PenDef ConnectorOutlinePen { get; }
 
     /// <summary>
     /// Gets the connector fill brush.
     /// </summary>
-    SolidBrush ConnectorFillBrush { get; }
+    SolidBrushDef ConnectorFillBrush { get; }
 
     /// <summary>
     /// Occurs when style is updated.

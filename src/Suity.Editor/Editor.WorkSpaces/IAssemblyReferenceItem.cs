@@ -1,5 +1,5 @@
+using Suity.Drawing;
 using System;
-using System.Drawing;
 
 namespace Suity.Editor.WorkSpaces;
 
@@ -23,7 +23,7 @@ public interface IAssemblyReferenceItem : IHasId, IComparable<IAssemblyReference
     /// <summary>
     /// Gets the icon
     /// </summary>
-    Image Icon { get; }
+    ImageDef Icon { get; }
     /// <summary>
     /// Gets whether the reference is valid
     /// </summary>

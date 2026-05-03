@@ -1,6 +1,7 @@
 using ICSharpCode.SharpZipLib.Zip;
 using Suity;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Services;
@@ -8,7 +9,6 @@ using Suity.Helpers;
 using Suity.NodeQuery;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -31,7 +31,7 @@ public class LibraryAssetBK : LibraryAsset
     private readonly Dictionary<Guid, Asset> _contentAssetsByGuid = [];
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Library;
+    public override ImageDef DefaultIcon => CoreIconCache.Library;
 
     /// <inheritdoc/>
     public override string LibraryName => _libraryName;

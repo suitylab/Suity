@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views;
 using Suity.Views.Graphics;
 using Suity.Views.Im;
@@ -79,7 +80,7 @@ public class DialogOptions
     /// <summary>
     /// Gets or sets the dialog icon.
     /// </summary>
-    public Image Icon { get; init; }
+    public ImageDef Icon { get; init; }
 
     /// <summary>
     /// Gets or sets whether this is a dialog (vs a window).

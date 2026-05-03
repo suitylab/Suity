@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -33,7 +34,7 @@ public class SimpleMenuCommand : MenuCommand
     /// </summary>
     /// <param name="text">The text to display.</param>
     /// <param name="icon">The optional icon.</param>
-    public SimpleMenuCommand(string text, Image icon = null)
+    public SimpleMenuCommand(string text, ImageDef icon = null)
         : base(text, icon)
     {
     }
@@ -45,7 +46,7 @@ public class SimpleMenuCommand : MenuCommand
     /// <param name="icon">The icon.</param>
     /// <param name="action">The action to execute.</param>
     /// <param name="checkPopState">The optional popup state check action.</param>
-    public SimpleMenuCommand(string text, Image icon, Action<MenuCommand> action, CheckPopStateAction checkPopState = null)
+    public SimpleMenuCommand(string text, ImageDef icon, Action<MenuCommand> action, CheckPopStateAction checkPopState = null)
         : base(text, icon)
     {
         CommandAction = action;
@@ -60,7 +61,7 @@ public class SimpleMenuCommand : MenuCommand
     /// <param name="icon">The icon.</param>
     /// <param name="action">The action to execute.</param>
     /// <param name="checkPopState">The optional popup state check action.</param>
-    public SimpleMenuCommand(string key, string text, Image icon, Action<MenuCommand> action, CheckPopStateAction checkPopState = null)
+    public SimpleMenuCommand(string key, string text, ImageDef icon, Action<MenuCommand> action, CheckPopStateAction checkPopState = null)
         : base(key, text, icon)
     {
         CommandAction = action;
@@ -76,7 +77,7 @@ public class SimpleMenuCommand : MenuCommand
     /// <param name="icon">The icon.</param>
     /// <param name="action">The action to execute.</param>
     /// <param name="checkPopState">The optional popup state check action.</param>
-    public SimpleMenuCommand(string key, string text, string hotKey, Image icon, Action<MenuCommand> action, CheckPopStateAction checkPopState = null)
+    public SimpleMenuCommand(string key, string text, string hotKey, ImageDef icon, Action<MenuCommand> action, CheckPopStateAction checkPopState = null)
         : base(key, text, icon)
     {
         HotKey = hotKey;

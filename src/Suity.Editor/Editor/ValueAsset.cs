@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Types;
 using System;
 using System.Drawing;
@@ -58,7 +59,7 @@ public class ValueAsset : Asset
         return _value;
     }
 
-    public override Image DefaultIcon => CoreIconCache.Value;
+    public override ImageDef DefaultIcon => CoreIconCache.Value;
 
     internal override void InternalOnAssetActivate(string assetKey)
     {

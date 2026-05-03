@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views.Graphics;
 using System;
 using System.Drawing;
@@ -1674,7 +1675,7 @@ public static class GuiStylePropertyExtensions
     /// <param name="node">The node to modify.</param>
     /// <param name="font">The font to set, or null to use theme default.</param>
     /// <returns>The same ImGuiNode for chaining.</returns>
-    public static ImGuiNode SetFont(this ImGuiNode node, Font? font)
+    public static ImGuiNode SetFont(this ImGuiNode node, FontDef? font)
     {
         node.Font = font;
         return node;
@@ -1686,7 +1687,7 @@ public static class GuiStylePropertyExtensions
     /// <param name="node">The node to modify.</param>
     /// <param name="font">The font to set, or null to use theme default.</param>
     /// <returns>The same ImGuiNode for chaining.</returns>
-    public static ImGuiNode InitFont(this ImGuiNode node, Font? font)
+    public static ImGuiNode InitFont(this ImGuiNode node, FontDef? font)
     {
         if (node.IsInitializing) { node.Font = font; }
         return node;
@@ -1703,7 +1704,7 @@ public static class GuiStylePropertyExtensions
     /// <param name="image">The image to set.</param>
     /// <param name="color">Optional filter color to apply to the image.</param>
     /// <returns>The same ImGuiNode for chaining.</returns>
-    public static ImGuiNode InitImage(this ImGuiNode node, Image image, Color? color = null)
+    public static ImGuiNode InitImage(this ImGuiNode node, ImageDef image, Color? color = null)
     {
         if (node.IsInitializing)
         {
@@ -1720,7 +1721,7 @@ public static class GuiStylePropertyExtensions
     /// <param name="image">The image to set.</param>
     /// <param name="color">Optional filter color to apply to the image.</param>
     /// <returns>The same ImGuiNode for chaining.</returns>
-    public static ImGuiNode SetImage(this ImGuiNode node, Image image, Color? color = null)
+    public static ImGuiNode SetImage(this ImGuiNode node, ImageDef image, Color? color = null)
     {
         node.Image = image;
         node.ImageFilterColor = color;
@@ -1733,7 +1734,7 @@ public static class GuiStylePropertyExtensions
     /// <param name="theme">The theme to modify.</param>
     /// <param name="image">The image to set as default.</param>
     /// <returns>The same ImGuiTheme for chaining.</returns>
-    public static ImGuiTheme SetImage(this ImGuiTheme theme, Image image)
+    public static ImGuiTheme SetImage(this ImGuiTheme theme, ImageDef image)
     {
         theme.SetStyle(image);
         return theme;
@@ -1842,7 +1843,7 @@ public static class GuiStylePropertyExtensions
     /// <param name="font">The font to set, or null to keep existing.</param>
     /// <param name="color">The color to set, or null to keep existing.</param>
     /// <returns>The same ImGuiNode for chaining.</returns>
-    public static ImGuiNode OverrideFont(this ImGuiNode node, Font? font = null, Color? color = null)
+    public static ImGuiNode OverrideFont(this ImGuiNode node, FontDef? font = null, Color? color = null)
     {
         var style = node.GetOrCreateValue<GuiFontStyle>();
         style.Font = font;
@@ -1857,7 +1858,7 @@ public static class GuiStylePropertyExtensions
     /// <param name="font">The font to set, or null to keep existing.</param>
     /// <param name="color">The color to set, or null to keep existing.</param>
     /// <returns>The same ImGuiNode for chaining.</returns>
-    public static ImGuiNode InitOverrideFont(this ImGuiNode node, Font? font = null, Color? color = null)
+    public static ImGuiNode InitOverrideFont(this ImGuiNode node, FontDef? font = null, Color? color = null)
     {
         if (node.IsInitializing)
         {
@@ -1875,7 +1876,7 @@ public static class GuiStylePropertyExtensions
     /// <param name="font">The font to set.</param>
     /// <param name="color">The color to set.</param>
     /// <returns>The same ImGuiTheme for chaining.</returns>
-    public static ImGuiTheme SetFont(this ImGuiTheme theme, Font font, Color color)
+    public static ImGuiTheme SetFont(this ImGuiTheme theme, FontDef font, Color color)
     {
         theme.SetStyle(new GuiFontStyle { Font = font, Color = color });
         return theme;
@@ -1886,7 +1887,7 @@ public static class GuiStylePropertyExtensions
     /// </summary>
     /// <param name="node">The node to get the scaled font from.</param>
     /// <returns>The font scaled according to the current DPI settings.</returns>
-    public static Font GetScaledFont(this ImGuiNode node)
+    public static FontDef GetScaledFont(this ImGuiNode node)
     {
         return ImGuiExternal._external.GetScaledFont(node);
     }

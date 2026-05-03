@@ -1,10 +1,10 @@
+using Suity.Drawing;
 using Suity.Editor.Types;
 using Suity.Views.Im;
 using System;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
-using System.Drawing;
 
 namespace Suity.Editor.AIGC;
 
@@ -410,7 +410,7 @@ public interface IImageGenCall
     /// <param name="aspectRatio">The desired aspect ratio for the generated image.</param>
     /// <param name="cancel">A cancellation token to cancel the operation.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the generated image as a Bitmap.</returns>
-    Task<Bitmap> GenerateImage(string prompt, ImageAspectRatio aspectRatio, CancellationToken cancel = default);
+    Task<BitmapDef> GenerateImage(string prompt, ImageAspectRatio aspectRatio, CancellationToken cancel = default);
 }
 
 #endregion

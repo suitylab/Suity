@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views.Named;
 using System;
 using System.Drawing;
@@ -154,7 +155,7 @@ public abstract class DocumentEntry : ICommit
     /// <summary>
     /// Gets the icon for the document.
     /// </summary>
-    public abstract Image Icon { get; }
+    public abstract ImageDef Icon { get; }
 
     /// <summary>
     /// Saves the document.

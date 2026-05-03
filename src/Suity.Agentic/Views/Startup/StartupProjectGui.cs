@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Analysis;
 using Suity.Editor.Services;
 using Suity.Helpers;
@@ -8,7 +9,6 @@ using Suity.Views.Im.PropertyEditing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -19,11 +19,11 @@ namespace Suity.Editor.Views.Startup;
 
 internal class StartupProjectGui : IDrawImGuiNode, IDisposable
 {
-    public static Bitmap BmpUsageTemplate { get; } = Suity.Editor.Properties.Resources.UsageTemplate.ToBitmap();
-    public static Bitmap BmpUsageExample { get; } = Suity.Editor.Properties.Resources.UsageExample.ToBitmap();
-    public static Bitmap BmpUsageLearning { get; } = Suity.Editor.Properties.Resources.UsageLearning.ToBitmap();
-    public static Bitmap BmpUsagePreset { get; } = Suity.Editor.Properties.Resources.UsagePreset.ToBitmap();
-    public static Bitmap BmpCloudDownload { get; } = Suity.Editor.Properties.Resources.CloudDownload.ToBitmap();
+    public static BitmapDef BmpUsageTemplate { get; } = Suity.Editor.Properties.Resources.UsageTemplate.ToBitmap();
+    public static BitmapDef BmpUsageExample { get; } = Suity.Editor.Properties.Resources.UsageExample.ToBitmap();
+    public static BitmapDef BmpUsageLearning { get; } = Suity.Editor.Properties.Resources.UsageLearning.ToBitmap();
+    public static BitmapDef BmpUsagePreset { get; } = Suity.Editor.Properties.Resources.UsagePreset.ToBitmap();
+    public static BitmapDef BmpCloudDownload { get; } = Suity.Editor.Properties.Resources.CloudDownload.ToBitmap();
 
     private enum Pages
     {
@@ -45,9 +45,11 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
     private bool _hasNewVersion;
     private bool _legacyVersion;
 
-    private readonly Dictionary<string, Bitmap> _templateImgs = [];
+    private readonly Dictionary<string, BitmapDef> _templateImgs = [];
 
     private readonly PropertyTarget _languageTarget;
+
+    private DrawImGui? _drawNotice;
 
 
     public event EventHandler? ProjectOpened;
@@ -165,13 +167,9 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
                 }
             });
 
-            if (_productConfig != null)
+            if (_drawNotice is { } drawNotice)
             {
-                if (!string.IsNullOrWhiteSpace(_productConfig.Version) && SuityApp.VersionCode != _productConfig.Version)
-                {
-                    string msg = L($"New version {_productConfig.Version} is available, click 'Update' to download the latest version.");
-                    ShowNotice(gui, msg, L("Update"), () => NavigateToDownloadPage());
-                }
+                drawNotice(gui);
             }
             else
             {
@@ -445,7 +443,11 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
                 gui.Text(L("Project Name"));
                 _newProjectName = gui.StringInput("#project", null, _newProjectName).InitFullWidth().Text;
                 gui.VerticalLayout().InitHeight(30);
-                gui.Button(L("Create")).InitWidth(100).InitCenter().OnClick(() =>
+                gui.Button(L("Create"))
+                .InitClass("toolBtn")
+                .InitWidth(100)
+                .InitCenter()
+                .OnClick(() =>
                 {
                     HandleNewProject();
                 });
@@ -456,11 +458,14 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
 
     private void ConfigProjectTemplate(ImGui gui, int i, ProjectTemplateInfo template)
     {
-        var item = gui.HorizontalButton($"item{i}")
-        .SetClass("projectItem")
-        .SetPseudoActive(template.Id == _selectedTemplate?.Id);
-
-        item.OnContent(() =>
+        gui.HorizontalButton($"item{i}")
+        .OnInitialize(n =>
+        {
+            n.SetClass("projectItem");
+            n.IsDoubleLayout = true;
+        })
+        .SetPseudoActive(template.Id == _selectedTemplate?.Id)
+        .OnContent(() =>
         {
             switch (template.TemplateUsage)
             {
@@ -494,7 +499,6 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
 
             var btn = gui.VerticalFrame("btnName")
             .InitClass("transButton")
-            //.InitVerticalLayout(true)
             .InitPseudoAffectsChildren(true)
             .InitWidthRest(40)
             .InitFullHeight()
@@ -684,7 +688,20 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
         var config = await DownloadStartupConfig();
         if (config is null)
         {
-            _projectTemplates = [];
+            _projectTemplates = null;
+
+            _drawNotice = gui => 
+            {
+                string msg = "Project template download failed.";
+                ShowNotice(gui, msg, "Retry", () => 
+                {
+                    _drawNotice = null;
+                    UpdateProjectTemplates();
+                    _guiRef.QueueRefresh();
+                });
+            };
+
+            _guiRef.QueueRefresh();
             return;
         }
 
@@ -725,6 +742,15 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
         }
 
         _productConfig = await DownloadProductConfig();
+
+        if (_productConfig != null && !string.IsNullOrWhiteSpace(_productConfig.Version) && SuityApp.VersionCode != _productConfig.Version)
+        {
+            _drawNotice = gui => 
+            {
+                var msg = L($"New version {_productConfig.Version} is available, click 'Update' to download the latest version.");
+                ShowNotice(gui, msg, L("Update"), () => NavigateToDownloadPage());
+            };
+        }
 
         _guiRef.QueueRefresh();
     }

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Flows;
 using Suity.Editor.Selecting;
 using Suity.Editor.Types;
@@ -8,7 +9,6 @@ using Suity.Views;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -324,7 +324,7 @@ public class ManualSelectAsset : AigcFlowNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon => _typeSelection.SelectedItem?.ToDisplayIcon() ?? base.Icon;
+    public override ImageDef Icon => _typeSelection.SelectedItem?.ToDisplayIcon() ?? base.Icon;
 
     /// <inheritdoc/>
     public override string ToString()

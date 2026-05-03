@@ -1,10 +1,9 @@
+using Suity.Drawing;
 using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.Flows;
-using Suity.Editor.Services;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
-using System.Drawing;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,7 +46,7 @@ public class LLmClassifier : AigcFlowNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon
+    public override ImageDef Icon
     {
         get
         {

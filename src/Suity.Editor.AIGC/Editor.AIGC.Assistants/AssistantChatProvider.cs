@@ -1,5 +1,5 @@
+using Suity.Drawing;
 using System;
-using System.Drawing;
 
 namespace Suity.Editor.AIGC.Assistants;
 
@@ -13,7 +13,7 @@ public abstract class AssistantChatProvider<T> : StandaloneAsset<ILLmChatProvide
     /// <summary>
     /// Gets the default icon for this chat provider.
     /// </summary>
-    public override Image DefaultIcon => typeof(T).ToDisplayIcon() ?? CoreIconCache.Assistant;
+    public override ImageDef DefaultIcon => typeof(T).ToDisplayIcon() ?? CoreIconCache.Assistant;
 
     /// <summary>
     /// Gets the display text for this chat provider.

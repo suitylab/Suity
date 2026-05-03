@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Documents;
 using Suity.Editor.WorkSpaces;
@@ -8,7 +9,6 @@ using Suity.Views.PathTree;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -37,7 +37,7 @@ public class WorkSpaceManagerNode : PopulatePathNode, IWorkSpaceManagerNode
     protected override string OnGetText() => "Workspaces";
 
     /// <inheritdoc/>
-    public override Image Image => CoreIconCache.WorkSpace.ToIconSmall();
+    public override ImageDef Image => CoreIconCache.WorkSpace.ToIconSmall();
 
     /// <summary>
     /// Gets the collection of workspace root nodes managed by this node.
@@ -157,10 +157,10 @@ public class WorkSpaceRootNode : RootDirectoryNode, IWorkSpaceRootNode, IDropTar
     public override bool CanEditText => true;
 
     /// <inheritdoc/>
-    public override Image Image => WorkSpace?.Icon?.ToIconSmall() ?? CoreIconCache.Folder.ToIconSmall();
+    public override ImageDef Image => WorkSpace?.Icon?.ToIconSmall() ?? CoreIconCache.Folder.ToIconSmall();
 
     /// <inheritdoc/>
-    public override Image TextStatusIcon
+    public override ImageDef TextStatusIcon
     {
         get
         {
@@ -513,18 +513,18 @@ public class WorkSpaceDirectoryNode : DirectoryNode, IWorkSpaceDirectoryNode, ID
 {
     private bool _cached;
 
-    private Image _imageEx;
+    private ImageDef _imageEx;
 
-    private Image _imageStatus;
+    private ImageDef _imageStatus;
 
     // Because finding WorkSpace takes time, the filter using WorkSpace is cached
     private Predicate<string> _tempPopuldateFilter;
 
     /// <inheritdoc/>
-    public override Image Image => CoreIconCache.Folder.ToIconSmall();
+    public override ImageDef Image => CoreIconCache.Folder.ToIconSmall();
 
     /// <inheritdoc/>
-    public override Image CustomImage
+    public override ImageDef CustomImage
     {
         get
         {
@@ -537,7 +537,7 @@ public class WorkSpaceDirectoryNode : DirectoryNode, IWorkSpaceDirectoryNode, ID
     }
 
     /// <inheritdoc/>
-    public override Image TextStatusIcon
+    public override ImageDef TextStatusIcon
     {
         get
         {
@@ -721,7 +721,7 @@ public class WorkSpaceDirectoryNode : DirectoryNode, IWorkSpaceDirectoryNode, ID
     /// Gets the extended image indicating rendering status.
     /// </summary>
     /// <returns>The extended image, or null if not rendering.</returns>
-    private Image GetImageEx()
+    private ImageDef GetImageEx()
     {
         if (IsRendering)
         {
@@ -734,7 +734,7 @@ public class WorkSpaceDirectoryNode : DirectoryNode, IWorkSpaceDirectoryNode, ID
     /// Gets the status image based on file state.
     /// </summary>
     /// <returns>The status image, or null if no status to display.</returns>
-    private Image GetImageStatus()
+    private ImageDef GetImageStatus()
     {
         if (!Directory.Exists(NodePath))
         {
@@ -763,13 +763,13 @@ public class WorkSpaceDirectoryNode : DirectoryNode, IWorkSpaceDirectoryNode, ID
 public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
 {
     private bool _cached;
-    private Image _image;
-    private Image _imageEx;
-    private Image _imageStatus;
+    private ImageDef _image;
+    private ImageDef _imageEx;
+    private ImageDef _imageStatus;
     private TextStatus _textStatus;
 
     /// <inheritdoc/>
-    public override Image Image
+    public override ImageDef Image
     {
         get
         {
@@ -783,7 +783,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
     }
 
     /// <inheritdoc/>
-    public override Image CustomImage
+    public override ImageDef CustomImage
     {
         get
         {
@@ -797,7 +797,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
     }
 
     /// <inheritdoc/>
-    public override Image TextStatusIcon
+    public override ImageDef TextStatusIcon
     {
         get
         {
@@ -974,7 +974,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
     /// </summary>
     /// <param name="state">The file state.</param>
     /// <returns>The icon for the given state, or null if none.</returns>
-    internal static Image GetIconByFileState(FileState state) => state switch
+    internal static ImageDef GetIconByFileState(FileState state) => state switch
     {
         FileState.None => null,
         FileState.User => null,
@@ -1014,7 +1014,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
     /// Gets the default file icon.
     /// </summary>
     /// <returns>The file icon image.</returns>
-    private Image GetImage()
+    private ImageDef GetImage()
     {
         return EditorUtility.GetIconForFileExact(NodePath)?.ToIconSmall();
     }
@@ -1023,7 +1023,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
     /// Gets the extended image indicating rendering status.
     /// </summary>
     /// <returns>The extended image, or null if not rendering.</returns>
-    private Image GetImageEx()
+    private ImageDef GetImageEx()
     {
         RenderTarget target = GetRenderTarget();
         if (target != null)
@@ -1045,7 +1045,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
     /// Gets the status image based on file state and render status.
     /// </summary>
     /// <returns>The status image, or null if no status to display.</returns>
-    private Image GetImageStatus()
+    private ImageDef GetImageStatus()
     {
         //if (!File.Exists(NodePath))
         //{

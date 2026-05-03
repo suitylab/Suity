@@ -7,6 +7,7 @@ using Suity.Views;
 using System;
 using System.Drawing;
 using System.Linq;
+using Suity.Drawing;
 
 namespace Suity.Editor.Values
 {
@@ -38,7 +39,7 @@ namespace Suity.Editor.Values
 /// <summary>
     /// Gets the display icon.
     /// </summary>
-    public override Image Icon => CoreIconCache.Clock;
+    public override ImageDef Icon => CoreIconCache.Clock;
 
     /// <summary>
     /// Gets the resolved value as an SKey.

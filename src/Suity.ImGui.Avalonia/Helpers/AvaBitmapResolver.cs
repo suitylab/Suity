@@ -1,9 +1,10 @@
 ﻿using Avalonia.Media.Imaging;
 using SkiaSharp;
+using Suity.Drawing;
 
 namespace Suity.Helpers;
 
-internal class AvaBitmapResolver : System.Drawing.IBitmapResovler
+internal class AvaBitmapResolver : IBitmapResovler
 {
     public AvaBitmapResolver(Bitmap avaBmp)
     {

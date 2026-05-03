@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
@@ -9,7 +10,6 @@ using Suity.Views;
 using Suity.Views.Im;
 using Suity.Views.Im.Flows;
 using System;
-using System.Drawing;
 
 namespace Suity.Editor.AIGC.Flows.Pages;
 
@@ -85,7 +85,7 @@ public class PageCanvasNode : ExpandedCanvasAssetNode<PageDefinitionAsset>
     public override bool ResizableOnExpand => true;
 
     /// <inheritdoc/>
-    public override Image Icon => base.Icon;
+    public override ImageDef Icon => base.Icon;
 
     /// <inheritdoc/>
     public override void EnterExpandedView(object target, IInspectorContext context = null)

@@ -1,5 +1,6 @@
 using Suity;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.AIGC.Flows;
 using Suity.Editor.AIGC.Flows.Pages;
@@ -13,7 +14,6 @@ using Suity.UndoRedos;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -670,7 +670,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
     /// Gets the status icon representing the completion state of all pages.
     /// </summary>
     /// <returns>A check icon if all done, uncheck icon if any not done, or null if undetermined.</returns>
-    public Image GetAllStatusIcon()
+    public ImageDef GetAllStatusIcon()
     {
         bool? done = GetAllDone();
         if (done is { } doneV)

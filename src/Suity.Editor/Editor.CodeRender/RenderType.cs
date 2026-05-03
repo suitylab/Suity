@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using System;
 using System.Drawing;
 
@@ -8,9 +9,9 @@ namespace Suity.Editor.CodeRender;
 /// </summary>
 public class RenderType : Asset
 {
-    private readonly Image _icon;
+    private readonly ImageDef _icon;
 
-    internal RenderType(string name, string displayName = null, Image icon = null)
+    internal RenderType(string name, string displayName = null, ImageDef icon = null)
         : base(name)
     {
         Description = displayName;
@@ -20,7 +21,7 @@ public class RenderType : Asset
     /// <summary>
     /// Gets the default icon for the render type.
     /// </summary>
-    public override Image DefaultIcon => _icon ?? base.DefaultIcon;
+    public override ImageDef DefaultIcon => _icon ?? base.DefaultIcon;
 
     /// <summary>
     /// Type family name.

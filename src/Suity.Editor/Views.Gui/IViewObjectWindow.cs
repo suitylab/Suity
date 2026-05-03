@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views.Menu;
 using System.Drawing;
 
@@ -17,7 +18,7 @@ public interface IViewObjectWindow
     /// <summary>
     /// Gets the icon displayed in the window's title bar.
     /// </summary>
-    Image Icon { get; }
+    ImageDef Icon { get; }
 
     /// <summary>
     /// Gets the preferred docking position for the window.
@@ -71,7 +72,7 @@ internal class SimpleViewObjectWindow : IViewObjectWindow
     /// <param name="title">The title of the window.</param>
     /// <param name="icon">The icon of the window.</param>
     /// <param name="menu">The root menu command associated with the window.</param>
-    public SimpleViewObjectWindow(object uiObject, string title, Image icon, RootMenuCommand menu)
+    public SimpleViewObjectWindow(object uiObject, string title, ImageDef icon, RootMenuCommand menu)
     {
         _uiObject = uiObject;
         Title = title;
@@ -82,7 +83,7 @@ internal class SimpleViewObjectWindow : IViewObjectWindow
     /// <inheritdoc/>
     public string Title { get; }
     /// <inheritdoc/>
-    public Image Icon { get; }
+    public ImageDef Icon { get; }
     /// <inheritdoc/>
     public DockHint DockHint { get; }
     /// <inheritdoc/>

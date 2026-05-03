@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Types;
 using System.Drawing;
@@ -22,7 +23,7 @@ public class EventType : TypeDesignItem<DEventBuilder>
     }
 
     /// <inheritdoc/>
-    public override Image TypeIcon => CoreIconCache.Event;
+    public override ImageDef TypeIcon => CoreIconCache.Event;
 
     /// <inheritdoc/>
     public override Color? TypeColor => DEvent.EventTypeColor;
@@ -31,7 +32,7 @@ public class EventType : TypeDesignItem<DEventBuilder>
     protected override string OnGetSuggestedPrefix() => "Event";
 
     /// <inheritdoc/>
-    protected override Image OnGetIcon()
+    protected override ImageDef OnGetIcon()
     {
         return base.OnGetIcon() ?? CoreIconCache.Event;
     }

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Flows;
 using Suity.Views.NodeGraph;
 using System.Drawing;
@@ -89,7 +90,7 @@ public abstract class ImGraphCommentNode : ImGraphNode, IDrawNodeContext
                 n.InitClass("debug_draw");
                 n.InitSizeRest();
                 n.InitOverrideBorder(0);
-                n.InitFont(new Font(ImGuiTheme.DefaultFont, 6));
+                n.InitFont(new FontDef(ImGuiTheme.DefaultFont, 6));
                 n.InitPadding(1);
             })
             .OverrideColor(color)

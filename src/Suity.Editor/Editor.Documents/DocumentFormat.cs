@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Services;
 using System;
 using System.ComponentModel;
@@ -42,7 +43,7 @@ public abstract class DocumentFormat
     /// Get data source object icon
     /// </summary>
     /// <returns></returns>
-    public virtual Image Icon => null;
+    public virtual ImageDef Icon => null;
 
     /// <summary>
     /// Gets whether new documents of this format can be created.

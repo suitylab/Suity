@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.ProjectGui.Nodes;
 using Suity.Helpers;
@@ -6,7 +7,6 @@ using Suity.Views.Menu;
 using Suity.Views.PathTree;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -26,7 +26,7 @@ internal class CategoryMenuCommand : MenuCommand
     /// <param name="Text">The display text for the category.</param>
     /// <param name="Icon">The icon to display for the category.</param>
     /// <param name="Order">The sort order for the category.</param>
-    public record CategoryInfo(string Key, string Text, Image Icon, int Order);
+    public record CategoryInfo(string Key, string Text, ImageDef Icon, int Order);
 
     private static Lazy<Dictionary<string, CategoryInfo>> _categoryDisplays = new(CreateCategoryDisplays);
 
@@ -66,7 +66,7 @@ internal class CategoryMenuCommand : MenuCommand
     /// </summary>
     /// <param name="text">The display text.</param>
     /// <param name="icon">The icon.</param>
-    public CategoryMenuCommand(string text, Image icon)
+    public CategoryMenuCommand(string text, ImageDef icon)
         : base(text, icon)
     {
     }
@@ -77,7 +77,7 @@ internal class CategoryMenuCommand : MenuCommand
     /// <param name="key">The unique key.</param>
     /// <param name="text">The display text.</param>
     /// <param name="icon">The icon.</param>
-    public CategoryMenuCommand(string key, string text, Image icon)
+    public CategoryMenuCommand(string key, string text, ImageDef icon)
         : base(key, text, icon)
     {
     }

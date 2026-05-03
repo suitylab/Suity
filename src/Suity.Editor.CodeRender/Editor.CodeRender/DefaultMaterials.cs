@@ -1,6 +1,6 @@
+using Suity.Drawing;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 
 namespace Suity.Editor.CodeRender;
@@ -39,7 +39,7 @@ public class DefaultTextMaterial : Asset, IMaterial
     public override string DisplayText => "Default Text Material";
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Text;
+    public override ImageDef DefaultIcon => CoreIconCache.Text;
 
     /// <summary>
     /// Gets the render targets for this material.
@@ -157,7 +157,7 @@ public class DefaultBinaryMaterial : Asset, IMaterial
     public override string DisplayText => "Default Binary Material";
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Binary;
+    public override ImageDef DefaultIcon => CoreIconCache.Binary;
 
     /// <summary>
     /// Gets the render targets for this material.

@@ -3,6 +3,7 @@ using Suity.Editor.Design;
 using Suity.Views;
 using System;
 using System.Drawing;
+using Suity.Drawing;
 
 namespace Suity.Editor.Types;
 
@@ -75,7 +76,7 @@ public class DEnumField : DField, IComparable
     }
 
     /// <inheritdoc />
-    public override Image GetIcon() => CoreIconCache.EnumField;
+    public override ImageDef GetIcon() => CoreIconCache.EnumField;
 
     /// <inheritdoc />
     public override string DisplayText => Attributes?.GetIsHiddenOrDisabled() == true ? string.Empty : base.DisplayText;

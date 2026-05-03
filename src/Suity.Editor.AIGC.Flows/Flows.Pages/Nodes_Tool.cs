@@ -1,5 +1,6 @@
 using ComputerBeacon.Json;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Flows;
@@ -106,7 +107,7 @@ public class GetSelfPageDefinition : AigcPageNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Page;
+    public override ImageDef Icon => CoreIconCache.Page;
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
@@ -149,7 +150,7 @@ public class GetCurrentToolList : AigcPageNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Page;
+    public override ImageDef Icon => CoreIconCache.Page;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)
@@ -208,7 +209,7 @@ public class SetPageTitle : AigcPageNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Page;
+    public override ImageDef Icon => CoreIconCache.Page;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)
@@ -280,7 +281,7 @@ public class ParseToolCalling : AigcPageNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Tool;
+    public override ImageDef Icon => CoreIconCache.Tool;
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
@@ -419,7 +420,7 @@ public class ParseTagToolCalling : AigcPageNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Tool;
+    public override ImageDef Icon => CoreIconCache.Tool;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)
@@ -503,7 +504,7 @@ public class CreateToolCalling : AigcPageNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Tool;
+    public override ImageDef Icon => CoreIconCache.Tool;
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
@@ -702,7 +703,7 @@ public class CreateToolCallingWithParameter : AigcPageNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Tool;
+    public override ImageDef Icon => CoreIconCache.Tool;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)

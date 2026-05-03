@@ -1,9 +1,9 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views;
 using Suity.Views.PathTree;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 
 namespace Suity.Editor.ProjectGui.Nodes;
@@ -15,7 +15,7 @@ namespace Suity.Editor.ProjectGui.Nodes;
 internal class PublishRootNode(string path) : RootDirectoryNode(path), IDropTarget
 {
     /// <inheritdoc/>
-    public override Image Image => CoreIconCache.Home.ToIconSmall();
+    public override ImageDef Image => CoreIconCache.Home.ToIconSmall();
 
     /// <inheritdoc/>
     protected override DirectoryNode CreateDirectoryNode() => new PublishDirectoryNode();
@@ -73,7 +73,7 @@ internal class PublishRootNode(string path) : RootDirectoryNode(path), IDropTarg
 internal class PublishDirectoryNode : DirectoryNode, IDropTarget
 {
     /// <inheritdoc/>
-    public override Image Image => CoreIconCache.Folder.ToIconSmall();
+    public override ImageDef Image => CoreIconCache.Folder.ToIconSmall();
 
     /// <inheritdoc/>
     protected override DirectoryNode CreateDirectoryNode()
@@ -110,7 +110,7 @@ internal class PublishDirectoryNode : DirectoryNode, IDropTarget
 internal class PublishFileNode : FileNode
 {
     /// <inheritdoc/>
-    public override Image Image
+    public override ImageDef Image
     {
         get
         {
@@ -147,10 +147,10 @@ internal class PublishFileNode : FileNode
     /// <summary>
     /// Gets the extended image for this node (always null).
     /// </summary>
-    public Image ImageEx => null;
+    public ImageDef ImageEx => null;
 
     /// <summary>
     /// Gets the status image for this node (always null).
     /// </summary>
-    public Image ImageStatus => null;
+    public ImageDef ImageStatus => null;
 }

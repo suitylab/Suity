@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Analyzing;
 using Suity.Editor.Design;
 using Suity.Editor.Selecting;
@@ -84,12 +85,12 @@ public abstract class SNamedDocument : SAssetDocument,
         }
     }
 
-    public override Image DefaultIcon
+    public override ImageDef DefaultIcon
         => AssetBuilder?.TargetAsset?.Icon ??
         this.GetType().ToDisplayIcon() ??
         CoreIconCache.DataGrid;
 
-    public override Image Icon => _iconSelection.Target?.Icon ?? DefaultIcon;
+    public override ImageDef Icon => _iconSelection.Target?.Icon ?? DefaultIcon;
 
     /// <summary>
     /// Gets or sets the color for the document.

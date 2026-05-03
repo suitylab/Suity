@@ -1,4 +1,4 @@
-using System.Drawing;
+using Suity.Drawing;
 
 namespace Suity.Editor.VirtualTree.Nodes;
 
@@ -9,9 +9,9 @@ namespace Suity.Editor.VirtualTree.Nodes;
 public class SimpleTextNode : VirtualNode
 {
     private string _text = string.Empty;
-    private readonly Image _icon;
+    private readonly ImageDef _icon;
     private readonly string _previewText = string.Empty;
-    private readonly Image _previewIcon;
+    private readonly ImageDef _previewIcon;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SimpleTextNode"/> class with the specified text.
@@ -27,7 +27,7 @@ public class SimpleTextNode : VirtualNode
     /// </summary>
     /// <param name="text">The display text.</param>
     /// <param name="icon">The main icon.</param>
-    public SimpleTextNode(string text, Image icon)
+    public SimpleTextNode(string text, ImageDef icon)
         : this(text, icon, null, null)
     {
     }
@@ -39,7 +39,7 @@ public class SimpleTextNode : VirtualNode
     /// <param name="icon">The main icon.</param>
     /// <param name="previewText">The preview text.</param>
     /// <param name="previewIcon">The preview icon.</param>
-    public SimpleTextNode(string text, Image icon, string previewText, Image previewIcon)
+    public SimpleTextNode(string text, ImageDef icon, string previewText, ImageDef previewIcon)
     {
         _text = text ?? string.Empty;
         _icon = icon;
@@ -63,7 +63,7 @@ public class SimpleTextNode : VirtualNode
     }
 
     /// <inheritdoc/>
-    protected override Image GetMainIcon()
+    protected override ImageDef GetMainIcon()
     {
         return _icon;
     }

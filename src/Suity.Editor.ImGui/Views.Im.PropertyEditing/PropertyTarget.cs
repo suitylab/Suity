@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.NodeQuery;
 using Suity.Synchonizing.Core;
@@ -282,7 +283,7 @@ public abstract class PropertyTarget : IValueTarget, ISupportStyle, IDrawContext
     /// <summary>
     /// Icon to display for this property.
     /// </summary>
-    public Image? Icon { get; set; }
+    public ImageDef? Icon { get; set; }
 
     /// <summary>
     /// Property tooltips, should be localized.

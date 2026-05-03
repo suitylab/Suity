@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Types;
 using Suity.Reflecting;
@@ -620,7 +621,7 @@ public static class SItemExtensions
     /// Gets the icon for an SItem.
     /// </summary>
     /// <param name="item">The SItem.</param>
-    public static Image GetIcon(this SItem item)
+    public static ImageDef GetIcon(this SItem item)
     {
         if (item is SObject sobj)
         {
@@ -644,7 +645,7 @@ public static class SItemExtensions
     /// Gets the icon for an SObject.
     /// </summary>
     /// <param name="obj">The SObject.</param>
-    public static Image GetIcon(this SObject obj)
+    public static ImageDef GetIcon(this SObject obj)
     {
         if (obj.Controller is { } controller && controller.ToDisplayIcon() is { } icon)
         {
@@ -664,7 +665,7 @@ public static class SItemExtensions
     /// Gets the icon for an SArray.
     /// </summary>
     /// <param name="ary">The SArray.</param>
-    public static Image GetIcon(this SArray ary)
+    public static ImageDef GetIcon(this SArray ary)
     {
         if (ary.InputType.OriginType.GetTarget(AssetFilters.All) is DCompond s)
         {

@@ -1,5 +1,6 @@
 using Suity;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.Design;
 using Suity.Editor.Expressions;
@@ -172,7 +173,7 @@ public class CallLLm : AigcFlowNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon
+    public override ImageDef Icon
     {
         get
         {

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
@@ -95,7 +96,7 @@ public class InputValue : ValueFlowNode, IViewDoubleClickAction
     }
 
     /// <inheritdoc/>
-    public override Image Icon => Value?.ToDisplayIcon() ?? base.Icon;
+    public override ImageDef Icon => Value?.ToDisplayIcon() ?? base.Icon;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)

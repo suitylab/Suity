@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Properties;
 using Suity.Helpers;
 using System.Drawing;
@@ -22,7 +23,7 @@ public class AIHubMixPlugin : BaseOpenAIPlugin<AIHubMixLLmModelAsset, AIHubMixIm
     /// <summary>
     /// Gets the icon image for AIHubMix.
     /// </summary>
-    public static Bitmap AIHubMixIcon { get; } = Resources.AIHubMix.ToBitmap();
+    public static BitmapDef AIHubMixIcon { get; } = Resources.AIHubMix.ToBitmap();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AIHubMixPlugin"/> class.
@@ -61,7 +62,7 @@ public class AIHubMixLLmModelAsset : ThirdPartyLLmModelAsset
     /// <summary>
     /// Gets the default icon for AIHubMix models.
     /// </summary>
-    public override Image DefaultIcon => AIHubMixPlugin.AIHubMixIcon;
+    public override ImageDef DefaultIcon => AIHubMixPlugin.AIHubMixIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.
@@ -88,7 +89,7 @@ public class AIHubMixImageGenModelAsset : ThirdPartyImageGenAsset
     /// <summary>
     /// Gets the default icon for AIHubMix image models.
     /// </summary>
-    public override Image DefaultIcon => AIHubMixPlugin.AIHubMixIcon;
+    public override ImageDef DefaultIcon => AIHubMixPlugin.AIHubMixIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.

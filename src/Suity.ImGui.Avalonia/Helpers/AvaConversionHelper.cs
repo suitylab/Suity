@@ -1,7 +1,6 @@
 using Avalonia.Media.Imaging;
 using SkiaSharp;
-using Suity.Editor.Services;
-using System.Drawing.Imaging;
+using Suity.Drawing;
 
 namespace Suity.Helpers;
 
@@ -16,9 +15,9 @@ public static class AvaConversionHelper
     /// </summary>
     /// <param name="drawingImage">The source image.</param>
     /// <returns>The cached Avalonia bitmap.</returns>
-    public static Bitmap? ToAvaloniaBitmapCached(this System.Drawing.Image drawingImage)
+    public static Bitmap? ToAvaloniaBitmapCached(this ImageDef drawingImage)
     {
-        if (drawingImage is not System.Drawing.Bitmap bmp || bmp.Data is null)
+        if (drawingImage is not BitmapDef bmp || bmp.Data is null)
         {
             return null;
         }

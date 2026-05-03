@@ -1,5 +1,5 @@
+using Suity.Drawing;
 using System;
-using System.Drawing;
 using System.Threading.Tasks;
 
 namespace Suity.Editor;
@@ -18,7 +18,7 @@ public abstract class Plugin : IServiceProvider
 
     public virtual string Description => null;
 
-    public virtual Image Icon => null;
+    public virtual ImageDef Icon => null;
 
     public virtual int Order => 0;
 

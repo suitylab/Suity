@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Flows;
 using System.Drawing;
 
@@ -151,7 +152,7 @@ public static class NodeGraphExtensions
     /// <param name="editorGui">Optional editor GUI callback.</param>
     /// <returns>An ImGui node representing the simple frame.</returns>
     public static ImGuiNode FlowSimpleFrame(this ImGui gui, FlowDirections direction, IDrawNodeContext drawContext,
-        string? text = null, Image? image = null, DrawEditorImGui? editorGui = null)
+        string? text = null, ImageDef? image = null, DrawEditorImGui? editorGui = null)
         => _external.SimpleFrame(gui, direction, drawContext, text, image, editorGui);
 
     /// <summary>
@@ -165,6 +166,6 @@ public static class NodeGraphExtensions
     /// <param name="editorGui">Optional editor GUI callback.</param>
     /// <returns>An ImGui node representing the single connector frame.</returns>
     public static ImGuiNode FlowSingleConnectorFrame(this ImGui gui, FlowNodeConnector connector, IDrawNodeContext drawContext, 
-        string? text = null, Image? image = null, DrawEditorImGui? editorGui = null)
+        string? text = null, ImageDef? image = null, DrawEditorImGui? editorGui = null)
         => _external.SingleConnectorFrame(gui, connector, drawContext, text, image, editorGui);
 }

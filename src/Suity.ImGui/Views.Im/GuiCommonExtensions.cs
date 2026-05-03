@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 
@@ -356,7 +357,7 @@ public static class GuiCommonExtensions
     /// <param name="line">The caller line number for auto-generated ID.</param>
     /// <param name="member">The caller member name for auto-generated ID.</param>
     /// <returns>The created <see cref="ImGuiNode"/>.</returns>
-    public static ImGuiNode Image(this ImGui gui, Image image, bool fitOriginSize = false, [CallerLineNumber] int line = 0, [CallerMemberName] string? member = null)
+    public static ImGuiNode Image(this ImGui gui, ImageDef image, bool fitOriginSize = false, [CallerLineNumber] int line = 0, [CallerMemberName] string? member = null)
          => gui.Image($"##v_line_#{member}#{line}", image, fitOriginSize);
 
     /// <summary>
@@ -367,7 +368,7 @@ public static class GuiCommonExtensions
     /// <param name="image">The image to display.</param>
     /// <param name="fitOriginSize">Whether to fit the node to the original image size.</param>
     /// <returns>The created <see cref="ImGuiNode"/>.</returns>
-    public static ImGuiNode Image(this ImGui gui, string id, Image image, bool fitOriginSize = false)
+    public static ImGuiNode Image(this ImGui gui, string id, ImageDef image, bool fitOriginSize = false)
     {
         ImGuiNode node = gui.BeginCurrentNode(id);
         if (node.IsInitializing)

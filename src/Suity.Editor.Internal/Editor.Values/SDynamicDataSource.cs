@@ -1,8 +1,8 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Selecting;
 using Suity.Synchonizing;
 using Suity.Views;
-using System.Drawing;
 
 namespace Suity.Editor.Values;
 
@@ -36,7 +36,7 @@ public class SDynamicDataSource : SDynamic
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Data;
+    public override ImageDef Icon => CoreIconCache.Data;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)

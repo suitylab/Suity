@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Layout;
 using Avalonia.Media;
@@ -33,7 +32,7 @@ internal class AvaDialogServiceAsync : IDialogServiceAsync
         return null;
     }
 
-    public async Task CreateTextWindowAsync(string text, string title, System.Drawing.Image icon)
+    public async Task CreateTextWindowAsync(string text, string title, Suity.Drawing.ImageDef icon)
     {
         // 1. Safely cast the icon
         WindowIcon? avaloniaIcon = null;

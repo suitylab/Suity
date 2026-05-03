@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,24 +18,24 @@ public static class ImageHelper
     /// </summary>
     public const int SmallSize = 32;
 
-    private static readonly Dictionary<Bitmap, Bitmap> _sizeSmalls = new Dictionary<Bitmap, Bitmap>();
-    private static readonly Dictionary<Bitmap, Bitmap> _sizeSmallGrays = new Dictionary<Bitmap, Bitmap>();
+    private static readonly Dictionary<BitmapDef, BitmapDef> _sizeSmalls = new Dictionary<BitmapDef, BitmapDef>();
+    private static readonly Dictionary<BitmapDef, BitmapDef> _sizeSmallGrays = new Dictionary<BitmapDef, BitmapDef>();
 
     /// <summary>
-    /// Converts a byte array to a <see cref="Bitmap"/> with the specified resolution.
+    /// Converts a byte array to a <see cref="BitmapDef"/> with the specified resolution.
     /// </summary>
     /// <param name="b">The byte array containing image data.</param>
     /// <param name="dpi">The horizontal and vertical resolution in dots per inch. Defaults to 100.</param>
-    /// <returns>A new <see cref="Bitmap"/> created from the byte array.</returns>
-    public static Bitmap ToBitmap(this byte[] b, int dpi = 100)
+    /// <returns>A new <see cref="BitmapDef"/> created from the byte array.</returns>
+    public static BitmapDef ToBitmap(this byte[] b, int dpi = 100)
     {
-        var bmp = new Bitmap(b);
+        var bmp = new BitmapDef(b);
         //bmp.SetResolution(dpi, dpi);
 
         return bmp;
     }
 
-    public static Image FromStream(Stream stream)
+    public static ImageDef FromStream(Stream stream)
     {
         byte[] b = stream.StreamToBytes();
         return ToBitmap(b);
@@ -46,7 +47,7 @@ public static class ImageHelper
     /// </summary>
     /// <param name="image">The source image to resize.</param>
     /// <returns>The resized image or the original if no resizing is needed.</returns>
-    public static Image ToIconSmall(this Image image)
+    public static ImageDef ToIconSmall(this ImageDef image)
     {
         return image;
 
@@ -74,7 +75,7 @@ public static class ImageHelper
     /// </summary>
     /// <param name="bitmap">The source bitmap to resize.</param>
     /// <returns>The resized bitmap or the original if no resizing is needed.</returns>
-    public static Bitmap ToIconSmall(this Bitmap bitmap)
+    public static BitmapDef ToIconSmall(this BitmapDef bitmap)
     {
         return bitmap;
 
@@ -97,14 +98,14 @@ public static class ImageHelper
     /// <param name="bitmap">The source bitmap to resize.</param>
     /// <param name="gray">If true, converts the resulting icon to grayscale.</param>
     /// <returns>The resized bitmap, optionally in grayscale.</returns>
-    public static Bitmap ToIconSmall(this Bitmap bitmap, bool gray)
+    public static BitmapDef ToIconSmall(this BitmapDef bitmap, bool gray)
     {
         if (bitmap == null)
         {
             return null;
         }
 
-        Bitmap iconSmall = bitmap.ToIconSmall();
+        BitmapDef iconSmall = bitmap.ToIconSmall();
 
         if (gray)
         {
@@ -126,7 +127,7 @@ public static class ImageHelper
     /// <summary>
     /// Resize image with GDI+ so that image is nice and clear with required size.
     /// </summary>
-    public static Bitmap Resize(this Bitmap source, Int32 width, Int32 height)
+    public static BitmapDef Resize(this BitmapDef source, Int32 width, Int32 height)
     {
         /*        Bitmap bitmap = new Bitmap(width, height, source.PixelFormat);
                 Graphics graphicsImage = Graphics.FromImage(bitmap);
@@ -144,7 +145,7 @@ public static class ImageHelper
     /// </summary>
     /// <param name="bmp">The bitmap to convert.</param>
     /// <returns>The same bitmap instance with all pixels converted to grayscale.</returns>
-    public static Bitmap ToGray(this Bitmap bmp)
+    public static BitmapDef ToGray(this BitmapDef bmp)
     {
         /*        for (int i = 0; i < bmp.Width; i++)
                 {

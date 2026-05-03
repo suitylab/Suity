@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using System;
 using System.Drawing;
@@ -54,7 +55,7 @@ public class DLogicModule : DType
         }
     }
 
-    public override Image DefaultIcon => CoreIconCache.LogicModule;
+    public override ImageDef DefaultIcon => CoreIconCache.LogicModule;
     public override Color? TypeColor => LogicModuleColor;
     public override RenderType RenderType => RenderType.LogicModule;
 

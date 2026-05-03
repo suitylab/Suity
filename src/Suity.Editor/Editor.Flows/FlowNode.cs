@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Types;
 using Suity.Helpers;
@@ -765,7 +766,7 @@ public abstract class FlowNode : IViewObject, IViewEditNotify, ITextDisplay
     /// <summary>
     /// Icon
     /// </summary>
-    public virtual Image Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Flow;
+    public virtual ImageDef Icon => EditorUtility.ToDisplayIcon(this.GetType()) ?? CoreIconCache.Flow;
 
     /// <summary>
     /// Gets the background color for the node.

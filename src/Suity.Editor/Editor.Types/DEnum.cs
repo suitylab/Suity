@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Design;
 using System;
@@ -101,7 +102,7 @@ public class DEnum : DType, IFieldGroup<DEnumField>, IDataAsset
     }
 
     /// <inheritdoc />
-    public override Image DefaultIcon => CoreIconCache.Enum;
+    public override ImageDef DefaultIcon => CoreIconCache.Enum;
 
     /// <inheritdoc />
     public override Color? TypeColor => EnumTypeColor;

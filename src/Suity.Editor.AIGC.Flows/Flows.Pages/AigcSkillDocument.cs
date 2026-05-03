@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
@@ -444,7 +445,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToo
     public bool IsStartupPage { get; internal set; }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Skill;
+    public override ImageDef DefaultIcon => CoreIconCache.Skill;
 
     /// <inheritdoc/>
     public override bool CanExportToLibrary => true;

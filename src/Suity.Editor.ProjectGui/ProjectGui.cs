@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.ProjectGui.Commands;
@@ -17,7 +18,6 @@ using Suity.Views.Named;
 using Suity.Views.PathTree;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -204,7 +204,7 @@ public partial class ProjectGui :
     string IToolWindow.Title => "Project";
 
     /// <inheritdoc/>
-    Image IToolWindow.Icon => Editor.ProjectGui.Properties.IconCache.Project;
+    ImageDef IToolWindow.Icon => Editor.ProjectGui.Properties.IconCache.Project;
 
     /// <inheritdoc/>
     DockHint IToolWindow.DockHint => DockHint.Left;

@@ -1,8 +1,8 @@
+using Suity.Drawing;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
-using System.Drawing;
 
 namespace Suity.Editor.Documents.TypeEdit;
 
@@ -28,7 +28,7 @@ public class StructFieldLabel : StructFieldItem
     protected override bool OnVerifyName(string name) => true;
 
     /// <inheritdoc/>
-    protected override Image OnGetIcon() => CoreIconCache.Label;
+    protected override ImageDef OnGetIcon() => CoreIconCache.Label;
 
     /// <inheritdoc/>
     protected override string OnGetDisplayText() => Description;

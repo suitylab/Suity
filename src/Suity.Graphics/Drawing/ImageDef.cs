@@ -1,11 +1,13 @@
+using System;
+using System.Drawing;
 using System.IO;
 
-namespace System.Drawing;
+namespace Suity.Drawing;
 
 /// <summary>
 /// Represents an abstract image data structure.
 /// </summary>
-public abstract class Image : IDisposable
+public abstract class ImageDef : IDisposable
 {
     /// <summary>
     /// Gets the width of the image.

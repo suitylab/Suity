@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
@@ -125,7 +126,7 @@ public abstract class ParameterField : SNamedField,
         setup.InspectorField(Optional, new ViewProperty("Nullable", "Nullable"));
     }
 
-    protected override Image OnGetIcon()
+    protected override ImageDef OnGetIcon()
     {
         ImageAsset icon = _iconSelection.Target;
         if (icon != null)
@@ -162,7 +163,7 @@ public abstract class ParameterField : SNamedField,
         if (pipeline == EditorImGuiPipeline.Preview)
         {
             TypeDefinition type = _varType.BaseType.GetTypeDefinition();
-            Image icon = _varType.Icon;
+            ImageDef icon = _varType.Icon;
             Color color = type?.Target?.ViewColor ?? type?.Target?.TypeColor ?? EditorServices.ColorConfig.GetStatusColor(TextStatus.Preview);
             string text = _varType.DisplayText;
             //if (_defaultValue != null)

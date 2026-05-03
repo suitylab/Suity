@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Services;
 using System;
@@ -155,7 +156,7 @@ public static class PropertyGridExtensions
     /// <param name="rowAction">Optional action invoked during row rendering pipelines.</param>
     /// <param name="value">Optional existing <see cref="PropertyRowData"/> to associate with the label.</param>
     /// <returns>An <see cref="ImGuiNode"/> representing the property label.</returns>
-    public static ImGuiNode PropertyLabel(this ImGui gui, string id, string title, Image? icon = null, TextStatus? status = null, PropertyRowAction? rowAction = null, PropertyRowData? value = null)
+    public static ImGuiNode PropertyLabel(this ImGui gui, string id, string title, ImageDef? icon = null, TextStatus? status = null, PropertyRowAction? rowAction = null, PropertyRowData? value = null)
         => _external.PropertyLabel(gui, id, title, icon, status, rowAction, value);
 
     /// <summary>
@@ -199,7 +200,7 @@ public static class PropertyGridExtensions
     /// <param name="rowAction">Optional action invoked during row rendering pipelines.</param>
     /// <param name="onClick">Optional callback invoked when the button is clicked.</param>
     /// <returns>An <see cref="ImGuiNode"/> representing the property button.</returns>
-    public static ImGuiNode PropertyButton(this ImGui gui, string id, string text, Image? icon = null, PropertyRowAction? rowAction = null, Action? onClick = null)
+    public static ImGuiNode PropertyButton(this ImGui gui, string id, string text, ImageDef? icon = null, PropertyRowAction? rowAction = null, Action? onClick = null)
         => _external.PropertyButton(gui, id, text, icon, rowAction, onClick);
 
     /// <summary>

@@ -1,5 +1,5 @@
+using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
-using System.Drawing;
 
 namespace Suity.Editor.Documents.Texts;
 
@@ -17,7 +17,7 @@ public class PromptDocument : BaseTextDocument<PromptAssetBuilder>
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Prompt;
+    public override ImageDef DefaultIcon => CoreIconCache.Prompt;
 
     /// <inheritdoc/>
     protected override bool NewDocument()

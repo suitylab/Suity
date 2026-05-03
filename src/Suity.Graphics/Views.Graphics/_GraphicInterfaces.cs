@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -131,7 +132,7 @@ public record TextBoxEditOptions
     /// <summary>
     /// Gets or sets the font used for the text box.
     /// </summary>
-    public Font Font { get; init; }
+    public FontDef Font { get; init; }
 
     /// <summary>
     /// Gets or sets the callback invoked when the text is edited.

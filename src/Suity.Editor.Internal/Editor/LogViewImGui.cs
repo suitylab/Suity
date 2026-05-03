@@ -1,9 +1,9 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views.Gui;
 using Suity.Views.Im;
 using Suity.Views.Im.Logging;
 using Suity.Views.Im.TreeEditing;
-using System.Drawing;
 
 namespace Suity.Editor.View;
 
@@ -57,7 +57,7 @@ public class LogViewImGui : IDrawImGui, IToolWindow
     /// <summary>
     /// Gets the icon displayed for the log window tab.
     /// </summary>
-    public Image Icon => CoreIconCache.Log;
+    public ImageDef Icon => CoreIconCache.Log;
 
     /// <summary>
     /// Gets the default docking position for the log window.

@@ -1,4 +1,4 @@
-using System.Drawing;
+using Suity.Drawing;
 
 namespace Suity.Views;
 
@@ -10,5 +10,5 @@ public interface ICustomIcon
     /// <summary>
     /// Gets the custom icon image.
     /// </summary>
-    Image CustomIcon { get; }
+    ImageDef CustomIcon { get; }
 }

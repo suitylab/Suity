@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Views.Im;
@@ -412,7 +413,7 @@ public class PackagePreviewDirectoryNode : PopulatePathNode, IPackagePreviewNode
     }
 
     /// <inheritdoc/>
-    public override Image Image => CoreIconCache.Folder.ToIconSmall();
+    public override ImageDef Image => CoreIconCache.Folder.ToIconSmall();
 
     /// <inheritdoc/>
     public CheckState EnableState
@@ -459,7 +460,7 @@ public class PackagePreviewItemNode : PathNode, IPackagePreviewNode
 
     private TextStatus _textStatus;
     private string _text;
-    private Image _imageEx;
+    private ImageDef _imageEx;
 
     private bool _fileExists;
 
@@ -589,7 +590,7 @@ public class PackagePreviewItemNode : PathNode, IPackagePreviewNode
     }
 
     /// <inheritdoc/>
-    public override Image Image => EditorUtility.GetIconForFileExact(NodePath)?.ToIconSmall();
+    public override ImageDef Image => EditorUtility.GetIconForFileExact(NodePath)?.ToIconSmall();
 
     /// <inheritdoc/>
     public CheckState EnableState
@@ -622,10 +623,10 @@ public class PackagePreviewItemNode : PathNode, IPackagePreviewNode
     /// <summary>
     /// Gets the additional status image displayed alongside the file icon.
     /// </summary>
-    public Image ImageEx => _imageEx;
+    public ImageDef ImageEx => _imageEx;
 
     /// <inheritdoc/>
-    public override Image CustomImage => _imageEx;
+    public override ImageDef CustomImage => _imageEx;
 
     /// <inheritdoc/>
     public override void UpdateStatus()
@@ -770,7 +771,7 @@ public class PackagePreviewItemNode : PathNode, IPackagePreviewNode
     /// Determines the additional status image to display based on the current state.
     /// </summary>
     /// <returns>An image for the status indicator, or null if no additional image is needed.</returns>
-    private Image GetImageEx()
+    private ImageDef GetImageEx()
     {
         if (Direction == PackageDirection.Import && _fileExists)
         {

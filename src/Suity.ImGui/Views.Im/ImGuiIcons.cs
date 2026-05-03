@@ -1,6 +1,5 @@
+using Suity.Drawing;
 using Suity.Properties;
-using System.Drawing;
-using System.IO;
 
 namespace Suity.Views.Im;
 
@@ -11,45 +10,45 @@ namespace Suity.Views.Im;
 public static class ImGuiIcons
 {
     /// <summary>Icon representing an add action.</summary>
-    public static Bitmap Add { get; } = new Bitmap(Resources.Add);
+    public static BitmapDef Add { get; } = new BitmapDef(Resources.Add);
     /// <summary>Icon representing an attribute.</summary>
-    public static Bitmap Attribute { get; } = new Bitmap(Resources.Attribute);
+    public static BitmapDef Attribute { get; } = new BitmapDef(Resources.Attribute);
     /// <summary>Icon representing a cancel action.</summary>
-    public static Bitmap Cancel { get; } = new Bitmap(Resources.Cancel);
+    public static BitmapDef Cancel { get; } = new BitmapDef(Resources.Cancel);
     /// <summary>Icon representing a checked state.</summary>
-    public static Bitmap Checked { get; } = new Bitmap(Resources.Checked);
+    public static BitmapDef Checked { get; } = new BitmapDef(Resources.Checked);
     /// <summary>Icon representing a clone action.</summary>
-    public static Bitmap Clone { get; } = new Bitmap(Resources.Clone);
+    public static BitmapDef Clone { get; } = new BitmapDef(Resources.Clone);
     /// <summary>Icon representing a collapsed state.</summary>
-    public static Bitmap Collapse { get; } = new Bitmap(Resources.Collapse);
+    public static BitmapDef Collapse { get; } = new BitmapDef(Resources.Collapse);
     /// <summary>Icon representing a column.</summary>
-    public static Bitmap Column { get; } = new Bitmap(Resources.Column);
+    public static BitmapDef Column { get; } = new BitmapDef(Resources.Column);
     /// <summary>Icon representing a condition.</summary>
-    public static Bitmap Condition { get; } = new Bitmap(Resources.Condition);
+    public static BitmapDef Condition { get; } = new BitmapDef(Resources.Condition);
     /// <summary>Icon representing a delete action.</summary>
-    public static Bitmap Delete { get; } = new Bitmap(Resources.Delete);
+    public static BitmapDef Delete { get; } = new BitmapDef(Resources.Delete);
     /// <summary>Empty icon used as a placeholder.</summary>
-    public static Bitmap Empty { get; } = new Bitmap(Resources.Empty);
+    public static BitmapDef Empty { get; } = new BitmapDef(Resources.Empty);
     /// <summary>Icon representing an expanded state.</summary>
-    public static Bitmap Expand { get; } = new Bitmap(Resources.Expand);
+    public static BitmapDef Expand { get; } = new BitmapDef(Resources.Expand);
     /// <summary>Icon representing a label.</summary>
-    public static Bitmap Label { get; } = new Bitmap(Resources.Label);
+    public static BitmapDef Label { get; } = new BitmapDef(Resources.Label);
     /// <summary>Icon representing more options.</summary>
-    public static Bitmap More { get; } = new Bitmap(Resources.More);
+    public static BitmapDef More { get; } = new BitmapDef(Resources.More);
     /// <summary>Icon representing an open action.</summary>
-    public static Bitmap Open { get; } = new Bitmap(Resources.Open);
+    public static BitmapDef Open { get; } = new BitmapDef(Resources.Open);
     /// <summary>Icon representing a pending state.</summary>
-    public static Bitmap Pending { get; } = new Bitmap(Resources.Pending);
+    public static BitmapDef Pending { get; } = new BitmapDef(Resources.Pending);
     /// <summary>Icon representing a play action.</summary>
-    public static Bitmap Play { get; } = new Bitmap(Resources.Play);
+    public static BitmapDef Play { get; } = new BitmapDef(Resources.Play);
     /// <summary>Icon representing a row.</summary>
-    public static Bitmap Row { get; } = new Bitmap(Resources.Row);
+    public static BitmapDef Row { get; } = new BitmapDef(Resources.Row);
     /// <summary>Icon representing sort descending.</summary>
-    public static Bitmap SortDown { get; } = new Bitmap(Resources.SortDown);
+    public static BitmapDef SortDown { get; } = new BitmapDef(Resources.SortDown);
     /// <summary>Icon representing sort ascending.</summary>
-    public static Bitmap SortUp { get; } = new Bitmap(Resources.SortUp);
+    public static BitmapDef SortUp { get; } = new BitmapDef(Resources.SortUp);
     /// <summary>Icon representing a switch action.</summary>
-    public static Bitmap Switch { get; } = new Bitmap(Resources.Switch);
+    public static BitmapDef Switch { get; } = new BitmapDef(Resources.Switch);
     /// <summary>Icon representing a warning.</summary>
-    public static Bitmap Warning { get; } = new Bitmap(Resources.Warning);
+    public static BitmapDef Warning { get; } = new BitmapDef(Resources.Warning);
 }

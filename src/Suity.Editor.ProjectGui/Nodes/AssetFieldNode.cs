@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views;
 using Suity.Views.PathTree;
@@ -34,7 +35,7 @@ public class AssetFieldNode : PathNode, IHasId
     public override string TypeName => GetFieldObject()?.Name ?? string.Empty;
 
     /// <inheritdoc/>
-    public override Image Image
+    public override ImageDef Image
     {
         get
         {

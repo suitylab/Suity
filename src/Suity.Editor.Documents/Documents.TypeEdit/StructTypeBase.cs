@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Selecting;
 using Suity.Editor.Types;
@@ -52,7 +53,7 @@ public abstract class StructTypeBase : TypeDesignItem,
     protected override string OnGetSuggestedPrefix() => "Struct";
 
     /// <inheritdoc/>
-    protected override Image OnGetIcon() => base.OnGetIcon() ?? _baseType.Target?.GetIcon();
+    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? _baseType.Target?.GetIcon();
 
     /// <inheritdoc/>
     protected override Color? OnGetColor() => base.OnGetColor() ?? _baseType.Target?.ViewColor;

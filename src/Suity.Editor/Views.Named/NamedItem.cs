@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Helpers;
 using Suity.Synchonizing;
@@ -75,7 +76,7 @@ public class NamedItem :
     /// <summary>
     /// Gets the icon associated with this item.
     /// </summary>
-    public Image Icon => OnGetIcon();
+    public ImageDef Icon => OnGetIcon();
 
     /// <summary>
     /// Gets the zero-based index of this item in its parent list.
@@ -348,7 +349,7 @@ public class NamedItem :
     /// <summary>
     /// Gets the icon to display for this item.
     /// </summary>
-    protected virtual Image OnGetIcon() => this.GetType().ToDisplayIcon();
+    protected virtual ImageDef OnGetIcon() => this.GetType().ToDisplayIcon();
 
     /// <summary>
     /// Gets the text status for display purposes.

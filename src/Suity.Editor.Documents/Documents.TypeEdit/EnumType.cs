@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
@@ -98,7 +99,7 @@ public class EnumType : TypeDesignItem<DEnumBuilder>, IMemberContainer, IDataIte
     }
 
     /// <inheritdoc/>
-    protected override Image OnGetIcon()
+    protected override ImageDef OnGetIcon()
     {
         return base.OnGetIcon() ?? Suity.Editor.CoreIconCache.Enum;
     }
@@ -107,7 +108,7 @@ public class EnumType : TypeDesignItem<DEnumBuilder>, IMemberContainer, IDataIte
     public override string PreviewText => "Enum";
 
     /// <inheritdoc/>
-    public override Image TypeIcon => CoreIconCache.Enum;
+    public override ImageDef TypeIcon => CoreIconCache.Enum;
 
     /// <inheritdoc/>
     public override Color? TypeColor => DEnum.EnumTypeColor;

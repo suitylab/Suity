@@ -1,8 +1,8 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Documents;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
-using System.Drawing;
 
 namespace Suity.Editor.AIGC.Assistants;
 
@@ -15,12 +15,12 @@ public class PromptAsset : TextDocumentAsset, IRenderable
     /// <summary>
     /// Gets the icon for this prompt asset.
     /// </summary>
-    public override Image GetIcon() => CoreIconCache.Prompt;
+    public override ImageDef GetIcon() => CoreIconCache.Prompt;
 
     /// <summary>
     /// Gets the default icon for this prompt asset.
     /// </summary>
-    public override Image DefaultIcon => CoreIconCache.Prompt;
+    public override ImageDef DefaultIcon => CoreIconCache.Prompt;
 
     /// <summary>
     /// Creates a <see cref="PromptBuilder"/> from the stored text content.

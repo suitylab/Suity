@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views.Graphics;
 using System;
 using System.Drawing;
@@ -16,7 +17,7 @@ public abstract class GraphNode
     private bool _canBeSelected;
     private bool _canBeDeleted;
     private string _comment;
-    private Brush _previewBrush;
+    private BrushDef _previewBrush;
 
 
     protected string _name;
@@ -73,7 +74,7 @@ public abstract class GraphNode
     /// <summary>
     /// Gets the icon displayed on the node.
     /// </summary>
-    public virtual Image Icon => null;
+    public virtual ImageDef Icon => null;
 
     /// <summary>
     /// Gets a value indicating whether this node is a group node.
@@ -168,7 +169,7 @@ public abstract class GraphNode
     /// <summary>
     /// Gets the brush used for drawing the preview text background.
     /// </summary>
-    protected Brush PreviewBrush => _previewBrush;
+    protected BrushDef PreviewBrush => _previewBrush;
 
     /// <summary>
     /// Occurs after the node is drawn, allowing custom post-draw rendering.
@@ -199,7 +200,7 @@ public abstract class GraphNode
 
         _connectors = new();
 
-        _previewBrush = new SolidBrush(Color.FromArgb(90, 0, 0, 0));
+        _previewBrush = new SolidBrushDef(Color.FromArgb(90, 0, 0, 0));
     }
 
     /// <summary>
@@ -292,35 +293,35 @@ public abstract class GraphNode
     /// <summary>
     /// Gets the brush used for filling the node body.
     /// </summary>
-    public virtual Brush NodeFillBrush => _diagram.ParentControl.Theme.NodeFill;
+    public virtual BrushDef NodeFillBrush => _diagram.ParentControl.Theme.NodeFill;
     /// <summary>
     /// Gets the brush used for filling the node header.
     /// </summary>
-    public virtual Brush NodeHeaderFillBrush => _diagram.ParentControl.Theme.NodeHeaderFill;
+    public virtual BrushDef NodeHeaderFillBrush => _diagram.ParentControl.Theme.NodeHeaderFill;
     /// <summary>
     /// Gets the pen used for drawing the node outline.
     /// </summary>
-    public virtual Pen NodeOutlinePen => _diagram.ParentControl.Theme.NodeOutline;
+    public virtual PenDef NodeOutlinePen => _diagram.ParentControl.Theme.NodeOutline;
     /// <summary>
     /// Gets the pen used for drawing the node outline when selected.
     /// </summary>
-    public virtual Pen NodeOutlineSelected => _diagram.ParentControl.Theme.NodeOutlineSelected;
+    public virtual PenDef NodeOutlineSelected => _diagram.ParentControl.Theme.NodeOutlineSelected;
     /// <summary>
     /// Gets the scaled font used for preview text.
     /// </summary>
-    public virtual Font NodeScaledPreviewFont => _diagram.ParentControl.Theme.NodeScaledPreviewFont;
+    public virtual FontDef NodeScaledPreviewFont => _diagram.ParentControl.Theme.NodeScaledPreviewFont;
     /// <summary>
     /// Gets the scaled font used for the node title.
     /// </summary>
-    public virtual Font NodeScaledTitleFont => _diagram.ParentControl.Theme.NodeScaledTitleFont;
+    public virtual FontDef NodeScaledTitleFont => _diagram.ParentControl.Theme.NodeScaledTitleFont;
     /// <summary>
     /// Gets the brush used for drawing node text.
     /// </summary>
-    public virtual Brush NodeText => _diagram.ParentControl.Theme.NodeText;
+    public virtual BrushDef NodeText => _diagram.ParentControl.Theme.NodeText;
     /// <summary>
     /// Gets the brush used for drawing node text shadow.
     /// </summary>
-    public virtual Brush NodeTextShadow => _diagram.ParentControl.Theme.NodeTextShadow;
+    public virtual BrushDef NodeTextShadow => _diagram.ParentControl.Theme.NodeTextShadow;
 
 
     #endregion

@@ -1,8 +1,8 @@
 using Suity;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Design;
-using Suity.Editor.Expressions;
 using Suity.Editor.Selecting;
 using Suity.Editor.Types;
 using Suity.Helpers;
@@ -684,7 +684,7 @@ internal class EditorTemplateExternalBK : EditorTemplateExternal
 
         node.OnContent(() =>
         {
-            Image? icon = EditorUtility.GetIcon(val)
+            ImageDef? icon = EditorUtility.GetIcon(val)
                 ?? EditorUtility.GetIcon(val.GetList()?.GetItem(val.SelectedKey)?.ToDisplayIcon());
 
             if (icon is { })

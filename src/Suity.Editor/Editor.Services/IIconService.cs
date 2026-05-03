@@ -1,5 +1,5 @@
+using Suity.Drawing;
 using System;
-using System.Drawing;
 
 namespace Suity.Editor.Services;
 
@@ -13,21 +13,21 @@ public interface IIconService
     /// </summary>
     /// <param name="path">The file path.</param>
     /// <returns>The icon image, or null if not found.</returns>
-    Image GetIconForFileExact(string path);
+    ImageDef GetIconForFileExact(string path);
 
     /// <summary>
     /// Gets the icon for a file path (may use cache).
     /// </summary>
     /// <param name="path">The file path.</param>
     /// <returns>The icon image, or null if not found.</returns>
-    Image GetIconForFile(string path);
+    ImageDef GetIconForFile(string path);
 
     /// <summary>
     /// Gets an icon by its ID.
     /// </summary>
     /// <param name="id">The icon ID.</param>
     /// <returns>The icon image, or null if not found.</returns>
-    Image GetIconById(Guid id);
+    ImageDef GetIconById(Guid id);
 }
 
 /// <summary>
@@ -45,19 +45,19 @@ internal sealed class EmptyIconService : IIconService
     }
 
     /// <inheritdoc/>
-    public Image GetIconForFileExact(string path)
+    public ImageDef GetIconForFileExact(string path)
     {
         return null;
     }
 
     /// <inheritdoc/>
-    public Image GetIconForFile(string path)
+    public ImageDef GetIconForFile(string path)
     {
         return null;
     }
 
     /// <inheritdoc/>
-    public Image GetIconById(Guid id)
+    public ImageDef GetIconById(Guid id)
     {
         return null;
     }

@@ -1,7 +1,7 @@
+using Suity.Drawing;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
-using System.Drawing;
 using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.Values;
@@ -37,7 +37,7 @@ internal class SDynamicSwitch : SDynamic
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Switch;
+    public override ImageDef Icon => CoreIconCache.Switch;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)

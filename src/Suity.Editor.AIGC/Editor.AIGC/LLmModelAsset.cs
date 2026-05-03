@@ -1,6 +1,6 @@
-using static Suity.Helpers.GlobalLocalizer;
+using Suity.Drawing;
 using Suity.Editor.Types;
-using System.Drawing;
+using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.AIGC;
 
@@ -28,7 +28,7 @@ public abstract class LLmModelAsset : StandaloneAsset<ILLmModel>, ILLmModel
     /// <summary>
     /// Gets the default icon for this model asset.
     /// </summary>
-    public override Image DefaultIcon => CoreIconCache.AI;
+    public override ImageDef DefaultIcon => CoreIconCache.AI;
 
     /// <summary>
     /// Gets or sets the unique identifier of the language model.

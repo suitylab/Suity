@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Reflecting;
 using Suity.Synchonizing;
@@ -342,7 +343,7 @@ public abstract class NamedFieldList : IViewList,
     /// <summary>
     /// Gets the icon to display for this list.
     /// </summary>
-    protected virtual Image OnGetIcon() => this.GetType().ToDisplayIcon() ?? CoreIconCache.Field;
+    protected virtual ImageDef OnGetIcon() => this.GetType().ToDisplayIcon() ?? CoreIconCache.Field;
 
     /// <summary>
     /// Gets the text status for display purposes.

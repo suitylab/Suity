@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views;
 using System;
 using System.Drawing;
@@ -32,7 +33,7 @@ public abstract partial class VirtualNode : MarshalByRefObject
     private bool _disposed;
     private string _propertyName = string.Empty;
     private string _description = string.Empty;
-    private Image _icon;
+    private ImageDef _icon;
     private Type _editedType;
     private bool _contentInit;
     private bool _updating;

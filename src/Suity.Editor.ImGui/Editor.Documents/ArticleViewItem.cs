@@ -1,10 +1,10 @@
+using Suity.Drawing;
 using Suity.Synchonizing;
 using Suity.UndoRedos;
 using Suity.Views;
 using Suity.Views.Im;
 using Suity.Views.Im.PropertyEditing;
 using System;
-using System.Drawing;
 using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.Documents;
@@ -109,7 +109,7 @@ public abstract class ArticleViewItem : IViewObject, IDrawEditorImGui
     /// <summary>
     /// Gets the icon associated with this article item.
     /// </summary>
-    public virtual Image Icon => CoreIconCache.Article;
+    public virtual ImageDef Icon => CoreIconCache.Article;
 
     #region Data Sync
 

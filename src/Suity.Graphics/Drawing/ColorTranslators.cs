@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 
-namespace System.Drawing;
+namespace Suity.Drawing;
 
 /// <summary>
 /// Provides methods to translate colors to and from HTML color representations.

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.AIGC.Flows;
 using Suity.Editor.Flows;
@@ -6,7 +7,6 @@ using Suity.Editor.Values;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
@@ -252,7 +252,7 @@ public abstract class LLmService
     /// <param name="level">The model performance level to use.</param>
     /// <param name="aspectRatio">The desired aspect ratio for the generated image.</param>
     /// <returns>A task representing the asynchronous operation, returning the generated image as a Bitmap.</returns>
-    public abstract Task<Bitmap> GenerateImage(string input, AigcModelLevel level = AigcModelLevel.Default, ImageAspectRatio aspectRatio = ImageAspectRatio.Default);
+    public abstract Task<BitmapDef> GenerateImage(string input, AigcModelLevel level = AigcModelLevel.Default, ImageAspectRatio aspectRatio = ImageAspectRatio.Default);
 
     /// <summary>
     /// Extracts a code block from a markdown-formatted string.

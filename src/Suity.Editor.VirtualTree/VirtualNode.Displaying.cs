@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Analyzing;
 using Suity.Helpers;
@@ -31,10 +32,10 @@ public partial class VirtualNode : ISupportStyle, IViewColor
 
     private string _text;
     private string _previewText;
-    private Image _mainIcon;
-    private Image _customIcon;
-    private Image _previewIcon;
-    private Image _statusIcon;
+    private ImageDef _mainIcon;
+    private ImageDef _customIcon;
+    private ImageDef _previewIcon;
+    private ImageDef _statusIcon;
     private Color? _color;
 
     private string _fieldDisplayName;
@@ -94,7 +95,7 @@ public partial class VirtualNode : ISupportStyle, IViewColor
     /// <summary>
     /// Gets or sets the icon for this node.
     /// </summary>
-    public Image Icon
+    public ImageDef Icon
     {
         get => _icon ?? _mainIcon;
         set
@@ -149,22 +150,22 @@ public partial class VirtualNode : ISupportStyle, IViewColor
     /// <summary>
     /// Gets the main icon of this node.
     /// </summary>
-    public Image MainIcon => _mainIcon;
+    public ImageDef MainIcon => _mainIcon;
 
     /// <summary>
     /// Gets the custom icon of this node.
     /// </summary>
-    public Image CustomIcon => _customIcon;
+    public ImageDef CustomIcon => _customIcon;
 
     /// <summary>
     /// Gets the preview icon of this node.
     /// </summary>
-    public Image PreviewIcon => _previewIcon;
+    public ImageDef PreviewIcon => _previewIcon;
 
     /// <summary>
     /// Gets the status icon of this node.
     /// </summary>
-    public Image StatusIcon => _statusIcon;
+    public ImageDef StatusIcon => _statusIcon;
 
     /// <inheritdoc/>
     public Color? ViewColor => _color;
@@ -254,17 +255,17 @@ public partial class VirtualNode : ISupportStyle, IViewColor
     /// <summary>
     /// Gets the main icon for this node. Override to provide a custom icon.
     /// </summary>
-    protected virtual Image GetMainIcon() => null;
+    protected virtual ImageDef GetMainIcon() => null;
 
     /// <summary>
     /// Gets the custom icon for this node. Override to provide a custom icon.
     /// </summary>
-    protected virtual Image GetCustomIcon() => null;
+    protected virtual ImageDef GetCustomIcon() => null;
 
     /// <summary>
     /// Gets the preview icon for this node. Override to provide a custom icon.
     /// </summary>
-    protected virtual Image GetPreviewIcon() => null;
+    protected virtual ImageDef GetPreviewIcon() => null;
 
     /// <summary>
     /// Gets the display name for the field. Override to provide a custom name.
@@ -289,7 +290,7 @@ public partial class VirtualNode : ISupportStyle, IViewColor
     /// <summary>
     /// Gets the status icon based on the current text status.
     /// </summary>
-    protected virtual Image GetStatusIcon() => _textStatus.ToStatusIcon();
+    protected virtual ImageDef GetStatusIcon() => _textStatus.ToStatusIcon();
 
     /// <summary>
     /// Gets the color for this node. Override to provide a custom color.
@@ -462,7 +463,7 @@ public partial class VirtualNode : ISupportStyle, IViewColor
         }
     }
 
-    public Image GetCustomPreviewIcon()
+    public ImageDef GetCustomPreviewIcon()
     {
         return null;
 

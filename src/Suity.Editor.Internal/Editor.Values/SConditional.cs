@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing;
@@ -8,7 +9,6 @@ using Suity.Views.Im;
 using Suity.Views.Im.PropertyEditing;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using static Suity.Helpers.GlobalLocalizer;
 
@@ -46,7 +46,7 @@ public class SConditional : SDynamic
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Condition;
+    public override ImageDef Icon => CoreIconCache.Condition;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)

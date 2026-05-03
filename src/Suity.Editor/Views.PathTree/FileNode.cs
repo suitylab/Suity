@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Helpers;
 using System;
@@ -146,5 +147,5 @@ public class FileNode : FsNode
     /// <summary>
     /// Gets the icon image associated with this file based on its path.
     /// </summary>
-    public override Image Image => EditorUtility.GetIconForFileExact(NodePath)?.ToIconSmall();
+    public override ImageDef Image => EditorUtility.GetIconForFileExact(NodePath)?.ToIconSmall();
 }

@@ -1,9 +1,9 @@
+using Suity.Drawing;
 using Suity.Editor.Services;
 using Suity.Synchonizing.Core;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace Suity.Editor.Documents.Linked;
 
@@ -38,7 +38,7 @@ public abstract class AssetDocument : Document,
         AssetBuilder.Owner = this;
     }
 
-    public override Image DefaultIcon => AssetBuilder?.TargetAsset?.Icon ?? this.GetType().ToDisplayIcon();
+    public override ImageDef DefaultIcon => AssetBuilder?.TargetAsset?.Icon ?? this.GetType().ToDisplayIcon();
 
 
     /// <summary>

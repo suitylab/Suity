@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Properties;
 using Suity.Helpers;
 using System.Drawing;
@@ -22,7 +23,7 @@ public class LmStudioPlugin : BaseOpenAIPlugin<LmStudioLLmModelAsset, LmStudioIm
     /// <summary>
     /// Gets the icon image for LM Studio.
     /// </summary>
-    public static Bitmap LmStudioIcon { get; } = Resources.LmStudio.ToBitmap();
+    public static BitmapDef LmStudioIcon { get; } = Resources.LmStudio.ToBitmap();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LmStudioPlugin"/> class.
@@ -61,7 +62,7 @@ public class LmStudioLLmModelAsset : ThirdPartyLLmModelAsset
     /// <summary>
     /// Gets the default icon for LM Studio models.
     /// </summary>
-    public override Image DefaultIcon => LmStudioPlugin.LmStudioIcon;
+    public override ImageDef DefaultIcon => LmStudioPlugin.LmStudioIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.
@@ -88,7 +89,7 @@ public class LmStudioImageGenModelAsset : ThirdPartyImageGenAsset
     /// <summary>
     /// Gets the default icon for LM Studio image models.
     /// </summary>
-    public override Image DefaultIcon => LmStudioPlugin.LmStudioIcon;
+    public override ImageDef DefaultIcon => LmStudioPlugin.LmStudioIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.

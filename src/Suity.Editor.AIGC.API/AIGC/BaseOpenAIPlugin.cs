@@ -1,4 +1,5 @@
 using OpenAI_API.Models;
+using Suity.Drawing;
 using Suity.Editor.Services;
 using Suity.Helpers;
 using Suity.Synchonizing;
@@ -26,7 +27,7 @@ public abstract class BaseOpenAIPlugin : ApiPlugin
     /// <summary>
     /// Gets the icon image representing the manufacturer.
     /// </summary>
-    public Image? ManufactureIcon { get; }
+    public ImageDef? ManufactureIcon { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BaseOpenAIPlugin"/> class.
@@ -34,7 +35,7 @@ public abstract class BaseOpenAIPlugin : ApiPlugin
     /// <param name="defaultUrl">The default API base URL.</param>
     /// <param name="manufacturerId">The unique manufacturer identifier.</param>
     /// <param name="manufactureIcon">Optional icon image for the manufacturer.</param>
-    protected BaseOpenAIPlugin(string defaultUrl, string manufacturerId, Image? manufactureIcon = null)
+    protected BaseOpenAIPlugin(string defaultUrl, string manufacturerId, ImageDef? manufactureIcon = null)
     {
         DefaultBaseUrl = defaultUrl;
         ManufacturerId = manufacturerId;
@@ -74,7 +75,7 @@ public abstract class BaseOpenAIPlugin<TLLm, TImage> : BaseOpenAIPlugin, IViewOb
     /// <param name="defaultUrl">The default API base URL.</param>
     /// <param name="manufacturerId">The unique manufacturer identifier.</param>
     /// <param name="manufactureIcon">Optional icon image for the manufacturer.</param>
-    protected BaseOpenAIPlugin(string defaultUrl, string manufacturerId, Image? manufactureIcon = null)
+    protected BaseOpenAIPlugin(string defaultUrl, string manufacturerId, ImageDef? manufactureIcon = null)
         : base(defaultUrl, manufacturerId, manufactureIcon)
     {
         ApiKeyProperty = new(nameof(ApiKey), "Api Key", toolTips: "Api Key configured in the backend.");
@@ -112,7 +113,7 @@ public abstract class BaseOpenAIPlugin<TLLm, TImage> : BaseOpenAIPlugin, IViewOb
     /// <summary>
     /// Gets the icon image for the plugin.
     /// </summary>
-    public override Image? Icon => ManufactureIcon;
+    public override ImageDef? Icon => ManufactureIcon;
 
     /// <summary>
     /// Initializes the plugin when a project is loaded, including loading cached model lists.

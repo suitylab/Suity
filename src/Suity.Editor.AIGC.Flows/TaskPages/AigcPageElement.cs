@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Flows;
 using Suity.Editor.Services;
@@ -18,7 +19,7 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
 {
     string _elementName;
     string _displayText;
-    Image _elementIcon;
+    ImageDef _elementIcon;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AigcPageElement"/> class.
@@ -84,7 +85,7 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
     /// <summary>
     /// Gets the icon image shown for this element.
     /// </summary>
-    public virtual Image Icon => _elementIcon;
+    public virtual ImageDef Icon => _elementIcon;
 
     #endregion
 
@@ -252,7 +253,7 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
     /// <summary>
     /// Gets the status icon representing the completion state of this element.
     /// </summary>
-    public Image GetStatusIcon()
+    public ImageDef GetStatusIcon()
     {
         bool? done = GetIsDone();
         if (done is { } doneV)

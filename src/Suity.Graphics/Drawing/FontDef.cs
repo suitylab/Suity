@@ -1,94 +1,96 @@
-namespace System.Drawing;
+using System;
+
+namespace Suity.Drawing;
 
 /// <summary>
 /// Represents a font data structure used for rendering text. Contains font properties without actual rendering functionality.
 /// </summary>
-public sealed class Font
+public sealed class FontDef
 {
     /// <summary>
-    /// Gets the <see cref="FontFamily"/> of this <see cref="Font"/>.
+    /// Gets the <see cref="FontFamily"/> of this <see cref="FontDef"/>.
     /// </summary>
-    public FontFamily FontFamily { get; }
+    public FontFamilyDef FontFamily { get; }
 
     /// <summary>
-    /// Gets the face name of this <see cref="Font"/>.
+    /// Gets the face name of this <see cref="FontDef"/>.
     /// </summary>
     public string Name => FontFamily.Name;
 
     /// <summary>
-    /// Gets the size of this <see cref="Font"/> in the units specified by the <see cref="Unit"/> property.
+    /// Gets the size of this <see cref="FontDef"/> in the units specified by the <see cref="Unit"/> property.
     /// </summary>
     public float Size { get; }
 
     /// <summary>
-    /// Gets the style information for this <see cref="Font"/>.
+    /// Gets the style information for this <see cref="FontDef"/>.
     /// </summary>
     public FontStyle Style { get; }
 
     /// <summary>
-    /// Gets the unit of measure for this <see cref="Font"/>.
+    /// Gets the unit of measure for this <see cref="FontDef"/>.
     /// </summary>
     public GraphicsUnit Unit { get; }
 
     /// <summary>
-    /// Gets the height, in pixels, of this <see cref="Font"/>.
+    /// Gets the height, in pixels, of this <see cref="FontDef"/>.
     /// </summary>
     public float Height { get; }
 
     /// <summary>
-    /// Gets a value indicating whether this <see cref="Font"/> is bold.
+    /// Gets a value indicating whether this <see cref="FontDef"/> is bold.
     /// </summary>
     public bool Bold => (Style & FontStyle.Bold) != 0;
 
     /// <summary>
-    /// Gets a value indicating whether this <see cref="Font"/> is italic.
+    /// Gets a value indicating whether this <see cref="FontDef"/> is italic.
     /// </summary>
     public bool Italic => (Style & FontStyle.Italic) != 0;
 
     /// <summary>
-    /// Gets a value indicating whether this <see cref="Font"/> is underlined.
+    /// Gets a value indicating whether this <see cref="FontDef"/> is underlined.
     /// </summary>
     public bool Underline => (Style & FontStyle.Underline) != 0;
 
     /// <summary>
-    /// Gets a value indicating whether this <see cref="Font"/> is strikethrough.
+    /// Gets a value indicating whether this <see cref="FontDef"/> is strikethrough.
     /// </summary>
     public bool Strikeout => (Style & FontStyle.Strikeout) != 0;
 
     /// <summary>
-    /// Gets a value indicating whether this <see cref="Font"/> is regular.
+    /// Gets a value indicating whether this <see cref="FontDef"/> is regular.
     /// </summary>
     public bool Regular => Style == FontStyle.Regular;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Font"/> class with the specified font family and size.
+    /// Initializes a new instance of the <see cref="FontDef"/> class with the specified font family and size.
     /// </summary>
-    /// <param name="family">The <see cref="FontFamily"/> of the new <see cref="Font"/>.</param>
+    /// <param name="family">The <see cref="FontFamily"/> of the new <see cref="FontDef"/>.</param>
     /// <param name="emSize">The em-size of the new font in points.</param>
-    public Font(FontFamily family, float emSize)
+    public FontDef(FontFamilyDef family, float emSize)
         : this(family, emSize, FontStyle.Regular, GraphicsUnit.Point)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Font"/> class with the specified font family, size, and style.
+    /// Initializes a new instance of the <see cref="FontDef"/> class with the specified font family, size, and style.
     /// </summary>
-    /// <param name="family">The <see cref="FontFamily"/> of the new <see cref="Font"/>.</param>
+    /// <param name="family">The <see cref="FontFamily"/> of the new <see cref="FontDef"/>.</param>
     /// <param name="emSize">The em-size of the new font.</param>
     /// <param name="style">A <see cref="FontStyle"/> that contains style information for the new font.</param>
-    public Font(FontFamily family, float emSize, FontStyle style)
+    public FontDef(FontFamilyDef family, float emSize, FontStyle style)
         : this(family, emSize, style, GraphicsUnit.Point)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Font"/> class with the specified font family, size, style, and unit.
+    /// Initializes a new instance of the <see cref="FontDef"/> class with the specified font family, size, style, and unit.
     /// </summary>
-    /// <param name="family">The <see cref="FontFamily"/> of the new <see cref="Font"/>.</param>
+    /// <param name="family">The <see cref="FontFamily"/> of the new <see cref="FontDef"/>.</param>
     /// <param name="emSize">The em-size of the new font.</param>
     /// <param name="style">A <see cref="FontStyle"/> that contains style information for the new font.</param>
     /// <param name="unit">A <see cref="GraphicsUnit"/> that specifies the unit of measure for the new font.</param>
-    public Font(FontFamily family, float emSize, FontStyle style, GraphicsUnit unit)
+    public FontDef(FontFamilyDef family, float emSize, FontStyle style, GraphicsUnit unit)
     {
         FontFamily = family ?? throw new ArgumentNullException(nameof(family));
         Size = emSize;
@@ -98,35 +100,35 @@ public sealed class Font
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Font"/> class with the specified font name and size.
+    /// Initializes a new instance of the <see cref="FontDef"/> class with the specified font name and size.
     /// </summary>
-    /// <param name="familyName">A string representation of the <see cref="FontFamily"/> of the new <see cref="Font"/>.</param>
+    /// <param name="familyName">A string representation of the <see cref="FontFamily"/> of the new <see cref="FontDef"/>.</param>
     /// <param name="emSize">The em-size of the new font in points.</param>
-    public Font(string familyName, float emSize)
-        : this(new FontFamily(familyName), emSize, FontStyle.Regular, GraphicsUnit.Point)
+    public FontDef(string familyName, float emSize)
+        : this(new FontFamilyDef(familyName), emSize, FontStyle.Regular, GraphicsUnit.Point)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Font"/> class with the specified font name, size, and style.
+    /// Initializes a new instance of the <see cref="FontDef"/> class with the specified font name, size, and style.
     /// </summary>
-    /// <param name="familyName">A string representation of the <see cref="FontFamily"/> of the new <see cref="Font"/>.</param>
+    /// <param name="familyName">A string representation of the <see cref="FontFamily"/> of the new <see cref="FontDef"/>.</param>
     /// <param name="emSize">The em-size of the new font.</param>
     /// <param name="style">A <see cref="FontStyle"/> that contains style information for the new font.</param>
-    public Font(string familyName, float emSize, FontStyle style)
-        : this(new FontFamily(familyName), emSize, style, GraphicsUnit.Point)
+    public FontDef(string familyName, float emSize, FontStyle style)
+        : this(new FontFamilyDef(familyName), emSize, style, GraphicsUnit.Point)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Font"/> class with the specified font name, size, style, and unit.
+    /// Initializes a new instance of the <see cref="FontDef"/> class with the specified font name, size, style, and unit.
     /// </summary>
-    /// <param name="familyName">A string representation of the <see cref="FontFamily"/> of the new <see cref="Font"/>.</param>
+    /// <param name="familyName">A string representation of the <see cref="FontFamily"/> of the new <see cref="FontDef"/>.</param>
     /// <param name="emSize">The em-size of the new font.</param>
     /// <param name="style">A <see cref="FontStyle"/> that contains style information for the new font.</param>
     /// <param name="unit">A <see cref="GraphicsUnit"/> that specifies the unit of measure for the new font.</param>
-    public Font(string familyName, float emSize, FontStyle style, GraphicsUnit unit)
-        : this(new FontFamily(familyName), emSize, style, unit)
+    public FontDef(string familyName, float emSize, FontStyle style, GraphicsUnit unit)
+        : this(new FontFamilyDef(familyName), emSize, style, unit)
     {
     }
 

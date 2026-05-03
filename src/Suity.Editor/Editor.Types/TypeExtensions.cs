@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Selecting;
 using System.Drawing;
@@ -78,7 +79,7 @@ public static class TypeExtensions
     /// <summary>
     /// Gets the icon for a type.
     /// </summary>
-    public static Image GetIcon(this TypeDefinition typeInfo)
+    public static ImageDef GetIcon(this TypeDefinition typeInfo)
         => TypesExternal._external.GetIcon(typeInfo);
 
     /// <summary>

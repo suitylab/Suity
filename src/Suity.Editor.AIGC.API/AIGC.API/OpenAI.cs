@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Properties;
 using Suity.Helpers;
 using System.Drawing;
@@ -22,7 +23,7 @@ public class OpenAIPlugin : BaseOpenAIPlugin<OpenAILLmModelAsset, OpenAIImageGen
     /// <summary>
     /// Gets the icon image for OpenAI.
     /// </summary>
-    public static Bitmap OpenAIIcon { get; } = Resources.OpenAI.ToBitmap();
+    public static BitmapDef OpenAIIcon { get; } = Resources.OpenAI.ToBitmap();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="OpenAIPlugin"/> class.
@@ -61,7 +62,7 @@ public class OpenAILLmModelAsset : ThirdPartyLLmModelAsset
     /// <summary>
     /// Gets the default icon for OpenAI models.
     /// </summary>
-    public override Image DefaultIcon => OpenAIPlugin.OpenAIIcon;
+    public override ImageDef DefaultIcon => OpenAIPlugin.OpenAIIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.
@@ -88,7 +89,7 @@ public class OpenAIImageGenModelAsset : ThirdPartyImageGenAsset
     /// <summary>
     /// Gets the default icon for OpenAI image models.
     /// </summary>
-    public override Image DefaultIcon => OpenAIPlugin.OpenAIIcon;
+    public override ImageDef DefaultIcon => OpenAIPlugin.OpenAIIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.

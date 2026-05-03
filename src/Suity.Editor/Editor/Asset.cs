@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Analyzing;
 using Suity.Editor.CodeRender;
 using Suity.Helpers;
@@ -394,7 +395,7 @@ public abstract class Asset : EditorObject,
     /// <summary>
     /// Icon
     /// </summary>
-    public Image Icon
+    public ImageDef Icon
     {
         get
         {
@@ -491,12 +492,12 @@ public abstract class Asset : EditorObject,
     /// <summary>
     /// Gets the icon for this asset
     /// </summary>
-    public virtual Image GetIcon() => EditorUtility.GetIconById(_iconId);
+    public virtual ImageDef GetIcon() => EditorUtility.GetIconById(_iconId);
 
     /// <summary>
     /// Default icon for this asset type
     /// </summary>
-    public virtual Image DefaultIcon => EditorUtility.ToDisplayIcon(this.GetType());
+    public virtual ImageDef DefaultIcon => EditorUtility.ToDisplayIcon(this.GetType());
 
     /// <summary>
     /// Name displayed in tree view
@@ -1048,7 +1049,7 @@ public abstract class StandaloneAsset<T> : Asset
     /// <summary>
     /// Default icon for this asset type
     /// </summary>
-    public override Image DefaultIcon => this.GetType().ToDisplayIcon() ?? CoreIconCache.Assistant;
+    public override ImageDef DefaultIcon => this.GetType().ToDisplayIcon() ?? CoreIconCache.Assistant;
 
     /// <summary>
     /// Display text for this asset

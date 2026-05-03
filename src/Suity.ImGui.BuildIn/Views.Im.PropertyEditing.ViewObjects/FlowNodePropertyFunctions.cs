@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Flows;
 using Suity.Helpers;
@@ -60,7 +61,7 @@ public static class FlowNodePropertyFunctions
                         gui.Text("Running")
                         .InitClass("propLabelText")
                         .InitCenterHorizontal()
-                        .OverrideFont(new Font(ImGuiTheme.DefaultFont, 14, FontStyle.Bold), Color.Cyan);
+                        .OverrideFont(new FontDef(ImGuiTheme.DefaultFont, 14, FontStyle.Bold), Color.Cyan);
                         break;
 
                     case FlowComputationStates.Finished:
@@ -70,7 +71,7 @@ public static class FlowNodePropertyFunctions
                             gui.Text($"Completed ({formattedTime})")
                             .InitClass("propLabelText")
                             .InitCenterHorizontal()
-                            .OverrideFont(new Font(ImGuiTheme.DefaultFont, 14, FontStyle.Bold), Color.DarkGreen);
+                            .OverrideFont(new FontDef(ImGuiTheme.DefaultFont, 14, FontStyle.Bold), Color.DarkGreen);
                         }
                         break;
 
@@ -82,7 +83,7 @@ public static class FlowNodePropertyFunctions
                             gui.Text($"Error: {err?.GetType().Name} ({formattedTime})")
                             .InitClass("propLabelText")
                             .InitCenterHorizontal()
-                            .OverrideFont(new Font(ImGuiTheme.DefaultFont, 14, FontStyle.Bold), Color.Red);
+                            .OverrideFont(new FontDef(ImGuiTheme.DefaultFont, 14, FontStyle.Bold), Color.Red);
 
                             string msg = string.Empty;
                             if (err != null)
@@ -105,7 +106,7 @@ public static class FlowNodePropertyFunctions
                         gui.Text("Cancelled")
                         .InitClass("propLabelText")
                         .InitCenterHorizontal()
-                        .OverrideFont(new Font(ImGuiTheme.DefaultFont, 14, FontStyle.Bold), Color.Gray);
+                        .OverrideFont(new FontDef(ImGuiTheme.DefaultFont, 14, FontStyle.Bold), Color.Gray);
                         break;
                 }
             });

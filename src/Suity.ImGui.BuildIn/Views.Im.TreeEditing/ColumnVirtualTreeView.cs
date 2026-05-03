@@ -1,8 +1,7 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor;
-using Suity.Editor.Services;
 using Suity.Editor.VirtualTree;
-using Suity.Helpers;
 using Suity.Synchonizing.Core;
 using Suity.Views.Graphics;
 using Suity.Views.Im.PropertyEditing;
@@ -387,7 +386,7 @@ public class ColumnVirtualTreeView : ImGuiVirtualTreeView, IHasPreviewPreset
 
             node.InitMenu(_headerMenu, index);
 
-            if (column.Icon is Image icon)
+            if (column.Icon is ImageDef icon)
             {
                 gui.Image("#i", icon)
                 .InitClass("icon");
@@ -555,7 +554,7 @@ public class ColumnVirtualTreeView : ImGuiVirtualTreeView, IHasPreviewPreset
         return state;
     }
 
-    private static readonly Brush _dragDropBrush = new SolidBrush(ImGuiTheme.DefaultDragColor);
+    private static readonly BrushDef _dragDropBrush = new SolidBrushDef(ImGuiTheme.DefaultDragColor);
 
     private static void ColumnHeaderDragDropRender(GuiPipeline pipeLine, ImGuiNode node, IGraphicOutput output, bool dirtyMode, ChildRenderFunction baseAction)
     {

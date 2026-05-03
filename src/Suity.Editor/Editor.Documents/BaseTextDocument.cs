@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Types;
 using Suity.Helpers;
@@ -52,7 +53,7 @@ public abstract class BaseTextDocument : AssetDocument
     /// <summary>
     /// Gets the icon for this document type.
     /// </summary>
-    public override Image Icon => CoreIconCache.Text;
+    public override ImageDef Icon => CoreIconCache.Text;
 
     /// <summary>
     /// Loads the document from storage.

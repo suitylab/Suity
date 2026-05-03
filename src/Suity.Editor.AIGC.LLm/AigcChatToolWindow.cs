@@ -1,19 +1,17 @@
 using Pathoschild.Http.Client;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.AIGC.Flows;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
-using Suity.Editor.Services;
 using Suity.Views.Graphics;
 using Suity.Views.Gui;
 using Suity.Views.Im;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
-using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.AIGC;
 
@@ -125,7 +123,7 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
 
     string IToolWindow.Title => "AI Generation";
 
-    Image IToolWindow.Icon => CoreIconCache.AI;
+    ImageDef IToolWindow.Icon => CoreIconCache.AI;
 
     DockHint IToolWindow.DockHint => DockHint.Left;
 

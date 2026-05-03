@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views;
 using Suity.Views.PathTree;
@@ -12,7 +13,7 @@ namespace Suity.Editor.ProjectGui.Nodes;
 public class AssetDirectoryNode : DirectoryNode, IAssetDirectoryNode, IAssetFsNode, IDropTarget
 {
     /// <inheritdoc/>
-    public override Image Image => CoreIconCache.Folder.ToIconSmall();
+    public override ImageDef Image => CoreIconCache.Folder.ToIconSmall();
 
     /// <inheritdoc/>
     protected override DirectoryNode CreateDirectoryNode()

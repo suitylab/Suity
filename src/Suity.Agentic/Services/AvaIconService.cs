@@ -1,10 +1,8 @@
-﻿using Suity.Editor.Documents;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Text;
+﻿using Suity.Drawing;
+using Suity.Editor.Documents;
 using Suity.Helpers;
+using System;
+using System.IO;
 
 namespace Suity.Editor.Services;
 
@@ -12,13 +10,13 @@ internal class AvaIconService : IIconService
 {
     public static readonly AvaIconService Instance = new();
 
-    public Image? GetIconById(Guid id)
+    public ImageDef? GetIconById(Guid id)
     {
         ImageAsset imageRef = AssetManager.Instance.GetAsset<ImageAsset>(id);
         return imageRef?.GetIconSmall();
     }
 
-    public Image? GetIconForFile(string path)
+    public ImageDef? GetIconForFile(string path)
     {
         if (Directory.Exists(path))
         {
@@ -28,7 +26,7 @@ internal class AvaIconService : IIconService
         return null;
     }
 
-    public Image? GetIconForFileExact(string path)
+    public ImageDef? GetIconForFileExact(string path)
     {
         var image = FileAssetManager.Current.GetIcon(path);
         if (image != null)

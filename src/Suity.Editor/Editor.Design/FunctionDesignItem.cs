@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Expressions;
 using Suity.Editor.Types;
@@ -162,7 +163,7 @@ public abstract class FunctionDesignItem : DesignItem<DFunctionBuilder>,
         }
     }
 
-    protected override Image OnGetIcon()
+    protected override ImageDef OnGetIcon()
     {
         var icon = SelectedIcon;
         if (icon != null)
@@ -179,7 +180,7 @@ public abstract class FunctionDesignItem : DesignItem<DFunctionBuilder>,
 
     protected override TextStatus OnGetTextStatus() => _isUser ? TextStatus.Import : TextStatus.Normal;
 
-    public override Image TypeIcon => CoreIconCache.Function;
+    public override ImageDef TypeIcon => CoreIconCache.Function;
     public override Color? TypeColor => DFunction.FunctionTypeColor;
 
     protected internal override void OnFieldListItemAdded(NamedFieldList list, NamedField item, bool isNew)

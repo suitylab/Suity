@@ -1,4 +1,4 @@
-using System.Drawing;
+using Suity.Drawing;
 
 namespace Suity.Editor.Types;
 
@@ -15,7 +15,7 @@ public class DDelegate : DType
     public override bool IsNative => true;
 
     /// <inheritdoc />
-    public override Image DefaultIcon => CoreIconCache.Delegate;
+    public override ImageDef DefaultIcon => CoreIconCache.Delegate;
 }
 
 /// <summary>

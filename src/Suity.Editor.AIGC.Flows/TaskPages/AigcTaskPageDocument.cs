@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
@@ -234,10 +235,10 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     #region Virtual & Override
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.Task;
+    public override ImageDef Icon => CoreIconCache.Task;
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Task;
+    public override ImageDef DefaultIcon => CoreIconCache.Task;
 
 
     /// <inheritdoc/>
@@ -434,7 +435,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
 public class AigcTaskPageAsset : Asset
 {
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Task;
+    public override ImageDef DefaultIcon => CoreIconCache.Task;
 }
 
 /// <summary>

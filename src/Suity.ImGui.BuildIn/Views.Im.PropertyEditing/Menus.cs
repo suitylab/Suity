@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Values;
 using Suity.Helpers;
@@ -6,7 +7,6 @@ using Suity.Views.Im.PropertyEditing.ViewObjects;
 using Suity.Views.Menu;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace Suity.Views.Im.PropertyEditing;
 
@@ -30,7 +30,7 @@ internal abstract class BaseDesignMenu : MenuCommand
     /// </summary>
     /// <param name="text">The display text for the menu item.</param>
     /// <param name="icon">The optional icon for the menu item.</param>
-    protected BaseDesignMenu(string text, Image? icon = null) : base(text, icon)
+    protected BaseDesignMenu(string text, ImageDef? icon = null) : base(text, icon)
     {
     }
 
@@ -40,7 +40,7 @@ internal abstract class BaseDesignMenu : MenuCommand
     /// <param name="key">The command key.</param>
     /// <param name="text">The display text for the menu item.</param>
     /// <param name="icon">The optional icon for the menu item.</param>
-    protected BaseDesignMenu(string key, string text, Image? icon = null) : base(key, text, icon)
+    protected BaseDesignMenu(string key, string text, ImageDef? icon = null) : base(key, text, icon)
     {
     }
 

@@ -1,4 +1,5 @@
-﻿using Suity.Synchonizing;
+﻿using Suity.Drawing;
+using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Drawing;
@@ -117,7 +118,7 @@ public abstract class VirtualNodeAdapter : MarshalByRefObject, ISyncContext
         }
     }
 
-    public virtual Image Icon
+    public virtual ImageDef Icon
     {
         get
         {
@@ -125,7 +126,7 @@ public abstract class VirtualNodeAdapter : MarshalByRefObject, ISyncContext
         }
     }
 
-    public virtual Image PreviewIcon
+    public virtual ImageDef PreviewIcon
     {
         get
         {

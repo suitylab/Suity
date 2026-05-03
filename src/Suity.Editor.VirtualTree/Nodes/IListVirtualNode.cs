@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.VirtualTree.Actions;
 using Suity.Editor.VirtualTree.Adapters;
 using Suity.Views;
@@ -241,13 +242,13 @@ public class IListVirtualNode : VirtualNode, IVirtualNodeListOperation
     }
 
     /// <inheritdoc/>
-    protected override Image GetMainIcon()
+    protected override ImageDef GetMainIcon()
     {
         return _adapter?.Icon ?? base.GetMainIcon();
     }
 
     /// <inheritdoc/>
-    protected override Image GetPreviewIcon()
+    protected override ImageDef GetPreviewIcon()
     {
         var customIcon = GetCustomPreviewIcon();
         if (customIcon != null)

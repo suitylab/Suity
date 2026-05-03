@@ -1,4 +1,5 @@
-﻿using Suity.Editor.Documents;
+﻿using Suity.Drawing;
+using Suity.Editor.Documents;
 using Suity.Helpers;
 using System;
 using System.Drawing;
@@ -91,7 +92,7 @@ public abstract class FileAssetManager
 
     public abstract Asset GetAsset(string fullPath);
 
-    public abstract Image GetIcon(string fullPath);
+    public abstract ImageDef GetIcon(string fullPath);
 
     internal abstract Asset GetOrUpdateAsset(string fullPath);
 

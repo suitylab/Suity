@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
-using Suity.Editor.Documents;
 using Suity.Helpers;
 using System;
 using System.Collections.Generic;
@@ -28,7 +27,7 @@ internal class AvaDialogService : IDialogService, IDialogExService
     }
 
     #region IDialogService
-    public void CreateTextWindow(string text, string title, System.Drawing.Image icon)
+    public void CreateTextWindow(string text, string title, Suity.Drawing.ImageDef icon)
     {
         throw new NotImplementedException();
     }

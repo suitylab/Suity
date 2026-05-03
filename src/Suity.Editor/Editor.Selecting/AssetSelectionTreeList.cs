@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Selecting;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -48,7 +49,7 @@ public class AssetSelectionTreeList<TAsset, TValue> : IViewList, IHasObjectCreat
     /// <summary>
     /// Gets or sets the display icon.
     /// </summary>
-    public Image Icon { get; set; }
+    public ImageDef Icon { get; set; }
 
     /// <summary>
     /// Event raised when an item is added.

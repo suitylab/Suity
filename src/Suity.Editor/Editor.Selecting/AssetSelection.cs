@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Analyzing;
 using Suity.Editor.Types;
 using Suity.Selecting;
@@ -220,7 +221,7 @@ public abstract class AssetSelection : ISelection,
     /// <summary>
     /// Gets the icon of the selected asset.
     /// </summary>
-    public virtual Image Icon => _assetRef.Target?.Icon;
+    public virtual ImageDef Icon => _assetRef.Target?.Icon;
 
     #endregion
 

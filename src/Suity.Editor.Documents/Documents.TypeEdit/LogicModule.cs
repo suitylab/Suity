@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Selecting;
@@ -199,7 +200,7 @@ public class LogicModule : TypeDesignItem<DLogicModuleBuilder>,
     }
 
     /// <inheritdoc/>
-    protected override Image OnGetIcon()
+    protected override ImageDef OnGetIcon()
     {
         return base.OnGetIcon() ?? CoreIconCache.LogicModule;
     }
@@ -208,7 +209,7 @@ public class LogicModule : TypeDesignItem<DLogicModuleBuilder>,
     public override string PreviewText => "Logic Module";
 
     /// <inheritdoc/>
-    public override Image TypeIcon => CoreIconCache.LogicModule;
+    public override ImageDef TypeIcon => CoreIconCache.LogicModule;
 
     #region IMemberContainer
 
@@ -258,7 +259,7 @@ public class LogicModuleComponent : SNamedField, INavigable, IViewDoubleClickAct
     }
 
     /// <inheritdoc/>
-    protected override Image OnGetIcon()
+    protected override ImageDef OnGetIcon()
     {
         return _compSelection?.Icon ?? CoreIconCache.Object;
     }

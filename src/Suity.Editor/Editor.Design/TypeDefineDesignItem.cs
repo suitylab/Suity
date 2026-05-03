@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
@@ -68,7 +69,7 @@ public abstract class TypeDefineDesignItem : DesignItem, INavigable
         }
     }
 
-    protected override Image OnGetIcon() => base.OnGetIcon() ?? CoreIconCache.Field;
+    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? CoreIconCache.Field;
 
     public override string PreviewText
     {

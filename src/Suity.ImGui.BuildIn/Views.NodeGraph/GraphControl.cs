@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Views.Graphics;
 using System;
 using System.Collections.Generic;
@@ -368,7 +369,7 @@ public class GraphControl : IGraphicObject
     protected virtual GraphControlTheme CreateTheme()
     {
         var theme = new GraphControlTheme();
-        theme.InitializeFonts(new FontFamily("Tahoma"));
+        theme.InitializeFonts(new FontFamilyDef("Tahoma"));
         return theme;
     }
     /// <summary>

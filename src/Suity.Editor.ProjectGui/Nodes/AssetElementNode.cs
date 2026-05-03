@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Services;
@@ -41,7 +42,7 @@ public class AssetElementNode : PopulatePathNode, IAssetElementNode
     public override string TypeName => GetAsset()?.PreviewText ?? string.Empty;
 
     /// <inheritdoc/>
-    public override Image Image
+    public override ImageDef Image
     {
         get
         {
@@ -67,7 +68,7 @@ public class AssetElementNode : PopulatePathNode, IAssetElementNode
     /// <summary>
     /// Gets the status image indicating errors or warnings.
     /// </summary>
-    public Image ImageStatus
+    public ImageDef ImageStatus
     {
         get
         {
@@ -252,7 +253,7 @@ public class AssetElementNode : PopulatePathNode, IAssetElementNode
     /// <summary>
     /// Gets the extended image indicating rendering status.
     /// </summary>
-    public Image ImageEx
+    public ImageDef ImageEx
     {
         get
         {

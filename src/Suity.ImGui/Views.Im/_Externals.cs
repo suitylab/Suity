@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -283,21 +284,21 @@ internal abstract class ImGuiExternal
     /// Gets the default font for the ImGui system.
     /// </summary>
     /// <returns>The default font.</returns>
-    public abstract Font DefaultFont { get; }
+    public abstract FontDef DefaultFont { get; }
 
     /// <summary>
     /// Gets the font for a node, considering theme and style settings.
     /// </summary>
     /// <param name="node">The target node.</param>
     /// <returns>The font for the node.</returns>
-    public abstract Font GetFont(ImGuiNode node);
+    public abstract FontDef GetFont(ImGuiNode node);
 
     /// <summary>
     /// Gets the scaled font for a node, adjusted for the node's scale factor.
     /// </summary>
     /// <param name="node">The target node.</param>
     /// <returns>The scaled font for the node.</returns>
-    public abstract Font GetScaledFont(ImGuiNode node);
+    public abstract FontDef GetScaledFont(ImGuiNode node);
 
     #endregion
 }

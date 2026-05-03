@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Selecting;
 using Suity.Synchonizing.Core;
 using System;
@@ -203,7 +204,7 @@ internal abstract class TypesExternal
     /// </summary>
     /// <param name="typeInfo">The type definition.</param>
     /// <returns>The icon image.</returns>
-    public abstract Image GetIcon(TypeDefinition typeInfo);
+    public abstract ImageDef GetIcon(TypeDefinition typeInfo);
 
     #endregion
 }

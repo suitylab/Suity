@@ -1,4 +1,5 @@
-﻿using Suity.Editor.Services;
+﻿using Suity.Drawing;
+using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing.Core;
@@ -60,13 +61,13 @@ public class TypeDefinitionFlowDataStyle : IFlowDataStyle
 
     public bool MultipleToConnection { get; protected set; }
 
-    public Pen LinkPen { get; protected set; }
+    public PenDef LinkPen { get; protected set; }
 
-    public SolidBrush LinkArrowBrush { get; protected set; }
+    public SolidBrushDef LinkArrowBrush { get; protected set; }
 
-    public Pen ConnectorOutlinePen { get; protected set; }
+    public PenDef ConnectorOutlinePen { get; protected set; }
 
-    public SolidBrush ConnectorFillBrush { get; protected set; }
+    public SolidBrushDef ConnectorFillBrush { get; protected set; }
 
     private void _typeRef_TargetUpdated(object sender, EntryEventArgs e, ref bool handled)
     {
@@ -177,10 +178,10 @@ public class TypeDefinitionFlowDataStyle : IFlowDataStyle
 
     protected void UpdateStyleByColor(Color color)
     {
-        this.LinkPen = new Pen(color, PenWidth);
-        this.LinkArrowBrush = new SolidBrush(color);
-        this.ConnectorOutlinePen = new Pen(color, PenWidth);
-        this.ConnectorFillBrush = new SolidBrush(color);
+        this.LinkPen = new PenDef(color, PenWidth);
+        this.LinkArrowBrush = new SolidBrushDef(color);
+        this.ConnectorOutlinePen = new PenDef(color, PenWidth);
+        this.ConnectorFillBrush = new SolidBrushDef(color);
     }
 
     public override string ToString()
@@ -194,15 +195,15 @@ internal class ExampleDataStyle : TypeDefinitionFlowDataStyle
     public static readonly Color DefaultColorAbstract = Color.FromArgb(224, 132, 56);
     public static readonly Color DefaultColor = Color.FromArgb(132, 56, 224);
 
-    private readonly Pen DefaultLinkPen = new(DefaultColor, 3);
-    private readonly SolidBrush DefaultLinkArrowBrush = new(DefaultColor);
-    private readonly Pen DefaultConnectorOutlinePen = new(DefaultColor, 3);
-    private readonly SolidBrush DefaultConnectorFillBrush = new(DefaultColor);
+    private readonly PenDef DefaultLinkPen = new(DefaultColor, 3);
+    private readonly SolidBrushDef DefaultLinkArrowBrush = new(DefaultColor);
+    private readonly PenDef DefaultConnectorOutlinePen = new(DefaultColor, 3);
+    private readonly SolidBrushDef DefaultConnectorFillBrush = new(DefaultColor);
 
-    private readonly Pen DefaultLinkPenA = new(DefaultColorAbstract, 3);
-    private readonly SolidBrush DefaultLinkArrowBrushA = new(DefaultColorAbstract);
-    private readonly Pen DefaultConnectorOutlinePenA = new(DefaultColorAbstract, 3);
-    private readonly SolidBrush DefaultConnectorFillBrushA = new(DefaultColorAbstract);
+    private readonly PenDef DefaultLinkPenA = new(DefaultColorAbstract, 3);
+    private readonly SolidBrushDef DefaultLinkArrowBrushA = new(DefaultColorAbstract);
+    private readonly PenDef DefaultConnectorOutlinePenA = new(DefaultColorAbstract, 3);
+    private readonly SolidBrushDef DefaultConnectorFillBrushA = new(DefaultColorAbstract);
 
     // Single source, multiple targets
     public ExampleDataStyle(TypeDefinition dataType)
@@ -255,10 +256,10 @@ public class TypeFlowDataStyle : IFlowDataStyle
             color = EditorServices.ColorConfig.GetStatusColor(TextStatus.Reference);
         }
 
-        LinkPen = new Pen(color, 3);
-        LinkArrowBrush = new SolidBrush(color);
-        ConnectorOutlinePen = new Pen(color, 3);
-        ConnectorFillBrush = new SolidBrush(color);
+        LinkPen = new PenDef(color, 3);
+        LinkArrowBrush = new SolidBrushDef(color);
+        ConnectorOutlinePen = new PenDef(color, 3);
+        ConnectorFillBrush = new SolidBrushDef(color);
     }
 
 
@@ -276,13 +277,13 @@ public class TypeFlowDataStyle : IFlowDataStyle
 
     public bool MultipleToConnection => true;
 
-    public Pen LinkPen { get; }
+    public PenDef LinkPen { get; }
 
-    public SolidBrush LinkArrowBrush { get; }
+    public SolidBrushDef LinkArrowBrush { get; }
 
-    public Pen ConnectorOutlinePen { get; }
+    public PenDef ConnectorOutlinePen { get; }
 
-    public SolidBrush ConnectorFillBrush { get; }
+    public SolidBrushDef ConnectorFillBrush { get; }
 
 
     public event EventHandler StyleUpdated;

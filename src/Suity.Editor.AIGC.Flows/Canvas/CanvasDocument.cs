@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.AIGC;
 using Suity.Editor.Design;
 using Suity.Editor.Documents.Linked;
@@ -28,7 +29,7 @@ public class CanvasDocument : FlowDocument<CanvasAssetBuilder>,
     /// <summary>
     /// Gets the icon representing this canvas document.
     /// </summary>
-    public override Image Icon => CoreIconCache.Canvas;
+    public override ImageDef Icon => CoreIconCache.Canvas;
 
     private readonly QueueOnceAction _updateViewAction;
     private FlowComputation _computation;
@@ -430,7 +431,7 @@ public class CanvasAsset : GroupAsset
     /// <summary>
     /// Gets the default icon for canvas assets.
     /// </summary>
-    public override Image DefaultIcon => CoreIconCache.Canvas;
+    public override ImageDef DefaultIcon => CoreIconCache.Canvas;
 }
 
 /// <summary>

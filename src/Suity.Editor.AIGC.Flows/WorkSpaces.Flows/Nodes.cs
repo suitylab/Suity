@@ -1,10 +1,10 @@
+using Suity.Drawing;
 using Suity.Editor.Flows;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -33,7 +33,7 @@ public class ListWorkSpaceFiles : AigcWorkSpaceNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon => CoreIconCache.File;
+    public override ImageDef Icon => CoreIconCache.File;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)

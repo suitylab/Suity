@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Analyzing;
 using Suity.Editor.VirtualTree;
@@ -221,7 +222,7 @@ internal class VirtualTreeCreateMenu : MenuCommand
     /// <param name="op">The create operation type.</param>
     /// <param name="text">The display text for the menu item.</param>
     /// <param name="icon">The icon for the menu item.</param>
-    public VirtualTreeCreateMenu(VirtualCreateOp op, string text, Image icon)
+    public VirtualTreeCreateMenu(VirtualCreateOp op, string text, ImageDef icon)
         : base(text, icon)
     {
         _op = op;

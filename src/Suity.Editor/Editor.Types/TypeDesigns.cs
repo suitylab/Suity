@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Selecting;
 using System;
 using System.Drawing;
@@ -37,7 +38,7 @@ public interface ITypeDesign
     /// <summary>
     /// Gets the icon.
     /// </summary>
-    Image Icon { get; }
+    ImageDef Icon { get; }
 
     /// <summary>
     /// Synchronizes the default value.

@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ public class SimpleSelectionList : ISelectionList
     /// <summary>
     /// Gets the icon associated with this selection list.
     /// </summary>
-    public Image Icon { get; }
+    public ImageDef Icon { get; }
 
     /// <summary>
     /// Gets all selection items in this list.

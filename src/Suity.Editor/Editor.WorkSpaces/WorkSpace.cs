@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Helpers;
 using Suity.Reflecting;
@@ -113,7 +114,7 @@ public abstract class WorkSpace : IRenderHost, IHasId
     /// <summary>
     /// Gets the workspace icon
     /// </summary>
-    public abstract Image Icon { get; }
+    public abstract ImageDef Icon { get; }
 
     /// <summary>
     /// Gets whether the workspace is in failure state

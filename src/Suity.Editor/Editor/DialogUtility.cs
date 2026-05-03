@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Helpers;
@@ -24,7 +25,7 @@ public static class DialogUtility
     /// <param name="title">The title of the window.</param>
     /// <param name="icon">The icon to display in the window.</param>
     [Obsolete("Use async version intead.", true)]
-    public static void CreateTextWindow(string text, string title, Image icon)
+    public static void CreateTextWindow(string text, string title, ImageDef icon)
         => EditorServices.DialogService?.CreateTextWindow(text, title, icon);
 
     /// <summary>
@@ -321,7 +322,7 @@ public static class DialogUtility
     /// <param name="text">The content text to display in the window.</param>
     /// <param name="title">The title of the window.</param>
     /// <param name="icon">The icon to display in the window.</param>
-    public static Task CreateTextWindowAsync(string text, string title, Image icon)
+    public static Task CreateTextWindowAsync(string text, string title, ImageDef icon)
         => EditorServices.DialogServiceAsync.CreateTextWindowAsync(text, title, icon);
 
     /// <summary>

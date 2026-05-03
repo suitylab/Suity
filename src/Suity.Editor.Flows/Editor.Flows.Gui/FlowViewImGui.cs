@@ -1,6 +1,7 @@
 using MarkedNet;
 using Suity;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor;
 using Suity.Editor.Analyzing;
 using Suity.Editor.Documents.Linked;
@@ -42,7 +43,7 @@ public abstract class FlowViewImGui :
     /// <summary>
     /// Default font family used for rendering node titles, connectors, and preview text.
     /// </summary>
-    static readonly FontFamily DEFAULT_FONT = ImGuiTheme.DefaultFont; //SystemFonts.DefaultFont.FontFamily;
+    static readonly FontFamilyDef DEFAULT_FONT = ImGuiTheme.DefaultFont; //SystemFonts.DefaultFont.FontFamily;
 
     private static readonly Dictionary<string, RootFlowMenuCommand> _menus = [];
 
@@ -176,21 +177,21 @@ public abstract class FlowViewImGui :
         theme.ConnectorTextColor = Color.White;
         theme.LinkColor = Color.FromArgb(180, 180, 180);
         theme.LinkEditableColor = Color.FromArgb(80, 64, 255, 0);
-        theme.NodeConnectorFont = new System.Drawing.Font(DEFAULT_FONT, 8F);
+        theme.NodeConnectorFont = new FontDef(DEFAULT_FONT, 8F);
         theme.NodeFillColor = Color.FromArgb(80, 80, 80);
         theme.NodeFillSelectedColor = Color.FromArgb(80, 80, 80);
         theme.NodeHeaderColor = Color.FromArgb(50, 0, 0, 0);
         theme.NodeOutlineColor = Color.FromArgb(0, 0, 0, 0);
         theme.NodeOutlineSelectedColor = Color.FromArgb(0, 142, 255);
-        theme.NodePreviewFont = new System.Drawing.Font(DEFAULT_FONT, 12F);
-        theme.NodeScaledConnectorFont = new System.Drawing.Font(DEFAULT_FONT, 8F);
-        theme.NodeScaledPreviewFont = new System.Drawing.Font(DEFAULT_FONT, 12F);
-        theme.NodeScaledTitleFont = new System.Drawing.Font(DEFAULT_FONT, 8F);
+        theme.NodePreviewFont = new FontDef(DEFAULT_FONT, 12F);
+        theme.NodeScaledConnectorFont = new FontDef(DEFAULT_FONT, 8F);
+        theme.NodeScaledPreviewFont = new FontDef(DEFAULT_FONT, 12F);
+        theme.NodeScaledTitleFont = new FontDef(DEFAULT_FONT, 8F);
         theme.NodeSignalInvalidColor = Color.FromArgb(255, 0, 0);
         theme.NodeSignalValidColor = Color.FromArgb(0, 255, 0);
         theme.NodeTextColor = Color.FromArgb(255, 255, 255);
         theme.NodeTextShadowColor = Color.FromArgb(128, 0, 0, 0);
-        theme.NodeTitleFont = new System.Drawing.Font(DEFAULT_FONT, 8F);
+        theme.NodeTitleFont = new FontDef(DEFAULT_FONT, 8F);
         theme.SelectionFillColor = Color.FromArgb(64, 0, 142, 255);
         theme.SelectionOutlineColor = Color.FromArgb(192, 0, 142, 255);
 
@@ -1460,24 +1461,6 @@ public abstract class FlowViewImGui :
         var node = new CommentFlowNode();
         OnFlowDoAction(new CreateNodeAction(this, node, rect));
         OnDirty();
-    }
-
-    [Obsolete]
-    internal void HandleDeleteNode()
-    {
-        var nodes = _graphControl.Diagram.SelectedNodes
-            .OfType<IFlowViewNode>()
-            .Select(o => o.Node)
-            .SkipNull();
-
-        if (nodes.Any())
-        {
-            OnFlowBeginMacro("Delete Node");
-            OnFlowDoAction(new DeleteNodeAction(this, nodes));
-            OnFlowEndMacro("Delete Node");
-
-            OnDirty();
-        }
     }
 
     /// <summary>

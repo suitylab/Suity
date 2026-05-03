@@ -1,5 +1,6 @@
 using LiteDB;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Design;
@@ -159,7 +160,7 @@ public class AigcTaskPage : DesignNode, IAigcTaskPage, IViewDoubleClickAction, I
     protected internal override string OnGetSuggestedPrefix() => "#Task-";
 
     /// <inheritdoc/>
-    protected override Image OnGetIcon() => base.OnGetIcon() ?? EnsureInstance()?.Icon ?? CoreIconCache.Task;
+    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? EnsureInstance()?.Icon ?? CoreIconCache.Task;
 
     /// <inheritdoc/>
     protected override bool OnCanEditText() => false;

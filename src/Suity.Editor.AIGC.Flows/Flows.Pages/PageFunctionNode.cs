@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
@@ -5,7 +6,6 @@ using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -87,7 +87,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
     }
 
     /// <inheritdoc/>
-    public override Image Icon => Target?.Icon ?? CoreIconCache.Function;
+    public override ImageDef Icon => Target?.Icon ?? CoreIconCache.Function;
 
     /// <inheritdoc/>
     public override string DisplayText

@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
@@ -87,7 +88,7 @@ public class PageDefinitionNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Page;
+    public override ImageDef DefaultIcon => CoreIconCache.Page;
 
     /// <summary>
     /// Gets the group name, using description if available, otherwise the node name.
@@ -284,7 +285,7 @@ public class PageDefinitionDiagramItem : FlowDiagramItem<PageDefinitionNode, Pag
 public class PageDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcToolAsset
 {
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Page;
+    public override ImageDef DefaultIcon => CoreIconCache.Page;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PageDefinitionAsset"/> class.
@@ -362,7 +363,7 @@ public class PageSubNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Page;
+    public override ImageDef DefaultIcon => CoreIconCache.Page;
 
     /// <summary>
     /// Gets the group name, using description if available, otherwise the node name.
@@ -500,7 +501,7 @@ public class PageResultNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
     FlowNodeConnector _defConnector;
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.CheckList;
+    public override ImageDef DefaultIcon => CoreIconCache.CheckList;
 
     /// <summary>
     /// Gets the group name, using description if available, otherwise the node name.

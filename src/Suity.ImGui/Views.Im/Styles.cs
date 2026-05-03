@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views.Graphics;
 using System.Drawing;
@@ -144,7 +145,7 @@ public class GuiFontStyle : IValueTransition<GuiFontStyle>
     /// <summary>
     /// The font.
     /// </summary>
-    public Font? Font { get; set; }
+    public FontDef? Font { get; set; }
 
     /// <summary>
     /// The font color.
@@ -158,7 +159,7 @@ public class GuiFontStyle : IValueTransition<GuiFontStyle>
         if (Font is { } && v2.Font is { })
         {
             float size = MathHelper.Lerp(Font.Size, v2.Font.Size, t);
-            v.Font = new Font(Font.FontFamily, size, Font.Style, Font.Unit/*, Font.GdiCharSet, Font.GdiVerticalFont*/);
+            v.Font = new FontDef(Font.FontFamily, size, Font.Style, Font.Unit/*, Font.GdiCharSet, Font.GdiVerticalFont*/);
         }
         else { v.Font = Font; }
         if (Color.HasValue && v2.Color.HasValue)

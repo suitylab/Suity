@@ -1,5 +1,6 @@
 using Suity;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Helpers;
 using Suity.Views.Graphics;
 using Suity.Views.Im.PropertyEditing;
@@ -39,8 +40,8 @@ internal class ImGuiBK : ImGui, IFloatTime
         typeof(GuiHeaderStyle),
     ];
 
-    private static readonly Pen DebugDirtyPen = new(Color.Cyan, 4);
-    private static readonly Pen DebugDirtyClearPen = new(Color.Black, 4);
+    private static readonly PenDef DebugDirtyPen = new(Color.Cyan, 4);
+    private static readonly PenDef DebugDirtyClearPen = new(Color.Black, 4);
 
     internal static ConcurrentPool<StringBuilder> StringBuilderPool { get; } = new(() => new());
 
@@ -1116,7 +1117,7 @@ internal class ImGuiBK : ImGui, IFloatTime
             //var color = ColorHelper.Multiply(DebugDirtyPen.Color, _debugDrawFadeOut);
             var color = Color.FromArgb(_rnd.Range(0, 255), _rnd.Range(0, 255), _rnd.Range(0, 255));
 
-            var pen = new Pen(color, DebugDirtyPen.Width);
+            var pen = new PenDef(color, DebugDirtyPen.Width);
 
             foreach (var rect in _lastDirtyRects)
             {

@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -85,7 +86,7 @@ public class EnumItem : EnumItemBase, IMember, IDescriptionDisplay, IPreviewDisp
     }
 
     /// <inheritdoc/>
-    protected override Image OnGetIcon() => CoreIconCache.EnumField;
+    protected override ImageDef OnGetIcon() => CoreIconCache.EnumField;
 
     /// <inheritdoc/>
     protected override void OnDrawPreviewImGui(ImGui gui)

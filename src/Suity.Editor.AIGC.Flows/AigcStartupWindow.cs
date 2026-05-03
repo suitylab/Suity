@@ -1,4 +1,5 @@
-﻿using Suity.Editor.AIGC.Flows.Properties;
+﻿using Suity.Drawing;
+using Suity.Editor.AIGC.Flows.Properties;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Selecting;
@@ -18,7 +19,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 {
     public static AigcStartupWindow Instance { get; private set; }
 
-    public static Bitmap Logo128 { get; } = Resources.Logo128.ToBitmap();
+    public static BitmapDef Logo128 { get; } = Resources.Logo128.ToBitmap();
 
     public static Color LogoFilterColor { get; } = Color.FromArgb(128, 128, 128, 128);
 
@@ -81,7 +82,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
     public string Title => "AI Startup";
 
-    public Image Icon => CoreIconCache.Startup;
+    public ImageDef Icon => CoreIconCache.Startup;
 
     public DockHint DockHint => DockHint.Document;
 

@@ -8,6 +8,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using Suity.Editor.Services;
+using Suity.Drawing;
 
 namespace Suity.Editor;
 
@@ -413,7 +414,7 @@ public static class AssetExtensions
     /// </summary>
     /// <param name="asset">The asset to get the icon for.</param>
     /// <returns>The small icon image, or null if not found.</returns>
-    public static Image ToIconSmall(this Asset asset)
+    public static ImageDef ToIconSmall(this Asset asset)
     {
         if (AssetManager.Instance.GetAsset(asset.IconId, AssetFilters.Default) is ImageAsset imgRef)
         {

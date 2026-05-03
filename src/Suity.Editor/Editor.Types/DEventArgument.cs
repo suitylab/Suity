@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using System.Drawing;
 
 namespace Suity.Editor.Types;
@@ -29,7 +30,7 @@ public class DEventArgument : DType
     }
 
     /// <inheritdoc />
-    public override Image DefaultIcon => CoreIconCache.EventArgument;
+    public override ImageDef DefaultIcon => CoreIconCache.EventArgument;
 
     /// <summary>
     /// Gets or sets the argument type.

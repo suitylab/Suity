@@ -1,8 +1,8 @@
+using Suity.Drawing;
 using Suity.Editor.Design;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
-using System.Drawing;
 
 namespace Suity.Editor.Documents.TypeEdit;
 
@@ -49,7 +49,7 @@ public class EventArgumentType : DesignItem<DEventArgumentBuilder>, INavigable
     }
 
     /// <inheritdoc/>
-    protected override Image OnGetIcon()
+    protected override ImageDef OnGetIcon()
     {
         return base.OnGetIcon() ?? Suity.Editor.CoreIconCache.EventArgument;
     }

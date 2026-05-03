@@ -1,6 +1,6 @@
+using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.Services;
-using System.Drawing;
 
 namespace Suity.Editor.AIGC.Flows;
 
@@ -14,12 +14,12 @@ public class AigcFlowDocument : BaseAigcFlowDocument<AigcDiagramAssetBuilder>
     /// <summary>
     /// Gets the icon for this document.
     /// </summary>
-    public override Image Icon => CoreIconCache.Workflow;
+    public override ImageDef Icon => CoreIconCache.Workflow;
 
     /// <summary>
     /// Gets the default icon for this document.
     /// </summary>
-    public override Image DefaultIcon => CoreIconCache.Workflow;
+    public override ImageDef DefaultIcon => CoreIconCache.Workflow;
 }
 
 /// <summary>
@@ -38,7 +38,7 @@ public class AigcDiagramAsset : GroupAsset
     /// <summary>
     /// Gets the default icon for this asset.
     /// </summary>
-    public override Image DefaultIcon => CoreIconCache.Workflow;
+    public override ImageDef DefaultIcon => CoreIconCache.Workflow;
 
     /// <summary>
     /// Gets a value indicating whether this asset can be exported to the library.

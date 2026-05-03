@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Properties;
 using Suity.Helpers;
 using System.Drawing;
@@ -22,7 +23,7 @@ public class DeepSeekPlugin : BaseOpenAIPlugin<DeepSeekLLmModelAsset, DeepSeekIm
     /// <summary>
     /// Gets the icon image for DeepSeek.
     /// </summary>
-    public static Bitmap DeepSeekIcon { get; } = Resources.DeepSeek.ToBitmap();
+    public static BitmapDef DeepSeekIcon { get; } = Resources.DeepSeek.ToBitmap();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DeepSeekPlugin"/> class.
@@ -61,7 +62,7 @@ public class DeepSeekLLmModelAsset : ThirdPartyLLmModelAsset
     /// <summary>
     /// Gets the default icon for DeepSeek models.
     /// </summary>
-    public override Image DefaultIcon => DeepSeekPlugin.DeepSeekIcon;
+    public override ImageDef DefaultIcon => DeepSeekPlugin.DeepSeekIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.
@@ -88,7 +89,7 @@ public class DeepSeekImageGenModelAsset : ThirdPartyImageGenAsset
     /// <summary>
     /// Gets the default icon for DeepSeek image models.
     /// </summary>
-    public override Image DefaultIcon => DeepSeekPlugin.DeepSeekIcon;
+    public override ImageDef DefaultIcon => DeepSeekPlugin.DeepSeekIcon;
 
     /// <summary>
     /// Gets a value indicating whether the API key is valid.

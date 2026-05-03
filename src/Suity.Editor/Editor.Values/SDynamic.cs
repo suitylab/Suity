@@ -1,3 +1,4 @@
+using Suity.Drawing;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -43,7 +44,7 @@ public class SDynamic : SValue, IViewObject
     /// <summary>
     /// Gets the display icon.
     /// </summary>
-    public virtual Image Icon => null;
+    public virtual ImageDef Icon => null;
 
     /// <summary>
     /// Validates the value.

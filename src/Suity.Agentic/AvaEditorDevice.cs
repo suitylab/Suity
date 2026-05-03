@@ -1,10 +1,10 @@
 using Avalonia.Threading;
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.MenuCommands.AppMenus;
 using Suity.Editor.Services;
-using Suity.Editor.Values;
 using Suity.Networking;
 using Suity.Rex;
 using Suity.Rex.Mapping;

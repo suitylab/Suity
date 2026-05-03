@@ -1,10 +1,10 @@
 using Suity.Collections;
+using Suity.Drawing;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Flows;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
-using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using Suity.Views.Im;
@@ -53,7 +53,7 @@ public class PageBeginNode : AigcPageTypeDefNode, IAigcRunWorkflow
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Begin;
+    public override ImageDef DefaultIcon => CoreIconCache.Begin;
 
     /// <inheritdoc/>
     public override Color? BackgroundColor => TitleColor;
@@ -236,7 +236,7 @@ public class PageEventNode : AigcPageTypeDefNode, IAigcRunWorkflow
     }
 
     /// <inheritdoc/>
-    public override Image DefaultIcon => CoreIconCache.Event;
+    public override ImageDef DefaultIcon => CoreIconCache.Event;
 
     /// <inheritdoc/>
     public override Color? BackgroundColor => TitleColor;

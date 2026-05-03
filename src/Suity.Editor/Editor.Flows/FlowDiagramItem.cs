@@ -1,4 +1,5 @@
-﻿using Suity.Editor.Documents.Linked;
+﻿using Suity.Drawing;
+using Suity.Editor.Documents.Linked;
 using Suity.Synchonizing;
 using Suity.Views;
 using Suity.Views.Named;
@@ -95,9 +96,9 @@ public class FlowDiagramItem : SNamedItem, IFlowDiagramItem
     /// <summary>
     /// Gets the icon.
     /// </summary>
-    protected override Image OnGetIcon()
+    protected override ImageDef OnGetIcon()
     {
-        return (Node as ITextDisplay)?.DisplayIcon as Image ?? base.OnGetIcon();
+        return (Node as ITextDisplay)?.DisplayIcon as ImageDef ?? base.OnGetIcon();
     }
 
 
