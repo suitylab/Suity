@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>com.suity.SuityAgentic</id>
+	<metadata_license>MIT</metadata_license>
+	<project_license>MIT</project_license>
+	<name>Suity.Agentic</name>
+	<summary>Agentic AI Development Environment</summary>
+	<description>
+		<p>Agentic AI Development Environment</p>
+	</description>
+  <url type="homepage">https://github.com/ybeapps/suity-agentic</url>
+	<launchable type="desktop-id">com.suity.SuityAgentic.desktop</launchable>
+	<provides>
+		<id>com.suity.SuityAgentic.desktop</id>
+	</provides>
+</component>
