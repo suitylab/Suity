@@ -63,6 +63,11 @@ public sealed class FontDef
     public bool Regular => Style == FontStyle.Regular;
 
     /// <summary>
+    /// Gets or sets an object that contains additional data about this <see cref="FontDef"/>.
+    /// </summary>
+    public object Tag { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="FontDef"/> class with the specified font family and size.
     /// </summary>
     /// <param name="family">The <see cref="FontFamily"/> of the new <see cref="FontDef"/>.</param>

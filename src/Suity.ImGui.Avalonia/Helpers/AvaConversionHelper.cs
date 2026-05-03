@@ -23,7 +23,7 @@ public static class AvaConversionHelper
         }
 
         var resolver = bmp.Resolver as AvaBitmapResolver;
-        if (resolver?.AvaBmp is { } avaBmp)
+        if (resolver?.AvaloniaCache is { } avaBmp)
         {
             return avaBmp;
         }
@@ -35,11 +35,11 @@ public static class AvaConversionHelper
 
         if (resolver is null)
         {
-            resolver = new AvaBitmapResolver(avaBmp);
+            resolver = new AvaBitmapResolver();
             bmp.Resolver = resolver;
         }
 
-        resolver.AvaBmp = avaBmp;
+        resolver.SetAvaloniaCache(avaBmp);
 
         return avaBmp;
     }

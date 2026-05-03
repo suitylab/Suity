@@ -138,7 +138,7 @@ public static class SkiaSharpUtils
         }
 
         var resolver = bmp.Resolver as AvaBitmapResolver;
-        if (resolver?.SKImg is { } skImg)
+        if (resolver?.SkiaCache is { } skImg)
         {
             return skImg;
         }
@@ -148,11 +148,11 @@ public static class SkiaSharpUtils
 
         if (resolver is null)
         {
-            resolver = new AvaBitmapResolver(skImg);
+            resolver = new AvaBitmapResolver();
             bmp.Resolver = resolver;
         }
 
-        resolver.SKImg = skImg;
+        resolver.SetSkiaCache(skImg);
 
         return skImg;
     }

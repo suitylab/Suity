@@ -30,8 +30,6 @@ public static class SkiaSharpExtensions
     /// </summary>
     public static float FontScale = 1f;
 
-    private static readonly Dictionary<FontDef, SKFont> _fontCache = [];
-    private static readonly Dictionary<ImageDef, SKImage> _imageCache = [];
 
     private static SKTypeface _defaultTypeFace;
     private static SKFont _defaultFont;
@@ -287,57 +285,51 @@ public static class SkiaSharpExtensions
     /// <returns>A cached SkiaSharp font.</returns>
     public static SKFont ToSKFont(this FontDef font)
     {
-        if (font == null)
+        if (font is null)
         {
             return DefaultFont;
         }
 
-        return _fontCache.GetOrAdd(font, _ =>
+        if (font.Tag is SKFont skFont)
         {
-            SKFontStyle style = null;
-            if (font.Bold)
+            return skFont;
+        }
+
+        SKFontStyle? style = null;
+        if (font.Bold)
+        {
+            if (font.Italic)
             {
-                if (font.Italic)
-                {
-                    style = SKFontStyle.BoldItalic;
-                }
-                else
-                {
-                    style = SKFontStyle.Bold;
-                }
+                style = SKFontStyle.BoldItalic;
             }
             else
             {
-                if (font.Italic)
-                {
-                    style = SKFontStyle.Italic;
-                }
-                else
-                {
-                    style = SKFontStyle.Normal;
-                }
+                style = SKFontStyle.Bold;
             }
-
-            if (_defaultTypeFace == null)
+        }
+        else
+        {
+            if (font.Italic)
             {
-                Initialize();
+                style = SKFontStyle.Italic;
             }
+            else
+            {
+                style = SKFontStyle.Normal;
+            }
+        }
 
-            //SKTypeface typeface = _defaultTypeFace;
-            SKTypeface typeface = SKTypeface.FromFamilyName(_defaultTypeFace.FamilyName, style);
+        if (_defaultTypeFace is null)
+        {
+            Initialize();
+        }
 
-            return new SKFont(typeface, font.Size * FontScale);
-        });
-    }
+        SKTypeface typeface = SKTypeface.FromFamilyName(_defaultTypeFace.FamilyName, style);
 
-    /// <summary>
-    /// Converts an <see cref="ImageDef"/> to a <see cref="SKImage"/>, using caching for performance.
-    /// </summary>
-    /// <param name="bitmap">The System.Drawing image.</param>
-    /// <returns>A cached SkiaSharp image.</returns>
-    public static SKImage ToSKImageCached(this ImageDef bitmap)
-    {
-        return _imageCache.GetOrAdd(bitmap, _ => bitmap.ToSKImage());
+        skFont = new SKFont(typeface, font.Size * FontScale);
+        font.Tag = skFont;
+
+        return skFont;
     }
 
     /// <summary>
@@ -507,7 +499,11 @@ public static class SkiaSharpExtensions
             };
         }
 
-        SKImage skImage = bitmap.ToSKImageCached();
+        var skImage = bitmap.ToSKImage();
+        if (skImage is null || skImage.Handle == nint.Zero)
+        {
+            return;
+        }
 
         if (color.HasValue)
         {
@@ -540,7 +536,11 @@ public static class SkiaSharpExtensions
             };
         }
 
-        SKImage skImage = bitmap.ToSKImage();
+        var skImage = bitmap.ToSKImage();
+        if (skImage is null || skImage.Handle == nint.Zero)
+        {
+            return;
+        }
 
         if (color.HasValue)
         {

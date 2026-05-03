@@ -258,10 +258,10 @@ internal class AvaGraphicOutput : IGraphicOutput
     }
 
     /// <inheritdoc/>
-    public SizeF MeasureImage(Suity.Drawing.ImageDef image)
+    public SizeF MeasureImage(ImageDef image)
     {
         var skImg = image.ToSKImage();
-        if (skImg != null)
+        if (skImg != null && skImg.Handle != nint.Zero)
         {
             return new SizeF(skImg.Width, skImg.Height);
         }

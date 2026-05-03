@@ -3,9 +3,19 @@ using System.IO;
 
 namespace Suity.Drawing;
 
+/// <summary>
+/// Defines a resolver interface for bitmap images that provides width and height information.
+/// </summary>
 public interface IBitmapResovler : IDisposable
 {
+    /// <summary>
+    /// Gets the width of the bitmap.
+    /// </summary>
     int Width { get; }
+
+    /// <summary>
+    /// Gets the height of the bitmap.
+    /// </summary>
     int Height { get; }
 }
 
@@ -26,14 +36,15 @@ public sealed class BitmapDef : ImageDef
     /// <inheritdoc/>
     public override int Height => Resolver?.Height ?? 0;
 
+    /// <summary>
+    /// Gets or sets the bitmap resolver that provides width and height information.
+    /// </summary>
     public IBitmapResovler Resolver { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="BitmapDef"/> class with the specified dimensions and data.
+    /// Initializes a new instance of the <see cref="BitmapDef"/> class with the specified data.
     /// </summary>
-    /// <param name="width">The width of the bitmap.</param>
-    /// <param name="height">The height of the bitmap.</param>
-    /// <param name="data">The raw byte data.</param>
+    /// <param name="data">The raw byte data of the bitmap.</param>
     public BitmapDef(byte[] data)
     {
         Data = data ?? throw new ArgumentNullException(nameof(data));
@@ -45,6 +56,9 @@ public sealed class BitmapDef : ImageDef
         return $"Bitmap [Width={Width}, Height={Height}, DataLength={Data.Length}]";
     }
 
+    /// <summary>
+    /// Releases all resources used by the <see cref="BitmapDef"/> and its resolver.
+    /// </summary>
     public override void Dispose()
     {
         base.Dispose();

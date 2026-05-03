@@ -6,36 +6,51 @@ namespace Suity.Helpers;
 
 internal class AvaBitmapResolver : IBitmapResovler
 {
-    public AvaBitmapResolver(Bitmap avaBmp)
+    public AvaBitmapResolver()
     {
-        AvaBmp = avaBmp ?? throw new ArgumentNullException(nameof(avaBmp));
-
-        Width = (int)avaBmp.Size.Width;
-        Height = (int)avaBmp.Size.Height;
     }
 
-    public AvaBitmapResolver(SKImage skImg)
+    public AvaBitmapResolver(Bitmap avaloniaCache)
     {
-        SKImg = skImg ?? throw new ArgumentNullException(nameof(skImg));
-
-        Width = skImg.Width;
-        Height = skImg.Height;
+        SetAvaloniaCache(avaloniaCache);
     }
 
-    public Bitmap? AvaBmp { get; set; }
+    public AvaBitmapResolver(SKImage skiaCache)
+    {
+        SetSkiaCache(skiaCache);
+    }
 
-    public SKImage? SKImg { get; set; }
+    public void SetAvaloniaCache(Bitmap avaloniaCache)
+    {
+        AvaloniaCache = avaloniaCache ?? throw new ArgumentNullException(nameof(avaloniaCache));
 
-    public int Width { get; }
+        Width = (int)avaloniaCache.Size.Width;
+        Height = (int)avaloniaCache.Size.Height;
+    }
 
-    public int Height { get; }
+    public void SetSkiaCache(SKImage skiaCache)
+    {
+        SkiaCache = skiaCache ?? throw new ArgumentNullException(nameof(skiaCache));
+
+        Width = skiaCache.Width;
+        Height = skiaCache.Height;
+    }
+
+
+    public Bitmap? AvaloniaCache { get; private set; }
+
+    public SKImage? SkiaCache { get; private set; }
+
+    public int Width { get; private set; }
+
+    public int Height { get; private set; }
 
     public void Dispose()
     {
-        AvaBmp?.Dispose();
-        AvaBmp = null;
+        AvaloniaCache?.Dispose();
+        AvaloniaCache = null;
 
-        SKImg?.Dispose();
-        SKImg = null;
+        SkiaCache?.Dispose();
+        SkiaCache = null;
     }
 }
