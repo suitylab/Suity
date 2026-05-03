@@ -1,0 +1,36 @@
+name: Build Suity.Agentic
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 10
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore src/Suity.Agentic/Suity.Agentic.csproj
+
+    - name: Build
+      run: dotnet build src/Suity.Agentic/Suity.Agentic.csproj --configuration Release --no-restore
+
+    - name: Delete PDB files
+      run: Get-ChildItem -Path . -Recurse -Filter "*.pdb" | Remove-Item -Force
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Suity.Agentic
+        path: src/Suity.Agentic/bin/Release/net10.0/
+        retention-days: 7
