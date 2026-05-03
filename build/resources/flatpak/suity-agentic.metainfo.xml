@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>com.suity.SuityAgentic</id>
+    <metadata_license>MIT</metadata_license>
+    <project_license>MIT</project_license>
+    <name>Suity.Agentic</name>
+    <summary>Agentic AI Development Environment</summary>
+    <description>
+        <p>Agentic AI Development Environment</p>
+    </description>
+    <url type="bugtracker">https://github.com/ybeapps/suity-agentic/issues</url>
+    <url type="help">https://github.com/ybeapps/suity-agentic/issues</url>
+    <url type="homepage">https://github.com/ybeapps/suity-agentic</url>
+    <url type="vcs-browser">https://github.com/ybeapps/suity-agentic</url>
+    <launchable type="desktop-id">com.suity.SuityAgentic.desktop</launchable>
+    <developer id="com.suity">
+        <name>Suity</name>
+    </developer>
+    <branding>
+        <color type="primary" scheme_preference="light">#4a90d9</color>
+        <color type="primary" scheme_preference="dark">#4a90d9</color>
+    </branding>
+    <content_rating type="oars-1.1" />
+</component>

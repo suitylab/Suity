@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Suity.Agentic
+Comment=Agentic AI Development Environment
+Exec=suity-agentic.sh
+Icon=com.suity.SuityAgentic
+Terminal=false
+Type=Application
+Categories=Development
+MimeType=inode/directory;
