@@ -53,7 +53,7 @@ mkdir -p resources/deb/opt/suity-agentic/
 mkdir -p resources/deb/usr/bin
 mkdir -p resources/deb/usr/share/applications
 mkdir -p resources/deb/usr/share/icons
-cp -f Suity.Agentic/* resources/deb/opt/suity-agentic
+cp -rf Suity.Agentic/* resources/deb/opt/suity-agentic
 ln -rsf resources/deb/opt/suity-agentic/suity-agentic resources/deb/usr/bin
 cp -r resources/_common/applications resources/deb/usr/share
 cp -r resources/_common/icons resources/deb/usr/share
