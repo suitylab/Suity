@@ -278,6 +278,7 @@ public class GraphInputManager
                             if (selected && !_shiftPressed)
                             {
                                 _control.SelectionManager.ClearLinkHighlights();
+                                _control.SelectionManager.ClearGroupNodeHighlights();
                             }
 
                             if (!selected)
@@ -285,7 +286,7 @@ public class GraphInputManager
                                 selected = _control.SelectionManager.UpdateLinkHighlights(false, _shiftPressed, pos);
                                 if (selected && !_shiftPressed)
                                 {
-                                    _control.SelectionManager.ClearNodeHighlights();
+                                    _control.SelectionManager.ClearAllNodeHighlights();
                                 }
                             }
 

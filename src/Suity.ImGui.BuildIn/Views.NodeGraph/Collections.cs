@@ -311,6 +311,9 @@ public class LayeredGraphNodeCollection : IEnumerable<GraphNode>
         }
     }
 
+    public GraphNodeCollection Groups => _groups;
+    public GraphNodeCollection Nodes => _nodes;
+
     #region IEnumerable
 
     public IEnumerator<GraphNode> GetEnumerator()

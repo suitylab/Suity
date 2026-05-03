@@ -214,13 +214,22 @@ public class GraphSelectionManager
     /// <summary>
     /// Clears the highlighted state of all nodes in the diagram.
     /// </summary>
-    public void ClearNodeHighlights()
+    public void ClearAllNodeHighlights()
     {
         foreach (GraphNode node in Diagram.NodeCollection)
         {
             node.Highlighted = false;
         }
     }
+
+    public void ClearGroupNodeHighlights()
+    {
+        foreach (GraphNode node in Diagram.NodeCollection.Groups)
+        {
+            node.Highlighted = false;
+        }
+    }
+
 
     /// <summary>
     /// Moves the selected nodes by the offset between origin and target.
