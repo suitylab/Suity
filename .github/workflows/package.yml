@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v6
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress
       - name: Download build
         uses: actions/download-artifact@v8
         with:
@@ -31,7 +33,9 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: package.${{ matrix.runtime }}
-          path: build/suity-agentic_*.zip
+          path: |
+            build/suity-agentic_*.zip
+            build/setup-suity-agentic-*.exe
       - name: Delete temp artifacts
         uses: geekyeggo/delete-artifact@v6
         with:

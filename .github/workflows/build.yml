@@ -64,7 +64,7 @@ jobs:
       - name: Build
         run: dotnet build src/Suity.slnx -c Release
       - name: Publish
-        run: dotnet publish src/Suity.Agentic/Suity.Agentic.csproj -c Release -o publish -r ${{ matrix.runtime }}
+        run: dotnet publish src/Suity.Agentic/Suity.Agentic.csproj -c Release -o publish -r ${{ matrix.runtime }} --self-contained true
       - name: Rename executable file
         if: startsWith(matrix.runtime, 'linux-')
         run: mv publish/Suity.Agentic publish/suity-agentic
