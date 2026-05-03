@@ -19,6 +19,9 @@ namespace Suity.Editor.Views.Startup;
 
 internal class StartupProjectGui : IDrawImGuiNode, IDisposable
 {
+    public const string VersionURL = "https://raw.githubusercontent.com/suitylab/Suity/refs/heads/main/VERSION";
+    public const string ReleaseURL = "https://github.com/suitylab/Suity/releases";
+
     public static BitmapDef BmpUsageTemplate { get; } = Suity.Editor.Properties.Resources.UsageTemplate.ToBitmap();
     public static BitmapDef BmpUsageExample { get; } = Suity.Editor.Properties.Resources.UsageExample.ToBitmap();
     public static BitmapDef BmpUsageLearning { get; } = Suity.Editor.Properties.Resources.UsageLearning.ToBitmap();
@@ -368,7 +371,7 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
 
     #region Create Project
 
-    private ProductConfig? _productConfig;
+    private string? _downloadedLatestVersion;
     private List<ProjectTemplateInfo>? _projectTemplates;
     private ProjectTemplateInfo? _selectedTemplate;
 
@@ -736,18 +739,22 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
 
     private async void UpdateProductConfig()
     {
-        if (_productConfig != null)
+        if (_downloadedLatestVersion != null)
         {
             return;
         }
 
-        _productConfig = await DownloadProductConfig();
+        _downloadedLatestVersion = await DownloadProductConfig();
+        if (string.IsNullOrWhiteSpace(_downloadedLatestVersion))
+        {
+            _downloadedLatestVersion = null;
+        }
 
-        if (_productConfig != null && !string.IsNullOrWhiteSpace(_productConfig.Version) && SuityApp.VersionCode != _productConfig.Version)
+        if (_downloadedLatestVersion != null && SuityApp.VersionCode != _downloadedLatestVersion)
         {
             _drawNotice = gui => 
             {
-                var msg = L($"New version {_productConfig.Version} is available, click 'Update' to download the latest version.");
+                var msg = L($"New version {_downloadedLatestVersion} is available, click 'Update' to download the latest version.");
                 ShowNotice(gui, msg, L("Update"), () => NavigateToDownloadPage());
             };
         }
@@ -755,16 +762,13 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
         _guiRef.QueueRefresh();
     }
 
-    private async Task<ProductConfig?> DownloadProductConfig()
+    private async Task<string?> DownloadProductConfig()
     {
-        string url = "https://storage.suitylab.com/SuityAgentic/ProductConfig.json";
-
         try
         {
             using var client = new HttpClient();
-            string json = await client.GetStringAsync(url);
-            var config = JsonConvert.DeserializeObject<ProductConfig>(json);
-            return config;
+            string version = await client.GetStringAsync(VersionURL);
+            return version;
         }
         catch (Exception ex)
         {
@@ -816,9 +820,9 @@ internal class StartupProjectGui : IDrawImGuiNode, IDisposable
 
     private void NavigateToDownloadPage()
     {
-        if (_productConfig?.DownloadUrl is { } url && !string.IsNullOrWhiteSpace(url))
+        if (!string.IsNullOrWhiteSpace(ReleaseURL))
         {
-            EditorUtility.OpenBrowser(url);
+            EditorUtility.OpenBrowser(ReleaseURL);
         }
         else
         {

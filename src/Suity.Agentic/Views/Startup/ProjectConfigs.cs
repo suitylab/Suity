@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Suity.Editor.Views.Startup;
 
 
+[Obsolete]
 public class ProductConfig
 {
     public string Name { get; set; }
