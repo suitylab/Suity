@@ -8,6 +8,7 @@ $issPath = "build\scripts\Suity.Agentic.iss"
 if (Test-Path $issPath) {
     Write-Host "Building Installer..."
     $env:SOURCE_DIR = (Resolve-Path "build\Suity.Agentic").Path
+    $env:OUTPUT_DIR = (Resolve-Path "build").Path
     & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" $issPath
     if ($LASTEXITCODE -ne 0) {
         throw "Inno Setup failed with exit code $LASTEXITCODE"
