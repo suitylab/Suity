@@ -412,6 +412,8 @@ public interface IViewSelectionInfo
 /// <summary>
 /// Represents a view that allows setting values by name.
 /// </summary>
+/// 
+/// 
 /// <summary>
 /// Represents a view that supports setting values by name.
 /// </summary>

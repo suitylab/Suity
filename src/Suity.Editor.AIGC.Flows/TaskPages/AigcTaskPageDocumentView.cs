@@ -565,7 +565,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                 .InitToolTips("Go to workflow")
                 .OnClick(() =>
                 {
-                    HandleNavigateDiagram();
+                    HandleGotoWorkflow();
                 });
             });
 
@@ -885,13 +885,13 @@ public class AigcTaskPageDocumentView : IDocumentView,
     /// <summary>
     /// Navigates to the diagram associated with the currently selected task.
     /// </summary>
-    internal void HandleNavigateDiagram() => HandleNavigateDiagram(_currentPage);
+    internal void HandleGotoWorkflow() => HandleGotoWorkflow(_currentPage);
 
     /// <summary>
     /// Navigates to the diagram associated with the specified task.
     /// </summary>
     /// <param name="task">The task whose diagram to navigate to.</param>
-    internal void HandleNavigateDiagram(AigcTaskPage task)
+    internal void HandleGotoWorkflow(AigcTaskPage task)
     {
         if (task is null)
         {

@@ -205,7 +205,7 @@ public abstract class ImGuiVirtualTreeView : ImGuiTreeView<VirtualNode>,
     {
         var gui = node.Gui;
 
-        if (DrawPipeline(node, vNode, EditorImGuiPipeline.Name))
+        if (DrawRowPipeline(node, vNode, EditorImGuiPipeline.Name))
         {
             return;
         }
@@ -321,7 +321,7 @@ public abstract class ImGuiVirtualTreeView : ImGuiTreeView<VirtualNode>,
     {
         var gui = node.Gui;
 
-        if (DrawPipeline(node, vNode, EditorImGuiPipeline.Description))
+        if (DrawRowPipeline(node, vNode, EditorImGuiPipeline.Description))
         {
             return;
         }
@@ -350,7 +350,7 @@ public abstract class ImGuiVirtualTreeView : ImGuiTreeView<VirtualNode>,
     {
         var gui = node.Gui;
 
-        if (DrawPipeline(node, vNode, EditorImGuiPipeline.Preview))
+        if (DrawRowPipeline(node, vNode, EditorImGuiPipeline.Preview))
         {
             return;
         }
@@ -389,7 +389,11 @@ public abstract class ImGuiVirtualTreeView : ImGuiTreeView<VirtualNode>,
     /// <param name="vNode">The virtual node data.</param>
     /// <param name="pipeline">The pipeline stage to execute.</param>
     /// <returns>True if the pipeline was handled; otherwise, false.</returns>
-    protected bool DrawPipeline(ImGuiNode node, VirtualNode vNode, EditorImGuiPipeline pipeline)
+    /// <remarks>
+    /// This method handles the rendering pipeline for a row in the tree view, processing both the node
+    /// and its displayed value if they implement the <see cref="IDrawEditorImGui"/> interface.
+    /// </remarks>
+    protected bool DrawRowPipeline(ImGuiNode node, VirtualNode vNode, EditorImGuiPipeline pipeline)
     {
         if (vNode is IDrawEditorImGui drawNode)
         {

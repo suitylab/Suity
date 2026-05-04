@@ -1,10 +1,8 @@
-using Suity.Editor.Services;
 using Suity.Editor.VirtualTree;
 using Suity.Helpers;
 using Suity.Synchonizing.Core;
 using Suity.Views.Im.PropertyEditing;
 using System;
-using System.Drawing;
 using System.Linq;
 
 namespace Suity.Views.Im.TreeEditing;
@@ -49,7 +47,7 @@ public class HeaderlessVirtualTreeView : ImGuiVirtualTreeView
     /// <summary>
     /// Gets or sets the content GUI action for rendering row content.
     /// </summary>
-    public Action<ImGuiNode, VirtualNode?> ContentGui { get; set; }
+    public Action<ImGuiNode, VirtualNode> ContentGui { get; set; }
 
 
 
@@ -144,44 +142,6 @@ public class HeaderlessVirtualTreeView : ImGuiVirtualTreeView
         {
             node.HandleDragDrop(this, dropEvent, mode);
         });
-    }
-
-    
-
-    private bool DrawRowPipeline(ImGuiNode node, VirtualNode vNode, EditorImGuiPipeline pipeline)
-    {
-        if (vNode is IDrawEditorImGui drawNode)
-        {
-            try
-            {
-                // vNode.DisplayedValue is handled inside the following pipeline.
-                if (drawNode.OnEditorGui(node.Gui, pipeline, this))
-                {
-                    return true;
-                }
-            }
-            catch (Exception err)
-            {
-                err.LogError();
-            }
-        }
-
-        if (vNode.DisplayedValue is IDrawEditorImGui drawValue)
-        {
-            try
-            {
-                if (drawValue.OnEditorGui(node.Gui, pipeline, this))
-                {
-                    return true;
-                }
-            }
-            catch (Exception err)
-            {
-                err.LogError();
-            }
-        }
-
-        return false;
     }
 
     private PropertyTarget CreateRootTarget(object obj, int viewId = 0)

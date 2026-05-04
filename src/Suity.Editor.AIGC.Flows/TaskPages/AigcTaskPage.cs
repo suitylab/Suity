@@ -15,6 +15,7 @@ using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.UndoRedos;
 using Suity.Views;
+using Suity.Views.Im;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,7 +28,11 @@ namespace Suity.Editor.AIGC.TaskPages;
 /// Represents an AIGC task page that manages AI-generated content tasks within a document flow.
 /// Implements design node functionality, task page interface, view double-click actions, and navigation.
 /// </summary>
-public class AigcTaskPage : DesignNode, IAigcTaskPage, IViewDoubleClickAction, INavigable
+public class AigcTaskPage : DesignNode,
+    IAigcTaskPage, 
+    IViewDoubleClickAction,
+    INavigable,
+    IDrawEditorImGui
 {
     readonly AssetProperty<IAigcToolAsset> _pageDef = new("PageDefinition", "Page");
     readonly AssetProperty<ArticleContainerAsset> _article = new("Article", "Article");
@@ -862,7 +867,7 @@ public class AigcTaskPage : DesignNode, IAigcTaskPage, IViewDoubleClickAction, I
     /// <inheritdoc/>
     void IViewDoubleClickAction.DoubleClick()
     {
-        (this.GetDocument()?.View as AigcTaskPageDocumentView)?.HandleNavigateDiagram(this);
+        HandleGotoWorkflow();
     }
 
     #endregion
@@ -873,6 +878,36 @@ public class AigcTaskPage : DesignNode, IAigcTaskPage, IViewDoubleClickAction, I
     object INavigable.GetNavigationTarget()
     {
         return Instance?.DiagramItem?.TargetAsset;
+    }
+
+    #endregion
+
+    #region IDrawEditorImGui
+
+    /// <inheritdoc/>
+    public override bool OnEditorGui(ImGui gui, EditorImGuiPipeline pipeline, IDrawContext context)
+    {
+        if (pipeline == EditorImGuiPipeline.Preview)
+        {
+            var selInfo = this.GetDocument()?.View?.GetService<IViewSelectionInfo>();
+            if (selInfo?.SelectedObjects is { } sels && sels.CountOne())
+            {
+                bool selected = sels.Contains(this);
+                if (selected)
+                {
+                    gui.VerticalLayout("#spacingW")
+                    .InitWidth(20);
+
+                    gui.Button("Workflow", CoreIconCache.Workflow)
+                    .InitClass("smallBtn")
+                    .InitCenter()
+                    .InitToolTips("Open workflow")
+                    .OnClick(HandleGotoWorkflow);
+                }
+            }
+        }
+
+        return base.OnEditorGui(gui, pipeline, context);
     }
 
     #endregion
@@ -1140,6 +1175,11 @@ public class AigcTaskPage : DesignNode, IAigcTaskPage, IViewDoubleClickAction, I
         }
 
         return true;
+    }
+
+    public void HandleGotoWorkflow()
+    {
+        (this.GetDocument()?.View as AigcTaskPageDocumentView)?.HandleGotoWorkflow(this);
     }
 
     #endregion

@@ -82,6 +82,13 @@ public abstract class ThemeBase : ImGuiTheme
             .SetColor(ColorScheme.EditorSelection)
             .SetCornerRound(3);
 
+        this.ClassStyle("smallBtn")
+            .SetSize(18, 18)
+            .SetPadding(1)
+            .SetBorder(0)
+            .SetColor(ColorScheme.ToolButton)
+            .SetCornerRound(2);
+
         this.ClassStyle("simpleBtn")
             .SetColor(ColorScheme.ToolButton)
             .SetCornerRound(3);

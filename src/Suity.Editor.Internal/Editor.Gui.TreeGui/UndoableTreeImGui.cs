@@ -2,7 +2,6 @@ using Suity.Editor.Services;
 using Suity.Synchonizing;
 using Suity.Synchonizing.Core;
 using Suity.UndoRedos;
-using Suity.Views;
 using Suity.Views.Im;
 using Suity.Views.Im.TreeEditing;
 using System;
