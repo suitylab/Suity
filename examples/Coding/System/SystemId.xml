@@ -246,6 +246,7 @@
   <Object id="34d46385-29dd-4910-a2be-3eb714d38060" name="*CoreIcon|Command" />
   <Object id="281ade0a-0315-49fc-a517-b5797fc29098" name="*CoreIcon|Comment" />
   <Object id="ded15a6b-07bb-4a95-bb73-bad3620b02d7" name="*CoreIcon|Compile" />
+  <Object id="6c46f558-ab83-4a28-b76d-47f8e2eaa250" name="*CoreIcon|Complete" />
   <Object id="e253536f-8ecd-4b0b-8e0d-37c263b19aba" name="*CoreIcon|Complex" />
   <Object id="bff170d9-bd80-446f-a323-61d3a9bd6eeb" name="*CoreIcon|Component" />
   <Object id="bfaf5a00-95f0-45ab-a4ed-b5440df68bfd" name="*CoreIcon|Computer" />
@@ -407,6 +408,7 @@
   <Object id="8a88de56-3479-47c2-8120-e2e5b0b7dc97" name="*CoreIcon|Object" />
   <Object id="e96abb42-455c-4e42-940d-62d15ebc46fd" name="*CoreIcon|Occupied" />
   <Object id="14ee459b-6186-4b0a-aeb5-5ccbd88e6cb5" name="*CoreIcon|Open" />
+  <Object id="7a6b426e-4300-47e7-bc19-751e26128884" name="*CoreIcon|Output" />
   <Object id="19b41c8f-5ad1-4878-b468-fcaa99aa2eaa" name="*CoreIcon|Package" />
   <Object id="1ee73cfb-b3c3-4307-a58b-aaf215353fae" name="*CoreIcon|Page" />
   <Object id="908c8b3d-c754-44cc-96fe-73a7a26b26b6" name="*CoreIcon|Parameter" />

@@ -66,11 +66,11 @@ public class GraphSelectionManager
             for (int i = Diagram.NodeCollection.Count - 1; i >= 0; i--)
             {
                 var node = Diagram.NodeCollection[i];
-                if (normalNode && node.IsGroup)
+                if (!groupNode && node.IsGroup)
                 {
                     continue;
                 }
-                if (groupNode && !node.IsGroup)
+                if (!normalNode && !node.IsGroup)
                 {
                     continue;
                 }
@@ -98,11 +98,11 @@ public class GraphSelectionManager
             for (int i = Diagram.NodeCollection.Count - 1; i >= 0; i--)
             {
                 var node = Diagram.NodeCollection[i];
-                if (normalNode && node.IsGroup)
+                if (!groupNode && node.IsGroup)
                 {
                     continue;
                 }
-                if (groupNode && !node.IsGroup)
+                if (!normalNode && !node.IsGroup)
                 {
                     continue;
                 }

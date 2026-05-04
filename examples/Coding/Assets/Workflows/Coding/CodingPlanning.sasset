@@ -105,8 +105,8 @@
             </ToolTips>
           </Item>
         </Attributes>
-        <TaskCommit>True</TaskCommit>
         <History>True</History>
+        <TaskCommit>True</TaskCommit>
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
         </ValueType>
@@ -156,10 +156,9 @@
             </ToolTips>
           </Item>
         </Attributes>
-        <TaskCommit>True</TaskCommit>
         <History>True</History>
+        <TaskCommit>True</TaskCommit>
         <ArticlePath>Requirement Document</ArticlePath>
-        <AssetKeyMode>True</AssetKeyMode>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="250" Y="-20" Width="86" Height="25">
@@ -228,6 +227,13 @@
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="-190" Width="149" Height="56">
       <Name>###AddKnowledgeArticle01</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.AddKnowledgeArticle" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-190" Y="-350" Width="269" Height="226">
+      <Name>###GroupFlowNode01</Name>
+      <Node type="Suity.Editor.Flows.GroupFlowNode">
+        <GroupName>Add this article to the global knowledge base</GroupName>
+        <Icon />
+      </Node>
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
