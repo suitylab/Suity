@@ -27,8 +27,7 @@ public enum PageViewCategory
 {
     Page,
     Chat,
-    History,
-    Commit,
+    Context,
 }
 
 /// <summary>
@@ -532,50 +531,36 @@ public class AigcTaskPageDocumentView : IDocumentView,
             .InitFitVertical()
             .OnContent(() =>
             {
-                _guiNaviContainerRef.Node = gui.HorizontalLayout("#left")
-                .InitWidthRest(64)
-                .InitPadding(0)
-                //.InitVerticalAlignment(GuiAlignment.Center)
-                .OnContent(() =>
+                //_guiNaviContainerRef.Node = gui.HorizontalLayout("#left")
+                //.InitWidthRest(64)
+                //.InitPadding(0)
+                ////.InitVerticalAlignment(GuiAlignment.Center)
+                //.OnContent(() =>
+                //{
+
+                //});
+
+                NaviButton(gui, PageViewCategory.Page, CoreIconCache.Task, "Page view");
+                NaviButton(gui, PageViewCategory.Chat, CoreIconCache.Chat, "LLm chat view");
+                NaviButton(gui, PageViewCategory.Context, CoreIconCache.Text, "Chat history context");
+
+                //TaskTitleGui(gui, page);
+
+                gui.VerticalLine("#spacing01")
+                .OnInitialize(n =>
                 {
-                    NaviButton(gui, PageViewCategory.Page, CoreIconCache.Task, "Page view");
-                    NaviButton(gui, PageViewCategory.Chat, CoreIconCache.Chat, "LLm chat view");
-                    NaviButton(gui, PageViewCategory.History, CoreIconCache.Text, "Chat history");
-                    NaviButton(gui, PageViewCategory.Commit, CoreIconCache.Complete, "Task commit message");
-
-                    /*                    if (page.Instance?.GetAllStatusIcon() is { } statusIcon)
-                                        {
-                                            gui.Image("#statusIcon", statusIcon).InitClass("icon");
-                                        }
-
-                                        if (page.Icon is { } icon)
-                                        {
-                                            gui.Image("#icon", icon).InitClass("icon");
-                                        }
-
-                                        gui.Text($"#title", page.DisplayText ?? "---")
-                                        .InitClass("titleText")
-                                        .InitCenter();
-
-                                        if (page.Instance?.SkillAssetSelection?.Target is { } skill)
-                                        {
-                                            gui.Text($" (Skill: {skill.ToDisplayText()})");
-                                        }*/
+                    //n.InitOverrideMargin(0, 0, 10, 10);
+                    n.InitHeight(40);
+                    n.InitWidth(20);
+                    n.InitOverrideBorder(1, Color.White.MultiplyAlpha(0.2f));
                 });
 
-                gui.HorizontalLayout("#right")
-                .InitWidthRest()
-                .InitPadding(10)
-                //.InitVerticalAlignment(GuiAlignment.Center)
-                .OnContent(() =>
+                gui.Button("#diagramBtn", "Diagram", CoreIconCache.Workflow)
+                .InitClass("naviBtn")
+                .InitToolTips("Go to diagram")
+                .OnClick(() =>
                 {
-                    gui.Button("Navigate", CoreIconCache.GotoDefination)
-                    .InitClass("configBtn")
-                    .InitToolTips("Go to diagram")
-                    .OnClick(() =>
-                    {
-                        HandleNavigateDiagram();
-                    });
+                    HandleNavigateDiagram();
                 });
             });
 
@@ -596,7 +581,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         }
                         break;
 
-                    case PageViewCategory.History:
+                    case PageViewCategory.Context:
                         gui.ScrollableFrame("#chat-history-" + page.Name, GuiOrientation.Vertical)
                         .InitFullSize()
                         .OnContent(() => 
@@ -607,7 +592,9 @@ public class AigcTaskPageDocumentView : IDocumentView,
                             .OnContent(() =>
                             {
                                 gui.Image("icon", CoreIconCache.Input).InitClass("titleIcon");
-                                gui.Text("input", "Input").InitClass("titleText").InitCenter();
+                                gui.Text("input", "Input chat history")
+                                .InitClass("titleText")
+                                .InitCenter();
                             });
                             
 
@@ -622,21 +609,27 @@ public class AigcTaskPageDocumentView : IDocumentView,
                             .OnContent(() =>
                             {
                                 gui.Image("icon", CoreIconCache.Output).InitClass("titleIcon");
-                                gui.Text("output", "Output").InitClass("titleText").InitCenter();
+                                gui.Text("output", "Output chat history")
+                                .InitClass("titleText")
+                                .InitCenter();
                             });
 
                             gui.TextAreaInput("#output", null, page.Instance?.GetOutputChatHistory())
                             .InitFullWidth()
                             .InitFitVertical()
                             .InitReadonly(true);
-                        });
-                        break;
 
-                    case PageViewCategory.Commit:
-                        gui.ScrollableFrame("#chat-commit" + page.Name, GuiOrientation.Vertical)
-                        .InitFullSize()
-                        .OnContent(() =>
-                        {
+                            gui.HorizontalLayout("#commit-title")
+                            .InitFullWidth()
+                            .InitFitVertical()
+                            .OnContent(() =>
+                            {
+                                gui.Image("icon", CoreIconCache.Complete).InitClass("titleIcon");
+                                gui.Text("commit", "Commit to parent task")
+                                .InitClass("titleText")
+                                .InitCenter();
+                            });
+
                             gui.TextAreaInput("#commit", null, page.Instance?.GetTaskCommit())
                             .InitFullWidth()
                             .InitFitVertical()
@@ -646,6 +639,28 @@ public class AigcTaskPageDocumentView : IDocumentView,
                 }
             });
         });
+    }
+
+    private static void TaskTitleGui(ImGui gui, AigcTaskPage page)
+    {
+        if (page.Instance?.GetAllStatusIcon() is { } statusIcon)
+        {
+            gui.Image("#statusIcon", statusIcon).InitClass("icon");
+        }
+
+        if (page.Icon is { } icon)
+        {
+            gui.Image("#icon", icon).InitClass("icon");
+        }
+
+        gui.Text($"#title", page.DisplayText ?? "---")
+        .InitClass("titleText")
+        .InitCenter();
+
+        if (page.Instance?.SkillAssetSelection?.Target is { } skill)
+        {
+            gui.Text($" (Skill: {skill.ToDisplayText()})");
+        }
     }
 
     private ImGuiNode NaviButton(ImGui gui, PageViewCategory category, ImageDef icon, string toolTips = null)
