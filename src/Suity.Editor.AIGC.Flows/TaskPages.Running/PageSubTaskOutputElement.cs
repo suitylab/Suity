@@ -203,17 +203,15 @@ public class PageSubTaskOutputElement : AigcPageElement, IPageParameterOutput, I
                 return false;
             }
 
-            done = tasks.All(o => o?.PageInstance?.GetIsDone().IsTrueOrEmpty() == true);
+            done = tasks.All(o => (o?.PageInstance?.GetAllDone()).IsTrueOrEmpty());
         }
         else
         {
             var task = GetLastSubTask();
-
-            done = task?.PageInstance?.GetIsDone().IsTrueOrEmpty() == true;
+            var taskIsDone = task?.PageInstance?.GetAllDone();
+            done = taskIsDone.IsTrueOrEmpty();
         }
 
         return done;
     }
-
-
 }

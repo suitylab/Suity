@@ -69,8 +69,8 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
     private bool _editTypeEnabled = true;
 
     private readonly ValueProperty<bool> _linkedMode = new("LinkedMode", "Linked Mode", true, "When enabled, will be displayed as a link address in task submissions and chat history, instead of content.\r\nOnly effective when value is a link type.");
-    private readonly ValueProperty<bool> _chatHistory = new("History", "Chat History", false, "Retained as historical conversation during dialogue.");
     private readonly ValueProperty<bool> _taskCompletion = new("TaskCompletion", "Task Completion", true, "Used to determine if task is completed.");
+    private readonly ValueProperty<bool> _chatHistory = new("History", "Chat History", false, "Retained as historical conversation during dialogue.");
     private readonly ValueProperty<bool> _taskCommit = new("TaskCommit", "Task Commit", false, "Submit this value after completing the task.");
 
     /// <summary>
@@ -188,8 +188,8 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
         base.OnSync(sync, context);
 
         _linkedMode.Sync(sync);
-        _chatHistory.Sync(sync);
         _taskCompletion.Sync(sync);
+        _chatHistory.Sync(sync);
         _taskCommit.Sync(sync);
 
         if (_editTypeEnabled)
@@ -246,8 +246,8 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
         base.OnSetupViewContent(setup);
 
         _linkedMode.InspectorField(setup);
-        _chatHistory.InspectorField(setup);
         _taskCompletion.InspectorField(setup);
+        _chatHistory.InspectorField(setup);
         _taskCommit.InspectorField(setup);
     }
 

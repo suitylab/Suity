@@ -467,7 +467,7 @@ public abstract class FlowViewImGui :
     }
 
     /// <inheritdoc/>
-    public void SetNodeSelection(IEnumerable<FlowNode> nodes)
+    public void SetNodeSelection(IEnumerable<FlowNode> nodes, bool focus)
     {
         var viewNodes = nodes.Select(o => o?.GetViewNode(this)).OfType<GraphNode>().ToArray();
         if (viewNodes.Length == 0)
@@ -480,10 +480,13 @@ public abstract class FlowViewImGui :
         OnFlowDoAction(new NodeSmartSelectionAction(this, _nodeSelectionBefore, viewNodes));
         _nodeSelectionBefore.Clear();
 
-        this._graphControl.Viewport.FocusSelection();
+        if (focus)
+        {
+            this._graphControl.Viewport.FocusSelection();
+        }
     }
 
-    public void SetLinkSelection(IEnumerable<NodeLink> links)
+    public void SetLinkSelection(IEnumerable<NodeLink> links, bool focus)
     {
         var viewLinks = links.Select(o => _graphControl.Diagram.FindLink(o.FromNode, o.FromConnector, o.ToNode, o.ToConnector)).ToArray();
         if (viewLinks.Length == 0)
@@ -496,7 +499,10 @@ public abstract class FlowViewImGui :
         OnFlowDoAction(new NodeSmartSelectionAction(this, [], [], _linkSelectionBefore, viewLinks));
         _linkSelectionBefore.Clear();
 
-        this._graphControl.Viewport.FocusSelection();
+        if (focus)
+        {
+            this._graphControl.Viewport.FocusSelection();
+        }
     }
 
     //public bool IsDisposed { get; }
@@ -800,15 +806,15 @@ public abstract class FlowViewImGui :
         switch (selection.Selection)
         {
             case IFlowDiagramItem diagramItem:
-                SetNodeSelection([diagramItem.Node]);
+                SetNodeSelection([diagramItem.Node], true);
                 return true;
 
             case List<IFlowDiagramItem> list:
-                SetNodeSelection(list.Select(o => o.Node));
+                SetNodeSelection(list.Select(o => o.Node), true);
                 return true;
 
             case FlowNode node:
-                SetNodeSelection([node]);
+                SetNodeSelection([node], true);
                 return true;
 
             case SyncPath path:
@@ -1499,7 +1505,7 @@ public abstract class FlowViewImGui :
             .OfType<FlowNode>()
             .Where(o => o.GetType() == type);
 
-        SetNodeSelection(nodes);
+        SetNodeSelection(nodes, true);
     }
 
     /// <summary>
@@ -1673,7 +1679,7 @@ public abstract class FlowViewImGui :
             return false;
         }
 
-        SetNodeSelection([node]);
+        SetNodeSelection([node], true);
 
         if (!SyncPath.IsNullOrEmpty(rest) && rest.Length >= 1)
         {
@@ -1688,7 +1694,7 @@ public abstract class FlowViewImGui :
         var node = _document.GetDiagramItem(name)?.Node;
         if (node != null)
         {
-            SetNodeSelection([node]);
+            SetNodeSelection([node], true);
 
             return true;
         }

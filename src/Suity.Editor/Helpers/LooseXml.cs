@@ -1,4 +1,6 @@
 using Suity.Editor.Types;
+using Suity.Synchonizing;
+using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,7 @@ namespace Suity.Editor.AIGC.Helpers;
 /// Used for parsing informal or incomplete XML-like structures in text content.
 /// </summary>
 [NativeType("XmlTag", CodeBase = "AIGC", Description = "Xml Tag", Icon = "*CoreIcon|Tag")]
-public class LooseXmlTag
+public class LooseXmlTag : IViewObject
 {
     /// <summary>
     /// Gets or sets the name of the XML tag.
@@ -98,6 +100,22 @@ public class LooseXmlTag
 
         return $"<{tagName} {string.Join(" ", Attributes.Select(kv => $"{kv.Key}=\"{kv.Value}\""))}>\n{InnerText}\n</{tagName}>";
     }
+
+    #region Data Sync
+
+    public void Sync(IPropertySync sync, ISyncContext context)
+    {
+        sync.Sync(nameof(TagName), TagName);
+        sync.Sync(nameof(InnerText), new TextBlock(InnerText));
+    }
+
+    public void SetupView(IViewObjectSetup setup)
+    {
+        setup.InspectorField(TagName, new ViewProperty(nameof(TagName), "Tag Name").WithReadOnly());
+        setup.InspectorFieldOf<TextBlock>(new ViewProperty(nameof(InnerText), "Inner Text").WithReadOnly());
+    }
+
+    #endregion
 }
 
 /// <summary>

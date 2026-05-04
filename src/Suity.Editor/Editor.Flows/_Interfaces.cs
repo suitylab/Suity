@@ -409,9 +409,15 @@ public interface IFlowView
     /// Sets the node selections.
     /// </summary>
     /// <param name="nodes">Nodes to select.</param>
-    void SetNodeSelection(IEnumerable<FlowNode> nodes);
+    /// <param name="focus">Whether to focus.</param>
+    void SetNodeSelection(IEnumerable<FlowNode> nodes, bool focus);
 
-    void SetLinkSelection(IEnumerable<NodeLink> links);
+    /// <summary>
+    /// Sets the link selections.
+    /// </summary>
+    /// <param name="links">Links to select.</param>
+    /// <param name="focus">Whether to focus.</param>
+    void SetLinkSelection(IEnumerable<NodeLink> links, bool focus);
 
     /// <summary>
     /// Inspects the selection.

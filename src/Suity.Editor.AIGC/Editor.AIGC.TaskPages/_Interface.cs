@@ -79,6 +79,7 @@ public interface IAigcPageElement : INamed
     /// <summary>
     /// Gets whether this element is done. Returns null if the state is unknown.
     /// </summary>
+    /// <returns></returns>
     bool? GetIsDone();
 
     /// <summary>
@@ -147,6 +148,12 @@ public interface IAigcPageInstance : IAigcPageElement
     /// Gets all input parameters for this page.
     /// </summary>
     IEnumerable<IPageParameterInput> GetInputParameters();
+
+    /// <summary>
+    /// Gets whether all child elements are done/completed.
+    /// </summary>
+    /// <returns>True if all child elements are done, false if not, or null if indeterminate.</returns>
+    bool? GetAllDone();
 }
 
 /// <summary>

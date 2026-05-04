@@ -108,7 +108,7 @@ internal class DeleteLinkAction : UndoRedoAction
                 nodesToRefresh.Add(_view.GetViewNode(link.ToNode));
             }
 
-            _view.SetLinkSelection(_links);
+            _view.SetLinkSelection(_links, false);
             _view.RefreshNodes(nodesToRefresh);
 
             EditorUtility.Inspector.UpdateInspector();

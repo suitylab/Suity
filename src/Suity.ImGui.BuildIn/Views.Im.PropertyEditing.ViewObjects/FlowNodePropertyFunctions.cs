@@ -114,7 +114,7 @@ public static class FlowNodePropertyFunctions
             var inputs = node.Connectors.Where(o => o.Direction == FlowDirections.Input && o.DataTypeName != FlowNode.ACTION_TYPE);
             if (inputs.Any())
             {
-                gui.PropertyLabel("##input-connectors", "Input Ports", CoreIconCache.Connect);
+                gui.PropertyLabel("##input-connectors", "Input Connectors", CoreIconCache.Connect);
                 foreach (var c in inputs)
                 {
                     string propName = $"#computed-{c.Name}";
@@ -130,7 +130,7 @@ public static class FlowNodePropertyFunctions
             var outputs = node.Connectors.Where(o => o.Direction == FlowDirections.Output && o.DataTypeName != FlowNode.ACTION_TYPE);
             if (outputs.Any())
             {
-                gui.PropertyLabel("##output-connectors", "Output Ports", CoreIconCache.Connect);
+                gui.PropertyLabel("##output-connectors", "Output Connectors", CoreIconCache.Connect);
                 foreach (var c in outputs)
                 {
                     string propName = $"#computed-{c.Name}";

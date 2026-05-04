@@ -530,7 +530,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
         })
         .OnContent(() =>
         {
-            gui.HorizontalFrame("title")
+            _guiNaviContainerRef.Node = gui.HorizontalFrame("title")
             .InitFullWidth()
             //.InitHeight(80)
             .InitFitVertical()

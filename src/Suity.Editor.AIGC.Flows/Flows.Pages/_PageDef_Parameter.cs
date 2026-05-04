@@ -595,9 +595,9 @@ public class PageMessageParameterItem : FlowDiagramItem<PageMessageParameterNode
 /// Provides output value support for AIGC page actions.
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
-[DisplayText("AIGC Page Output Value", "*CoreIcon|Parameter")]
+[DisplayText("AIGC Page Output Parameter", "*CoreIcon|Parameter")]
 [DisplayOrder(2900)]
-[ToolTipsText("Provides output value support for AIGC page actions.")]
+[ToolTipsText("Provides output parameter support for AIGC page actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageOutputNode")]
 public class PageParameterOutputNode : AigcPageTypeDefNode
 {
@@ -767,7 +767,7 @@ public class PageParameterOutputItem : FlowDiagramItem<PageParameterOutputNode>,
 /// Provides article output support for AIGC page actions.
 /// </summary>
 [SimpleFlowNodeStyle(Color = ArticleAsset.ArticleBgColorCode, HasHeader = false, Width = 100, Height = 20)]
-[DisplayText("AIGC Page Article Output", "*CoreIcon|Article")]
+[DisplayText("AIGC Page Output Article", "*CoreIcon|Article")]
 [DisplayOrder(2800)]
 [ToolTipsText("Provides article output support for AIGC page actions.")]
 public class PageArticleOutputNode : AigcPageTypeDefNode
@@ -934,7 +934,7 @@ public class PageArticleOutputItem : FlowDiagramItem<PageArticleOutputNode>, IPa
 /// Provides file output support for AIGC page actions.
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
-[DisplayText("AIGC Page File Output", "*CoreIcon|File")]
+[DisplayText("AIGC Page Output File", "*CoreIcon|File")]
 [DisplayOrder(2750)]
 [ToolTipsText("Provides file output support for AIGC page actions.")]
 public class PageFileOutputNode : AigcPageTypeDefNode
@@ -1094,7 +1094,7 @@ public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, IPageElem
 /// Provides sub-task output support for AIGC page actions.
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false, Width = 100, Height = 20)]
-[DisplayText("AIGC Page SubTask Output", "*CoreIcon|Task")]
+[DisplayText("AIGC Page Output SubTask", "*CoreIcon|Task")]
 [DisplayOrder(2700)]
 [ToolTipsText("Provides sub-task output support for AIGC page actions.")]
 public class PageSubTaskOutputNode : AigcPageTypeDefNode
