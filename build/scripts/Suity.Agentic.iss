@@ -33,6 +33,7 @@ BeveledLabel=Suity.Agentic requires .NET 10 Runtime. Please ensure you have .NET
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [CustomMessages]
+english.PrerequisiteMessage=This application requires Microsoft .NET 10 Desktop Runtime. Please download and install it from https://dotnet.microsoft.com/download/dotnet/10.0 before continuing.
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
