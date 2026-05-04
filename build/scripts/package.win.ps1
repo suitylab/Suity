@@ -14,7 +14,10 @@ if (Test-Path $issPath) {
     }
     Write-Host "Installer built successfully."
 
-    Move-Item -Path "build\scripts\build\setup-suity-agentic-*.exe" -Destination "build\" -Force
+    $installer = Get-ChildItem -Path "build\scripts\build" -Filter "setup-suity-agentic-*.exe" | Select-Object -First 1
+    if ($installer) {
+        Move-Item -Path $installer.FullName -Destination "build\" -Force
+    }
 } else {
     Write-Warning "Inno Setup script not found at $issPath. Skipping installer build."
 }
