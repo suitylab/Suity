@@ -40,14 +40,32 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 6.1; Check: not IsAdminInstallMode
 
 [Code]
-function InitializeSetup(): Boolean;
+function IsDotNetInstalled(): Boolean;
 var
-  ErrorCode: Integer;
+  Version: String;
+  Key: String;
+begin
+  Result := False;
+  Key := 'SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.WindowsDesktop.App';
+  if RegQueryStringValue(HKLM, Key, 'Version', Version) then
+  begin
+    if Length(Version) >= 2 then
+    begin
+      if Copy(Version, 1, 2) = '10' then
+        Result := True;
+    end;
+  end;
+end;
+
+function InitializeSetup(): Boolean;
 begin
   Result := True;
-  if not MsgBox(CustomMessage('PrerequisiteMessage'), mbConfirmation, MB_YESNO) = IDYES then
+  if not IsDotNetInstalled() then
   begin
-    Result := False;
+    if MsgBox(CustomMessage('PrerequisiteMessage'), mbConfirmation, MB_YESNO) <> IDYES then
+    begin
+      Result := False;
+    end;
   end;
 end;
 
