@@ -13,6 +13,8 @@ if (Test-Path $issPath) {
         throw "Inno Setup failed with exit code $LASTEXITCODE"
     }
     Write-Host "Installer built successfully."
+
+    Move-Item -Path "build\scripts\build\setup-suity-agentic-*.exe" -Destination "build\" -Force
 } else {
     Write-Warning "Inno Setup script not found at $issPath. Skipping installer build."
 }
