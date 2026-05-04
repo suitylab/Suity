@@ -3,7 +3,7 @@
 #define MyAppPublisher "Suity"
 #define MyAppExeName "Suity.Agentic.exe"
 #define MyAppURL "https://github.com/ybeapps/suity-agentic"
-#define MyAppIcon "src\Suity.Agentic\Assets\suity-logo.ico"
+#define MyAppIcon "..\..\src\Suity.Agentic\Assets\suity-logo.ico"
 #define SourceDir GetEnv('SOURCE_DIR')
 
 [Setup]
