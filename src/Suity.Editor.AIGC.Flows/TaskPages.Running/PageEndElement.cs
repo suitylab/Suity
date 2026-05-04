@@ -95,13 +95,13 @@ public class PageEndElement : AigcPageElement, IPageParameterOutput
     /// <summary>
     /// Gets a value indicating whether the parameter is displayed as a link address instead of content.
     /// </summary>
-    public bool AssetKeyMode { get; private set; }
+    public bool LinkedMode { get; private set; }
 
     /// <summary>
     /// Resolves the chat history text representation of the current value.
     /// </summary>
     /// <returns>The chat history text.</returns>
-    public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, AssetKeyMode);
+    public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, LinkedMode);
 
 
 
@@ -124,7 +124,7 @@ public class PageEndElement : AigcPageElement, IPageParameterOutput
         ParameterType = EndNode?.TypeDef ?? TypeDefinition.Empty;
         EndNode = _endItem.Node as IAigcEndNode;
         EndType = EndNode?.EndType ?? PageCommitTypes.None;
-        AssetKeyMode = EndNode?.LinkedMode == true;
+        LinkedMode = EndNode?.LinkedMode == true;
     }
 
 

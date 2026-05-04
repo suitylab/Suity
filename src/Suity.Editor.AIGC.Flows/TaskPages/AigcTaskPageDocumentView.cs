@@ -18,6 +18,7 @@ using Suity.Views.Im.PropertyEditing;
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
 
@@ -59,6 +60,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
     private readonly GuiOptionalValue _pageNaviOption = new();
     private PageViewCategory _pageCategory;
     private AigcTaskPageRunner _currentRunner;
+    private string _msgInput = string.Empty;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AigcTaskPageDocumentView"/> class.
@@ -90,6 +92,8 @@ public class AigcTaskPageDocumentView : IDocumentView,
         _propGrid.AddService<IViewSave>(_subView);
         _propGrid.Edited += _grid_Edited;
     }
+
+    public bool IsRunning => _currentRunner?.IsRunning == true;
 
     #region IHasSubDocumentView
 
@@ -309,7 +313,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                 .InitFitVertical()
                 .OnContent(() => 
                 {
-                    if (_currentRunner?.IsRunning == true)
+                    if (IsRunning)
                     {
                         gui.Button("btnStop", "Stop", CoreIconCache.Stop)
                         .InitClass("simpleBtn")
@@ -381,7 +385,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
         }
         else
         {
-            OnResumeGui(gui, doc);
+            // OnResumeGui(gui, doc);
         }
     }
 
@@ -521,7 +525,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
     private void OnTaskPageGui(ImGui gui, AigcTaskPage page)
     {
-        gui.VerticalLayout("#task_page")
+        gui.VerticalLayout("#task_page-" + page.Name)
         .OnInitialize(n =>
         {
             n.InitTheme(_theme);
@@ -580,73 +584,147 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         break;
 
                     case PageViewCategory.Chat:
-                        if (page.Instance is { } instance)
-                        {
-                            instance.Conversation.OnNodeGui(gui);
-                        }
+                        ChatGui(gui, page);
                         break;
 
                     case PageViewCategory.Context:
-                        gui.ScrollableFrame("#chat-history-" + page.Name, GuiOrientation.Vertical)
-                        .InitFullSize()
-                        .OnContent(() => 
-                        {
-                            gui.HorizontalLayout("#input-title")
-                            .InitFullWidth()
-                            .InitFitVertical()
-                            .OnContent(() =>
-                            {
-                                gui.Image("icon", CoreIconCache.Input).InitClass("titleIcon");
-                                gui.Text("input", "Input chat history")
-                                .InitClass("titleText")
-                                .InitCenter();
-                            });
-                            
-
-                            gui.TextAreaInput("#input", null, page.Instance?.GetInputChatHistory())
-                            .InitFullWidth()
-                            .InitFitVertical()
-                            .InitReadonly(true);
-
-                            gui.HorizontalLayout("#output-title")
-                            .InitFullWidth()
-                            .InitFitVertical()
-                            .OnContent(() =>
-                            {
-                                gui.Image("icon", CoreIconCache.Output).InitClass("titleIcon");
-                                gui.Text("output", "Output chat history")
-                                .InitClass("titleText")
-                                .InitCenter();
-                            });
-
-                            gui.TextAreaInput("#output", null, page.Instance?.GetOutputChatHistory())
-                            .InitFullWidth()
-                            .InitFitVertical()
-                            .InitReadonly(true);
-
-                            gui.HorizontalLayout("#commit-title")
-                            .InitFullWidth()
-                            .InitFitVertical()
-                            .OnContent(() =>
-                            {
-                                gui.Image("icon", CoreIconCache.Complete).InitClass("titleIcon");
-                                gui.Text("commit", "Commit to parent task")
-                                .InitClass("titleText")
-                                .InitCenter();
-                            });
-
-                            gui.TextAreaInput("#commit", null, page.Instance?.GetTaskCommit())
-                            .InitFullWidth()
-                            .InitFitVertical()
-                            .InitReadonly(true);
-                        });
+                        ContextGui(gui, page);
                         break;
                 }
             });
         });
     }
 
-    private static void TaskTitleGui(ImGui gui, AigcTaskPage page)
+    private void ChatGui(ImGui gui, AigcTaskPage page)
+    {
+        if (page.Instance is not { } instance)
+        {
+            return;
+        }
+
+        gui.VerticalLayout("#dialog")
+        .InitFullWidth()
+        .InitHeightRest(120)
+        .OnContent(() =>
+        {
+            instance.Conversation.OnNodeGui(gui);
+        });
+
+        bool started = IsRunning;
+
+        gui.VerticalResizer(30, null)
+        .InitFullWidth()
+        .InitClass("resizer");
+
+/*        if (_attachments.Count > 0)
+        {
+            foreach (var attachment in _attachments.Values)
+            {
+                attachment.OnGui(gui, att =>
+                {
+                    QueuedAction.Do(() =>
+                    {
+                        _attachments.Remove(att.Document);
+                        _guiRef.QueueRefresh();
+                    });
+                });
+            }
+        }*/
+
+        _msgInput = gui.TextAreaInput("msgInput", _msgInput, autoFit: false, submitMode: TextBoxEditSubmitMode.Enter)
+        //.SetEnabled(started)
+        .InitMargin(5)
+        .InitHeightRest(30)
+        .InitFullWidth()
+        .InitInputFunctionChain(TextInput)
+        .SetHintTextL("Input message...")
+        .Text;
+
+        gui.HorizontalReverseLayout("input_bar")
+        //.SetEnabled(started)
+        .InitFullWidth()
+        .InitHeightRest()
+        .OnContent(() =>
+        {
+            gui.Button("send", CoreIconCache.Send)
+            .InitClass("simpleBtn")
+            .InitWidth(50)
+            .InitFullHeight()
+            .SetToolTipsL("Send")
+            .OnClick(() =>
+            {
+                if (IsRunning && !string.IsNullOrWhiteSpace(_msgInput))
+                {
+                    if (page.Instance?.Conversation is { } conversation && conversation is IConversationHost host)
+                    {
+                        conversation.AddUserMessage(_msgInput);
+                        host.HandleMessageInput(_msgInput);
+                        _msgInput = string.Empty;
+                        _guiRef.QueueRefresh();
+                    }
+                }
+            });
+        });
+    }
+
+    private void ContextGui(ImGui gui, AigcTaskPage page)
+    {
+        gui.ScrollableFrame("#chat-history-" + page.Name, GuiOrientation.Vertical)
+        .InitFullSize()
+        .OnContent(() =>
+        {
+            gui.HorizontalLayout("#input-title")
+            .InitFullWidth()
+            .InitFitVertical()
+            .OnContent(() =>
+            {
+                gui.Image("icon", CoreIconCache.Input).InitClass("titleIcon");
+                gui.Text("input", "Input chat history")
+                .InitClass("titleText")
+                .InitCenter();
+            });
+
+
+            gui.TextAreaInput("#input", null, page.Instance?.GetInputChatHistory())
+            .InitFullWidth()
+            .InitFitVertical()
+            .InitReadonly(true);
+
+            gui.HorizontalLayout("#output-title")
+            .InitFullWidth()
+            .InitFitVertical()
+            .OnContent(() =>
+            {
+                gui.Image("icon", CoreIconCache.Output).InitClass("titleIcon");
+                gui.Text("output", "Output chat history")
+                .InitClass("titleText")
+                .InitCenter();
+            });
+
+            gui.TextAreaInput("#output", null, page.Instance?.GetOutputChatHistory())
+            .InitFullWidth()
+            .InitFitVertical()
+            .InitReadonly(true);
+
+            gui.HorizontalLayout("#commit-title")
+            .InitFullWidth()
+            .InitFitVertical()
+            .OnContent(() =>
+            {
+                gui.Image("icon", CoreIconCache.Complete).InitClass("titleIcon");
+                gui.Text("commit", "Commit to parent task")
+                .InitClass("titleText")
+                .InitCenter();
+            });
+
+            gui.TextAreaInput("#commit", null, page.Instance?.GetTaskCommit())
+            .InitFullWidth()
+            .InitFitVertical()
+            .InitReadonly(true);
+        });
+    }
+
+    private void TaskTitleGui(ImGui gui, AigcTaskPage page)
     {
         if (page.Instance?.GetAllStatusIcon() is { } statusIcon)
         {

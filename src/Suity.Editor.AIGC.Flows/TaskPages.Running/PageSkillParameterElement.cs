@@ -81,7 +81,7 @@ public class PageSkillParameterElement : AigcPageElement, IPageParameterInput
     /// <summary>
     /// Gets a value indicating whether the parameter is displayed as a link address instead of content.
     /// </summary>
-    public bool AssetKeyMode { get; private set; }
+    public bool LinkedMode { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether this is a skill input. Always returns <c>true</c> for this element type.
@@ -89,7 +89,7 @@ public class PageSkillParameterElement : AigcPageElement, IPageParameterInput
     public bool IsSkillInput => true;
 
     /// <inheritdoc/>
-    public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, AssetKeyMode);
+    public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, LinkedMode);
 
     #endregion
 
@@ -105,7 +105,7 @@ public class PageSkillParameterElement : AigcPageElement, IPageParameterInput
         TaskCompletion = node?.TaskCompletion == true;
         TaskCommit = node?.TaskCommit == true;
         ChatHistory = node?.ChatHistory == true;
-        AssetKeyMode = node?.LinkedMode == true;
+        LinkedMode = node?.LinkedMode == true;
     }
 
     /// <inheritdoc/>

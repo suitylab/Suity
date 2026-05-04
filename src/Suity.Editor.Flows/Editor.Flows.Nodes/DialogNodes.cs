@@ -446,7 +446,7 @@ public class ManualTextInput : DialogFlowNode
         string message = _message.GetText(compute, this);
         if (!string.IsNullOrWhiteSpace(message))
         {
-            conversation.AddSystemMessage(message);
+            conversation.AddInfoMessage(message);
         }
 
         string s = await conversation.WaitForTextInput(cancel);

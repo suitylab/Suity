@@ -208,6 +208,11 @@ public class PageSubTaskOutputElement : AigcPageElement, IPageParameterOutput, I
         else
         {
             var task = GetLastSubTask();
+            if (task is null)
+            {
+                return false;
+            }
+
             var taskIsDone = task?.PageInstance?.GetAllDone();
             done = taskIsDone.IsTrueOrEmpty();
         }

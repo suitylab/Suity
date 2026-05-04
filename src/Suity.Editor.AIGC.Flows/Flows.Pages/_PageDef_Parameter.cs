@@ -787,6 +787,7 @@ public class PageArticleOutputNode : AigcPageTypeDefNode
         base.FlowNodeGui = OnGui;
         base.EditTypeEnabled = false;
         base.TypeDef = TypeDefinition.FromNative<IArticle>();
+        base.LinkedMode = true;
 
         UpdateConnector();
     }

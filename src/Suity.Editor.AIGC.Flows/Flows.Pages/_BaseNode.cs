@@ -68,10 +68,10 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
 
     private bool _editTypeEnabled = true;
 
-    private readonly ValueProperty<bool> _linkedMode = new("LinkedMode", "Linked Mode", true, "When enabled, will be displayed as a link address in task submissions and chat history, instead of content.\r\nOnly effective when value is a link type.");
     private readonly ValueProperty<bool> _taskCompletion = new("TaskCompletion", "Task Completion", true, "Used to determine if task is completed.");
     private readonly ValueProperty<bool> _chatHistory = new("History", "Chat History", false, "Retained as historical conversation during dialogue.");
     private readonly ValueProperty<bool> _taskCommit = new("TaskCommit", "Task Commit", false, "Submit this value after completing the task.");
+    private readonly ValueProperty<bool> _linkedMode = new("LinkedMode", "Linked Mode", false, "When enabled, will be displayed as a link address in task submissions and chat history, instead of content.\r\nOnly effective when value is a link type.");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AigcPageTypeDefNode"/> class.
@@ -82,7 +82,7 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
     }
 
     /// <inheritdoc/>
-    public bool LinkedMode => _linkedMode.Value;
+    public bool LinkedMode { get => _linkedMode.Value; protected set => _linkedMode.Value = value; }
 
     /// <summary>
     /// Gets or sets a value indicating whether this property is retained as historical conversation during dialogue.
@@ -187,10 +187,10 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
     {
         base.OnSync(sync, context);
 
-        _linkedMode.Sync(sync);
         _taskCompletion.Sync(sync);
         _chatHistory.Sync(sync);
         _taskCommit.Sync(sync);
+        _linkedMode.Sync(sync);
 
         if (_editTypeEnabled)
         {
@@ -245,10 +245,10 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
     {
         base.OnSetupViewContent(setup);
 
-        _linkedMode.InspectorField(setup);
         _taskCompletion.InspectorField(setup);
         _chatHistory.InspectorField(setup);
         _taskCommit.InspectorField(setup);
+        _linkedMode.InspectorField(setup);
     }
 
     /// <summary>

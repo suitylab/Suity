@@ -176,9 +176,9 @@ public class PageArticleOutputElement : AigcPageElement, IArticleResolver, IPage
     public bool PassToSubTasks { get; private set; }
 
     /// <summary>
-    /// Gets a value indicating whether the asset key mode is enabled.
+    /// Gets a value indicating whether the linked mode is enabled.
     /// </summary>
-    public bool AssetKeyMode { get; private set; }
+    public bool LinkedMode { get; private set; }
 
     /// <summary>
     /// Gets the target writing field for the article content.
@@ -227,7 +227,7 @@ public class PageArticleOutputElement : AigcPageElement, IArticleResolver, IPage
     {
         var article = ResolveArticle(false);
 
-        if (AssetKeyMode)
+        if (LinkedMode)
         {
             return article?.ArticleUrl ?? string.Empty;
         }
@@ -370,7 +370,7 @@ public class PageArticleOutputElement : AigcPageElement, IArticleResolver, IPage
         var node = _outputItem.Node;
 
         PassToSubTasks = node?.PassToSubTasks == true;
-        AssetKeyMode = node?.LinkedMode == true;
+        LinkedMode = node?.LinkedMode == true;
         WritingTarget = node?.WritingTarget ?? ArticleFields.Content;
 
         TaskCompletion = node?.TaskCompletion == true;

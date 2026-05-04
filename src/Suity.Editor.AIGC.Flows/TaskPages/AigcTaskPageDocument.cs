@@ -169,8 +169,8 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
                 continue;
             }
 
-            var allDone = task.GetAllDone();
-            if (allDone.IsFalse())
+            var allDone = task.GetAllDoneSubTasks();
+            if (!allDone)
             {
                 working = task;
                 continue;

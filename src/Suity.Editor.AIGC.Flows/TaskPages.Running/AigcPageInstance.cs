@@ -632,6 +632,11 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
     /// <returns>True if all pages are done, false if any is not done, or null if no inputs are defined.</returns>
     public bool? GetAllDone()
     {
+        if (GetIsDone().IsFalse())
+        {
+            return false;
+        }
+
         var pages = _groups.OfType<SubPageElement>().OfType<AigcPageElement>().ConcatOne(this);
 
         bool? v = null;

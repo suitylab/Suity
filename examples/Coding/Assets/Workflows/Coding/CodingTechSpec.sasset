@@ -110,12 +110,12 @@
             </ToolTips>
           </Item>
         </Attributes>
-        <TaskCommit>True</TaskCommit>
         <History>True</History>
+        <TaskCommit>True</TaskCommit>
+        <LinkedMode>True</LinkedMode>
         <ArticlePath>Techincal Specification</ArticlePath>
         <MultipleSection>True</MultipleSection>
         <PassToSubTasks>True</PassToSubTasks>
-        <AssetKeyMode>True</AssetKeyMode>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="450" Y="-110" Width="59" Height="25">

@@ -171,8 +171,9 @@
         <Name>Summary</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <TaskCommit>True</TaskCommit>
         <History>True</History>
+        <TaskCommit>True</TaskCommit>
+        <LinkedMode>True</LinkedMode>
         <ArticlePath>Summary</ArticlePath>
       </Node>
     </Item>

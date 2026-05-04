@@ -1080,7 +1080,7 @@ public class AigcTaskPage : DesignNode,
     public bool GetAllDoneSubTasks()
     {
         var allDone = GetAllDone();
-        if (!allDone.IsTrueOrEmpty())
+        if (allDone.IsFalse())
         {
             return false;
         }
