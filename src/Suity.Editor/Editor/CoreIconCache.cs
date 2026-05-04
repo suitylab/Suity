@@ -132,6 +132,8 @@ public static class CoreIconCache
 
     public static BitmapDef Compile { get; } = CoreIcon.Compile.ToBitmap();
 
+    public static BitmapDef Complete { get; } = CoreIcon.Complete.ToBitmap();
+
     public static BitmapDef Complex { get; } = CoreIcon.Complex.ToBitmap();
 
     public static BitmapDef Component { get; } = CoreIcon.Component.ToBitmap();
@@ -455,6 +457,8 @@ public static class CoreIconCache
     public static BitmapDef Occupied { get; } = CoreIcon.Occupied.ToBitmap();
 
     public static BitmapDef Open { get; } = CoreIcon.Open.ToBitmap();
+
+    public static BitmapDef Output { get; } = CoreIcon.Output.ToBitmap();
 
     public static BitmapDef Package { get; } = CoreIcon.Package.ToBitmap();
 

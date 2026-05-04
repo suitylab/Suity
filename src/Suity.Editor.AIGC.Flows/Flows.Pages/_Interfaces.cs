@@ -37,6 +37,11 @@ public interface IAigcTypeNode
     /// Gets the type definition associated with this node.
     /// </summary>
     TypeDefinition TypeDef { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether the parameter is displayed as a link address instead of content.
+    /// </summary>
+    bool LinkedMode { get; }
 }
 
 /// <summary>

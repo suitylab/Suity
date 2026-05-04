@@ -1186,4 +1186,10 @@
   <data name="Multiple" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Multiple.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Complete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Complete.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Output" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Output.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

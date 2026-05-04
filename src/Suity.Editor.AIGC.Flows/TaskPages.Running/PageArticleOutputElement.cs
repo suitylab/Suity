@@ -370,7 +370,7 @@ public class PageArticleOutputElement : AigcPageElement, IArticleResolver, IPage
         var node = _outputItem.Node;
 
         PassToSubTasks = node?.PassToSubTasks == true;
-        AssetKeyMode = node?.AssetKeyMode == true;
+        AssetKeyMode = node?.LinkedMode == true;
         WritingTarget = node?.WritingTarget ?? ArticleFields.Content;
 
         TaskCompletion = node?.TaskCompletion == true;

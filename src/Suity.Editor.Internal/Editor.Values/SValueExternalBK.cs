@@ -1698,7 +1698,7 @@ internal sealed class SValueExternalBK : SValueExternal
             return;
         }
 
-        if (hideDataLink && fieldType.IsDataLink(true) && field.ContainsAttribute<ConnectorAttribute>())
+        if (hideDataLink && fieldType.GetIsDataLink(true) && field.ContainsAttribute<ConnectorAttribute>())
         {
             return;
         }

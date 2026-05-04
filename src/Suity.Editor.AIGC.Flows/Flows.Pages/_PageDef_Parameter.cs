@@ -60,7 +60,6 @@ public class PageParameterInputNode : AigcPageTypeDefNode
         set => _value = value;
     }
 
-
     /// <inheritdoc/>
     protected override void OnSyncValue(IPropertySync sync, ISyncContext context)
     {
@@ -72,7 +71,6 @@ public class PageParameterInputNode : AigcPageTypeDefNode
             UpdateConnectorQueued();
         }
     }
-
 
     /// <inheritdoc/>
     protected override void OnSetupViewValue(IViewObjectSetup setup)
@@ -261,7 +259,6 @@ public class PageSkillParameterNode : AigcPageTypeDefNode
             UpdateConnectorQueued();
         }
     }
-
 
     /// <inheritdoc/>
     protected override void OnSetupViewValue(IViewObjectSetup setup)
@@ -782,8 +779,6 @@ public class PageArticleOutputNode : AigcPageTypeDefNode
     private readonly ValueProperty<bool> _multipleSection = new("MultipleSection", "Multi-Section Article", false, "Whether it is a multi-section article.");
     private readonly ValueProperty<bool> _passToSubTasks = new("PassToSubTasks", "Pass To Sub-Tasks", false, "When enabled, sub-tasks will use this article location.");
 
-    private readonly ValueProperty<bool> _assetKeyMode = new("AssetKeyMode", "Link Mode", false, "When enabled, will be displayed as a link address in task submissions and chat history, instead of article content.");
-
     /// <summary>
     /// Initializes a new instance of the <see cref="PageArticleOutputNode"/> class.
     /// </summary>
@@ -822,11 +817,6 @@ public class PageArticleOutputNode : AigcPageTypeDefNode
     /// </summary>
     public bool PassToSubTasks => _passToSubTasks.Value;
 
-    /// <summary>
-    /// Gets a value indicating whether the article is displayed as a link address instead of content.
-    /// </summary>
-    public bool AssetKeyMode => _assetKeyMode.Value;
-
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)
     {
@@ -836,7 +826,6 @@ public class PageArticleOutputNode : AigcPageTypeDefNode
         _writingTarget.Sync(sync);
         _multipleSection.Sync(sync);
         _passToSubTasks.Sync(sync);
-        _assetKeyMode.Sync(sync);
 
         if (sync.IsSetterOf("RefConnector"))
         {
@@ -859,7 +848,6 @@ public class PageArticleOutputNode : AigcPageTypeDefNode
     {
         base.OnSetupViewContent(setup);
 
-        _assetKeyMode.InspectorField(setup);
         _passToSubTasks.InspectorField(setup);
     }
 

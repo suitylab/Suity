@@ -418,7 +418,6 @@ public abstract class PageBaseEndNode : AigcPageTypeDefNode, IFlowNodeComputeAsy
     protected override void OnSyncValue(IPropertySync sync, ISyncContext context)
     {
         _refConnector.Sync(sync);
-
         if (sync.IsSetterOf("RefConnector"))
         {
             UpdateConnectorQueued();

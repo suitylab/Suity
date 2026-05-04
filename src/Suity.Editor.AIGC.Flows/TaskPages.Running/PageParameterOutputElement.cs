@@ -78,8 +78,13 @@ public class PageParameterOutputElement : AigcPageElement, IPageParameterOutput
     /// </summary>
     public bool ChatHistory { get; private set; }
 
+    /// <summary>
+    /// Gets a value indicating whether the parameter is displayed as a link address instead of content.
+    /// </summary>
+    public bool AssetKeyMode { get; private set; }
+
     /// <inheritdoc/>
-    public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value);
+    public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, AssetKeyMode);
 
     #endregion
 
@@ -88,11 +93,14 @@ public class PageParameterOutputElement : AigcPageElement, IPageParameterOutput
     {
         base.OnBuild();
 
-        ParameterType = _outputItem.Node?.TypeDef ?? TypeDefinition.Empty;
+        var node = _outputItem.Node;
 
-        TaskCompletion = _outputItem.Node?.TaskCompletion == true;
-        TaskCommit = _outputItem.Node?.TaskCommit == true;
-        ChatHistory = _outputItem.Node?.ChatHistory == true;
+        ParameterType = node?.TypeDef ?? TypeDefinition.Empty;
+
+        TaskCompletion = node?.TaskCompletion == true;
+        TaskCommit = node?.TaskCommit == true;
+        ChatHistory = node?.ChatHistory == true;
+        AssetKeyMode = node?.LinkedMode == true;
     }
 
     /// <inheritdoc/>

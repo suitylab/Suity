@@ -3,6 +3,7 @@ using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Flows;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -461,8 +462,26 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
     /// <param name="type">The type definition of the value.</param>
     /// <param name="value">The value to convert.</param>
     /// <returns>The converted chat history text, or the original value's string representation.</returns>
-    public static ChatHistoryText ConvertChatHistoryText(TypeDefinition type, object value)
+    public static ChatHistoryText ConvertChatHistoryText(TypeDefinition type, object value, bool assetKeyMode)
     {
+        if (assetKeyMode) 
+        {
+            switch (value)
+            {
+                case Asset asset:
+                    return asset.AssetKey;
+
+                case SAssetKey assetKey:
+                    return assetKey.SelectedKey;
+
+                case SKey sKey:
+                    return sKey.SelectedKey;
+
+                default:
+                    break;
+            }
+        }
+
         var historyText = TypeDefinition.FromNative<ChatHistoryText>();
         var state = EditorServices.TypeConvertService.TryConvert(type, historyText, false, value, out var converted);
         var result = state == TypeConvertState.Unconvertible ? value : converted;

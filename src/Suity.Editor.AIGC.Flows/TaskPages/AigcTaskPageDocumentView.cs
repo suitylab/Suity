@@ -27,8 +27,7 @@ public enum PageViewCategory
 {
     Page,
     Chat,
-    Input,
-    Output,
+    History,
     Commit,
 }
 
@@ -248,8 +247,13 @@ public class AigcTaskPageDocumentView : IDocumentView,
         var fontSmall = new FontDef(ImGuiTheme.DefaultFont, 12);
 
         var theme = new ImGuiTheme();
+
         theme.ClassStyle("titleText")
-        .SetFont(font, Color.White);
+            .SetFont(font, Color.White);
+
+        theme.ClassStyle("titleIcon")
+            .SetSize(32, 32)
+            .SetVerticalAlignment(GuiAlignment.Center);
 
         theme.ClassStyle("descText")
         .SetFont(fontSmall, Color.White);
@@ -536,9 +540,8 @@ public class AigcTaskPageDocumentView : IDocumentView,
                 {
                     NaviButton(gui, PageViewCategory.Page, CoreIconCache.Task, "Page view");
                     NaviButton(gui, PageViewCategory.Chat, CoreIconCache.Chat, "LLm chat view");
-                    NaviButton(gui, PageViewCategory.Input, CoreIconCache.Text, "Input chat history");
-                    NaviButton(gui, PageViewCategory.Output, CoreIconCache.Text, "Output chat history");
-                    NaviButton(gui, PageViewCategory.Commit, CoreIconCache.Text, "Task commit message");
+                    NaviButton(gui, PageViewCategory.History, CoreIconCache.Text, "Chat history");
+                    NaviButton(gui, PageViewCategory.Commit, CoreIconCache.Complete, "Task commit message");
 
                     /*                    if (page.Instance?.GetAllStatusIcon() is { } statusIcon)
                                         {
@@ -593,19 +596,52 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         }
                         break;
 
-                    case PageViewCategory.Input:
-                        gui.TextAreaInput("#input-" + page.Name, null, page.Instance?.GetInputChatHistory())
-                        .InitFullSize();
-                        break;
+                    case PageViewCategory.History:
+                        gui.ScrollableFrame("#chat-history-" + page.Name, GuiOrientation.Vertical)
+                        .InitFullSize()
+                        .OnContent(() => 
+                        {
+                            gui.HorizontalLayout("#input-title")
+                            .InitFullWidth()
+                            .InitFitVertical()
+                            .OnContent(() =>
+                            {
+                                gui.Image("icon", CoreIconCache.Input).InitClass("titleIcon");
+                                gui.Text("input", "Input").InitClass("titleText").InitCenter();
+                            });
+                            
 
-                    case PageViewCategory.Output:
-                        gui.TextAreaInput("#output-" + page.Name, null, page.Instance?.GetOutputChatHistory())
-                        .InitFullSize();
+                            gui.TextAreaInput("#input", null, page.Instance?.GetInputChatHistory())
+                            .InitFullWidth()
+                            .InitFitVertical()
+                            .InitReadonly(true);
+
+                            gui.HorizontalLayout("#output-title")
+                            .InitFullWidth()
+                            .InitFitVertical()
+                            .OnContent(() =>
+                            {
+                                gui.Image("icon", CoreIconCache.Output).InitClass("titleIcon");
+                                gui.Text("output", "Output").InitClass("titleText").InitCenter();
+                            });
+
+                            gui.TextAreaInput("#output", null, page.Instance?.GetOutputChatHistory())
+                            .InitFullWidth()
+                            .InitFitVertical()
+                            .InitReadonly(true);
+                        });
                         break;
 
                     case PageViewCategory.Commit:
-                        gui.TextAreaInput("#commit-" + page.Name, null, page.Instance?.GetTaskCommit())
-                        .InitFullSize();
+                        gui.ScrollableFrame("#chat-commit" + page.Name, GuiOrientation.Vertical)
+                        .InitFullSize()
+                        .OnContent(() =>
+                        {
+                            gui.TextAreaInput("#commit", null, page.Instance?.GetTaskCommit())
+                            .InitFullWidth()
+                            .InitFitVertical()
+                            .InitReadonly(true);
+                        });
                         break;
                 }
             });

@@ -54,12 +54,17 @@ public class PageParameterInputElement : AigcPageElement, IPageParameterInput
     public bool ChatHistory { get; private set; }
 
     /// <summary>
+    /// Gets a value indicating whether the parameter is displayed as a link address instead of content.
+    /// </summary>
+    public bool AssetKeyMode { get; private set; }
+
+    /// <summary>
     /// Gets a value indicating whether this is a skill input. Always returns <c>false</c> for this element type.
     /// </summary>
     public bool IsSkillInput => false;
 
     /// <inheritdoc/>
-    public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value);
+    public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, AssetKeyMode);
 
     /// <summary>
     /// Gets the current value of the parameter.
@@ -108,10 +113,14 @@ public class PageParameterInputElement : AigcPageElement, IPageParameterInput
     {
         base.OnBuild();
 
-        TaskCompletion = _inputItem.Node?.TaskCompletion == true;
-        TaskCommit = _inputItem.Node?.TaskCommit == true;
-        ChatHistory = _inputItem.Node?.ChatHistory == true;
-        ParameterType = _inputItem.Node?.TypeDef ?? TypeDefinition.Empty;
+        var node = _inputItem.Node;
+
+        ParameterType = node?.TypeDef ?? TypeDefinition.Empty;
+
+        TaskCompletion = node?.TaskCompletion == true;
+        TaskCommit = node?.TaskCommit == true;
+        ChatHistory = node?.ChatHistory == true;
+        AssetKeyMode = node?.LinkedMode == true;
     }
 
     /// <inheritdoc/>

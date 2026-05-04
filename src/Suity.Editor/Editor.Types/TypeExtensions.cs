@@ -24,11 +24,11 @@ public static class TypeExtensions
     /// <returns>The exported type.</returns>
     public static TypeDefinition GetExportedType(this TypeDefinition type)
     {
-        if (type.IsStringLikeType())
+        if (type.GetIsStringLikeType())
         {
             return NativeTypes.StringType;
         }
-        else if (type.IsArray && type.ElementType.IsStringLikeType())
+        else if (type.IsArray && type.ElementType.GetIsStringLikeType())
         {
             return NativeTypes.StringType.MakeArrayType();
         }
@@ -102,7 +102,7 @@ public static class TypeExtensions
     /// <summary>
     /// Determines whether the type is defined as a value struct.
     /// </summary>
-    public static bool IsDefinedAsValueStruct(this TypeDefinition typeInfo)
+    public static bool GetIsDefinedAsValueStruct(this TypeDefinition typeInfo)
     {
         if (typeInfo.Target is not DCompond pStruct)
         {
@@ -117,12 +117,34 @@ public static class TypeExtensions
         return pStruct.Attributes.GetAttributes<ValueTypeStructAttribute>().Any();
     }
 
+    public static bool GetIsLink(this TypeDefinition type, bool includeArray)
+    {
+        if (TypeDefinition.IsNullOrEmpty(type))
+        {
+            return false;
+        }
+
+        if (type.IsLink)
+        {
+            return true;
+        }
+
+        if (includeArray && type.IsArray)
+        {
+            return type.ElementType.GetIsLink(false);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     /// <summary>
     /// Determines whether the type is a data link.
     /// </summary>
-    public static bool IsDataLink(this TypeDefinition type, bool includeArray)
+    public static bool GetIsDataLink(this TypeDefinition type, bool includeArray)
     {
-        if (type == null)
+        if (TypeDefinition.IsNullOrEmpty(type))
         {
             return false;
         }
@@ -134,7 +156,7 @@ public static class TypeExtensions
 
         if (includeArray && type.IsArray)
         {
-            return type.ElementType.IsDataLink(false);
+            return type.ElementType.GetIsDataLink(false);
         }
         else
         {
@@ -142,9 +164,9 @@ public static class TypeExtensions
         }
     }
 
-    public static bool IsNormalDataLink(this TypeDefinition type, bool includeArray)
+    public static bool GetIsNormalDataLink(this TypeDefinition type, bool includeArray)
     {
-        if (type == null)
+        if (TypeDefinition.IsNullOrEmpty(type))
         {
             return false;
         }
@@ -156,7 +178,7 @@ public static class TypeExtensions
 
         if (includeArray && type.IsArray)
         {
-            return type.ElementType.IsNormalDataLink(false);
+            return type.ElementType.GetIsNormalDataLink(false);
         }
         else
         {
@@ -164,9 +186,9 @@ public static class TypeExtensions
         }
     }
 
-    public static bool IsAbstractDataLink(this TypeDefinition type, bool includeArray)
+    public static bool GetIsAbstractDataLink(this TypeDefinition type, bool includeArray)
     {
-        if (type == null)
+        if (TypeDefinition.IsNullOrEmpty(type))
         {
             return false;
         }
@@ -178,7 +200,7 @@ public static class TypeExtensions
 
         if (includeArray && type.IsArray)
         {
-            return type.ElementType.IsAbstractDataLink(false);
+            return type.ElementType.GetIsAbstractDataLink(false);
         }
         else
         {
@@ -189,7 +211,7 @@ public static class TypeExtensions
     /// <summary>
     /// Determines whether the type is string-like.
     /// </summary>
-    public static bool IsStringLikeType(this TypeDefinition type) => type.IsLink || type == NativeTypes.TextBlockType;
+    public static bool GetIsStringLikeType(this TypeDefinition type) => type.IsLink || type == NativeTypes.TextBlockType;
 
     /// <summary>
     /// Checks if the field is public.

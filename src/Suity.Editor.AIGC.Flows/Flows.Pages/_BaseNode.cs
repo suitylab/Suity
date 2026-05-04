@@ -68,9 +68,10 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
 
     private bool _editTypeEnabled = true;
 
+    private readonly ValueProperty<bool> _linkedMode = new("LinkedMode", "Linked Mode", true, "When enabled, will be displayed as a link address in task submissions and chat history, instead of content.\r\nOnly effective when value is a link type.");
+    private readonly ValueProperty<bool> _chatHistory = new("History", "Chat History", false, "Retained as historical conversation during dialogue.");
     private readonly ValueProperty<bool> _taskCompletion = new("TaskCompletion", "Task Completion", true, "Used to determine if task is completed.");
     private readonly ValueProperty<bool> _taskCommit = new("TaskCommit", "Task Commit", false, "Submit this value after completing the task.");
-    private readonly ValueProperty<bool> _chatHistory = new("History", "Chat History", false, "Retained as historical conversation during dialogue.");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AigcPageTypeDefNode"/> class.
@@ -79,6 +80,14 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
     {
         _valueType = DTypeManager.Instance.CreateTypeDesignSelection();
     }
+
+    /// <inheritdoc/>
+    public bool LinkedMode => _linkedMode.Value;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this property is retained as historical conversation during dialogue.
+    /// </summary>
+    public bool ChatHistory { get => _chatHistory.Value; protected set => _chatHistory.Value = value; }
 
     /// <summary>
     /// Gets or sets a value indicating whether this property is used to determine task completion.
@@ -90,10 +99,6 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
     /// </summary>
     public bool TaskCommit { get => _taskCommit.Value; protected set => _taskCommit.Value = value; }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether this property is retained as historical conversation during dialogue.
-    /// </summary>
-    public bool ChatHistory { get => _chatHistory.Value; protected set => _chatHistory.Value = value; }
 
     /// <summary>
     /// Gets the type design selection used for configuring the value type.
@@ -182,9 +187,10 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
     {
         base.OnSync(sync, context);
 
+        _linkedMode.Sync(sync);
+        _chatHistory.Sync(sync);
         _taskCompletion.Sync(sync);
         _taskCommit.Sync(sync);
-        _chatHistory.Sync(sync);
 
         if (_editTypeEnabled)
         {
@@ -239,9 +245,10 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
     {
         base.OnSetupViewContent(setup);
 
+        _linkedMode.InspectorField(setup);
+        _chatHistory.InspectorField(setup);
         _taskCompletion.InspectorField(setup);
         _taskCommit.InspectorField(setup);
-        _chatHistory.InspectorField(setup);
     }
 
     /// <summary>

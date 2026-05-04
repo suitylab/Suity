@@ -693,6 +693,16 @@ namespace Suity.Editor {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
+        internal static byte[] Complete {
+            get {
+                object obj = ResourceManager.GetObject("Complete", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
         internal static byte[] Complex {
             get {
                 object obj = ResourceManager.GetObject("Complex", resourceCulture);
@@ -2296,6 +2306,16 @@ namespace Suity.Editor {
         internal static byte[] Open {
             get {
                 object obj = ResourceManager.GetObject("Open", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
+        internal static byte[] Output {
+            get {
+                object obj = ResourceManager.GetObject("Output", resourceCulture);
                 return ((byte[])(obj));
             }
         }
