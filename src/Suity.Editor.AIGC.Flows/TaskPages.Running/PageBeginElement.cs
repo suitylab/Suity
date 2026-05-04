@@ -5,7 +5,7 @@ using Suity.Synchonizing;
 using Suity.Views;
 using static Suity.Helpers.GlobalLocalizer;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC.TaskPages.Running;
 
 /// <summary>
 /// Represents the beginning element of an AIGC page, serving as the entry point for page interactions.

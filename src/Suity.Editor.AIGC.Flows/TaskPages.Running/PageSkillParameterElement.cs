@@ -6,7 +6,7 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC.TaskPages.Running;
 
 /// <summary>
 /// Represents a page element that handles skill parameter input for AIGC tasks.

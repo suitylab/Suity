@@ -23,7 +23,8 @@ internal class AvaImGuiService : IImGuiService
 
     public ImGui CreateImGui(IGraphicContext context, ImGuiConfig config) => ImGuiServices.CreateImGui(context, config);
 
-    public IConversationImGui CreateConversationImGui(string id, bool disableOldMessage) => new ConversationHandlerImGui(id) { DisableOldMessage = disableOldMessage };
+    public IConversationImGui CreateConversationImGui(string id, bool disableOldMessage)
+        => new ConversationHandlerImGui(id) { DisableOldMessage = disableOldMessage };
 
     public IDrawExpandedImGui CreateExpandedView(Type objectType)
         => DrawExpandedImGuiResolver.Instance.CreateView(objectType);

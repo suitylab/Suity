@@ -4,9 +4,10 @@ using Suity.Editor.Documents;
 using Suity.Helpers;
 using Suity.Views;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC.TaskPages.Running;
 
 /// <summary>
 /// Represents the result of a task execution, including the end type and associated parameter.
@@ -21,13 +22,10 @@ internal record TaskRunResult(PageCommitTypes EndType, object Parameter);
 [DisplayText("Task Page Runner")]
 internal class AigcTaskPageRunner : AIAssistant
 {
-    readonly AigcTaskPageDocument _document;
+    private readonly AigcTaskPageDocument _document;
+    private readonly DocumentUsageToken _usageToken = new(nameof(AigcTaskPageRunner));
 
-    AigcTaskPage _lastTask;
-
-    readonly DocumentUsageToken _usageToken = new(nameof(AigcTaskPageRunner));
-
-    
+    private AigcTaskPage _lastTask;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AigcTaskPageRunner"/> class.
@@ -105,6 +103,7 @@ internal class AigcTaskPageRunner : AIAssistant
                 return AICallResult.FromFailed("Task canceled.");
             }
 
+            // Get task for running, if the last task is not completed, continue to run it; otherwise get the next task to run.
             var task = _document.GetLastRunningTask();
             if (task is null)
             {
@@ -135,7 +134,7 @@ internal class AigcTaskPageRunner : AIAssistant
                 sel.SetSelection(new ViewSelection(task));
             }
 
-            var runResult = await RunEvent(request, task, AigcTaskEventTypes.TaskBegin, null, null);
+            var runResult = await RunTask(request, task, AigcTaskEventTypes.TaskBegin, null, null);
             if (request.Cancel.IsCancellationRequested)
             {
                 return AICallResult.FromFailed("Task canceled.");
@@ -145,8 +144,8 @@ internal class AigcTaskPageRunner : AIAssistant
             {
                 try
                 {
-                    // Report upward
-                    await CheckReportParent(request, task, runResult);
+                    // Commit to its parent task, if the task is committed as finished or failed, to trigger parent task continue running or some other logic.
+                    await CommitToParent(request, task, runResult);
                 }
                 catch (TaskCanceledException)
                 {
@@ -180,7 +179,7 @@ internal class AigcTaskPageRunner : AIAssistant
     /// <param name="commitName">The name of the commit, if applicable.</param>
     /// <param name="parameter">The parameter to pass to the event handler.</param>
     /// <returns>A <see cref="TaskRunResult"/> containing the end type and result parameter.</returns>
-    public async Task<TaskRunResult> RunEvent(AIRequest request, AigcTaskPage task, AigcTaskEventTypes eventType, string commitName, object parameter)
+    private async Task<TaskRunResult> RunTask(AIRequest request, AigcTaskPage task, AigcTaskEventTypes eventType, string commitName, object parameter)
     {
         try
         {
@@ -255,13 +254,13 @@ internal class AigcTaskPageRunner : AIAssistant
     }
 
     /// <summary>
-    /// Reports the task result up the parent task hierarchy until no further reporting is needed.
+    /// Commits the task result up the parent task hierarchy until no further reporting is needed.
     /// </summary>
     /// <param name="request">The AI request containing conversation and cancellation context.</param>
     /// <param name="task">The child task that completed execution.</param>
     /// <param name="runResult">The result of the child task execution.</param>
     /// <returns>An <see cref="AICallResult"/> indicating the success or failure of the reporting process.</returns>
-    public async Task<AICallResult> CheckReportParent(AIRequest request, AigcTaskPage task, TaskRunResult runResult)
+    private async Task<AICallResult> CommitToParent(AIRequest request, AigcTaskPage task, TaskRunResult runResult)
     {
         while (task != null)
         {
@@ -289,7 +288,7 @@ internal class AigcTaskPageRunner : AIAssistant
             var parameter = runResult.Parameter;
             string commitName = task.CommitName;
             
-            runResult = await RunEvent(request, parent, eventType, commitName, parameter);
+            runResult = await RunTask(request, parent, eventType, commitName, parameter);
             task = parent;
 
             if (request.Cancel.IsCancellationRequested)

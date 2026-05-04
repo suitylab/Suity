@@ -87,6 +87,8 @@ public class ImGuiFitSystemBK : ImGuiFitSystem
 
         if (direction.IsHorizontal())
         {
+            float paddingTop = node.GetButtonTextPaddingTop();
+            float paddingBottom = node.GetButtonTextPaddingBottom();
             float paddingLeft = node.GetButtonTextPaddingLeft();
             float paddingRight = node.GetButtonTextPaddingRight();
 
@@ -95,7 +97,7 @@ public class ImGuiFitSystemBK : ImGuiFitSystem
             {
                 var innerRect = node.InnerRect;
 
-                float imgSize = innerRect.Height - (paddingLeft + paddingRight);
+                float imgSize = innerRect.Height - (paddingTop + paddingBottom);
 
                 width += imgSize;
 

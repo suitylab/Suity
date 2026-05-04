@@ -20,7 +20,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC.TaskPages.Running;
 
 /// <summary>
 /// Represents an instance of an AIGC page within a flow, managing page elements, parameters, and computation context.
@@ -46,8 +46,9 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
     private PageEndElement _currentEndElement;
 
     private readonly AssetProperty<IAigcToolAsset> _skill = new(SKILL_PROP, "Skill");
-
     private string _skillName;
+
+    private readonly IConversationImGui _conversation;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AigcPageInstance"/> class.
@@ -63,7 +64,9 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
         _asset = pageDefinition.TargetAsset as PageDefinitionAsset ?? throw new ArgumentNullException(nameof(pageDefinition.TargetAsset));
         Option = option;
         _skill.Target = skill;
-        
+
+        _conversation = EditorServices.ImGuiService.CreateConversationImGui(pageDefinition.Name, false);
+
         Build();
     }
 
@@ -100,8 +103,6 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
     /// </summary>
     public AssetSelection<IAigcToolAsset> SkillAssetSelection => _skill.Selection;
 
-
-
     /// <summary>
     /// Gets the last computation that was executed on this page.
     /// </summary>
@@ -122,7 +123,6 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
     /// </summary>
     public bool UseParentArticle { get; private set; }
 
-
     /// <inheritdoc/>
     public override string Name => _skillName ?? base.Name;
 
@@ -130,6 +130,11 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
     /// Gets or sets the tooltips text for this page.
     /// </summary>
     public string Tooltips { get; private set; }
+
+    /// <summary>
+    /// Gets the conversation interface for this page instance.
+    /// </summary>
+    public IConversationImGui Conversation => _conversation;
 
     #endregion
 
@@ -1271,8 +1276,15 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
     /// <param name="computation">The flow computation to configure.</param>
     protected virtual void OnConfigComputation(IFlowComputation computation)
     {
-        var view = computation.Context.GetArgument<IFlowView>();
-        computation.Context.SetArgument<IFlowCallerContext>(this);
+        _conversation.RemoveMessages(o => true);
+
+        var context = computation.Context;
+
+        var view = context.GetArgument<IFlowView>();
+        context.SetArgument<IFlowCallerContext>(this);
+        context.SetArgument<IConversationHandler>(_conversation);
+        context.SetArgument<IConversationHost>(_conversation as IConversationHost);
+        context.SetArgument<IConversationHostAsync>(_conversation as IConversationHostAsync);
 
         this.LastComputation = computation;
 

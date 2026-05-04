@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC.TaskPages.Running;
 
 /// <summary>
 /// Represents an abstract base class for AIGC page elements that integrate with the flow diagram system.

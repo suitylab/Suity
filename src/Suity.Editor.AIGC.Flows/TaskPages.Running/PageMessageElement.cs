@@ -4,7 +4,7 @@ using Suity.Editor.Types;
 using Suity.Views;
 using System;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC.TaskPages.Running;
 
 /// <summary>
 /// Represents a message element in an AIGC page that handles text-based message display and parameter input/output.

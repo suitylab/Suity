@@ -1,27 +1,28 @@
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Flows;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC.TaskPages.Running;
 
 /// <summary>
-/// Represents a page element that handles prompt parameter input for AIGC tasks.
+/// Represents a page element that handles parameter input for AIGC tasks.
 /// </summary>
-public class PagePromptParameterElement : AigcPageElement, IPageParameterInput
+public class PageParameterInputElement : AigcPageElement, IPageParameterInput
 {
-    private readonly PagePromptParameterInputItem _inputItem;
+    private readonly PageParameterInputItem _inputItem;
+    private object _value;
     private FlowNodeConnector _connector;
 
-    private readonly TextBlock _cachedPrompt = new();
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PagePromptParameterElement"/> class.
+    /// Initializes a new instance of the <see cref="PageParameterInputElement"/> class.
     /// </summary>
-    /// <param name="parameterItem">The prompt parameter input item to associate with this element.</param>
-    public PagePromptParameterElement(PagePromptParameterInputItem parameterItem)
+    /// <param name="parameterItem">The parameter input item to associate with this element.</param>
+    public PageParameterInputElement(PageParameterInputItem parameterItem)
         : base(parameterItem)
     {
         _inputItem = parameterItem ?? throw new ArgumentNullException(nameof(parameterItem));
@@ -33,14 +34,14 @@ public class PagePromptParameterElement : AigcPageElement, IPageParameterInput
     #region IPageParameterInput
 
     /// <summary>
+    /// Gets the type definition of the parameter.
+    /// </summary>
+    public TypeDefinition ParameterType { get; private set; }
+
+    /// <summary>
     /// Gets a value indicating whether this input is related to task completion.
     /// </summary>
     public bool TaskCompletion { get; private set; }
-
-    /// <summary>
-    /// Gets a value indicating whether this is a skill input. Always returns <c>false</c> for this element type.
-    /// </summary>
-    public bool IsSkillInput => false;
 
     /// <summary>
     /// Gets a value indicating whether this input is related to task commit.
@@ -53,14 +54,17 @@ public class PagePromptParameterElement : AigcPageElement, IPageParameterInput
     public bool ChatHistory { get; private set; }
 
     /// <summary>
-    /// Gets the type definition of the parameter. Always returns the native string type for prompt parameters.
+    /// Gets a value indicating whether this is a skill input. Always returns <c>false</c> for this element type.
     /// </summary>
-    public TypeDefinition ParameterType => NativeTypes.StringType;
+    public bool IsSkillInput => false;
+
+    /// <inheritdoc/>
+    public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value);
 
     /// <summary>
-    /// Gets the resolved prompt text as the parameter value.
+    /// Gets the current value of the parameter.
     /// </summary>
-    public object Value => ResolvePrmopt();
+    public object Value => _value;
 
     /// <summary>
     /// Gets or sets a value indicating whether a value has been explicitly set.
@@ -68,7 +72,18 @@ public class PagePromptParameterElement : AigcPageElement, IPageParameterInput
     public bool IsValueSet { get; set; }
 
     /// <inheritdoc/>
-    public object EnsureValue() => ResolvePrmopt();
+    public void SetValue(object value)
+    {
+        _value = value;
+        IsValueSet = true;
+    }
+
+    /// <inheritdoc/>
+    public object EnsureValue()
+    {
+        UpdateDefaultValue(ParameterType);
+        return _value;
+    }
 
     /// <inheritdoc/>
     public object GetOuterValue(IFlowComputation outerCompute)
@@ -82,22 +97,8 @@ public class PagePromptParameterElement : AigcPageElement, IPageParameterInput
         }
         else
         {
-            return ResolvePrmopt();
+            return _value;
         }
-    }
-
-    /// <inheritdoc/>
-    public ChatHistoryText ResolveChatHistory() => ResolvePrmopt();
-
-    /// <inheritdoc/>
-    public void SetValue(object value)
-    {
-        if (value is not string prompt)
-        {
-            return;
-        }
-
-        SetPrompt(prompt);
     }
 
     #endregion
@@ -110,21 +111,7 @@ public class PagePromptParameterElement : AigcPageElement, IPageParameterInput
         TaskCompletion = _inputItem.Node?.TaskCompletion == true;
         TaskCommit = _inputItem.Node?.TaskCommit == true;
         ChatHistory = _inputItem.Node?.ChatHistory == true;
-    }
-
-    /// <inheritdoc/>
-    public override bool? GetIsDone()
-    {
-        if (TaskCompletion)
-        {
-            var prompt = ResolvePrmopt();
-
-            return !string.IsNullOrWhiteSpace(prompt);
-        }
-        else
-        {
-            return null;
-        }
+        ParameterType = _inputItem.Node?.TypeDef ?? TypeDefinition.Empty;
     }
 
     /// <inheritdoc/>
@@ -135,11 +122,10 @@ public class PagePromptParameterElement : AigcPageElement, IPageParameterInput
             return;
         }
 
-        if (sync.Intent == SyncIntent.View)
-        {
-            ResolvePrmopt();
-            sync.Sync("Prompt", _cachedPrompt, SyncFlag.GetOnly);
-        }
+        // var valueType = ParameterType;
+        UpdateDefaultValue(ParameterType);
+
+        _value = sync.Sync(Name, _value);
     }
 
     /// <inheritdoc/>
@@ -151,10 +137,11 @@ public class PagePromptParameterElement : AigcPageElement, IPageParameterInput
         }
 
         var valueType = ParameterType;
+        UpdateDefaultValue(valueType);
 
         var property = new ViewProperty(Name, DisplayText)
             .WithExpand()
-            .WithReadOnly()
+            .WithOptional()
             .WithStatus(GetStatus());
 
         // In function mode, check if the connection point corresponding to the configuration property has been connected
@@ -163,53 +150,57 @@ public class PagePromptParameterElement : AigcPageElement, IPageParameterInput
             property.ConfigConnected(flowNode.Diagram, _connector);
         }
 
-        setup.InspectorField(_cachedPrompt, property);
+        setup.InspectorFieldOfType(valueType, property);
     }
 
     /// <inheritdoc/>
     public override void UpdateConnector(PageFunctionNode node)
     {
-        _connector = node.AddDataInputConnector(Name, NativeTypes.StringType, DisplayText);
+        var valueType = ParameterType;
+        _connector = node.AddDataInputConnector(Name, valueType, DisplayText);
     }
+
 
     /// <inheritdoc/>
     public override void UpdateFromOther(IAigcPageElement other)
     {
-        if (other is PagePromptParameterElement otherParameter)
+        if (other is PageParameterInputElement otherParameter)
         {
             UpdateFromOther(otherParameter);
         }
     }
 
     /// <summary>
-    /// Updates the prompt from another <see cref="PagePromptParameterElement"/>.
+    /// Updates the value from another <see cref="PageParameterInputElement"/>.
     /// </summary>
-    /// <param name="otherParameter">The source element to copy the prompt from.</param>
-    public void UpdateFromOther(PagePromptParameterElement otherParameter)
+    /// <param name="otherParameter">The source element to copy the value from.</param>
+    public void UpdateFromOther(PageParameterInputElement otherParameter)
     {
-        string prompt = otherParameter.ResolvePrmopt();
-        SetPrompt(prompt);
+        _value = otherParameter._value;
     }
 
-    private string ResolvePrmopt()
+    /// <inheritdoc/>
+    public override bool? GetIsDone()
     {
-        var task = Option.Owner as IAigcTaskPage;
-        
-        if (task?.GetPrompt(false) is string prompt)
+        if (TaskCompletion)
         {
-            _cachedPrompt.Text = prompt;
+            return !PageHelper.GetIsValueEmpty(Value);
         }
-
-        return _cachedPrompt.Text;
+        else
+        {
+            return null;
+        }
     }
 
-    private void SetPrompt(string prompt)
+    private void UpdateDefaultValue(TypeDefinition type)
     {
-        _cachedPrompt.Text = prompt;
-
-        if (Option.Owner is IAigcTaskPage task)
+        if (!TypeDefinition.IsNullOrEmpty(type))
         {
-            task.SetPrompt(prompt);
+            _value = type.CreateOrRepairValue(_value, true);
+        }
+        else
+        {
+            _value = null;
         }
     }
 }

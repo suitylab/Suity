@@ -7,7 +7,7 @@ using Suity.Views;
 using System;
 using System.IO;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC.TaskPages.Running;
 
 /// <summary>
 /// Represents a file output element in an AIGC page that handles file path output and validation.

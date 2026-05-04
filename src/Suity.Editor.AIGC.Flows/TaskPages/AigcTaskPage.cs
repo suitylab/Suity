@@ -3,6 +3,7 @@ using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.AIGC.Flows.Pages;
+using Suity.Editor.AIGC.TaskPages.Running;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
@@ -16,7 +17,6 @@ using Suity.UndoRedos;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -1110,33 +1110,33 @@ public class AigcTaskPage : DesignNode, IAigcTaskPage, IViewDoubleClickAction, I
             return false;
         }
 
-        var elements = instance.GetAllChildElements(true)
+        var begins = instance.GetAllChildElements(true)
             .OfType<PageBeginElement>()
             .Where(o => o.Node is PageEventNode node && node.MathEvent(eventType, commitName))
             .ToArray();
 
-        if (elements.Length == 0)
+        if (begins.Length == 0)
         {
             return false;
         }
 
-        foreach (var element in elements)
+        foreach (var begin in begins)
         {
-            var parentDefPage = element.FindParentDefPage();
+            var parentDefPage = begin.FindParentDefPage();
             if (parentDefPage is null)
             {
                 continue;
             }
             if (parentDefPage.GetIsDone() == true)
             {
-                request.Conversation.AddDisabledMessage("Skip completed event: " + element.Name);
+                request.Conversation.AddDisabledMessage("Skip completed event: " + begin.Name);
                 continue;
             }
 
             // request.Conversation.AddRunningMessage("Execute event: " + element.Name);
 
-            element.SetValue(parameter);
-            await instance.HandleBeginTask(request, element);
+            begin.SetValue(parameter);
+            await instance.HandleBeginTask(request, begin);
         }
 
         return true;

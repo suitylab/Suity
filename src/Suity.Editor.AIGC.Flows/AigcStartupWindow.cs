@@ -1,6 +1,7 @@
 ﻿using Suity.Drawing;
-using Suity.Editor.AIGC.Flows.Properties;
+using Suity.Editor.AIGC.Properties;
 using Suity.Editor.AIGC.TaskPages;
+using Suity.Editor.AIGC.TaskPages.Running;
 using Suity.Editor.Documents;
 using Suity.Editor.Selecting;
 using Suity.Helpers;
@@ -11,6 +12,7 @@ using Suity.Views.Im.PropertyEditing;
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.AIGC;
@@ -269,14 +271,15 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
             return;
         }
 
-        doc.ShowView();
+        var view = doc.ShowView();
 
         doc.StartupPage = startupPage;
         doc.InitialTaskPrompt = prompt;
         doc.MarkDirtyAndSaveDelayed(this);
 
-        var runner = new AigcTaskPageRunner(doc);
+        // Waiting for document view to be ready
+        await EditorUtility.WaitForNextQueuedAction();
 
-        await LLmService.Instance.InputMainChat(prompt, runner);
+        (view as AigcTaskPageDocumentView)?.Run(prompt);
     }
 }

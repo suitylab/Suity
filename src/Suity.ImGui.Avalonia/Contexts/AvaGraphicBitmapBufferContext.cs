@@ -163,11 +163,11 @@ internal class AvaGraphicBitmapBufferContext : AvaGraphicBaseContext
 
     private void DrawBuffer(DrawingContext context, Rect rect, WriteableBitmap bitmap)
     {
-        // 获取控件的当前边界，或者指定一个特定的 Rect
+        // Get the current bounds of the control, or specify a specific Rect
         var destRect = new Rect(0, 0, rect.Width, rect.Height);
         var sourceRect = new Rect(0, 0, bitmap.Size.Width, bitmap.Size.Height);
 
-        // 将 WriteableBitmap 绘画到当前上下文
+        // Draw the WriteableBitmap to the current context
         context.DrawImage(bitmap, sourceRect, destRect);
 
         ClearInput();

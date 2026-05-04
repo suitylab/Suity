@@ -1,3 +1,4 @@
+using Suity;
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
@@ -8,7 +9,7 @@ using Suity.Views;
 using System;
 using System.Linq;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC.TaskPages.Running;
 
 #region PageArticleRefItem
 

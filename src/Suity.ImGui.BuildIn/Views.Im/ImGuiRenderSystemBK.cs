@@ -1016,11 +1016,12 @@ public class ImGuiRenderSystemBK : ImGuiRenderSystem
 
             if (image is { })
             {
-                float paddingTop = node.GlobalScaleValue(node.GetButtonTextPaddingTop());
+                float paddingTop = node.GetButtonTextPaddingTop();
+                float paddingBottom = node.GetButtonTextPaddingBottom();
                 float paddingLeft = node.GlobalScaleValue(node.GetButtonTextPaddingLeft());
                 float paddingRight = node.GlobalScaleValue(node.GetButtonTextPaddingRight());
 
-                float imgSize = innerRect.Height - paddingLeft - paddingRight;
+                float imgSize = innerRect.Height - (paddingTop + paddingBottom);
 
                 var imgRect = new RectangleF(innerRect.X + paddingLeft, innerRect.Y + paddingTop, imgSize, imgSize);
                 output.DrawImageCached(image, imgRect, imgColor);

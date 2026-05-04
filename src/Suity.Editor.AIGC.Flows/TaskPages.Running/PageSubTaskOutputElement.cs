@@ -1,3 +1,4 @@
+using Suity;
 using Suity.Collections;
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Flows;
@@ -6,7 +7,7 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System.Linq;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC.TaskPages.Running;
 
 /// <summary>
 /// Represents a page element that handles sub-task output for AIGC tasks.
