@@ -26,7 +26,7 @@ public abstract class BaseLLmChat : ILLmChat,
 
     private LLmChatStates _state;
 
-    protected CancellationTokenSource _cancel;
+    protected CancellationTokenSource _cancelSource;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BaseLLmChat"/> class with a name and optional text and context.
@@ -87,10 +87,10 @@ public abstract class BaseLLmChat : ILLmChat,
         {
             _state = LLmChatStates.Starting;
 
-            _cancel?.Dispose();
-            _cancel = new CancellationTokenSource();
+            _cancelSource?.Dispose();
+            _cancelSource = new CancellationTokenSource();
 
-            await OnStart(_cancel.Token);
+            await OnStart(_cancelSource.Token);
 
             _state = LLmChatStates.Started;
 
@@ -98,11 +98,11 @@ public abstract class BaseLLmChat : ILLmChat,
             {
                 _conversation.AddUserMessage(msg, attachments as AttachmentSet[]);
                 // return await _conversation.HandleMessageInputAsync(msg, _cancel.Token);
-                return await HandleStart(msg, option, _cancel.Token);
+                return await HandleStart(msg, option, _cancelSource);
             }
             else
             {
-                return await HandleStart(null, option, _cancel.Token);
+                return await HandleStart(null, option, _cancelSource);
             }
         }
         //catch (ExecuteException err)
@@ -143,8 +143,8 @@ public abstract class BaseLLmChat : ILLmChat,
         }
         finally
         {
-            var cancel = _cancel;
-            _cancel = null;
+            var cancel = _cancelSource;
+            _cancelSource = null;
 
             cancel?.Dispose();
 
@@ -180,8 +180,8 @@ public abstract class BaseLLmChat : ILLmChat,
 
         _state = LLmChatStates.Stopped;
 
-        var cancel = _cancel;
-        _cancel = null;
+        var cancel = _cancelSource;
+        _cancelSource = null;
 
         cancel?.Cancel();
         cancel?.Dispose();
@@ -221,14 +221,14 @@ public abstract class BaseLLmChat : ILLmChat,
             return null;
         }
 
-        if (_cancel != null)
+        if (_cancelSource != null)
         {
             _conversation.AddUserMessage(msg, attachments as AttachmentSet[]);
             //_conversation.AddErrorMessage($"A task is currently being processed and cannot accept new information.");
 
             if (_conversation is IConversationHostAsync hostAsync)
             {
-                return await hostAsync.HandleMessageInputAsync(msg, _cancel.Token);
+                return await hostAsync.HandleMessageInputAsync(msg, _cancelSource.Token);
             }
             else
             {
@@ -335,7 +335,7 @@ public abstract class BaseLLmChat : ILLmChat,
     /// <param name="option">Optional configuration for the conversation.</param>
     /// <param name="cancel">The cancellation token for the operation.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    protected virtual Task<object> HandleStart(string msg, object option, CancellationToken cancel)
+    protected virtual Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource)
     {
         return Task.FromResult<object>(null);
     }
@@ -397,9 +397,9 @@ public class ManualLLmChat : BaseLLmChat
     /// </summary>
     /// <param name="msg">The message to process.</param>
     /// <param name="option">Optional configuration.</param>
-    /// <param name="cancel">The cancellation token.</param>
+    /// <param name="cancelSource">The cancellation token source.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    protected override async Task<object> HandleStart(string msg, object option, CancellationToken cancel)
+    protected override async Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource)
     {
         if (string.IsNullOrWhiteSpace(msg))
         {

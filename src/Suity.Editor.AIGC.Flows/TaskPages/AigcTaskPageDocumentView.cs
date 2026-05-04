@@ -27,7 +27,9 @@ public enum PageViewCategory
 {
     Page,
     Chat,
+    Input,
     Output,
+    Commit,
 }
 
 /// <summary>
@@ -42,6 +44,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
     ISyncStateRecord
 {
     private readonly ImGuiNodeRef _guiRef = new();
+    private readonly ImGuiNodeRef _guiNaviContainerRef = new();
 
     private readonly ImGuiTheme _theme;
     private readonly IUndoableViewObjectImGui _treeView;
@@ -57,7 +60,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
     private AigcTaskPage _currentPage;
     private readonly GuiOptionalValue _pageNaviOption = new();
     private PageViewCategory _pageCategory;
-
+    private AigcTaskPageRunner _currentRunner;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AigcTaskPageDocumentView"/> class.
@@ -303,13 +306,28 @@ public class AigcTaskPageDocumentView : IDocumentView,
                 .InitFitVertical()
                 .OnContent(() => 
                 {
-                    gui.Button("btnResume", "Resume", CoreIconCache.Play)
-                    .InitClass("simpleBtn")
-                    .SetToolTipsL("Start generating")
-                    .OnClick(() =>
+                    if (_currentRunner?.IsRunning == true)
                     {
-                        Run("resume");
-                    });
+                        gui.Button("btnStop", "Stop", CoreIconCache.Stop)
+                        .InitClass("simpleBtn")
+                        .SetToolTipsL("Stop task")
+                        .OnClick(() =>
+                        {
+                            _currentRunner?.RequestCancel();
+                            _currentRunner = null;
+                            _guiRef.QueueRefresh();
+                        });
+                    }
+                    else
+                    {
+                        gui.Button("btnResume", "Resume", CoreIconCache.Play)
+                        .InitClass("simpleBtn")
+                        .SetToolTipsL("Start task")
+                        .OnClick(() =>
+                        {
+                            Run("resume");
+                        });
+                    }
                 });
 
                 _treeView.OnNodeGui(gui)
@@ -510,34 +528,36 @@ public class AigcTaskPageDocumentView : IDocumentView,
             .InitFitVertical()
             .OnContent(() =>
             {
-                gui.HorizontalLayout("#left")
+                _guiNaviContainerRef.Node = gui.HorizontalLayout("#left")
                 .InitWidthRest(64)
                 .InitPadding(0)
                 //.InitVerticalAlignment(GuiAlignment.Center)
                 .OnContent(() =>
                 {
-                    NaviButton(gui, PageViewCategory.Page, CoreIconCache.Task).InitOptionActive();
-                    NaviButton(gui, PageViewCategory.Chat, CoreIconCache.Chat);
-                    NaviButton(gui, PageViewCategory.Output, CoreIconCache.Text);
+                    NaviButton(gui, PageViewCategory.Page, CoreIconCache.Task, "Page view");
+                    NaviButton(gui, PageViewCategory.Chat, CoreIconCache.Chat, "LLm chat view");
+                    NaviButton(gui, PageViewCategory.Input, CoreIconCache.Text, "Input chat history");
+                    NaviButton(gui, PageViewCategory.Output, CoreIconCache.Text, "Output chat history");
+                    NaviButton(gui, PageViewCategory.Commit, CoreIconCache.Text, "Task commit message");
 
-/*                    if (page.Instance?.GetAllStatusIcon() is { } statusIcon)
-                    {
-                        gui.Image("#statusIcon", statusIcon).InitClass("icon");
-                    }
+                    /*                    if (page.Instance?.GetAllStatusIcon() is { } statusIcon)
+                                        {
+                                            gui.Image("#statusIcon", statusIcon).InitClass("icon");
+                                        }
 
-                    if (page.Icon is { } icon)
-                    {
-                        gui.Image("#icon", icon).InitClass("icon");
-                    }
+                                        if (page.Icon is { } icon)
+                                        {
+                                            gui.Image("#icon", icon).InitClass("icon");
+                                        }
 
-                    gui.Text($"#title", page.DisplayText ?? "---")
-                    .InitClass("titleText")
-                    .InitCenter();
+                                        gui.Text($"#title", page.DisplayText ?? "---")
+                                        .InitClass("titleText")
+                                        .InitCenter();
 
-                    if (page.Instance?.SkillAssetSelection?.Target is { } skill)
-                    {
-                        gui.Text($" (Skill: {skill.ToDisplayText()})");
-                    }*/
+                                        if (page.Instance?.SkillAssetSelection?.Target is { } skill)
+                                        {
+                                            gui.Text($" (Skill: {skill.ToDisplayText()})");
+                                        }*/
                 });
 
                 gui.HorizontalLayout("#right")
@@ -565,33 +585,61 @@ public class AigcTaskPageDocumentView : IDocumentView,
                     case PageViewCategory.Page:
                         _propGrid.OnGui(gui);
                         break;
+
                     case PageViewCategory.Chat:
                         if (page.Instance is { } instance)
                         {
                             instance.Conversation.OnNodeGui(gui);
                         }
                         break;
+
+                    case PageViewCategory.Input:
+                        gui.TextAreaInput("#input-" + page.Name, null, page.Instance?.GetInputChatHistory())
+                        .InitFullSize();
+                        break;
+
                     case PageViewCategory.Output:
+                        gui.TextAreaInput("#output-" + page.Name, null, page.Instance?.GetOutputChatHistory())
+                        .InitFullSize();
+                        break;
+
+                    case PageViewCategory.Commit:
+                        gui.TextAreaInput("#commit-" + page.Name, null, page.Instance?.GetTaskCommit())
+                        .InitFullSize();
                         break;
                 }
             });
         });
     }
 
-    private ImGuiNode NaviButton(ImGui gui, PageViewCategory category, ImageDef icon)
+    private ImGuiNode NaviButton(ImGui gui, PageViewCategory category, ImageDef icon, string toolTips = null)
     {
-        return gui.SwitchButton($"#{category}", category.ToDisplayTextL(), icon, _pageNaviOption)
-        .InitClass("naviBtn")
-        .InitFullHeight()
-        .InitFitHorizontal()
-        .InitChildSpacing(5)
-        //.InitPadding(0, 0, 10, 10)
-        .SetToolTips(category.ToDisplayTextL())
+        var node = gui.SwitchButton($"#{category}", category.ToDisplayTextL(), icon, _pageNaviOption)
+        .OnInitialize(n =>
+        {
+            n.InitClass("naviBtn");
+            n.InitFullHeight();
+            n.InitFitHorizontal();
+            n.InitChildSpacing(5);
+            n.InitOptionActive(category == _pageCategory);
+            //n.InitPadding(0, 0, 10, 10);
+        })
         .OnClick(() =>
         {
-            SetCurrentCategory(category);
+            _pageCategory = category;
             gui.QueueRefresh();
         });
+
+        if (!string.IsNullOrWhiteSpace(toolTips))
+        {
+            node.SetToolTips(L(toolTips));
+        }
+        else
+        {
+            node.SetToolTips(category.ToDisplayTextL());
+        }
+
+        return node;
     }
 
     private void SetCurrentCategory(PageViewCategory category)
@@ -602,6 +650,13 @@ public class AigcTaskPageDocumentView : IDocumentView,
         }
 
         _pageCategory = category;
+
+        if (_guiNaviContainerRef.Node is { } container)
+        {
+            var node = container.GetChildNode($"#{category}");
+            node?.SetActiveSwitchButton();
+            _guiNaviContainerRef.QueueRefresh();
+        }
     }
 
 
@@ -712,21 +767,34 @@ public class AigcTaskPageDocumentView : IDocumentView,
     /// </summary>
     /// <param name="msg">The message to run.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public Task Run(string msg)
+    public async Task<object> Run(string msg)
     {
+        var runner = _currentRunner;
+
+        if (runner != null)
+        {
+            runner.RequestCancel();
+        }
+
         if (_document is not { } doc)
         {
-            return Task.CompletedTask;
+            return null;
         }
 
         if (string.IsNullOrWhiteSpace(msg))
         {
-            return Task.CompletedTask;
+            return null;
         }
 
-        var runner = new AigcTaskPageRunner(doc);
+        runner = _currentRunner = new AigcTaskPageRunner(doc);
+        SetCurrentCategory(PageViewCategory.Chat);
 
-        return LLmService.Instance.InputMainChat(msg, runner);
+        var result = await LLmService.Instance.InputMainChat(msg, runner);
+
+        _currentRunner = null;
+        SetCurrentCategory(PageViewCategory.Page);
+
+        return result;
     }
 
 

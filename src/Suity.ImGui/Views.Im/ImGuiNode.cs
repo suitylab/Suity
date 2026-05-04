@@ -802,7 +802,7 @@ public abstract class ImGuiNode
     /// </summary>
     /// <param name="id">The identifier of the child node to retrieve.</param>
     /// <returns>The child node with the specified identifier, or null if not found.</returns>
-    public abstract ImGuiNode? GetChildNode(string id);
+    public abstract ImGuiNode? GetChildNode(string? id);
 
     /// <summary>
     /// Retrieves a child node by its index.

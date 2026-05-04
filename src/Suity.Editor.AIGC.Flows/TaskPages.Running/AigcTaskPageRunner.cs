@@ -26,6 +26,8 @@ internal class AigcTaskPageRunner : AIAssistant
     private readonly DocumentUsageToken _usageToken = new(nameof(AigcTaskPageRunner));
 
     private AigcTaskPage _lastTask;
+    private AIRequest _lastRequest;
+
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AigcTaskPageRunner"/> class.
@@ -37,17 +39,40 @@ internal class AigcTaskPageRunner : AIAssistant
     }
 
     /// <inheritdoc/>
-    public override Task<AICallResult> HandleRequest(AIRequest request)
+    public override async Task<AICallResult> HandleRequest(AIRequest request)
     {
-        if (_document.IsTaskEmpty)
+        if (_lastRequest is not null)
         {
-            return HandleNew(request);
+            return AICallResult.Empty;
         }
-        else
+
+        try
         {
-            return HandleResume(request);
+            _lastRequest = request;
+
+            if (_document.IsTaskEmpty)
+            {
+                return await HandleNew(request);
+            }
+            else
+            {
+                return await HandleResume(request);
+            }
+
+        }
+        finally
+        {
+            _lastRequest = null;
         }
     }
+
+    public bool IsRunning => _lastRequest != null;
+
+    public void RequestCancel()
+    {
+        _lastRequest?.RequestCancel?.Invoke();
+    }
+
 
     private async Task<AICallResult> HandleNew(AIRequest request)
     {

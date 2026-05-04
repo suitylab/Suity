@@ -2599,9 +2599,9 @@ internal class ImGuiNodeBK : ImGuiNode
     }
 
     // ReSharper disable once MemberCanBePrivate.Global
-    public override ImGuiNode? GetChildNode(string id)
+    public override ImGuiNode? GetChildNode(string? id)
     {
-        if (id is null)
+        if (string.IsNullOrEmpty(id))
         {
             return null;
         }
@@ -2613,7 +2613,7 @@ internal class ImGuiNodeBK : ImGuiNode
 
         if (_childNodeDic is { })
         {
-            return _childNodeDic.GetValueSafe(id);
+            return _childNodeDic.GetValueSafe(id!);
         }
         else
         {

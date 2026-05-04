@@ -113,7 +113,7 @@ public class ConversationHandlerImGui :
                 for (int i = 0; i < _items.Count; i++)
                 {
                     var item = _items[i];
-                    item.OnGui(gui, i, i == _items.Count - 1, _menu, this);
+                    item?.OnGui(gui, i, i == _items.Count - 1, _menu, this);
                 }
             }
             else
@@ -121,7 +121,7 @@ public class ConversationHandlerImGui :
                 for (int i = 0; i < _items.Count; i++)
                 {
                     var item = _items[i];
-                    item.OnGui(gui, i, true, _menu, this);
+                    item?.OnGui(gui, i, true, _menu, this);
                 }
             }
         })

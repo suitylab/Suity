@@ -30,7 +30,7 @@ public class AssistantChat : BaseLLmChat
     }
 
     /// <inheritdoc/>
-    protected override Task<object> HandleStart(string msg, object option, CancellationToken cancel)
+    protected override Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource)
     {
         if (_handling)
         {
@@ -46,7 +46,12 @@ public class AssistantChat : BaseLLmChat
             Conversation = _conversation,
             FuncContext = this._context,
             Option = option,
-            Cancel = cancel,
+            Cancel = cancelSource.Token,
+            RequestCancel = () =>
+            {
+                cancelSource.Cancel();
+                // _conversation.AddSystemMessage(L("Request cancelled."));
+            }
         };
 
         return HandleRequest(request);

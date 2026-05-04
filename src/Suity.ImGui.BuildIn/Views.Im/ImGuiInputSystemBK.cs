@@ -450,8 +450,7 @@ public class ImGuiInputSystemBK : ImGuiInputSystem
             case GuiEventTypes.MouseUp:
                 if (node.GetIsClicked() && selectedValue is { })
                 {
-                    var otherNode = node.Parent?.GetChildNode(selectedValue.ActiveNodeId ?? string.Empty);
-                    if (otherNode is { })
+                    if (node.Parent?.GetChildNode(selectedValue.ActiveNodeId) is { } otherNode)
                     {
                         otherNode.Pseudo = null;
                         node.MarkRenderDirty();

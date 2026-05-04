@@ -51,14 +51,14 @@ public abstract class BaseFlowChat : BaseLLmChat
     }
 
     /// <inheritdoc/>
-    protected override async Task<object> HandleStart(string msg, object option, CancellationToken cancel)
+    protected override async Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource)
     {
         //if (string.IsNullOrWhiteSpace(msg))
         //{
         //    return null;
         //}
 
-        return await HandleRun(msg, option, cancel);
+        return await HandleRun(msg, option, cancelSource);
     }
 
     /// <inheritdoc/>
@@ -99,7 +99,7 @@ public abstract class BaseFlowChat : BaseLLmChat
     /// <param name="option">The workflow options.</param>
     /// <param name="cancel">Cancellation token.</param>
     /// <returns>The result of the workflow execution.</returns>
-    private async Task<object> HandleRun(string msg, object option, CancellationToken cancel)
+    private async Task<object> HandleRun(string msg, object option, CancellationTokenSource cancelSource)
     {
         var runner = _runner;
         if (runner is null)
@@ -132,9 +132,9 @@ public abstract class BaseFlowChat : BaseLLmChat
         try
         {
             //TODO: Although async, it does not support multiple threads calling at the same time, need to add protection
-            var result = await runner.RunStarterNode(starterNode, null, msg, cancel);
+            var result = await runner.RunStarterNode(starterNode, null, msg, cancelSource.Token);
 
-            if (cancel.IsCancellationRequested)
+            if (cancelSource.Token.IsCancellationRequested)
             {
                 _conversation.AddSystemMessage("Task canceled.");
             }

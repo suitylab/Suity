@@ -932,10 +932,11 @@ public static class GuiCoreExtensions
     /// Sets this node as the active option only during initialization.
     /// </summary>
     /// <param name="node">The target ImGui node.</param>
+    /// <param name="isActive">Whether this node should be set as active.</param>
     /// <returns>The same node for method chaining.</returns>
-    public static ImGuiNode InitOptionActive(this ImGuiNode node)
+    public static ImGuiNode InitOptionActive(this ImGuiNode node, bool isActive = true)
     {
-        if (node.IsInitializing)
+        if (node.IsInitializing && isActive)
         {
             if (node.Parent?.GetOrCreateValue<GuiOptionalValue>() is { } value)
             {

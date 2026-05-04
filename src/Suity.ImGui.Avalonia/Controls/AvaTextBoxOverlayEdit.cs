@@ -153,7 +153,14 @@ public class AvaTextBoxOverlayEdit : IGraphicTextBoxEdit
         Dispatcher.UIThread.Post(() =>
         {
             _textBox.Focus();
-            _textBox.SelectAll();
+            if (!option.MultiLine)
+            {
+                _textBox.SelectAll();
+            }
+            else
+            {
+                _textBox.ScrollToLine(0);
+            }
         }, DispatcherPriority.Input);
     }
 

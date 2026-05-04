@@ -1,9 +1,10 @@
-using static Suity.Helpers.GlobalLocalizer;
+using Suity.Drawing;
 using Suity.Views.Graphics;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.CompilerServices;
-using Suity.Drawing;
+using System.Xml.Linq;
+using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Views.Im;
 
@@ -271,6 +272,25 @@ public static class GuiButtonExtensions
         }
         node.Layout();
         return node;
+    }
+
+    public static void SetActiveSwitchButton(this ImGuiNode node)
+    {
+        var selectedValue = node.Parent?.GetValue<GuiOptionalValue>();
+        if (selectedValue is null)
+        {
+            return;
+        }
+
+        if (node.Parent?.GetChildNode(selectedValue.ActiveNodeId) is { } otherNode)
+        {
+            otherNode.Pseudo = null;
+            node.MarkRenderDirty();
+        }
+
+        selectedValue.ActiveNodeId = node.Id;
+        node.Pseudo = ImGuiNode.PseudoActive;
+        node.MarkRenderDirty();
     }
 
     /// <summary>

@@ -58,6 +58,11 @@ public class AIRequest
     public CancellationToken Cancel { get; init; }
 
     /// <summary>
+    /// Action to request cancellation of the ongoing operation. This can be invoked by the assistant to signal that it wants to stop processing, for example when a user clicks a cancel button in the conversation interface.
+    /// </summary>
+    public Action RequestCancel { get; init; }
+
+    /// <summary>
     /// Context to pass additional arguments.
     /// </summary>
     public FunctionContext FuncContext { get; init; }
