@@ -32,6 +32,8 @@ public class MainAssistant : AIAssistant
     {
         try
         {
+            AICallResult result = AICallResult.Empty;
+
             if (request.Option is AIAssistantOption option)
             {
                 if (option.Assistant is { } assistant)
@@ -43,17 +45,28 @@ public class MainAssistant : AIAssistant
                         msg.AddCode(assistant.ToDisplayTextL());
                     });
 
-                    return await assistant.HandleRequest(request);
+                    result = await assistant.HandleRequest(request);
                 }
                 else
                 {
-                    return AICallResult.Empty;
+                    result = AICallResult.Empty;
                 }
             }
             else
             {
-                return await HandleNormal(request);
+                result = await HandleNormal(request);
             }
+
+            if (result?.Status == AICallStatus.Failed)
+            {
+                request.Conversation?.AddErrorMessage(result.Message);
+            }
+            else if (!string.IsNullOrWhiteSpace(result.Message))
+            {
+                request.Conversation?.AddSystemMessage(result.Message);
+            }
+
+            return result;
         }
         finally
         {

@@ -326,6 +326,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         gui.Button("btnResume", "Resume", CoreIconCache.Play)
                         .InitClass("simpleBtn")
                         .SetToolTipsL("Start task")
+                        .SetEnabled(_document?.GetLastRunningTask() != null)
                         .OnClick(() =>
                         {
                             Run("resume");
@@ -427,12 +428,16 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         gui.Text(L("Startup")).InitFit();
                         gui.PropertyEditor(_startupPageTarget, act =>
                         {
-                            act.DoAction();
-                            doc.StartupPageSelection = _startupPageTarget.GetValues().FirstOrDefault() as AssetSelection<IAigcToolAsset> ?? doc.StartupPageSelection;
+                            if (doc.Count == 0)
+                            {
+                                act.DoAction();
+                                doc.StartupPageSelection = _startupPageTarget.GetValues().FirstOrDefault() as AssetSelection<IAigcToolAsset> ?? doc.StartupPageSelection;
 
-                            // doc.StartupPageSelection.Target ??= null;
-                            _guiRef.QueueRefresh();
-                        });
+                                // doc.StartupPageSelection.Target ??= null;
+                                _guiRef.QueueRefresh();
+                            }
+                        })
+                        .SetEnabled(doc.Count == 0);
                     });
 
                     gui.Text("#title", L("Please enter AI prompt words"));
@@ -555,9 +560,9 @@ public class AigcTaskPageDocumentView : IDocumentView,
                     n.InitOverrideBorder(1, Color.White.MultiplyAlpha(0.2f));
                 });
 
-                gui.Button("#diagramBtn", "Diagram", CoreIconCache.Workflow)
+                gui.Button("#workflowBtn", "Workflow", CoreIconCache.Workflow)
                 .InitClass("naviBtn")
-                .InitToolTips("Go to diagram")
+                .InitToolTips("Go to workflow")
                 .OnClick(() =>
                 {
                     HandleNavigateDiagram();

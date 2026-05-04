@@ -128,11 +128,16 @@ internal class AigcTaskPageRunner : AIAssistant
                 return AICallResult.FromFailed("Task canceled.");
             }
 
+            if (_document.Count == 0)
+            {
+                return AICallResult.FromMessage("No tasks have been created.");
+            }
+
             // Get task for running, if the last task is not completed, continue to run it; otherwise get the next task to run.
             var task = _document.GetLastRunningTask();
             if (task is null)
             {
-                break;
+                return AICallResult.FromMessage("All tasks have been completed.");
             }
 
             if (task.GetIsDoneInputs().IsFalse())

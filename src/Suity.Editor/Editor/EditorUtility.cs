@@ -1,10 +1,9 @@
-﻿using static Suity.Helpers.GlobalLocalizer;
+﻿using Suity.Drawing;
 using Suity.Editor.CodeRender;
-using Suity.Editor.Documents;
 using Suity.Editor.Design;
+using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.ProjectGui;
-using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
@@ -22,14 +21,14 @@ using Suity.Views.Named;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Diagnostics;
-using Suity.Drawing;
+using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor;
 

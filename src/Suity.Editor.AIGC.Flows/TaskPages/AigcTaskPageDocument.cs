@@ -148,10 +148,10 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     public IEnumerable<AigcTaskPage> Tasks => ItemCollection.Items.OfType<AigcTaskPage>();
 
     /// <summary>
-    /// Gets the first task that has not been fully completed, searching from the last task backward.
+    /// Gets the first top level task that has not been fully completed, searching from the last task backward.
     /// </summary>
-    /// <returns>The first undone <see cref="AigcTaskPage"/>, or null if all tasks are done.</returns>
-    public AigcTaskPage GetFirstUndoneTask()
+    /// <returns>The first top level running <see cref="AigcTaskPage"/>, or null if all tasks are done.</returns>
+    public AigcTaskPage GetFirstTopLevelRunningTask()
     {
         int c = Count;
         if (c == 0)
@@ -159,7 +159,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
             return null;
         }
 
-        AigcTaskPage undone = null;
+        AigcTaskPage working = null;
 
         for (int i = c - 1; i >= 0; i--)
         {
@@ -170,9 +170,9 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
             }
 
             var allDone = task.GetAllDone();
-            if (allDone.HasValue && allDone.Value == false)
+            if (allDone.IsFalse())
             {
-                undone = task;
+                working = task;
                 continue;
             }
             else
@@ -181,7 +181,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
             }
         }
 
-        return undone;
+        return working;
     }
 
     /// <summary>
@@ -195,7 +195,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
             return null;
         }
 
-        var task = GetFirstUndoneTask();
+        var task = GetFirstTopLevelRunningTask();
         if (task != null)
         {
             return task.GetLastRunningTask() ?? task;
@@ -203,7 +203,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
 
         // This is the last completed task.
         task = GetTaskAt(Count - 1);
-        if (task != null)
+        if (task != null && task.GetAllDone().IsFalse())
         {
             return task.GetLastRunningTask() ?? task;
         }

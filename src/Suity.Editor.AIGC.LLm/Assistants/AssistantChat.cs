@@ -87,10 +87,6 @@ public class AssistantChat : BaseLLmChat
         try
         {
             var result = await _assistant.HandleRequest(request);
-            if (result?.Status == AICallStatus.Failed)
-            {
-                _conversation.AddErrorMessage(result.Message);
-            }
 
             return result;
         }
