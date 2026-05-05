@@ -159,11 +159,6 @@ internal class AigcTaskPageRunner : AIAssistant
 
             _lastTask = task;
 
-            if (_document.View?.GetService<IViewSelectable>() is { } sel)
-            {
-                sel.SetSelection(new ViewSelection(task));
-            }
-
             var runResult = await RunTask(request, task, AigcTaskEventTypes.TaskBegin, null, null);
             if (request.Cancel.IsCancellationRequested)
             {
@@ -224,6 +219,8 @@ internal class AigcTaskPageRunner : AIAssistant
     /// <returns>A <see cref="TaskRunResult"/> containing the end type and result parameter.</returns>
     private async Task<TaskRunResult> RunTask(AIRequest request, AigcTaskPage task, AigcTaskEventTypes eventType, string commitName, object parameter)
     {
+        SelectTask(task);
+
         try
         {
             string name = task.Name;
@@ -241,21 +238,7 @@ internal class AigcTaskPageRunner : AIAssistant
             request.Conversation.AddSystemMessage(message, msg =>
             {
                 msg.AddCode(name);
-                msg.AddButton("Locate", () => 
-                {
-                    try
-                    {
-                        if (_document.View?.GetService<IViewSelectable>() is { } sel)
-                        {
-                            _document.ShowView();
-                            sel.SetSelection(new ViewSelection(task));
-                        }
-                    }
-                    catch (Exception err)
-                    {
-                        err.LogError();
-                    }
-                });
+                msg.AddButton("Locate", () => SelectTask(task));
             });
 
             bool handled = await task.HandleEvent(request, eventType, commitName, parameter);
@@ -330,7 +313,7 @@ internal class AigcTaskPageRunner : AIAssistant
 
             var parameter = runResult.Parameter;
             string commitName = task.CommitName;
-            
+
             runResult = await RunTask(request, parent, eventType, commitName, parameter);
             task = parent;
 
@@ -341,6 +324,27 @@ internal class AigcTaskPageRunner : AIAssistant
         }
 
         return AICallResult.Success;
+    }
+
+    private void SelectTask(AigcTaskPage task)
+    {
+        if (task is null)
+        {
+            return;
+        }
+
+        try
+        {
+            if (_document.View?.GetService<IViewSelectable>() is { } sel)
+            {
+                _document.ShowView();
+                sel.SetSelection(new ViewSelection(task));
+            }
+        }
+        catch (Exception err)
+        {
+            err.LogError();
+        }
     }
 
     /// <summary>
@@ -364,4 +368,5 @@ internal class AigcTaskPageRunner : AIAssistant
         }
 
     }
+
 }

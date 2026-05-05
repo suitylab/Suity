@@ -124,7 +124,7 @@ public class PageParameterOutputElement : AigcPageElement, IPageParameterOutput
 
         if (hasText1 && !hasText2)
         {
-            Logs.LogWarning("0-00");
+            //Logs.LogWarning("0-00");
         }
     }
 
