@@ -86,7 +86,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="230" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="230" Width="38" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.AIGC.Flows.GetSpeechLanguage" />
     </Item>
@@ -335,6 +335,16 @@
         <AllSubTasks>True</AllSubTasks>
       </Node>
     </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="100" Width="95" Height="28">
+      <Name>###GetSubTaskCommit01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.GetSubTaskCommit">
+        <AllSubTasks>True</AllSubTasks>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="80" Width="49" Height="17">
+      <Name>###GetCurrentTask01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.GetCurrentTask" />
+    </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
   <Links>
@@ -529,6 +539,18 @@
       <FromConnector>Out</FromConnector>
       <ToNode>AskEnd</ToNode>
       <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTask01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###GetSubTaskCommit01</ToNode>
+      <ToConnector>ParentTask</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetSubTaskCommit01</FromNode>
+      <FromConnector>Commit</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

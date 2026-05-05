@@ -248,7 +248,6 @@
         <Name>Answer</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <LinkedMode>False</LinkedMode>
         <TaskCompletion>False</TaskCompletion>
         <History>True</History>
         <TaskCommit>True</TaskCommit>
@@ -265,7 +264,6 @@
         <Name>Question</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <LinkedMode>False</LinkedMode>
         <TaskCompletion>False</TaskCompletion>
         <History>True</History>
         <TaskCommit>True</TaskCommit>
@@ -296,7 +294,6 @@
         <Name>OK</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <LinkedMode>False</LinkedMode>
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
         </ValueType>
