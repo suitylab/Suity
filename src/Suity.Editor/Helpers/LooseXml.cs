@@ -105,8 +105,8 @@ public class LooseXmlTag : IViewObject
 
     public void Sync(IPropertySync sync, ISyncContext context)
     {
-        sync.Sync(nameof(TagName), TagName);
-        sync.Sync(nameof(InnerText), new TextBlock(InnerText));
+        sync.Sync(nameof(TagName), TagName, SyncFlag.GetOnly);
+        sync.Sync(nameof(InnerText), new TextBlock(InnerText), SyncFlag.GetOnly);
     }
 
     public void SetupView(IViewObjectSetup setup)

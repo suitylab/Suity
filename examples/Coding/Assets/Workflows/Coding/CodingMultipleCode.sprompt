@@ -36,6 +36,7 @@ Output multiple code file based on the File Specification, and within `<code>` t
 - Output **pure source code only** with proper syntax highlighting markers if needed.
 - Include necessary inline comments for complex logic, but avoid over-commenting obvious code.
 - Do NOT output any introductory text, explanations, or conversational content outside the `<code>` tag.
+- Do NOT output any explanations, code-block indicator inside the `<code>` tag.
 - Do NOT output emoji, markdown formatting outside code, or special decorative characters.
 - Do NOT write codes that should be defined in other files.
 - All comments and documentation inside the code should be written in {{SPEECH_LANGUAGE}} unless the codebase convention specifies otherwise.

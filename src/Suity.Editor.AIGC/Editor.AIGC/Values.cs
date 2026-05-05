@@ -42,7 +42,7 @@ public enum LLmMessageRole
 /// Represents a single message in a language model conversation with a role and content.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Language Model Info", Color = AigcColors.Task)]
-public class LLmMessage
+public class LLmMessage : IViewObject
 {
     /// <summary>
     /// Gets or sets the role of the message (System, User, or Assistant).
@@ -105,6 +105,20 @@ public class LLmMessage
             Message = content,
         };
     }
+
+    #region IViewObject
+    public void Sync(IPropertySync sync, ISyncContext context)
+    {
+        sync.Sync(nameof(Role), Role, SyncFlag.GetOnly);
+        sync.Sync(nameof(Message), new TextBlock(Message), SyncFlag.GetOnly);
+    }
+
+    public void SetupView(IViewObjectSetup setup)
+    {
+        setup.InspectorField(Role, new ViewProperty(nameof(Role), "Role").WithReadOnly());
+        setup.InspectorFieldOf<TextBlock>(new ViewProperty(nameof(Message), "Message").WithReadOnly());
+    }
+    #endregion
 }
 
 /// <summary>

@@ -65,7 +65,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="-100" Width="136" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="-100" Width="136" Height="107">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.AIGC.Flows.CallLLm">
         <DialogName>
@@ -101,7 +101,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-90" Width="107" Height="89">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-90" Width="103" Height="85">
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.AIGC.Flows.BuildPrompt">
         <PromptTemplate>
@@ -151,7 +151,7 @@
         <CompletionCondition>Any</CompletionCondition>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="40" Width="150" Height="67">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="40" Width="146" Height="63">
       <Name>###ExtractXmlsTagAction01</Name>
       <Node type="Suity.Editor.AIGC.Flows.ExtractXmlsTagAction">
         <TagNames>
@@ -160,7 +160,7 @@
         </TagNames>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="40" Width="130" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="40" Width="126" Height="52">
       <Name>###ManualTextInput01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ManualTextInput">
         <Message />
@@ -188,14 +188,14 @@
       <Name>###GetXmlTagContentNode03</Name>
       <Node type="Suity.Editor.AIGC.Flows.GetXmlTagContentNode" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="-20" Width="111" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="-20" Width="107" Height="52">
       <Name>###SetPageTitle01</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.SetPageTitle">
         <Title>
         </Title>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="120" Width="198" Height="78">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="120" Width="194" Height="74">
       <Name>###CreateToolCallingWithParameter01</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.CreateToolCallingWithParameter">
         <ToolDefinition>
@@ -203,8 +203,8 @@
         </ToolDefinition>
         <Parameters>
           <Item>
-            <Name>LanguageRule</Name>
-            <Description>LanguageRule</Description>
+            <Name>DomainContext</Name>
+            <Description>DomainContext</Description>
             <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
               <Id>e4f266c7-5634-4d59-81a9-d56bbe2d9fdb</Id>
               <Prefix>&amp;</Prefix>
@@ -232,7 +232,7 @@
       <Name>###GetCurrentTaskPrompt01</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.GetCurrentTaskPrompt" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="210" Width="131" Height="100">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="210" Width="127" Height="96">
       <Name>###AppendTaskPageNode01</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.AppendTaskPage">
         <PageTitle>
@@ -451,12 +451,6 @@
       <ToConnector>DataIn</ToConnector>
     </Item>
     <Item>
-      <FromNode>DomainContext</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###CreateToolCallingWithParameter01</ToNode>
-      <ToConnector>p_LanguageRule</ToConnector>
-    </Item>
-    <Item>
       <FromNode>ProjectName</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###CreateToolCallingWithParameter01</ToNode>
@@ -485,6 +479,12 @@
       <FromConnector>Definition</FromConnector>
       <ToNode>CodePlanningAsk</ToNode>
       <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>DomainContext</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreateToolCallingWithParameter01</ToNode>
+      <ToConnector>p_DomainContext</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

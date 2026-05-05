@@ -86,7 +86,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="230" Width="38" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="230" Width="44" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.AIGC.Flows.GetSpeechLanguage" />
     </Item>
@@ -265,8 +265,8 @@
         </ToolDefinition>
         <Parameters>
           <Item>
-            <Name>LanguageRule</Name>
-            <Description>LanguageRule</Description>
+            <Name>DomainContext</Name>
+            <Description>DomainContext</Description>
             <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
               <Id>e4f266c7-5634-4d59-81a9-d56bbe2d9fdb</Id>
               <Prefix>&amp;</Prefix>
@@ -330,7 +330,6 @@
         <Description>Questions and answers</Description>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <TaskCompletion>False</TaskCompletion>
         <History>True</History>
         <AllSubTasks>True</AllSubTasks>
       </Node>
@@ -487,12 +486,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>LanguageRule</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###CreateToolCallingWithParameter01</ToNode>
-      <ToConnector>p_LanguageRule</ToConnector>
-    </Item>
-    <Item>
       <FromNode>ProjectName</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###CreateToolCallingWithParameter01</ToNode>
@@ -551,6 +544,12 @@
       <FromConnector>Commit</FromConnector>
       <ToNode>###CallLLm01</ToNode>
       <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>LanguageRule</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreateToolCallingWithParameter01</ToNode>
+      <ToConnector>p_DomainContext</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

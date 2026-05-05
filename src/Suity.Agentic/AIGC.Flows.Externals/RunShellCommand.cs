@@ -112,6 +112,17 @@ public class RunShellCommand : AigcExternalNode
         string shell = isWindows ? "cmd.exe" : "/bin/bash";
         string arguments = isWindows ? $"/C {command}" : $"-c \"{command.Replace("\"", "\\\"")}\"";
 
+        Encoding outputEncoding;
+        if (isWindows)
+        {
+            int consoleCodePage = GetConsoleCodePage();
+            outputEncoding = Encoding.GetEncoding(consoleCodePage);
+        }
+        else
+        {
+            outputEncoding = Encoding.UTF8;
+        }
+
         var startInfo = new ProcessStartInfo
         {
             FileName = shell,
@@ -121,8 +132,8 @@ public class RunShellCommand : AigcExternalNode
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             CreateNoWindow = true,
-            StandardOutputEncoding = Encoding.UTF8,
-            StandardErrorEncoding = Encoding.UTF8,
+            StandardOutputEncoding = outputEncoding,
+            StandardErrorEncoding = outputEncoding,
         };
 
         var outputBuilder = new StringBuilder();
@@ -179,6 +190,10 @@ public class RunShellCommand : AigcExternalNode
 
         return result.ToString();
     }
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+    private static extern int GetConsoleOutputCP();
+    private static int GetConsoleCodePage() => GetConsoleOutputCP();
 }
 
 #endregion
