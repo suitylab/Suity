@@ -75,13 +75,13 @@ public class PageSubTaskOutputElement : AigcPageElement, IPageParameterOutput, I
     {
         if (AllSubTasks)
         {
-            var contents = GetAllSubTasks().Select(o => o?.PageInstance?.GetTaskCommit()).SkipNull();
+            var contents = GetAllSubTasks().Select(o => o?.GetPageInstance()?.GetTaskCommit()).SkipNull();
             return string.Join("\r\n\r\n", contents);
         }
         else
         {
             var subTask = GetLastSubTask();
-            return subTask?.PageInstance?.GetTaskCommit() ?? ChatHistoryText.Empty;
+            return subTask?.GetPageInstance()?.GetTaskCommit() ?? ChatHistoryText.Empty;
         }
     }
 
@@ -103,7 +103,7 @@ public class PageSubTaskOutputElement : AigcPageElement, IPageParameterOutput, I
         {
             if (!AllSubTasks)
             {
-                string toolName = GetLastSubTask()?.PageInstance?.Name;
+                string toolName = GetLastSubTask()?.GetPageInstance()?.Name;
                 return toolName;
             }
             else
@@ -203,7 +203,7 @@ public class PageSubTaskOutputElement : AigcPageElement, IPageParameterOutput, I
                 return false;
             }
 
-            done = tasks.All(o => (o?.PageInstance?.GetAllDone()).IsTrueOrEmpty());
+            done = tasks.All(o => (o?.GetPageInstance()?.GetAllDone()).IsTrueOrEmpty());
         }
         else
         {
@@ -213,7 +213,7 @@ public class PageSubTaskOutputElement : AigcPageElement, IPageParameterOutput, I
                 return false;
             }
 
-            var taskIsDone = task?.PageInstance?.GetAllDone();
+            var taskIsDone = task?.GetPageInstance()?.GetAllDone();
             done = taskIsDone.IsTrueOrEmpty();
         }
 

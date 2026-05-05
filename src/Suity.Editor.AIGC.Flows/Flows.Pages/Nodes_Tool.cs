@@ -1396,7 +1396,7 @@ public class TaskPageToPageInstanceConverter : TypeConverter<IAigcTaskPage, IAig
     /// <inheritdoc/>
     public override IAigcPageInstance Convert(IAigcTaskPage objFrom)
     {
-        return objFrom.PageInstance;
+        return objFrom.GetPageInstance();
     }
 }
 

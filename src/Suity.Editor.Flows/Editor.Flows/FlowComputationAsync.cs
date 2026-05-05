@@ -171,7 +171,7 @@ public class FlowComputationAsync : IFlowComputationAsync, IDisposable
         {
             if (_datas.TryGetValue(output, out object value2))
             {
-                if (value2 is IEnumerable ary)
+                if (value2 is not string && value2 is IEnumerable ary)
                 {
                     List<object> list = [];
                     foreach (var item in ary)
@@ -186,7 +186,7 @@ public class FlowComputationAsync : IFlowComputationAsync, IDisposable
                     }
 
                     var converted = ConvertValue(output, connector, list);
-                    if (converted is not string && converted is System.Collections.IEnumerable e)
+                    if (converted is not string && converted is IEnumerable e)
                     {
                         return e.OfType<object>();
                     }

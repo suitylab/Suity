@@ -39,7 +39,7 @@ public class SubPageElement : GroupPageElement
     /// <inheritdoc/>
     public override bool? GetIsDone()
     {
-        if (!GetIsDoneInputs(ParameterCondition).IsTrueOrEmpty())
+        if (GetIsDoneInputs(ParameterCondition).IsFalse())
         {
             return false;
         }

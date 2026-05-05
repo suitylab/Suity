@@ -272,7 +272,7 @@ public class FlowComputation : IFlowComputation
 
             OnConnectorValueResolved(connector);
 
-            if (value2 is IEnumerable ary)
+            if (value2 is not string && value2 is IEnumerable ary)
             {
                 List<object> list = [];
                 foreach (var item in ary)
@@ -287,7 +287,7 @@ public class FlowComputation : IFlowComputation
                 }
 
                 var converted = ConvertValue(output, connector, list);
-                if (converted is not string && converted is System.Collections.IEnumerable e)
+                if (converted is not string && converted is IEnumerable e)
                 {
                     return e.OfType<object>();
                 }

@@ -289,7 +289,7 @@ public class GetInitialTaskPrompt : AigcPageNode
 
 #endregion
 
-#region GetTaskPrompt
+#region GetCurrentTaskPrompt
 
 /// <summary>
 /// A flow node that retrieves the current task prompt, optionally including prompts from parent tasks.
@@ -401,7 +401,7 @@ public class GetTaskPrompt : AigcPageNode
 /// A flow node that retrieves the commit information from a specified task.
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
-[DisplayText("Get Current Task Commit", "*CoreIcon|Task")]
+[DisplayText("Get Task Commit Context", "*CoreIcon|Task")]
 public class GetTaskCommit : AigcPageNode
 {
     readonly FlowNodeConnector _task;
@@ -422,8 +422,139 @@ public class GetTaskCommit : AigcPageNode
     public override void Compute(IFlowComputation compute)
     {
         var task = compute.GetValue<IAigcTaskPage>(_task);
-        string commit = task?.PageInstance?.GetTaskCommit() ?? string.Empty;
+        if (task is null)
+        {
+            throw new FlowComputaionException(this, "Task is null.");
+        }
 
+        string commit = task?.GetPageInstance()?.GetTaskCommit() ?? string.Empty;
+
+        compute.SetValue(_commit, commit);
+    }
+}
+
+#endregion
+
+#region GetSubTaskCommit
+
+/// <summary>
+/// A flow node that retrieves the commit information from a specified task.
+/// </summary>
+[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
+[DisplayText("Get SubTask Commit Context", "*CoreIcon|Task")]
+public class GetSubTaskCommit : AigcPageNode
+{
+    readonly FlowNodeConnector _parentTask;
+    readonly ConnectorValueProperty<bool> _allSubTasks = new("AllSubTasks", "All Sub Tasks", false,
+        "If enabled, retrieves commit information from all sub tasks and concatenates them, otherwise retrieves commit information from the last sub task only.");
+    readonly FlowNodeConnector _commit;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetTaskCommit"/> class.
+    /// </summary>
+    public GetSubTaskCommit()
+    {
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
+
+        _parentTask = this.AddDataInputConnector("ParentTask", taskType, "Parent Task");
+        _allSubTasks.AddConnector(this);
+        _commit = AddDataOutputConnector("Commit", "string", "Commit Info");
+    }
+
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _allSubTasks.Sync(sync);
+    }
+
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _allSubTasks.InspectorField(setup, this);
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var parentTask = compute.GetValue<IAigcTaskPage>(_parentTask);
+        if (parentTask is null)
+        {
+            throw new FlowComputaionException(this, "Parent task is null.");
+        }
+
+        bool allSubTasks = _allSubTasks.GetValue(compute, this);
+
+        string commit = string.Empty;
+
+        if (allSubTasks)
+        {
+            var commits = parentTask.GetAllSubTasks()
+                .Select(t => t.GetPageInstance()?.GetTaskCommit())
+                .ToArray();
+
+            commit = string.Join(Environment.NewLine, commits.Where(c => !string.IsNullOrEmpty(c)));
+        }
+        else
+        {
+            commit = parentTask.GetLastSubTask()?.GetPageInstance().GetTaskCommit() ?? string.Empty;
+        }
+
+        compute.SetValue(_commit, commit);
+    }
+}
+
+#endregion
+
+#region GetTaskContextText
+
+/// <summary>
+/// A flow node that retrieves the commit information from a specified task.
+/// </summary>
+[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
+[DisplayText("Get Current Task Context Text", "*CoreIcon|Task")]
+public class GetTaskContextText : AigcPageNode
+{
+    readonly FlowNodeConnector _task;
+    readonly FlowNodeConnector _inputChat;
+    readonly FlowNodeConnector _outputChat;
+    readonly FlowNodeConnector _commit;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetTaskContextText"/> class.
+    /// </summary>
+    public GetTaskContextText()
+    {
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
+
+        _task = this.AddDataInputConnector("Task", taskType, "Task");
+        _inputChat = this.AddDataOutputConnector("InputChat", "string", "Input Chat History");
+        _outputChat = this.AddDataOutputConnector("OutputChat", "string", "Output Chat History");
+        _commit = this.AddDataOutputConnector("Commit", "string", "Commit Info");
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var task = compute.GetValue<IAigcTaskPage>(_task);
+        if (task is null)
+        {
+            throw new FlowComputaionException(this, "Task is null.");
+        }
+
+        var pageInstance = task.GetPageInstance();
+        if (pageInstance is null)
+        {
+            throw new FlowComputaionException(this, "Task page instance is null.");
+        }
+
+        string inputChat = pageInstance.GetInputChatHistory() ?? string.Empty;
+        string outputChat = pageInstance.GetOutputChatHistory() ?? string.Empty;
+        string commit = pageInstance.GetTaskCommit() ?? string.Empty;
+        
+        compute.SetValue(_inputChat, inputChat);
+        compute.SetValue(_outputChat, outputChat);
         compute.SetValue(_commit, commit);
     }
 }
@@ -524,7 +655,7 @@ public class GetLastSubTask : AigcPageNode
 
         if (needDone && subTask != null)
         {
-            bool isDone = subTask.PageInstance?.GetIsDone() == true;
+            bool isDone = subTask.GetPageInstance()?.GetIsDone() == true;
             if (!isDone)
             {
                 subTask = null;

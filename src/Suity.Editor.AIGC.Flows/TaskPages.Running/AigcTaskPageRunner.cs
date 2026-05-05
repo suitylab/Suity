@@ -134,7 +134,7 @@ internal class AigcTaskPageRunner : AIAssistant
             }
 
             // Get task for running, if the last task is not completed, continue to run it; otherwise get the next task to run.
-            var task = _document.GetLastRunningTask();
+            var task = _document.GetUnfinishedChildTaskDeep();
             if (task is null)
             {
                 return AICallResult.FromMessage("All tasks have been completed.");
@@ -168,6 +168,19 @@ internal class AigcTaskPageRunner : AIAssistant
             if (request.Cancel.IsCancellationRequested)
             {
                 return AICallResult.FromFailed("Task canceled.");
+            }
+
+            // When a task is completed but no end event is triggered,
+            // try to trigger the sub-task completion event to ensure the parent task can correctly perceive the completion status of the sub-task.
+            if (runResult.EndType == PageCommitTypes.None && task.GetAllDone().IsFalse() && task.GetAllSubTaskDone() == true)
+            {
+                var lastTask = task.GetTaskAt(task.Count - 1);
+
+                runResult = await RunTask(request, task, AigcTaskEventTypes.SubTaskFinished, lastTask?.CommitName, null);
+                if (request.Cancel.IsCancellationRequested)
+                {
+                    return AICallResult.FromFailed("Task canceled.");
+                }
             }
 
             if (runResult.EndType != PageCommitTypes.None)
@@ -299,7 +312,7 @@ internal class AigcTaskPageRunner : AIAssistant
                 break;
             }
 
-            if (!task.GetAllDoneSubTasks())
+            if (!task.GetAllDoneWithSubTasks())
             {
                 break;
             }

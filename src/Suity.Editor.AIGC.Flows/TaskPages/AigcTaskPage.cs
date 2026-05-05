@@ -318,7 +318,7 @@ public class AigcTaskPage : DesignNode,
     /// <summary>
     /// Gets the page instance, ensuring it is built if necessary.
     /// </summary>
-    public IAigcPageInstance PageInstance => EnsureInstance();
+    public IAigcPageInstance GetPageInstance() => EnsureInstance();
 
     /// <summary>
     /// Gets the task prompt, optionally including prompts from the parent hierarchy.
@@ -942,10 +942,10 @@ public class AigcTaskPage : DesignNode,
     public IEnumerable<AigcTaskPage> Tasks => Items.OfType<AigcTaskPage>();
 
     /// <summary>
-    /// Gets the first task that has not been marked as done.
+    /// Gets the unfinished child task, searching from the last task backward.
     /// </summary>
-    /// <returns>The first undone task, or null if all tasks are done.</returns>
-    public AigcTaskPage GetFirstUndoneTask()
+    /// <returns>The first unfinished child <see cref="AigcTaskPage"/>, or null if all tasks are done.</returns>
+    public AigcTaskPage GetUnfinishedChildTask()
     {
         int c = Count;
         if (c == 0)
@@ -953,7 +953,7 @@ public class AigcTaskPage : DesignNode,
             return null;
         }
 
-        AigcTaskPage undone = null;
+        AigcTaskPage unfinished = null;
 
         for (int i = c - 1; i >= 0; i--)
         {
@@ -964,9 +964,9 @@ public class AigcTaskPage : DesignNode,
             }
 
             var allDone = task.GetAllDone();
-            if (allDone.HasValue && allDone.Value == false)
+            if (allDone.IsFalse())
             {
-                undone = task;
+                unfinished = task;
                 continue;
             }
             else
@@ -975,31 +975,32 @@ public class AigcTaskPage : DesignNode,
             }
         }
 
-        return undone;
+        return unfinished;
     }
 
     /// <summary>
-    /// Gets the last running (undone) task, recursively checking sub-tasks.
+    /// Gets the unfinished child task, recursively checking sub-tasks.
     /// </summary>
-    /// <returns>The last running task, or null if no tasks exist.</returns>
-    public AigcTaskPage GetLastRunningTask()
+    /// <returns>The last unfinished child task, or null if no tasks exist.</returns>
+    public AigcTaskPage GetUnfinishedChildTaskDeep()
     {
         if (Count == 0)
         {
             return null;
         }
 
-        var task = GetFirstUndoneTask();
+        var task = GetUnfinishedChildTask();
         if (task != null)
         {
-            return task.GetLastRunningTask() ?? task;
+            return task.GetUnfinishedChildTaskDeep() ?? task;
         }
 
-        task = GetTaskAt(Count - 1);
-        if (task != null)
-        {
-            return task.GetLastRunningTask() ?? task;
-        }
+        // This is the last completed task.
+        //task = GetTaskAt(Count - 1);
+        //if (task != null)
+        //{
+        //    return task.GetUnfinishedChildTaskDeep() ?? task;
+        //}
 
         return null;
     }
@@ -1074,10 +1075,10 @@ public class AigcTaskPage : DesignNode,
     public bool? GetAllDone() => EnsureInstance()?.GetAllDone();
 
     /// <summary>
-    /// Gets a value indicating whether all sub-tasks are completed.
+    /// Gets a value indicating whether the task is done, and with all sub-tasks also done.
     /// </summary>
-    /// <returns>True if all sub-tasks are done; otherwise, false.</returns>
-    public bool GetAllDoneSubTasks()
+    /// <returns>True if this task and all sub-tasks are done, false if any is not done.</returns>
+    public bool GetAllDoneWithSubTasks()
     {
         var allDone = GetAllDone();
         if (allDone.IsFalse())
@@ -1090,7 +1091,21 @@ public class AigcTaskPage : DesignNode,
             return true;
         }
 
-        return Items.OfType<AigcTaskPage>().All(o => o.GetAllDoneSubTasks());
+        return Items.OfType<AigcTaskPage>().All(o => o.GetAllDoneWithSubTasks());
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether all sub-tasks are done.
+    /// </summary>
+    /// <returns>True if all sub-tasks are done, false if any is not done, or null if no sub-tasks exist.</returns>
+    public bool? GetAllSubTaskDone()
+    {
+        if (Count == 0)
+        {
+            return null;
+        }
+
+        return Items.OfType<AigcTaskPage>().All(o => o.GetAllDone().IsTrueOrEmpty());
     }
 
     /// <summary>
@@ -1162,9 +1177,13 @@ public class AigcTaskPage : DesignNode,
             {
                 continue;
             }
-            if (parentDefPage.GetIsDone() == true)
+
+            if (parentDefPage.GetIsDone().IsTrueOrEmpty())
             {
-                request.Conversation.AddDisabledMessage("Skip completed event: " + begin.Name);
+                request.Conversation.AddDisabledMessage("Skip completed event: " + eventType, msg => 
+                {
+                    msg.AddCode(begin.Name);
+                });
                 continue;
             }
 

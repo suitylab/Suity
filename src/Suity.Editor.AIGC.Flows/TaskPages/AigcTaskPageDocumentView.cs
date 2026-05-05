@@ -330,7 +330,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         gui.Button("btnResume", "Resume", CoreIconCache.Play)
                         .InitClass("simpleBtn")
                         .SetToolTipsL("Start task")
-                        .SetEnabled(_document?.GetLastRunningTask() != null)
+                        .SetEnabled(_document?.GetUnfinishedChildTaskDeep() != null)
                         .OnClick(() =>
                         {
                             Run("resume");
@@ -378,7 +378,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
         {
             OnStartupGui(gui, doc);
         }
-        else if (doc.GetLastRunningTask() is null)
+        else if (doc.GetUnfinishedChildTaskDeep() is null)
         {
             // Previous task completed.
             OnStartupGui(gui, doc);

@@ -379,10 +379,9 @@ public class PropertyGridData : IValueActionHandler
     public int? EditorColumnWidthMax { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether multiple columns are supported.
-    /// Default value is true.
+    /// Gets or sets a value indicating whether multiple columns displaying are supported.
     /// </summary>
-    public bool SupportMultipleColumn { get; set; } = true;
+    public bool SupportMultipleColumn { get; set; }
 
     /// <summary>
     /// Gets or sets the path to the grid node.

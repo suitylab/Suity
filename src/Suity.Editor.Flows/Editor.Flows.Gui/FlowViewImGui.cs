@@ -505,6 +505,11 @@ public abstract class FlowViewImGui :
         }
     }
 
+    public void FocusSelection()
+    {
+        this._graphControl.Viewport.FocusSelection();
+    }
+
     //public bool IsDisposed { get; }
     /// <inheritdoc/>
     public virtual void RefreshView() => _graphControl.RefreshView(true);

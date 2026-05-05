@@ -311,7 +311,7 @@ public interface IAigcTaskPage
     /// <summary>
     /// Gets the page instance associated with this task.
     /// </summary>
-    IAigcPageInstance PageInstance { get; }
+    IAigcPageInstance GetPageInstance();
 
     /// <summary>
     /// Gets the task prompt, optionally including hierarchical context.

@@ -420,6 +420,11 @@ public interface IFlowView
     void SetLinkSelection(IEnumerable<NodeLink> links, bool focus);
 
     /// <summary>
+    /// Focuses the selection.
+    /// </summary>
+    void FocusSelection();
+
+    /// <summary>
     /// Inspects the selection.
     /// </summary>
     void InspectSelection();

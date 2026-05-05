@@ -151,7 +151,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// Gets the first top level task that has not been fully completed, searching from the last task backward.
     /// </summary>
     /// <returns>The first top level running <see cref="AigcTaskPage"/>, or null if all tasks are done.</returns>
-    public AigcTaskPage GetFirstTopLevelRunningTask()
+    public AigcTaskPage GetUnfinishedChildTask()
     {
         int c = Count;
         if (c == 0)
@@ -169,7 +169,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
                 continue;
             }
 
-            var allDone = task.GetAllDoneSubTasks();
+            var allDone = task.GetAllDoneWithSubTasks();
             if (!allDone)
             {
                 working = task;
@@ -185,28 +185,28 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     }
 
     /// <summary>
-    /// Gets the last task that is currently running or the most recent task if all are completed.
+    /// Gets the last task that is currently unfinished or the most recent task if all are completed.
     /// </summary>
-    /// <returns>The last running <see cref="AigcTaskPage"/>, or null if no tasks exist.</returns>
-    public AigcTaskPage GetLastRunningTask()
+    /// <returns>The last unfinished <see cref="AigcTaskPage"/>, or null if no tasks exist.</returns>
+    public AigcTaskPage GetUnfinishedChildTaskDeep()
     {
         if (Count == 0)
         {
             return null;
         }
 
-        var task = GetFirstTopLevelRunningTask();
+        var task = GetUnfinishedChildTask();
         if (task != null)
         {
-            return task.GetLastRunningTask() ?? task;
+            return task.GetUnfinishedChildTaskDeep() ?? task;
         }
 
         // This is the last completed task.
-        task = GetTaskAt(Count - 1);
-        if (task != null && task.GetAllDone().IsFalse())
-        {
-            return task.GetLastRunningTask() ?? task;
-        }
+        //task = GetTaskAt(Count - 1);
+        //if (task != null && task.GetAllDone().IsFalse())
+        //{
+        //    return task.GetUnfinishedChildTaskDeep() ?? task;
+        //}
 
         return null;
     }

@@ -170,6 +170,12 @@ public class PageArticleOutputElement : AigcPageElement, IArticleResolver, IPage
     /// <inheritdoc/>
     public override FlowNodeConnector OuterConnector => _outerConnector;
 
+
+    /// <summary>
+    /// Displaying multiple section
+    /// </summary>
+    public bool MultipleSection => _multipleSection;
+
     /// <summary>
     /// Gets a value indicating whether the output should be passed to sub-tasks.
     /// </summary>
@@ -233,7 +239,36 @@ public class PageArticleOutputElement : AigcPageElement, IArticleResolver, IPage
         }
         else
         {
-            return article?.GetFullText() ?? string.Empty;
+            if (_articleRefCollection != null)
+            {
+                return _articleRefCollection.GetPlainTextNullable();
+            }
+            else if (_articleRef != null)
+            {
+                return _articleRef.GetPlainTextNullable();
+            }
+            else
+            {
+                return string.Empty;
+            }
+
+/*            switch (WritingTarget)
+            {
+                case ArticleFields.Content:
+                    return article?.GetFullText() ?? string.Empty;
+
+                case ArticleFields.Overview:
+                    return article?.Overview ?? string.Empty;
+
+                case ArticleFields.Guide:
+                    return article?.Guide ?? string.Empty;
+
+                case ArticleFields.Note:
+                    return article.Note ?? string.Empty;
+
+                default:
+                    return string.Empty;
+            }*/
         }
     }
 
