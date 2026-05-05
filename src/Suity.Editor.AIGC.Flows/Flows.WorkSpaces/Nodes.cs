@@ -1,5 +1,6 @@
 using Suity.Drawing;
 using Suity.Editor.Flows;
+using Suity.Editor.Types;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Synchonizing;
@@ -10,7 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.WorkSpaces.Flows;
+namespace Suity.Editor.AIGC.Flows.WorkSpaces;
 
 #region ListWorkSpaceFiles
 
@@ -19,6 +20,7 @@ namespace Suity.Editor.AIGC.WorkSpaces.Flows;
 /// </summary>
 [SimpleFlowNodeStyle(HasHeader = false)]
 [DisplayText("List WorkSpace Files", "*CoreIcon|WorkSpace")]
+[NativeAlias("Suity.Editor.AIGC.WorkSpaces.Flows.ListWorkSpaceFiles")]
 public class ListWorkSpaceFiles : AigcWorkSpaceNode
 {
     private readonly ConnectorAssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
@@ -45,12 +47,11 @@ public class ListWorkSpaceFiles : AigcWorkSpaceNode
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         _workSpace.InspectorField(setup, this);
-        _filter.InspectorField(setup, this);
     }
 
     /// <inheritdoc/>
@@ -87,6 +88,7 @@ public class ListWorkSpaceFiles : AigcWorkSpaceNode
 /// </summary>
 [SimpleFlowNodeStyle(HasHeader = false)]
 [DisplayText("Read WorkSpace File", "*CoreIcon|WorkSpace")]
+[NativeAlias("Suity.Editor.AIGC.WorkSpaces.Flows.ReadWorkSpaceFile")]
 public class ReadWorkSpaceFile : AigcWorkSpaceNode
 {
     private readonly ConnectorAssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
@@ -152,6 +154,7 @@ public class ReadWorkSpaceFile : AigcWorkSpaceNode
 /// Writes content to a file in a workspace.
 /// </summary>
 [DisplayText("Write WorkSpace File", "*CoreIcon|WorkSpace")]
+[NativeAlias("Suity.Editor.AIGC.WorkSpaces.Flows.WriteWorkSpaceFile")]
 public class WriteWorkSpaceFile : AigcWorkSpaceNode
 {
     private readonly FlowNodeConnector _in;
@@ -217,6 +220,7 @@ public class WriteWorkSpaceFile : AigcWorkSpaceNode
 /// Deletes a file from a workspace.
 /// </summary>
 [DisplayText("Delete WorkSpace File", "*CoreIcon|WorkSpace")]
+[NativeAlias("Suity.Editor.AIGC.WorkSpaces.Flows.DeleteWorkSpaceFile")]
 public class DeleteWorkSpaceFile : AigcWorkSpaceNode
 {
     private readonly FlowNodeConnector _in;
@@ -289,6 +293,7 @@ public class DeleteWorkSpaceFile : AigcWorkSpaceNode
 /// </summary>
 [SimpleFlowNodeStyle(HasHeader = false)]
 [DisplayText("Check WorkSpace File Exists", "*CoreIcon|WorkSpace")]
+[NativeAlias("Suity.Editor.AIGC.WorkSpaces.Flows.IsWorkSpaceFileExist")]
 public class IsWorkSpaceFileExist : AigcWorkSpaceNode
 {
     private readonly ConnectorAssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
@@ -349,3 +354,51 @@ public class IsWorkSpaceFileExist : AigcWorkSpaceNode
 #endregion
 
 // GetAllFilePaths;
+
+#region GetWorkSpaceDirectory
+
+/// <summary>
+/// Gets the full directory path of a workspace.
+/// </summary>
+[SimpleFlowNodeStyle(HasHeader = false)]
+[DisplayText("Get WorkSpace Directory", "*CoreIcon|WorkSpace")]
+public class GetWorkSpaceDirectory : AigcWorkSpaceNode
+{
+    private readonly ConnectorAssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
+    private readonly FlowNodeConnector _directory;
+
+    public GetWorkSpaceDirectory()
+    {
+        _workSpace.AddConnector(this);
+        _directory = this.AddDataOutputConnector("Directory", "string", "Directory Path");
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _workSpace.Sync(sync);
+    }
+
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _workSpace.InspectorField(setup, this);
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var workSpace = _workSpace.GetTarget(compute, this)?.WorkSpace;
+        if (workSpace is null)
+        {
+            throw new NullReferenceException($"{nameof(WorkSpace)} not found.");
+        }
+
+        compute.SetValue(_directory, workSpace.MasterDirectory);
+    }
+}
+
+#endregion

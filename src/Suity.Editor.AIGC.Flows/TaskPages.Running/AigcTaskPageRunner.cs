@@ -4,7 +4,6 @@ using Suity.Editor.Documents;
 using Suity.Helpers;
 using Suity.Views;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.TaskPages.Running;
@@ -50,15 +49,14 @@ internal class AigcTaskPageRunner : AIAssistant
         {
             _lastRequest = request;
 
-            if (_document.IsTaskEmpty)
-            {
-                return await HandleNew(request);
-            }
-            else
+            if (request.UserMessage == "-resume")
             {
                 return await HandleResume(request);
             }
-
+            else
+            {
+                return await HandleNew(request);
+            }
         }
         finally
         {
@@ -167,7 +165,7 @@ internal class AigcTaskPageRunner : AIAssistant
 
             // When a task is completed but no end event is triggered,
             // try to trigger the sub-task completion event to ensure the parent task can correctly perceive the completion status of the sub-task.
-            if (runResult.EndType == PageCommitTypes.None && task.GetAllDone().IsFalse() && task.GetAllSubTaskDone() == true)
+            if (task.GetAllDone().IsFalse() && task.GetAllSubTaskDone() == true)
             {
                 var lastTask = task.GetTaskAt(task.Count - 1);
 
@@ -178,32 +176,23 @@ internal class AigcTaskPageRunner : AIAssistant
                 }
             }
 
-            if (runResult.EndType != PageCommitTypes.None)
-            {
-                try
-                {
-                    // Commit to its parent task, if the task is committed as finished or failed, to trigger parent task continue running or some other logic.
-                    await CommitToParent(request, task, runResult);
-                }
-                catch (TaskCanceledException)
-                {
-                    return AICallResult.FromFailed("Task canceled.");
-                }
-                catch (Exception err)
-                {
-                    request.Conversation.AddException(err);
-                    return AICallResult.FromFailed("Task interrupted.");
-                }
-            }
-        }
-
-        if (request.Cancel.IsCancellationRequested)
-        {
-            return AICallResult.FromFailed("Task canceled.");
-        }
-        else
-        {
-            return AICallResult.FromMessage("Task completed.");
+            //if (runResult.EndType != PageCommitTypes.None)
+            //{
+            //    try
+            //    {
+            //        // Commit to its parent task, if the task is committed as finished or failed, to trigger parent task continue running or some other logic.
+            //        await CommitToParent(request, task, runResult);
+            //    }
+            //    catch (TaskCanceledException)
+            //    {
+            //        return AICallResult.FromFailed("Task canceled.");
+            //    }
+            //    catch (Exception err)
+            //    {
+            //        request.Conversation.AddException(err);
+            //        return AICallResult.FromFailed("Task interrupted.");
+            //    }
+            //}
         }
     }
 

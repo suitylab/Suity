@@ -65,7 +65,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="-100" Width="136" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="-100" Width="136" Height="111">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.AIGC.Flows.CallLLm">
         <DialogName>
@@ -76,7 +76,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-160" Y="-10" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-160" Y="-10" Width="38" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.AIGC.Flows.GetSpeechLanguage" />
     </Item>
@@ -101,7 +101,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-90" Width="103" Height="85">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-90" Width="107" Height="89">
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.AIGC.Flows.BuildPrompt">
         <PromptTemplate>
@@ -117,10 +117,10 @@
         <UpdateKeywords>False</UpdateKeywords>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-410" Y="-80" Width="63" Height="17">
-      <Name>LanguageRule</Name>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-410" Y="-80" Width="66" Height="17">
+      <Name>DomainContext</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
-        <Name>LanguageRule</Name>
+        <Name>DomainContext</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
           <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
@@ -151,7 +151,7 @@
         <CompletionCondition>Any</CompletionCondition>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="40" Width="146" Height="63">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="40" Width="150" Height="67">
       <Name>###ExtractXmlsTagAction01</Name>
       <Node type="Suity.Editor.AIGC.Flows.ExtractXmlsTagAction">
         <TagNames>
@@ -160,7 +160,7 @@
         </TagNames>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="40" Width="126" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="40" Width="130" Height="56">
       <Name>###ManualTextInput01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ManualTextInput">
         <Message />
@@ -188,14 +188,14 @@
       <Name>###GetXmlTagContentNode03</Name>
       <Node type="Suity.Editor.AIGC.Flows.GetXmlTagContentNode" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="-20" Width="107" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="-20" Width="111" Height="56">
       <Name>###SetPageTitle01</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.SetPageTitle">
         <Title>
         </Title>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="120" Width="194" Height="74">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="120" Width="198" Height="78">
       <Name>###CreateToolCallingWithParameter01</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.CreateToolCallingWithParameter">
         <ToolDefinition>
@@ -232,7 +232,7 @@
       <Name>###GetCurrentTaskPrompt01</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.GetCurrentTaskPrompt" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="210" Width="127" Height="96">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="410" Y="210" Width="131" Height="100">
       <Name>###AppendTaskPageNode01</Name>
       <Node type="Suity.Editor.AIGC.Flows.Pages.AppendTaskPage">
         <PageTitle>
@@ -343,7 +343,7 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>LanguageRule</FromNode>
+      <FromNode>DomainContext</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###BuildPrompts01</ToNode>
       <ToConnector>k_DOMAIN_CONTEXT</ToConnector>
@@ -451,7 +451,7 @@
       <ToConnector>DataIn</ToConnector>
     </Item>
     <Item>
-      <FromNode>LanguageRule</FromNode>
+      <FromNode>DomainContext</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###CreateToolCallingWithParameter01</ToNode>
       <ToConnector>p_LanguageRule</ToConnector>

@@ -1,7 +1,7 @@
 using Suity.Editor.AIGC.Flows.Pages;
-using Suity.Editor.AIGC.WorkSpaces.Flows;
+using Suity.Editor.AIGC.Flows.WorkSpaces;
+using Suity.Editor.AIGC.FLows.External;
 using Suity.Editor.Flows;
-using Suity.Editor.Flows.Nodes;
 
 namespace Suity.Editor.AIGC.Flows;
 
@@ -33,10 +33,13 @@ internal class AigcFlowSelectionList : FlowNodeSelectionNode
         //AddDerived<KnowledgeBaseFlowNode>();
         //AddDerived<AigcCodeDesignNode>();
         AddDerived<AigcWorkSpaceNode>();
-/*        AddDerived<AigcPlanNode>(
-            //condition: _ => ServiceInternals._license.GetCapability(EditorCapabilities.AigcPlanning)
-            );
-*/
+        /*        AddDerived<AigcPlanNode>(
+                    //condition: _ => ServiceInternals._license.GetCapability(EditorCapabilities.AigcPlanning)
+                    );
+        */
+
+        AddDerived<AigcExternalNode>();
+
         AddDerived<ActionFlowNode>();
         AddDerived<DialogFlowNode>();
         AddDerived<TextFlowNode>();

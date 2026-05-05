@@ -1,14 +1,13 @@
-﻿using Suity.Editor.AIGC;
-using Suity.Views;
+﻿using Suity.Views;
 using System.Text;
 
-namespace Suity.Editor.Helpers;
+namespace Suity.Editor.AIGC.StreamUpdaters;
 
 /// <summary>
 /// A stream updater that processes LLM output by segmenting it into paragraphs based on XML tags,
 /// and updates the conversation UI accordingly.
 /// </summary>
-public class XmlTagStreamStreamUpdater : LLmStreamUpdater
+public class XmlTagStreamUpdater : LLmStreamUpdater
 {
     /// <summary>
     /// Gets or sets a value indicating whether to display the full text content in code blocks.
@@ -30,10 +29,10 @@ public class XmlTagStreamStreamUpdater : LLmStreamUpdater
     public override bool DisplayingFullResult => true;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="XmlTagStreamStreamUpdater"/> class
+    /// Initializes a new instance of the <see cref="XmlTagStreamUpdater"/> class
     /// and subscribes to paragraph segmentation events.
     /// </summary>
-    public XmlTagStreamStreamUpdater()
+    public XmlTagStreamUpdater()
     {
         _paragraphBuffer.OnParagraphCompleted += paragraph =>
         {

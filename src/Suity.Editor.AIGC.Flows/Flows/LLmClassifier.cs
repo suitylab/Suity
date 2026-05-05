@@ -77,9 +77,9 @@ public class LLmClassifier : AigcFlowNode
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         _chatModel.InspectorField(setup, this);
         _overrideConfig.InspectorField(setup);

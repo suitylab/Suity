@@ -240,7 +240,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="170" Y="290" Width="88" Height="28">
       <Name>###ReadWorkSpaceFile01</Name>
-      <Node type="Suity.Editor.AIGC.WorkSpaces.Flows.ReadWorkSpaceFile">
+      <Node type="Suity.Editor.AIGC.Flows.WorkSpaces.ReadWorkSpaceFile">
         <WorkSpace />
         <FilePath>
         </FilePath>

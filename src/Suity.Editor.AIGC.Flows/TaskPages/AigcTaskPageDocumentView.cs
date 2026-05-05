@@ -333,7 +333,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         .SetEnabled(_document?.GetUnfinishedChildTaskDeep() != null)
                         .OnClick(() =>
                         {
-                            Run("resume");
+                            Run("-resume");
                         });
                     }
                 });
@@ -462,7 +462,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         gui.Button("btnRun", "Run", CoreIconCache.Send)
                         .InitClass("simpleBtn")
                         .InitFullHeight()
-                        .SetToolTipsL("Start generating")
+                        .SetToolTipsL("Start running")
                         .SetEnabled(configured)
                         .OnClick(() =>
                         {

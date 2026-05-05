@@ -170,9 +170,9 @@ public class JsonConvert : JsonFlowNode
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         _contentType.InspectorField(setup);
     }
@@ -289,9 +289,9 @@ public class GetJsonField : JsonFlowNode
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         _fieldName.InspectorField(setup, this);
         _contentType.InspectorField(setup);

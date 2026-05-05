@@ -83,15 +83,25 @@ coverage/
 - **Formatting:** Code must be formatted using Prettier before commit.
 - **Linting:** No ESLint errors or warnings allowed in the build pipeline.
 
-## 7. Build & Development
+## Build & Development Workflow
+- Development: npm run dev (Starts Vite dev server)
+- Production Build: npm run build (Outputs to /dist)
+- Preview: npm run preview (Locally previews production build)
+
+## Build & Development
 - **Development:** `npm run dev` (Starts Vite dev server)
 - **Production Build:** `npm run build` (Outputs to `/dist`)
 - **Preview:** `npm run preview` (Locally previews production build)
 
-## 8. Dependencies
+## Dependencies
 - All dependencies must be listed in `package.json`.
 - Use specific versions or locked versions (via `package-lock.json` or `pnpm-lock.yaml`) to ensure build consistency.
 - Dev dependencies (types, linting, build tools) must be separated from production dependencies.
+
+## Post-Generation Execution Steps
+⚠️ Mandatory Automation: After successfully generating all project files and configurations, execute the following shell commands in strict sequence:
+1. npm install - Install all project dependencies.
+2. npm run dev - Execute immediately after npm install completes successfully to start the Vite development server.
 
 ## **Important Notice**
 - 'index.html' file should strickly follow the Entry Point Specification described above, do NOT write any logical or layout code in the index.html.

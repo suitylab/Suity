@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Suity.Editor.Helpers;
+namespace Suity.Editor.AIGC.StreamUpdaters;
 
 /// <summary>
 /// Represents a paragraph of text extracted from a stream, optionally associated with an XML tag.

@@ -1022,7 +1022,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
 
         if (computation.Context.GetArgument<IConversationHandler>() is { } conversation)
         {
-            conversation.AddSystemMessage("Flow started", msg => 
+            conversation.AddSystemMessage("Workflow started", msg => 
             {
                 msg.AddCode(beginElement.DiagramItem.DisplayText ?? name);
             });
@@ -1095,7 +1095,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
 
         if (computation.Context.GetArgument<IConversationHandler>() is { } conversation)
         {
-            conversation.AddSystemMessage("Flow ended", msg => 
+            conversation.AddSystemMessage("Workflow ended", msg => 
             {
                 msg.AddCode(endElement.DiagramItem.DisplayText ?? name);
             });

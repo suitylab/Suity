@@ -1162,7 +1162,7 @@ public class AigcTaskPage : DesignNode,
 
         var begins = instance.GetAllChildElements(true)
             .OfType<PageBeginElement>()
-            .Where(o => o.Node is PageEventNode node && node.MathEvent(eventType, commitName))
+            .Where(o => MatchBeginElement(o, eventType, commitName))
             .ToArray();
 
         if (begins.Length == 0)
@@ -1194,6 +1194,18 @@ public class AigcTaskPage : DesignNode,
         }
 
         return true;
+    }
+
+    private bool MatchBeginElement(PageBeginElement begin, AigcTaskEventTypes eventType, string commitName)
+    {
+        if (eventType == AigcTaskEventTypes.TaskBegin && begin.Node is PageBeginNode)
+        {
+            // PageBeginNode can be used for TaskBegin event without commitName, for better compatibility with old version page definitions.
+            return true;
+        }
+
+        // Exact match with PageEventNode and eventType, commitName.
+        return begin.Node is PageEventNode node && node.MathEvent(eventType, commitName);
     }
 
     public void HandleGotoWorkflow()

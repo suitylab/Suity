@@ -254,9 +254,9 @@ public class PassValue : ValueFlowNode
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         setup.InspectorField(_valueType, new ViewProperty("DataType", "Data Type"));
         _isArray.InspectorField(setup);
@@ -363,9 +363,9 @@ public class CloneObject : ValueFlowNode
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         setup.InspectorField(_valueType, new ViewProperty("ValueType", "Type"));
         _isArray.InspectorField(setup);
@@ -702,9 +702,9 @@ public class FirstNotNullValue : ValueFlowNode
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         setup.InspectorField(_valueType, new ViewProperty("ValueType", "Type"));
         _isArray.InspectorField(setup);

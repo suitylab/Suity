@@ -2,7 +2,7 @@ using Suity.Editor.AIGC;
 using Suity.Views;
 using System.Text;
 
-namespace Suity.Editor.Helpers;
+namespace Suity.Editor.AIGC.StreamUpdaters;
 
 /// <summary>
 /// Stream Updater class, inherits from LLmStreamUpdater, used to handle streaming output display

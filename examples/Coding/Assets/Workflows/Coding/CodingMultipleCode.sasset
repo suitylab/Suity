@@ -143,7 +143,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="610" Y="-40" Width="140" Height="74">
       <Name>###WriteWorkSpaceFile01</Name>
-      <Node type="Suity.Editor.AIGC.WorkSpaces.Flows.WriteWorkSpaceFile">
+      <Node type="Suity.Editor.AIGC.Flows.WorkSpaces.WriteWorkSpaceFile">
         <WorkSpace />
         <FilePath>
         </FilePath>

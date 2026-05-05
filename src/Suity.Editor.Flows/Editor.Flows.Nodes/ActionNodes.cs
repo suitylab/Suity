@@ -133,9 +133,9 @@ public class ForeachJsonArray : ActionFlowNode
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         setup.InspectorField(ContentType, new ViewProperty(nameof(ContentType), "Type"));
     }
@@ -795,9 +795,9 @@ public class DataActionCompose : ActionFlowNode, INavigable
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         setup.InspectorField(_type, new ViewProperty("DataType", "Data Type"));
         setup.InspectorField(_isArray, new ViewProperty("IsArray", "Array"));
@@ -891,9 +891,9 @@ public class DataActionDecompose : ActionFlowNode, INavigable
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         setup.InspectorField(_type, new ViewProperty("DataType", "Data Type"));
         setup.InspectorField(_isArray, new ViewProperty("IsArray", "Array"));
@@ -986,9 +986,9 @@ public class MultipleDataActionDecompose : ActionFlowNode, INavigable
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         setup.InspectorField(_type, new ViewProperty("DataType", "Data Type"));
         _isArray.InspectorField(setup);
@@ -1088,9 +1088,9 @@ public class PassDataAction : ActionFlowNode, INavigable
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         setup.InspectorField(_type, new ViewProperty("DataType", "Data Type"));
         setup.InspectorField(_isArray, new ViewProperty("IsArray", "Array"));
@@ -1170,9 +1170,9 @@ public class DataTypeSwitchAction : ActionFlowNode
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         setup.InspectorField(_types, new ViewProperty("AbstractType", "Abstract Type").WithWriteBack());
     }
@@ -1586,9 +1586,9 @@ public class CacheValue : ActionFlowNode
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         setup.InspectorField(_type, new ViewProperty("DataType", "Data Type"));
         _isArray.InspectorField(setup);

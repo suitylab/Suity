@@ -10,7 +10,6 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace Suity.Editor.AIGC.Flows.Pages;

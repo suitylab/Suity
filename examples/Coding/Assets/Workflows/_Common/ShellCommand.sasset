@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="AigcFlow">
+  <AssetId>ccbf54aa-51e5-4573-af8a-aef47e246dec</AssetId>
+  <NameSpace>TestCoding001</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageDefinitionDiagramItem" X="-280" Y="-70" Width="140" Height="120">
+      <Name>ShellCommand</Name>
+      <AssetId>c36df34f-f6ad-4ace-bc2f-a01013c33a18</AssetId>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageDefinitionNode">
+        <Name>ShellCommand</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Run a single shell command. Do not run multiple commands and a same time.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <Tools />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageResultDiagramItem" X="180" Y="-70" Width="140" Height="120">
+      <Name>ShellCommandEnd</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageResultNode">
+        <Name>ShellCommandEnd</Name>
+        <Description>
+        </Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-270" Y="-20" Width="52" Height="17">
+      <Name>Command</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
+        <Name>Command</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <TaskCommit>True</TaskCommit>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </ValueType>
+        <Value type="System.String">
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageEndDiagramItem" X="190" Y="-30" Width="58" Height="17">
+      <Name>OnComplete</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageEndNode">
+        <Name>OnComplete</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterOutputItem" X="190" Y="-10" Width="44" Height="17">
+      <Name>Output</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterOutputNode">
+        <Name>Output</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <TaskCommit>True</TaskCommit>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>6d9a5040-b6d7-4daa-b06f-6f2f27f02012</Id>
+        </ValueType>
+        <Value type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+          <Value type="Suity.Views.TextBlock">
+            <Text>
+            </Text>
+          </Value>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-50" Width="136" Height="74">
+      <Name>###RunShellCommand01</Name>
+      <Node type="Suity.Editor.AIGC.FLows.External.RunShellCommand">
+        <Command>
+        </Command>
+        <WorkingDirectory>
+        </WorkingDirectory>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-80" Width="94" Height="17">
+      <Name>###GetWorkSpaceDirectory01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.WorkSpaces.GetWorkSpaceDirectory">
+        <WorkSpace />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-110" Width="59" Height="17">
+      <Name>###GetTaskWorkSpace01</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.GetTaskWorkSpace" />
+    </Item>
+    <Item type="Suity.Editor.AIGC.Flows.Pages.PageBeginDiagramItem" X="-270" Y="-40" Width="46" Height="17">
+      <Name>OnStart</Name>
+      <Node type="Suity.Editor.AIGC.Flows.Pages.PageBeginNode">
+        <Name>OnStart</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+  </Nodes>
+  <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+  <Links>
+    <Item>
+      <FromNode>ShellCommandEnd</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>ShellCommand</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###RunShellCommand01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnComplete</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Command</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###RunShellCommand01</ToNode>
+      <ToConnector>Command</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###RunShellCommand01</FromNode>
+      <FromConnector>Result</FromConnector>
+      <ToNode>Output</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetWorkSpaceDirectory01</FromNode>
+      <FromConnector>Directory</FromConnector>
+      <ToNode>###RunShellCommand01</ToNode>
+      <ToConnector>WorkingDirectory</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskWorkSpace01</FromNode>
+      <FromConnector>TaskWorkSpace</FromConnector>
+      <ToNode>###GetWorkSpaceDirectory01</ToNode>
+      <ToConnector>WorkSpace</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>OnStart</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###RunShellCommand01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

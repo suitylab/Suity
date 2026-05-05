@@ -630,6 +630,11 @@ internal abstract class AvaGraphicBaseContext :
             {
                 _control.Focus();
             }
+
+            if (!e.Handled)
+            {
+                (_graphicObject as IDropTarget)?.DragOver(AvaDragEvent.Global);
+            }
         }
         catch (Exception err)
         {
@@ -653,6 +658,11 @@ internal abstract class AvaGraphicBaseContext :
             if (!_control.IsFocused)
             {
                 _control.Focus();
+            }
+
+            if (!e.Handled)
+            {
+                (_graphicObject as IDropTarget)?.DragDrop(AvaDragEvent.Global);
             }
         }
         catch (Exception err)

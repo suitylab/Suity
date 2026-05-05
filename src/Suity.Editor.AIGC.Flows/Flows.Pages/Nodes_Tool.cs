@@ -161,9 +161,9 @@ public class GetCurrentToolList : AigcPageNode
     }
 
     /// <inheritdoc/>
-    public override void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         _documentTools.InspectorField(setup, this);
     }

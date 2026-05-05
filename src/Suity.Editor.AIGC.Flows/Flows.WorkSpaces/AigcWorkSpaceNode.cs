@@ -3,7 +3,7 @@ using Suity.Editor.Flows;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.WorkSpaces.Flows;
+namespace Suity.Editor.AIGC.Flows.WorkSpaces;
 
 /// <summary>
 /// Base class for flow nodes that interact with workspaces.
