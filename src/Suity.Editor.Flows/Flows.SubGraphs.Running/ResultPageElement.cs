@@ -2,8 +2,9 @@ using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Flows;
 using Suity.Synchonizing;
 using Suity.Views;
+using Suity.Editor.AIGC.TaskPages;
 
-namespace Suity.Editor.AIGC.TaskPages.Running;
+namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
 /// Represents a result page element that displays the completion outputs of an AIGC flow page.

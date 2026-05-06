@@ -1,4 +1,4 @@
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Flows.Pages;
 
 /// <summary>
 /// Provides extension methods for nullable boolean values used in task-related operations.

@@ -1,11 +1,12 @@
 using Suity.Editor.AIGC.Flows.Pages;
+using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 
-namespace Suity.Editor.AIGC.TaskPages.Running;
+namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
 /// Represents the end element of an AIGC page, handling page completion and parameter output.

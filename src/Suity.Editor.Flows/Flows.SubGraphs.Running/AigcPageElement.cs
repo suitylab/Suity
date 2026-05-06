@@ -1,9 +1,11 @@
 using Suity.Drawing;
 using Suity.Editor.AIGC.Flows.Pages;
+using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Flows;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.Flows.Pages;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -11,7 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace Suity.Editor.AIGC.TaskPages.Running;
+namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
 /// Represents an abstract base class for AIGC page elements that integrate with the flow diagram system.

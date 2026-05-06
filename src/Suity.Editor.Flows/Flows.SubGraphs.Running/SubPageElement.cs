@@ -1,8 +1,10 @@
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Flows;
+using Suity.Flows.Pages;
 using Suity.Views;
+using Suity.Editor.AIGC.TaskPages;
 
-namespace Suity.Editor.AIGC.TaskPages.Running;
+namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
 /// Represents a sub-page element that groups related flow nodes and delegates completion status to its result page.

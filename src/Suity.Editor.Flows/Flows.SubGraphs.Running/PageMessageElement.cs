@@ -1,10 +1,11 @@
 using Suity.Editor.AIGC.Flows.Pages;
+using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Views;
 using System;
 
-namespace Suity.Editor.AIGC.TaskPages.Running;
+namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
 /// Represents a message element in an AIGC page that handles text-based message display and parameter input/output.

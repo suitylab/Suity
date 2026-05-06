@@ -1,11 +1,12 @@
 using Suity.Editor.AIGC.Flows.Pages;
+using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
 using static Suity.Helpers.GlobalLocalizer;
 
-namespace Suity.Editor.AIGC.TaskPages.Running;
+namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
 /// Represents the beginning element of an AIGC page, serving as the entry point for page interactions.

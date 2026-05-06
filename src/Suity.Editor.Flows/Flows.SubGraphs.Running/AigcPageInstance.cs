@@ -1,14 +1,17 @@
 using Suity;
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.AIGC.Flows;
 using Suity.Editor.AIGC.Flows.Pages;
+using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Design;
 using Suity.Editor.Flows;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
+using Suity.Flows.Pages;
 using Suity.Synchonizing;
 using Suity.UndoRedos;
 using Suity.Views;
@@ -20,7 +23,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
 
-namespace Suity.Editor.AIGC.TaskPages.Running;
+namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
 /// Represents an instance of an AIGC page within a flow, managing page elements, parameters, and computation context.
@@ -1240,7 +1243,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
     /// <param name="begin">The page begin element that initiated the task.</param>
     /// <param name="view">Optional flow view for UI integration.</param>
     /// <returns>A task representing the asynchronous task operation.</returns>
-    internal Task<object> HandleBeginTask(AIRequest request, PageBeginElement begin, IFlowView view = null)
+    public Task<object> HandleBeginTask(AIRequest request, PageBeginElement begin, IFlowView view = null)
     {
         if (!IsInDiagram)
         {

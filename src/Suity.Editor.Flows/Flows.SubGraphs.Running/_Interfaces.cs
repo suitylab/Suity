@@ -1,6 +1,4 @@
-using Suity.Editor.AIGC.TaskPages.Running;
-
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
 /// Interface for objects that can create <see cref="AigcPageElement"/> instances.

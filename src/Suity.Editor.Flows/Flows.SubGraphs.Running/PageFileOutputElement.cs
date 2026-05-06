@@ -1,4 +1,5 @@
 using Suity.Editor.AIGC.Flows.Pages;
+using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Helpers;
@@ -7,7 +8,7 @@ using Suity.Views;
 using System;
 using System.IO;
 
-namespace Suity.Editor.AIGC.TaskPages.Running;
+namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
 /// Represents a file output element in an AIGC page that handles file path output and validation.
