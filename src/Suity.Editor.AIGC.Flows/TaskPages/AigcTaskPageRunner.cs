@@ -6,7 +6,7 @@ using Suity.Views;
 using System;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.TaskPages.Running;
+namespace Suity.Editor.AIGC.TaskPages;
 
 /// <summary>
 /// Represents the result of a task execution, including the end type and associated parameter.

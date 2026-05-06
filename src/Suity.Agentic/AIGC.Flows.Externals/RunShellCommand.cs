@@ -5,6 +5,7 @@ using Suity.Views;
 using System;
 using System.Diagnostics;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -106,6 +107,15 @@ public class RunShellCommand : AigcExternalNode
         return _out;
     }
 
+    private static readonly Regex AnsiRegex = new(@"\x1b\[[0-9;]*[a-zA-Z]|\x1b[()][a-zA-Z0-9]|\x1b\][^\x07]*\x07|\x1b\[[0-9;]*[A-Z]", RegexOptions.Compiled);
+
+    private static string StripAnsiCodes(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+            return text;
+        return AnsiRegex.Replace(text, "");
+    }
+
     private static async Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token)
     {
         bool isWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
@@ -145,8 +155,9 @@ public class RunShellCommand : AigcExternalNode
         {
             if (e.Data != null)
             {
-                outputBuilder.AppendLine(e.Data);
-                onOutput?.Invoke(e.Data + Environment.NewLine);
+                string cleanLine = StripAnsiCodes(e.Data);
+                outputBuilder.AppendLine(cleanLine);
+                onOutput?.Invoke(cleanLine + Environment.NewLine);
             }
         };
 
@@ -154,8 +165,9 @@ public class RunShellCommand : AigcExternalNode
         {
             if (e.Data != null)
             {
-                errorBuilder.AppendLine(e.Data);
-                onOutput?.Invoke("[STDERR] " + e.Data + Environment.NewLine);
+                string cleanLine = StripAnsiCodes(e.Data);
+                errorBuilder.AppendLine(cleanLine);
+                onOutput?.Invoke("[STDERR] " + cleanLine + Environment.NewLine);
             }
         };
 
