@@ -1,6 +1,5 @@
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
@@ -9,9 +8,9 @@ using Suity.Views;
 namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
-/// Represents the end element of an AIGC page, handling page completion and parameter output.
+/// Represents the end element of a sub-graph, handling sub-graph completion and parameter output.
 /// </summary>
-public class PageEndElement : SubGraphElement, IPageParameterOutput
+public class SubGraphEndElement : SubGraphElement, IPageParameterOutput
 {
     private readonly FlowDiagramItem _endItem;
 
@@ -19,10 +18,10 @@ public class PageEndElement : SubGraphElement, IPageParameterOutput
     private FlowNodeConnector _connector;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageEndElement"/> class.
+    /// Initializes a new instance of the <see cref="SubGraphEndElement"/> class.
     /// </summary>
     /// <param name="endItem">The flow diagram item representing the end node.</param>
-    public PageEndElement(FlowDiagramItem endItem)
+    public SubGraphEndElement(FlowDiagramItem endItem)
         : base(endItem)
     {
         _endItem = endItem ?? throw new System.ArgumentNullException(nameof(endItem));
@@ -169,17 +168,17 @@ public class PageEndElement : SubGraphElement, IPageParameterOutput
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubGraphElement other)
     {
-        if (other is PageEndElement otherOutput)
+        if (other is SubGraphEndElement otherOutput)
         {
             UpdateFromOther(otherOutput);
         }
     }
 
     /// <summary>
-    /// Updates the current element's value from another <see cref="PageEndElement"/>.
+    /// Updates the current element's value from another <see cref="SubGraphEndElement"/>.
     /// </summary>
     /// <param name="otherParameter">The other page end element to copy values from.</param>
-    public void UpdateFromOther(PageEndElement otherParameter)
+    public void UpdateFromOther(SubGraphEndElement otherParameter)
     {
         _value = otherParameter._value;
     }

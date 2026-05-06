@@ -188,7 +188,7 @@ public class PageParameterInputItem : FlowDiagramItem<PageParameterInputNode>, I
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new PageParameterInputElement(this);
+    public SubGraphElement CreatePageElement() => new SubGraphParameterInput(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Paramater";
@@ -374,7 +374,7 @@ public class PageSkillParameterItem : FlowDiagramItem<PageSkillParameterNode>, I
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new PageSkillParameterElement(this);
+    public SubGraphElement CreatePageElement() => new SubGraphSkillParameter(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "SkillParamater";
@@ -465,7 +465,7 @@ public class PagePromptParameterInputItem : FlowDiagramItem<PagePromptParameterI
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new PagePromptParameterElement(this);
+    public SubGraphElement CreatePageElement() => new SubGraphPromptParameter(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "PromptParamater";
@@ -578,7 +578,7 @@ public class PageMessageParameterItem : FlowDiagramItem<PageMessageParameterNode
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new PageMessageElement(this);
+    public SubGraphElement CreatePageElement() => new SubGraphMessage(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Message";
@@ -750,7 +750,7 @@ public class PageParameterOutputItem : FlowDiagramItem<PageParameterOutputNode>,
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new PageParameterOutputElement(this);
+    public SubGraphElement CreatePageElement() => new SubGraphParameterOutput(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Output";
@@ -918,7 +918,7 @@ public class PageArticleOutputItem : FlowDiagramItem<PageArticleOutputNode>, ISu
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new PageArticleOutputElement(this);
+    public SubGraphElement CreatePageElement() => new SubGraphArticleOutput(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Article";
@@ -1078,7 +1078,7 @@ public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, ISubGraph
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new PageFileOutputElement(this);
+    public SubGraphElement CreatePageElement() => new SubGraphFileOutput(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "File";
@@ -1238,7 +1238,7 @@ public class PageSubTaskOutputItem : FlowDiagramItem<PageSubTaskOutputNode>, ISu
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new PageSubTaskOutputElement(this);
+    public SubGraphElement CreatePageElement() => new SubGraphSubTaskOutput(this);
 
 
     /// <inheritdoc/>

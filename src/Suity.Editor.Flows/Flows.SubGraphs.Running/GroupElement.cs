@@ -1,5 +1,4 @@
 using Suity.Editor.AIGC.Flows.Pages;
-using Suity.Editor.Flows;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -111,7 +110,7 @@ public class GroupElement : SubGraphElement
     /// <inheritdoc/>
     public override void Sort()
     {
-        _list.Sort(AigcPageInstance.PageElementSort);
+        _list.Sort(SubGraphInstance.PageElementSort);
 
         foreach (var item in _list)
         {

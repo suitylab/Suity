@@ -40,7 +40,7 @@ public class AigcTaskPage : DesignNode,
     readonly TextBlockProperty _taskPrompt = new("TaskPrompt", "Task Prompt", string.Empty);
     readonly StringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "Name used when committing to parent task.");
 
-    private AigcPageInstance _instance;
+    private SubGraphInstance _instance;
     private readonly QueueOnceAction _buildAction;
 
     /// <summary>
@@ -96,7 +96,7 @@ public class AigcTaskPage : DesignNode,
     /// Gets or sets the page instance associated with this task page.
     /// The setter manages event subscription and unsubscription for the instance.
     /// </summary>
-    public AigcPageInstance Instance
+    public SubGraphInstance Instance
     {
         get => _instance;
         private set
@@ -560,7 +560,7 @@ public class AigcTaskPage : DesignNode,
     {
         var pass = EnsureInstance()
             ?.GetAllChildElements(true)
-            .OfType<PageArticleOutputElement>()
+            .OfType<SubGraphArticleOutput>()
             .FirstOrDefault(o => o.PassToSubTasks);
 
         if (pass != null)
@@ -1162,7 +1162,7 @@ public class AigcTaskPage : DesignNode,
         }
 
         var begins = instance.GetAllChildElements(true)
-            .OfType<PageBeginElement>()
+            .OfType<SubGraphBeginElement>()
             .Where(o => MatchBeginElement(o, eventType, commitName))
             .ToArray();
 
@@ -1197,7 +1197,7 @@ public class AigcTaskPage : DesignNode,
         return true;
     }
 
-    private bool MatchBeginElement(PageBeginElement begin, AigcTaskEventTypes eventType, string commitName)
+    private bool MatchBeginElement(SubGraphBeginElement begin, AigcTaskEventTypes eventType, string commitName)
     {
         if (eventType == AigcTaskEventTypes.TaskBegin && begin.Node is PageBeginNode)
         {
@@ -1251,7 +1251,7 @@ public class AigcTaskPage : DesignNode,
     /// Builds the instance if it doesn't exist or is not in the diagram.
     /// </summary>
     /// <returns>The built page instance, or null if no definition is available.</returns>
-    public AigcPageInstance EnsureInstance()
+    public SubGraphInstance EnsureInstance()
     {
         if (_instance != null && _instance.IsInDiagram)
         {
@@ -1267,7 +1267,7 @@ public class AigcTaskPage : DesignNode,
     /// Builds the page instance from the definition item.
     /// </summary>
     /// <returns>The built page instance, or null if no definition is available.</returns>
-    private AigcPageInstance BuildInstance()
+    private SubGraphInstance BuildInstance()
     {
         if (GetDefinitionItem() is { } page)
         {
@@ -1285,7 +1285,7 @@ public class AigcTaskPage : DesignNode,
                     Owner = this,
                 };
 
-                Instance = new AigcPageInstance(page, option);
+                Instance = new SubGraphInstance(page, option);
                 if (instance != null)
                 {
                     Instance.UpdateFromOther(instance);
@@ -1407,7 +1407,7 @@ public class AigcTaskPage : DesignNode,
             Owner = taskPage,
         };
 
-        var pageInstance = pageDefAsset.CreatePageInstance(option) as AigcPageInstance
+        var pageInstance = pageDefAsset.CreatePageInstance(option) as SubGraphInstance
             ?? throw new NullReferenceException("Task is not a AigcPageInstance.");
 
         taskPage.Instance = pageInstance;
@@ -1473,7 +1473,7 @@ public class AigcTaskPage : DesignNode,
             Owner = taskPage,
         };
 
-        var instance = new AigcPageInstance(item, option);
+        var instance = new SubGraphInstance(item, option);
         instance.UpdateFromOther(pageInstance);
         taskPage.Instance = instance;
 

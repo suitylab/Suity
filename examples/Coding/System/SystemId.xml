@@ -9,7 +9,6 @@
   <Object id="f30149a8-21bd-4eea-8b48-07c6135b79f7" name="*AIGC|AigcModelLevel.High" />
   <Object id="00062761-7f4e-4d94-a693-7cf00553f737" name="*AIGC|AigcModelLevel.Low" />
   <Object id="36d50664-445e-49fb-afbf-3dda1929357f" name="*AIGC|AigcModelLevel.Medium" />
-  <Object id="1728e633-e33d-4c27-b39c-2d98592d1166" name="*AIGC|AigcPageInstance" />
   <Object id="b5609555-3d7d-4ff7-9329-19f5da6b236e" name="*AIGC|AigcRead" />
   <Object id="b835ccd9-2ac5-44e6-95cb-42c9cf397d79" name="*AIGC|AigcSkillAsset" />
   <Object id="44d44bed-9296-4bc6-9a04-e2fce68c381a" name="*AIGC|AIKnowledgeConfig" />
@@ -60,6 +59,7 @@
   <Object id="1b952042-8712-40d9-b851-6cd7cacf72c4" name="*AIGC|PromptAsset" />
   <Object id="903aa1cc-8908-49e3-9b10-83a0bb67005b" name="*AIGC|PromptBuilder" />
   <Object id="f9e4d782-f4a5-46bb-86e3-2d79325a961f" name="*AIGC|SkipAIGeneration" />
+  <Object id="cb707ddc-b394-4219-9674-e736bd84ac39" name="*AIGC|SubGraphInstance" />
   <Object id="4e73c3cc-effc-465d-8fe8-5e9b3dd8c87c" name="*AIGC|VectorKnowledge" />
   <Object id="3e63d8f9-29dc-4cf2-a10e-ae9cd5acc1a5" name="*AIGC|XmlTag" />
   <Object id="74f1f0ec-d71b-49d5-a1f4-891235d8d5dd" name="*AIHubMixImage" />

@@ -23,14 +23,14 @@ public class PageCanvasNode : ExpandedCanvasAssetNode<PageDefinitionAsset>
 {
     private readonly ImSubPropertyGrid _propGrid = new("AigcPage", true);
 
-    private AigcPageInstance _rootElement;
+    private SubGraphInstance _rootElement;
     private IInspectorContext _inpectorContext;
 
     /// <summary>
     /// Gets or sets the root page element instance for this node.
     /// Manages event subscriptions for result output and refresh requests.
     /// </summary>
-    public AigcPageInstance RootElement
+    public SubGraphInstance RootElement
     {
         get => _rootElement;
         set
@@ -241,7 +241,7 @@ public class PageCanvasNode : ExpandedCanvasAssetNode<PageDefinitionAsset>
                     Owner = this,
                 };
 
-                RootElement = new AigcPageInstance(page, option);
+                RootElement = new SubGraphInstance(page, option);
                 if (rootPage != null)
                 {
                     RootElement.UpdateFromOther(rootPage);

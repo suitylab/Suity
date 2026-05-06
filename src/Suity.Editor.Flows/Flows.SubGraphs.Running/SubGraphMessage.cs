@@ -1,6 +1,5 @@
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Views;
 using System;
@@ -8,18 +7,18 @@ using System;
 namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
-/// Represents a message element in an AIGC page that handles text-based message display and parameter input/output.
+/// Represents a message element in a sub-graph that handles text-based message display and parameter input/output.
 /// </summary>
-public class PageMessageElement : SubGraphElement, IPageMessage, IPageParameterInput, IPageParameterOutput
+public class SubGraphMessage : SubGraphElement, IPageMessage, IPageParameterInput, IPageParameterOutput
 {
     private readonly PageMessageParameterItem _msg;
     private string _text;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageMessageElement"/> class.
+    /// Initializes a new instance of the <see cref="SubGraphMessage"/> class.
     /// </summary>
     /// <param name="msg">The page message parameter item.</param>
-    public PageMessageElement(PageMessageParameterItem msg)
+    public SubGraphMessage(PageMessageParameterItem msg)
         : base(msg)
     {
         _msg = msg ?? throw new ArgumentNullException(nameof(msg));

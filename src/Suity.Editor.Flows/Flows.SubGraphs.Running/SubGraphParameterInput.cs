@@ -10,20 +10,20 @@ using System;
 namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
-/// Represents a page element that handles skill parameter input for AIGC tasks.
+/// Represents a page element that handles parameter input for AIGC tasks.
 /// </summary>
-public class PageSkillParameterElement : SubGraphElement, IPageParameterInput
+public class SubGraphParameterInput : SubGraphElement, IPageParameterInput
 {
-    private readonly PageSkillParameterItem _inputItem;
+    private readonly PageParameterInputItem _inputItem;
     private object _value;
     private FlowNodeConnector _connector;
 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageSkillParameterElement"/> class.
+    /// Initializes a new instance of the <see cref="SubGraphParameterInput"/> class.
     /// </summary>
-    /// <param name="parameterItem">The skill parameter item to associate with this element.</param>
-    public PageSkillParameterElement(PageSkillParameterItem parameterItem)
+    /// <param name="parameterItem">The parameter input item to associate with this element.</param>
+    public SubGraphParameterInput(PageParameterInputItem parameterItem)
         : base(parameterItem)
     {
         _inputItem = parameterItem ?? throw new ArgumentNullException(nameof(parameterItem));
@@ -32,37 +32,12 @@ public class PageSkillParameterElement : SubGraphElement, IPageParameterInput
     /// <inheritdoc/>
     public override FlowNodeConnector OuterConnector => _connector;
 
-    /// <summary>
-    /// Gets the underlying skill parameter item.
-    /// </summary>
-    public PageSkillParameterItem ParameterItem => _inputItem;
-
     #region IPageParameterInput
 
     /// <summary>
     /// Gets the type definition of the parameter.
     /// </summary>
     public TypeDefinition ParameterType { get; private set; }
-
-    /// <summary>
-    /// Gets the resolved skill definition value.
-    /// </summary>
-    public object Value => ResolveSkillDefValue();
-
-    /// <summary>
-    /// Gets or sets a value indicating whether a value has been explicitly set.
-    /// </summary>
-    public bool IsValueSet { get; set; }
-
-    /// <inheritdoc/>
-    public void SetValue(object value)
-    {
-        _value = value;
-        IsValueSet = true;
-    }
-
-    /// <inheritdoc/>
-    public object EnsureValue() => ResolveSkillDefValue();
 
     /// <summary>
     /// Gets a value indicating whether this input is related to task completion.
@@ -85,12 +60,52 @@ public class PageSkillParameterElement : SubGraphElement, IPageParameterInput
     public bool LinkedMode { get; private set; }
 
     /// <summary>
-    /// Gets a value indicating whether this is a skill input. Always returns <c>true</c> for this element type.
+    /// Gets a value indicating whether this is a skill input. Always returns <c>false</c> for this element type.
     /// </summary>
-    public bool IsSkillInput => true;
+    public bool IsSkillInput => false;
 
     /// <inheritdoc/>
     public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, LinkedMode);
+
+    /// <summary>
+    /// Gets the current value of the parameter.
+    /// </summary>
+    public object Value => _value;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether a value has been explicitly set.
+    /// </summary>
+    public bool IsValueSet { get; set; }
+
+    /// <inheritdoc/>
+    public void SetValue(object value)
+    {
+        _value = value;
+        IsValueSet = true;
+    }
+
+    /// <inheritdoc/>
+    public object EnsureValue()
+    {
+        UpdateDefaultValue(ParameterType);
+        return _value;
+    }
+
+    /// <inheritdoc/>
+    public object GetOuterValue(IFlowComputation outerCompute)
+    {
+        if (Option.Owner is FlowNode node
+            && node.Diagram is { } diagram
+            && _connector != null
+            && diagram.GetIsLinked(_connector))
+        {
+            return outerCompute.GetValue(_connector);
+        }
+        else
+        {
+            return _value;
+        }
+    }
 
     #endregion
 
@@ -110,58 +125,34 @@ public class PageSkillParameterElement : SubGraphElement, IPageParameterInput
     }
 
     /// <inheritdoc/>
-    public object GetOuterValue(IFlowComputation outerCompute)
-    {
-        if (Option.Owner is FlowNode node
-            && node.Diagram is { } diagram
-            && _connector != null
-            && diagram.GetIsLinked(_connector))
-        {
-            return outerCompute.GetValue(_connector);
-        }
-        else
-        {
-            return _value;
-        }
-    }
-
-    /// <inheritdoc/>
     public override void Sync(IPropertySync sync, ISyncContext context)
     {
         if (Option.Mode == PageElementMode.Skill)
         {
-            var valueType = ParameterType;
-            UpdateDefaultValue(ParameterType);
+            return;
+        }
 
-            // Skill parameters need to notify parent to save
-            _value = sync.Sync(Name, _value, SyncFlag.AffectsParent);
-        }
-        else
-        {
-            if (sync.Intent == SyncIntent.View && sync.IsGetter())
-            {
-                var value = ResolveSkillDefValue();
-                sync.Sync(Name, value, SyncFlag.GetOnly);
-            }
-        }
+        // var valueType = ParameterType;
+        UpdateDefaultValue(ParameterType);
+
+        _value = sync.Sync(Name, _value);
     }
 
     /// <inheritdoc/>
     public override void SetupView(IViewObjectSetup setup)
     {
+        if (Option.Mode == PageElementMode.Skill)
+        {
+            return;
+        }
+
         var valueType = ParameterType;
         UpdateDefaultValue(valueType);
 
         var property = new ViewProperty(Name, DisplayText)
             .WithExpand()
             .WithOptional()
-            .WithWriteBack() // Important, skill parameters need to notify parent to save
             .WithStatus(GetStatus());
-
-        if (Option.Mode != PageElementMode.Skill)
-        {
-            property.WithReadOnly();
-        }
 
         // In function mode, check if the connection point corresponding to the configuration property has been connected
         if (Option.Mode == PageElementMode.Function && _connector != null && Option.Owner is FlowNode flowNode)
@@ -183,17 +174,17 @@ public class PageSkillParameterElement : SubGraphElement, IPageParameterInput
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubGraphElement other)
     {
-        if (other is PageSkillParameterElement otherParameter)
+        if (other is SubGraphParameterInput otherParameter)
         {
             UpdateFromOther(otherParameter);
         }
     }
 
     /// <summary>
-    /// Updates the value from another <see cref="PageSkillParameterElement"/>.
+    /// Updates the value from another <see cref="SubGraphParameterInput"/>.
     /// </summary>
     /// <param name="otherParameter">The source element to copy the value from.</param>
-    public void UpdateFromOther(PageSkillParameterElement otherParameter)
+    public void UpdateFromOther(SubGraphParameterInput otherParameter)
     {
         _value = otherParameter._value;
     }
@@ -221,24 +212,5 @@ public class PageSkillParameterElement : SubGraphElement, IPageParameterInput
         {
             _value = null;
         }
-    }
-
-    /// <summary>
-    /// Resolves the value from the skill definition, or falls back to the local value.
-    /// </summary>
-    /// <returns>The resolved skill parameter value.</returns>
-    public object ResolveSkillDefValue()
-    {
-        if (Option.Mode != PageElementMode.Skill)
-        {
-            if (Root?.GetSkill() is { } skill && skill.TryGetParameter(Name, out var value))
-            {
-                //TODO: Do we need to Clone once to avoid modification?
-                return value;
-            }
-        }
-
-        UpdateDefaultValue(ParameterType);
-        return _value;
     }
 }

@@ -19,12 +19,12 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 [NotAvailable]
 public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNodeComputeAsync
 {
-    private AigcPageInstance _instance;
+    private SubGraphInstance _instance;
 
     /// <summary>
     /// Gets or sets the page instance associated with this node.
     /// </summary>
-    public AigcPageInstance Instance
+    public SubGraphInstance Instance
     {
         get => _instance;
         set
@@ -231,7 +231,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
         }
 
         // Get the starting element from the port
-        if (instance.GetElement(begin.Name) is not PageBeginElement beginElement)
+        if (instance.GetElement(begin.Name) is not SubGraphBeginElement beginElement)
         {
             return null;
         }
@@ -275,7 +275,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
         }
 
         // Get end port
-        if (instance.GetElement(callerContext.EndActionName) is PageEndElement endElement)
+        if (instance.GetElement(callerContext.EndActionName) is SubGraphEndElement endElement)
         {
             if (endElement.OuterConnector is { } connector)
             {
@@ -291,8 +291,8 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
     /// <summary>
     /// Ensures that a valid page instance exists and is associated with this node, building one if necessary.
     /// </summary>
-    /// <returns>The current <see cref="AigcPageInstance"/>, or null if it could not be created.</returns>
-    public AigcPageInstance EnsureInstance()
+    /// <returns>The current <see cref="SubGraphInstance"/>, or null if it could not be created.</returns>
+    public SubGraphInstance EnsureInstance()
     {
         if (_instance != null && _instance.IsInDiagram)
         {
@@ -305,7 +305,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
     }
 
 
-    private AigcPageInstance BuildInstance()
+    private SubGraphInstance BuildInstance()
     {
         if (Page is { } page)
         {
@@ -323,7 +323,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
                     Owner = this,
                 };
 
-                instance = new AigcPageInstance(page, option);
+                instance = new SubGraphInstance(page, option);
                 instance.UpdateFromOther(instance);
 
                 this.Instance = instance;
@@ -344,7 +344,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
 /// </summary>
 public class PageFunctionCallerContext : IFlowCallerContext
 {
-    private readonly AigcPageInstance _rootElement;
+    private readonly SubGraphInstance _rootElement;
     private readonly IFlowComputationAsync _outer;
 
     /// <summary>
@@ -367,7 +367,7 @@ public class PageFunctionCallerContext : IFlowCallerContext
     /// </summary>
     /// <param name="rootElement">The page instance that this context operates on.</param>
     /// <param name="outer">The outer flow computation that invoked this page function.</param>
-    public PageFunctionCallerContext(AigcPageInstance rootElement, IFlowComputationAsync outer)
+    public PageFunctionCallerContext(SubGraphInstance rootElement, IFlowComputationAsync outer)
     {
         _rootElement = rootElement ?? throw new ArgumentNullException(nameof(rootElement));
         _outer = outer ?? throw new ArgumentNullException(nameof(outer));
@@ -412,7 +412,7 @@ public class PageFunctionCallerContext : IFlowCallerContext
     /// <inheritdoc/>
     public async Task<object> CallFunction(IFlowComputation computation, string name, object value, CancellationToken cancel)
     {
-        var endElement = _rootElement.GetElement(name) as PageEndElement;
+        var endElement = _rootElement.GetElement(name) as SubGraphEndElement;
         if (endElement?.OuterConnector is { } connector)
         {
             _outer.SetValue(connector, value);

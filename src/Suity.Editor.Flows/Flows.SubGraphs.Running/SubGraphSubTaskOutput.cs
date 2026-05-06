@@ -2,7 +2,6 @@ using Suity;
 using Suity.Collections;
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Flows.Pages;
 using Suity.Synchonizing;
@@ -12,18 +11,18 @@ using System.Linq;
 namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
-/// Represents a page element that handles sub-task output for AIGC tasks.
+/// Represents a sub-graph element that handles sub-task output for sub-graph.
 /// Implements both parameter output and tool parameter interfaces.
 /// </summary>
-public class PageSubTaskOutputElement : SubGraphElement, IPageParameterOutput, IPageParameterTool
+public class SubGraphSubTaskOutput : SubGraphElement, IPageParameterOutput, IPageParameterTool
 {
     readonly PageSubTaskOutputItem _outputItem;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageSubTaskOutputElement"/> class.
+    /// Initializes a new instance of the <see cref="SubGraphSubTaskOutput"/> class.
     /// </summary>
     /// <param name="item">The sub-task output item to associate with this element.</param>
-    public PageSubTaskOutputElement(PageSubTaskOutputItem item)
+    public SubGraphSubTaskOutput(PageSubTaskOutputItem item)
         : base(item)
     {
         _outputItem = item ?? throw new System.ArgumentNullException(nameof(item));

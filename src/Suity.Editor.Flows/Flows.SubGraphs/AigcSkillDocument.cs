@@ -24,7 +24,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 [DocumentFormat(FormatName = "AigcSkill", Extension = "sskill", DisplayText = "Skill", Icon = "*CoreIcon|Skill", Categoty = "AIGC", CanShowView = false)]
 public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSkill
 {
-    private AigcPageInstance _rootElement;
+    private SubGraphInstance _rootElement;
 
     private readonly StringProperty _skillName = new("SkillName", "Skill Name");
 
@@ -138,7 +138,7 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
     /// <summary>
     /// Gets or sets the root page instance for this skill.
     /// </summary>
-    public AigcPageInstance Instance
+    public SubGraphInstance Instance
     {
         get => _rootElement;
         set
@@ -306,8 +306,8 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
     /// <summary>
     /// Ensures that a skill instance exists, building one if necessary.
     /// </summary>
-    /// <returns>The current <see cref="AigcPageInstance"/> for this skill.</returns>
-    public AigcPageInstance EnsureSkillInstance()
+    /// <returns>The current <see cref="SubGraphInstance"/> for this skill.</returns>
+    public SubGraphInstance EnsureSkillInstance()
     {
         if (Instance is null)
         {
@@ -335,7 +335,7 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
                     Owner = this,
                 };
 
-                var newInstance = new AigcPageInstance(page, option);
+                var newInstance = new SubGraphInstance(page, option);
                 if (last != null)
                 {
                     newInstance.UpdateFromOther(last);
@@ -546,7 +546,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToo
             return null;
         }
 
-        var instance = new AigcPageInstance(toolPageItem, option, this);
+        var instance = new SubGraphInstance(toolPageItem, option, this);
 
         string skillName = doc.Name;
         string description = doc.Overview;

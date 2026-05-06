@@ -7,7 +7,6 @@ using Suity.Editor.AIGC.Flows;
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Design;
-using Suity.Editor.Flows;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -26,10 +25,10 @@ using static Suity.Helpers.GlobalLocalizer;
 namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
-/// Represents an instance of an AIGC page within a flow, managing page elements, parameters, and computation context.
+/// Represents an instance of a sub-graph within a flow, managing page elements, parameters, and computation context.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Page Instance", Icon = "*CoreIcon|Page")]
-public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageInstance
+[NativeType(CodeBase = "AIGC", Description = "Sub-Graph Instance", Icon = "*CoreIcon|Page")]
+public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageInstance
 {
     /// <summary>
     /// Property key used to store the skill asset reference.
@@ -46,7 +45,7 @@ public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     private readonly List<GroupElement> _groups = [];
     private readonly Dictionary<string, SubGraphElement> _dic = [];
     private readonly HashSet<SubGraphElement> _allElements = [];
-    private PageEndElement _currentEndElement;
+    private SubGraphEndElement _currentEndElement;
 
     private readonly AssetProperty<IAigcToolAsset> _skill = new(SKILL_PROP, "Skill");
     private string _skillName;
@@ -54,12 +53,12 @@ public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     private readonly IConversationImGui _conversation;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AigcPageInstance"/> class.
+    /// Initializes a new instance of the <see cref="SubGraphInstance"/> class.
     /// </summary>
     /// <param name="pageDefinition">The page definition diagram item.</param>
     /// <param name="option">The page element configuration options.</param>
     /// <param name="skill">Optional skill asset to associate with this page instance.</param>
-    public AigcPageInstance(PageDefinitionDiagramItem pageDefinition, PageElementOption option, IAigcToolAsset skill = null)
+    public SubGraphInstance(PageDefinitionDiagramItem pageDefinition, PageElementOption option, IAigcToolAsset skill = null)
         : base(pageDefinition)
     {
         _pageDefinition = pageDefinition ?? throw new ArgumentNullException(nameof(pageDefinition));
@@ -488,7 +487,7 @@ public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubGraphElement other)
     {
-        if (other is AigcPageInstance otherRoot)
+        if (other is SubGraphInstance otherRoot)
         {
             UpdateFromOther(otherRoot);
         }
@@ -498,7 +497,7 @@ public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// Updates this page instance's data from another page instance.
     /// </summary>
     /// <param name="otherRoot">The source page instance to update from.</param>
-    public void UpdateFromOther(AigcPageInstance otherRoot)
+    public void UpdateFromOther(SubGraphInstance otherRoot)
     {
         _skill.TargetAsset = otherRoot._skill.TargetAsset;
 
@@ -515,10 +514,10 @@ public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// Creates a clone of this page instance with the specified options.
     /// </summary>
     /// <param name="option">The options to apply to the cloned instance.</param>
-    /// <returns>A new <see cref="AigcPageInstance"/> that is a copy of this instance.</returns>
-    public AigcPageInstance Clone(PageElementOption option)
+    /// <returns>A new <see cref="SubGraphInstance"/> that is a copy of this instance.</returns>
+    public SubGraphInstance Clone(PageElementOption option)
     {
-        var clone = new AigcPageInstance(_pageDefinition, option);
+        var clone = new SubGraphInstance(_pageDefinition, option);
         clone.UpdateFromOther(this);
 
         return clone;
@@ -699,7 +698,7 @@ public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// <summary>
     /// Gets the current end element that was last executed in the flow.
     /// </summary>
-    public PageEndElement CurrentEndElement => _currentEndElement;
+    public SubGraphEndElement CurrentEndElement => _currentEndElement;
 
     /// <summary>
     /// Converts this page instance to a <see cref="SimpleType"/> representation.
@@ -709,7 +708,7 @@ public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     {
         List<SimpleField> fields = [];
 
-        if (_dic.Values.OfType<PageBeginElement>().FirstOrDefault() is { } begin)
+        if (_dic.Values.OfType<SubGraphBeginElement>().FirstOrDefault() is { } begin)
         {
             if (begin.ParameterType is { } fieldType && !TypeDefinition.IsNullOrEmpty(fieldType))
             {
@@ -1013,7 +1012,7 @@ public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
             return;
         }
 
-        if (element is not PageBeginElement beginElement)
+        if (element is not SubGraphBeginElement beginElement)
         {
             return;
         }
@@ -1061,7 +1060,7 @@ public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
             return null;
         }
 
-        if (element is not PageEndElement endElement)
+        if (element is not SubGraphEndElement endElement)
         {
             return null;
         }
@@ -1086,7 +1085,7 @@ public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
             return;
         }
 
-        if (element is not PageEndElement endElement)
+        if (element is not SubGraphEndElement endElement)
         {
             return;
         }
@@ -1202,7 +1201,7 @@ public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// <param name="begin">The page begin element that initiated the chat.</param>
     /// <param name="view">Optional flow view for UI integration.</param>
     /// <returns>A task representing the asynchronous chat operation.</returns>
-    internal Task<object> HandleBeginChat(PageBeginElement begin, IFlowView view = null)
+    internal Task<object> HandleBeginChat(SubGraphBeginElement begin, IFlowView view = null)
     {
         if (!IsInDiagram)
         {
@@ -1243,7 +1242,7 @@ public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// <param name="begin">The page begin element that initiated the task.</param>
     /// <param name="view">Optional flow view for UI integration.</param>
     /// <returns>A task representing the asynchronous task operation.</returns>
-    public Task<object> HandleBeginTask(AIRequest request, PageBeginElement begin, IFlowView view = null)
+    public Task<object> HandleBeginTask(AIRequest request, SubGraphBeginElement begin, IFlowView view = null)
     {
         if (!IsInDiagram)
         {

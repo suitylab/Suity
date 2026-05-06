@@ -1,6 +1,5 @@
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing;
@@ -11,9 +10,9 @@ using System.IO;
 namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
-/// Represents a file output element in an AIGC page that handles file path output and validation.
+/// Represents a file output element in an sub-graph that handles file path output and validation.
 /// </summary>
-public class PageFileOutputElement : SubGraphElement, IPageParameterOutput
+public class SubGraphFileOutput : SubGraphElement, IPageParameterOutput
 {
     private readonly PageFileOutputItem _outputItem;
     private string _value = string.Empty;
@@ -21,10 +20,10 @@ public class PageFileOutputElement : SubGraphElement, IPageParameterOutput
 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageFileOutputElement"/> class.
+    /// Initializes a new instance of the <see cref="SubGraphFileOutput"/> class.
     /// </summary>
     /// <param name="outputItem">The page file output item.</param>
-    public PageFileOutputElement(PageFileOutputItem outputItem)
+    public SubGraphFileOutput(PageFileOutputItem outputItem)
         : base(outputItem)
     {
         _outputItem = outputItem ?? throw new ArgumentNullException(nameof(outputItem));
@@ -146,17 +145,17 @@ public class PageFileOutputElement : SubGraphElement, IPageParameterOutput
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubGraphElement other)
     {
-        if (other is PageFileOutputElement otherOutput)
+        if (other is SubGraphFileOutput otherOutput)
         {
             UpdateFromOther(otherOutput);
         }
     }
 
     /// <summary>
-    /// Updates the current element's value from another <see cref="PageFileOutputElement"/>.
+    /// Updates the current element's value from another <see cref="SubGraphFileOutput"/>.
     /// </summary>
     /// <param name="otherParameter">The other file output element to copy values from.</param>
-    public void UpdateFromOther(PageFileOutputElement otherParameter)
+    public void UpdateFromOther(SubGraphFileOutput otherParameter)
     {
         _value = otherParameter._value;
     }

@@ -1,7 +1,6 @@
 using Suity.Drawing;
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
@@ -102,14 +101,14 @@ public abstract class SubGraphElement : IViewObject, ISubGraphElement
     /// <summary>
     /// Gets the root page instance that contains this element.
     /// </summary>
-    public AigcPageInstance Root
+    public SubGraphInstance Root
     {
         get
         {
             var parent = Parent;
             while (parent != null)
             {
-                if (parent is AigcPageInstance root)
+                if (parent is SubGraphInstance root)
                 {
                     return root;
                 }

@@ -321,7 +321,7 @@ public class PageDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcToolAss
             return null;
         }
 
-        return new AigcPageInstance(toolPageItem, option);
+        return new SubGraphInstance(toolPageItem, option);
     }
 
     #endregion
@@ -656,7 +656,7 @@ public class PageDefinitionAssetToTextConverter : TypeToTextConverter<PageDefini
             Mode = PageElementMode.Function,
         };
 
-        var element = new AigcPageInstance(item, option);
+        var element = new SubGraphInstance(item, option);
 
         return element.ToSimpleType().ToString();
     }
@@ -684,7 +684,7 @@ public class PageDefinitionAssetArrayToTextConverter : AssetLinkArrayToTextConve
                 Mode = PageElementMode.Function,
             };
 
-            var element = new AigcPageInstance(item, option);
+            var element = new SubGraphInstance(item, option);
 
             string s = element.ToSimpleType().ToString();
 
@@ -717,7 +717,7 @@ public class IAigcSkillToTextConverter : TypeToTextConverter<IAigcToolAsset>
             Mode = PageElementMode.Function,
         };
 
-        var element = new AigcPageInstance(item, option);
+        var element = new SubGraphInstance(item, option);
 
         return element.ToSimpleType().ToString();
     }

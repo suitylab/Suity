@@ -9,9 +9,9 @@ using System;
 namespace Suity.Editor.Flows.SubGraphs.Running;
 
 /// <summary>
-/// Represents a page element that handles prompt parameter input for AIGC tasks.
+/// Represents a sub-graph element that handles prompt parameter input for sub-graph.
 /// </summary>
-public class PagePromptParameterElement : SubGraphElement, IPageParameterInput
+public class SubGraphPromptParameter : SubGraphElement, IPageParameterInput
 {
     private readonly PagePromptParameterInputItem _inputItem;
     private FlowNodeConnector _connector;
@@ -19,10 +19,10 @@ public class PagePromptParameterElement : SubGraphElement, IPageParameterInput
     private readonly TextBlock _cachedPrompt = new();
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PagePromptParameterElement"/> class.
+    /// Initializes a new instance of the <see cref="SubGraphPromptParameter"/> class.
     /// </summary>
     /// <param name="parameterItem">The prompt parameter input item to associate with this element.</param>
-    public PagePromptParameterElement(PagePromptParameterInputItem parameterItem)
+    public SubGraphPromptParameter(PagePromptParameterInputItem parameterItem)
         : base(parameterItem)
     {
         _inputItem = parameterItem ?? throw new ArgumentNullException(nameof(parameterItem));
@@ -176,17 +176,17 @@ public class PagePromptParameterElement : SubGraphElement, IPageParameterInput
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubGraphElement other)
     {
-        if (other is PagePromptParameterElement otherParameter)
+        if (other is SubGraphPromptParameter otherParameter)
         {
             UpdateFromOther(otherParameter);
         }
     }
 
     /// <summary>
-    /// Updates the prompt from another <see cref="PagePromptParameterElement"/>.
+    /// Updates the prompt from another <see cref="SubGraphPromptParameter"/>.
     /// </summary>
     /// <param name="otherParameter">The source element to copy the prompt from.</param>
-    public void UpdateFromOther(PagePromptParameterElement otherParameter)
+    public void UpdateFromOther(SubGraphPromptParameter otherParameter)
     {
         string prompt = otherParameter.ResolvePrmopt();
         SetPrompt(prompt);

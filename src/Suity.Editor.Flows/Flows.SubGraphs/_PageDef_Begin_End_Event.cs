@@ -133,8 +133,8 @@ public class PageBeginDiagramItem : FlowDiagramItem<PageBeginNode>, ISubGraphEle
     /// <summary>
     /// Creates a new page begin element from this diagram item.
     /// </summary>
-    /// <returns>A new <see cref="PageBeginElement"/>.</returns>
-    public SubGraphElement CreatePageElement() => new PageBeginElement(this);
+    /// <returns>A new <see cref="SubGraphBeginElement"/>.</returns>
+    public SubGraphElement CreatePageElement() => new SubGraphBeginElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Begin";
@@ -367,8 +367,8 @@ public class PageEventDiagramItem : FlowDiagramItem<PageEventNode>, ISubGraphEle
     /// <summary>
     /// Creates a new page begin element from this diagram item.
     /// </summary>
-    /// <returns>A new <see cref="PageBeginElement"/>.</returns>
-    public SubGraphElement CreatePageElement() => new PageBeginElement(this);
+    /// <returns>A new <see cref="SubGraphBeginElement"/>.</returns>
+    public SubGraphElement CreatePageElement() => new SubGraphBeginElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "TaskEvent";
@@ -601,8 +601,8 @@ public class PageEndDiagramItem : FlowDiagramItem<PageEndNode>, ISubGraphElement
     /// <summary>
     /// Creates a new page end element from this diagram item.
     /// </summary>
-    /// <returns>A new <see cref="PageEndElement"/>.</returns>
-    public SubGraphElement CreatePageElement() => new PageEndElement(this);
+    /// <returns>A new <see cref="SubGraphEndElement"/>.</returns>
+    public SubGraphElement CreatePageElement() => new SubGraphEndElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "End";
@@ -671,8 +671,8 @@ public class PageCommitDiagramItem : FlowDiagramItem<PageCommitNode>, ISubGraphE
     /// <summary>
     /// Creates a new page end element from this diagram item.
     /// </summary>
-    /// <returns>A new <see cref="PageEndElement"/>.</returns>
-    public SubGraphElement CreatePageElement() => new PageEndElement(this);
+    /// <returns>A new <see cref="SubGraphEndElement"/>.</returns>
+    public SubGraphElement CreatePageElement() => new SubGraphEndElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Commit";

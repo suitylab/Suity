@@ -1,6 +1,5 @@
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -11,16 +10,16 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// <summary>
 /// Represents the beginning element of an AIGC page, serving as the entry point for page interactions.
 /// </summary>
-public class PageBeginElement : SubGraphElement, IPageValueElement
+public class SubGraphBeginElement : SubGraphElement, IPageValueElement
 {
     private FlowNodeConnector _connector;
     private object _value;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageBeginElement"/> class.
+    /// Initializes a new instance of the <see cref="SubGraphBeginElement"/> class.
     /// </summary>
     /// <param name="actionItem">The flow diagram item associated with this begin element.</param>
-    public PageBeginElement(FlowDiagramItem actionItem)
+    public SubGraphBeginElement(FlowDiagramItem actionItem)
         : base(actionItem)
     {
     }
