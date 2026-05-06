@@ -18,17 +18,17 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// <summary>
 /// Represents an abstract base class for AIGC page elements that integrate with the flow diagram system.
 /// </summary>
-public abstract class AigcPageElement : IViewObject, IAigcPageElement
+public abstract class SubGraphElement : IViewObject, ISubGraphElement
 {
     string _elementName;
     string _displayText;
     ImageDef _elementIcon;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AigcPageElement"/> class.
+    /// Initializes a new instance of the <see cref="SubGraphElement"/> class.
     /// </summary>
     /// <param name="diagramItem">The flow diagram item associated with this element.</param>
-    protected AigcPageElement(FlowDiagramItem diagramItem)
+    protected SubGraphElement(FlowDiagramItem diagramItem)
     {
         DiagramItem = diagramItem ?? throw new ArgumentNullException(nameof(diagramItem));
     }
@@ -73,7 +73,7 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
     /// <summary>
     /// Gets or sets the result page element associated with this element.
     /// </summary>
-    public AigcPageElement ResultPage { get; set; }
+    public SubGraphElement ResultPage { get; set; }
 
     /// <summary>
     /// Gets a value indicating whether this element is currently present in a diagram.
@@ -97,7 +97,7 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
     /// <summary>
     /// Gets or sets the parent page element of this element.
     /// </summary>
-    public AigcPageElement Parent { get; internal set; }
+    public SubGraphElement Parent { get; internal set; }
 
     /// <summary>
     /// Gets the root page instance that contains this element.
@@ -124,13 +124,13 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
     /// <summary>
     /// Gets the direct child elements of this element.
     /// </summary>
-    public virtual IEnumerable<AigcPageElement> ChildElements => [];
+    public virtual IEnumerable<SubGraphElement> ChildElements => [];
 
     /// <summary>
     /// Gets all descendant child elements recursively.
     /// </summary>
     /// <param name="sorted">Whether to return elements in sorted order.</param>
-    public virtual IEnumerable<AigcPageElement> GetAllChildElements(bool sorted = true)
+    public virtual IEnumerable<SubGraphElement> GetAllChildElements(bool sorted = true)
     {
         foreach (var item in ChildElements)
         {
@@ -152,7 +152,7 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
     /// Finds the nearest parent element that has a result page defined.
     /// </summary>
     /// <returns>The parent element with a result page, or null if none is found.</returns>
-    public AigcPageElement FindParentDefPage()
+    public SubGraphElement FindParentDefPage()
     {
         var page = this;
         while (page != null)
@@ -225,7 +225,7 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
     /// Updates this element's state from another page element.
     /// </summary>
     /// <param name="other">The other page element to update from.</param>
-    public virtual void UpdateFromOther(IAigcPageElement other)
+    public virtual void UpdateFromOther(ISubGraphElement other)
     {
     }
 
@@ -363,7 +363,7 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
     /// </summary>
     /// <param name="predicate">The predicate to match parent elements against.</param>
     /// <returns>The matching parent element, or null if none is found.</returns>
-    protected AigcPageElement FindParent(Predicate<AigcPageElement> predicate)
+    protected SubGraphElement FindParent(Predicate<SubGraphElement> predicate)
     {
         var element = this;
         while (element != null)
@@ -393,7 +393,7 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
     /// <param name="item">The diagram item to create an element for.</param>
     /// <param name="reused">When this method returns, contains whether an existing element was reused.</param>
     /// <returns>The created or reused page element, or null if creation is not possible.</returns>
-    public static AigcPageElement CreateElement(Dictionary<FlowDiagramItem, AigcPageElement> dic, FlowDiagramItem item, out bool reused)
+    public static SubGraphElement CreateElement(Dictionary<FlowDiagramItem, SubGraphElement> dic, FlowDiagramItem item, out bool reused)
     {
         if (dic.TryGetValue(item, out var element))
         {
@@ -404,7 +404,7 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
         {
             reused = false;
 
-            if (item is IPageElementCreator creator)
+            if (item is ISubGraphElementCreator creator)
             {
                 return creator.CreatePageElement();
             }
@@ -438,7 +438,7 @@ public abstract class AigcPageElement : IViewObject, IAigcPageElement
     /// <param name="a">The first page element.</param>
     /// <param name="b">The second page element.</param>
     /// <returns>A negative value if a comes before b, positive if after, zero if equal.</returns>
-    public static int PageElementSort(AigcPageElement a, AigcPageElement b)
+    public static int PageElementSort(SubGraphElement a, SubGraphElement b)
     {
         if (a.Order != b.Order)
         {

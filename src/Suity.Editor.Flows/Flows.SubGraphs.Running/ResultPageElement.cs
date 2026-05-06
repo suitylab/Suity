@@ -9,7 +9,7 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// <summary>
 /// Represents a result page element that displays the completion outputs of an AIGC flow page.
 /// </summary>
-public class ResultPageElement : GroupPageElement
+public class ResultPageElement : GroupElement
 {
     readonly PageResultDiagramItem _resultPage;
 

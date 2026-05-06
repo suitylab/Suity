@@ -168,7 +168,7 @@ public class PageParameterInputNode : AigcPageTypeDefNode
 /// Diagram item representing a <see cref="PageParameterInputNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterDiagramItem")]
-public class PageParameterInputItem : FlowDiagramItem<PageParameterInputNode>, IPageElementCreator
+public class PageParameterInputItem : FlowDiagramItem<PageParameterInputNode>, ISubGraphElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageParameterInputItem"/> class.
@@ -188,7 +188,7 @@ public class PageParameterInputItem : FlowDiagramItem<PageParameterInputNode>, I
     }
 
     /// <inheritdoc/>
-    public AigcPageElement CreatePageElement() => new PageParameterInputElement(this);
+    public SubGraphElement CreatePageElement() => new PageParameterInputElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Paramater";
@@ -354,7 +354,7 @@ public class PageSkillParameterNode : AigcPageTypeDefNode
 /// <summary>
 /// Diagram item representing a <see cref="PageSkillParameterNode"/> in the flow diagram.
 /// </summary>
-public class PageSkillParameterItem : FlowDiagramItem<PageSkillParameterNode>, IPageElementCreator
+public class PageSkillParameterItem : FlowDiagramItem<PageSkillParameterNode>, ISubGraphElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageSkillParameterItem"/> class.
@@ -374,7 +374,7 @@ public class PageSkillParameterItem : FlowDiagramItem<PageSkillParameterNode>, I
     }
 
     /// <inheritdoc/>
-    public AigcPageElement CreatePageElement() => new PageSkillParameterElement(this);
+    public SubGraphElement CreatePageElement() => new PageSkillParameterElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "SkillParamater";
@@ -445,7 +445,7 @@ public class PagePromptParameterInputNode : AigcPageTypeDefNode
 /// <summary>
 /// Diagram item representing a <see cref="PagePromptParameterInputNode"/> in the flow diagram.
 /// </summary>
-public class PagePromptParameterInputItem : FlowDiagramItem<PagePromptParameterInputNode>, IPageElementCreator
+public class PagePromptParameterInputItem : FlowDiagramItem<PagePromptParameterInputNode>, ISubGraphElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PagePromptParameterInputItem"/> class.
@@ -465,7 +465,7 @@ public class PagePromptParameterInputItem : FlowDiagramItem<PagePromptParameterI
     }
 
     /// <inheritdoc/>
-    public AigcPageElement CreatePageElement() => new PagePromptParameterElement(this);
+    public SubGraphElement CreatePageElement() => new PagePromptParameterElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "PromptParamater";
@@ -558,7 +558,7 @@ public class PageMessageParameterNode : AigcPageTypeDefNode
 /// <summary>
 /// Diagram item representing a <see cref="PageMessageParameterNode"/> in the flow diagram.
 /// </summary>
-public class PageMessageParameterItem : FlowDiagramItem<PageMessageParameterNode>, IPageElementCreator
+public class PageMessageParameterItem : FlowDiagramItem<PageMessageParameterNode>, ISubGraphElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageMessageParameterItem"/> class.
@@ -578,7 +578,7 @@ public class PageMessageParameterItem : FlowDiagramItem<PageMessageParameterNode
     }
 
     /// <inheritdoc/>
-    public AigcPageElement CreatePageElement() => new PageMessageElement(this);
+    public SubGraphElement CreatePageElement() => new PageMessageElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Message";
@@ -730,7 +730,7 @@ public class PageParameterOutputNode : AigcPageTypeDefNode
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageOutputDiagramItem")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParamterOutputItem")]
-public class PageParameterOutputItem : FlowDiagramItem<PageParameterOutputNode>, IPageElementCreator
+public class PageParameterOutputItem : FlowDiagramItem<PageParameterOutputNode>, ISubGraphElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageParameterOutputItem"/> class.
@@ -750,7 +750,7 @@ public class PageParameterOutputItem : FlowDiagramItem<PageParameterOutputNode>,
     }
 
     /// <inheritdoc/>
-    public AigcPageElement CreatePageElement() => new PageParameterOutputElement(this);
+    public SubGraphElement CreatePageElement() => new PageParameterOutputElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Output";
@@ -898,7 +898,7 @@ public class PageArticleOutputNode : AigcPageTypeDefNode
 /// Diagram item representing a <see cref="PageArticleOutputNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageArticleOutputDiagramItem")]
-public class PageArticleOutputItem : FlowDiagramItem<PageArticleOutputNode>, IPageElementCreator
+public class PageArticleOutputItem : FlowDiagramItem<PageArticleOutputNode>, ISubGraphElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageArticleOutputItem"/> class.
@@ -918,7 +918,7 @@ public class PageArticleOutputItem : FlowDiagramItem<PageArticleOutputNode>, IPa
     }
 
     /// <inheritdoc/>
-    public AigcPageElement CreatePageElement() => new PageArticleOutputElement(this);
+    public SubGraphElement CreatePageElement() => new PageArticleOutputElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Article";
@@ -1058,7 +1058,7 @@ public class PageFileOutputNode : AigcPageTypeDefNode
 /// <summary>
 /// Diagram item representing a <see cref="PageFileOutputNode"/> in the flow diagram.
 /// </summary>
-public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, IPageElementCreator
+public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, ISubGraphElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageFileOutputItem"/> class.
@@ -1078,7 +1078,7 @@ public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, IPageElem
     }
 
     /// <inheritdoc/>
-    public AigcPageElement CreatePageElement() => new PageFileOutputElement(this);
+    public SubGraphElement CreatePageElement() => new PageFileOutputElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "File";
@@ -1217,7 +1217,7 @@ public class PageSubTaskOutputNode : AigcPageTypeDefNode
 /// Diagram item representing a <see cref="PageSubTaskOutputNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubTaskOutputDiagramItem")]
-public class PageSubTaskOutputItem : FlowDiagramItem<PageSubTaskOutputNode>, IPageElementCreator
+public class PageSubTaskOutputItem : FlowDiagramItem<PageSubTaskOutputNode>, ISubGraphElementCreator
 {
 
     /// <summary>
@@ -1238,7 +1238,7 @@ public class PageSubTaskOutputItem : FlowDiagramItem<PageSubTaskOutputNode>, IPa
     }
 
     /// <inheritdoc/>
-    public AigcPageElement CreatePageElement() => new PageSubTaskOutputElement(this);
+    public SubGraphElement CreatePageElement() => new PageSubTaskOutputElement(this);
 
 
     /// <inheritdoc/>

@@ -10,7 +10,7 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// <summary>
 /// Represents a message element in an AIGC page that handles text-based message display and parameter input/output.
 /// </summary>
-public class PageMessageElement : AigcPageElement, IPageMessage, IPageParameterInput, IPageParameterOutput
+public class PageMessageElement : SubGraphElement, IPageMessage, IPageParameterInput, IPageParameterOutput
 {
     private readonly PageMessageParameterItem _msg;
     private string _text;

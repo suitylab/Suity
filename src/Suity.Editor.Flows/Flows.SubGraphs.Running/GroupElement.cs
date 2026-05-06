@@ -10,22 +10,22 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// <summary>
 /// Represents a group page element that can contain nested child elements and sub-groups within an AIGC flow diagram.
 /// </summary>
-public class GroupPageElement : AigcPageElement
+public class GroupElement : SubGraphElement
 {
     private readonly FlowDiagramItem _groupItem;
-    private readonly List<AigcPageElement> _list = [];
-    private readonly List<GroupPageElement> _groups = [];
+    private readonly List<SubGraphElement> _list = [];
+    private readonly List<GroupElement> _groups = [];
     private readonly int _depth;
 
     private string _groupName;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="GroupPageElement"/> class.
+    /// Initializes a new instance of the <see cref="GroupElement"/> class.
     /// </summary>
     /// <param name="groupItem">The flow diagram item representing this group.</param>
     /// <param name="depth">The nesting depth of this group element.</param>
     /// <param name="order">The display order of this element. Defaults to 0.</param>
-    public GroupPageElement(FlowDiagramItem groupItem, int depth, int order = 0)
+    public GroupElement(FlowDiagramItem groupItem, int depth, int order = 0)
         : base(groupItem)
     {
         _groupItem = groupItem ?? throw new ArgumentNullException(nameof(groupItem));
@@ -60,7 +60,7 @@ public class GroupPageElement : AigcPageElement
     /// Adds a child element to this group, automatically nesting it into a sub-group if bounds intersect.
     /// </summary>
     /// <param name="element">The page element to add.</param>
-    internal void AddElement(AigcPageElement element)
+    internal void AddElement(SubGraphElement element)
     {
         if (element is null)
         {
@@ -83,7 +83,7 @@ public class GroupPageElement : AigcPageElement
             element.Parent = this;
             element.Option = this.Option;
 
-            if (element is GroupPageElement groupElement)
+            if (element is GroupElement groupElement)
             {
                 _groups.Add(groupElement);
             }
@@ -100,7 +100,7 @@ public class GroupPageElement : AigcPageElement
 
         foreach (var child in node.Children)
         {
-            var groupPage = new GroupPageElement(child.Data, newDepth);
+            var groupPage = new GroupElement(child.Data, newDepth);
             _groups.Add(groupPage);
             _list.Add(groupPage);
             groupPage.AddChildNodes(child);
@@ -163,5 +163,5 @@ public class GroupPageElement : AigcPageElement
     }
 
     /// <inheritdoc/>
-    public override IEnumerable<AigcPageElement> ChildElements => _list;
+    public override IEnumerable<SubGraphElement> ChildElements => _list;
 }

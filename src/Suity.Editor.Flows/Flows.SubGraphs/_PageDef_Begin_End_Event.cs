@@ -111,7 +111,7 @@ public class PageBeginNode : AigcPageTypeDefNode, IAigcRunWorkflow
 /// <summary>
 /// Diagram item representing a <see cref="PageBeginNode"/> in the flow diagram.
 /// </summary>
-public class PageBeginDiagramItem : FlowDiagramItem<PageBeginNode>, IPageElementCreator
+public class PageBeginDiagramItem : FlowDiagramItem<PageBeginNode>, ISubGraphElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageBeginDiagramItem"/> class.
@@ -134,7 +134,7 @@ public class PageBeginDiagramItem : FlowDiagramItem<PageBeginNode>, IPageElement
     /// Creates a new page begin element from this diagram item.
     /// </summary>
     /// <returns>A new <see cref="PageBeginElement"/>.</returns>
-    public AigcPageElement CreatePageElement() => new PageBeginElement(this);
+    public SubGraphElement CreatePageElement() => new PageBeginElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Begin";
@@ -345,7 +345,7 @@ public class PageEventNode : AigcPageTypeDefNode, IAigcRunWorkflow
 /// Diagram item representing a <see cref="PageEventNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.TaskPageEventDiagramItem")]
-public class PageEventDiagramItem : FlowDiagramItem<PageEventNode>, IPageElementCreator
+public class PageEventDiagramItem : FlowDiagramItem<PageEventNode>, ISubGraphElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageEventDiagramItem"/> class.
@@ -368,7 +368,7 @@ public class PageEventDiagramItem : FlowDiagramItem<PageEventNode>, IPageElement
     /// Creates a new page begin element from this diagram item.
     /// </summary>
     /// <returns>A new <see cref="PageBeginElement"/>.</returns>
-    public AigcPageElement CreatePageElement() => new PageBeginElement(this);
+    public SubGraphElement CreatePageElement() => new PageBeginElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "TaskEvent";
@@ -579,7 +579,7 @@ public class PageEndNode : PageBaseEndNode
 /// <summary>
 /// Diagram item representing a <see cref="PageEndNode"/> in the flow diagram.
 /// </summary>
-public class PageEndDiagramItem : FlowDiagramItem<PageEndNode>, IPageElementCreator
+public class PageEndDiagramItem : FlowDiagramItem<PageEndNode>, ISubGraphElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageEndDiagramItem"/> class.
@@ -602,7 +602,7 @@ public class PageEndDiagramItem : FlowDiagramItem<PageEndNode>, IPageElementCrea
     /// Creates a new page end element from this diagram item.
     /// </summary>
     /// <returns>A new <see cref="PageEndElement"/>.</returns>
-    public AigcPageElement CreatePageElement() => new PageEndElement(this);
+    public SubGraphElement CreatePageElement() => new PageEndElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "End";
@@ -649,7 +649,7 @@ public class PageCommitNode : PageBaseEndNode, IFlowNodeComputeAsync, IAigcEndNo
 /// <summary>
 /// Diagram item representing a <see cref="PageCommitNode"/> in the flow diagram.
 /// </summary>
-public class PageCommitDiagramItem : FlowDiagramItem<PageCommitNode>, IPageElementCreator
+public class PageCommitDiagramItem : FlowDiagramItem<PageCommitNode>, ISubGraphElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageCommitDiagramItem"/> class.
@@ -672,7 +672,7 @@ public class PageCommitDiagramItem : FlowDiagramItem<PageCommitNode>, IPageEleme
     /// Creates a new page end element from this diagram item.
     /// </summary>
     /// <returns>A new <see cref="PageEndElement"/>.</returns>
-    public AigcPageElement CreatePageElement() => new PageEndElement(this);
+    public SubGraphElement CreatePageElement() => new PageEndElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Commit";

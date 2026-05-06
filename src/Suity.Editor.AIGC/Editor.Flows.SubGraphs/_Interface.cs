@@ -74,7 +74,7 @@ public interface IAigcPage : INamed
 /// <summary>
 /// Represents an element within an AIGC page that can report its completion status and output history capabilities.
 /// </summary>
-public interface IAigcPageElement : INamed
+public interface ISubGraphElement : INamed
 {
     /// <summary>
     /// Gets whether this element is done. Returns null if the state is unknown.
@@ -92,7 +92,7 @@ public interface IAigcPageElement : INamed
 /// Represents an instance of an AIGC page, providing access to its definition, skill, tool asset, elements, and parameters.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "AIGC Page Instance", Color = AigcColors.Task, Icon = "*CoreIcon|Page")]
-public interface IAigcPageInstance : IAigcPageElement
+public interface IAigcPageInstance : ISubGraphElement
 {
     /// <summary>
     /// Gets the owner of this page instance.
@@ -117,7 +117,7 @@ public interface IAigcPageInstance : IAigcPageElement
     /// <summary>
     /// Gets all elements contained in this page.
     /// </summary>
-    IEnumerable<IAigcPageElement> Elements { get; }
+    IEnumerable<ISubGraphElement> Elements { get; }
 
     /// <summary>
     /// Gets the input chat history.

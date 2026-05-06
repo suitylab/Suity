@@ -9,7 +9,7 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// <summary>
 /// Represents a sub-page element that groups related flow nodes and delegates completion status to its result page.
 /// </summary>
-public class SubPageElement : GroupPageElement
+public class SubPageElement : GroupElement
 {
     readonly PageSubDiagramItem _subPage;
 

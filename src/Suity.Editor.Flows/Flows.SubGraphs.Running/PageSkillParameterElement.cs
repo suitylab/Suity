@@ -12,7 +12,7 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// <summary>
 /// Represents a page element that handles skill parameter input for AIGC tasks.
 /// </summary>
-public class PageSkillParameterElement : AigcPageElement, IPageParameterInput
+public class PageSkillParameterElement : SubGraphElement, IPageParameterInput
 {
     private readonly PageSkillParameterItem _inputItem;
     private object _value;
@@ -181,7 +181,7 @@ public class PageSkillParameterElement : AigcPageElement, IPageParameterInput
 
 
     /// <inheritdoc/>
-    public override void UpdateFromOther(IAigcPageElement other)
+    public override void UpdateFromOther(ISubGraphElement other)
     {
         if (other is PageSkillParameterElement otherParameter)
         {

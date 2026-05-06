@@ -11,7 +11,7 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// <summary>
 /// Represents a page element that handles prompt parameter input for AIGC tasks.
 /// </summary>
-public class PagePromptParameterElement : AigcPageElement, IPageParameterInput
+public class PagePromptParameterElement : SubGraphElement, IPageParameterInput
 {
     private readonly PagePromptParameterInputItem _inputItem;
     private FlowNodeConnector _connector;
@@ -174,7 +174,7 @@ public class PagePromptParameterElement : AigcPageElement, IPageParameterInput
     }
 
     /// <inheritdoc/>
-    public override void UpdateFromOther(IAigcPageElement other)
+    public override void UpdateFromOther(ISubGraphElement other)
     {
         if (other is PagePromptParameterElement otherParameter)
         {

@@ -15,7 +15,7 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// Represents a page element that handles sub-task output for AIGC tasks.
 /// Implements both parameter output and tool parameter interfaces.
 /// </summary>
-public class PageSubTaskOutputElement : AigcPageElement, IPageParameterOutput, IPageParameterTool
+public class PageSubTaskOutputElement : SubGraphElement, IPageParameterOutput, IPageParameterTool
 {
     readonly PageSubTaskOutputItem _outputItem;
 

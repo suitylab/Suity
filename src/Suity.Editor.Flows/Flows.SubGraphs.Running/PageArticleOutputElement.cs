@@ -146,7 +146,7 @@ public class PageArticleRefCollection : ArticleViewCollection<PageArticleRefItem
 /// Represents a page element that outputs article content in an AIGC flow.
 /// Implements article resolution and page parameter output functionality.
 /// </summary>
-public class PageArticleOutputElement : AigcPageElement, IArticleResolver, IPageParameterOutput
+public class PageArticleOutputElement : SubGraphElement, IArticleResolver, IPageParameterOutput
 {
     private readonly PageArticleOutputItem _outputItem;
     private FlowNodeConnector _outerConnector;
@@ -494,7 +494,7 @@ public class PageArticleOutputElement : AigcPageElement, IArticleResolver, IPage
 
 
     /// <inheritdoc/>
-    public override void UpdateFromOther(IAigcPageElement other)
+    public override void UpdateFromOther(ISubGraphElement other)
     {
         if (other is PageArticleOutputElement otherOutput)
         {

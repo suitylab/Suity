@@ -11,7 +11,7 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// <summary>
 /// Represents the end element of an AIGC page, handling page completion and parameter output.
 /// </summary>
-public class PageEndElement : AigcPageElement, IPageParameterOutput
+public class PageEndElement : SubGraphElement, IPageParameterOutput
 {
     private readonly FlowDiagramItem _endItem;
 
@@ -167,7 +167,7 @@ public class PageEndElement : AigcPageElement, IPageParameterOutput
     }
 
     /// <inheritdoc/>
-    public override void UpdateFromOther(IAigcPageElement other)
+    public override void UpdateFromOther(ISubGraphElement other)
     {
         if (other is PageEndElement otherOutput)
         {

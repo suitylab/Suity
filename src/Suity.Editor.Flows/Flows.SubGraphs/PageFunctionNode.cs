@@ -265,7 +265,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
 
         foreach (var output in outputs)
         {
-            if ((output as AigcPageElement)?.DiagramItem?.Node is not { } node)
+            if ((output as SubGraphElement)?.DiagramItem?.Node is not { } node)
             {
                 continue;
             }

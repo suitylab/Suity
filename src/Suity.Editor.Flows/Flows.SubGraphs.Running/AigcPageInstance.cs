@@ -29,7 +29,7 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// Represents an instance of an AIGC page within a flow, managing page elements, parameters, and computation context.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Page Instance", Icon = "*CoreIcon|Page")]
-public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageInstance
+public class AigcPageInstance : SubGraphElement, IFlowCallerContext, IAigcPageInstance
 {
     /// <summary>
     /// Property key used to store the skill asset reference.
@@ -42,10 +42,10 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
 
     private readonly PageDefinitionAsset _asset;
 
-    private readonly List<AigcPageElement> _list = [];
-    private readonly List<GroupPageElement> _groups = [];
-    private readonly Dictionary<string, AigcPageElement> _dic = [];
-    private readonly HashSet<AigcPageElement> _allElements = [];
+    private readonly List<SubGraphElement> _list = [];
+    private readonly List<GroupElement> _groups = [];
+    private readonly Dictionary<string, SubGraphElement> _dic = [];
+    private readonly HashSet<SubGraphElement> _allElements = [];
     private PageEndElement _currentEndElement;
 
     private readonly AssetProperty<IAigcToolAsset> _skill = new(SKILL_PROP, "Skill");
@@ -176,7 +176,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
     /// <summary>
     /// Gets all elements contained within this page.
     /// </summary>
-    public IEnumerable<IAigcPageElement> Elements => _allElements;
+    public IEnumerable<ISubGraphElement> Elements => _allElements;
 
     #endregion
 
@@ -228,12 +228,12 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
 
         items.Sort(FlowDiagramItemSort);
 
-        Dictionary<FlowDiagramItem, AigcPageElement> dic = [];
+        Dictionary<FlowDiagramItem, SubGraphElement> dic = [];
         dic.AddRange(_dic.Values, o => o.DiagramItem);
 
         Clear();
 
-        List<AigcPageElement> pageList = null;
+        List<SubGraphElement> pageList = null;
 
 
         // Build group structure first
@@ -341,7 +341,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
         RectNode<FlowDiagramItem> groupRootNode = RectTreeBuilder.BuildTree(groups, o => o.Bound);
         foreach (var subPageNode in groupRootNode.Children)
         {
-            var page = new GroupPageElement(subPageNode.Data, 1) { Parent = this, Option = this.Option };
+            var page = new GroupElement(subPageNode.Data, 1) { Parent = this, Option = this.Option };
 
             page.InternalBuild();
 
@@ -351,7 +351,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
         }
     }
 
-    private void CollectSubPages(IEnumerable<FlowDiagramItem> subPages, ref List<AigcPageElement> pages)
+    private void CollectSubPages(IEnumerable<FlowDiagramItem> subPages, ref List<SubGraphElement> pages)
     {
         int order = -10;
 
@@ -380,7 +380,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
         }
     }
 
-    private void CollectResultPages(IEnumerable<FlowDiagramItem> subPages, ref List<AigcPageElement> pages)
+    private void CollectResultPages(IEnumerable<FlowDiagramItem> subPages, ref List<SubGraphElement> pages)
     {
         RectNode<FlowDiagramItem> groupRootNode = RectTreeBuilder.BuildTree(subPages, o => o.Bound);
         foreach (var subPageNode in groupRootNode.Children)
@@ -425,7 +425,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
         _currentEndElement = null;
     }
 
-    private bool AddElement(AigcPageElement element)
+    private bool AddElement(SubGraphElement element)
     {
         if (element is null)
         {
@@ -454,7 +454,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
             element.Parent = this;
             element.Option = this.Option;
 
-            if (element is GroupPageElement groupElement)
+            if (element is GroupElement groupElement)
             {
                 _groups.Add(groupElement);
             }
@@ -486,7 +486,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
 
 
     /// <inheritdoc/>
-    public override void UpdateFromOther(IAigcPageElement other)
+    public override void UpdateFromOther(ISubGraphElement other)
     {
         if (other is AigcPageInstance otherRoot)
         {
@@ -584,10 +584,10 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
     #region Get
 
     /// <inheritdoc/>
-    public override IEnumerable<AigcPageElement> ChildElements => _list;
+    public override IEnumerable<SubGraphElement> ChildElements => _list;
 
     /// <inheritdoc/>
-    public override IEnumerable<AigcPageElement> GetAllChildElements(bool sorted = true)
+    public override IEnumerable<SubGraphElement> GetAllChildElements(bool sorted = true)
     {
         if (sorted)
         {
@@ -604,7 +604,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
     /// </summary>
     /// <param name="name">The name of the element.</param>
     /// <returns>The element if found; otherwise, null.</returns>
-    public AigcPageElement GetElement(string name) => _dic.GetValueSafe(name);
+    public SubGraphElement GetElement(string name) => _dic.GetValueSafe(name);
 
     /// <inheritdoc/>
     public override bool? GetIsDone()
@@ -640,7 +640,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
             return false;
         }
 
-        var pages = _groups.OfType<SubPageElement>().OfType<AigcPageElement>().ConcatOne(this);
+        var pages = _groups.OfType<SubPageElement>().OfType<SubGraphElement>().ConcatOne(this);
 
         bool? v = null;
         foreach (var page in pages)
@@ -749,7 +749,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
                 fieldType = NativeTypes.StringType;
             }
 
-            var node = (parameter as AigcPageElement)?.DiagramItem?.Node as DesignFlowNode;
+            var node = (parameter as SubGraphElement)?.DiagramItem?.Node as DesignFlowNode;
             var range = node?.GetAttribute<NumericRangeAttribute>();
             var selection = node?.GetAttribute<SelectionDesignAttribute>();
             var tooltips = node?.GetAttribute<ToolTipsAttribute>();
@@ -818,7 +818,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
             }
             else
             {
-                string attr = ResolveElementXmlAttr(element as AigcPageElement);
+                string attr = ResolveElementXmlAttr(element as SubGraphElement);
                 builder.AppendLine($"<{element.Name}{attr}>");
 
                 try
@@ -868,7 +868,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
             }
             else
             {
-                string attr = ResolveElementXmlAttr(element as AigcPageElement);
+                string attr = ResolveElementXmlAttr(element as SubGraphElement);
                 builder.AppendLine($"<{element.Name}{attr}>");
 
                 try
@@ -904,7 +904,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
         builder.Length = 0;
         foreach (var element in outputs)
         {
-            string attr = ResolveElementXmlAttr(element as AigcPageElement);
+            string attr = ResolveElementXmlAttr(element as SubGraphElement);
             builder.AppendLine($"<{element.Name}{attr}>");
 
             try
@@ -923,14 +923,14 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
         return builder.ToString();
     }
 
-    private string ResolveElementXmlAttr(AigcPageElement element)
+    private string ResolveElementXmlAttr(SubGraphElement element)
     {
         if (element is null)
         {
             return string.Empty;
         }
 
-        var attr = (element as AigcPageElement)?.Node as IAttributeGetter;
+        var attr = (element as SubGraphElement)?.Node as IAttributeGetter;
         var tooltips = attr?.GetAttribute<ToolTipsAttribute>();
         string desc = string.Empty;
         if (tooltips != null)
@@ -1113,7 +1113,7 @@ public class AigcPageInstance : AigcPageElement, IFlowCallerContext, IAigcPageIn
 
         foreach (var output in outputs)
         {
-            if ((output as AigcPageElement)?.DiagramItem?.Node is not { } node)
+            if ((output as SubGraphElement)?.DiagramItem?.Node is not { } node)
             {
                 continue;
             }

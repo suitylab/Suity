@@ -11,7 +11,7 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// <summary>
 /// Represents the beginning element of an AIGC page, serving as the entry point for page interactions.
 /// </summary>
-public class PageBeginElement : AigcPageElement, IPageValueElement
+public class PageBeginElement : SubGraphElement, IPageValueElement
 {
     private FlowNodeConnector _connector;
     private object _value;

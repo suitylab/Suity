@@ -27,7 +27,7 @@ public enum PageCompleteState
 /// <summary>
 /// Represents a page value element that holds a typed parameter value.
 /// </summary>
-public interface IPageValueElement : IAigcPageElement
+public interface IPageValueElement : ISubGraphElement
 {
     /// <summary>
     /// Gets the type definition of the parameter.

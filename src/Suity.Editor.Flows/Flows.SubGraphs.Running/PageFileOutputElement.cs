@@ -13,7 +13,7 @@ namespace Suity.Editor.Flows.SubGraphs.Running;
 /// <summary>
 /// Represents a file output element in an AIGC page that handles file path output and validation.
 /// </summary>
-public class PageFileOutputElement : AigcPageElement, IPageParameterOutput
+public class PageFileOutputElement : SubGraphElement, IPageParameterOutput
 {
     private readonly PageFileOutputItem _outputItem;
     private string _value = string.Empty;
@@ -144,7 +144,7 @@ public class PageFileOutputElement : AigcPageElement, IPageParameterOutput
     }
 
     /// <inheritdoc/>
-    public override void UpdateFromOther(IAigcPageElement other)
+    public override void UpdateFromOther(ISubGraphElement other)
     {
         if (other is PageFileOutputElement otherOutput)
         {
