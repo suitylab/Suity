@@ -42,7 +42,7 @@ public abstract class SubFlowNode : DesignFlowNode
 /// Base class for sub-flow type definition nodes that support type selection and configuration.
 /// Provides properties for task completion, commit, chat history, and type definition settings.
 /// </summary>
-public abstract class SubFlowTypeNode : SubFlowNode, IAigcTypeNode
+public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
 {
     private ITypeDesignSelection _valueType;
     private bool _isArray;

@@ -1156,7 +1156,7 @@ public class AigcTaskPage : DesignNode,
     /// <param name="commitName">The commit name to match against event nodes.</param>
     /// <param name="parameter">The parameter to pass to the event handler.</param>
     /// <returns>True if any events were handled; otherwise, false.</returns>
-    public async Task<bool> HandleEvent(AIRequest request, AigcTaskEventTypes eventType, string commitName, object parameter)
+    public async Task<bool> HandleEvent(AIRequest request, SubFlowEventTypes eventType, string commitName, object parameter)
     {
         if (EnsureInstance() is not { } instance)
         {
@@ -1199,9 +1199,9 @@ public class AigcTaskPage : DesignNode,
         return true;
     }
 
-    private bool MatchBeginElement(SubFlowBeginElement begin, AigcTaskEventTypes eventType, string commitName)
+    private bool MatchBeginElement(SubFlowBeginElement begin, SubFlowEventTypes eventType, string commitName)
     {
-        if (eventType == AigcTaskEventTypes.TaskBegin && begin.Node is SubFlowBeginNode)
+        if (eventType == SubFlowEventTypes.TaskBegin && begin.Node is SubFlowBeginNode)
         {
             // PageBeginNode can be used for TaskBegin event without commitName, for better compatibility with old version page definitions.
             return true;

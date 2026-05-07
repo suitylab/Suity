@@ -18,12 +18,12 @@ namespace Suity.Editor.Flows.SubFlows;
 #region SubFlowBeginNode
 
 /// <summary>
-/// Provides action start support for AIGC pages, such as button clicks, etc.
+/// Provides action start support for Sub-flow pages, such as button clicks, etc.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.Workflow, HasHeader = false, Width = 100, Height = 20)]
-[DisplayText("AIGC Page Action Begin", "*CoreIcon|Begin")]
+[DisplayText("Sub-flow Action Begin", "*CoreIcon|Begin")]
 [DisplayOrder(4000)]
-[ToolTipsText("Provides action start support for AIGC pages, such as button clicks, etc.")]
+[ToolTipsText("Provides action start support for Sub-flow pages, such as button clicks, etc.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageBeginNode")]
 public class SubFlowBeginNode : SubFlowTypeNode, IFlowRunnable
 {
@@ -96,7 +96,7 @@ public class SubFlowBeginNode : SubFlowTypeNode, IFlowRunnable
         compute.SetResult(this, _begin);
     }
 
-    #region IAigcRunWorkflow
+    #region IFlowRunnable
 
     /// <inheritdoc/>
     public FlowNode GetStarterNode(FunctionContext ctx)
@@ -159,7 +159,7 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
 {
     private FlowNodeConnector _begin;
 
-    readonly ValueProperty<AigcTaskEventTypes> _eventType = new("EventType", "Event Type", AigcTaskEventTypes.TaskBegin);
+    readonly ValueProperty<SubFlowEventTypes> _eventType = new("EventType", "Event Type", SubFlowEventTypes.TaskBegin);
     readonly StringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "The submission name of the sub-task.");
 
     /// <summary>
@@ -176,7 +176,7 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
     /// <summary>
     /// Gets the type of event this node responds to.
     /// </summary>
-    public AigcTaskEventTypes EventType => _eventType.Value;
+    public SubFlowEventTypes EventType => _eventType.Value;
 
     /// <summary>
     /// Gets the commit name associated with this event node.
@@ -189,7 +189,7 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
     /// <param name="eventType">The event type to match.</param>
     /// <param name="commitName">The commit name to match, or null for any commit.</param>
     /// <returns>True if the event matches; otherwise, false.</returns>
-    public bool MathEvent(AigcTaskEventTypes eventType, string commitName = null)
+    public bool MathEvent(SubFlowEventTypes eventType, string commitName = null)
     {
         // Event type must match
         if (eventType != _eventType.Value)
@@ -307,7 +307,7 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
         compute.SetResult(this, _begin);
     }
 
-    #region IAigcRunWorkflow
+    #region IFlowRunnable
 
     /// <inheritdoc/>
     public FlowNode GetStarterNode(FunctionContext ctx)
@@ -322,19 +322,19 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
     /// </summary>
     /// <param name="eventType">The event type.</param>
     /// <returns>The associated color, or null.</returns>
-    public static Color? ToColor(AigcTaskEventTypes eventType)
+    public static Color? ToColor(SubFlowEventTypes eventType)
     {
         switch (eventType)
         {
 
-            case AigcTaskEventTypes.SubTaskFinished:
+            case SubFlowEventTypes.SubTaskFinished:
                 return DEvent.EventTypeColor;
 
-            case AigcTaskEventTypes.SubTaskFailed:
+            case SubFlowEventTypes.SubTaskFailed:
                 return FlowColors.ErrorColor;
 
-            case AigcTaskEventTypes.TaskBegin:
-            case AigcTaskEventTypes.None:
+            case SubFlowEventTypes.TaskBegin:
+            case SubFlowEventTypes.None:
             default:
                 return FlowColors.WorkflowColor;
         }
@@ -385,12 +385,12 @@ public class PageEventDiagramItem : FlowDiagramItem<PageEventNode>, ISubFlowElem
 /// Abstract base class for page end nodes that handle flow completion and commit operations.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageBaseEndNode")]
-public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsync, IAigcEndNode
+public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsync, ISubFlowEndNode
 {
     /// <summary>
     /// The type of commit this end node represents.
     /// </summary>
-    protected PageCommitTypes _endType;
+    protected TaskCommitTypes _endType;
 
     private FlowNodeConnector _end;
     private FlowNodeConnector _refInput;
@@ -400,7 +400,7 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
     /// Initializes a new instance of the <see cref="BaseSubFlowEndNode"/> class with the specified end type.
     /// </summary>
     /// <param name="endType">The type of commit this end node represents.</param>
-    protected BaseSubFlowEndNode(PageCommitTypes endType)
+    protected BaseSubFlowEndNode(TaskCommitTypes endType)
     {
         _endType = endType;
 
@@ -413,7 +413,7 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
     /// <summary>
     /// Gets the type of commit this end node represents.
     /// </summary>
-    public PageCommitTypes EndType => _endType;
+    public TaskCommitTypes EndType => _endType;
 
     /// <inheritdoc/>
     protected override void OnSyncValue(IPropertySync sync, ISyncContext context)
@@ -540,17 +540,17 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
     /// </summary>
     /// <param name="endType">The commit type.</param>
     /// <returns>The associated color, or null.</returns>
-    public static Color? ToColor(PageCommitTypes endType)
+    public static Color? ToColor(TaskCommitTypes endType)
     {
         switch (endType)
         {
-            case PageCommitTypes.None:
+            case TaskCommitTypes.None:
                 return FlowColors.WorkflowColor;
 
-            case PageCommitTypes.TaskFinished:
+            case TaskCommitTypes.TaskFinished:
                 return DEvent.EventTypeColor;
 
-            case PageCommitTypes.TaskFailed:
+            case TaskCommitTypes.TaskFailed:
                 return FlowColors.ErrorColor;
 
             default:
@@ -575,7 +575,7 @@ public class SubFlowEndNode : BaseSubFlowEndNode
     /// <summary>
     /// Initializes a new instance of the <see cref="SubFlowEndNode"/> class.
     /// </summary>
-    public SubFlowEndNode() : base(PageCommitTypes.None) { }
+    public SubFlowEndNode() : base(TaskCommitTypes.None) { }
 }
 
 /// <summary>
@@ -626,12 +626,12 @@ public class SubFlowEndDiagramItem : FlowDiagramItem<SubFlowEndNode>, ISubFlowEl
 [DisplayOrder(3899)]
 [ToolTipsText("End the flow and submit the result upward.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageCommitNode")]
-public class PageCommitNode : BaseSubFlowEndNode, IFlowNodeComputeAsync, IAigcEndNode
+public class PageCommitNode : BaseSubFlowEndNode, IFlowNodeComputeAsync, ISubFlowEndNode
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageCommitNode"/> class.
     /// </summary>
-    public PageCommitNode() : base(PageCommitTypes.TaskFinished) { }
+    public PageCommitNode() : base(TaskCommitTypes.TaskFinished) { }
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)

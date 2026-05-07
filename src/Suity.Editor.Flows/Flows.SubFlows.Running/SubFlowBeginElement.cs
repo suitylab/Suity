@@ -62,7 +62,7 @@ public class SubFlowBeginElement : SubFlowElement, IPageValueElement
     {
         base.OnBuild();
 
-        ParameterType = (Node as IAigcTypeNode)?.TypeDef;
+        ParameterType = (Node as ISubFlowTypeNode)?.TypeDef;
     }
 
     /// <inheritdoc/>

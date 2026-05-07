@@ -6,7 +6,7 @@ namespace Suity.Editor.Flows.SubFlows;
 /// <summary>
 /// Defines the types of page commit events that can occur in the AIGC workflow.
 /// </summary>
-public enum PageCommitTypes
+public enum TaskCommitTypes
 {
     /// <summary>
     /// No commit type specified.
@@ -45,7 +45,7 @@ public enum ParameterConditions
 /// <summary>
 /// Represents an AIGC node that has an associated type definition.
 /// </summary>
-public interface IAigcTypeNode
+public interface ISubFlowTypeNode
 {
     /// <summary>
     /// Gets the type definition associated with this node.
@@ -61,19 +61,19 @@ public interface IAigcTypeNode
 /// <summary>
 /// Represents an AIGC end node that has an associated type definition and an end type.
 /// </summary>
-public interface IAigcEndNode : IAigcTypeNode
+public interface ISubFlowEndNode : ISubFlowTypeNode
 {
     /// <summary>
     /// Gets the type of page commit that occurs when this end node is reached.
     /// </summary>
-    PageCommitTypes EndType { get; }
+    TaskCommitTypes EndType { get; }
 }
 
 /// <summary>
-/// Represents a connection between pages in the AIGC workflow.
+/// Represents a connection between pages in the Sub-flow.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Page Connection", Color = "#333333")]
-public interface IPageConnection
+[NativeType(CodeBase = "AIGC", Description = "Branch Connection", Color = "#333333")]
+public interface IBranchConnection
 {
 
 }

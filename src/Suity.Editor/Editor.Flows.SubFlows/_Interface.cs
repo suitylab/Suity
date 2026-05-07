@@ -50,12 +50,12 @@ public interface ISubFlowDefAsset : INamed, IHasId
 
 #endregion
 
-#region AigcTaskEventTypes
+#region SubFlowEventTypes
 
 /// <summary>
-/// Represents the types of events that can occur during an AIGC task lifecycle.
+/// Represents the types of events that can occur during an Sub-flow task lifecycle.
 /// </summary>
-public enum AigcTaskEventTypes
+public enum SubFlowEventTypes
 {
     /// <summary>
     /// No event.

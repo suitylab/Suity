@@ -32,7 +32,7 @@ public class SubFlowEndElement : SubFlowElement, IPageParameterOutput
     /// <summary>
     /// Gets the AIGC end node associated with this element.
     /// </summary>
-    public IAigcEndNode EndNode { get; private set; }
+    public ISubFlowEndNode EndNode { get; private set; }
 
     #region IPageParameterOutput
 
@@ -44,7 +44,7 @@ public class SubFlowEndElement : SubFlowElement, IPageParameterOutput
     /// <summary>
     /// Gets the type of page commit operation for this end element.
     /// </summary>
-    public PageCommitTypes EndType { get; private set; }
+    public TaskCommitTypes EndType { get; private set; }
 
     /// <summary>
     /// Gets the current value of this output parameter.
@@ -121,8 +121,8 @@ public class SubFlowEndElement : SubFlowElement, IPageParameterOutput
         base.OnBuild();
 
         ParameterType = EndNode?.TypeDef ?? TypeDefinition.Empty;
-        EndNode = _endItem.Node as IAigcEndNode;
-        EndType = EndNode?.EndType ?? PageCommitTypes.None;
+        EndNode = _endItem.Node as ISubFlowEndNode;
+        EndType = EndNode?.EndType ?? TaskCommitTypes.None;
         LinkedMode = EndNode?.LinkedMode == true;
     }
 

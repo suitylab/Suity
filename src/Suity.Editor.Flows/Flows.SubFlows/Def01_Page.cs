@@ -116,7 +116,7 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
             this.AddAssociateOutputConnector("Page", typeof(SubFlowDefinitionAsset).FullName, _id);
         }
 
-        var type = TypeDefinition.FromNative<IPageConnection>();
+        var type = TypeDefinition.FromNative<IBranchConnection>();
         _resultConnector = FixedNodeConnector.CreateControlInput("Result", type, "Result Page");
         AddConnector(_resultConnector);
     }
@@ -375,7 +375,7 @@ public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
             this.AddAssociateInputConnector("Page", typeof(SubFlowDefinitionAsset).FullName, _page.Id);
         }
 
-        var type = TypeDefinition.FromNative<IPageConnection>();
+        var type = TypeDefinition.FromNative<IBranchConnection>();
         _resultConnector = FixedNodeConnector.CreateControlInput("Result", type, "Result Page");
         AddConnector(_resultConnector);
     }
@@ -489,7 +489,7 @@ public class SubFlowResultNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
     {
         base.OnUpdateConnector();
 
-        var type = TypeDefinition.FromNative<IPageConnection>();
+        var type = TypeDefinition.FromNative<IBranchConnection>();
         _defConnector = FixedNodeConnector.CreateControlOutput("Definition", type, "Definition Page");
         AddConnector(_defConnector);
     }
