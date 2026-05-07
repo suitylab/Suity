@@ -23,7 +23,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
     public static Color LogoFilterColor { get; } = Color.FromArgb(128, 128, 128, 128);
 
-    private class StartupSelection : AssetSelection<IAigcToolAsset>
+    private class StartupSelection : AssetSelection<ISubFlowAsset>
     {
         public StartupSelection()
         {
@@ -42,7 +42,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
     {
         Instance ??= this;
 
-        _startupAssetSel.Target = _startupAssetSel.GetList()?.GetItems()?.FirstOrDefault() as IAigcToolAsset;
+        _startupAssetSel.Target = _startupAssetSel.GetList()?.GetItems()?.FirstOrDefault() as ISubFlowAsset;
         _startupAssetSel.TargetUpdated += (s, e, ref handled) => { _guiRef.QueueRefresh(); };
         _startupAssetSel.ListenEnabled = true;
         _startupAssetTarget = PropertyTargetUtility.CreatePropertyTarget(_startupAssetSel, "Select Startup Agent");
@@ -95,7 +95,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
     public void NotifyShow()
     {
-        _startupAssetSel.Target = _startupAssetSel.GetList()?.GetItems()?.FirstOrDefault() as IAigcToolAsset;
+        _startupAssetSel.Target = _startupAssetSel.GetList()?.GetItems()?.FirstOrDefault() as ISubFlowAsset;
 
         _guiRef.QueueRefresh(true);
     }
@@ -180,7 +180,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
     private void DefaultInputGui(ImGui gui)
     {
-        var hintText = _startupAssetSel.Target?.GetSkillDefinition()?.PromptHint;
+        var hintText = (_startupAssetSel.Target as IHasSkill)?.GetSkill()?.PromptHint;
         if (string.IsNullOrWhiteSpace(hintText))
         {
             hintText = L("Prompt input...");

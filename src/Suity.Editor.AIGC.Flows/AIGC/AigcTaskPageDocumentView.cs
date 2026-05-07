@@ -167,7 +167,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
         if (_document.StartupPage is null)
         {
-            _document.StartupPage = _document.StartupPageSelection?.GetList()?.GetItems()?.FirstOrDefault() as IAigcToolAsset;
+            _document.StartupPage = _document.StartupPageSelection?.GetList()?.GetItems()?.FirstOrDefault() as ISubFlowAsset;
         }
 
         _undoManager = host.GetService<UndoRedoManager>() ?? new UndoRedoManager();
@@ -434,7 +434,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                             if (doc.Count == 0)
                             {
                                 act.DoAction();
-                                doc.StartupPageSelection = _startupPageTarget.GetValues().FirstOrDefault() as AssetSelection<IAigcToolAsset> ?? doc.StartupPageSelection;
+                                doc.StartupPageSelection = _startupPageTarget.GetValues().FirstOrDefault() as AssetSelection<ISubFlowAsset> ?? doc.StartupPageSelection;
 
                                 // doc.StartupPageSelection.Target ??= null;
                                 _guiRef.QueueRefresh();
@@ -739,7 +739,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
         .InitClass("titleText")
         .InitCenter();
 
-        if (page.Instance?.SkillAssetSelection?.Target is { } skill)
+        if (page.Instance is SkillSubFlowInstance instance && instance.SkillAssetSelection?.Target is { } skill)
         {
             gui.Text($" (Skill: {skill.ToDisplayText()})");
         }

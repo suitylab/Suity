@@ -1,6 +1,7 @@
 using ComputerBeacon.Json;
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Selecting;
@@ -102,7 +103,7 @@ public class GetSelfPageDefinition : TaskPageNode
     /// </summary>
     public GetSelfPageDefinition()
     {
-        var type = TypeDefinition.FromAssetLink<IAigcToolAsset>();
+        var type = TypeDefinition.FromAssetLink<ISubFlowAsset>();
 
         _out = this.AddDataOutputConnector("SelfPage", type, "Self Page Definition");
     }
@@ -145,7 +146,7 @@ public class GetCurrentToolList : TaskPageNode
     /// </summary>
     public GetCurrentToolList()
     {
-        var type = AssetManager.Instance.GetAssetLink<IAigcToolAsset>().Definition.MakeArrayType();
+        var type = AssetManager.Instance.GetAssetLink<ISubFlowAsset>().Definition.MakeArrayType();
 
         _documentTools.AddConnector(this);
         _toolPages = this.AddDataOutputConnector("SelfTools", type, "Self Tool List");
@@ -271,7 +272,7 @@ public class ParseToolCalling : TaskPageNode
     /// </summary>
     public ParseToolCalling()
     {
-        var pageType = AssetManager.Instance.GetAssetLink<IAigcToolAsset>().Definition.MakeArrayType();
+        var pageType = AssetManager.Instance.GetAssetLink<ISubFlowAsset>().Definition.MakeArrayType();
 
         _in = this.AddActionInputConnector("In", "Input");
         _toolPages = this.AddDataInputConnector("ToolPages", pageType, "Tool Page List");
@@ -290,7 +291,7 @@ public class ParseToolCalling : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var toolPages = compute.GetValues<IAigcToolAsset>(_toolPages, true) ?? [];
+        var toolPages = compute.GetValues<ISubFlowAsset>(_toolPages, true) ?? [];
         string toolName = compute.GetValue<string>(_toolName);
         string toolJson = compute.GetValue<string>(_toolJson);
 
@@ -316,7 +317,7 @@ public class ParseToolCalling : TaskPageNode
     /// <param name="toolName">Target page name.</param>
     /// <param name="toolJson">Configuration JSON string.</param>
     /// <returns>Successfully created AigcPageInstance, null if failed.</returns>
-    public static ISubFlowInstance CreatePageInstance(IAigcToolAsset[] toolPages, string toolName, string toolJson)
+    public static ISubFlowInstance CreatePageInstance(ISubFlowAsset[] toolPages, string toolName, string toolJson)
     {
         // 1. Basic parameter validation
         if (toolPages == null || toolPages.Length == 0 || string.IsNullOrWhiteSpace(toolName) || string.IsNullOrWhiteSpace(toolJson))
@@ -356,7 +357,7 @@ public class ParseToolCalling : TaskPageNode
                 Mode = PageElementMode.Function,
             };
 
-            var pageInstance = pageDefAsset.CreatePageInstance(option);
+            var pageInstance = pageDefAsset.CreateInstance(option);
             var simpleType = pageInstance.ToSimpleType();
 
             var dic = EditorServices.JsonResource.FromJson(jobj, simpleType);
@@ -410,7 +411,7 @@ public class ParseTagToolCalling : TaskPageNode
     /// </summary>
     public ParseTagToolCalling()
     {
-        var pageType = AssetManager.Instance.GetAssetLink<IAigcToolAsset>().Definition.MakeArrayType();
+        var pageType = AssetManager.Instance.GetAssetLink<ISubFlowAsset>().Definition.MakeArrayType();
         var tagType = TypeDefinition.FromNative<LooseXmlTag>();
 
         _in = this.AddActionInputConnector("In", "Input");
@@ -447,7 +448,7 @@ public class ParseTagToolCalling : TaskPageNode
     public override void Compute(IFlowComputation compute)
     {
         // 1. Get input data
-        var toolPages = compute.GetValues<IAigcToolAsset>(_toolPages, true) ?? [];
+        var toolPages = compute.GetValues<ISubFlowAsset>(_toolPages, true) ?? [];
         var tag = compute.GetValue<LooseXmlTag>(_xmlTag);
         string attributeName = _attributeName.GetValue(compute, this);
 
@@ -498,7 +499,7 @@ public class CreateToolCalling : TaskPageNode
     /// </summary>
     public CreateToolCalling()
     {
-        var pageType = AssetManager.Instance.GetAssetLink<IAigcToolAsset>().Definition;
+        var pageType = AssetManager.Instance.GetAssetLink<ISubFlowAsset>().Definition;
 
         _in = this.AddActionInputConnector("In", "Input");
         _toolPage = this.AddDataInputConnector("ToolPage", pageType, "Tool Page");
@@ -517,7 +518,7 @@ public class CreateToolCalling : TaskPageNode
     {
         do
         {
-            var toolPage = compute.GetValue<IAigcToolAsset>(_toolPage);
+            var toolPage = compute.GetValue<ISubFlowAsset>(_toolPage);
             if (toolPage is null)
             {
                 break;
@@ -530,7 +531,7 @@ public class CreateToolCalling : TaskPageNode
                     Mode = PageElementMode.Function,
                 };
 
-                var pageInstance = toolPage.CreatePageInstance(option);
+                var pageInstance = toolPage.CreateInstance(option);
 
                 compute.SetValue(_pageInstance, pageInstance);
                 compute.SetResult(this, _out);
@@ -697,7 +698,7 @@ public class CreateToolCallingWithParameter : TaskPageNode
     FlowNodeConnector _out;
     FlowNodeConnector _pageInstance;
 
-    readonly AssetProperty<IAigcToolAsset> _toolDef = new("ToolDefinition", "Tool Definition");
+    readonly AssetProperty<ISubFlowAsset> _toolDef = new("ToolDefinition", "Tool Definition");
     readonly ListProperty<ToolCallParameter> _parameters = new("Parameters", "Parameters");
 
     /// <summary>
@@ -738,7 +739,7 @@ public class CreateToolCallingWithParameter : TaskPageNode
                     Mode = PageElementMode.Function,
                 };
 
-                var pageInstance = toolPageAsset.CreatePageInstance(option);
+                var pageInstance = toolPageAsset.CreateInstance(option);
 
                 _parameters.List.Clear();
 
@@ -827,7 +828,7 @@ public class CreateToolCallingWithParameter : TaskPageNode
                     Mode = PageElementMode.Function,
                 };
 
-                var pageInstance = toolPageAsset.CreatePageInstance(option);
+                var pageInstance = toolPageAsset.CreateInstance(option);
 
                 var parameters = GetParameters();
                 foreach (var parameter in parameters)

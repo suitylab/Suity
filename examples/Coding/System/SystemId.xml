@@ -33,10 +33,10 @@
   <Object id="3fe5f3c0-7e16-4346-b6ba-5f3deba04e0b" name="*AIGC|FlowContextScopes.Global" />
   <Object id="42b640b9-3350-4e88-aead-90b852bd206a" name="*AIGC|FlowContextScopes.Local" />
   <Object id="18f8d2fd-3de5-4152-80ec-4ff6143f97fa" name="*AIGC|IAigcTaskPage" />
-  <Object id="56081e25-4c99-44e0-9b6c-a404e30627c2" name="*AIGC|IAigcToolAsset" />
   <Object id="f5eea3e3-f771-40f5-afa1-58dc2e2ee6f2" name="*AIGC|ILLmModel" />
   <Object id="04fd9a4f-dbc7-4fee-af06-58b10b527112" name="*AIGC|ImageGenAsset" />
   <Object id="4e421e0a-107a-4c6f-ab81-b2b28a109aaa" name="*AIGC|IPageConnection" />
+  <Object id="339b452b-0d3a-47c8-bbdb-de6ebc7a9d38" name="*AIGC|ISubFlowAsset" />
   <Object id="97428a0b-35ed-448c-b5f9-30cd91d13c6a" name="*AIGC|ISubFlowDefAsset" />
   <Object id="02582c69-f4bf-461d-94f0-9cfd2ac09214" name="*AIGC|ISubFlowInstance" />
   <Object id="6a031e9e-d61e-436a-aad1-b02203721a32" name="*AIGC|KeywordKnowledge" />
@@ -96,6 +96,7 @@
   <Object id="6fa6d105-cdf7-45b1-a61c-ef9dda724967" name="*AssetLink|Suity.Editor.AIGC.Assistants.BasicChatProvider" />
   <Object id="886637bc-a0a1-4ccd-9192-019aeacd293c" name="*AssetLink|Suity.Editor.AIGC.Assistants.MainAssistantChatProvider" />
   <Object id="e4f266c7-5634-4d59-81a9-d56bbe2d9fdb" name="*AssetLink|Suity.Editor.AIGC.Assistants.PromptAsset" />
+  <Object id="93f02858-5d18-4bf0-814c-e4b516f78def" name="*AssetLink|Suity.Editor.AIGC.IAigcTaskPage" />
   <Object id="73e9e467-1515-4468-a3d6-975793e93cbf" name="*AssetLink|Suity.Editor.AIGC.ILLmModel" />
   <Object id="1fff8183-0093-4464-aa2b-af80ce9e0785" name="*AssetLink|Suity.Editor.AIGC.ImageGenAsset" />
   <Object id="62637705-3d43-4136-b03f-bead04cb82ec" name="*AssetLink|Suity.Editor.AIGC.InternalLLmModelAsset" />
@@ -130,9 +131,8 @@
   <Object id="8a971ea6-e6ca-4a47-816d-d4184e7f3434" name="*AssetLink|Suity.Editor.Flows.AIGC.AigcDiagramAsset" />
   <Object id="d1c49547-aa83-417e-9436-5f9fe905bf04" name="*AssetLink|Suity.Editor.Flows.AIGC.WorkflowAsset" />
   <Object id="be8c2840-ebdd-4cae-8b20-e6a264cfaadc" name="*AssetLink|Suity.Editor.Flows.AIGC.WorkflowChatProvider" />
-  <Object id="d6582f68-a5ae-4385-9355-c7c890cd4d8d" name="*AssetLink|Suity.Editor.Flows.SubFlows.IAigcTaskPage" />
-  <Object id="1ca8aaea-d529-4a1f-bfdd-9a8fe5a2e25a" name="*AssetLink|Suity.Editor.Flows.SubFlows.IAigcToolAsset" />
   <Object id="75df44ff-0ae7-4775-92e8-394dd81800a8" name="*AssetLink|Suity.Editor.Flows.SubFlows.IPageConnection" />
+  <Object id="e002059d-99eb-4ee6-9a0d-ed4a3adbe4b0" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowAsset" />
   <Object id="71d33b49-cbfb-4c53-92cd-96846c47a9fb" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowDef" />
   <Object id="a6c50133-7223-49c7-ac26-75b6e5aa1604" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowDefAsset" />
   <Object id="8895914c-a8b0-4c29-a83c-fb2efb0c9724" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowInstance" />

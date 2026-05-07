@@ -1,5 +1,6 @@
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.AIGC;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows.SubFlows;
@@ -39,7 +40,7 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
     private readonly AssetProperty<ISubFlowDefAsset> _baseFlow
         = new("BaseFlow", "Base Execution Flow");
 
-    private readonly AssetListProperty<IAigcToolAsset> _tools
+    private readonly AssetListProperty<ISubFlowAsset> _tools
         = new("Tools", "Tools");
 
     private readonly ValueProperty<bool> _isStartupPage
@@ -203,7 +204,7 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
     /// <summary>
     /// Gets the collection of tools associated with this skill.
     /// </summary>
-    public IEnumerable<IAigcToolAsset> Tools => _tools.List.Select(o => o.Target).SkipNull();
+    public IEnumerable<ISubFlowAsset> Tools => _tools.List.Select(o => o.Target).SkipNull();
 
     /// <summary>
     /// Gets a value indicating whether this skill can be used as a startup page.
@@ -420,7 +421,7 @@ public class AigcSkillAssetBuilder : AssetBuilder<AigcSkillAsset>
 /// Represents a skill asset that can be used as a tool and contains a page definition.
 /// </summary>
 [NativeType(Name = "AigcSkillAsset", Description = "Skill Asset", CodeBase = "*AIGC", Icon = "*CoreIcon|Skil", Color = FlowColors.Agent)]
-public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToolAsset
+public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlowAsset, IHasSkill
 {
     readonly EditorAssetRef<ISubFlowDefAsset> _baseFlow = new();
 
@@ -429,7 +430,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToo
     /// </summary>
     public AigcSkillAsset()
     {
-        UpdateAssetTypes(typeof(IAigcToolAsset));
+        UpdateAssetTypes(typeof(ISubFlowAsset));
 
         base.AddUpdateRelationship(_baseFlow);
     }
@@ -525,14 +526,14 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToo
     /// Gets the skill definition from the associated skill document.
     /// </summary>
     /// <returns>The <see cref="IAigcSkill"/> definition, or null.</returns>
-    public IAigcSkill GetSkillDefinition() => this.GetDocument<AigcSkillDocument>();
+    public IAigcSkill GetSkill() => this.GetDocument<AigcSkillDocument>();
 
     /// <summary>
     /// Creates a new page instance for this tool asset with the specified options.
     /// </summary>
     /// <param name="option">The page element options.</param>
     /// <returns>A new <see cref="ISubFlowInstance"/>, or null if creation fails.</returns>
-    public ISubFlowInstance CreatePageInstance(PageElementOption option)
+    public ISubFlowInstance CreateInstance(PageElementOption option)
     {
         if (this.GetDocument<AigcSkillDocument>() is not { } doc)
         {
@@ -549,7 +550,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToo
             return null;
         }
 
-        var instance = new SubFlowInstance(toolPageItem, option, this);
+        var instance = new SkillSubFlowInstance(toolPageItem, option, this);
 
         string skillName = doc.Name;
         string description = doc.Overview;

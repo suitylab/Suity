@@ -29,15 +29,9 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 [NativeType(CodeBase = "AIGC", Description = "Sub-Graph Instance", Icon = "*CoreIcon|Page")]
 public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInstance
 {
-    /// <summary>
-    /// Property key used to store the skill asset reference.
-    /// </summary>
-    public const string SKILL_PROP = "__skill__";
 
     private readonly SubFlowDefinitionDiagramItem _pageDefinition;
     private readonly SubflowDefinitionNode _pageNode;
-
-
     private readonly SubFlowDefinitionAsset _asset;
 
     private readonly List<SubFlowElement> _list = [];
@@ -46,8 +40,6 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     private readonly HashSet<SubFlowElement> _allElements = [];
     private SubFlowEndElement _currentEndElement;
 
-    private readonly AssetProperty<IAigcToolAsset> _skill = new(SKILL_PROP, "Skill");
-    private string _skillName;
 
     private readonly IConversationImGui _conversation;
 
@@ -57,14 +49,13 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <param name="pageDefinition">The page definition diagram item.</param>
     /// <param name="option">The page element configuration options.</param>
     /// <param name="skill">Optional skill asset to associate with this page instance.</param>
-    public SubFlowInstance(SubFlowDefinitionDiagramItem pageDefinition, PageElementOption option, IAigcToolAsset skill = null)
+    public SubFlowInstance(SubFlowDefinitionDiagramItem pageDefinition, PageElementOption option)
         : base(pageDefinition)
     {
         _pageDefinition = pageDefinition ?? throw new ArgumentNullException(nameof(pageDefinition));
         _pageNode = _pageDefinition.Node ?? throw new ArgumentNullException(nameof(pageDefinition));
         _asset = pageDefinition.TargetAsset as SubFlowDefinitionAsset ?? throw new ArgumentNullException(nameof(pageDefinition.TargetAsset));
         Option = option;
-        _skill.Target = skill;
 
         _conversation = EditorServices.ImGuiService.CreateConversationImGui(pageDefinition.Name, false);
 
@@ -99,10 +90,6 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
     #region Core Props
 
-    /// <summary>
-    /// Gets the selection for the skill asset associated with this page.
-    /// </summary>
-    public AssetSelection<IAigcToolAsset> SkillAssetSelection => _skill.Selection;
 
     /// <summary>
     /// Gets the last computation that was executed on this page.
@@ -117,20 +104,17 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <summary>
     /// Gets the condition that determines when page parameters are considered complete.
     /// </summary>
-    public ParameterConditions ParameterCondition { get; private set; }
+    public ParameterConditions ParameterCondition { get; protected set; }
 
     /// <summary>
     /// Gets a value indicating whether this page should use the parent article.
     /// </summary>
-    public bool UseParentArticle { get; private set; }
-
-    /// <inheritdoc/>
-    public override string Name => _skillName ?? base.Name;
+    public bool UseParentArticle { get; protected set; }
 
     /// <summary>
     /// Gets or sets the tooltips text for this page.
     /// </summary>
-    public string Tooltips { get; private set; }
+    public string Tooltips { get; protected set; }
 
     /// <summary>
     /// Gets the conversation interface for this page instance.
@@ -151,25 +135,13 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// </summary>
     public ISubFlowDef BaseDefinition => _pageNode;
 
-    /// <summary>
-    /// Gets the skill definition associated with this page, if any.
-    /// </summary>
-    /// <returns>The skill definition, or null if no skill is set.</returns>
-    public IAigcSkill GetSkill() => _skill.Target?.GetSkillDefinition();
+    public SubflowDefinitionNode PageNode => _pageNode;
 
     /// <summary>
     /// Gets the tool asset associated with this page.
     /// </summary>
     /// <returns>The tool asset, falling back to the target asset if no skill is set.</returns>
-    public IAigcToolAsset GetToolAsset()
-    {
-        if (_skill.Target is { } skillAsset)
-        {
-            return skillAsset;
-        }
-
-        return TargetAsset as IAigcToolAsset;
-    }
+    public virtual ISubFlowAsset GetToolAsset() => TargetAsset as ISubFlowAsset;
 
     /// <summary>
     /// Gets all elements contained within this page.
@@ -314,24 +286,10 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     {
         base.OnBuild();
 
-        ParameterCondition = _pageDefinition?.Node?.CompletionCondition ?? ParameterConditions.All;
-        UseParentArticle = GetSkill()?.UseParentArticle ?? (_pageDefinition.Node?.UseParentArticle == true);
+        ParameterCondition = _pageNode.CompletionCondition;
+        UseParentArticle = _pageNode.UseParentArticle == true;
 
-        //Name
-        if (GetSkill()?.SkillName is { } skillName && !string.IsNullOrWhiteSpace(skillName))
-        {
-            _skillName = skillName;
-        }
-
-        //Tooltips
-        if (GetSkill()?.SkillTooltips is { } skillTooltips && !string.IsNullOrWhiteSpace(skillTooltips))
-        {
-            Tooltips = skillTooltips;
-        }
-        else
-        {
-            Tooltips = _pageNode.GetAttribute<ToolTipsAttribute>()?.ToolTips;
-        }
+        Tooltips = _pageNode.GetAttribute<ToolTipsAttribute>()?.ToolTips;
     }
 
     private void CollectGroups(IEnumerable<FlowDiagramItem> groups)
@@ -496,10 +454,8 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// Updates this page instance's data from another page instance.
     /// </summary>
     /// <param name="otherRoot">The source page instance to update from.</param>
-    public void UpdateFromOther(SubFlowInstance otherRoot)
+    public virtual void UpdateFromOther(SubFlowInstance otherRoot)
     {
-        _skill.TargetAsset = otherRoot._skill.TargetAsset;
-
         foreach (var other in otherRoot._dic.Values)
         {
             if (_dic.TryGetValue(other.DiagramItem.Name, out var exist))
@@ -552,8 +508,6 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <inheritdoc/>
     public override void Sync(IPropertySync sync, ISyncContext context)
     {
-        _skill.Sync(sync);
-
         foreach (var element in _list)
         {
             element.Sync(sync, context);
@@ -950,15 +904,9 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// Gets the list of tool assets available to this page.
     /// </summary>
     /// <returns>An array of tool assets from both the page definition and associated skill.</returns>
-    public IAigcToolAsset[] GetToolList()
+    public virtual ISubFlowAsset[] GetToolList()
     {
         var tools = _pageNode.Tools.SkipNull();
-
-        if (GetSkill()?.Tools?.ToArray() is { } exTools && exTools.Length > 0)
-        {
-            tools = tools.Concat(exTools.SkipNull());
-        }
-
         return [.. tools];
     }
 
@@ -1162,15 +1110,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// Gets the definition page, preferring the skill asset if available.
     /// </summary>
     /// <returns>The skill asset or the base asset as the definition page.</returns>
-    public IAigcToolAsset GetDefinitionPage()
-    {
-        if (_skill.Target is { } skill)
-        {
-            return skill;
-        }
-
-        return _asset;
-    }
+    public virtual ISubFlowAsset GetDefinitionPage() => _asset;
 
 
     #endregion

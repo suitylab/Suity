@@ -40,7 +40,7 @@ public class AppendTaskPage : TaskPageNode
     public AppendTaskPage()
     {
         var instanceType = TypeDefinition.FromNative<ISubFlowInstance>();
-        var type = TypeDefinition.FromNative<IAigcToolAsset>();
+        var type = TypeDefinition.FromNative<ISubFlowAsset>();
 
         _in = this.AddActionInputConnector("In", "Input");
         _inPageInstance = this.AddDataInputConnector("PageInstance", instanceType, "Page Instance");
@@ -81,7 +81,7 @@ public class AppendTaskPage : TaskPageNode
     public override void Compute(IFlowComputation compute)
     {
         var pageInstance = compute.GetValue<ISubFlowInstance>(_inPageInstance);
-        var page = compute.GetValue<IAigcToolAsset>(_inPage);
+        var page = compute.GetValue<ISubFlowAsset>(_inPage);
         if (pageInstance is null && page is null)
         {
             throw new NullReferenceException("At least one of the required inputs (PageInstance or Page) is null.");
@@ -136,7 +136,7 @@ public class AddSubTaskPage : TaskPageNode
     public AddSubTaskPage()
     {
         var instanceType = TypeDefinition.FromNative<ISubFlowInstance>();
-        var type = TypeDefinition.FromNative<IAigcToolAsset>();
+        var type = TypeDefinition.FromNative<ISubFlowAsset>();
 
         _in = this.AddActionInputConnector("In", "Input");
         _inPageInstance = this.AddDataInputConnector("PageInstance", instanceType, "Page Instance");
@@ -177,7 +177,7 @@ public class AddSubTaskPage : TaskPageNode
     public override void Compute(IFlowComputation compute)
     {
         var pageInstance = compute.GetValue<ISubFlowInstance>(_inPageInstance);
-        var page = compute.GetValue<IAigcToolAsset>(_inPage);
+        var page = compute.GetValue<ISubFlowAsset>(_inPage);
         if (pageInstance is null && page is null)
         {
             throw new NullReferenceException("At least one of the required inputs (PageInstance or Page) is null.");

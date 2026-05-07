@@ -30,7 +30,7 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
 
     FlowNodeConnector _resultConnector;
 
-    readonly AssetListProperty<IAigcToolAsset> _tools = new("Tools", "Tool List");
+    readonly AssetListProperty<ISubFlowAsset> _tools = new("Tools", "Tool List");
     readonly ValueProperty<bool> _useParentArticle = new("UseParentArticle", "Use Parent Article", false, "Use the parent article as the article record for this page's content.");
 
     /// <summary>
@@ -73,7 +73,7 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
     /// <summary>
     /// Gets the collection of tools associated with this page.
     /// </summary>
-    public IEnumerable<IAigcToolAsset> Tools => _tools.Targets;
+    public IEnumerable<ISubFlowAsset> Tools => _tools.Targets;
 
     /// <summary>
     /// Gets a value indicating whether to use the parent article as the article record for this page's content.
@@ -231,7 +231,7 @@ public class SubFlowDefinitionDiagramItem : FlowDiagramItem<SubflowDefinitionNod
 /// Asset representing a page definition that can be used as a tool.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Page Definition", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
-public class SubFlowDefinitionAsset : Asset, ISubFlowDefAsset, IAigcToolAsset
+public class SubFlowDefinitionAsset : Asset, ISubFlowDefAsset, ISubFlowAsset
 {
     /// <inheritdoc/>
     public override ImageDef DefaultIcon => CoreIconCache.Page;
@@ -241,7 +241,7 @@ public class SubFlowDefinitionAsset : Asset, ISubFlowDefAsset, IAigcToolAsset
     /// </summary>
     public SubFlowDefinitionAsset()
     {
-        UpdateAssetTypes(typeof(ISubFlowDefAsset), typeof(IAigcToolAsset));
+        UpdateAssetTypes(typeof(ISubFlowDefAsset), typeof(ISubFlowAsset));
     }
 
     /// <summary>
@@ -259,10 +259,7 @@ public class SubFlowDefinitionAsset : Asset, ISubFlowDefAsset, IAigcToolAsset
     public ISubFlowDef GetBaseDefinition() => GetDiagramItem()?.Node;
 
     /// <inheritdoc/>
-    public IAigcSkill GetSkillDefinition() => null;
-
-    /// <inheritdoc/>
-    public ISubFlowInstance CreatePageInstance(PageElementOption option)
+    public ISubFlowInstance CreateInstance(PageElementOption option)
     {
         if (GetDiagramItem() is not { } toolPageItem)
         {
@@ -643,12 +640,12 @@ public class SubFlowDefinitionAssetArrayToTextConverter : AssetLinkArrayToTextCo
 }
 
 /// <summary>
-/// Converts an <see cref="IAigcToolAsset"/> to a text representation of its page instance.
+/// Converts an <see cref="ISubFlowAsset"/> to a text representation of its page instance.
 /// </summary>
-public class IAigcSkillToTextConverter : TypeToTextConverter<IAigcToolAsset>
+public class IAigcSkillToTextConverter : TypeToTextConverter<ISubFlowAsset>
 {
     /// <inheritdoc/>
-    public override string Convert(IAigcToolAsset objFrom)
+    public override string Convert(ISubFlowAsset objFrom)
     {
         var item = (objFrom as SubFlowDefinitionAsset)?.GetDiagramItem();
         if (item is null)
@@ -668,12 +665,12 @@ public class IAigcSkillToTextConverter : TypeToTextConverter<IAigcToolAsset>
 }
 
 /// <summary>
-/// Converts an array of <see cref="IAigcToolAsset"/> to a combined text representation.
+/// Converts an array of <see cref="ISubFlowAsset"/> to a combined text representation.
 /// </summary>
-public class IAigcSkillArrayToTextConverter : AssetLinkArrayToTextConverter<IAigcToolAsset>
+public class IAigcSkillArrayToTextConverter : AssetLinkArrayToTextConverter<ISubFlowAsset>
 {
     /// <inheritdoc/>
-    public override string Convert(IAigcToolAsset[] objFroms)
+    public override string Convert(ISubFlowAsset[] objFroms)
     {
         List<string> list = [];
 
@@ -684,7 +681,7 @@ public class IAigcSkillArrayToTextConverter : AssetLinkArrayToTextConverter<IAig
                 Mode = PageElementMode.Function,
             };
 
-            var element = obj.CreatePageInstance(option);
+            var element = obj.CreateInstance(option);
             if (element is null)
             {
                 continue;

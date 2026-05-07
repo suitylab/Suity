@@ -28,9 +28,9 @@ namespace Suity.Editor.AIGC;
 public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IAigcTaskHost
 {
     readonly TextBlockProperty _initialTaskPrompt = new("InitialTaskPrompt", "Initial Task Prompt", string.Empty);
-    readonly AssetProperty<IAigcToolAsset> _startupPage = new("StartupPage", "Startup Page") { Filter = StartupPageFilter.Instance };
+    readonly AssetProperty<ISubFlowAsset> _startupPage = new("StartupPage", "Startup Page") { Filter = StartupPageFilter.Instance };
     readonly AssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
-    readonly AssetListProperty<IAigcToolAsset> _tools = new("Tools", "Tools List");
+    readonly AssetListProperty<ISubFlowAsset> _tools = new("Tools", "Tools List");
     readonly AssetListProperty<IArticleAsset> _knowledgeArticles
         = new("KnowledgeArticles", "Knowledge Articles", "Reading materials used as knowledge reference.") { Filter = ReadingMaterialFilter.Instance };
     readonly ValueProperty<int> _maxChatHistory = new("MaxChatHistory", "Max Chat History", 30, "Maximum number of chat history entries to keep, <=0 means unlimited");
@@ -52,7 +52,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// <summary>
     /// Gets or sets the selection of available startup pages.
     /// </summary>
-    public AssetSelection<IAigcToolAsset> StartupPageSelection
+    public AssetSelection<ISubFlowAsset> StartupPageSelection
     {
         get => _startupPage.Selection;
         internal set => _startupPage.Selection = value;
@@ -61,7 +61,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// <summary>
     /// Gets or sets the startup page used to initiate task execution.
     /// </summary>
-    public IAigcToolAsset StartupPage
+    public ISubFlowAsset StartupPage
     {
         get => _startupPage.Target;
         internal set => _startupPage.Target = value;
@@ -75,7 +75,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// <summary>
     /// Gets the collection of tool pages available for task execution.
     /// </summary>
-    public IEnumerable<IAigcToolAsset> ToolPages => _tools.Targets;
+    public IEnumerable<ISubFlowAsset> ToolPages => _tools.Targets;
 
     /// <summary>
     /// Gets or sets the maximum number of chat history entries to keep. A value of 0 or less means unlimited.
@@ -98,7 +98,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// <summary>
     /// Gets the list of configured tool pages, excluding null entries.
     /// </summary>
-    public IAigcToolAsset[] GetToolList() => ToolPages.SkipNull().ToArray() ?? [];
+    public ISubFlowAsset[] GetToolList() => ToolPages.SkipNull().ToArray() ?? [];
 
     #endregion
 
@@ -458,7 +458,7 @@ public class StartupPageFilter : IAssetFilter
     /// <inheritdoc/>
     public bool FilterAsset(Asset asset)
     {
-        if (asset is not IAigcToolAsset skillAsset)
+        if (asset is not ISubFlowAsset skillAsset)
         {
             return false;
         }

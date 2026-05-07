@@ -1,5 +1,6 @@
 using Suity;
 using Suity.Collections;
+using Suity.Editor.AIGC;
 using Suity.Editor.Types;
 using Suity.Flows.Pages;
 using Suity.Synchonizing;

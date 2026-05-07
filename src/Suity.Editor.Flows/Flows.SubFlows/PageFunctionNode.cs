@@ -426,5 +426,5 @@ public class PageFunctionCallerContext : IFlowCallerContext
     }
 
     /// <inheritdoc/>
-    public IAigcToolAsset GetDefinitionPage() => _rootElement?.GetDefinitionPage();
+    public ISubFlowAsset GetDefinitionPage() => _rootElement?.GetDefinitionPage();
 }

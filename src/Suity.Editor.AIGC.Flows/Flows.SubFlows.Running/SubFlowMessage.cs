@@ -1,3 +1,4 @@
+using Suity.Editor.AIGC;
 using Suity.Editor.Types;
 using Suity.Views;
 using System;

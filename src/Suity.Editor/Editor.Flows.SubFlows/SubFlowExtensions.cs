@@ -3,7 +3,7 @@ namespace Suity.Editor.Flows.SubFlows;
 /// <summary>
 /// Provides extension methods for AIGC task pages and related types.
 /// </summary>
-public static class TaskPageExtensions
+public static class SubFlowExtensions
 {
     /// <summary>
     /// Determines whether the specified <see cref="PageElementMode"/> represents a task or page mode.

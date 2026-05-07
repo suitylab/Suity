@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-	<RootNamespace>Suity</RootNamespace>
+	<RootNamespace>Suity.Editor</RootNamespace>
 	<LangVersion>Latest</LangVersion>
 	<Version>1.0.0.0</Version>
   </PropertyGroup>
@@ -15,6 +15,10 @@
     <ProjectReference Include="..\Suity.DataSync\Suity.DataSync.csproj" />
     <ProjectReference Include="..\Suity.Editor\Suity.Editor.csproj" />
     <ProjectReference Include="..\Suity\Suity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Flows.TaskPages\" />
   </ItemGroup>
 
 </Project>

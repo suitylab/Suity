@@ -37,7 +37,7 @@ public class AigcTaskPage : DesignNode,
     INavigable,
     IDrawEditorImGui
 {
-    readonly AssetProperty<IAigcToolAsset> _pageDef = new("PageDefinition", "Page");
+    readonly AssetProperty<ISubFlowAsset> _pageDef = new("PageDefinition", "Page");
     readonly AssetProperty<ArticleContainerAsset> _article = new("Article", "Article");
     readonly TextBlockProperty _taskPrompt = new("TaskPrompt", "Task Prompt", string.Empty);
     readonly StringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "Name used when committing to parent task.");
@@ -72,7 +72,7 @@ public class AigcTaskPage : DesignNode,
     /// <summary>
     /// Gets or sets the page definition asset that defines the structure and behavior of this task page.
     /// </summary>
-    public IAigcToolAsset PageDefinition
+    public ISubFlowAsset PageDefinition
     {
         get => _pageDef.Target;
         set => _pageDef.Target = value;
@@ -416,7 +416,7 @@ public class AigcTaskPage : DesignNode,
     /// <param name="taskPrompt">The prompt for the new task.</param>
     /// <param name="commitName">The commit name for the new task.</param>
     /// <returns>True if the task was successfully appended; otherwise, false.</returns>
-    public bool AppendTask(IAigcToolAsset asset, string title, string taskPrompt, string commitName)
+    public bool AppendTask(ISubFlowAsset asset, string title, string taskPrompt, string commitName)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -497,7 +497,7 @@ public class AigcTaskPage : DesignNode,
     /// <param name="taskPrompt">The prompt for the new sub-task.</param>
     /// <param name="commitName">The commit name for the new sub-task.</param>
     /// <returns>True if the sub-task was successfully added; otherwise, false.</returns>
-    public bool AddSubTask(IAigcToolAsset asset, string title, string taskPrompt, string commitName)
+    public bool AddSubTask(ISubFlowAsset asset, string title, string taskPrompt, string commitName)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -847,14 +847,14 @@ public class AigcTaskPage : DesignNode,
     /// </summary>
     /// <param name="includeDocumentTools">If true, includes tools from the document.</param>
     /// <returns>An array of available tool assets.</returns>
-    public IAigcToolAsset[] GetToolList(bool includeDocumentTools)
+    public ISubFlowAsset[] GetToolList(bool includeDocumentTools)
     {
         if (EnsureInstance() is not { } instance)
         {
             return [];
         }
 
-        IEnumerable<IAigcToolAsset> tools = instance.GetToolList();
+        IEnumerable<ISubFlowAsset> tools = instance.GetToolList();
         if (includeDocumentTools && this.GetDocument() is AigcTaskPageDocument doc)
         {
             tools = tools.Concat(doc.GetToolList());
@@ -1340,7 +1340,7 @@ public class AigcTaskPage : DesignNode,
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
-    public AigcTaskPage CreateTaskPage(IAigcToolAsset asset, string title = null, string taskPrompt = null, string commitName = null)
+    public AigcTaskPage CreateTaskPage(ISubFlowAsset asset, string title = null, string taskPrompt = null, string commitName = null)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -1379,7 +1379,7 @@ public class AigcTaskPage : DesignNode,
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="pageDefAsset"/> is null.</exception>
-    public static AigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, IAigcToolAsset pageDefAsset, string title = null, string taskPrompt = null, string commitName = null)
+    public static AigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, ISubFlowAsset pageDefAsset, string title = null, string taskPrompt = null, string commitName = null)
     {
         if (pageDefAsset is null)
         {
@@ -1409,7 +1409,7 @@ public class AigcTaskPage : DesignNode,
             Owner = taskPage,
         };
 
-        var pageInstance = pageDefAsset.CreatePageInstance(option) as SubFlowInstance
+        var pageInstance = pageDefAsset.CreateInstance(option) as SubFlowInstance
             ?? throw new NullReferenceException("Task is not a AigcPageInstance.");
 
         taskPage.Instance = pageInstance;
