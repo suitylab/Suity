@@ -286,7 +286,7 @@ public class SubFlowDefinitionAssetBuilder : AssetBuilder<SubFlowDefinitionAsset
 
 #endregion
 
-#region PageSubNode
+#region SubflowBranchNode
 
 /// <summary>
 /// AIGC interactive page's detached extension sub-page node.
@@ -296,16 +296,16 @@ public class SubFlowDefinitionAssetBuilder : AssetBuilder<SubFlowDefinitionAsset
 [DisplayOrder(4999)]
 [ToolTipsText("AIGC interactive page's detached extension page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubNode")]
-public class SubflowExtensionNode : SubflowDefNode, IGroupFlowNode, IAigcPage
+public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, IAigcPage
 {
     readonly AssetProperty<SubFlowDefinitionAsset> _page = new("Page", "Page");
 
     FlowNodeConnector _resultConnector;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubflowExtensionNode"/> class.
+    /// Initializes a new instance of the <see cref="SubflowBranchNode"/> class.
     /// </summary>
-    public SubflowExtensionNode()
+    public SubflowBranchNode()
     {
         Description = "Sub Page";
 
@@ -411,24 +411,24 @@ public class SubflowExtensionNode : SubflowDefNode, IGroupFlowNode, IAigcPage
 }
 
 /// <summary>
-/// Diagram item representing a <see cref="SubflowExtensionNode"/> in the flow diagram.
+/// Diagram item representing a <see cref="SubflowBranchNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubDiagramItem")]
-public class SubflowExtensionDiagramItem : FlowDiagramItem<SubflowExtensionNode>
+public class SubflowBranchDiagramItem : FlowDiagramItem<SubflowBranchNode>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubflowExtensionDiagramItem"/> class.
+    /// Initializes a new instance of the <see cref="SubflowBranchDiagramItem"/> class.
     /// </summary>
-    public SubflowExtensionDiagramItem()
+    public SubflowBranchDiagramItem()
     : base()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubflowExtensionDiagramItem"/> class with the specified node.
+    /// Initializes a new instance of the <see cref="SubflowBranchDiagramItem"/> class with the specified node.
     /// </summary>
     /// <param name="node">The page sub node.</param>
-    public SubflowExtensionDiagramItem(SubflowExtensionNode node)
+    public SubflowBranchDiagramItem(SubflowBranchNode node)
         : base(node)
     {
     }
@@ -542,7 +542,7 @@ public class SubFlowResultDiagramItem : FlowDiagramItem<SubFlowResultNode>
     /// Initializes a new instance of the <see cref="SubFlowResultDiagramItem"/> class with the specified node.
     /// </summary>
     /// <param name="node">The page sub node.</param>
-    public SubFlowResultDiagramItem(SubflowExtensionNode node)
+    public SubFlowResultDiagramItem(SubflowBranchNode node)
         : base(node)
     {
     }

@@ -9,20 +9,20 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 /// <summary>
 /// Represents a sub-page element that groups related flow nodes and delegates completion status to its result page.
 /// </summary>
-public class SubFlowExtensionElement : SubFlowGroupElement
+public class SubFlowBranchElement : SubFlowGroupElement
 {
-    readonly SubflowExtensionDiagramItem _subPage;
+    readonly SubflowBranchDiagramItem _subPage;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubFlowExtensionElement"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowBranchElement"/> class.
     /// </summary>
     /// <param name="extensionItem">The flow diagram item representing this sub-page group.</param>
     /// <param name="depth">The nesting depth of this element.</param>
     /// <param name="order">The display order of this element. Defaults to -1.</param>
-    public SubFlowExtensionElement(FlowDiagramItem extensionItem, int depth, int order = -1)
+    public SubFlowBranchElement(FlowDiagramItem extensionItem, int depth, int order = -1)
         : base(extensionItem, depth, order)
     {
-        _subPage = extensionItem as SubflowExtensionDiagramItem;
+        _subPage = extensionItem as SubflowBranchDiagramItem;
     }
 
     /// <summary>

@@ -250,7 +250,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, IAigcPageInst
 
         // Build sub pages
         var subPages = doc.ItemCollection.AllItems
-            .OfType<SubflowExtensionDiagramItem>()
+            .OfType<SubflowBranchDiagramItem>()
             .Where(o => o.Node?.GetTargetPageItem() == page)
             .ToList();
 
@@ -361,7 +361,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, IAigcPageInst
 
         foreach (var subPageNode in groupRootNode.Children)
         {
-            var page = new SubFlowExtensionElement(subPageNode.Data, 1, order)
+            var page = new SubFlowBranchElement(subPageNode.Data, 1, order)
             {
                 Parent = this,
                 Option = this.Option
@@ -639,7 +639,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, IAigcPageInst
             return false;
         }
 
-        var pages = _groups.OfType<SubFlowExtensionElement>().OfType<SubFlowElement>().ConcatOne(this);
+        var pages = _groups.OfType<SubFlowBranchElement>().OfType<SubFlowElement>().ConcatOne(this);
 
         bool? v = null;
         foreach (var page in pages)
