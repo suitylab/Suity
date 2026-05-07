@@ -98,7 +98,6 @@
   <Object id="e4f266c7-5634-4d59-81a9-d56bbe2d9fdb" name="*AssetLink|Suity.Editor.AIGC.Assistants.PromptAsset" />
   <Object id="a95213f4-3e2f-4c95-b83f-e22771b41628" name="*AssetLink|Suity.Editor.AIGC.Flows.AigcDiagramAsset" />
   <Object id="050fada7-0e57-4f75-bb15-940d23fd4002" name="*AssetLink|Suity.Editor.AIGC.Flows.Pages.AigcSkillAsset" />
-  <Object id="98912abd-bc25-43de-9786-8091bf5d0eda" name="*AssetLink|Suity.Editor.AIGC.Flows.Pages.IPageConnection" />
   <Object id="25a5cc10-a4fb-4dd5-ba72-a97b9fa75ab2" name="*AssetLink|Suity.Editor.AIGC.Flows.Pages.PageDefinitionAsset" />
   <Object id="c4dd27cb-643a-4b53-9b74-ba62ae53d5ff" name="*AssetLink|Suity.Editor.AIGC.Flows.WorkflowAsset" />
   <Object id="28c161a0-10f0-4dd4-819e-0a4d0a2f187a" name="*AssetLink|Suity.Editor.AIGC.Flows.WorkflowChatProvider" />
@@ -139,6 +138,7 @@
   <Object id="7df44f97-87a7-44f7-a994-1cf3ecb92614" name="*AssetLink|Suity.Editor.Documents.TextDocumentAsset" />
   <Object id="d6528035-2ea2-483b-89ad-66ad134c1695" name="*AssetLink|Suity.Editor.Documents.TypeEdit.DEnumToStruct" />
   <Object id="dc28c0fe-c19d-4901-8e8f-565067fa3730" name="*AssetLink|Suity.Editor.FixedDataTableAsset" />
+  <Object id="1042e2be-5085-44c0-b83c-6883984d05bf" name="*AssetLink|Suity.Editor.Flows.SubGraphs.IPageConnection" />
   <Object id="9c99d8fe-3f3e-4c45-bbc8-17d63f9f62a4" name="*AssetLink|Suity.Editor.GroupAsset" />
   <Object id="73e4af74-1020-4f88-b9d3-07d9293255ce" name="*AssetLink|Suity.Editor.ImageAsset" />
   <Object id="c8db7325-863c-4e63-a314-1888e8328085" name="*AssetLink|Suity.Editor.IPagedTextAsset" />

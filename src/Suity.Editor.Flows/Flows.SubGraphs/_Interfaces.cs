@@ -2,7 +2,7 @@ using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows;
 using Suity.Editor.Types;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.SubGraphs;
 
 /// <summary>
 /// Defines the types of page commit events that can occur in the AIGC workflow.

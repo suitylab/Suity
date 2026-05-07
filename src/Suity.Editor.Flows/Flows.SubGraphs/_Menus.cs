@@ -3,6 +3,7 @@ using Suity.Collections;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.Gui;
+using Suity.Editor.Flows.SubGraphs;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing.Core;
@@ -300,7 +301,7 @@ public class ExtractFunctionMenuItem : MenuCommand
 
         fileFullName = $"{dir}/{newFileName}.sasset";
 
-        var newDoc = collector.CreateDocument(fileFullName, newFileName);
+        var newDoc = collector.CreateDocument(fileFullName, newFileName, doc.Format);
 
 
         if ((flowView as IServiceProvider)?.GetService<UndoRedoManager>() is { } undoRedo)
@@ -498,8 +499,9 @@ public class FlowFunctionCollector : UndoRedoAction
     /// </summary>
     /// <param name="fileName">The full path for the new document file.</param>
     /// <param name="name">The name for the function.</param>
+    /// <param name="documentFormat">The document format to use for the new document.</param>
     /// <returns>The created flow diagram item, or null if creation failed.</returns>
-    public IFlowDiagramItem CreateDocument(string fileName, string name)
+    public IFlowDiagramItem CreateDocument(string fileName, string name, DocumentFormat format)
     {
         if (string.IsNullOrWhiteSpace(fileName))
         {
@@ -511,19 +513,13 @@ public class FlowFunctionCollector : UndoRedoAction
             return null;
         }
 
-        var format = DocumentManager.Instance.GetDocumentFormat("AigcFlow");
-        if (format is null)
-        {
-            return null;
-        }
-
         var entry = DocumentManager.Instance.NewDocument(fileName, format);
         if (entry is null)
         {
             return null;
         }
 
-        var doc = entry.Content as AigcFlowDocument;
+        var doc = entry.Content as FlowDocument;
         if (doc is null)
         {
             return null;

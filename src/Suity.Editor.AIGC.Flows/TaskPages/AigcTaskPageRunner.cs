@@ -1,6 +1,7 @@
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Documents;
+using Suity.Editor.Flows.SubGraphs;
 using Suity.Flows.Pages;
 using Suity.Helpers;
 using Suity.Views;

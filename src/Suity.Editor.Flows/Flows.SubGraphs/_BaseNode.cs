@@ -5,7 +5,7 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.SubGraphs;
 
 /// <summary>
 /// Base class for AIGC page definition design-time flow nodes.

@@ -13,6 +13,7 @@ using Suity.Views.Named;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Suity.Editor.Flows.SubGraphs;
 
 namespace Suity.Editor.AIGC.Flows.Pages;
 
@@ -240,7 +241,6 @@ public class PageDefinitionDiagramItem : FlowDiagramItem<PageDefinitionNode, Pag
 /// Asset representing a page definition that can be used as a tool.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Page Definition", Color = AigcColors.Page, Icon = "*CoreIcon|Page")]
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionAsset")]
 public class PageDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcToolAsset
 {
     /// <inheritdoc/>

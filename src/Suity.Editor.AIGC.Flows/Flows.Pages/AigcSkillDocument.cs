@@ -419,7 +419,6 @@ public class AigcSkillAssetBuilder : AssetBuilder<AigcSkillAsset>
 /// Represents a skill asset that can be used as a tool and contains a page definition.
 /// </summary>
 [NativeType(Name = "AigcSkillAsset", Description = "Skill Asset", CodeBase = "*AIGC", Icon = "*CoreIcon|Skil", Color = AigcColors.Agent)]
-//[NativeAlias("Suity.Editor.AIGC.Flows.Pages.AigcSkillAsset")]
 public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToolAsset
 {
     readonly EditorAssetRef<IAigcPageDefinitionAsset> _baseFlow = new();

@@ -11,6 +11,7 @@ using Suity.Views;
 using Suity.Views.Im;
 using Suity.Views.Im.Flows;
 using System.Drawing;
+using Suity.Editor.Flows.SubGraphs;
 
 namespace Suity.Editor.AIGC.Flows.Pages;
 
