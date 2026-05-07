@@ -123,7 +123,7 @@ public abstract class LLmService
     /// <param name="view">Optional flow view for UI integration.</param>
     /// <param name="config">Optional action to configure the flow computation.</param>
     /// <returns>A task representing the asynchronous operation, returning the workflow result.</returns>
-    public abstract Task<object> StartWorkflowChat(IAigcRunWorkflow runnable, IFlowView view = null, Action<IFlowComputation> config = null);
+    public abstract Task<object> StartWorkflowChat(IFlowRunnable runnable, IFlowView view = null, Action<IFlowComputation> config = null);
 
     /// <summary>
     /// Starts a specific workflow task with the given AI request.
@@ -133,7 +133,7 @@ public abstract class LLmService
     /// <param name="view">Optional flow view for UI integration.</param>
     /// <param name="config">Optional action to configure the flow computation.</param>
     /// <returns>A task representing the asynchronous operation, returning the task result.</returns>
-    public abstract Task<object> StartWorkflowTask(AIRequest request, IAigcRunWorkflow runnable, IFlowView view = null, Action<IFlowComputation> config = null);
+    public abstract Task<object> StartWorkflowTask(AIRequest request, IFlowRunnable runnable, IFlowView view = null, Action<IFlowComputation> config = null);
 
     /// <summary>
     /// Gets an LLM model based on the specified level and type.

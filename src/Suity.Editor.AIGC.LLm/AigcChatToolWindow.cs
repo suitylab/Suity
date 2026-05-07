@@ -487,7 +487,7 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
     /// <param name="view">Optional flow view for visualization.</param>
     /// <param name="config">Optional configuration action for the flow computation.</param>
     /// <returns>A task representing the workflow chat operation.</returns>
-    public async Task<object> StartWorkflowChat(IAigcRunWorkflow runnable, IFlowView view = null, Action<IFlowComputation> config = null)
+    public async Task<object> StartWorkflowChat(IFlowRunnable runnable, IFlowView view = null, Action<IFlowComputation> config = null)
     {
         if (runnable is null)
         {

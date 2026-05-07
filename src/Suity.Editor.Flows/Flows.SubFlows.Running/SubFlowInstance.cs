@@ -1167,7 +1167,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             return Task.FromResult<object>(null);
         }
 
-        if (begin.Node is not IAigcRunWorkflow runnable)
+        if (begin.Node is not IFlowRunnable runnable)
         {
             return Task.FromResult<object>(null);
         }
@@ -1208,7 +1208,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             return Task.FromResult<object>(null);
         }
 
-        if (begin.Node is not IAigcRunWorkflow runnable)
+        if (begin.Node is not IFlowRunnable runnable)
         {
             return Task.FromResult<object>(null);
         }

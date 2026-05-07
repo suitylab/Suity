@@ -17,7 +17,7 @@ namespace Suity.Editor.Flows.AIGC;
 [DisplayText("AIGC Workflow", "*CoreIcon|Workflow")]
 [ToolTipsText("AIGC workflow starting node")]
 [NativeAlias("Suity.Editor.AIGC.Flows.WorkflowNode")]
-public class WorkflowNode : DesignFlowNode, IAigcRunWorkflow, IWorkflowSetup
+public class WorkflowNode : DesignFlowNode, IFlowRunnable, IWorkflowSetup
 {
     private readonly FlowNodeConnector _begin;
     private readonly FlowNodeConnector _prompt;

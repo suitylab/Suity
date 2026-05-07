@@ -35,7 +35,7 @@ public class WorkflowChatProvider : StandaloneAsset<ILLmChatProvider>, ILLmChatP
 
         if (option.Runnable is not { } runnable)
         {
-            throw new AigcException($"{typeof(IAigcRunWorkflow)} not found.");
+            throw new AigcException($"{typeof(IFlowRunnable)} not found.");
         }
 
         return new WorkflowChat(runnable, context);
@@ -52,14 +52,14 @@ internal class WorkflowChat : BaseFlowChat
     /// <summary>
     /// Gets the runnable workflow interface.
     /// </summary>
-    public IAigcRunWorkflow Runnable { get; }
+    public IFlowRunnable Runnable { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="WorkflowChat"/> class.
     /// </summary>
     /// <param name="runnable">The runnable workflow.</param>
     /// <param name="context">Optional function context.</param>
-    public WorkflowChat(IAigcRunWorkflow runnable, FunctionContext context = null)
+    public WorkflowChat(IFlowRunnable runnable, FunctionContext context = null)
         : base(runnable.Name, runnable.ToDisplayTextL(), context)
     {
         Runnable = runnable ?? throw new System.ArgumentNullException(nameof(runnable));

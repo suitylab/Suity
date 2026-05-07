@@ -1,23 +1,9 @@
 ﻿using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Assistants;
-using Suity.Views.Named;
 using System;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.Flows.AIGC;
-
-/// <summary>
-/// Interface for AI-generated content (AIGC) workflow execution that extends INamed interface
-/// </summary>
-public interface IAigcRunWorkflow : INamed
-{
-    /// <summary>
-    /// Gets the starter node of the workflow
-    /// </summary>
-    /// <param name="ctx">The function context containing necessary information for workflow execution</param>
-    /// <returns>The starting flow node of the workflow</returns>
-    FlowNode GetStarterNode(FunctionContext ctx);
-}
 
 /// <summary>
 /// Interface for executing AI-generated content workflows
@@ -46,7 +32,7 @@ public class AigcWorkflowOption
     /// <summary>
     /// Gets or sets the runnable workflow implementation
     /// </summary>
-    public IAigcRunWorkflow Runnable { get; set; }
+    public IFlowRunnable Runnable { get; set; }
 
     /// <summary>
     /// Gets or sets the view component for the workflow visualization

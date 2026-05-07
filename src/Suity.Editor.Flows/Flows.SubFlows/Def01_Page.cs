@@ -17,12 +17,12 @@ namespace Suity.Editor.Flows.SubFlows;
 #region SubflowDefinitionNode
 
 /// <summary>
-/// AIGC interactive page definition node that can act as a group and page.
+/// Sub-flow interactive page definition node that can act as a group and page.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.Page)]
-[DisplayText("AIGC Page", "*CoreIcon|Page")]
+[DisplayText("Sub-flow Page", "*CoreIcon|Page")]
 [DisplayOrder(5000)]
-[ToolTipsText("AIGC interactive page definition")]
+[ToolTipsText("Sub-flow interactive page definition")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionNode")]
 public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
 {
@@ -232,7 +232,7 @@ public class SubFlowDefinitionDiagramItem : FlowDiagramItem<SubflowDefinitionNod
 /// <summary>
 /// Asset representing a page definition that can be used as a tool.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Page Definition", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
+[NativeType(CodeBase = "AIGC", Description = "Sub-flow Definition", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
 public class SubFlowDefinitionAsset : Asset, ISubFlowDefAsset, ISubFlowAsset
 {
     /// <inheritdoc/>
@@ -252,7 +252,7 @@ public class SubFlowDefinitionAsset : Asset, ISubFlowDefAsset, ISubFlowAsset
     /// <returns>The <see cref="SubFlowDefinitionDiagramItem"/>, or null.</returns>
     public SubFlowDefinitionDiagramItem GetDiagramItem() => this.GetStorageObject(true) as SubFlowDefinitionDiagramItem;
 
-    #region IAigcToolAsset
+    #region ISubFlowAsset
 
     /// <inheritdoc/>
     public bool IsStartupPage => false;
@@ -286,12 +286,12 @@ public class SubFlowDefinitionAssetBuilder : AssetBuilder<SubFlowDefinitionAsset
 #region SubflowBranchNode
 
 /// <summary>
-/// AIGC interactive page's detached extension sub-page node.
+/// Sub-flow interactive page's detached extension sub-page node.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.Page)]
-[DisplayText("AIGC Sub Page", "*CoreIcon|Page")]
+[DisplayText("Sub-flow Branch Page", "*CoreIcon|Page")]
 [DisplayOrder(4999)]
-[ToolTipsText("AIGC interactive page's detached extension page")]
+[ToolTipsText("Sub-flow interactive page's detached branch page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubNode")]
 public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
 {
@@ -436,7 +436,7 @@ public class SubflowBranchDiagramItem : FlowDiagramItem<SubflowBranchNode>
 #region PageResultNode
 
 /// <summary>
-/// AIGC interactive page's detached result page node.
+/// Sub-flow interactive page's detached result page node.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.Page)]
 [DisplayText("AIGC Result Page", "*CoreIcon|CheckList")]
@@ -552,7 +552,7 @@ public class SubFlowResultDiagramItem : FlowDiagramItem<SubFlowResultNode>
 /// <summary>
 /// Converts a <see cref="SubFlowDefinitionAsset"/> to an <see cref="ISubFlowDef"/>.
 /// </summary>
-public class SubFlowDefinitionAssetToIAigcPageConverter : AssetLinkToTypeConverter<SubFlowDefinitionAsset, ISubFlowDef>
+public class SubFlowDefinitionAssetToISubFlowDefConverter : AssetLinkToTypeConverter<SubFlowDefinitionAsset, ISubFlowDef>
 {
     /// <inheritdoc/>
     public override ISubFlowDef Convert(SubFlowDefinitionAsset objFrom)
@@ -564,7 +564,7 @@ public class SubFlowDefinitionAssetToIAigcPageConverter : AssetLinkToTypeConvert
 /// <summary>
 /// Converts an <see cref="ISubFlowDef"/> to a <see cref="SubFlowDefinitionAsset"/>.
 /// </summary>
-public class IAigcPageToSubFlowDefinitionAssetConverter : TypeToAssetLinkConverter<ISubFlowDef, SubFlowDefinitionAsset>
+public class ISubFlowDefToSubFlowDefinitionAssetConverter : TypeToAssetLinkConverter<ISubFlowDef, SubFlowDefinitionAsset>
 {
     /// <inheritdoc/>
     public override SubFlowDefinitionAsset Convert(ISubFlowDef objFroms)
@@ -644,7 +644,7 @@ public class SubFlowDefinitionAssetArrayToTextConverter : AssetLinkArrayToTextCo
 /// <summary>
 /// Converts an <see cref="ISubFlowAsset"/> to a text representation of its page instance.
 /// </summary>
-public class IAigcSkillToTextConverter : TypeToTextConverter<ISubFlowAsset>
+public class ISubFlowAssetToTextConverter : TypeToTextConverter<ISubFlowAsset>
 {
     /// <inheritdoc/>
     public override string Convert(ISubFlowAsset objFrom)
@@ -669,7 +669,7 @@ public class IAigcSkillToTextConverter : TypeToTextConverter<ISubFlowAsset>
 /// <summary>
 /// Converts an array of <see cref="ISubFlowAsset"/> to a combined text representation.
 /// </summary>
-public class IAigcSkillArrayToTextConverter : AssetLinkArrayToTextConverter<ISubFlowAsset>
+public class ISubFlowAssetArrayToTextConverter : AssetLinkArrayToTextConverter<ISubFlowAsset>
 {
     /// <inheritdoc/>
     public override string Convert(ISubFlowAsset[] objFroms)

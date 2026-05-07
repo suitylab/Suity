@@ -118,7 +118,7 @@ internal class LLmServiceBK : LLmService
     }
 
     /// <inheritdoc/>
-    public override Task<object> StartWorkflowChat(IAigcRunWorkflow runnable, IFlowView view = null, Action<IFlowComputation> config = null)
+    public override Task<object> StartWorkflowChat(IFlowRunnable runnable, IFlowView view = null, Action<IFlowComputation> config = null)
     {
         //EditorUtility.CloseToolWindow(AigcStartupWindow.Instance);
         EditorUtility.ShowToolWindow(AigcChatToolWindow.Instance);
@@ -127,7 +127,7 @@ internal class LLmServiceBK : LLmService
     }
 
     /// <inheritdoc/>
-    public override Task<object> StartWorkflowTask(AIRequest request, IAigcRunWorkflow runnable, IFlowView view = null, Action<IFlowComputation> config = null)
+    public override Task<object> StartWorkflowTask(AIRequest request, IFlowRunnable runnable, IFlowView view = null, Action<IFlowComputation> config = null)
     {
         var option = new AigcWorkflowOption
         {

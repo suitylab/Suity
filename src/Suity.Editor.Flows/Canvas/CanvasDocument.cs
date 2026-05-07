@@ -175,7 +175,7 @@ public class CanvasDocument : FlowDocument<CanvasAssetBuilder>,
             ?? throw new NullReferenceException(errMsg);
 
         var node = this.CreateAssetNode(asset, size)
-            ?? throw new AigcException(L("Failed to create canvas node."));
+            ?? throw new InvalidOperationException(L("Failed to create canvas node."));
 
         this.MarkDirty(this);
 

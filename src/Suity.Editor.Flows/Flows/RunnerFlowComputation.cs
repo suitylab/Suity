@@ -7,22 +7,6 @@ using System.Threading.Tasks;
 namespace Suity.Editor.Flows;
 
 /// <summary>
-/// Interface for running flow nodes asynchronously, extending the flow computation with execution capabilities.
-/// </summary>
-public interface IFlowNodeRunner : IFlowComputation, IDisposable
-{
-    /// <summary>
-    /// Runs the starter node of the workflow.
-    /// </summary>
-    /// <param name="starterNode">The node to start execution from.</param>
-    /// <param name="connector">Optional connector to start from.</param>
-    /// <param name="msg">Optional message to pass as input.</param>
-    /// <param name="cancel">Cancellation token.</param>
-    /// <returns>A task representing the asynchronous operation, returning the result connector.</returns>
-    Task<object> RunStarterNode(FlowNode starterNode, FlowNodeConnector connector = null, string msg = null, CancellationToken cancel = default);
-}
-
-/// <summary>
 /// Computation engine for runner flow execution, handling node running and conversation integration.
 /// </summary>
 public class RunnerFlowComputation : FlowComputationAsync, IFlowNodeRunner

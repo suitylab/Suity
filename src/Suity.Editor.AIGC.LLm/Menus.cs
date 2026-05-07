@@ -39,7 +39,7 @@ public class RunWorkflowMenu : MenuCommand
             return;
         }
 
-        Visible = (Selection?.FirstOrDefault() as IFlowViewNode)?.Node is IAigcRunWorkflow;
+        Visible = (Selection?.FirstOrDefault() as IFlowViewNode)?.Node is IFlowRunnable;
     }
 
     /// <inheritdoc/>
@@ -50,7 +50,7 @@ public class RunWorkflowMenu : MenuCommand
             return;
         }
 
-        if (viewNode?.Node is not IAigcRunWorkflow runnable)
+        if (viewNode?.Node is not IFlowRunnable runnable)
         {
             return;
         }

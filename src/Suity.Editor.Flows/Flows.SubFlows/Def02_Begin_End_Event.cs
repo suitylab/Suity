@@ -1,6 +1,5 @@
 using Suity.Collections;
 using Suity.Drawing;
-using Suity.Editor.Flows.AIGC;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -26,7 +25,7 @@ namespace Suity.Editor.Flows.SubFlows;
 [DisplayOrder(4000)]
 [ToolTipsText("Provides action start support for AIGC pages, such as button clicks, etc.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageBeginNode")]
-public class SubFlowBeginNode : SubFlowTypeNode, IAigcRunWorkflow
+public class SubFlowBeginNode : SubFlowTypeNode, IFlowRunnable
 {
     private FlowNodeConnector _begin;
 
@@ -156,7 +155,7 @@ public class SubFlowBeginDiagramItem : FlowDiagramItem<SubFlowBeginNode>, ISubFl
 [DisplayOrder(3800)]
 [ToolTipsText("Provides event trigger support for task pages, such as event startup, etc.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageEventNode")]
-public class PageEventNode : SubFlowTypeNode, IAigcRunWorkflow
+public class PageEventNode : SubFlowTypeNode, IFlowRunnable
 {
     private FlowNodeConnector _begin;
 
