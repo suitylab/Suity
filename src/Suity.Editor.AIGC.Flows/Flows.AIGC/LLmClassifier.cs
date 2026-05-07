@@ -1,6 +1,6 @@
 using Suity.Drawing;
+using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Helpers;
-using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// Node that calls an LLM to classify input text into predefined categories.

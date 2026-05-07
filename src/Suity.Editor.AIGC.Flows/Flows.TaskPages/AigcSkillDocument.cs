@@ -16,8 +16,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.AIGC;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.TaskPages;
 
 /// <summary>
 /// Document representing an AIGC skill, containing page definitions, tools, and configuration.

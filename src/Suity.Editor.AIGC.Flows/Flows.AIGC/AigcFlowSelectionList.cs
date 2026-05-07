@@ -1,10 +1,9 @@
-using Suity.Editor.AIGC.Flows.Pages;
-using Suity.Editor.Flows;
 using Suity.Editor.Flows.Nodes;
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.TaskPages;
 using Suity.Editor.Flows.WorkSpaces;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// Selection list containing all available AIGC flow nodes for the node factory palette.
@@ -27,7 +26,7 @@ internal class AigcFlowSelectionList : FlowNodeSelectionNode
 
         AddDerived<AigcFlowNode>();
         AddDerived<SubFlowNode>();
-        AddDerived<AigcPageNode>();
+        AddDerived<TaskPageNode>();
         AddDerived<AigcXmlNode>();
         //AddDerived<AigcAgentNode>();
         AddDerived<AigcArticleNode>();

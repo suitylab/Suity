@@ -1,9 +1,7 @@
-using System.Threading.Tasks;
-using System.Threading;
+using Suity.Editor.AIGC;
 using System;
-using Suity.Editor.Flows;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 
 /// <summary>

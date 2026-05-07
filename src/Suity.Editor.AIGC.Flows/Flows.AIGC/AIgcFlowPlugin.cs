@@ -2,7 +2,7 @@ using Suity.Drawing;
 using Suity.Synchonizing;
 using Suity.Views;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// Plugin for configuring AIGC workflow settings and behavior.

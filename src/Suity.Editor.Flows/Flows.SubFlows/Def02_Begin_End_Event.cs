@@ -3,6 +3,7 @@ using Suity.Drawing;
 using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Flows;
 using Suity.Editor.AIGC.TaskPages;
+using Suity.Editor.Flows.AIGC;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Services;
 using Suity.Editor.Types;

@@ -1,10 +1,10 @@
-﻿using Suity.Editor.AIGC.Assistants;
-using Suity.Editor.Flows;
+﻿using Suity.Editor.AIGC;
+using Suity.Editor.AIGC.Assistants;
 using Suity.Views.Named;
 using System;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// Interface for AI-generated content (AIGC) workflow execution that extends INamed interface

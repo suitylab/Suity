@@ -3,7 +3,7 @@ using Suity.Editor.Documents;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// AIGC Flow document type for creating and editing AI workflow diagrams.

@@ -1,7 +1,6 @@
+using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Assistants;
-using Suity.Editor.Flows;
 using Suity.Editor.Selecting;
-using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -11,7 +10,7 @@ using System;
 using System.Linq;
 
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 #region ReplaceOnePrompt
 

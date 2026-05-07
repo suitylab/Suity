@@ -1,5 +1,4 @@
 using Suity.Editor.AIGC.Helpers;
-using Suity.Editor.Flows;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Helpers;
@@ -8,7 +7,7 @@ using Suity.Views;
 using System;
 using System.Linq;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// Base class for XML-related AIGC flow nodes.

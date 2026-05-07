@@ -1,10 +1,10 @@
 using Suity;
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.Design;
 using Suity.Editor.Expressions;
-using Suity.Editor.Flows;
 using Suity.Editor.Selecting;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
@@ -17,7 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 #region GetGlobalLLmModel
 

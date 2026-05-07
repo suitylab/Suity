@@ -1,3 +1,4 @@
+using Suity.Editor.AIGC;
 using Suity.Editor.Flows;
 using Suity.Views;
 using Suity.Views.Im;
@@ -5,7 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// Base class for flow-based chat interactions, managing workflow execution and conversation handling.

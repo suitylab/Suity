@@ -1,8 +1,7 @@
-using Suity.Editor.Flows;
 using Suity.Editor.Helpers;
 using Suity.Editor.Types;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// Node that extracts text from the first code block in Markdown text.

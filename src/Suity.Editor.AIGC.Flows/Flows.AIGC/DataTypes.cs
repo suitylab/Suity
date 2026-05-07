@@ -2,7 +2,7 @@ using Suity.Drawing;
 using Suity.Editor.Flows.Gui;
 using System.Drawing;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// Custom graph data type for conversation threads, with magenta-colored connectors.

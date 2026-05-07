@@ -1,5 +1,4 @@
 using Suity.Editor.AIGC.Helpers;
-using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -7,7 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 #region WorkflowLog
 

@@ -1,5 +1,5 @@
+using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
@@ -7,7 +7,7 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.TaskPages;
 
 #region GetTaskWorkSpace
 /// <summary>
@@ -16,8 +16,8 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Task WorkSpace", "*CoreIcon|WorkSpace")]
-[NativeAlias("Suity.Editor.AIGC.Flows.GetTaskWorkSpace")]
-public class GetTaskWorkSpace : AigcPageNode
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskWorkSpace")]
+public class GetTaskWorkSpace : TaskPageNode
 {
     readonly FlowNodeConnector _taskWorkSpace;
 
@@ -51,8 +51,8 @@ public class GetTaskWorkSpace : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = true)]
 [DisplayText("Create Task WorkSpace", "*CoreIcon|WorkSpace")]
-[NativeAlias("Suity.Editor.AIGC.Flows.CreateTaskWorkSpace")]
-public class CreateTaskWorkSpace : AigcPageNode
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.CreateTaskWorkSpace")]
+public class CreateTaskWorkSpace : TaskPageNode
 {
     readonly FlowNodeConnector _in;
 

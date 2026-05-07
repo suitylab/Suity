@@ -1,10 +1,9 @@
 using Suity.Drawing;
-using Suity.Editor.Flows;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// Base class for all AIGC flow nodes, providing async computation support.

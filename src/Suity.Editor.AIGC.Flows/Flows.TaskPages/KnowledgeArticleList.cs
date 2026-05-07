@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.TaskPages;
 
 /// <summary>
 /// Represents a single knowledge article item within a knowledge article list,

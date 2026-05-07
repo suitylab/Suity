@@ -1,14 +1,12 @@
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Documents;
-using Suity.Editor.Flows;
 using Suity.Editor.Flows.Nodes;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Selecting;
 using Suity.Views;
 using System;
-using System.Drawing;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// Base class for AIGC flowchart documents, providing common functionality for agent and tool flowcharts.

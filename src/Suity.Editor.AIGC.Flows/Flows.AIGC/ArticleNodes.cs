@@ -1,8 +1,6 @@
-using Suity;
 using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
-using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Selecting;
 using Suity.Synchonizing;
@@ -15,7 +13,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// Base class for article-related AIGC flow nodes.

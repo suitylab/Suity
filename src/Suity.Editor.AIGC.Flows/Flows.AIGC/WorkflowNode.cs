@@ -1,12 +1,12 @@
 using Suity.Drawing;
-using Suity.Editor.Flows;
+using Suity.Editor.AIGC;
 using Suity.Editor.Selecting;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 #region WorkflowNode
 

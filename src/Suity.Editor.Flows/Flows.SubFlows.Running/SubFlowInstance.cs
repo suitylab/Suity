@@ -7,6 +7,7 @@ using Suity.Editor.AIGC.Flows;
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Design;
+using Suity.Editor.Flows.AIGC;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;

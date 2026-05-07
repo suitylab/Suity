@@ -1,7 +1,7 @@
-using Suity.Editor.Flows;
+using Suity.Editor.AIGC;
 using Suity.Editor.Types;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows.AIGC;
 
 /// <summary>
 /// Asset provider for creating workflow-based chat instances.
