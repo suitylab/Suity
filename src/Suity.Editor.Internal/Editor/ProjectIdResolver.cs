@@ -349,7 +349,7 @@ internal class ProjectIdResolver : IObjectIdResolver
                 {
                     _ids.Add(id);
                     _dic[key] = id;
-                    RecordRevert(id, key);
+                    // RecordRevert(id, key);
 
                     EditorServices.SystemLog.AddLog($"Recover resolved id : {key}");
                     return id;
@@ -483,7 +483,8 @@ internal class ProjectIdResolver : IObjectIdResolver
     /// </summary>
     /// <param name="key">The key string to record.</param>
     /// <param name="id">The <see cref="Guid"/> to associate with the key.</param>
-    public void Record(string key, Guid id)
+    /// <param name="reverse">Reverse record the id to key mapping.</param>
+    public void Record(string key, Guid id, bool reverse = true)
     {
         if (string.IsNullOrEmpty(key))
         {
@@ -500,7 +501,10 @@ internal class ProjectIdResolver : IObjectIdResolver
                 if (current != id)
                 {
                     _dic[key] = id;
-                    RecordRevert(id, key);
+                    if (reverse)
+                    {
+                        RecordRevert(id, key);
+                    }
                     _ids.Add(id);
 
                     var record = _record.FindOne(x => x.Path == key) ?? new ObjectIdRecord { Path = key };

@@ -117,6 +117,8 @@ public abstract class EditorObjectManager
     public abstract FieldObjectCollection<T> CreateFieldCollection<T>(EditorObject owner)
         where T : FieldObject, new();
 
+    internal abstract void RegisterSystemAlias(Guid id, EditorObject obj);
+
     /// <summary>
     /// Executes an action while temporarily disabling watching.
     /// </summary>

@@ -201,7 +201,8 @@ public static class GlobalIdResolver
     /// </summary>
     /// <param name="key">The string key to record.</param>
     /// <param name="id">The GUID identifier to associate with the key.</param>
-    internal static void Record(string key, Guid id)
+    /// <param name="reverseRecord">Reverse records GUID-to-key mapping</param>
+    internal static void Record(string key, Guid id, bool reverse = true)
     {
         if (string.IsNullOrEmpty(key))
         {
@@ -215,7 +216,7 @@ public static class GlobalIdResolver
 
         if (_current != null)
         {
-            _current.Record(key, id);
+            _current.Record(key, id, reverse);
             return;
         }
 

@@ -4,7 +4,7 @@ using Suity.NodeQuery;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Linq;
 
 namespace Suity.Editor.Types;
 
@@ -393,6 +393,40 @@ public class DNativeType : DType, INativeType
         }
 
         return _type.IsAssignableFrom(otherType);
+    }
+
+    protected override void OnAssetActivate(string assetKey)
+    {
+        base.OnAssetActivate(assetKey);
+
+        Guid id = this.Id;
+        if (id != Guid.Empty)
+        {
+            //if (_alias != null)
+            //{
+            //    foreach (var alias in _alias)
+            //    {
+            //        GlobalIdResolver.Record(alias, id, false);
+            //    }
+            //}
+
+            var aliasAttrs = _type.GetAttributesCached<NativeAliasAttribute>();
+            if (aliasAttrs.Any())
+            {
+                foreach (var alias in aliasAttrs)
+                {
+                    if (!string.IsNullOrWhiteSpace(alias.AliasName))
+                    {
+                        var legacyId = GlobalIdResolver.Resolve(alias.AliasName);
+                        if (legacyId != Guid.Empty)
+                        {
+                            //GlobalIdResolver.Record(alias.AliasName, id, false);
+                            EditorObjectManager.Instance.RegisterSystemAlias(legacyId, this);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

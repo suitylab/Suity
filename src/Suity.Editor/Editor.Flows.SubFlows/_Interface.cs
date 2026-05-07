@@ -106,8 +106,9 @@ public interface ISubFlowElement : INamed
 /// <summary>
 /// Represents an instance of an AIGC page, providing access to its definition, skill, tool asset, elements, and parameters.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "AIGC Page Instance", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
+[NativeType(CodeBase = "AIGC", Description = "Sub-flow Instance", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.TaskPages.IAigcPageInstance")]
+[NativeAlias("*AIGC|IAigcPageInstance")]
 public interface ISubFlowInstance : ISubFlowElement
 {
     /// <summary>

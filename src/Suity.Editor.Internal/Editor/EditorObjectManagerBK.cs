@@ -162,4 +162,10 @@ internal class EditorObjectManagerBK : EditorObjectManager
     {
         return new FieldObjectCollectionBK<T>(owner);
     }
+
+    internal override void RegisterSystemAlias(Guid id, EditorObject obj)
+    {
+        EnsureEntry(id).AddObject(obj);
+    }
+
 }

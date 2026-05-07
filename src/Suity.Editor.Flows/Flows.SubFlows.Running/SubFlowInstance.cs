@@ -27,6 +27,7 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 /// Represents an instance of a sub-graph within a flow, managing page elements, parameters, and computation context.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Sub-Graph Instance", Icon = "*CoreIcon|Page")]
+[NativeAlias("Suity.Editor.AIGC.TaskPages.Running.AigcPageInstance")]
 public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInstance
 {
 

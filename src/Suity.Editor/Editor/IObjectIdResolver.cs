@@ -51,7 +51,8 @@ public interface IObjectIdResolver
     /// </summary>
     /// <param name="key">The string key.</param>
     /// <param name="id">The GUID to associate with the key.</param>
-    void Record(string key, Guid id);
+    /// <param name="reverse">Whether to record the reverse mapping.</param>
+    void Record(string key, Guid id, bool reverse = true);
 
     /// <summary>
     /// Renames a key while preserving its associated GUID.
@@ -89,7 +90,8 @@ public class DefaultObjectIdResolver : IObjectIdResolver
     /// </summary>
     /// <param name="key">The string key.</param>
     /// <param name="id">The GUID to associate with the key.</param>
-    public void Record(string key, Guid id)
+    /// <param name="reverse">Whether to record the reverse mapping.</param>
+    public void Record(string key, Guid id, bool reverse = true)
     {
         lock (_syncRoot)
         {
