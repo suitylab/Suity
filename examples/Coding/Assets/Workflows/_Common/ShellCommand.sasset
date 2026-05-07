@@ -6,10 +6,10 @@
   </Description>
   <Icon />
   <Nodes>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageDefinitionDiagramItem" X="-280" Y="-70" Width="140" Height="120">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-280" Y="-70" Width="140" Height="120">
       <Name>ShellCommand</Name>
       <AssetId>c36df34f-f6ad-4ace-bc2f-a01013c33a18</AssetId>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageDefinitionNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
         <Name>ShellCommand</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
@@ -24,9 +24,9 @@
         <Tools />
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageResultDiagramItem" X="180" Y="-70" Width="140" Height="120">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="180" Y="-70" Width="140" Height="120">
       <Name>ShellCommandEnd</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageResultNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
         <Name>ShellCommandEnd</Name>
         <Description>
         </Description>
@@ -34,9 +34,9 @@
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-270" Y="-20" Width="52" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-270" Y="-20" Width="52" Height="17">
       <Name>Command</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
         <Name>Command</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -48,18 +48,18 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageEndDiagramItem" X="190" Y="-30" Width="58" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="190" Y="-30" Width="58" Height="17">
       <Name>OnComplete</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageEndNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
         <Name>OnComplete</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterOutputItem" X="190" Y="-10" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="190" Y="-10" Width="44" Height="17">
       <Name>Output</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterOutputNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
         <Name>Output</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -75,9 +75,9 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-50" Width="136" Height="74">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-50" Width="140" Height="78">
       <Name>###RunShellCommand01</Name>
-      <Node type="Suity.Editor.AIGC.FLows.External.RunShellCommand">
+      <Node type="Suity.Editor.Flows.Nodes.RunShellCommand">
         <Command>
         </Command>
         <WorkingDirectory>
@@ -86,17 +86,17 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-80" Width="94" Height="17">
       <Name>###GetWorkSpaceDirectory01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.WorkSpaces.GetWorkSpaceDirectory">
+      <Node type="Suity.Editor.Flows.WorkSpaces.GetWorkSpaceDirectory">
         <WorkSpace />
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-110" Width="59" Height="17">
       <Name>###GetTaskWorkSpace01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.GetTaskWorkSpace" />
+      <Node type="Suity.Editor.Flows.TaskPages.GetTaskWorkSpace" />
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageBeginDiagramItem" X="-270" Y="-40" Width="46" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowBeginDiagramItem" X="-270" Y="-40" Width="46" Height="17">
       <Name>OnStart</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageBeginNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowBeginNode">
         <Name>OnStart</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />

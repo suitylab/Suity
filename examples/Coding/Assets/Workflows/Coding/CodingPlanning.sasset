@@ -6,10 +6,10 @@
   </Description>
   <Icon />
   <Nodes>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageDefinitionDiagramItem" X="-420" Y="-110" Width="200" Height="120">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-420" Y="-110" Width="200" Height="120">
       <Name>CodePlanning</Name>
       <AssetId>0b58628b-6881-4951-9428-cbfe5d186435</AssetId>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageDefinitionNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
         <Name>CodePlanning</Name>
         <Description>
         </Description>
@@ -29,9 +29,9 @@
         <UseParentArticle>True</UseParentArticle>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageResultDiagramItem" X="500" Y="140" Width="140" Height="110">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="500" Y="140" Width="140" Height="110">
       <Name>CodePlanningResult</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageResultNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
         <Name>CodePlanningResult</Name>
         <Description>
         </Description>
@@ -39,9 +39,9 @@
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-410" Y="-40" Width="59" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-410" Y="-40" Width="59" Height="17">
       <Name>Requirement</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
         <Name>Requirement</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
@@ -64,9 +64,9 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageEventDiagramItem" X="-410" Y="-20" Width="60" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-410" Y="-20" Width="60" Height="17">
       <Name>FileSpecStart</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageEventNode">
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
         <Name>FileSpecStart</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -75,9 +75,9 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="140" Width="136" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="140" Width="136" Height="111">
       <Name>###CallLLm01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.CallLLm">
+      <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
         </DialogName>
         <ChatModel />
@@ -88,11 +88,11 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="230" Width="44" Height="17">
       <Name>###GetSpeechLanguage01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.GetSpeechLanguage" />
+      <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-410" Y="-60" Width="59" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-410" Y="-60" Width="59" Height="17">
       <Name>ProjectName</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
         <Name>ProjectName</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
@@ -111,9 +111,9 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="150" Width="103" Height="85">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="150" Width="107" Height="89">
       <Name>###BuildPrompts01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.BuildPrompt">
+      <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
           <Id>b7afaec3-7741-4ac4-af8b-3dc41b8f5397</Id>
         </PromptTemplate>
@@ -127,9 +127,9 @@
         <UpdateKeywords>False</UpdateKeywords>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageCommitDiagramItem" X="510" Y="180" Width="58" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="510" Y="180" Width="58" Height="17">
       <Name>PlanningEnd</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageCommitNode">
+      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
         <Name>PlanningEnd</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -137,9 +137,9 @@
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageArticleOutputItem" X="510" Y="200" Width="78" Height="25">
+    <Item type="Suity.Editor.Flows.SubFlows.PageArticleOutputItem" X="510" Y="200" Width="78" Height="25">
       <Name>RequirementDocument</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageArticleOutputNode">
+      <Node type="Suity.Editor.Flows.SubFlows.PageArticleOutputNode">
         <Name>RequirementDocument</Name>
         <Description>
         </Description>
@@ -161,19 +161,19 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="240" Y="220" Width="86" Height="25">
       <Name>###PageParameterRefNode01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterReference">
+      <Node type="Suity.Editor.Flows.TaskPages.PageParameterReference">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>356b2763-5681-445d-946c-09831536f55d</Id>
         </ValueType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="360" Y="250" Width="91" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="360" Y="250" Width="95" Height="111">
       <Name>###SetArticle01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.SetArticle" />
+      <Node type="Suity.Editor.Flows.AIGC.SetArticle" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="290" Width="115" Height="74">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="290" Width="119" Height="78">
       <Name>###ExtractXmlsTagNode01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.ExtractXmlsTagNode">
+      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagNode">
         <TagNames>
           <Item>thought</Item>
           <Item>requirement</Item>
@@ -183,15 +183,15 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="260" Y="330" Width="28" Height="17">
       <Name>###GetXmlTagContentNode01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.GetXmlTagContentNode" />
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="260" Y="350" Width="28" Height="17">
       <Name>###GetXmlTagContentNode02</Name>
-      <Node type="Suity.Editor.AIGC.Flows.GetXmlTagContentNode" />
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem" X="-410" Y="-80" Width="63" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-410" Y="-80" Width="63" Height="17">
       <Name>LanguageRule</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
         <Name>LanguageRule</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
@@ -212,19 +212,19 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="-290" Width="91" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="-290" Width="95" Height="111">
       <Name>###SetArticle02</Name>
-      <Node type="Suity.Editor.AIGC.Flows.SetArticle" />
+      <Node type="Suity.Editor.Flows.AIGC.SetArticle" />
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="-170" Width="75" Height="28">
       <Name>###GetTaskArticle01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.GetTaskArticle">
+      <Node type="Suity.Editor.Flows.TaskPages.GetTaskArticle">
         <AutoCreate>True</AutoCreate>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="20" Y="-160" Width="145" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="20" Y="-160" Width="149" Height="56">
       <Name>###AddKnowledgeArticle01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.AddKnowledgeArticle" />
+      <Node type="Suity.Editor.Flows.TaskPages.AddKnowledgeArticle" />
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-90" Y="-320" Width="269" Height="226">
       <Name>###GroupFlowNode01</Name>
@@ -233,9 +233,9 @@
         <Icon />
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageSubDiagramItem" X="-420" Y="130" Width="200" Height="140">
+    <Item type="Suity.Editor.Flows.SubFlows.SubflowBranchDiagramItem" X="-420" Y="130" Width="200" Height="140">
       <Name>###PageSubNode01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageSubNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowBranchNode">
         <Name>###PageSubNode01</Name>
         <Description>Sub Page</Description>
         <Icon />
@@ -245,9 +245,9 @@
         </Page>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageEventDiagramItem" X="-410" Y="160" Width="76" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-410" Y="160" Width="76" Height="17">
       <Name>SubTaskCompleted</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageEventNode">
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
         <Name>SubTaskCompleted</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -257,9 +257,9 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-70" Width="194" Height="74">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-70" Width="198" Height="78">
       <Name>###CreateToolCallingWithParameter01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.CreateToolCallingWithParameter">
+      <Node type="Suity.Editor.Flows.TaskPages.CreateToolCallingWithParameter">
         <ToolDefinition>
           <Id>adf7cd73-9d41-448a-a65f-8c80c23d8030</Id>
         </ToolDefinition>
@@ -292,11 +292,11 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="40" Width="79" Height="17">
       <Name>###GetCurrentTaskPrompt01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.GetCurrentTaskPrompt" />
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskPrompt" />
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageResultDiagramItem" X="400" Y="-80" Width="140" Height="110">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="400" Y="-80" Width="140" Height="110">
       <Name>CreateAskResult</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageResultNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
         <Name>CreateAskResult</Name>
         <Description>
         </Description>
@@ -304,18 +304,18 @@
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageCommitDiagramItem" X="410" Y="-40" Width="45" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="410" Y="-40" Width="45" Height="17">
       <Name>AskEnd</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageCommitNode">
+      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
         <Name>AskEnd</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="220" Y="-70" Width="130" Height="96">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="220" Y="-70" Width="134" Height="100">
       <Name>###AddSubTaskPage01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.AddSubTaskPage">
+      <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
         <PageTitle>
         </PageTitle>
         <TaskPrompt />
@@ -323,9 +323,9 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Flows.Pages.PageSubTaskOutputItem" X="410" Y="-20" Width="79" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageSubTaskOutputItem" X="410" Y="-20" Width="79" Height="17">
       <Name>QuestionsAndAnswers</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.PageSubTaskOutputNode">
+      <Node type="Suity.Editor.Flows.SubFlows.PageSubTaskOutputNode">
         <Name>QuestionsAndAnswers</Name>
         <Description>Questions and answers</Description>
         <Icon />
@@ -336,13 +336,13 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="100" Width="95" Height="28">
       <Name>###GetSubTaskCommit01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.GetSubTaskCommit">
+      <Node type="Suity.Editor.Flows.TaskPages.GetSubTaskCommit">
         <AllSubTasks>True</AllSubTasks>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="80" Width="49" Height="17">
       <Name>###GetCurrentTask01</Name>
-      <Node type="Suity.Editor.AIGC.Flows.Pages.GetCurrentTask" />
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTask" />
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
