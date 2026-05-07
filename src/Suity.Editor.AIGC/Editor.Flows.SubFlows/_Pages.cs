@@ -1,7 +1,7 @@
 using Suity.Editor.Flows;
 using Suity.Editor.Types;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.Flows.SubFlows;
 
 /// <summary>
 /// Represents the completion state of a page.
@@ -27,7 +27,7 @@ public enum PageCompleteState
 /// <summary>
 /// Represents a page value element that holds a typed parameter value.
 /// </summary>
-public interface IPageValueElement : ISubGraphElement
+public interface IPageValueElement : ISubFlowElement
 {
     /// <summary>
     /// Gets the type definition of the parameter.

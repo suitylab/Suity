@@ -1,6 +1,4 @@
 using Suity.Drawing;
-using Suity.Editor.AIGC;
-using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Services;
@@ -1118,7 +1116,7 @@ public class PageSubTaskOutputNode : SubFlowTypeNode
     /// </summary>
     public PageSubTaskOutputNode()
     {
-        TypeDef = TypeDefinition.FromNative<IAigcPageInstance>();
+        TypeDef = TypeDefinition.FromNative<ISubFlowInstance>();
 
         base.FlowNodeGui = OnGui;
         // Disable type editing
@@ -1172,7 +1170,7 @@ public class PageSubTaskOutputNode : SubFlowTypeNode
     /// <inheritdoc/>
     protected override void OnUpdateConnector()
     {
-        var type = TypeDefinition.FromNative<IAigcPageInstance>();
+        var type = TypeDefinition.FromNative<ISubFlowInstance>();
         if (_allSubTasks.Value)
         {
             type = type.MakeArrayType();

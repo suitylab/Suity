@@ -2,7 +2,6 @@ using LiteDB;
 using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
-using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
@@ -322,7 +321,7 @@ public class AigcTaskPage : DesignNode,
     /// <summary>
     /// Gets the page instance, ensuring it is built if necessary.
     /// </summary>
-    public IAigcPageInstance GetPageInstance() => EnsureInstance();
+    public ISubFlowInstance GetPageInstance() => EnsureInstance();
 
     /// <summary>
     /// Gets the task prompt, optionally including prompts from the parent hierarchy.
@@ -459,7 +458,7 @@ public class AigcTaskPage : DesignNode,
     /// <param name="taskPrompt">The prompt for the new task.</param>
     /// <param name="commitName">The commit name for the new task.</param>
     /// <returns>True if the task was successfully appended; otherwise, false.</returns>
-    public bool AppendTask(IAigcPageInstance pageInstance, string title, string taskPrompt, string commitName)
+    public bool AppendTask(ISubFlowInstance pageInstance, string title, string taskPrompt, string commitName)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -530,7 +529,7 @@ public class AigcTaskPage : DesignNode,
     /// <param name="taskPrompt">The prompt for the new sub-task.</param>
     /// <param name="commitName">The commit name for the new sub-task.</param>
     /// <returns>True if the sub-task was successfully added; otherwise, false.</returns>
-    public bool AddSubTask(IAigcPageInstance pageInstance, string title, string taskPrompt, string commitName)
+    public bool AddSubTask(ISubFlowInstance pageInstance, string title, string taskPrompt, string commitName)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -1360,7 +1359,7 @@ public class AigcTaskPage : DesignNode,
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
-    public AigcTaskPage CreateTaskPage(IAigcPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null)
+    public AigcTaskPage CreateTaskPage(ISubFlowInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -1438,7 +1437,7 @@ public class AigcTaskPage : DesignNode,
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="pageInstance"/> is null.</exception>
-    public static AigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, IAigcPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null)
+    public static AigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, ISubFlowInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null)
     {
         if (pageInstance is null)
         {

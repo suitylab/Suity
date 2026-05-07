@@ -1,9 +1,9 @@
 using Suity.Collections;
 using Suity.Drawing;
-using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
+using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -15,8 +15,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using Suity.Editor.Flows.SubFlows;
-using Suity.Editor.AIGC;
 
 namespace Suity.Editor.Flows.TaskPages;
 
@@ -38,7 +36,7 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
 
     private readonly ValueProperty<Color> _colorSelection = new("Color", "Color");
 
-    private readonly AssetProperty<IAigcPageDefinitionAsset> _baseFlow
+    private readonly AssetProperty<ISubFlowDefAsset> _baseFlow
         = new("BaseFlow", "Base Execution Flow");
 
     private readonly AssetListProperty<IAigcToolAsset> _tools
@@ -171,7 +169,7 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
     /// <summary>
     /// Gets the base execution flow page definition asset.
     /// </summary>
-    public IAigcPageDefinitionAsset BaseFlow => _baseFlow.Target;
+    public ISubFlowDefAsset BaseFlow => _baseFlow.Target;
 
     /// <summary>
     /// Gets the base execution flow as a diagram item.
@@ -385,7 +383,7 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.AigcSkillAssetBuilder")]
 public class AigcSkillAssetBuilder : AssetBuilder<AigcSkillAsset>
 {
-    IAigcPageDefinitionAsset _baseFlow;
+    ISubFlowDefAsset _baseFlow;
     bool _startupPage;
 
     /// <summary>
@@ -401,7 +399,7 @@ public class AigcSkillAssetBuilder : AssetBuilder<AigcSkillAsset>
     /// Sets the base execution flow for the skill asset.
     /// </summary>
     /// <param name="baseflow">The base flow page definition asset.</param>
-    public void SetBaseFlow(IAigcPageDefinitionAsset baseflow)
+    public void SetBaseFlow(ISubFlowDefAsset baseflow)
     {
         _baseFlow = baseflow;
         this.UpdateAuto(nameof(AigcSkillAsset.BaseFlow));
@@ -424,7 +422,7 @@ public class AigcSkillAssetBuilder : AssetBuilder<AigcSkillAsset>
 [NativeType(Name = "AigcSkillAsset", Description = "Skill Asset", CodeBase = "*AIGC", Icon = "*CoreIcon|Skil", Color = FlowColors.Agent)]
 public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToolAsset
 {
-    readonly EditorAssetRef<IAigcPageDefinitionAsset> _baseFlow = new();
+    readonly EditorAssetRef<ISubFlowDefAsset> _baseFlow = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AigcSkillAsset"/> class.
@@ -439,7 +437,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToo
     /// <summary>
     /// Gets the base execution flow page definition asset.
     /// </summary>
-    public IAigcPageDefinitionAsset BaseFlow
+    public ISubFlowDefAsset BaseFlow
     {
         get => _baseFlow.Target;
         internal set => _baseFlow.Target = value;
@@ -533,8 +531,8 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToo
     /// Creates a new page instance for this tool asset with the specified options.
     /// </summary>
     /// <param name="option">The page element options.</param>
-    /// <returns>A new <see cref="IAigcPageInstance"/>, or null if creation fails.</returns>
-    public IAigcPageInstance CreatePageInstance(PageElementOption option)
+    /// <returns>A new <see cref="ISubFlowInstance"/>, or null if creation fails.</returns>
+    public ISubFlowInstance CreatePageInstance(PageElementOption option)
     {
         if (this.GetDocument<AigcSkillDocument>() is not { } doc)
         {

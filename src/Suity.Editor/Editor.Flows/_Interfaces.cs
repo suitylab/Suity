@@ -1,11 +1,6 @@
 using Suity.Drawing;
-using Suity.Editor.AIGC;
-using Suity.Editor.Services;
-using Suity.Editor.Types;
 using Suity.Editor.Values;
-using Suity.Editor.WorkSpaces;
 using Suity.Views.Im;
-using Suity.Views.Named;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -995,29 +990,3 @@ public class FlowComputaionException : Exception
 
 #endregion
 
-#region ISubFlowDef
-
-/// <summary>
-/// Represents an AIGC page that can provide its definition, result, and associated document item.
-/// </summary>
-[NativeType(CodeBase = "Suity", Description = "Aigc Page", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
-[NativeAlias("Suity.Editor.AIGC.TaskPages.IAigcPage")]
-public interface ISubFlowDef : INamed
-{
-    /// <summary>
-    /// Gets the page definition.
-    /// </summary>
-    ISubFlowDef GetPageDefinition();
-
-    /// <summary>
-    /// Gets the page result.
-    /// </summary>
-    ISubFlowDef GetPageResult();
-
-    /// <summary>
-    /// Gets the associated document item for this page.
-    /// </summary>
-    object GetDocumentItem();
-}
-
-#endregion

@@ -50,8 +50,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Editor.Flows.SubGraphs\" />
-  </ItemGroup>
-
 </Project>

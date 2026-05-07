@@ -38,7 +38,7 @@ internal class AigcFlowSelectionList : FlowNodeSelectionNode
                     );
         */
 
-        AddDerived<AigcExternalNode>();
+        AddDerived<ExternalNode>();
 
         AddDerived<ActionFlowNode>();
         AddDerived<DialogFlowNode>();

@@ -9,7 +9,7 @@ namespace Suity.Editor.Flows.Nodes;
 /// </summary>
 [DisplayText("External", "*CoreIcon|System")]
 [ToolTipsText("External service related nodes")]
-public abstract class AigcExternalNode : FlowNode, IFlowNodeComputeAsync
+public abstract class ExternalNode : FlowNode, IFlowNodeComputeAsync
 {
     /// <inheritdoc/>
     public override ImageDef Icon => GetType().ToDisplayIcon() ?? CoreIconCache.System;

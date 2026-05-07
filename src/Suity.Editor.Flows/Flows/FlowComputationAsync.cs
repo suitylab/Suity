@@ -1060,9 +1060,9 @@ public class FlowComputationAsync : IFlowComputationAsync, IDisposable
 
         try
         {
-            if (dataNode is IFlowNodeComputeAsync aigcNode)
+            if (dataNode is IFlowNodeComputeAsync computeNode)
             {
-                var result = await aigcNode.ComputeAsync(this, cancel);
+                var result = await computeNode.ComputeAsync(this, cancel);
 
                 if (cancel.IsCancellationRequested)
                 {

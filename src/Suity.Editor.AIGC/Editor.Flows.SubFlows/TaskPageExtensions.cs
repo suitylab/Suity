@@ -1,4 +1,4 @@
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.Flows.SubFlows;
 
 /// <summary>
 /// Provides extension methods for AIGC task pages and related types.

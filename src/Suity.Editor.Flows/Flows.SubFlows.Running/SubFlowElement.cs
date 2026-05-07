@@ -1,6 +1,5 @@
 using Suity.Drawing;
 using Suity.Editor.AIGC.Flows.Pages;
-using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
@@ -17,7 +16,7 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 /// <summary>
 /// Represents an abstract base class for AIGC page elements that integrate with the flow diagram system.
 /// </summary>
-public abstract class SubFlowElement : IViewObject, ISubGraphElement
+public abstract class SubFlowElement : IViewObject, ISubFlowElement
 {
     string _elementName;
     string _displayText;
@@ -224,7 +223,7 @@ public abstract class SubFlowElement : IViewObject, ISubGraphElement
     /// Updates this element's state from another page element.
     /// </summary>
     /// <param name="other">The other page element to update from.</param>
-    public virtual void UpdateFromOther(ISubGraphElement other)
+    public virtual void UpdateFromOther(ISubFlowElement other)
     {
     }
 

@@ -1,5 +1,4 @@
 using Suity.Editor.AIGC.Flows.Pages;
-using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
@@ -155,7 +154,7 @@ public class SubFlowParameterOutput : SubFlowElement, IPageParameterOutput
     }
 
     /// <inheritdoc/>
-    public override void UpdateFromOther(ISubGraphElement other)
+    public override void UpdateFromOther(ISubFlowElement other)
     {
         if (other is SubFlowParameterOutput otherOutput)
         {

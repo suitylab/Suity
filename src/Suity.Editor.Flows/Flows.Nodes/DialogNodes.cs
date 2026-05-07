@@ -14,7 +14,6 @@ namespace Suity.Editor.Flows.Nodes;
 /// A flow node that displays a chat dialog with a single 'OK' button.
 /// Execution continues along the output connector when the user confirms.
 /// </summary>
-[NativeAlias("Suity.Editor.AIGC.Flows.OkDialogNode")]
 [DisplayText("OK Dialog", "*CoreIcon|Conversation")]
 [ToolTipsText("A chat dialog with an 'OK' button")]
 public class OkDialog : DialogFlowNode
@@ -114,7 +113,6 @@ public class OkDialog : DialogFlowNode
 /// A flow node that displays a chat dialog with 'Yes' and 'No' buttons,
 /// routing execution to the corresponding output connector based on the user's choice.
 /// </summary>
-[NativeAlias("Suity.Editor.AIGC.Flows.YesNoDialogNode")]
 [DisplayText("Yes/No Dialog", "*CoreIcon|Conversation")]
 [ToolTipsText("A chat dialog with 'Yes' and 'No' buttons")]
 public class YesNoDialog : DialogFlowNode
@@ -224,7 +222,6 @@ public class YesNoDialog : DialogFlowNode
 /// A flow node that outputs a message to the chat box log with a configurable
 /// text status and optional delay before display.
 /// </summary>
-[NativeAlias("Suity.Editor.AIGC.Flows.OutputMessageActionNode")]
 [DisplayText("Output Message Action", "*CoreIcon|Conversation")]
 [ToolTipsText("Output a message to the chat box")]
 public class OutputMessage : DialogFlowNode
@@ -306,7 +303,6 @@ public class OutputMessage : DialogFlowNode
 /// A flow node that outputs a hidden message to the chat box with a 'Copy' button.
 /// Clicking the button copies the specified text to the system clipboard.
 /// </summary>
-[NativeAlias("Suity.Editor.AIGC.Flows.CopyMessageActionNode")]
 [DisplayText("Copy Message Action", "*CoreIcon|Conversation")]
 [ToolTipsText("Output text to chat box, this message is hidden, and clicking the 'Copy' button copies the text to clipboard.")]
 public class CopyMessage : DialogFlowNode
@@ -395,7 +391,6 @@ public class CopyMessage : DialogFlowNode
 /// A flow node that prompts the user to input text in the chat box
 /// and captures the entered content as a data output.
 /// </summary>
-[NativeAlias("Suity.Editor.AIGC.Flows.ManualTextInputNode")]
 [DisplayText("Manual Text Input", "*CoreIcon|Conversation")]
 [ToolTipsText("Request user to input text in the chat box and read the content.")]
 public class ManualTextInput : DialogFlowNode

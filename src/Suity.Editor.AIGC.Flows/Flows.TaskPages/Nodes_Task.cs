@@ -2,7 +2,6 @@ using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Helpers;
-using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Services;
@@ -40,7 +39,7 @@ public class AppendTaskPage : TaskPageNode
     /// </summary>
     public AppendTaskPage()
     {
-        var instanceType = TypeDefinition.FromNative<IAigcPageInstance>();
+        var instanceType = TypeDefinition.FromNative<ISubFlowInstance>();
         var type = TypeDefinition.FromNative<IAigcToolAsset>();
 
         _in = this.AddActionInputConnector("In", "Input");
@@ -81,7 +80,7 @@ public class AppendTaskPage : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var pageInstance = compute.GetValue<IAigcPageInstance>(_inPageInstance);
+        var pageInstance = compute.GetValue<ISubFlowInstance>(_inPageInstance);
         var page = compute.GetValue<IAigcToolAsset>(_inPage);
         if (pageInstance is null && page is null)
         {
@@ -136,7 +135,7 @@ public class AddSubTaskPage : TaskPageNode
     /// </summary>
     public AddSubTaskPage()
     {
-        var instanceType = TypeDefinition.FromNative<IAigcPageInstance>();
+        var instanceType = TypeDefinition.FromNative<ISubFlowInstance>();
         var type = TypeDefinition.FromNative<IAigcToolAsset>();
 
         _in = this.AddActionInputConnector("In", "Input");
@@ -177,7 +176,7 @@ public class AddSubTaskPage : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var pageInstance = compute.GetValue<IAigcPageInstance>(_inPageInstance);
+        var pageInstance = compute.GetValue<ISubFlowInstance>(_inPageInstance);
         var page = compute.GetValue<IAigcToolAsset>(_inPage);
         if (pageInstance is null && page is null)
         {

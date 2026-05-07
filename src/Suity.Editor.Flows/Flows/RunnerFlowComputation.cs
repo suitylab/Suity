@@ -23,7 +23,7 @@ public interface IFlowNodeRunner : IFlowComputation, IDisposable
 }
 
 /// <summary>
-/// Computation engine for AIGC flow execution, handling node running and conversation integration.
+/// Computation engine for runner flow execution, handling node running and conversation integration.
 /// </summary>
 public class RunnerFlowComputation : FlowComputationAsync, IFlowNodeRunner
 {

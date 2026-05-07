@@ -3,9 +3,7 @@ using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Assistants;
-using Suity.Editor.AIGC.Flows;
 using Suity.Editor.AIGC.Flows.Pages;
-using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Design;
 using Suity.Editor.Flows.AIGC;
 using Suity.Editor.Selecting;
@@ -29,7 +27,7 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 /// Represents an instance of a sub-graph within a flow, managing page elements, parameters, and computation context.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Sub-Graph Instance", Icon = "*CoreIcon|Page")]
-public class SubFlowInstance : SubFlowElement, IFlowCallerContext, IAigcPageInstance
+public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInstance
 {
     /// <summary>
     /// Property key used to store the skill asset reference.
@@ -176,7 +174,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, IAigcPageInst
     /// <summary>
     /// Gets all elements contained within this page.
     /// </summary>
-    public IEnumerable<ISubGraphElement> Elements => _allElements;
+    public IEnumerable<ISubFlowElement> Elements => _allElements;
 
     #endregion
 
@@ -486,7 +484,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, IAigcPageInst
 
 
     /// <inheritdoc/>
-    public override void UpdateFromOther(ISubGraphElement other)
+    public override void UpdateFromOther(ISubFlowElement other)
     {
         if (other is SubFlowInstance otherRoot)
         {

@@ -1,7 +1,5 @@
 using Suity.Collections;
 using Suity.Drawing;
-using Suity.Editor.AIGC;
-using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Selecting;
@@ -233,7 +231,7 @@ public class SubFlowDefinitionDiagramItem : FlowDiagramItem<SubflowDefinitionNod
 /// Asset representing a page definition that can be used as a tool.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Page Definition", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
-public class SubFlowDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcToolAsset
+public class SubFlowDefinitionAsset : Asset, ISubFlowDefAsset, IAigcToolAsset
 {
     /// <inheritdoc/>
     public override ImageDef DefaultIcon => CoreIconCache.Page;
@@ -243,7 +241,7 @@ public class SubFlowDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcTool
     /// </summary>
     public SubFlowDefinitionAsset()
     {
-        UpdateAssetTypes(typeof(IAigcPageDefinitionAsset), typeof(IAigcToolAsset));
+        UpdateAssetTypes(typeof(ISubFlowDefAsset), typeof(IAigcToolAsset));
     }
 
     /// <summary>
@@ -264,7 +262,7 @@ public class SubFlowDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcTool
     public IAigcSkill GetSkillDefinition() => null;
 
     /// <inheritdoc/>
-    public IAigcPageInstance CreatePageInstance(PageElementOption option)
+    public ISubFlowInstance CreatePageInstance(PageElementOption option)
     {
         if (GetDiagramItem() is not { } toolPageItem)
         {

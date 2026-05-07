@@ -1,9 +1,7 @@
 using ComputerBeacon.Json;
 using Suity.Collections;
 using Suity.Drawing;
-using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Helpers;
-using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
@@ -280,7 +278,7 @@ public class ParseToolCalling : TaskPageNode
         _toolName = this.AddDataInputConnector("ToolName", "string", "Tool Name");
         _toolJson = this.AddDataInputConnector("ToolJson", "string", "Tool Json");
 
-        var instanceType = TypeDefinition.FromNative<IAigcPageInstance>();
+        var instanceType = TypeDefinition.FromNative<ISubFlowInstance>();
 
         _outPageInstance = this.AddConnector("PageInstance", instanceType, FlowDirections.Output, FlowConnectorTypes.Action, false, "Page Instance");
         _outNoResult = this.AddActionOutputConnector("NoResult", "No Result");
@@ -318,7 +316,7 @@ public class ParseToolCalling : TaskPageNode
     /// <param name="toolName">Target page name.</param>
     /// <param name="toolJson">Configuration JSON string.</param>
     /// <returns>Successfully created AigcPageInstance, null if failed.</returns>
-    public static IAigcPageInstance CreatePageInstance(IAigcToolAsset[] toolPages, string toolName, string toolJson)
+    public static ISubFlowInstance CreatePageInstance(IAigcToolAsset[] toolPages, string toolName, string toolJson)
     {
         // 1. Basic parameter validation
         if (toolPages == null || toolPages.Length == 0 || string.IsNullOrWhiteSpace(toolName) || string.IsNullOrWhiteSpace(toolJson))
@@ -420,7 +418,7 @@ public class ParseTagToolCalling : TaskPageNode
         _xmlTag = this.AddDataInputConnector("XmlTag", tagType, "Xml Tag");
         _attributeName.AddConnector(this);
 
-        var instanceType = TypeDefinition.FromNative<IAigcPageInstance>();
+        var instanceType = TypeDefinition.FromNative<ISubFlowInstance>();
 
         _outPageInstance = this.AddConnector("PageInstance", instanceType, FlowDirections.Output, FlowConnectorTypes.Action, false, "Page Instance");
         _outNoResult = this.AddActionOutputConnector("NoResult", "No Result");
@@ -505,7 +503,7 @@ public class CreateToolCalling : TaskPageNode
         _in = this.AddActionInputConnector("In", "Input");
         _toolPage = this.AddDataInputConnector("ToolPage", pageType, "Tool Page");
 
-        var instanceType = TypeDefinition.FromNative<IAigcPageInstance>();
+        var instanceType = TypeDefinition.FromNative<ISubFlowInstance>();
 
         _out = this.AddActionOutputConnector("Out", "Output");
         _pageInstance = this.AddDataOutputConnector("PageInstance", instanceType, "Page Instance");
@@ -797,7 +795,7 @@ public class CreateToolCallingWithParameter : TaskPageNode
 
         _in = this.AddActionInputConnector("In", "Input");
 
-        var instanceType = TypeDefinition.FromNative<IAigcPageInstance>();
+        var instanceType = TypeDefinition.FromNative<ISubFlowInstance>();
 
         _out = this.AddActionOutputConnector("Out", "Output");
         _pageInstance = this.AddDataOutputConnector("PageInstance", instanceType, "Page Instance");
@@ -963,7 +961,7 @@ public class GetPageInstanceParameter : TaskPageNode
     /// <inheritdoc/>
     protected override void OnUpdateConnector()
     {
-        var pageType = TypeDefinition.FromNative<IAigcPageInstance>();
+        var pageType = TypeDefinition.FromNative<ISubFlowInstance>();
         _pageInstance = AddDataInputConnector("PageInstance", pageType, "Page Instance");
         _parameterName.AddConnector(this);
         _out = AddDataOutputConnector("Out", TypeDef, "Output");
@@ -972,7 +970,7 @@ public class GetPageInstanceParameter : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var pageInstance = compute.GetValue<IAigcPageInstance>(_pageInstance);
+        var pageInstance = compute.GetValue<ISubFlowInstance>(_pageInstance);
         var context = pageInstance as IFlowCallerContext;
         string name = _parameterName.GetValue(compute, this)?.Trim() ?? string.Empty;
 
@@ -1073,7 +1071,7 @@ public class SetPageInstanceParameter : TaskPageNode
     {
         _in = AddActionInputConnector("In", "Input");
 
-        var pageType = TypeDefinition.FromNative<IAigcPageInstance>();
+        var pageType = TypeDefinition.FromNative<ISubFlowInstance>();
         _pageInstance = AddDataInputConnector("PageInstance", pageType, "Page Instance");
         _parameterName.AddConnector(this);
 
@@ -1084,7 +1082,7 @@ public class SetPageInstanceParameter : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var pageInstance = compute.GetValue<IAigcPageInstance>(_pageInstance)
+        var pageInstance = compute.GetValue<ISubFlowInstance>(_pageInstance)
             ?? throw new ArgumentNullException("PageInstance");
 
         var context = pageInstance as IFlowCallerContext;
@@ -1403,24 +1401,24 @@ public class PageParameterReference : TaskPageNode
 #region Converters
 
 /// <summary>
-/// Converts an <see cref="IAigcTaskPage"/> to its associated <see cref="IAigcPageInstance"/>.
+/// Converts an <see cref="IAigcTaskPage"/> to its associated <see cref="ISubFlowInstance"/>.
 /// </summary>
-public class TaskPageToPageInstanceConverter : TypeConverter<IAigcTaskPage, IAigcPageInstance>
+public class TaskPageToPageInstanceConverter : TypeConverter<IAigcTaskPage, ISubFlowInstance>
 {
     /// <inheritdoc/>
-    public override IAigcPageInstance Convert(IAigcTaskPage objFrom)
+    public override ISubFlowInstance Convert(IAigcTaskPage objFrom)
     {
         return objFrom.GetPageInstance();
     }
 }
 
 /// <summary>
-/// Converts an <see cref="IAigcPageInstance"/> to its owning <see cref="IAigcTaskPage"/>.
+/// Converts an <see cref="ISubFlowInstance"/> to its owning <see cref="IAigcTaskPage"/>.
 /// </summary>
-public class PageInstanceToTaskPageConverter : TypeConverter<IAigcPageInstance, IAigcTaskPage>
+public class PageInstanceToTaskPageConverter : TypeConverter<ISubFlowInstance, IAigcTaskPage>
 {
     /// <inheritdoc/>
-    public override IAigcTaskPage Convert(IAigcPageInstance objFrom)
+    public override IAigcTaskPage Convert(ISubFlowInstance objFrom)
     {
         return objFrom.Owner as IAigcTaskPage;
     }

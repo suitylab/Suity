@@ -1,7 +1,5 @@
 using Suity;
 using Suity.Collections;
-using Suity.Editor.AIGC.Flows.Pages;
-using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Types;
 using Suity.Flows.Pages;
 using Suity.Synchonizing;
@@ -31,9 +29,9 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
     #region IPageParameterOutput
 
     /// <summary>
-    /// Gets the type definition of the output parameter. Returns the type for <see cref="IAigcPageInstance"/>.
+    /// Gets the type definition of the output parameter. Returns the type for <see cref="ISubFlowInstance"/>.
     /// </summary>
-    public TypeDefinition ParameterType => TypeDefinition.FromNative<IAigcPageInstance>();
+    public TypeDefinition ParameterType => TypeDefinition.FromNative<ISubFlowInstance>();
 
     /// <summary>
     /// Gets the sub-task output value. Returns either all sub-tasks or the last sub-task based on <see cref="AllSubTasks"/>.

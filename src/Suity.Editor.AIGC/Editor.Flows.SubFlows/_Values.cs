@@ -1,6 +1,6 @@
 using Suity.Editor.Types;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.Flows.SubFlows;
 
 /// <summary>
 /// Represents a wrapper for chat history text content with implicit conversion support.

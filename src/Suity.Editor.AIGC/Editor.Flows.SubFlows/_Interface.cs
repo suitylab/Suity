@@ -1,5 +1,5 @@
+using Suity.Editor.AIGC;
 using Suity.Editor.Documents;
-using Suity.Editor.Flows;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.WorkSpaces;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.Flows.SubFlows;
 
 #region AigcTaskEventTypes
 
@@ -49,7 +49,7 @@ public enum AigcTaskEventTypes
 /// <summary>
 /// Represents an element within an AIGC page that can report its completion status and output history capabilities.
 /// </summary>
-public interface ISubGraphElement : INamed
+public interface ISubFlowElement : INamed
 {
     /// <summary>
     /// Gets whether this element is done. Returns null if the state is unknown.
@@ -67,7 +67,8 @@ public interface ISubGraphElement : INamed
 /// Represents an instance of an AIGC page, providing access to its definition, skill, tool asset, elements, and parameters.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "AIGC Page Instance", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
-public interface IAigcPageInstance : ISubGraphElement
+[NativeAlias("Suity.Editor.AIGC.TaskPages.IAigcPageInstance")]
+public interface ISubFlowInstance : ISubFlowElement
 {
     /// <summary>
     /// Gets the owner of this page instance.
@@ -92,7 +93,7 @@ public interface IAigcPageInstance : ISubGraphElement
     /// <summary>
     /// Gets all elements contained in this page.
     /// </summary>
-    IEnumerable<ISubGraphElement> Elements { get; }
+    IEnumerable<ISubFlowElement> Elements { get; }
 
     /// <summary>
     /// Gets the input chat history.
@@ -286,7 +287,7 @@ public interface IAigcTaskPage
     /// <summary>
     /// Gets the page instance associated with this task.
     /// </summary>
-    IAigcPageInstance GetPageInstance();
+    ISubFlowInstance GetPageInstance();
 
     /// <summary>
     /// Gets the task prompt, optionally including hierarchical context.
@@ -306,7 +307,7 @@ public interface IAigcTaskPage
     /// <summary>
     /// Appends a task using the specified page instance.
     /// </summary>
-    bool AppendTask(IAigcPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null);
+    bool AppendTask(ISubFlowInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null);
 
     /// <summary>
     /// Adds a subtask using the specified tool asset.
@@ -316,7 +317,7 @@ public interface IAigcTaskPage
     /// <summary>
     /// Adds a subtask using the specified page instance.
     /// </summary>
-    bool AddSubTask(IAigcPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null);
+    bool AddSubTask(ISubFlowInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null);
 
     /// <summary>
     /// Gets the last subtask added to this task page.
@@ -405,19 +406,7 @@ public interface IAigcSkill
 
 #endregion
 
-#region Assets
-
-/// <summary>
-/// Represents an asset that defines an AIGC page.
-/// </summary>
-[NativeType(CodeBase = "AIGC", Description = "AIGC Page Definition Asset", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
-public interface IAigcPageDefinitionAsset : INamed, IHasId
-{
-    /// <summary>
-    /// Gets the base definition of the page.
-    /// </summary>
-    ISubFlowDef GetBaseDefinition();
-}
+#region IAigcToolAsset
 
 /// <summary>
 /// Represents a tool asset that can create page instances and provides access to page and skill definitions.
@@ -448,7 +437,7 @@ public interface IAigcToolAsset : INamed, IHasId
     /// <summary>
     /// Creates a new page instance with the specified options.
     /// </summary>
-    IAigcPageInstance CreatePageInstance(PageElementOption option);
+    ISubFlowInstance CreatePageInstance(PageElementOption option);
 }
 
 #endregion
