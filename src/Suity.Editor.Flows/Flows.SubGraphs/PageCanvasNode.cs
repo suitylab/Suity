@@ -18,7 +18,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 /// Represents a canvas node for a page definition asset, providing an expanded view
 /// with property grid inspection and navigation capabilities.
 /// </summary>
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionCanvasNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageCanvasNode")]
 public class PageCanvasNode : ExpandedCanvasAssetNode<PageDefinitionAsset>
 {
     private readonly ImSubPropertyGrid _propGrid = new("AigcPage", true);

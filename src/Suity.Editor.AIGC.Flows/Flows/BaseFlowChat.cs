@@ -197,7 +197,7 @@ public abstract class BaseFlowChat : BaseLLmChat
 
         DropCurrentRun();
 
-        var runner = _runner = new AigcFlowComputation(_conversation, _context);
+        var runner = _runner = new RunnerFlowComputation(_conversation, _context);
 
         runner.Context.SetArgument<IConversationHost>(_conversation as IConversationHost);
         runner.Context.SetArgument<IConversationHostAsync>(_conversation as IConversationHostAsync);

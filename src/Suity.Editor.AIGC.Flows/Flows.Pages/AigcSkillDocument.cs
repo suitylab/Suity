@@ -22,6 +22,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 /// Document representing an AIGC skill, containing page definitions, tools, and configuration.
 /// </summary>
 [DocumentFormat(FormatName = "AigcSkill", Extension = "sskill", DisplayText = "Skill", Icon = "*CoreIcon|Skill", Categoty = "AIGC", CanShowView = false)]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.AigcSkillDocument")]
 public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSkill
 {
     private SubGraphInstance _rootElement;
@@ -378,6 +379,7 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
 /// <summary>
 /// Asset builder for <see cref="AigcSkillAsset"/>, handling updates to base flow and startup page settings.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.AigcSkillAssetBuilder")]
 public class AigcSkillAssetBuilder : AssetBuilder<AigcSkillAsset>
 {
     IAigcPageDefinitionAsset _baseFlow;
@@ -417,6 +419,7 @@ public class AigcSkillAssetBuilder : AssetBuilder<AigcSkillAsset>
 /// Represents a skill asset that can be used as a tool and contains a page definition.
 /// </summary>
 [NativeType(Name = "AigcSkillAsset", Description = "Skill Asset", CodeBase = "*AIGC", Icon = "*CoreIcon|Skil", Color = AigcColors.Agent)]
+//[NativeAlias("Suity.Editor.AIGC.Flows.Pages.AigcSkillAsset")]
 public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToolAsset
 {
     readonly EditorAssetRef<IAigcPageDefinitionAsset> _baseFlow = new();

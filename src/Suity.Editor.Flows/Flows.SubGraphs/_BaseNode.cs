@@ -8,23 +8,6 @@ using System;
 namespace Suity.Editor.AIGC.Flows.Pages;
 
 /// <summary>
-/// Base class for AIGC page operation flow nodes.
-/// Provides common functionality for nodes that interact with AIGC pages.
-/// </summary>
-[DisplayText("AIGC Page Operations", "*CoreIcon|Page")]
-[ToolTipsText("AIGC page operation related nodes")]
-public abstract class AigcPageNode : FlowNode
-{
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AigcPageNode"/> class.
-    /// </summary>
-    protected AigcPageNode()
-        : base()
-    {
-    }
-}
-
-/// <summary>
 /// Base class for AIGC page definition design-time flow nodes.
 /// Provides common functionality for nodes that define AIGC page structures.
 /// </summary>
@@ -257,5 +240,34 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
     /// </summary>
     protected virtual void UpdateDefaultValue()
     {
+    }
+}
+
+/// <summary>
+/// Abstract base class for AIGC page definition nodes that support parameter completion conditions.
+/// </summary>
+public abstract class AigcPageDefPageNode : AigcPageDefNode
+{
+    readonly ValueProperty<ParameterConditions> _completionCondition = new("CompletionCondition", "Completion Condition", ParameterConditions.All, "Condition for parameter completion. All means all must be met, Any means only one needs to be met.");
+
+    /// <summary>
+    /// Gets the condition for parameter completion.
+    /// </summary>
+    public ParameterConditions CompletionCondition => _completionCondition.Value;
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _completionCondition.Sync(sync);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSetupViewContent(IViewObjectSetup setup)
+    {
+        base.OnSetupViewContent(setup);
+
+        _completionCondition.InspectorField(setup);
     }
 }

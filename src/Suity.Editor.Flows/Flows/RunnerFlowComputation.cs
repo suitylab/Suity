@@ -1,11 +1,10 @@
-using Suity.Editor.Flows;
 using Suity.Views;
 using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.Flows;
+namespace Suity.Editor.Flows;
 
 /// <summary>
 /// Interface for running flow nodes asynchronously, extending the flow computation with execution capabilities.
@@ -26,7 +25,7 @@ public interface IFlowNodeRunner : IFlowComputation, IDisposable
 /// <summary>
 /// Computation engine for AIGC flow execution, handling node running and conversation integration.
 /// </summary>
-public class AigcFlowComputation : FlowComputationAsync, IFlowNodeRunner
+public class RunnerFlowComputation : FlowComputationAsync, IFlowNodeRunner
 {
     /// <summary>
     /// Gets the conversation handler for this computation.
@@ -34,11 +33,11 @@ public class AigcFlowComputation : FlowComputationAsync, IFlowNodeRunner
     public IConversationHandler Conversation { get; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AigcFlowComputation"/> class.
+    /// Initializes a new instance of the <see cref="RunnerFlowComputation"/> class.
     /// </summary>
     /// <param name="conversation">The conversation handler.</param>
     /// <param name="context">Optional function context.</param>
-    public AigcFlowComputation(IConversationHandler conversation, FunctionContext context = null)
+    public RunnerFlowComputation(IConversationHandler conversation, FunctionContext context = null)
         : base(context)
     {
         Conversation = conversation ?? throw new ArgumentNullException(nameof(conversation));
@@ -91,21 +90,5 @@ public class AigcFlowComputation : FlowComputationAsync, IFlowNodeRunner
     }
 
     #endregion
-
-    //protected override void OnDiagramAdded(IFlowDiagram diagram)
-    //{
-    //    base.OnDiagramAdded(diagram);
-
-    //    //TODO: Find a better way to associate documents and views. Currently, documents are associated with computators, views with computators, and documents with views.
-
-    //    var doc = diagram.GetFlowDocument() as AigcFlowDocument;
-    //    doc?.SetLastComputation(this);
-
-    //    foreach (var view in diagram.Views)
-    //    {
-    //        view.Computation = this;
-    //    }
-    //}
-
 
 }

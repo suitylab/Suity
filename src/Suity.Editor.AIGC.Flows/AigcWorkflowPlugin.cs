@@ -1,5 +1,6 @@
 ﻿using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.AIGC.Flows;
+using Suity.Editor.Flows;
 using Suity.Views;
 using System;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ public class AigcWorkflowPlugin : BackendPlugin, IAigcWorkflowRunner
         var ctx = request.FuncContext != null ? new FunctionContext(request.FuncContext) : new FunctionContext();
         ctx.SetArgument<IConversationHandler>(conversation);
 
-        var runner = new AigcFlowComputation(conversation, ctx);
+        var runner = new RunnerFlowComputation(conversation, ctx);
 
         if (workflowOption.View is { } view)
         {

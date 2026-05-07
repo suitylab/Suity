@@ -29,6 +29,21 @@ public enum PageCommitTypes
 }
 
 /// <summary>
+/// Defines conditions under which parameters are considered complete.
+/// </summary>
+public enum ParameterConditions
+{
+    /// <summary>
+    /// All parameters must be met.
+    /// </summary>
+    All,
+    /// <summary>
+    /// Only one parameter needs to be met.
+    /// </summary>
+    Any,
+}
+
+/// <summary>
 /// Represents an AIGC node that has an associated type definition.
 /// </summary>
 public interface IAigcTypeNode
@@ -97,3 +112,4 @@ class SameDocFilter : IAssetFilter
         return parentAsset == (_node.DiagramItem as SNamedItem)?.GetDocument()?.GetAsset();
     }
 }
+

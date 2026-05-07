@@ -16,51 +16,6 @@ using System.Drawing;
 
 namespace Suity.Editor.AIGC.Flows.Pages;
 
-/// <summary>
-/// Defines conditions under which parameters are considered complete.
-/// </summary>
-public enum ParameterConditions
-{
-    /// <summary>
-    /// All parameters must be met.
-    /// </summary>
-    All,
-    /// <summary>
-    /// Only one parameter needs to be met.
-    /// </summary>
-    Any,
-}
-
-/// <summary>
-/// Abstract base class for AIGC page definition nodes that support parameter completion conditions.
-/// </summary>
-public abstract class AigcPageDefPageNode : AigcPageDefNode
-{
-    readonly ValueProperty<ParameterConditions> _completionCondition = new("CompletionCondition", "Completion Condition", ParameterConditions.All, "Condition for parameter completion. All means all must be met, Any means only one needs to be met.");
-
-    /// <summary>
-    /// Gets the condition for parameter completion.
-    /// </summary>
-    public ParameterConditions CompletionCondition => _completionCondition.Value;
-
-    /// <inheritdoc/>
-    protected override void OnSync(IPropertySync sync, ISyncContext context)
-    {
-        base.OnSync(sync, context);
-
-        _completionCondition.Sync(sync);
-    }
-
-    /// <inheritdoc/>
-    protected override void OnSetupViewContent(IViewObjectSetup setup)
-    {
-        base.OnSetupViewContent(setup);
-        
-        _completionCondition.InspectorField(setup);
-    }
-}
-
-
 #region PageDefinitionNode
 
 /// <summary>
@@ -70,6 +25,7 @@ public abstract class AigcPageDefPageNode : AigcPageDefNode
 [DisplayText("AIGC Page", "*CoreIcon|Page")]
 [DisplayOrder(5000)]
 [ToolTipsText("AIGC interactive page definition")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionNode")]
 public class PageDefinitionNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
 {
     Guid _id;
@@ -199,6 +155,7 @@ public class PageDefinitionNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
 /// <summary>
 /// Diagram item representing a <see cref="PageDefinitionNode"/> in the flow diagram.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionDiagramItem")]
 public class PageDefinitionDiagramItem : FlowDiagramItem<PageDefinitionNode, PageDefinitionAssetBuilder>
 {
     private DocumentEntry _docEntry;
@@ -283,6 +240,7 @@ public class PageDefinitionDiagramItem : FlowDiagramItem<PageDefinitionNode, Pag
 /// Asset representing a page definition that can be used as a tool.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Page Definition", Color = AigcColors.Page, Icon = "*CoreIcon|Page")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionAsset")]
 public class PageDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcToolAsset
 {
     /// <inheritdoc/>
@@ -345,6 +303,7 @@ public class PageDefinitionAssetBuilder : AssetBuilder<PageDefinitionAsset>
 [DisplayText("AIGC Sub Page", "*CoreIcon|Page")]
 [DisplayOrder(4999)]
 [ToolTipsText("AIGC interactive page's detached extension page")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubNode")]
 public class PageSubNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
 {
     readonly AssetProperty<PageDefinitionAsset> _page = new("Page", "Page");
@@ -466,6 +425,7 @@ public class PageSubNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
 /// <summary>
 /// Diagram item representing a <see cref="PageSubNode"/> in the flow diagram.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubDiagramItem")]
 public class PageSubDiagramItem : FlowDiagramItem<PageSubNode>
 {
     /// <summary>
@@ -497,6 +457,7 @@ public class PageSubDiagramItem : FlowDiagramItem<PageSubNode>
 [DisplayText("AIGC Result Page", "*CoreIcon|CheckList")]
 [DisplayOrder(4998)]
 [ToolTipsText("AIGC interactive page's detached result page")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageResultNode")]
 public class PageResultNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
 {
     FlowNodeConnector _defConnector;
@@ -582,6 +543,7 @@ public class PageResultNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
 /// <summary>
 /// Diagram item representing a <see cref="PageResultNode"/> in the flow diagram.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageResultDiagramItem")]
 public class PageResultDiagramItem : FlowDiagramItem<PageResultNode>
 {
     /// <summary>

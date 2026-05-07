@@ -43,6 +43,7 @@ public class KnowledgeArticleItem
 /// and filters out articles without content.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Knowledge Article List", Icon = "*CoreIcon|Knowledge", Color = "#5C7CFA")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.KnowledgeArticleList")]
 public class KnowledgeArticleList
 {
     /// <summary>

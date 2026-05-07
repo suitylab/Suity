@@ -22,7 +22,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 [DisplayText("AIGC Page Input Parameter", "*CoreIcon|Parameter")]
 [DisplayOrder(3000)]
 [ToolTipsText("Provides input parameter support for AIGC page actions.")]
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode")]
 public class PageParameterInputNode : AigcPageTypeDefNode
 {
     private FlowNodeConnector _out;
@@ -167,7 +167,7 @@ public class PageParameterInputNode : AigcPageTypeDefNode
 /// <summary>
 /// Diagram item representing a <see cref="PageParameterInputNode"/> in the flow diagram.
 /// </summary>
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterDiagramItem")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem")]
 public class PageParameterInputItem : FlowDiagramItem<PageParameterInputNode>, ISubGraphElementCreator
 {
     /// <summary>
@@ -207,6 +207,7 @@ public class PageParameterInputItem : FlowDiagramItem<PageParameterInputNode>, I
 [DisplayText("AIGC Page Skill Parameter", "*CoreIcon|Skill")]
 [DisplayOrder(2990)]
 [ToolTipsText("Provides skill parameter support for AIGC page actions.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSkillParameterNode")]
 public class PageSkillParameterNode : AigcPageTypeDefNode
 {
     private FlowNodeConnector _out;
@@ -354,6 +355,7 @@ public class PageSkillParameterNode : AigcPageTypeDefNode
 /// <summary>
 /// Diagram item representing a <see cref="PageSkillParameterNode"/> in the flow diagram.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSkillParameterItem")]
 public class PageSkillParameterItem : FlowDiagramItem<PageSkillParameterNode>, ISubGraphElementCreator
 {
     /// <summary>
@@ -445,6 +447,7 @@ public class PagePromptParameterInputNode : AigcPageTypeDefNode
 /// <summary>
 /// Diagram item representing a <see cref="PagePromptParameterInputNode"/> in the flow diagram.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PagePromptParameterInputItem")]
 public class PagePromptParameterInputItem : FlowDiagramItem<PagePromptParameterInputNode>, ISubGraphElementCreator
 {
     /// <summary>
@@ -485,6 +488,7 @@ public class PagePromptParameterInputItem : FlowDiagramItem<PagePromptParameterI
 [DisplayText("AIGC Page Message Parameter", "*CoreIcon|Comment")]
 [DisplayOrder(2970)]
 [ToolTipsText("Provides input parameter support for AIGC page actions.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageMessageParameterNode")]
 public class PageMessageParameterNode : AigcPageTypeDefNode
 {
     private readonly TextBlockProperty _message = new("Message", "Message", string.Empty, "Supported placeholders: {TaskName} {TaskStatus}");
@@ -558,6 +562,7 @@ public class PageMessageParameterNode : AigcPageTypeDefNode
 /// <summary>
 /// Diagram item representing a <see cref="PageMessageParameterNode"/> in the flow diagram.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageMessageParameterItem")]
 public class PageMessageParameterItem : FlowDiagramItem<PageMessageParameterNode>, ISubGraphElementCreator
 {
     /// <summary>
@@ -598,7 +603,7 @@ public class PageMessageParameterItem : FlowDiagramItem<PageMessageParameterNode
 [DisplayText("AIGC Page Output Parameter", "*CoreIcon|Parameter")]
 [DisplayOrder(2900)]
 [ToolTipsText("Provides output parameter support for AIGC page actions.")]
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageOutputNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterOutputNode")]
 public class PageParameterOutputNode : AigcPageTypeDefNode
 {
     private FlowNodeConnector _in;
@@ -729,7 +734,7 @@ public class PageParameterOutputNode : AigcPageTypeDefNode
 /// Diagram item representing a <see cref="PageParameterOutputNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageOutputDiagramItem")]
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParamterOutputItem")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterOutputItem")]
 public class PageParameterOutputItem : FlowDiagramItem<PageParameterOutputNode>, ISubGraphElementCreator
 {
     /// <summary>
@@ -770,6 +775,7 @@ public class PageParameterOutputItem : FlowDiagramItem<PageParameterOutputNode>,
 [DisplayText("AIGC Page Output Article", "*CoreIcon|Article")]
 [DisplayOrder(2800)]
 [ToolTipsText("Provides article output support for AIGC page actions.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageArticleOutputNode")]
 public class PageArticleOutputNode : AigcPageTypeDefNode
 {
     private FlowNodeConnector _refInput;
@@ -897,7 +903,7 @@ public class PageArticleOutputNode : AigcPageTypeDefNode
 /// <summary>
 /// Diagram item representing a <see cref="PageArticleOutputNode"/> in the flow diagram.
 /// </summary>
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageArticleOutputDiagramItem")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageArticleOutputItem")]
 public class PageArticleOutputItem : FlowDiagramItem<PageArticleOutputNode>, ISubGraphElementCreator
 {
     /// <summary>
@@ -938,6 +944,7 @@ public class PageArticleOutputItem : FlowDiagramItem<PageArticleOutputNode>, ISu
 [DisplayText("AIGC Page Output File", "*CoreIcon|File")]
 [DisplayOrder(2750)]
 [ToolTipsText("Provides file output support for AIGC page actions.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageFileOutputNode")]
 public class PageFileOutputNode : AigcPageTypeDefNode
 {
     private FlowNodeConnector _in;
@@ -1058,6 +1065,7 @@ public class PageFileOutputNode : AigcPageTypeDefNode
 /// <summary>
 /// Diagram item representing a <see cref="PageFileOutputNode"/> in the flow diagram.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageFileOutputItem")]
 public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, ISubGraphElementCreator
 {
     /// <summary>
@@ -1098,6 +1106,7 @@ public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, ISubGraph
 [DisplayText("AIGC Page Output SubTask", "*CoreIcon|Task")]
 [DisplayOrder(2700)]
 [ToolTipsText("Provides sub-task output support for AIGC page actions.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubTaskOutputNode")]
 public class PageSubTaskOutputNode : AigcPageTypeDefNode
 {
     private FlowNodeConnector _refInput;

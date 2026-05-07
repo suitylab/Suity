@@ -48,7 +48,7 @@ public class DefaultEditorColorConfig : DefaultColorConfig, IEditorColorConfig
 
     private readonly Color _style_Button = ColorHelper.IntToColor(0x2693DD);
 
-    private readonly Color _status_error = ColorHelper.IntToColor(0xFF0000);
+    private readonly Color _status_error = ColorHelper.IntToColor(0xFF6666);
     private readonly Color _status_warning = ColorHelper.IntToColor(0xFF9B00);
     private readonly Color _status_info = ColorHelper.IntToColor(0x008EFF/*0x789AFF*/);
     private readonly Color _status_comment = ColorHelper.IntToColor(0x27BB1E);

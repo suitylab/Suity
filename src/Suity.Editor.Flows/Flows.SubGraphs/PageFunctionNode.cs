@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Suity.Editor.Types;
 
 namespace Suity.Editor.AIGC.Flows.Pages;
 
@@ -17,6 +18,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 /// Represents a flow node that references a page definition asset and enables page execution within a flow.
 /// </summary>
 [NotAvailable]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageFunctionNode")]
 public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNodeComputeAsync
 {
     private SubGraphInstance _instance;
@@ -246,7 +248,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
         var context = new FunctionContext(compute.Context);
 
         // Create internal computation
-        /*using */var computeInner = new AigcFlowComputation(conversation, context);
+        /*using */var computeInner = new RunnerFlowComputation(conversation, context);
         // Do not use using here, because after completion, the internal state can still be visualized.
 
         // Create caller context
@@ -342,6 +344,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
 /// <summary>
 /// Provides a context for a page function caller to interact with an outer flow computation.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageFunctionCallerContext")]
 public class PageFunctionCallerContext : IFlowCallerContext
 {
     private readonly SubGraphInstance _rootElement;

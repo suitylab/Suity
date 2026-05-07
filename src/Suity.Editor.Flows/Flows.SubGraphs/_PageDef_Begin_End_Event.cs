@@ -26,6 +26,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 [DisplayText("AIGC Page Action Begin", "*CoreIcon|Begin")]
 [DisplayOrder(4000)]
 [ToolTipsText("Provides action start support for AIGC pages, such as button clicks, etc.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageBeginNode")]
 public class PageBeginNode : AigcPageTypeDefNode, IAigcRunWorkflow
 {
     private FlowNodeConnector _begin;
@@ -111,6 +112,7 @@ public class PageBeginNode : AigcPageTypeDefNode, IAigcRunWorkflow
 /// <summary>
 /// Diagram item representing a <see cref="PageBeginNode"/> in the flow diagram.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageBeginDiagramItem")]
 public class PageBeginDiagramItem : FlowDiagramItem<PageBeginNode>, ISubGraphElementCreator
 {
     /// <summary>
@@ -154,7 +156,7 @@ public class PageBeginDiagramItem : FlowDiagramItem<PageBeginNode>, ISubGraphEle
 [DisplayText("Task Page Event", "*CoreIcon|Event")]
 [DisplayOrder(3800)]
 [ToolTipsText("Provides event trigger support for task pages, such as event startup, etc.")]
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.TaskPageEventNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageEventNode")]
 public class PageEventNode : AigcPageTypeDefNode, IAigcRunWorkflow
 {
     private FlowNodeConnector _begin;
@@ -344,7 +346,7 @@ public class PageEventNode : AigcPageTypeDefNode, IAigcRunWorkflow
 /// <summary>
 /// Diagram item representing a <see cref="PageEventNode"/> in the flow diagram.
 /// </summary>
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.TaskPageEventDiagramItem")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageEventDiagramItem")]
 public class PageEventDiagramItem : FlowDiagramItem<PageEventNode>, ISubGraphElementCreator
 {
     /// <summary>
@@ -384,6 +386,7 @@ public class PageEventDiagramItem : FlowDiagramItem<PageEventNode>, ISubGraphEle
 /// <summary>
 /// Abstract base class for page end nodes that handle flow completion and commit operations.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageBaseEndNode")]
 public abstract class PageBaseEndNode : AigcPageTypeDefNode, IFlowNodeComputeAsync, IAigcEndNode
 {
     /// <summary>
@@ -568,6 +571,7 @@ public abstract class PageBaseEndNode : AigcPageTypeDefNode, IFlowNodeComputeAsy
 [DisplayText("AIGC Page Action End", "*CoreIcon|End")]
 [DisplayOrder(3900)]
 [ToolTipsText("Provides action end support for AIGC pages.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageEndNode")]
 public class PageEndNode : PageBaseEndNode
 {
     /// <summary>
@@ -579,6 +583,7 @@ public class PageEndNode : PageBaseEndNode
 /// <summary>
 /// Diagram item representing a <see cref="PageEndNode"/> in the flow diagram.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageEndDiagramItem")]
 public class PageEndDiagramItem : FlowDiagramItem<PageEndNode>, ISubGraphElementCreator
 {
     /// <summary>
@@ -622,6 +627,7 @@ public class PageEndDiagramItem : FlowDiagramItem<PageEndNode>, ISubGraphElement
 [DisplayText("AIGC Page Action End - Commit", "*CoreIcon|Task")]
 [DisplayOrder(3899)]
 [ToolTipsText("End the flow and submit the result upward.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageCommitNode")]
 public class PageCommitNode : PageBaseEndNode, IFlowNodeComputeAsync, IAigcEndNode
 {
     /// <summary>
@@ -649,6 +655,7 @@ public class PageCommitNode : PageBaseEndNode, IFlowNodeComputeAsync, IAigcEndNo
 /// <summary>
 /// Diagram item representing a <see cref="PageCommitNode"/> in the flow diagram.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageCommitDiagramItem")]
 public class PageCommitDiagramItem : FlowDiagramItem<PageCommitNode>, ISubGraphElementCreator
 {
     /// <summary>
