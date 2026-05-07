@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC;
 
 /// <summary>
 /// Menu command that navigates to the diagram view of a selected AIGC task page.

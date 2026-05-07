@@ -2,7 +2,7 @@ using LiteDB;
 using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
-using Suity.Editor.AIGC.Flows.Pages;
+using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
@@ -24,13 +24,14 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC;
 
 /// <summary>
 /// Represents an AIGC task page that manages AI-generated content tasks within a document flow.
 /// Implements design node functionality, task page interface, view double-click actions, and navigation.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.AigcTaskPage")]
+[NativeAlias("Suity.Editor.AIGC.TaskPages.AigcTaskPage")]
 public class AigcTaskPage : DesignNode,
     IAigcTaskPage, 
     IViewDoubleClickAction,

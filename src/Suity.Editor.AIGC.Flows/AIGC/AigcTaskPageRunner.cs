@@ -1,5 +1,5 @@
 using Suity.Editor.AIGC.Assistants;
-using Suity.Editor.AIGC.Flows.Pages;
+using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Flows.Pages;
@@ -8,7 +8,7 @@ using Suity.Views;
 using System;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC;
 
 /// <summary>
 /// Represents the result of a task execution, including the end type and associated parameter.

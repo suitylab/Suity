@@ -1,5 +1,6 @@
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows;
@@ -17,11 +18,10 @@ using Suity.Views.Im.PropertyEditing;
 using System;
 using System.Drawing;
 using System.Linq;
-using System.Net.Mail;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC;
 
 public enum PageViewCategory
 {

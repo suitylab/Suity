@@ -1,6 +1,6 @@
 using Suity.Collections;
 using Suity.Drawing;
-using Suity.Editor.AIGC.Flows.Pages;
+using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows.SubFlows;
@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.TaskPages;
+namespace Suity.Editor.AIGC;
 
 /// <summary>
 /// Document that manages AIGC task pages, including task creation, configuration, and execution orchestration.
