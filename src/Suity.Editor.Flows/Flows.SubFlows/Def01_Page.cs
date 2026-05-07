@@ -21,12 +21,12 @@ namespace Suity.Editor.Flows.SubFlows;
 /// <summary>
 /// AIGC interactive page definition node that can act as a group and page.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.Page)]
+[SimpleFlowNodeStyle(Color = FlowColors.Page)]
 [DisplayText("AIGC Page", "*CoreIcon|Page")]
 [DisplayOrder(5000)]
 [ToolTipsText("AIGC interactive page definition")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionNode")]
-public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, IAigcPage
+public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
 {
     Guid _id;
 
@@ -121,13 +121,13 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, IAigcPage
         AddConnector(_resultConnector);
     }
 
-    #region IAigcPage
+    #region ISubFlowDef
 
     /// <inheritdoc/>
-    public IAigcPage GetPageDefinition() => null;
+    public override ISubFlowDef GetPageDefinition() => null;
 
     /// <inheritdoc/>
-    public IAigcPage GetPageResult()
+    public override ISubFlowDef GetPageResult()
     {
         if (this.Diagram is not { } diagram)
         {
@@ -140,11 +140,11 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, IAigcPage
 
         }
 
-        return node as IAigcPage;
+        return node as ISubFlowDef;
     }
 
     /// <inheritdoc/>
-    public object GetDocumentItem() => this.DiagramItem;
+    public override object GetDocumentItem() => this.DiagramItem;
     #endregion
 }
 
@@ -232,7 +232,7 @@ public class SubFlowDefinitionDiagramItem : FlowDiagramItem<SubflowDefinitionNod
 /// <summary>
 /// Asset representing a page definition that can be used as a tool.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Page Definition", Color = AigcColors.Page, Icon = "*CoreIcon|Page")]
+[NativeType(CodeBase = "AIGC", Description = "Page Definition", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
 public class SubFlowDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcToolAsset
 {
     /// <inheritdoc/>
@@ -258,7 +258,7 @@ public class SubFlowDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcTool
     public bool IsStartupPage => false;
 
     /// <inheritdoc/>
-    public IAigcPage GetBaseDefinition() => GetDiagramItem()?.Node;
+    public ISubFlowDef GetBaseDefinition() => GetDiagramItem()?.Node;
 
     /// <inheritdoc/>
     public IAigcSkill GetSkillDefinition() => null;
@@ -291,12 +291,12 @@ public class SubFlowDefinitionAssetBuilder : AssetBuilder<SubFlowDefinitionAsset
 /// <summary>
 /// AIGC interactive page's detached extension sub-page node.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.Page)]
+[SimpleFlowNodeStyle(Color = FlowColors.Page)]
 [DisplayText("AIGC Sub Page", "*CoreIcon|Page")]
 [DisplayOrder(4999)]
 [ToolTipsText("AIGC interactive page's detached extension page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubNode")]
-public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, IAigcPage
+public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
 {
     readonly AssetProperty<SubFlowDefinitionAsset> _page = new("Page", "Page");
 
@@ -383,13 +383,13 @@ public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, IAigcPage
         AddConnector(_resultConnector);
     }
 
-    #region IAigcPage
+    #region ISubFlowDef
 
     /// <inheritdoc/>
-    public IAigcPage GetPageDefinition() => null;
+    public override ISubFlowDef GetPageDefinition() => null;
 
     /// <inheritdoc/>
-    public IAigcPage GetPageResult()
+    public override ISubFlowDef GetPageResult()
     {
         if (this.Diagram is not { } diagram)
         {
@@ -402,11 +402,11 @@ public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, IAigcPage
 
         }
 
-        return node as IAigcPage;
+        return node as ISubFlowDef;
     }
 
     /// <inheritdoc/>
-    public object GetDocumentItem() => this.DiagramItem;
+    public override object GetDocumentItem() => this.DiagramItem;
     #endregion
 }
 
@@ -441,12 +441,12 @@ public class SubflowBranchDiagramItem : FlowDiagramItem<SubflowBranchNode>
 /// <summary>
 /// AIGC interactive page's detached result page node.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.Page)]
+[SimpleFlowNodeStyle(Color = FlowColors.Page)]
 [DisplayText("AIGC Result Page", "*CoreIcon|CheckList")]
 [DisplayOrder(4998)]
 [ToolTipsText("AIGC interactive page's detached result page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageResultNode")]
-public class SubFlowResultNode : SubflowDefNode, IGroupFlowNode, IAigcPage
+public class SubFlowResultNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
 {
     FlowNodeConnector _defConnector;
 
@@ -497,10 +497,10 @@ public class SubFlowResultNode : SubflowDefNode, IGroupFlowNode, IAigcPage
         AddConnector(_defConnector);
     }
 
-    #region IAigcPage
+    #region ISubFlowDef
 
     /// <inheritdoc/>
-    public IAigcPage GetPageDefinition()
+    public override ISubFlowDef GetPageDefinition()
     {
         if (this.Diagram is not { } diagram)
         {
@@ -513,14 +513,14 @@ public class SubFlowResultNode : SubflowDefNode, IGroupFlowNode, IAigcPage
 
         }
 
-        return node as IAigcPage;
+        return node as ISubFlowDef;
     }
 
     /// <inheritdoc/>
-    public IAigcPage GetPageResult() => null;
+    public override ISubFlowDef GetPageResult() => null;
 
     /// <inheritdoc/>
-    public object GetDocumentItem() => this.DiagramItem;
+    public override object GetDocumentItem() => this.DiagramItem;
     #endregion
 }
 
@@ -553,24 +553,24 @@ public class SubFlowResultDiagramItem : FlowDiagramItem<SubFlowResultNode>
 #region Converters
 
 /// <summary>
-/// Converts a <see cref="SubFlowDefinitionAsset"/> to an <see cref="IAigcPage"/>.
+/// Converts a <see cref="SubFlowDefinitionAsset"/> to an <see cref="ISubFlowDef"/>.
 /// </summary>
-public class SubFlowDefinitionAssetToIAigcPageConverter : AssetLinkToTypeConverter<SubFlowDefinitionAsset, IAigcPage>
+public class SubFlowDefinitionAssetToIAigcPageConverter : AssetLinkToTypeConverter<SubFlowDefinitionAsset, ISubFlowDef>
 {
     /// <inheritdoc/>
-    public override IAigcPage Convert(SubFlowDefinitionAsset objFrom)
+    public override ISubFlowDef Convert(SubFlowDefinitionAsset objFrom)
     {
         return objFrom.GetDiagramItem()?.Node;
     }
 }
 
 /// <summary>
-/// Converts an <see cref="IAigcPage"/> to a <see cref="SubFlowDefinitionAsset"/>.
+/// Converts an <see cref="ISubFlowDef"/> to a <see cref="SubFlowDefinitionAsset"/>.
 /// </summary>
-public class IAigcPageToSubFlowDefinitionAssetConverter : TypeToAssetLinkConverter<IAigcPage, SubFlowDefinitionAsset>
+public class IAigcPageToSubFlowDefinitionAssetConverter : TypeToAssetLinkConverter<ISubFlowDef, SubFlowDefinitionAsset>
 {
     /// <inheritdoc/>
-    public override SubFlowDefinitionAsset Convert(IAigcPage objFroms)
+    public override SubFlowDefinitionAsset Convert(ISubFlowDef objFroms)
     {
         if (objFroms is SubflowDefinitionNode node)
         {

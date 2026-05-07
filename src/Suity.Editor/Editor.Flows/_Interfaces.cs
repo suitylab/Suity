@@ -984,12 +984,40 @@ public class FlowComputaionException : Exception
         FlowNode = flowNode;
     }
 
+
     /// <summary>
     /// Serialization constructor.
     /// </summary>
     protected FlowComputaionException(
       System.Runtime.Serialization.SerializationInfo info,
       System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+}
+
+#endregion
+
+#region ISubFlowDef
+
+/// <summary>
+/// Represents an AIGC page that can provide its definition, result, and associated document item.
+/// </summary>
+[NativeType(CodeBase = "Suity", Description = "Aigc Page", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
+[NativeAlias("Suity.Editor.AIGC.TaskPages.IAigcPage")]
+public interface ISubFlowDef : INamed
+{
+    /// <summary>
+    /// Gets the page definition.
+    /// </summary>
+    ISubFlowDef GetPageDefinition();
+
+    /// <summary>
+    /// Gets the page result.
+    /// </summary>
+    ISubFlowDef GetPageResult();
+
+    /// <summary>
+    /// Gets the associated document item for this page.
+    /// </summary>
+    object GetDocumentItem();
 }
 
 #endregion

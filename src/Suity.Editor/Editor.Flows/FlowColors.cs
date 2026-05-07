@@ -1,12 +1,12 @@
 using Suity.Drawing;
 using System.Drawing;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.Flows;
 
 /// <summary>
-/// Color definitions used across the AIGC editor components.
+/// Color definitions used across the flow node editor components.
 /// </summary>
-public class AigcColors
+public class FlowColors
 {
     /// <summary>
     /// Hex color value for error states.

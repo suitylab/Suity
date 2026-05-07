@@ -1,5 +1,6 @@
 using Suity.Drawing;
 using Suity.Editor.AIGC;
+using Suity.Editor.Flows;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Helpers;
@@ -52,14 +53,14 @@ public class NodeGraphTheme : ThemeBase
         this.ClassStyle("headerFrame")
             .SetFitOrientation(GuiOrientation.Vertical)
             .SetFullWidth()
-            .SetColor(AigcColors.NodeHaderColor)
+            .SetColor(FlowColors.NodeHaderColor)
             .SetBorder(0)
             .SetCornerRound(6)
             .SetPadding(4);
 
         this.ClassStyle("headerFrameFit")
             .SetFitOrientation(GuiOrientation.Both)
-            .SetColor(AigcColors.NodeHaderColor)
+            .SetColor(FlowColors.NodeHaderColor)
             .SetBorder(0)
             .SetCornerRound(6)
             .SetPadding(4);

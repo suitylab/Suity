@@ -20,7 +20,7 @@ namespace Suity.Editor.Flows.TaskPages;
 /// A flow node that appends a task page to the current task workflow.
 /// Accepts either a page instance or a page definition as input.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG)]
 [DisplayText("Append Task Page", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.AppendTaskPageNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.AppendTaskPage")]
@@ -116,7 +116,7 @@ public class AppendTaskPage : TaskPageNode
 /// A flow node that adds a sub-task page to the current task hierarchy.
 /// Accepts either a page instance or a page definition as input.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG)]
 [DisplayText("Add Sub Task Page", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.AddSubTaskPageNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.AddSubTaskPage")]
@@ -211,7 +211,7 @@ public class AddSubTaskPage : TaskPageNode
 /// A flow node that retrieves the chat history from the current task.
 /// Optionally includes chat history from parent tasks in the hierarchy.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Task Chat History", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskChatHistoryNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskChatHistory")]
@@ -266,7 +266,7 @@ public class GetTaskChatHistory : TaskPageNode
 /// <summary>
 /// A flow node that retrieves the initial task prompt from the current task page.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Initial Task Prompt", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetInitialTaskPrompt")]
 public class GetInitialTaskPrompt : TaskPageNode
@@ -298,7 +298,7 @@ public class GetInitialTaskPrompt : TaskPageNode
 /// <summary>
 /// A flow node that retrieves the current task prompt, optionally including prompts from parent tasks.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Current Task Prompt", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetCurrentTaskPrompt")]
 public class GetCurrentTaskPrompt : TaskPageNode
@@ -350,7 +350,7 @@ public class GetCurrentTaskPrompt : TaskPageNode
 /// <summary>
 /// A flow node that retrieves the task prompt from a specified task, optionally including prompts from parent tasks.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Task Prompt", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskPrompt")]
 public class GetTaskPrompt : TaskPageNode
@@ -406,7 +406,7 @@ public class GetTaskPrompt : TaskPageNode
 /// <summary>
 /// A flow node that retrieves the commit information from a specified task.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Task Commit Context", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskCommit")]
 public class GetTaskCommit : TaskPageNode
@@ -447,7 +447,7 @@ public class GetTaskCommit : TaskPageNode
 /// <summary>
 /// A flow node that retrieves the commit information from a specified task.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
 [DisplayText("Get SubTask Commit Context", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetSubTaskCommit")]
 public class GetSubTaskCommit : TaskPageNode
@@ -520,7 +520,7 @@ public class GetSubTaskCommit : TaskPageNode
 /// <summary>
 /// A flow node that retrieves the commit information from a specified task.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Current Task Context Text", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskContextText")]
 public class GetTaskContextText : TaskPageNode
@@ -575,7 +575,7 @@ public class GetTaskContextText : TaskPageNode
 /// <summary>
 /// A flow node that retrieves the self task reference from the current execution context.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.Page, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.Page, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Get Self Task", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetSelfTask")]
 [DisplayOrder(4960)]
@@ -613,7 +613,7 @@ public class GetSelfTask : TaskPageNode
 /// A flow node that retrieves the last sub-task from a specified task.
 /// Optionally requires the sub-task to be completed before returning it.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.Page, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.Page, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Get Last Sub Task", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetLastSubTask")]
 [DisplayOrder(4950)]
@@ -685,7 +685,7 @@ public class GetLastSubTask : TaskPageNode
 /// A flow node that retrieves various information about a specified task,
 /// including ID, title, index, parent task, child tasks, and status flags.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Task Information", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskInfomation")]
 public class GetTaskInfomation : TaskPageNode
@@ -790,7 +790,7 @@ public class GetTaskInfomation : TaskPageNode
 /// <summary>
 /// A flow node that retrieves the current task from the execution context.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Current Task", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetCurrentTask")]
 public class GetCurrentTask : TaskPageNode
@@ -1182,24 +1182,24 @@ public class GetArticleTaggedContents : TaskPageNode
 
 #region Converters
 /// <summary>
-/// Converts a <see cref="SubFlowDefinitionAsset"/> to an <see cref="IAigcPage"/> by retrieving the diagram item's node.
+/// Converts a <see cref="SubFlowDefinitionAsset"/> to an <see cref="ISubFlowDef"/> by retrieving the diagram item's node.
 /// </summary>
-public class PageAssetToAigcPageConverter : TypeConverter<SubFlowDefinitionAsset, IAigcPage>
+public class PageAssetToAigcPageConverter : TypeConverter<SubFlowDefinitionAsset, ISubFlowDef>
 {
     /// <inheritdoc/>
-    public override IAigcPage Convert(SubFlowDefinitionAsset objFrom)
+    public override ISubFlowDef Convert(SubFlowDefinitionAsset objFrom)
     {
         return objFrom.GetDiagramItem()?.Node;
     }
 }
 
 /// <summary>
-/// Converts an <see cref="IAigcPage"/> to a <see cref="SubFlowDefinitionAsset"/> by retrieving the page definition node's asset.
+/// Converts an <see cref="ISubFlowDef"/> to a <see cref="SubFlowDefinitionAsset"/> by retrieving the page definition node's asset.
 /// </summary>
-public class AigcPageToPageAssetConverter : TypeConverter<IAigcPage, SubFlowDefinitionAsset>
+public class AigcPageToPageAssetConverter : TypeConverter<ISubFlowDef, SubFlowDefinitionAsset>
 {
     /// <inheritdoc/>
-    public override SubFlowDefinitionAsset Convert(IAigcPage objFrom)
+    public override SubFlowDefinitionAsset Convert(ISubFlowDef objFrom)
     {
         return (objFrom as SubflowDefinitionNode)?.GetAsset() as SubFlowDefinitionAsset;
     }

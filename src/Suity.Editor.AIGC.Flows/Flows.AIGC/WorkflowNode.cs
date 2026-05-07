@@ -13,7 +13,7 @@ namespace Suity.Editor.Flows.AIGC;
 /// <summary>
 /// The starting node of an AIGC workflow, serving as the entry point for workflow execution.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.Workflow)]
+[SimpleFlowNodeStyle(Color = FlowColors.Workflow)]
 [DisplayText("AIGC Workflow", "*CoreIcon|Workflow")]
 [ToolTipsText("AIGC workflow starting node")]
 [NativeAlias("Suity.Editor.AIGC.Flows.WorkflowNode")]

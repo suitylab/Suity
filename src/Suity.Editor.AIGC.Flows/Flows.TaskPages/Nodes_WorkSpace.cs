@@ -14,7 +14,7 @@ namespace Suity.Editor.Flows.TaskPages;
 /// A flow node that retrieves the workspace associated with the current AIGC task page.
 /// Outputs the workspace asset through a data output connector.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Task WorkSpace", "*CoreIcon|WorkSpace")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskWorkSpace")]
 public class GetTaskWorkSpace : TaskPageNode
@@ -49,7 +49,7 @@ public class GetTaskWorkSpace : TaskPageNode
 /// A flow node that creates a new workspace for the current AIGC task page,
 /// or optionally retrieves an existing one if it already exists.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = true)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = true)]
 [DisplayText("Create Task WorkSpace", "*CoreIcon|WorkSpace")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.CreateTaskWorkSpace")]
 public class CreateTaskWorkSpace : TaskPageNode

@@ -304,8 +304,8 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
     /// <summary>
     /// Gets the underlying page definition for this skill.
     /// </summary>
-    /// <returns>The <see cref="IAigcPage"/> definition, or null if not available.</returns>
-    public IAigcPage GetPageDefinition() => _baseFlow.Target?.GetBaseDefinition();
+    /// <returns>The <see cref="ISubFlowDef"/> definition, or null if not available.</returns>
+    public ISubFlowDef GetPageDefinition() => _baseFlow.Target?.GetBaseDefinition();
 
     /// <summary>
     /// Ensures that a skill instance exists, building one if necessary.
@@ -421,7 +421,7 @@ public class AigcSkillAssetBuilder : AssetBuilder<AigcSkillAsset>
 /// <summary>
 /// Represents a skill asset that can be used as a tool and contains a page definition.
 /// </summary>
-[NativeType(Name = "AigcSkillAsset", Description = "Skill Asset", CodeBase = "*AIGC", Icon = "*CoreIcon|Skil", Color = AigcColors.Agent)]
+[NativeType(Name = "AigcSkillAsset", Description = "Skill Asset", CodeBase = "*AIGC", Icon = "*CoreIcon|Skil", Color = FlowColors.Agent)]
 public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToolAsset
 {
     readonly EditorAssetRef<IAigcPageDefinitionAsset> _baseFlow = new();
@@ -520,8 +520,8 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToo
     /// <summary>
     /// Gets the base page definition from the associated skill document.
     /// </summary>
-    /// <returns>The <see cref="IAigcPage"/> definition, or null.</returns>
-    public IAigcPage GetBaseDefinition() => this.GetDocument<AigcSkillDocument>()?.GetPageDefinition();
+    /// <returns>The <see cref="ISubFlowDef"/> definition, or null.</returns>
+    public ISubFlowDef GetBaseDefinition() => this.GetDocument<AigcSkillDocument>()?.GetPageDefinition();
 
     /// <summary>
     /// Gets the skill definition from the associated skill document.

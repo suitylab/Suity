@@ -26,7 +26,7 @@ namespace Suity.Editor.Flows.TaskPages;
 /// <summary>
 /// Provides a reference to a page definition asset and outputs it as data.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.Page, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.Page, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Page Resource Reference", "*CoreIcon|Page")]
 [DisplayOrder(4950)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionRefNode")]
@@ -90,7 +90,7 @@ public class PageDefinitionReference : TaskPageNode
 /// <summary>
 /// Retrieves the definition of the current (self) page in the flow context.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.Page, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.Page, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Get Self Page Definition", "*CoreIcon|Page")]
 [DisplayOrder(4960)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetSelfPageNode")]
@@ -130,7 +130,7 @@ public class GetSelfPageDefinition : TaskPageNode
 /// <summary>
 /// Retrieves the list of available tool pages in the current context.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.ToolBG, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Get Current Tool List", "*CoreIcon|Tool")]
 [DisplayOrder(4940)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetPageToolPagesNode")]
@@ -191,7 +191,7 @@ public class GetCurrentToolList : TaskPageNode
 /// <summary>
 /// Sets the title of the current page in the flow context.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.Page)]
+[SimpleFlowNodeStyle(Color = FlowColors.Page)]
 [DisplayText("Set Page Title", "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetPageTitleNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetPageTitle")]
@@ -252,7 +252,7 @@ public class SetPageTitle : TaskPageNode
 /// <summary>
 /// Parses a tool calling object from incoming JSON text and a list of available tool pages.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.ToolBG)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
 [DisplayText("Parse Tool Calling", "*CoreIcon|Tool")]
 [DisplayOrder(3000)]
 [ToolTipsText("Parse the calling object from the incoming JSON text and tool page list.")]
@@ -391,7 +391,7 @@ public class ParseToolCalling : TaskPageNode
 /// <summary>
 /// Parses a tool calling object from an XML tag and a list of available tool pages.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.ToolBG)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
 [DisplayText("Parse Xml Tag Tool Calling", "*CoreIcon|Tool")]
 [DisplayOrder(2950)]
 [ToolTipsText("Parse the calling object from the incoming JSON text and tool page list.")]
@@ -480,7 +480,7 @@ public class ParseTagToolCalling : TaskPageNode
 /// <summary>
 /// Creates an empty tool calling object based on a page definition.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.ToolBG)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
 [DisplayText("Create Tool Calling", "*CoreIcon|Tool")]
 [DisplayOrder(2960)]
 [ToolTipsText("Create an empty tool calling object based on the page definition.")]
@@ -687,7 +687,7 @@ public class ToolCallParameter : INamed, IViewObject, ITextDisplay
 /// <summary>
 /// Creates a tool calling object with configurable parameters based on a page definition.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.ToolBG)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
 [DisplayText("Create Tool Calling With Parameter", "*CoreIcon|Tool")]
 [DisplayOrder(2960)]
 [ToolTipsText("Create a tool calling object with parameters based on the page definition.")]
@@ -895,7 +895,7 @@ public class CreateToolCallingWithParameter : TaskPageNode
 /// <summary>
 /// Retrieves a specific parameter value from a page instance by name.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.PageParameter, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false)]
 [DisplayText("Get Page Instance Parameter", "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetPageInstanceParameter")]
 public class GetPageInstanceParameter : TaskPageNode
@@ -1000,7 +1000,7 @@ public class GetPageInstanceParameter : TaskPageNode
 /// <summary>
 /// Sets a specific parameter value on a page instance by name.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.PageParameter)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter)]
 [DisplayText("Set Page Instance Parameter", "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetPageInstanceParameter")]
 public class SetPageInstanceParameter : TaskPageNode
@@ -1124,7 +1124,7 @@ public class SetPageInstanceParameter : TaskPageNode
 /// <summary>
 /// Sets a page parameter value by connecting to a parameter reference node.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.PageParameter)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter)]
 [DisplayText("Set Page Parameter", "*CoreIcon|Parameter")]
 [DisplayOrder(2799)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetPageParameterNode")]

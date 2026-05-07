@@ -14,7 +14,7 @@ namespace Suity.Editor.Flows.AIGC;
 /// <summary>
 /// Node that calls an LLM to classify input text into predefined categories.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.LLm)]
+[SimpleFlowNodeStyle(Color = FlowColors.LLm)]
 [DisplayText("LLM Classifier", "*CoreIcon|Chat")]
 [ToolTipsText("Call large language model to perform classification.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.LLmClassifier")]

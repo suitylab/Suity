@@ -24,7 +24,7 @@ namespace Suity.Editor.Flows.AIGC;
 /// <summary>
 /// Node that retrieves the global LLM model based on specified level and type.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.LLm, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.LLm, HasHeader = false)]
 [DisplayText("Get Global LLM Model", "*CoreIcon|Chat")]
 [NativeAlias("Suity.Editor.AIGC.Flows.GetGlobalLLmModel")]
 public class GetGlobalLLmModel : AigcFlowNode
@@ -128,7 +128,7 @@ public class LLmCallOptionEx : IViewObject
 /// <summary>
 /// Main node for calling large language models. Supports model selection, function calling, output verification, and retry logic.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.LLm)]
+[SimpleFlowNodeStyle(Color = FlowColors.LLm)]
 [DisplayText("Call LLM", "*CoreIcon|Chat")]
 [ToolTipsText("Main entry point for calling large language models.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.CallLLm")]

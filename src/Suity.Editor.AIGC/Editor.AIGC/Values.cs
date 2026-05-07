@@ -1,4 +1,5 @@
 using Suity.Collections;
+using Suity.Editor.Flows;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -41,7 +42,7 @@ public enum LLmMessageRole
 /// <summary>
 /// Represents a single message in a language model conversation with a role and content.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Language Model Info", Color = AigcColors.Task)]
+[NativeType(CodeBase = "AIGC", Description = "Language Model Info", Color = FlowColors.Task)]
 public class LLmMessage : IViewObject
 {
     /// <summary>

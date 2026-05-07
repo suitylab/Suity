@@ -44,31 +44,6 @@ public enum AigcTaskEventTypes
 
 #endregion
 
-#region IAigcPage
-
-/// <summary>
-/// Represents an AIGC page that can provide its definition, result, and associated document item.
-/// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Aigc Page", Color = AigcColors.Task, Icon = "*CoreIcon|Page")]
-public interface IAigcPage : INamed
-{
-    /// <summary>
-    /// Gets the page definition.
-    /// </summary>
-    IAigcPage GetPageDefinition();
-
-    /// <summary>
-    /// Gets the page result.
-    /// </summary>
-    IAigcPage GetPageResult();
-
-    /// <summary>
-    /// Gets the associated document item for this page.
-    /// </summary>
-    object GetDocumentItem();
-}
-#endregion
-
 #region IAigcPageInstance
 
 /// <summary>
@@ -91,7 +66,7 @@ public interface ISubGraphElement : INamed
 /// <summary>
 /// Represents an instance of an AIGC page, providing access to its definition, skill, tool asset, elements, and parameters.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "AIGC Page Instance", Color = AigcColors.Task, Icon = "*CoreIcon|Page")]
+[NativeType(CodeBase = "AIGC", Description = "AIGC Page Instance", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
 public interface IAigcPageInstance : ISubGraphElement
 {
     /// <summary>
@@ -102,7 +77,7 @@ public interface IAigcPageInstance : ISubGraphElement
     /// <summary>
     /// Gets the base definition of this page.
     /// </summary>
-    IAigcPage BaseDefinition { get; }
+    ISubFlowDef BaseDefinition { get; }
 
     /// <summary>
     /// Gets the skill associated with this page.
@@ -290,7 +265,7 @@ public interface IAigcTaskHost
 /// <summary>
 /// Represents an AIGC task page that manages task execution, subtasks, prompts, and chat history.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "AIGC Task Page", Color = AigcColors.Task, Icon = "*CoreIcon|Task")]
+[NativeType(CodeBase = "AIGC", Description = "AIGC Task Page", Color = FlowColors.Task, Icon = "*CoreIcon|Task")]
 public interface IAigcTaskPage
 {
     /// <summary>
@@ -435,19 +410,19 @@ public interface IAigcSkill
 /// <summary>
 /// Represents an asset that defines an AIGC page.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "AIGC Page Definition Asset", Color = AigcColors.Page, Icon = "*CoreIcon|Page")]
+[NativeType(CodeBase = "AIGC", Description = "AIGC Page Definition Asset", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
 public interface IAigcPageDefinitionAsset : INamed, IHasId
 {
     /// <summary>
     /// Gets the base definition of the page.
     /// </summary>
-    IAigcPage GetBaseDefinition();
+    ISubFlowDef GetBaseDefinition();
 }
 
 /// <summary>
 /// Represents a tool asset that can create page instances and provides access to page and skill definitions.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "AIGC Tool Asset", Color = AigcColors.Tool, Icon = "*CoreIcon|Tool")]
+[NativeType(CodeBase = "AIGC", Description = "AIGC Tool Asset", Color = FlowColors.Tool, Icon = "*CoreIcon|Tool")]
 public interface IAigcToolAsset : INamed, IHasId
 {
     /// <summary>
@@ -463,7 +438,7 @@ public interface IAigcToolAsset : INamed, IHasId
     /// <summary>
     /// Gets the base page definition.
     /// </summary>
-    IAigcPage GetBaseDefinition();
+    ISubFlowDef GetBaseDefinition();
 
     /// <summary>
     /// Gets the skill definition.

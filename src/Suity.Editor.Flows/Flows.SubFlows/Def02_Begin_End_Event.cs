@@ -24,7 +24,7 @@ namespace Suity.Editor.Flows.SubFlows;
 /// <summary>
 /// Provides action start support for AIGC pages, such as button clicks, etc.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.Workflow, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.Workflow, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("AIGC Page Action Begin", "*CoreIcon|Begin")]
 [DisplayOrder(4000)]
 [ToolTipsText("Provides action start support for AIGC pages, such as button clicks, etc.")]
@@ -335,12 +335,12 @@ public class PageEventNode : SubFlowTypeNode, IAigcRunWorkflow
                 return DEvent.EventTypeColor;
 
             case AigcTaskEventTypes.SubTaskFailed:
-                return AigcColors.ErrorColor;
+                return FlowColors.ErrorColor;
 
             case AigcTaskEventTypes.TaskBegin:
             case AigcTaskEventTypes.None:
             default:
-                return AigcColors.WorkflowColor;
+                return FlowColors.WorkflowColor;
         }
     }
 }
@@ -549,13 +549,13 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
         switch (endType)
         {
             case PageCommitTypes.None:
-                return AigcColors.WorkflowColor;
+                return FlowColors.WorkflowColor;
 
             case PageCommitTypes.TaskFinished:
                 return DEvent.EventTypeColor;
 
             case PageCommitTypes.TaskFailed:
-                return AigcColors.ErrorColor;
+                return FlowColors.ErrorColor;
 
             default:
                 return null;
@@ -569,7 +569,7 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
 /// <summary>
 /// Provides action end support for AIGC pages.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.Workflow, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.Workflow, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("AIGC Page Action End", "*CoreIcon|End")]
 [DisplayOrder(3900)]
 [ToolTipsText("Provides action end support for AIGC pages.")]

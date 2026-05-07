@@ -18,7 +18,7 @@ namespace Suity.Editor.Flows.SubFlows;
 /// <summary>
 /// Provides input parameter support for AIGC page actions.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("AIGC Page Input Parameter", "*CoreIcon|Parameter")]
 [DisplayOrder(3000)]
 [ToolTipsText("Provides input parameter support for AIGC page actions.")]
@@ -203,7 +203,7 @@ public class SubFlowParameterInputItem : FlowDiagramItem<SubFlowParameterInputNo
 /// <summary>
 /// Provides skill parameter support for AIGC page actions.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.AgentBg, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.AgentBg, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("AIGC Page Skill Parameter", "*CoreIcon|Skill")]
 [DisplayOrder(2990)]
 [ToolTipsText("Provides skill parameter support for AIGC page actions.")]
@@ -392,7 +392,7 @@ public class PageSkillParameterItem : FlowDiagramItem<PageSkillParameterNode>, I
 /// <summary>
 /// Provides prompt input value support for AIGC page actions.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("AIGC Page Prompt Parameter", "*CoreIcon|Prompt")]
 [DisplayOrder(2980)]
 [ToolTipsText("Provides prompt input value support for AIGC page actions.")]
@@ -484,7 +484,7 @@ public class PagePromptParameterInputItem : FlowDiagramItem<PagePromptParameterI
 /// <summary>
 /// Provides message input parameter support for AIGC page actions.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.Message, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.Message, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("AIGC Page Message Parameter", "*CoreIcon|Comment")]
 [DisplayOrder(2970)]
 [ToolTipsText("Provides input parameter support for AIGC page actions.")]
@@ -599,7 +599,7 @@ public class PageMessageParameterItem : FlowDiagramItem<PageMessageParameterNode
 /// <summary>
 /// Provides output value support for AIGC page actions.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("AIGC Page Output Parameter", "*CoreIcon|Parameter")]
 [DisplayOrder(2900)]
 [ToolTipsText("Provides output parameter support for AIGC page actions.")]
@@ -940,7 +940,7 @@ public class PageArticleOutputItem : FlowDiagramItem<PageArticleOutputNode>, ISu
 /// <summary>
 /// Provides file output support for AIGC page actions.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("AIGC Page Output File", "*CoreIcon|File")]
 [DisplayOrder(2750)]
 [ToolTipsText("Provides file output support for AIGC page actions.")]
@@ -1102,7 +1102,7 @@ public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, ISubFlowE
 /// <summary>
 /// Provides sub-task output support for AIGC page actions.
 /// </summary>
-[SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("AIGC Page Output SubTask", "*CoreIcon|Task")]
 [DisplayOrder(2700)]
 [ToolTipsText("Provides sub-task output support for AIGC page actions.")]

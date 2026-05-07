@@ -245,7 +245,7 @@ public abstract class SubFlowTypeNode : SubFlowNode, IAigcTypeNode
 /// <summary>
 /// Abstract base class for sub-flow definition nodes that support parameter completion conditions.
 /// </summary>
-public abstract class SubflowDefNode : SubFlowNode
+public abstract class SubflowDefNode : SubFlowNode, ISubFlowDef
 {
     readonly ValueProperty<ParameterConditions> _completionCondition = new("CompletionCondition", "Completion Condition", ParameterConditions.All, "Condition for parameter completion. All means all must be met, Any means only one needs to be met.");
 
@@ -269,4 +269,13 @@ public abstract class SubflowDefNode : SubFlowNode
 
         _completionCondition.InspectorField(setup);
     }
+
+    /// <inheritdoc/>
+    public abstract ISubFlowDef GetPageDefinition();
+
+    /// <inheritdoc/>
+    public abstract ISubFlowDef GetPageResult();
+
+    /// <inheritdoc/>
+    public abstract object GetDocumentItem();
 }

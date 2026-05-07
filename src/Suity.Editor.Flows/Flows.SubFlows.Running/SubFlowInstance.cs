@@ -151,7 +151,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, IAigcPageInst
     /// <summary>
     /// Gets the base page definition that this instance is based on.
     /// </summary>
-    public IAigcPage BaseDefinition => _pageNode;
+    public ISubFlowDef BaseDefinition => _pageNode;
 
     /// <summary>
     /// Gets the skill definition associated with this page, if any.
@@ -222,7 +222,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, IAigcPageInst
 
         var items = doc.ItemCollection.AllItems
             .OfType<FlowDiagramItem>()
-            .Where(o => o.Node is not IAigcPage)
+            .Where(o => o.Node is not ISubFlowDef)
             .Where(o => o.Bound.IntersectsWith(page.Bound))
             .ToList();
 
@@ -289,7 +289,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, IAigcPageInst
         {
             items = doc.ItemCollection.AllItems
             .OfType<FlowDiagramItem>()
-            .Where(o => o.Node is not IAigcPage)
+            .Where(o => o.Node is not ISubFlowDef)
             .Where(o => o.Node is not IGroupFlowNode)
             .Where(o => pageList.Any(page => page.Bound.IntersectsWith(o.Bound)))
             .ToList();
@@ -402,12 +402,12 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, IAigcPageInst
 
             (pages ??= []).Add(page);
 
-            if (pages.FirstOrDefault(o => (o.DiagramItem.Node as IAigcPage)?.GetPageResult() == flowNode) is { } defPage)
+            if (pages.FirstOrDefault(o => (o.DiagramItem.Node as ISubFlowDef)?.GetPageResult() == flowNode) is { } defPage)
             {
                 defPage.ResultPage = page;
                 page.Order = defPage.Order - 5;
             }
-            else if ((this.DiagramItem.Node as IAigcPage)?.GetPageResult() == flowNode)
+            else if ((this.DiagramItem.Node as ISubFlowDef)?.GetPageResult() == flowNode)
             {
                 // RootPage result page
                 this.ResultPage = page;
