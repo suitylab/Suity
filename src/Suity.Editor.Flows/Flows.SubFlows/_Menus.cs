@@ -1,10 +1,7 @@
 using Suity;
 using Suity.Collections;
-using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Documents;
-using Suity.Editor.Flows;
 using Suity.Editor.Flows.Gui;
-using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing.Core;
@@ -23,7 +20,7 @@ namespace Suity.Editor.Flows.SubFlows;
 #region CreateFunctionMenuItem
 
 /// <summary>
-/// Menu item for creating a new function node group in the AIGC flow diagram.
+/// Menu item for creating a new function node group in the Sub-flow diagram.
 /// </summary>
 [InsertInto("#AigcFlow")]
 public class CreateFunctionMenuItem : MenuCommand
@@ -191,7 +188,7 @@ public class CreateFunctionAction : UndoRedoAction
 #region ExtractFunctionMenuItem
 
 /// <summary>
-/// Menu item for extracting selected nodes into a reusable function in the AIGC flow diagram.
+/// Menu item for extracting selected nodes into a reusable function in the Sub-flow diagram.
 /// </summary>
 [InsertInto("#AigcFlow")]
 public class ExtractFunctionMenuItem : MenuCommand

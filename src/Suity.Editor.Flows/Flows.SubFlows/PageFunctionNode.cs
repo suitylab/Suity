@@ -1,7 +1,5 @@
 using Suity.Drawing;
 using Suity.Editor.Documents;
-using Suity.Editor.Flows;
-using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Helpers;
@@ -12,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.SubFlows;
 
 /// <summary>
 /// Represents a flow node that references a page definition asset and enables page execution within a flow.

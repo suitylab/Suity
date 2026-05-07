@@ -1,4 +1,3 @@
-using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -7,7 +6,7 @@ using System.Collections.Generic;
 namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
-/// Represents a group page element that can contain nested child elements and sub-groups within an AIGC flow diagram.
+/// Represents a group page element that can contain nested child elements and sub-groups within an Sub-flow diagram.
 /// </summary>
 public class SubFlowGroupElement : SubFlowElement
 {

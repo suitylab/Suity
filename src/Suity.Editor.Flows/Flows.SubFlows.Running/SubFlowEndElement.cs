@@ -1,4 +1,3 @@
-using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
@@ -30,7 +29,7 @@ public class SubFlowEndElement : SubFlowElement, IPageParameterOutput
     public override FlowNodeConnector OuterConnector => _connector;
 
     /// <summary>
-    /// Gets the AIGC end node associated with this element.
+    /// Gets the Sub-flow end node associated with this element.
     /// </summary>
     public ISubFlowEndNode EndNode { get; private set; }
 

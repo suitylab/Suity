@@ -1,4 +1,3 @@
-using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -7,7 +6,7 @@ using static Suity.Helpers.GlobalLocalizer;
 namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
-/// Represents the beginning element of an AIGC page, serving as the entry point for page interactions.
+/// Represents the beginning element of an Sub-flow page, serving as the entry point for page interactions.
 /// </summary>
 public class SubFlowBeginElement : SubFlowElement, IPageValueElement
 {

@@ -3,13 +3,9 @@ using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Assistants;
-using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Design;
-using Suity.Editor.Flows.AIGC;
-using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
-using Suity.Flows.Pages;
 using Suity.Synchonizing;
 using Suity.UndoRedos;
 using Suity.Views;
@@ -26,7 +22,7 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 /// <summary>
 /// Represents an instance of a sub-graph within a flow, managing page elements, parameters, and computation context.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Sub-Graph Instance", Icon = "*CoreIcon|Page")]
+[NativeType(CodeBase = "SubFlow", Description = "Sub-Graph Instance", Icon = "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.TaskPages.Running.AigcPageInstance")]
 public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInstance
 {
@@ -124,7 +120,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
     #endregion
 
-    #region IAigcPageInstance
+    #region ISubFlowInstance
 
     /// <summary>
     /// Gets the owner of this page instance.

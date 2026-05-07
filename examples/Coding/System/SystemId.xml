@@ -33,7 +33,6 @@
   <Object id="3fe5f3c0-7e16-4346-b6ba-5f3deba04e0b" name="*AIGC|FlowContextScopes.Global" />
   <Object id="42b640b9-3350-4e88-aead-90b852bd206a" name="*AIGC|FlowContextScopes.Local" />
   <Object id="18f8d2fd-3de5-4152-80ec-4ff6143f97fa" name="*AIGC|IAigcTaskPage" />
-  <Object id="7c373563-593c-4efc-b8e7-a72842300609" name="*AIGC|IBranchConnection" />
   <Object id="f5eea3e3-f771-40f5-afa1-58dc2e2ee6f2" name="*AIGC|ILLmModel" />
   <Object id="04fd9a4f-dbc7-4fee-af06-58b10b527112" name="*AIGC|ImageGenAsset" />
   <Object id="339b452b-0d3a-47c8-bbdb-de6ebc7a9d38" name="*AIGC|ISubFlowAsset" />
@@ -58,8 +57,6 @@
   <Object id="1b952042-8712-40d9-b851-6cd7cacf72c4" name="*AIGC|PromptAsset" />
   <Object id="903aa1cc-8908-49e3-9b10-83a0bb67005b" name="*AIGC|PromptBuilder" />
   <Object id="f9e4d782-f4a5-46bb-86e3-2d79325a961f" name="*AIGC|SkipAIGeneration" />
-  <Object id="8660e638-48d8-43b5-b08f-a2bc723054a3" name="*AIGC|SubFlowDefinitionAsset" />
-  <Object id="cf1285ee-a699-46e5-a879-c8e2ac96fecc" name="*AIGC|SubFlowInstance" />
   <Object id="4e73c3cc-effc-465d-8fe8-5e9b3dd8c87c" name="*AIGC|VectorKnowledge" />
   <Object id="3e63d8f9-29dc-4cf2-a10e-ae9cd5acc1a5" name="*AIGC|XmlTag" />
   <Object id="74f1f0ec-d71b-49d5-a1f4-891235d8d5dd" name="*AIHubMixImage" />
@@ -600,6 +597,11 @@
   <Object id="9cf974b8-a9a7-4c0b-b794-65c5e289b35d" name="*RenderType|TypeFormatter" />
   <Object id="7f713bf6-15ac-4bfa-94fe-d3029c57ee00" name="*SiliconFlowImage" />
   <Object id="4f7ed151-b5b6-4ce0-9f3c-ec2a4ea67c8c" name="*SiliconFlowLLm" />
+  <Object id="0d7fe790-7370-4374-9178-6870246c699f" name="*SubFlow" />
+  <Object id="3ac40d65-d15b-4021-b18e-d0408fcb29c7" name="*SubFlow|IBranchConnection" />
+  <Object id="2aef8f59-7a8f-402e-909a-dff40eb623ea" name="*SubFlow|SubFlowDefinitionAsset" />
+  <Object id="70a1566a-7ea4-4b65-a3e0-fbf445d14d6e" name="*SubFlow|SubFlowInstance" />
+  <Object id="70a1566a-7ea4-4b65-a3e0-fbf445d14d6e" name="*SubFlow|SubFlowInstance" />
   <Object id="91556408-cf09-4033-a5fa-1759223e1abb" name="*Suity" />
   <Object id="ebdb3e23-2e3f-4b54-bdac-152015486bbb" name="*Suity.Controlling" />
   <Object id="21a73305-22d1-475e-836f-c345b94160d0" name="*Suity.Controlling|Component" />

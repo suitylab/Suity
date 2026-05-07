@@ -13,12 +13,12 @@ namespace Suity.Editor.Flows.SubFlows;
 
 #region SubflowParameterInputNode
 /// <summary>
-/// Provides input parameter support for AIGC page actions.
+/// Provides input parameter support for Sub-flow actions.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
-[DisplayText("AIGC Page Input Parameter", "*CoreIcon|Parameter")]
+[DisplayText("Sub-flow Input Parameter", "*CoreIcon|Parameter")]
 [DisplayOrder(3000)]
-[ToolTipsText("Provides input parameter support for AIGC page actions.")]
+[ToolTipsText("Provides input parameter support for Sub-flow actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode")]
 public class SubFlowParameterInputNode : SubFlowTypeNode
 {
@@ -198,12 +198,12 @@ public class SubFlowParameterInputItem : FlowDiagramItem<SubFlowParameterInputNo
 
 #region SubFlowParameterOutputNode
 /// <summary>
-/// Provides output value support for AIGC page actions.
+/// Provides output value support for Sub-flow actions.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
-[DisplayText("AIGC Page Output Parameter", "*CoreIcon|Parameter")]
+[DisplayText("Sub-flow Output Parameter", "*CoreIcon|Parameter")]
 [DisplayOrder(2900)]
-[ToolTipsText("Provides output parameter support for AIGC page actions.")]
+[ToolTipsText("Provides output parameter support for Sub-flow actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterOutputNode")]
 public class SubFlowParameterOutputNode : SubFlowTypeNode
 {

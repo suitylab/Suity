@@ -1,9 +1,9 @@
-namespace Suity.Flows.Pages;
+namespace Suity.Editor.Flows.SubFlows;
 
 /// <summary>
 /// Provides extension methods for nullable boolean values used in task-related operations.
 /// </summary>
-public static class TaskExtensions
+public static class SubFlowExtensions
 {
     /// <summary>
     /// Returns true if the nullable boolean is null or has a value of true.

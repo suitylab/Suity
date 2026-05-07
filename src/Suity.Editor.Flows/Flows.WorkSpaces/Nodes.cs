@@ -21,7 +21,7 @@ namespace Suity.Editor.Flows.WorkSpaces;
 [DisplayText("List WorkSpace Files", "*CoreIcon|WorkSpace")]
 [NativeAlias("Suity.Editor.AIGC.WorkSpaces.Flows.ListWorkSpaceFiles")]
 [NativeAlias("Suity.Editor.AIGC.Flows.WorkSpaces.ListWorkSpaceFiles")]
-public class ListWorkSpaceFiles : AigcWorkSpaceNode
+public class ListWorkSpaceFiles : WorkSpaceNode
 {
     private readonly ConnectorAssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
     readonly ConnectorStringProperty _filter = new("Filter", "Filter", "*");
@@ -90,7 +90,7 @@ public class ListWorkSpaceFiles : AigcWorkSpaceNode
 [DisplayText("Read WorkSpace File", "*CoreIcon|WorkSpace")]
 [NativeAlias("Suity.Editor.AIGC.WorkSpaces.Flows.ReadWorkSpaceFile")]
 [NativeAlias("Suity.Editor.AIGC.Flows.WorkSpaces.ReadWorkSpaceFile")]
-public class ReadWorkSpaceFile : AigcWorkSpaceNode
+public class ReadWorkSpaceFile : WorkSpaceNode
 {
     private readonly ConnectorAssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
     private readonly ConnectorStringProperty _filePath = new("FilePath", "File Path", default, "Input file relative path");
@@ -157,7 +157,7 @@ public class ReadWorkSpaceFile : AigcWorkSpaceNode
 [DisplayText("Write WorkSpace File", "*CoreIcon|WorkSpace")]
 [NativeAlias("Suity.Editor.AIGC.WorkSpaces.Flows.WriteWorkSpaceFile")]
 [NativeAlias("Suity.Editor.AIGC.Flows.WorkSpaces.WriteWorkSpaceFile")]
-public class WriteWorkSpaceFile : AigcWorkSpaceNode
+public class WriteWorkSpaceFile : WorkSpaceNode
 {
     private readonly FlowNodeConnector _in;
     private readonly FlowNodeConnector _out;
@@ -224,7 +224,7 @@ public class WriteWorkSpaceFile : AigcWorkSpaceNode
 [DisplayText("Delete WorkSpace File", "*CoreIcon|WorkSpace")]
 [NativeAlias("Suity.Editor.AIGC.WorkSpaces.Flows.DeleteWorkSpaceFile")]
 [NativeAlias("Suity.Editor.AIGC.Flows.WorkSpaces.DeleteWorkSpaceFile")]
-public class DeleteWorkSpaceFile : AigcWorkSpaceNode
+public class DeleteWorkSpaceFile : WorkSpaceNode
 {
     private readonly FlowNodeConnector _in;
     private readonly FlowNodeConnector _out;
@@ -298,7 +298,7 @@ public class DeleteWorkSpaceFile : AigcWorkSpaceNode
 [DisplayText("Check WorkSpace File Exists", "*CoreIcon|WorkSpace")]
 [NativeAlias("Suity.Editor.AIGC.WorkSpaces.Flows.IsWorkSpaceFileExist")]
 [NativeAlias("Suity.Editor.AIGC.Flows.WorkSpaces.IsWorkSpaceFileExist")]
-public class IsWorkSpaceFileExist : AigcWorkSpaceNode
+public class IsWorkSpaceFileExist : WorkSpaceNode
 {
     private readonly ConnectorAssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
     private readonly ConnectorStringProperty _filePath = new("FilePath", "File Path", default, "Input file relative path");
@@ -367,7 +367,7 @@ public class IsWorkSpaceFileExist : AigcWorkSpaceNode
 [SimpleFlowNodeStyle(HasHeader = false)]
 [DisplayText("Get WorkSpace Directory", "*CoreIcon|WorkSpace")]
 [NativeAlias("Suity.Editor.AIGC.Flows.WorkSpaces.GetWorkSpaceDirectory")]
-public class GetWorkSpaceDirectory : AigcWorkSpaceNode
+public class GetWorkSpaceDirectory : WorkSpaceNode
 {
     private readonly ConnectorAssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
     private readonly FlowNodeConnector _directory;

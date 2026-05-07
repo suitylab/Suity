@@ -1,4 +1,3 @@
-using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
@@ -8,7 +7,7 @@ using System;
 namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
-/// Represents a page element that handles parameter input for AIGC tasks.
+/// Represents a page element that handles parameter input for Sub-flow.
 /// </summary>
 public class SubFlowParameterInput : SubFlowElement, IPageParameterInput
 {

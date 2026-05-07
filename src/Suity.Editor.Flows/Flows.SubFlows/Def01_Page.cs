@@ -232,7 +232,7 @@ public class SubFlowDefinitionDiagramItem : FlowDiagramItem<SubflowDefinitionNod
 /// <summary>
 /// Asset representing a page definition that can be used as a tool.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Sub-flow Definition", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
+[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Definition", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
 public class SubFlowDefinitionAsset : Asset, ISubFlowDefAsset, ISubFlowAsset
 {
     /// <inheritdoc/>
@@ -439,9 +439,9 @@ public class SubflowBranchDiagramItem : FlowDiagramItem<SubflowBranchNode>
 /// Sub-flow interactive page's detached result page node.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.Page)]
-[DisplayText("AIGC Result Page", "*CoreIcon|CheckList")]
+[DisplayText("Sub-flow Result Page", "*CoreIcon|CheckList")]
 [DisplayOrder(4998)]
-[ToolTipsText("AIGC interactive page's detached result page")]
+[ToolTipsText("Sub-flow interactive page's detached result page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageResultNode")]
 public class SubFlowResultNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
 {

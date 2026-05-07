@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.SubFlows;
 
 /// <summary>
 /// Represents a node in a rectangle-based spatial tree, holding data and a bounding rectangle.

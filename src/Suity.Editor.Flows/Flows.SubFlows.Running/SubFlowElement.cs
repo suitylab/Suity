@@ -1,9 +1,7 @@
 using Suity.Drawing;
-using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
-using Suity.Flows.Pages;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -14,7 +12,7 @@ using System.Linq;
 namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
-/// Represents an abstract base class for AIGC page elements that integrate with the flow diagram system.
+/// Represents an abstract base class for Sub-flow page elements that integrate with the flow diagram system.
 /// </summary>
 public abstract class SubFlowElement : IViewObject, ISubFlowElement
 {
@@ -227,7 +225,7 @@ public abstract class SubFlowElement : IViewObject, ISubFlowElement
     {
     }
 
-    #region IAigcPageElement
+    #region ISubFlowElement
 
     /// <summary>
     /// Gets whether this element is done/completed.

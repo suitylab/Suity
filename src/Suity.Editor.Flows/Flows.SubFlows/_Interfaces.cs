@@ -4,7 +4,7 @@ using Suity.Editor.Types;
 namespace Suity.Editor.Flows.SubFlows;
 
 /// <summary>
-/// Defines the types of page commit events that can occur in the AIGC workflow.
+/// Defines the types of page commit events that can occur in the Sub-flow.
 /// </summary>
 public enum TaskCommitTypes
 {
@@ -43,7 +43,7 @@ public enum ParameterConditions
 }
 
 /// <summary>
-/// Represents an AIGC node that has an associated type definition.
+/// Represents an Sub-flow node that has an associated type definition.
 /// </summary>
 public interface ISubFlowTypeNode
 {
@@ -59,7 +59,7 @@ public interface ISubFlowTypeNode
 }
 
 /// <summary>
-/// Represents an AIGC end node that has an associated type definition and an end type.
+/// Represents an Sub-flow end node that has an associated type definition and an end type.
 /// </summary>
 public interface ISubFlowEndNode : ISubFlowTypeNode
 {
@@ -72,7 +72,7 @@ public interface ISubFlowEndNode : ISubFlowTypeNode
 /// <summary>
 /// Represents a connection between pages in the Sub-flow.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Branch Connection", Color = "#333333")]
+[NativeType(CodeBase = "SubFlow", Description = "Branch Connection", Color = "#333333")]
 public interface IBranchConnection
 {
 

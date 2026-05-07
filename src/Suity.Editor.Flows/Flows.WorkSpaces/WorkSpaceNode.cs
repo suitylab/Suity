@@ -9,7 +9,7 @@ namespace Suity.Editor.Flows.WorkSpaces;
 /// </summary>
 [DisplayText("WorkSpace", "*CoreIcon|WorkSpace")]
 [ToolTipsText("WorkSpace related nodes")]
-public abstract class AigcWorkSpaceNode : FlowNode, IFlowNodeComputeAsync
+public abstract class WorkSpaceNode : FlowNode, IFlowNodeComputeAsync
 {
     /// <inheritdoc/>
     public override ImageDef Icon => GetType().ToDisplayIcon() ?? CoreIconCache.WorkSpace;

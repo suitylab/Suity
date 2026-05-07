@@ -32,7 +32,7 @@ internal class AigcFlowSelectionList : FlowNodeSelectionNode
         AddDerived<AigcArticleNode>();
         //AddDerived<KnowledgeBaseFlowNode>();
         //AddDerived<AigcCodeDesignNode>();
-        AddDerived<AigcWorkSpaceNode>();
+        AddDerived<WorkSpaceNode>();
         /*        AddDerived<AigcPlanNode>(
                     //condition: _ => ServiceInternals._license.GetCapability(EditorCapabilities.AigcPlanning)
                     );
