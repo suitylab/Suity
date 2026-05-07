@@ -1,8 +1,7 @@
 using Suity.Drawing;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows.SubGraphs.Running;
 using Suity.Editor.Documents;
-using Suity.Editor.Flows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Helpers;
@@ -12,25 +11,25 @@ using Suity.Views.Im;
 using Suity.Views.Im.Flows;
 using System;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.SubFlows;
 
 /// <summary>
 /// Represents a canvas node for a page definition asset, providing an expanded view
 /// with property grid inspection and navigation capabilities.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageCanvasNode")]
-public class PageCanvasNode : ExpandedCanvasAssetNode<PageDefinitionAsset>
+public class SubFlowCanvasNode : ExpandedCanvasAssetNode<SubFlowDefinitionAsset>
 {
     private readonly ImSubPropertyGrid _propGrid = new("AigcPage", true);
 
-    private SubGraphInstance _rootElement;
+    private SubFlowInstance _rootElement;
     private IInspectorContext _inpectorContext;
 
     /// <summary>
     /// Gets or sets the root page element instance for this node.
     /// Manages event subscriptions for result output and refresh requests.
     /// </summary>
-    public SubGraphInstance RootElement
+    public SubFlowInstance RootElement
     {
         get => _rootElement;
         set
@@ -71,12 +70,12 @@ public class PageCanvasNode : ExpandedCanvasAssetNode<PageDefinitionAsset>
     /// <summary>
     /// Gets the page definition diagram item associated with this node.
     /// </summary>
-    public PageDefinitionDiagramItem Page => GetTargetObject() as PageDefinitionDiagramItem;
+    public SubFlowDefinitionDiagramItem Page => GetTargetObject() as SubFlowDefinitionDiagramItem;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageCanvasNode"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowCanvasNode"/> class.
     /// </summary>
-    public PageCanvasNode()
+    public SubFlowCanvasNode()
     {
         // Not occupying document editing, only for display.
         base.OccupyDocumentUsage = false;
@@ -241,7 +240,7 @@ public class PageCanvasNode : ExpandedCanvasAssetNode<PageDefinitionAsset>
                     Owner = this,
                 };
 
-                RootElement = new SubGraphInstance(page, option);
+                RootElement = new SubFlowInstance(page, option);
                 if (rootPage != null)
                 {
                     RootElement.UpdateFromOther(rootPage);

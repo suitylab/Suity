@@ -2,12 +2,12 @@ using Suity.Editor.Values;
 using Suity.Views;
 using System;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.SubFlows;
 
 /// <summary>
 /// Provides helper methods for evaluating page-related values and types.
 /// </summary>
-public static class PageHelper
+public static class SubFlowHelper
 {
     /// <summary>
     /// Determines whether the specified object represents an empty or null value.

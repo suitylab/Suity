@@ -3,6 +3,7 @@ using Suity.Drawing;
 using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
+using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -274,7 +275,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     {
         if (item is AigcTaskPage page)
         {
-            var selection = new AssetSelection<PageDefinitionAsset>();
+            var selection = new AssetSelection<SubFlowDefinitionAsset>();
             if (!await selection.ShowSelectionGUIAsync("Select Task Page"))
             {
                 return false;
@@ -303,7 +304,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// <inheritdoc/>
     protected internal override bool OnDropInCheck(SNamedRootCollection items, object value)
     {
-        if (value is PageDefinitionAsset)
+        if (value is SubFlowDefinitionAsset)
         {
             return true;
         }
@@ -314,7 +315,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// <inheritdoc/>
     protected internal override object OnDropInConvert(SNamedRootCollection items, object value)
     {
-        if (value is PageDefinitionAsset pageDef)
+        if (value is SubFlowDefinitionAsset pageDef)
         {
             return new AigcTaskPage(pageDef)
             {

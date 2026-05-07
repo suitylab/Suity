@@ -1,9 +1,9 @@
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows.SubGraphs.Running;
 using Suity.Editor.Documents;
-using Suity.Editor.Flows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -13,11 +13,10 @@ using Suity.Views.Named;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Suity.Editor.Flows.SubGraphs;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.SubFlows;
 
-#region PageDefinitionNode
+#region SubflowDefinitionNode
 
 /// <summary>
 /// AIGC interactive page definition node that can act as a group and page.
@@ -27,7 +26,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 [DisplayOrder(5000)]
 [ToolTipsText("AIGC interactive page definition")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionNode")]
-public class PageDefinitionNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
+public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, IAigcPage
 {
     Guid _id;
 
@@ -37,9 +36,9 @@ public class PageDefinitionNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
     readonly ValueProperty<bool> _useParentArticle = new("UseParentArticle", "Use Parent Article", false, "Use the parent article as the article record for this page's content.");
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageDefinitionNode"/> class.
+    /// Initializes a new instance of the <see cref="SubflowDefinitionNode"/> class.
     /// </summary>
-    public PageDefinitionNode()
+    public SubflowDefinitionNode()
         : base()
     {
         UpdateConnector();
@@ -114,7 +113,7 @@ public class PageDefinitionNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
 
         if (_id != Guid.Empty)
         {
-            this.AddAssociateOutputConnector("Page", typeof(PageDefinitionAsset).FullName, _id);
+            this.AddAssociateOutputConnector("Page", typeof(SubFlowDefinitionAsset).FullName, _id);
         }
 
         var type = TypeDefinition.FromNative<IPageConnection>();
@@ -149,31 +148,27 @@ public class PageDefinitionNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
     #endregion
 }
 
-#endregion
-
-#region PageDefinitionDiagramItem
-
 /// <summary>
-/// Diagram item representing a <see cref="PageDefinitionNode"/> in the flow diagram.
+/// Diagram item representing a <see cref="SubflowDefinitionNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionDiagramItem")]
-public class PageDefinitionDiagramItem : FlowDiagramItem<PageDefinitionNode, PageDefinitionAssetBuilder>
+public class SubFlowDefinitionDiagramItem : FlowDiagramItem<SubflowDefinitionNode, SubFlowDefinitionAssetBuilder>
 {
     private DocumentEntry _docEntry;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageDefinitionDiagramItem"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowDefinitionDiagramItem"/> class.
     /// </summary>
-    public PageDefinitionDiagramItem()
+    public SubFlowDefinitionDiagramItem()
     : base()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageDefinitionDiagramItem"/> class with the specified node.
+    /// Initializes a new instance of the <see cref="SubFlowDefinitionDiagramItem"/> class with the specified node.
     /// </summary>
     /// <param name="node">The page definition node.</param>
-    public PageDefinitionDiagramItem(PageDefinitionNode node)
+    public SubFlowDefinitionDiagramItem(SubflowDefinitionNode node)
         : base(node)
     {
     }
@@ -215,7 +210,7 @@ public class PageDefinitionDiagramItem : FlowDiagramItem<PageDefinitionNode, Pag
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 
     /// <inheritdoc/>
     protected override void OnAdded()
@@ -233,23 +228,20 @@ public class PageDefinitionDiagramItem : FlowDiagramItem<PageDefinitionNode, Pag
         DocEntry = null;
     }
 }
-#endregion
-
-#region PageDefinitionAsset
 
 /// <summary>
 /// Asset representing a page definition that can be used as a tool.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Page Definition", Color = AigcColors.Page, Icon = "*CoreIcon|Page")]
-public class PageDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcToolAsset
+public class SubFlowDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcToolAsset
 {
     /// <inheritdoc/>
     public override ImageDef DefaultIcon => CoreIconCache.Page;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageDefinitionAsset"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowDefinitionAsset"/> class.
     /// </summary>
-    public PageDefinitionAsset()
+    public SubFlowDefinitionAsset()
     {
         UpdateAssetTypes(typeof(IAigcPageDefinitionAsset), typeof(IAigcToolAsset));
     }
@@ -257,8 +249,8 @@ public class PageDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcToolAss
     /// <summary>
     /// Gets the diagram item associated with this asset.
     /// </summary>
-    /// <returns>The <see cref="PageDefinitionDiagramItem"/>, or null.</returns>
-    public PageDefinitionDiagramItem GetDiagramItem() => this.GetStorageObject(true) as PageDefinitionDiagramItem;
+    /// <returns>The <see cref="SubFlowDefinitionDiagramItem"/>, or null.</returns>
+    public SubFlowDefinitionDiagramItem GetDiagramItem() => this.GetStorageObject(true) as SubFlowDefinitionDiagramItem;
 
     #region IAigcToolAsset
 
@@ -279,16 +271,16 @@ public class PageDefinitionAsset : Asset, IAigcPageDefinitionAsset, IAigcToolAss
             return null;
         }
 
-        return new SubGraphInstance(toolPageItem, option);
+        return new SubFlowInstance(toolPageItem, option);
     }
 
     #endregion
 }
 
 /// <summary>
-/// Asset builder for <see cref="PageDefinitionAsset"/>.
+/// Asset builder for <see cref="SubFlowDefinitionAsset"/>.
 /// </summary>
-public class PageDefinitionAssetBuilder : AssetBuilder<PageDefinitionAsset>
+public class SubFlowDefinitionAssetBuilder : AssetBuilder<SubFlowDefinitionAsset>
 {
 }
 
@@ -304,16 +296,16 @@ public class PageDefinitionAssetBuilder : AssetBuilder<PageDefinitionAsset>
 [DisplayOrder(4999)]
 [ToolTipsText("AIGC interactive page's detached extension page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubNode")]
-public class PageSubNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
+public class SubflowExtensionNode : SubflowDefNode, IGroupFlowNode, IAigcPage
 {
-    readonly AssetProperty<PageDefinitionAsset> _page = new("Page", "Page");
+    readonly AssetProperty<SubFlowDefinitionAsset> _page = new("Page", "Page");
 
     FlowNodeConnector _resultConnector;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageSubNode"/> class.
+    /// Initializes a new instance of the <see cref="SubflowExtensionNode"/> class.
     /// </summary>
-    public PageSubNode()
+    public SubflowExtensionNode()
     {
         Description = "Sub Page";
 
@@ -347,8 +339,8 @@ public class PageSubNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
     /// <summary>
     /// Gets the target page diagram item referenced by this sub-page.
     /// </summary>
-    /// <returns>The <see cref="PageDefinitionDiagramItem"/>, or null.</returns>
-    public PageDefinitionDiagramItem GetTargetPageItem() => _page.Target?.GetDiagramItem();
+    /// <returns>The <see cref="SubFlowDefinitionDiagramItem"/>, or null.</returns>
+    public SubFlowDefinitionDiagramItem GetTargetPageItem() => _page.Target?.GetDiagramItem();
 
     /// <inheritdoc/>
     public override Color? TitleColor => GroupFlowNode.GroupHeaderColor;
@@ -383,7 +375,7 @@ public class PageSubNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
 
         if (_page.Id != Guid.Empty)
         {
-            this.AddAssociateInputConnector("Page", typeof(PageDefinitionAsset).FullName, _page.Id);
+            this.AddAssociateInputConnector("Page", typeof(SubFlowDefinitionAsset).FullName, _page.Id);
         }
 
         var type = TypeDefinition.FromNative<IPageConnection>();
@@ -418,29 +410,25 @@ public class PageSubNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
     #endregion
 }
 
-#endregion
-
-#region PageSubDiagramItem
-
 /// <summary>
-/// Diagram item representing a <see cref="PageSubNode"/> in the flow diagram.
+/// Diagram item representing a <see cref="SubflowExtensionNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubDiagramItem")]
-public class PageSubDiagramItem : FlowDiagramItem<PageSubNode>
+public class SubflowExtensionDiagramItem : FlowDiagramItem<SubflowExtensionNode>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageSubDiagramItem"/> class.
+    /// Initializes a new instance of the <see cref="SubflowExtensionDiagramItem"/> class.
     /// </summary>
-    public PageSubDiagramItem()
+    public SubflowExtensionDiagramItem()
     : base()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageSubDiagramItem"/> class with the specified node.
+    /// Initializes a new instance of the <see cref="SubflowExtensionDiagramItem"/> class with the specified node.
     /// </summary>
     /// <param name="node">The page sub node.</param>
-    public PageSubDiagramItem(PageSubNode node)
+    public SubflowExtensionDiagramItem(SubflowExtensionNode node)
         : base(node)
     {
     }
@@ -458,7 +446,7 @@ public class PageSubDiagramItem : FlowDiagramItem<PageSubNode>
 [DisplayOrder(4998)]
 [ToolTipsText("AIGC interactive page's detached result page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageResultNode")]
-public class PageResultNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
+public class SubFlowResultNode : SubflowDefNode, IGroupFlowNode, IAigcPage
 {
     FlowNodeConnector _defConnector;
 
@@ -491,9 +479,9 @@ public class PageResultNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
     public override Color? BackgroundColor => base.TitleColor;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageResultNode"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowResultNode"/> class.
     /// </summary>
-    public PageResultNode()
+    public SubFlowResultNode()
     {
         Description = "Result";
         UpdateConnector();
@@ -536,29 +524,25 @@ public class PageResultNode : AigcPageDefPageNode, IGroupFlowNode, IAigcPage
     #endregion
 }
 
-#endregion
-
-#region PageResultDiagramItem
-
 /// <summary>
-/// Diagram item representing a <see cref="PageResultNode"/> in the flow diagram.
+/// Diagram item representing a <see cref="SubFlowResultNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageResultDiagramItem")]
-public class PageResultDiagramItem : FlowDiagramItem<PageResultNode>
+public class SubFlowResultDiagramItem : FlowDiagramItem<SubFlowResultNode>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageResultDiagramItem"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowResultDiagramItem"/> class.
     /// </summary>
-    public PageResultDiagramItem()
+    public SubFlowResultDiagramItem()
     : base()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageResultDiagramItem"/> class with the specified node.
+    /// Initializes a new instance of the <see cref="SubFlowResultDiagramItem"/> class with the specified node.
     /// </summary>
     /// <param name="node">The page sub node.</param>
-    public PageResultDiagramItem(PageSubNode node)
+    public SubFlowResultDiagramItem(SubflowExtensionNode node)
         : base(node)
     {
     }
@@ -569,28 +553,28 @@ public class PageResultDiagramItem : FlowDiagramItem<PageResultNode>
 #region Converters
 
 /// <summary>
-/// Converts a <see cref="PageDefinitionAsset"/> to an <see cref="IAigcPage"/>.
+/// Converts a <see cref="SubFlowDefinitionAsset"/> to an <see cref="IAigcPage"/>.
 /// </summary>
-public class PageDefinitionAssetToIAigcPageConverter : AssetLinkToTypeConverter<PageDefinitionAsset, IAigcPage>
+public class SubFlowDefinitionAssetToIAigcPageConverter : AssetLinkToTypeConverter<SubFlowDefinitionAsset, IAigcPage>
 {
     /// <inheritdoc/>
-    public override IAigcPage Convert(PageDefinitionAsset objFrom)
+    public override IAigcPage Convert(SubFlowDefinitionAsset objFrom)
     {
         return objFrom.GetDiagramItem()?.Node;
     }
 }
 
 /// <summary>
-/// Converts an <see cref="IAigcPage"/> to a <see cref="PageDefinitionAsset"/>.
+/// Converts an <see cref="IAigcPage"/> to a <see cref="SubFlowDefinitionAsset"/>.
 /// </summary>
-public class IAigcPageToPageDefinitionAssetConverter : TypeToAssetLinkConverter<IAigcPage, PageDefinitionAsset>
+public class IAigcPageToSubFlowDefinitionAssetConverter : TypeToAssetLinkConverter<IAigcPage, SubFlowDefinitionAsset>
 {
     /// <inheritdoc/>
-    public override PageDefinitionAsset Convert(IAigcPage objFroms)
+    public override SubFlowDefinitionAsset Convert(IAigcPage objFroms)
     {
-        if (objFroms is PageDefinitionNode node)
+        if (objFroms is SubflowDefinitionNode node)
         {
-            return node.GetAsset() as PageDefinitionAsset;
+            return node.GetAsset() as SubFlowDefinitionAsset;
         }
         else
         {
@@ -600,12 +584,12 @@ public class IAigcPageToPageDefinitionAssetConverter : TypeToAssetLinkConverter<
 }
 
 /// <summary>
-/// Converts a <see cref="PageDefinitionAsset"/> to a text representation of its page instance.
+/// Converts a <see cref="SubFlowDefinitionAsset"/> to a text representation of its page instance.
 /// </summary>
-public class PageDefinitionAssetToTextConverter : TypeToTextConverter<PageDefinitionAsset>
+public class SubFlowDefinitionAssetToTextConverter : TypeToTextConverter<SubFlowDefinitionAsset>
 {
     /// <inheritdoc/>
-    public override string Convert(PageDefinitionAsset objFrom)
+    public override string Convert(SubFlowDefinitionAsset objFrom)
     {
         var item = objFrom.GetDiagramItem();
         if (item is null)
@@ -618,19 +602,19 @@ public class PageDefinitionAssetToTextConverter : TypeToTextConverter<PageDefini
             Mode = PageElementMode.Function,
         };
 
-        var element = new SubGraphInstance(item, option);
+        var element = new SubFlowInstance(item, option);
 
         return element.ToSimpleType().ToString();
     }
 }
 
 /// <summary>
-/// Converts an array of <see cref="PageDefinitionAsset"/> to a combined text representation.
+/// Converts an array of <see cref="SubFlowDefinitionAsset"/> to a combined text representation.
 /// </summary>
-public class PageDefinitionAssetArrayToTextConverter : AssetLinkArrayToTextConverter<PageDefinitionAsset>
+public class SubFlowDefinitionAssetArrayToTextConverter : AssetLinkArrayToTextConverter<SubFlowDefinitionAsset>
 {
     /// <inheritdoc/>
-    public override string Convert(PageDefinitionAsset[] objFroms)
+    public override string Convert(SubFlowDefinitionAsset[] objFroms)
     {
         List<string> list = [];
 
@@ -646,7 +630,7 @@ public class PageDefinitionAssetArrayToTextConverter : AssetLinkArrayToTextConve
                 Mode = PageElementMode.Function,
             };
 
-            var element = new SubGraphInstance(item, option);
+            var element = new SubFlowInstance(item, option);
 
             string s = element.ToSimpleType().ToString();
 
@@ -668,7 +652,7 @@ public class IAigcSkillToTextConverter : TypeToTextConverter<IAigcToolAsset>
     /// <inheritdoc/>
     public override string Convert(IAigcToolAsset objFrom)
     {
-        var item = (objFrom as PageDefinitionAsset)?.GetDiagramItem();
+        var item = (objFrom as SubFlowDefinitionAsset)?.GetDiagramItem();
         if (item is null)
         {
             return null;
@@ -679,7 +663,7 @@ public class IAigcSkillToTextConverter : TypeToTextConverter<IAigcToolAsset>
             Mode = PageElementMode.Function,
         };
 
-        var element = new SubGraphInstance(item, option);
+        var element = new SubFlowInstance(item, option);
 
         return element.ToSimpleType().ToString();
     }

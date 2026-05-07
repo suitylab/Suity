@@ -22,30 +22,30 @@ using System.Threading;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
 /// Represents an instance of a sub-graph within a flow, managing page elements, parameters, and computation context.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Sub-Graph Instance", Icon = "*CoreIcon|Page")]
-public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageInstance
+public class SubFlowInstance : SubFlowElement, IFlowCallerContext, IAigcPageInstance
 {
     /// <summary>
     /// Property key used to store the skill asset reference.
     /// </summary>
     public const string SKILL_PROP = "__skill__";
 
-    private readonly PageDefinitionDiagramItem _pageDefinition;
-    private readonly PageDefinitionNode _pageNode;
+    private readonly SubFlowDefinitionDiagramItem _pageDefinition;
+    private readonly SubflowDefinitionNode _pageNode;
 
 
-    private readonly PageDefinitionAsset _asset;
+    private readonly SubFlowDefinitionAsset _asset;
 
-    private readonly List<SubGraphElement> _list = [];
-    private readonly List<GroupElement> _groups = [];
-    private readonly Dictionary<string, SubGraphElement> _dic = [];
-    private readonly HashSet<SubGraphElement> _allElements = [];
-    private SubGraphEndElement _currentEndElement;
+    private readonly List<SubFlowElement> _list = [];
+    private readonly List<SubFlowGroupElement> _groups = [];
+    private readonly Dictionary<string, SubFlowElement> _dic = [];
+    private readonly HashSet<SubFlowElement> _allElements = [];
+    private SubFlowEndElement _currentEndElement;
 
     private readonly AssetProperty<IAigcToolAsset> _skill = new(SKILL_PROP, "Skill");
     private string _skillName;
@@ -53,17 +53,17 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     private readonly IConversationImGui _conversation;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphInstance"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowInstance"/> class.
     /// </summary>
     /// <param name="pageDefinition">The page definition diagram item.</param>
     /// <param name="option">The page element configuration options.</param>
     /// <param name="skill">Optional skill asset to associate with this page instance.</param>
-    public SubGraphInstance(PageDefinitionDiagramItem pageDefinition, PageElementOption option, IAigcToolAsset skill = null)
+    public SubFlowInstance(SubFlowDefinitionDiagramItem pageDefinition, PageElementOption option, IAigcToolAsset skill = null)
         : base(pageDefinition)
     {
         _pageDefinition = pageDefinition ?? throw new ArgumentNullException(nameof(pageDefinition));
         _pageNode = _pageDefinition.Node ?? throw new ArgumentNullException(nameof(pageDefinition));
-        _asset = pageDefinition.TargetAsset as PageDefinitionAsset ?? throw new ArgumentNullException(nameof(pageDefinition.TargetAsset));
+        _asset = pageDefinition.TargetAsset as SubFlowDefinitionAsset ?? throw new ArgumentNullException(nameof(pageDefinition.TargetAsset));
         Option = option;
         _skill.Target = skill;
 
@@ -113,7 +113,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// <summary>
     /// Gets the base page definition asset.
     /// </summary>
-    public PageDefinitionAsset BaseAsset => _asset;
+    public SubFlowDefinitionAsset BaseAsset => _asset;
 
     /// <summary>
     /// Gets the condition that determines when page parameters are considered complete.
@@ -227,12 +227,12 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
 
         items.Sort(FlowDiagramItemSort);
 
-        Dictionary<FlowDiagramItem, SubGraphElement> dic = [];
+        Dictionary<FlowDiagramItem, SubFlowElement> dic = [];
         dic.AddRange(_dic.Values, o => o.DiagramItem);
 
         Clear();
 
-        List<SubGraphElement> pageList = null;
+        List<SubFlowElement> pageList = null;
 
 
         // Build group structure first
@@ -250,7 +250,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
 
         // Build sub pages
         var subPages = doc.ItemCollection.AllItems
-            .OfType<PageSubDiagramItem>()
+            .OfType<SubflowExtensionDiagramItem>()
             .Where(o => o.Node?.GetTargetPageItem() == page)
             .ToList();
 
@@ -340,7 +340,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
         RectNode<FlowDiagramItem> groupRootNode = RectTreeBuilder.BuildTree(groups, o => o.Bound);
         foreach (var subPageNode in groupRootNode.Children)
         {
-            var page = new GroupElement(subPageNode.Data, 1) { Parent = this, Option = this.Option };
+            var page = new SubFlowGroupElement(subPageNode.Data, 1) { Parent = this, Option = this.Option };
 
             page.InternalBuild();
 
@@ -350,7 +350,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
         }
     }
 
-    private void CollectSubPages(IEnumerable<FlowDiagramItem> subPages, ref List<SubGraphElement> pages)
+    private void CollectSubPages(IEnumerable<FlowDiagramItem> subPages, ref List<SubFlowElement> pages)
     {
         int order = -10;
 
@@ -361,7 +361,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
 
         foreach (var subPageNode in groupRootNode.Children)
         {
-            var page = new SubPageElement(subPageNode.Data, 1, order)
+            var page = new SubFlowExtensionElement(subPageNode.Data, 1, order)
             {
                 Parent = this,
                 Option = this.Option
@@ -379,7 +379,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
         }
     }
 
-    private void CollectResultPages(IEnumerable<FlowDiagramItem> subPages, ref List<SubGraphElement> pages)
+    private void CollectResultPages(IEnumerable<FlowDiagramItem> subPages, ref List<SubFlowElement> pages)
     {
         RectNode<FlowDiagramItem> groupRootNode = RectTreeBuilder.BuildTree(subPages, o => o.Bound);
         foreach (var subPageNode in groupRootNode.Children)
@@ -387,7 +387,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
             var diagramItem = subPageNode.Data;
             var flowNode = diagramItem.Node;
 
-            var page = new ResultPageElement(diagramItem, 1)
+            var page = new SubFlowResultElement(diagramItem, 1)
             {
                 Parent = this,
                 Option = this.Option
@@ -424,7 +424,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
         _currentEndElement = null;
     }
 
-    private bool AddElement(SubGraphElement element)
+    private bool AddElement(SubFlowElement element)
     {
         if (element is null)
         {
@@ -453,7 +453,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
             element.Parent = this;
             element.Option = this.Option;
 
-            if (element is GroupElement groupElement)
+            if (element is SubFlowGroupElement groupElement)
             {
                 _groups.Add(groupElement);
             }
@@ -487,7 +487,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubGraphElement other)
     {
-        if (other is SubGraphInstance otherRoot)
+        if (other is SubFlowInstance otherRoot)
         {
             UpdateFromOther(otherRoot);
         }
@@ -497,7 +497,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// Updates this page instance's data from another page instance.
     /// </summary>
     /// <param name="otherRoot">The source page instance to update from.</param>
-    public void UpdateFromOther(SubGraphInstance otherRoot)
+    public void UpdateFromOther(SubFlowInstance otherRoot)
     {
         _skill.TargetAsset = otherRoot._skill.TargetAsset;
 
@@ -514,10 +514,10 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// Creates a clone of this page instance with the specified options.
     /// </summary>
     /// <param name="option">The options to apply to the cloned instance.</param>
-    /// <returns>A new <see cref="SubGraphInstance"/> that is a copy of this instance.</returns>
-    public SubGraphInstance Clone(PageElementOption option)
+    /// <returns>A new <see cref="SubFlowInstance"/> that is a copy of this instance.</returns>
+    public SubFlowInstance Clone(PageElementOption option)
     {
-        var clone = new SubGraphInstance(_pageDefinition, option);
+        var clone = new SubFlowInstance(_pageDefinition, option);
         clone.UpdateFromOther(this);
 
         return clone;
@@ -583,10 +583,10 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     #region Get
 
     /// <inheritdoc/>
-    public override IEnumerable<SubGraphElement> ChildElements => _list;
+    public override IEnumerable<SubFlowElement> ChildElements => _list;
 
     /// <inheritdoc/>
-    public override IEnumerable<SubGraphElement> GetAllChildElements(bool sorted = true)
+    public override IEnumerable<SubFlowElement> GetAllChildElements(bool sorted = true)
     {
         if (sorted)
         {
@@ -603,7 +603,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// </summary>
     /// <param name="name">The name of the element.</param>
     /// <returns>The element if found; otherwise, null.</returns>
-    public SubGraphElement GetElement(string name) => _dic.GetValueSafe(name);
+    public SubFlowElement GetElement(string name) => _dic.GetValueSafe(name);
 
     /// <inheritdoc/>
     public override bool? GetIsDone()
@@ -639,7 +639,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
             return false;
         }
 
-        var pages = _groups.OfType<SubPageElement>().OfType<SubGraphElement>().ConcatOne(this);
+        var pages = _groups.OfType<SubFlowExtensionElement>().OfType<SubFlowElement>().ConcatOne(this);
 
         bool? v = null;
         foreach (var page in pages)
@@ -698,7 +698,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// <summary>
     /// Gets the current end element that was last executed in the flow.
     /// </summary>
-    public SubGraphEndElement CurrentEndElement => _currentEndElement;
+    public SubFlowEndElement CurrentEndElement => _currentEndElement;
 
     /// <summary>
     /// Converts this page instance to a <see cref="SimpleType"/> representation.
@@ -708,7 +708,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     {
         List<SimpleField> fields = [];
 
-        if (_dic.Values.OfType<SubGraphBeginElement>().FirstOrDefault() is { } begin)
+        if (_dic.Values.OfType<SubFlowBeginElement>().FirstOrDefault() is { } begin)
         {
             if (begin.ParameterType is { } fieldType && !TypeDefinition.IsNullOrEmpty(fieldType))
             {
@@ -748,7 +748,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
                 fieldType = NativeTypes.StringType;
             }
 
-            var node = (parameter as SubGraphElement)?.DiagramItem?.Node as DesignFlowNode;
+            var node = (parameter as SubFlowElement)?.DiagramItem?.Node as DesignFlowNode;
             var range = node?.GetAttribute<NumericRangeAttribute>();
             var selection = node?.GetAttribute<SelectionDesignAttribute>();
             var tooltips = node?.GetAttribute<ToolTipsAttribute>();
@@ -817,7 +817,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
             }
             else
             {
-                string attr = ResolveElementXmlAttr(element as SubGraphElement);
+                string attr = ResolveElementXmlAttr(element as SubFlowElement);
                 builder.AppendLine($"<{element.Name}{attr}>");
 
                 try
@@ -867,7 +867,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
             }
             else
             {
-                string attr = ResolveElementXmlAttr(element as SubGraphElement);
+                string attr = ResolveElementXmlAttr(element as SubFlowElement);
                 builder.AppendLine($"<{element.Name}{attr}>");
 
                 try
@@ -903,7 +903,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
         builder.Length = 0;
         foreach (var element in outputs)
         {
-            string attr = ResolveElementXmlAttr(element as SubGraphElement);
+            string attr = ResolveElementXmlAttr(element as SubFlowElement);
             builder.AppendLine($"<{element.Name}{attr}>");
 
             try
@@ -922,14 +922,14 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
         return builder.ToString();
     }
 
-    private string ResolveElementXmlAttr(SubGraphElement element)
+    private string ResolveElementXmlAttr(SubFlowElement element)
     {
         if (element is null)
         {
             return string.Empty;
         }
 
-        var attr = (element as SubGraphElement)?.Node as IAttributeGetter;
+        var attr = (element as SubFlowElement)?.Node as IAttributeGetter;
         var tooltips = attr?.GetAttribute<ToolTipsAttribute>();
         string desc = string.Empty;
         if (tooltips != null)
@@ -1012,7 +1012,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
             return;
         }
 
-        if (element is not SubGraphBeginElement beginElement)
+        if (element is not SubFlowBeginElement beginElement)
         {
             return;
         }
@@ -1060,7 +1060,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
             return null;
         }
 
-        if (element is not SubGraphEndElement endElement)
+        if (element is not SubFlowEndElement endElement)
         {
             return null;
         }
@@ -1085,7 +1085,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
             return;
         }
 
-        if (element is not SubGraphEndElement endElement)
+        if (element is not SubFlowEndElement endElement)
         {
             return;
         }
@@ -1112,7 +1112,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
 
         foreach (var output in outputs)
         {
-            if ((output as SubGraphElement)?.DiagramItem?.Node is not { } node)
+            if ((output as SubFlowElement)?.DiagramItem?.Node is not { } node)
             {
                 continue;
             }
@@ -1201,7 +1201,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// <param name="begin">The page begin element that initiated the chat.</param>
     /// <param name="view">Optional flow view for UI integration.</param>
     /// <returns>A task representing the asynchronous chat operation.</returns>
-    internal Task<object> HandleBeginChat(SubGraphBeginElement begin, IFlowView view = null)
+    internal Task<object> HandleBeginChat(SubFlowBeginElement begin, IFlowView view = null)
     {
         if (!IsInDiagram)
         {
@@ -1242,7 +1242,7 @@ public class SubGraphInstance : SubGraphElement, IFlowCallerContext, IAigcPageIn
     /// <param name="begin">The page begin element that initiated the task.</param>
     /// <param name="view">Optional flow view for UI integration.</param>
     /// <returns>A task representing the asynchronous task operation.</returns>
-    public Task<object> HandleBeginTask(AIRequest request, SubGraphBeginElement begin, IFlowView view = null)
+    public Task<object> HandleBeginTask(AIRequest request, SubFlowBeginElement begin, IFlowView view = null)
     {
         if (!IsInDiagram)
         {

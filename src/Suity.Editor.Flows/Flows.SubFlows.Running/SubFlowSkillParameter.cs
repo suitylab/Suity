@@ -6,12 +6,12 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
 /// Represents a sub-graph element that handles skill parameter input for AIGC tasks.
 /// </summary>
-public class SubGraphSkillParameter : SubGraphElement, IPageParameterInput
+public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
 {
     private readonly PageSkillParameterItem _inputItem;
     private object _value;
@@ -19,10 +19,10 @@ public class SubGraphSkillParameter : SubGraphElement, IPageParameterInput
 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphSkillParameter"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowSkillParameter"/> class.
     /// </summary>
     /// <param name="parameterItem">The skill parameter item to associate with this element.</param>
-    public SubGraphSkillParameter(PageSkillParameterItem parameterItem)
+    public SubFlowSkillParameter(PageSkillParameterItem parameterItem)
         : base(parameterItem)
     {
         _inputItem = parameterItem ?? throw new ArgumentNullException(nameof(parameterItem));
@@ -182,17 +182,17 @@ public class SubGraphSkillParameter : SubGraphElement, IPageParameterInput
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubGraphElement other)
     {
-        if (other is SubGraphSkillParameter otherParameter)
+        if (other is SubFlowSkillParameter otherParameter)
         {
             UpdateFromOther(otherParameter);
         }
     }
 
     /// <summary>
-    /// Updates the value from another <see cref="SubGraphSkillParameter"/>.
+    /// Updates the value from another <see cref="SubFlowSkillParameter"/>.
     /// </summary>
     /// <param name="otherParameter">The source element to copy the value from.</param>
-    public void UpdateFromOther(SubGraphSkillParameter otherParameter)
+    public void UpdateFromOther(SubFlowSkillParameter otherParameter)
     {
         _value = otherParameter._value;
     }
@@ -202,7 +202,7 @@ public class SubGraphSkillParameter : SubGraphElement, IPageParameterInput
     {
         if (TaskCompletion)
         {
-            return !PageHelper.GetIsValueEmpty(Value);
+            return !SubFlowHelper.GetIsValueEmpty(Value);
         }
         else
         {

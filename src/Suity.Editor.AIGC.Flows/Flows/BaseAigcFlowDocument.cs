@@ -2,6 +2,7 @@ using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.Nodes;
+using Suity.Editor.Flows.SubFlows;
 using Suity.Selecting;
 using Suity.Views;
 using System;
@@ -75,7 +76,7 @@ public class BaseAigcFlowDocument<TAssetBuilder> : FlowDocument<TAssetBuilder>, 
     /// <returns>A flow node or input value representing the dropped asset, or null if conversion fails.</returns>
     public virtual object DropInConvert(object value)
     {
-        if (value is PageDefinitionAsset page)
+        if (value is SubFlowDefinitionAsset page)
         {
             return new PageFunctionNode(page);
         }

@@ -6,7 +6,8 @@ using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
-using Suity.Editor.Flows.SubGraphs.Running;
+using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -40,7 +41,7 @@ public class AigcTaskPage : DesignNode,
     readonly TextBlockProperty _taskPrompt = new("TaskPrompt", "Task Prompt", string.Empty);
     readonly StringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "Name used when committing to parent task.");
 
-    private SubGraphInstance _instance;
+    private SubFlowInstance _instance;
     private readonly QueueOnceAction _buildAction;
 
     /// <summary>
@@ -59,7 +60,7 @@ public class AigcTaskPage : DesignNode,
     /// Initializes a new instance of the <see cref="AigcTaskPage"/> class with the specified page definition.
     /// </summary>
     /// <param name="pageDef">The page definition asset to use for this task page.</param>
-    public AigcTaskPage(PageDefinitionAsset pageDef)
+    public AigcTaskPage(SubFlowDefinitionAsset pageDef)
         : this()
     {
         _pageDef.Target = pageDef;
@@ -88,15 +89,15 @@ public class AigcTaskPage : DesignNode,
     /// <summary>
     /// Gets the diagram item representation of the page definition.
     /// </summary>
-    /// <returns>The <see cref="PageDefinitionDiagramItem"/> for this page, or null if not available.</returns>
-    public PageDefinitionDiagramItem GetDefinitionItem()
-        => (PageDefinition?.GetBaseDefinition() as PageDefinitionNode)?.DiagramItem as PageDefinitionDiagramItem;
+    /// <returns>The <see cref="SubFlowDefinitionDiagramItem"/> for this page, or null if not available.</returns>
+    public SubFlowDefinitionDiagramItem GetDefinitionItem()
+        => (PageDefinition?.GetBaseDefinition() as SubflowDefinitionNode)?.DiagramItem as SubFlowDefinitionDiagramItem;
 
     /// <summary>
     /// Gets or sets the page instance associated with this task page.
     /// The setter manages event subscription and unsubscription for the instance.
     /// </summary>
-    public SubGraphInstance Instance
+    public SubFlowInstance Instance
     {
         get => _instance;
         private set
@@ -560,7 +561,7 @@ public class AigcTaskPage : DesignNode,
     {
         var pass = EnsureInstance()
             ?.GetAllChildElements(true)
-            .OfType<SubGraphArticleOutput>()
+            .OfType<SubFlowArticleOutput>()
             .FirstOrDefault(o => o.PassToSubTasks);
 
         if (pass != null)
@@ -1162,7 +1163,7 @@ public class AigcTaskPage : DesignNode,
         }
 
         var begins = instance.GetAllChildElements(true)
-            .OfType<SubGraphBeginElement>()
+            .OfType<SubFlowBeginElement>()
             .Where(o => MatchBeginElement(o, eventType, commitName))
             .ToArray();
 
@@ -1197,9 +1198,9 @@ public class AigcTaskPage : DesignNode,
         return true;
     }
 
-    private bool MatchBeginElement(SubGraphBeginElement begin, AigcTaskEventTypes eventType, string commitName)
+    private bool MatchBeginElement(SubFlowBeginElement begin, AigcTaskEventTypes eventType, string commitName)
     {
-        if (eventType == AigcTaskEventTypes.TaskBegin && begin.Node is PageBeginNode)
+        if (eventType == AigcTaskEventTypes.TaskBegin && begin.Node is SubFlowBeginNode)
         {
             // PageBeginNode can be used for TaskBegin event without commitName, for better compatibility with old version page definitions.
             return true;
@@ -1251,7 +1252,7 @@ public class AigcTaskPage : DesignNode,
     /// Builds the instance if it doesn't exist or is not in the diagram.
     /// </summary>
     /// <returns>The built page instance, or null if no definition is available.</returns>
-    public SubGraphInstance EnsureInstance()
+    public SubFlowInstance EnsureInstance()
     {
         if (_instance != null && _instance.IsInDiagram)
         {
@@ -1267,7 +1268,7 @@ public class AigcTaskPage : DesignNode,
     /// Builds the page instance from the definition item.
     /// </summary>
     /// <returns>The built page instance, or null if no definition is available.</returns>
-    private SubGraphInstance BuildInstance()
+    private SubFlowInstance BuildInstance()
     {
         if (GetDefinitionItem() is { } page)
         {
@@ -1285,7 +1286,7 @@ public class AigcTaskPage : DesignNode,
                     Owner = this,
                 };
 
-                Instance = new SubGraphInstance(page, option);
+                Instance = new SubFlowInstance(page, option);
                 if (instance != null)
                 {
                     Instance.UpdateFromOther(instance);
@@ -1318,7 +1319,7 @@ public class AigcTaskPage : DesignNode,
     /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
     public AigcTaskPage CreateTaskPage(IAigcPage page, string title = null, string taskPrompt = null, string commitName = null)
     {
-        var asset = (page as PageDefinitionNode)?.GetAsset() as PageDefinitionAsset
+        var asset = (page as SubflowDefinitionNode)?.GetAsset() as SubFlowDefinitionAsset
             ?? throw new NullReferenceException("page is not a PageDefinitionNode or PageDefinitionAsset.");
 
         if (this.GetDocument() is not AigcTaskPageDocument doc)
@@ -1407,7 +1408,7 @@ public class AigcTaskPage : DesignNode,
             Owner = taskPage,
         };
 
-        var pageInstance = pageDefAsset.CreatePageInstance(option) as SubGraphInstance
+        var pageInstance = pageDefAsset.CreatePageInstance(option) as SubFlowInstance
             ?? throw new NullReferenceException("Task is not a AigcPageInstance.");
 
         taskPage.Instance = pageInstance;
@@ -1447,7 +1448,7 @@ public class AigcTaskPage : DesignNode,
             throw new NullReferenceException("Task is not a AigcPageInstance.");
         }
 
-        var item = pageDefAsset.GetBaseDefinition()?.GetDocumentItem() as PageDefinitionDiagramItem
+        var item = pageDefAsset.GetBaseDefinition()?.GetDocumentItem() as SubFlowDefinitionDiagramItem
             ?? throw new NullReferenceException("Task dose not contain PageDefinitionDiagramItem.");
 
         var name = doc.AllocateTaskId();
@@ -1473,7 +1474,7 @@ public class AigcTaskPage : DesignNode,
             Owner = taskPage,
         };
 
-        var instance = new SubGraphInstance(item, option);
+        var instance = new SubFlowInstance(item, option);
         instance.UpdateFromOther(pageInstance);
         taskPage.Instance = instance;
 

@@ -9,60 +9,60 @@ using Suity.Views;
 using System;
 using System.Linq;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
-#region SubGraphArticleRefItem
+#region SubFlowArticleRefItem
 
 /// <summary>
 /// Represents a reference item for an article within a page output element.
 /// </summary>
-public class SubGraphArticleRefItem : ArticleViewItem
+public class SubFlowArticleRefItem : ArticleViewItem
 {
-    readonly SubGraphArticleOutput _parent;
+    readonly SubFlowArticleOutput _parent;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphArticleRefItem"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowArticleRefItem"/> class.
     /// </summary>
     /// <param name="parent">The parent page article output element.</param>
     /// <param name="propertyName">The name of the property.</param>
     /// <param name="location">The article location.</param>
-    public SubGraphArticleRefItem(SubGraphArticleOutput parent, string propertyName, ArticleLocation location)
+    public SubFlowArticleRefItem(SubFlowArticleOutput parent, string propertyName, ArticleLocation location)
         : this(parent, propertyName, null, location)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphArticleRefItem"/> class with a location getter.
+    /// Initializes a new instance of the <see cref="SubFlowArticleRefItem"/> class with a location getter.
     /// </summary>
     /// <param name="parent">The parent page article output element.</param>
     /// <param name="propertyName">The name of the property.</param>
     /// <param name="locationGetter">A function that retrieves the article location.</param>
-    public SubGraphArticleRefItem(SubGraphArticleOutput parent, string propertyName, Func<ArticleLocation> locationGetter)
+    public SubFlowArticleRefItem(SubFlowArticleOutput parent, string propertyName, Func<ArticleLocation> locationGetter)
         : this(parent, propertyName, null, locationGetter)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphArticleRefItem"/> class with a description.
+    /// Initializes a new instance of the <see cref="SubFlowArticleRefItem"/> class with a description.
     /// </summary>
     /// <param name="parent">The parent page article output element.</param>
     /// <param name="propertyName">The name of the property.</param>
     /// <param name="description">The description of the item.</param>
     /// <param name="location">The article location.</param>
-    public SubGraphArticleRefItem(SubGraphArticleOutput parent, string propertyName, string description, ArticleLocation location)
+    public SubFlowArticleRefItem(SubFlowArticleOutput parent, string propertyName, string description, ArticleLocation location)
         : base(parent, propertyName, description, location)
     {
         _parent = parent ?? throw new ArgumentNullException(nameof(parent));
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphArticleRefItem"/> class with a description and location getter.
+    /// Initializes a new instance of the <see cref="SubFlowArticleRefItem"/> class with a description and location getter.
     /// </summary>
     /// <param name="parent">The parent page article output element.</param>
     /// <param name="propertyName">The name of the property.</param>
     /// <param name="description">The description of the item.</param>
     /// <param name="locationGetter">A function that retrieves the article location.</param>
-    public SubGraphArticleRefItem(SubGraphArticleOutput parent, string propertyName, string description, Func<ArticleLocation> locationGetter)
+    public SubFlowArticleRefItem(SubFlowArticleOutput parent, string propertyName, string description, Func<ArticleLocation> locationGetter)
         : base(parent, propertyName, description, locationGetter)
     {
         _parent = parent ?? throw new ArgumentNullException(nameof(parent));
@@ -72,7 +72,7 @@ public class SubGraphArticleRefItem : ArticleViewItem
     /// <summary>
     /// Gets the parent page article output element.
     /// </summary>
-    public SubGraphArticleOutput Parent => _parent;
+    public SubFlowArticleOutput Parent => _parent;
 
     /// <inheritdoc/>
     protected override void DoAction(UndoRedoAction action)
@@ -89,53 +89,53 @@ public class SubGraphArticleRefItem : ArticleViewItem
 }
 #endregion
 
-#region SubGraphArticleRefCollection
+#region SubFlowArticleRefCollection
 
 /// <summary>
-/// Represents a collection of article reference items for a sub-graph output element.
+/// Represents a collection of article reference items for a sub-flow output element.
 /// </summary>
-public class SubGraphArticleRefCollection : ArticleViewCollection<SubGraphArticleRefItem>
+public class SubFlowArticleRefCollection : ArticleViewCollection<SubFlowArticleRefItem>
 {
-    readonly SubGraphArticleOutput _parent;
+    readonly SubFlowArticleOutput _parent;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphArticleRefCollection"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowArticleRefCollection"/> class.
     /// </summary>
     /// <param name="parent">The parent page article output element.</param>
     /// <param name="articleUsage">The article usage identifier.</param>
     /// <param name="path">The path segments for the article location.</param>
-    public SubGraphArticleRefCollection(SubGraphArticleOutput parent, string articleUsage, params string[] path)
+    public SubFlowArticleRefCollection(SubFlowArticleOutput parent, string articleUsage, params string[] path)
         : base(parent, articleUsage, path)
     {
         _parent = parent ?? throw new ArgumentNullException(nameof(parent));
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphArticleRefCollection"/> class with a specific location.
+    /// Initializes a new instance of the <see cref="SubFlowArticleRefCollection"/> class with a specific location.
     /// </summary>
     /// <param name="parent">The parent page article output element.</param>
     /// <param name="location">The article location.</param>
-    public SubGraphArticleRefCollection(SubGraphArticleOutput parent, ArticleLocation location)
+    public SubFlowArticleRefCollection(SubFlowArticleOutput parent, ArticleLocation location)
         : base(parent, location)
     {
         _parent = parent ?? throw new ArgumentNullException(nameof(parent));
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphArticleRefCollection"/> class with a location getter.
+    /// Initializes a new instance of the <see cref="SubFlowArticleRefCollection"/> class with a location getter.
     /// </summary>
     /// <param name="parent">The parent page article output element.</param>
     /// <param name="locationGetter">A function that retrieves the article location.</param>
-    public SubGraphArticleRefCollection(SubGraphArticleOutput parent, Func<ArticleLocation> locationGetter)
+    public SubFlowArticleRefCollection(SubFlowArticleOutput parent, Func<ArticleLocation> locationGetter)
     : base(parent, locationGetter)
     {
         _parent = parent ?? throw new ArgumentNullException(nameof(parent));
     }
 
     /// <inheritdoc/>
-    public override SubGraphArticleRefItem CreateRefItem(string propertyName, string description, Func<ArticleLocation> locationGetter)
+    public override SubFlowArticleRefItem CreateRefItem(string propertyName, string description, Func<ArticleLocation> locationGetter)
     {
-        return new SubGraphArticleRefItem(_parent, propertyName, description, locationGetter);
+        return new SubFlowArticleRefItem(_parent, propertyName, description, locationGetter);
     }
 }
 
@@ -145,7 +145,7 @@ public class SubGraphArticleRefCollection : ArticleViewCollection<SubGraphArticl
 /// Represents a page element that outputs article content in an AIGC flow.
 /// Implements article resolution and page parameter output functionality.
 /// </summary>
-public class SubGraphArticleOutput : SubGraphElement, IArticleResolver, IPageParameterOutput
+public class SubFlowArticleOutput : SubFlowElement, IArticleResolver, IPageParameterOutput
 {
     private readonly PageArticleOutputItem _outputItem;
     private FlowNodeConnector _outerConnector;
@@ -153,15 +153,15 @@ public class SubGraphArticleOutput : SubGraphElement, IArticleResolver, IPagePar
     private bool _multipleSection;
     private string[] _articlePath;
     private bool _isStaticArticlePath;
-    private SubGraphArticleRefItem _articleRef;
-    private SubGraphArticleRefCollection _articleRefCollection;
+    private SubFlowArticleRefItem _articleRef;
+    private SubFlowArticleRefCollection _articleRefCollection;
 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphArticleOutput"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowArticleOutput"/> class.
     /// </summary>
     /// <param name="outputItem">The output item that provides configuration data.</param>
-    public SubGraphArticleOutput(PageArticleOutputItem outputItem)
+    public SubFlowArticleOutput(PageArticleOutputItem outputItem)
         : base(outputItem)
     {
         _outputItem = outputItem ?? throw new ArgumentNullException(nameof(outputItem));
@@ -495,7 +495,7 @@ public class SubGraphArticleOutput : SubGraphElement, IArticleResolver, IPagePar
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubGraphElement other)
     {
-        if (other is SubGraphArticleOutput otherOutput)
+        if (other is SubFlowArticleOutput otherOutput)
         {
             UpdateFromOther(otherOutput);
         }
@@ -505,7 +505,7 @@ public class SubGraphArticleOutput : SubGraphElement, IArticleResolver, IPagePar
     /// Updates this element from another page article output element.
     /// </summary>
     /// <param name="otherParameter">The other element to update from.</param>
-    public void UpdateFromOther(SubGraphArticleOutput otherParameter)
+    public void UpdateFromOther(SubFlowArticleOutput otherParameter)
     {
     }
 

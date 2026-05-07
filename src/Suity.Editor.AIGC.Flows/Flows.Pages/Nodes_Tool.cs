@@ -4,6 +4,7 @@ using Suity.Drawing;
 using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Flows;
+using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -31,7 +32,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionRefNode")]
 public class PageDefinitionReference : AigcPageNode
 {
-    readonly AssetProperty<PageDefinitionAsset> _page = new("Page", "Page");
+    readonly AssetProperty<SubFlowDefinitionAsset> _page = new("Page", "Page");
     readonly FlowNodeConnector _out;
 
     /// <summary>
@@ -39,7 +40,7 @@ public class PageDefinitionReference : AigcPageNode
     /// </summary>
     public PageDefinitionReference()
     {
-        var type = AssetManager.Instance.GetAssetLink<PageDefinitionAsset>().Definition;
+        var type = AssetManager.Instance.GetAssetLink<SubFlowDefinitionAsset>().Definition;
         _out = this.AddDataOutputConnector("Out", type);
 
         base.FlowNodeGui = OnGui;
@@ -783,7 +784,7 @@ public class CreateToolCallingWithParameter : AigcPageNode
     {
         base.OnUpdateConnector();
 
-        var pageType = AssetManager.Instance.GetAssetLink<PageDefinitionAsset>().Definition;
+        var pageType = AssetManager.Instance.GetAssetLink<SubFlowDefinitionAsset>().Definition;
 
         _in = this.AddActionInputConnector("In", "Input");
 

@@ -5,12 +5,12 @@ using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
 /// Represents the end element of a sub-graph, handling sub-graph completion and parameter output.
 /// </summary>
-public class SubGraphEndElement : SubGraphElement, IPageParameterOutput
+public class SubFlowEndElement : SubFlowElement, IPageParameterOutput
 {
     private readonly FlowDiagramItem _endItem;
 
@@ -18,10 +18,10 @@ public class SubGraphEndElement : SubGraphElement, IPageParameterOutput
     private FlowNodeConnector _connector;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphEndElement"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowEndElement"/> class.
     /// </summary>
     /// <param name="endItem">The flow diagram item representing the end node.</param>
-    public SubGraphEndElement(FlowDiagramItem endItem)
+    public SubFlowEndElement(FlowDiagramItem endItem)
         : base(endItem)
     {
         _endItem = endItem ?? throw new System.ArgumentNullException(nameof(endItem));
@@ -168,17 +168,17 @@ public class SubGraphEndElement : SubGraphElement, IPageParameterOutput
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubGraphElement other)
     {
-        if (other is SubGraphEndElement otherOutput)
+        if (other is SubFlowEndElement otherOutput)
         {
             UpdateFromOther(otherOutput);
         }
     }
 
     /// <summary>
-    /// Updates the current element's value from another <see cref="SubGraphEndElement"/>.
+    /// Updates the current element's value from another <see cref="SubFlowEndElement"/>.
     /// </summary>
     /// <param name="otherParameter">The other page end element to copy values from.</param>
-    public void UpdateFromOther(SubGraphEndElement otherParameter)
+    public void UpdateFromOther(SubFlowEndElement otherParameter)
     {
         _value = otherParameter._value;
     }

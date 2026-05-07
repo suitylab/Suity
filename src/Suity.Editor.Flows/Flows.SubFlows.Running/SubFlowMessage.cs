@@ -4,21 +4,21 @@ using Suity.Editor.Types;
 using Suity.Views;
 using System;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
 /// Represents a message element in a sub-graph that handles text-based message display and parameter input/output.
 /// </summary>
-public class SubGraphMessage : SubGraphElement, IPageMessage, IPageParameterInput, IPageParameterOutput
+public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput, IPageParameterOutput
 {
     private readonly PageMessageParameterItem _msg;
     private string _text;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphMessage"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowMessage"/> class.
     /// </summary>
     /// <param name="msg">The page message parameter item.</param>
-    public SubGraphMessage(PageMessageParameterItem msg)
+    public SubFlowMessage(PageMessageParameterItem msg)
         : base(msg)
     {
         _msg = msg ?? throw new ArgumentNullException(nameof(msg));
@@ -160,11 +160,11 @@ public class SubGraphMessage : SubGraphElement, IPageMessage, IPageParameterInpu
         // The upper layer cannot determine the direction of this message, so we need to look upward for the container's nature
         if (direction == FlowDirections.Input)
         {
-            return FindParent(o => o is ResultPageElement) is null;
+            return FindParent(o => o is SubFlowResultElement) is null;
         }
         else
         {
-            return FindParent(o => o is ResultPageElement) != null;
+            return FindParent(o => o is SubFlowResultElement) != null;
         }
 
     }

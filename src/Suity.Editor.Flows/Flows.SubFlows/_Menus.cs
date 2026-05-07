@@ -1,9 +1,10 @@
 using Suity;
 using Suity.Collections;
+using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.Gui;
-using Suity.Editor.Flows.SubGraphs;
+using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing.Core;
@@ -17,7 +18,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.SubFlows;
 
 #region CreateFunctionMenuItem
 
@@ -129,12 +130,12 @@ public class CreateFunctionAction : UndoRedoAction
         int nodeOffsetY = 30; // Offset of internal nodes relative to page top
 
         // 1. Create function definition page (Definition Page)
-        var startPage = _diagram.AddNode(new PageDefinitionNode() { Name = _funcName });
+        var startPage = _diagram.AddNode(new SubflowDefinitionNode() { Name = _funcName });
         startPage.SetBound(new Rectangle(_startX, _startY, 140, 120));
         _createdItems.Add(startPage);
 
         // 2. Create function result page (Result Page)
-        var resultPage = _diagram.AddNode(new PageResultNode() { Name = _funcName + "_End" });
+        var resultPage = _diagram.AddNode(new SubFlowResultNode() { Name = _funcName + "_End" });
         resultPage.SetBound(new Rectangle(_startX + spacing, _startY, 140, 120));
         _createdItems.Add(resultPage);
 
@@ -142,22 +143,22 @@ public class CreateFunctionAction : UndoRedoAction
         _diagram.AddLink(resultPage.Name, "Definition", startPage.Name, "Result");
 
         // 4. Create start action node (Begin)
-        var beginNode = _diagram.AddNode(new PageBeginNode() { Name = "OnStart" });
+        var beginNode = _diagram.AddNode(new SubFlowBeginNode() { Name = "OnStart" });
         beginNode.SetBound(new Rectangle(_startX + 10, _startY + nodeOffsetY, 10, 10));
         _createdItems.Add(beginNode);
 
         // 5. Create start parameter node (Parameter)
-        var paramNode = _diagram.AddNode(new PageParameterInputNode() { Name = "Input" });
+        var paramNode = _diagram.AddNode(new SubFlowParameterInputNode() { Name = "Input" });
         paramNode.SetBound(new Rectangle(_startX + 10, _startY + nodeOffsetY + 20, 10, 10));
         _createdItems.Add(paramNode);
 
         // 6. Create end action node (End)
-        var endNode = _diagram.AddNode(new PageEndNode() { Name = "OnComplete" });
+        var endNode = _diagram.AddNode(new SubFlowEndNode() { Name = "OnComplete" });
         endNode.SetBound(new Rectangle(_startX + spacing + 10, _startY + nodeOffsetY + 10, 10, 10));
         _createdItems.Add(endNode);
 
         // 7. Create output parameter node (Output)
-        var outputNode = _diagram.AddNode(new PageParameterOutputNode() { Name = "Output" });
+        var outputNode = _diagram.AddNode(new SubFlowParameterOutputNode() { Name = "Output" });
         outputNode.SetBound(new Rectangle(_startX + spacing + 10, _startY + nodeOffsetY + 30, 10, 10));
         _createdItems.Add(outputNode);
 
@@ -389,7 +390,7 @@ public class FlowFunctionCollector : UndoRedoAction
     readonly List<ConnectorMap> _connectorMaps = [];
 
     private bool _isValid = false;
-    private EditorAssetRef<PageDefinitionAsset> _pageDefAsset = new();
+    private EditorAssetRef<SubFlowDefinitionAsset> _pageDefAsset = new();
     private string _functionItemName;
 
 
@@ -402,7 +403,7 @@ public class FlowFunctionCollector : UndoRedoAction
     {
         nodes ??= [];
 
-        _nodes.AddRange(nodes.SkipNull().Where(o => o is not AigcPageDefNode));
+        _nodes.AddRange(nodes.SkipNull().Where(o => o is not SubFlowNode));
         if (_nodes.Count == 0)
         {
             return;
@@ -492,7 +493,7 @@ public class FlowFunctionCollector : UndoRedoAction
     /// <summary>
     /// Gets the page definition asset created during document creation.
     /// </summary>
-    public PageDefinitionAsset PageDefAsset => _pageDefAsset.Target;
+    public SubFlowDefinitionAsset PageDefAsset => _pageDefAsset.Target;
 
     /// <summary>
     /// Creates a new document from the collected nodes and sets up the function structure.
@@ -549,10 +550,10 @@ public class FlowFunctionCollector : UndoRedoAction
         }
 
         var b = doc.GetBound();
-        var startPage = diagram.AddNode(new PageDefinitionNode() { Name = name });
+        var startPage = diagram.AddNode(new SubflowDefinitionNode() { Name = name });
         startPage.SetBound(new Rectangle(b.X - 180, b.Y, 140, 200));
 
-        var resultPage = diagram.AddNode(new PageResultNode() { Name = "End" });
+        var resultPage = diagram.AddNode(new SubFlowResultNode() { Name = "End" });
         resultPage.SetBound(new Rectangle(b.Right + 40, b.Y, 140, 200));
 
         diagram.AddLink(resultPage.Name, "Definition", startPage.Name, "Result");
@@ -581,7 +582,7 @@ public class FlowFunctionCollector : UndoRedoAction
             {
                 if (connector.Direction == FlowDirections.Input)
                 {
-                    var begin = diagram.AddNode(new PageBeginNode() { Name = c.DefName, Description = c.DefDescription, TypeDef = typeDef });
+                    var begin = diagram.AddNode(new SubFlowBeginNode() { Name = c.DefName, Description = c.DefDescription, TypeDef = typeDef });
                     begin.SetBound(new Rectangle(startPage.X + 10, startPage.Y + 30 + inputIndex * 20, 10, 10));
                     diagram.AddLink(begin.Name, "Out", c.NodeName, c.ConnectorName);
                     c.DefName = begin.Name; // Update name
@@ -589,7 +590,7 @@ public class FlowFunctionCollector : UndoRedoAction
                 }
                 else
                 {
-                    var end = diagram.AddNode(new PageEndNode() { Name = c.DefName, Description = c.DefDescription, TypeDef = typeDef });
+                    var end = diagram.AddNode(new SubFlowEndNode() { Name = c.DefName, Description = c.DefDescription, TypeDef = typeDef });
                     end.SetBound(new Rectangle(resultPage.X + 10, resultPage.Y + 40 + outputIndex * 20, 10, 10));
                     diagram.AddLink(c.NodeName, c.ConnectorName, end.Name, "In");
                     c.DefName = end.Name; // Update name
@@ -600,7 +601,7 @@ public class FlowFunctionCollector : UndoRedoAction
             {
                 if (connector.Direction == FlowDirections.Input)
                 {
-                    var parameter = diagram.AddNode(new PageParameterInputNode() { Name = c.DefName, Description = c.DefDescription, TypeDef = typeDef });
+                    var parameter = diagram.AddNode(new SubFlowParameterInputNode() { Name = c.DefName, Description = c.DefDescription, TypeDef = typeDef });
                     parameter.SetBound(new Rectangle(startPage.X + 10, startPage.Y + 30 + inputIndex * 20, 10, 10));
                     diagram.AddLink(parameter.Name, "Out", c.NodeName, c.ConnectorName);
                     c.DefName = parameter.Name; // Update name
@@ -608,7 +609,7 @@ public class FlowFunctionCollector : UndoRedoAction
                 }
                 else
                 {
-                    var output = diagram.AddNode(new PageParameterOutputNode() { Name = c.DefName, Description = c.DefDescription, TypeDef = typeDef });
+                    var output = diagram.AddNode(new SubFlowParameterOutputNode() { Name = c.DefName, Description = c.DefDescription, TypeDef = typeDef });
                     output.SetBound(new Rectangle(resultPage.X + 10, resultPage.Y + 40 + outputIndex * 20, 10, 10));
                     diagram.AddLink(c.NodeName, c.ConnectorName, output.Name, "In");
                     c.DefName = output.Name; // Update name
@@ -622,7 +623,7 @@ public class FlowFunctionCollector : UndoRedoAction
 
         doc.ForceSave();
 
-        _pageDefAsset.Target = (startPage as PageDefinitionDiagramItem)?.TargetAsset as PageDefinitionAsset;
+        _pageDefAsset.Target = (startPage as SubFlowDefinitionDiagramItem)?.TargetAsset as SubFlowDefinitionAsset;
 
         return startPage;
     }

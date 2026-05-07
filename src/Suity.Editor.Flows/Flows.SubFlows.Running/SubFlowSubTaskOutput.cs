@@ -8,21 +8,21 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System.Linq;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
 /// Represents a sub-graph element that handles sub-task output for sub-graph.
 /// Implements both parameter output and tool parameter interfaces.
 /// </summary>
-public class SubGraphSubTaskOutput : SubGraphElement, IPageParameterOutput, IPageParameterTool
+public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageParameterTool
 {
     readonly PageSubTaskOutputItem _outputItem;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphSubTaskOutput"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowSubTaskOutput"/> class.
     /// </summary>
     /// <param name="item">The sub-task output item to associate with this element.</param>
-    public SubGraphSubTaskOutput(PageSubTaskOutputItem item)
+    public SubFlowSubTaskOutput(PageSubTaskOutputItem item)
         : base(item)
     {
         _outputItem = item ?? throw new System.ArgumentNullException(nameof(item));

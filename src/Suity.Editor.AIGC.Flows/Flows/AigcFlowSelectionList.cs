@@ -2,7 +2,7 @@ using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.AIGC.Flows.WorkSpaces;
 using Suity.Editor.AIGC.FLows.External;
 using Suity.Editor.Flows;
-using Suity.Editor.Flows.SubGraphs;
+using Suity.Editor.Flows.SubFlows;
 
 namespace Suity.Editor.AIGC.Flows;
 
@@ -26,7 +26,7 @@ internal class AigcFlowSelectionList : FlowNodeSelectionNode
         //Add<ToolFlowNode>();
 
         AddDerived<AigcFlowNode>();
-        AddDerived<AigcPageDefNode>();
+        AddDerived<SubFlowNode>();
         AddDerived<AigcPageNode>();
         AddDerived<AigcXmlNode>();
         //AddDerived<AigcAgentNode>();

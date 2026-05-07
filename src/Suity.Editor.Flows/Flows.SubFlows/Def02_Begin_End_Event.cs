@@ -1,8 +1,9 @@
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.AIGC;
+using Suity.Editor.AIGC.Flows;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows.SubGraphs.Running;
-using Suity.Editor.Flows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
@@ -14,11 +15,10 @@ using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Suity.Editor.Flows.SubGraphs;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.SubFlows;
 
-#region PageBeginNode
+#region SubFlowBeginNode
 
 /// <summary>
 /// Provides action start support for AIGC pages, such as button clicks, etc.
@@ -28,14 +28,14 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 [DisplayOrder(4000)]
 [ToolTipsText("Provides action start support for AIGC pages, such as button clicks, etc.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageBeginNode")]
-public class PageBeginNode : AigcPageTypeDefNode, IAigcRunWorkflow
+public class SubFlowBeginNode : SubFlowTypeNode, IAigcRunWorkflow
 {
     private FlowNodeConnector _begin;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageBeginNode"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowBeginNode"/> class.
     /// </summary>
-    public PageBeginNode()
+    public SubFlowBeginNode()
     {
         base.FlowNodeGui = OnGui;
         Optional = true;
@@ -111,24 +111,24 @@ public class PageBeginNode : AigcPageTypeDefNode, IAigcRunWorkflow
 }
 
 /// <summary>
-/// Diagram item representing a <see cref="PageBeginNode"/> in the flow diagram.
+/// Diagram item representing a <see cref="SubFlowBeginNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageBeginDiagramItem")]
-public class PageBeginDiagramItem : FlowDiagramItem<PageBeginNode>, ISubGraphElementCreator
+public class SubFlowBeginDiagramItem : FlowDiagramItem<SubFlowBeginNode>, ISubFlowElementCreator
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageBeginDiagramItem"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowBeginDiagramItem"/> class.
     /// </summary>
-    public PageBeginDiagramItem()
+    public SubFlowBeginDiagramItem()
         : base()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageBeginDiagramItem"/> class with the specified node.
+    /// Initializes a new instance of the <see cref="SubFlowBeginDiagramItem"/> class with the specified node.
     /// </summary>
     /// <param name="node">The page begin node.</param>
-    public PageBeginDiagramItem(PageBeginNode node)
+    public SubFlowBeginDiagramItem(SubFlowBeginNode node)
         : base(node)
     {
     }
@@ -136,19 +136,19 @@ public class PageBeginDiagramItem : FlowDiagramItem<PageBeginNode>, ISubGraphEle
     /// <summary>
     /// Creates a new page begin element from this diagram item.
     /// </summary>
-    /// <returns>A new <see cref="SubGraphBeginElement"/>.</returns>
-    public SubGraphElement CreatePageElement() => new SubGraphBeginElement(this);
+    /// <returns>A new <see cref="SubFlowBeginElement"/>.</returns>
+    public SubFlowElement CreatePageElement() => new SubFlowBeginElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Begin";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 }
 #endregion
 
-#region PageEventNode
+#region PageEventNode TODO: Move to Suity.Editor.AIGC.Flows
 
 /// <summary>
 /// Provides event trigger support for task pages, such as event startup, etc.
@@ -158,7 +158,7 @@ public class PageBeginDiagramItem : FlowDiagramItem<PageBeginNode>, ISubGraphEle
 [DisplayOrder(3800)]
 [ToolTipsText("Provides event trigger support for task pages, such as event startup, etc.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageEventNode")]
-public class PageEventNode : AigcPageTypeDefNode, IAigcRunWorkflow
+public class PageEventNode : SubFlowTypeNode, IAigcRunWorkflow
 {
     private FlowNodeConnector _begin;
 
@@ -348,7 +348,7 @@ public class PageEventNode : AigcPageTypeDefNode, IAigcRunWorkflow
 /// Diagram item representing a <see cref="PageEventNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageEventDiagramItem")]
-public class PageEventDiagramItem : FlowDiagramItem<PageEventNode>, ISubGraphElementCreator
+public class PageEventDiagramItem : FlowDiagramItem<PageEventNode>, ISubFlowElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageEventDiagramItem"/> class.
@@ -370,25 +370,25 @@ public class PageEventDiagramItem : FlowDiagramItem<PageEventNode>, ISubGraphEle
     /// <summary>
     /// Creates a new page begin element from this diagram item.
     /// </summary>
-    /// <returns>A new <see cref="SubGraphBeginElement"/>.</returns>
-    public SubGraphElement CreatePageElement() => new SubGraphBeginElement(this);
+    /// <returns>A new <see cref="SubFlowBeginElement"/>.</returns>
+    public SubFlowElement CreatePageElement() => new SubFlowBeginElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "TaskEvent";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 }
 #endregion
 
-#region PageBaseEndNode
+#region BaseSubFlowEndNode TODO: Remove PageCommitTypes
 
 /// <summary>
 /// Abstract base class for page end nodes that handle flow completion and commit operations.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageBaseEndNode")]
-public abstract class PageBaseEndNode : AigcPageTypeDefNode, IFlowNodeComputeAsync, IAigcEndNode
+public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsync, IAigcEndNode
 {
     /// <summary>
     /// The type of commit this end node represents.
@@ -400,10 +400,10 @@ public abstract class PageBaseEndNode : AigcPageTypeDefNode, IFlowNodeComputeAsy
     private readonly ValueProperty<bool> _refConnector = new("RefConnector", "Reference Port");
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageBaseEndNode"/> class with the specified end type.
+    /// Initializes a new instance of the <see cref="BaseSubFlowEndNode"/> class with the specified end type.
     /// </summary>
     /// <param name="endType">The type of commit this end node represents.</param>
-    protected PageBaseEndNode(PageCommitTypes endType)
+    protected BaseSubFlowEndNode(PageCommitTypes endType)
     {
         _endType = endType;
 
@@ -563,7 +563,7 @@ public abstract class PageBaseEndNode : AigcPageTypeDefNode, IFlowNodeComputeAsy
 }
 #endregion
 
-#region PageEndNode
+#region SubFlowEndNode
 
 /// <summary>
 /// Provides action end support for AIGC pages.
@@ -573,33 +573,33 @@ public abstract class PageBaseEndNode : AigcPageTypeDefNode, IFlowNodeComputeAsy
 [DisplayOrder(3900)]
 [ToolTipsText("Provides action end support for AIGC pages.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageEndNode")]
-public class PageEndNode : PageBaseEndNode
+public class SubFlowEndNode : BaseSubFlowEndNode
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageEndNode"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowEndNode"/> class.
     /// </summary>
-    public PageEndNode() : base(PageCommitTypes.None) { }
+    public SubFlowEndNode() : base(PageCommitTypes.None) { }
 }
 
 /// <summary>
-/// Diagram item representing a <see cref="PageEndNode"/> in the flow diagram.
+/// Diagram item representing a <see cref="SubFlowEndNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageEndDiagramItem")]
-public class PageEndDiagramItem : FlowDiagramItem<PageEndNode>, ISubGraphElementCreator
+public class SubFlowEndDiagramItem : FlowDiagramItem<SubFlowEndNode>, ISubFlowElementCreator
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageEndDiagramItem"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowEndDiagramItem"/> class.
     /// </summary>
-    public PageEndDiagramItem()
+    public SubFlowEndDiagramItem()
         : base()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageEndDiagramItem"/> class with the specified node.
+    /// Initializes a new instance of the <see cref="SubFlowEndDiagramItem"/> class with the specified node.
     /// </summary>
     /// <param name="node">The page end node.</param>
-    public PageEndDiagramItem(PageEndNode node)
+    public SubFlowEndDiagramItem(SubFlowEndNode node)
         : base(node)
     {
     }
@@ -607,15 +607,15 @@ public class PageEndDiagramItem : FlowDiagramItem<PageEndNode>, ISubGraphElement
     /// <summary>
     /// Creates a new page end element from this diagram item.
     /// </summary>
-    /// <returns>A new <see cref="SubGraphEndElement"/>.</returns>
-    public SubGraphElement CreatePageElement() => new SubGraphEndElement(this);
+    /// <returns>A new <see cref="SubFlowEndElement"/>.</returns>
+    public SubFlowElement CreatePageElement() => new SubFlowEndElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "End";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 }
 #endregion
 
@@ -629,7 +629,7 @@ public class PageEndDiagramItem : FlowDiagramItem<PageEndNode>, ISubGraphElement
 [DisplayOrder(3899)]
 [ToolTipsText("End the flow and submit the result upward.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageCommitNode")]
-public class PageCommitNode : PageBaseEndNode, IFlowNodeComputeAsync, IAigcEndNode
+public class PageCommitNode : BaseSubFlowEndNode, IFlowNodeComputeAsync, IAigcEndNode
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageCommitNode"/> class.
@@ -657,7 +657,7 @@ public class PageCommitNode : PageBaseEndNode, IFlowNodeComputeAsync, IAigcEndNo
 /// Diagram item representing a <see cref="PageCommitNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageCommitDiagramItem")]
-public class PageCommitDiagramItem : FlowDiagramItem<PageCommitNode>, ISubGraphElementCreator
+public class PageCommitDiagramItem : FlowDiagramItem<PageCommitNode>, ISubFlowElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageCommitDiagramItem"/> class.
@@ -679,14 +679,14 @@ public class PageCommitDiagramItem : FlowDiagramItem<PageCommitNode>, ISubGraphE
     /// <summary>
     /// Creates a new page end element from this diagram item.
     /// </summary>
-    /// <returns>A new <see cref="SubGraphEndElement"/>.</returns>
-    public SubGraphElement CreatePageElement() => new SubGraphEndElement(this);
+    /// <returns>A new <see cref="SubFlowEndElement"/>.</returns>
+    public SubFlowElement CreatePageElement() => new SubFlowEndElement(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Commit";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 }
 #endregion

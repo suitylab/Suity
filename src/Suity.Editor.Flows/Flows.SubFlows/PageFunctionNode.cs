@@ -1,6 +1,6 @@
 using Suity.Drawing;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows.SubGraphs.Running;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Helpers;
@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Suity.Editor.Types;
+using Suity.Editor.Flows.SubFlows;
 
 namespace Suity.Editor.AIGC.Flows.Pages;
 
@@ -19,14 +20,14 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 /// </summary>
 [NotAvailable]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageFunctionNode")]
-public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNodeComputeAsync
+public class PageFunctionNode : AssetRefFlowNode<SubFlowDefinitionAsset>, IFlowNodeComputeAsync
 {
-    private SubGraphInstance _instance;
+    private SubFlowInstance _instance;
 
     /// <summary>
     /// Gets or sets the page instance associated with this node.
     /// </summary>
-    public SubGraphInstance Instance
+    public SubFlowInstance Instance
     {
         get => _instance;
         set
@@ -65,7 +66,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
     /// <summary>
     /// Gets the page definition diagram item associated with this node.
     /// </summary>
-    public PageDefinitionDiagramItem Page => GetTargetObject() as PageDefinitionDiagramItem;
+    public SubFlowDefinitionDiagramItem Page => GetTargetObject() as SubFlowDefinitionDiagramItem;
 
     /// <summary>
     /// Initializes a new instance of <see cref="PageFunctionNode"/>.
@@ -81,7 +82,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
     /// Initializes a new instance of <see cref="PageFunctionNode"/> with the specified asset.
     /// </summary>
     /// <param name="asset">The page definition asset to associate with this node.</param>
-    public PageFunctionNode(PageDefinitionAsset asset)
+    public PageFunctionNode(SubFlowDefinitionAsset asset)
         : base(asset)
     {
         // Does not occupy document editing, only for display.
@@ -233,7 +234,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
         }
 
         // Get the starting element from the port
-        if (instance.GetElement(begin.Name) is not SubGraphBeginElement beginElement)
+        if (instance.GetElement(begin.Name) is not SubFlowBeginElement beginElement)
         {
             return null;
         }
@@ -267,7 +268,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
 
         foreach (var output in outputs)
         {
-            if ((output as SubGraphElement)?.DiagramItem?.Node is not { } node)
+            if ((output as SubFlowElement)?.DiagramItem?.Node is not { } node)
             {
                 continue;
             }
@@ -277,7 +278,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
         }
 
         // Get end port
-        if (instance.GetElement(callerContext.EndActionName) is SubGraphEndElement endElement)
+        if (instance.GetElement(callerContext.EndActionName) is SubFlowEndElement endElement)
         {
             if (endElement.OuterConnector is { } connector)
             {
@@ -293,8 +294,8 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
     /// <summary>
     /// Ensures that a valid page instance exists and is associated with this node, building one if necessary.
     /// </summary>
-    /// <returns>The current <see cref="SubGraphInstance"/>, or null if it could not be created.</returns>
-    public SubGraphInstance EnsureInstance()
+    /// <returns>The current <see cref="SubFlowInstance"/>, or null if it could not be created.</returns>
+    public SubFlowInstance EnsureInstance()
     {
         if (_instance != null && _instance.IsInDiagram)
         {
@@ -307,7 +308,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
     }
 
 
-    private SubGraphInstance BuildInstance()
+    private SubFlowInstance BuildInstance()
     {
         if (Page is { } page)
         {
@@ -325,7 +326,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
                     Owner = this,
                 };
 
-                instance = new SubGraphInstance(page, option);
+                instance = new SubFlowInstance(page, option);
                 instance.UpdateFromOther(instance);
 
                 this.Instance = instance;
@@ -347,7 +348,7 @@ public class PageFunctionNode : AssetRefFlowNode<PageDefinitionAsset>, IFlowNode
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageFunctionCallerContext")]
 public class PageFunctionCallerContext : IFlowCallerContext
 {
-    private readonly SubGraphInstance _rootElement;
+    private readonly SubFlowInstance _rootElement;
     private readonly IFlowComputationAsync _outer;
 
     /// <summary>
@@ -370,7 +371,7 @@ public class PageFunctionCallerContext : IFlowCallerContext
     /// </summary>
     /// <param name="rootElement">The page instance that this context operates on.</param>
     /// <param name="outer">The outer flow computation that invoked this page function.</param>
-    public PageFunctionCallerContext(SubGraphInstance rootElement, IFlowComputationAsync outer)
+    public PageFunctionCallerContext(SubFlowInstance rootElement, IFlowComputationAsync outer)
     {
         _rootElement = rootElement ?? throw new ArgumentNullException(nameof(rootElement));
         _outer = outer ?? throw new ArgumentNullException(nameof(outer));
@@ -415,7 +416,7 @@ public class PageFunctionCallerContext : IFlowCallerContext
     /// <inheritdoc/>
     public async Task<object> CallFunction(IFlowComputation computation, string name, object value, CancellationToken cancel)
     {
-        var endElement = _rootElement.GetElement(name) as SubGraphEndElement;
+        var endElement = _rootElement.GetElement(name) as SubFlowEndElement;
         if (endElement?.OuterConnector is { } connector)
         {
             _outer.SetValue(connector, value);

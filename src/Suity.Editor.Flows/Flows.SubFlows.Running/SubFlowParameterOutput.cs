@@ -6,23 +6,23 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
 /// Represents a sub-graph element that handles parameter output for sub-graph.
 /// </summary>
-public class SubGraphParameterOutput : SubGraphElement, IPageParameterOutput
+public class SubFlowParameterOutput : SubFlowElement, IPageParameterOutput
 {
-    private readonly PageParameterOutputItem _outputItem;
+    private readonly SubFlowParameterOutputItem _outputItem;
     private object _value;
     private FlowNodeConnector _connector;
 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphParameterOutput"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowParameterOutput"/> class.
     /// </summary>
     /// <param name="outputItem">The parameter output item to associate with this element.</param>
-    public SubGraphParameterOutput(PageParameterOutputItem outputItem)
+    public SubFlowParameterOutput(SubFlowParameterOutputItem outputItem)
         : base(outputItem)
     {
         _outputItem = outputItem ?? throw new ArgumentNullException(nameof(outputItem));
@@ -157,17 +157,17 @@ public class SubGraphParameterOutput : SubGraphElement, IPageParameterOutput
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubGraphElement other)
     {
-        if (other is SubGraphParameterOutput otherOutput)
+        if (other is SubFlowParameterOutput otherOutput)
         {
             UpdateFromOther(otherOutput);
         }
     }
 
     /// <summary>
-    /// Updates the value from another <see cref="SubGraphParameterOutput"/>.
+    /// Updates the value from another <see cref="SubFlowParameterOutput"/>.
     /// </summary>
     /// <param name="otherParameter">The source element to copy the value from.</param>
-    public void UpdateFromOther(SubGraphParameterOutput otherParameter)
+    public void UpdateFromOther(SubFlowParameterOutput otherParameter)
     {
         _value = otherParameter._value;
     }
@@ -190,7 +190,7 @@ public class SubGraphParameterOutput : SubGraphElement, IPageParameterOutput
     {
         if (TaskCompletion)
         {
-            return !PageHelper.GetIsValueEmpty(Value);
+            return !SubFlowHelper.GetIsValueEmpty(Value);
         }
         else
         {

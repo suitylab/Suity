@@ -1,24 +1,23 @@
-using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
 
-namespace Suity.Editor.Flows.SubGraphs;
+namespace Suity.Editor.Flows.SubFlows;
 
 /// <summary>
-/// Base class for AIGC page definition design-time flow nodes.
-/// Provides common functionality for nodes that define AIGC page structures.
+/// Base class for sub-flow design-time flow nodes.
+/// Provides common functionality for nodes that define sub-flow structures.
 /// </summary>
-[DisplayText("AIGC Page Definition", "*CoreIcon|Page")]
-[ToolTipsText("AIGC page definition related nodes")]
-public abstract class AigcPageDefNode : DesignFlowNode
+[DisplayText("Sub-flow node", "*CoreIcon|Page")]
+[ToolTipsText("Sub-flow related nodes")]
+public abstract class SubFlowNode : DesignFlowNode
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="AigcPageDefNode"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowNode"/> class.
     /// </summary>
-    protected AigcPageDefNode()
+    protected SubFlowNode()
         : base()
     {
     }
@@ -40,10 +39,10 @@ public abstract class AigcPageDefNode : DesignFlowNode
 }
 
 /// <summary>
-/// Base class for AIGC page type definition nodes that support type selection and configuration.
+/// Base class for sub-flow type definition nodes that support type selection and configuration.
 /// Provides properties for task completion, commit, chat history, and type definition settings.
 /// </summary>
-public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
+public abstract class SubFlowTypeNode : SubFlowNode, IAigcTypeNode
 {
     private ITypeDesignSelection _valueType;
     private bool _isArray;
@@ -57,9 +56,9 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
     private readonly ValueProperty<bool> _linkedMode = new("LinkedMode", "Linked Mode", false, "When enabled, will be displayed as a link address in task submissions and chat history, instead of content.\r\nOnly effective when value is a link type.");
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AigcPageTypeDefNode"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowTypeNode"/> class.
     /// </summary>
-    protected AigcPageTypeDefNode()
+    protected SubFlowTypeNode()
     {
         _valueType = DTypeManager.Instance.CreateTypeDesignSelection();
     }
@@ -144,10 +143,10 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
     public virtual bool IsSkillParameter => false;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AigcPageTypeDefNode"/> class with a specified type ID.
+    /// Initializes a new instance of the <see cref="SubFlowTypeNode"/> class with a specified type ID.
     /// </summary>
     /// <param name="typeId">The unique identifier for the type.</param>
-    protected AigcPageTypeDefNode(Guid typeId) : this()
+    protected SubFlowTypeNode(Guid typeId) : this()
     {
         _valueType.Id = typeId;
     }
@@ -244,9 +243,9 @@ public abstract class AigcPageTypeDefNode : AigcPageDefNode, IAigcTypeNode
 }
 
 /// <summary>
-/// Abstract base class for AIGC page definition nodes that support parameter completion conditions.
+/// Abstract base class for sub-flow definition nodes that support parameter completion conditions.
 /// </summary>
-public abstract class AigcPageDefPageNode : AigcPageDefNode
+public abstract class SubflowDefNode : SubFlowNode
 {
     readonly ValueProperty<ParameterConditions> _completionCondition = new("CompletionCondition", "Completion Condition", ParameterConditions.All, "Condition for parameter completion. All means all must be met, Any means only one needs to be met.");
 

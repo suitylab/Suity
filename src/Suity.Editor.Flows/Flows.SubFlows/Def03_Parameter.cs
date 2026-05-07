@@ -1,8 +1,8 @@
 using Suity.Drawing;
+using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows.SubGraphs.Running;
 using Suity.Editor.Documents;
-using Suity.Editor.Flows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
@@ -11,11 +11,10 @@ using Suity.Views;
 using Suity.Views.Im;
 using Suity.Views.Im.Flows;
 using System.Drawing;
-using Suity.Editor.Flows.SubGraphs;
 
-namespace Suity.Editor.AIGC.Flows.Pages;
+namespace Suity.Editor.Flows.SubFlows;
 
-#region PageParameterInputNode
+#region SubflowParameterInputNode
 /// <summary>
 /// Provides input parameter support for AIGC page actions.
 /// </summary>
@@ -24,7 +23,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 [DisplayOrder(3000)]
 [ToolTipsText("Provides input parameter support for AIGC page actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterInputNode")]
-public class PageParameterInputNode : AigcPageTypeDefNode
+public class SubFlowParameterInputNode : SubFlowTypeNode
 {
     private FlowNodeConnector _out;
     private FlowNodeConnector _refInput;
@@ -34,9 +33,9 @@ public class PageParameterInputNode : AigcPageTypeDefNode
 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageParameterInputNode"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowParameterInputNode"/> class.
     /// </summary>
-    public PageParameterInputNode()
+    public SubFlowParameterInputNode()
         : base(NativeTypes.StringType.TargetId)
     {
         Value = NativeTypes.StringType.CreateOrRepairValue(Value, false);
@@ -166,37 +165,37 @@ public class PageParameterInputNode : AigcPageTypeDefNode
 
 
 /// <summary>
-/// Diagram item representing a <see cref="PageParameterInputNode"/> in the flow diagram.
+/// Diagram item representing a <see cref="SubFlowParameterInputNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterInputItem")]
-public class PageParameterInputItem : FlowDiagramItem<PageParameterInputNode>, ISubGraphElementCreator
+public class SubFlowParameterInputItem : FlowDiagramItem<SubFlowParameterInputNode>, ISubFlowElementCreator
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageParameterInputItem"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowParameterInputItem"/> class.
     /// </summary>
-    public PageParameterInputItem()
+    public SubFlowParameterInputItem()
         : base()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageParameterInputItem"/> class with the specified node.
+    /// Initializes a new instance of the <see cref="SubFlowParameterInputItem"/> class with the specified node.
     /// </summary>
     /// <param name="node">The page parameter input node.</param>
-    public PageParameterInputItem(PageParameterInputNode node)
+    public SubFlowParameterInputItem(SubFlowParameterInputNode node)
         : base(node)
     {
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new SubGraphParameterInput(this);
+    public SubFlowElement CreatePageElement() => new SubFlowParameterInput(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Paramater";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 }
 #endregion
 
@@ -209,7 +208,7 @@ public class PageParameterInputItem : FlowDiagramItem<PageParameterInputNode>, I
 [DisplayOrder(2990)]
 [ToolTipsText("Provides skill parameter support for AIGC page actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSkillParameterNode")]
-public class PageSkillParameterNode : AigcPageTypeDefNode
+public class PageSkillParameterNode : SubFlowTypeNode
 {
     private FlowNodeConnector _out;
     private FlowNodeConnector _refInput;
@@ -357,7 +356,7 @@ public class PageSkillParameterNode : AigcPageTypeDefNode
 /// Diagram item representing a <see cref="PageSkillParameterNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSkillParameterItem")]
-public class PageSkillParameterItem : FlowDiagramItem<PageSkillParameterNode>, ISubGraphElementCreator
+public class PageSkillParameterItem : FlowDiagramItem<PageSkillParameterNode>, ISubFlowElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageSkillParameterItem"/> class.
@@ -377,14 +376,14 @@ public class PageSkillParameterItem : FlowDiagramItem<PageSkillParameterNode>, I
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new SubGraphSkillParameter(this);
+    public SubFlowElement CreatePageElement() => new SubFlowSkillParameter(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "SkillParamater";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 }
 #endregion
 
@@ -398,7 +397,7 @@ public class PageSkillParameterItem : FlowDiagramItem<PageSkillParameterNode>, I
 [DisplayOrder(2980)]
 [ToolTipsText("Provides prompt input value support for AIGC page actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PagePromptParameterInputNode")]
-public class PagePromptParameterInputNode : AigcPageTypeDefNode
+public class PagePromptParameterInputNode : SubFlowTypeNode
 {
     readonly private FlowNodeConnector _prompt;
 
@@ -449,7 +448,7 @@ public class PagePromptParameterInputNode : AigcPageTypeDefNode
 /// Diagram item representing a <see cref="PagePromptParameterInputNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PagePromptParameterInputItem")]
-public class PagePromptParameterInputItem : FlowDiagramItem<PagePromptParameterInputNode>, ISubGraphElementCreator
+public class PagePromptParameterInputItem : FlowDiagramItem<PagePromptParameterInputNode>, ISubFlowElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PagePromptParameterInputItem"/> class.
@@ -469,14 +468,14 @@ public class PagePromptParameterInputItem : FlowDiagramItem<PagePromptParameterI
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new SubGraphPromptParameter(this);
+    public SubFlowElement CreatePageElement() => new SubFlowPromptParameter(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "PromptParamater";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 }
 #endregion
 
@@ -490,7 +489,7 @@ public class PagePromptParameterInputItem : FlowDiagramItem<PagePromptParameterI
 [DisplayOrder(2970)]
 [ToolTipsText("Provides input parameter support for AIGC page actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageMessageParameterNode")]
-public class PageMessageParameterNode : AigcPageTypeDefNode
+public class PageMessageParameterNode : SubFlowTypeNode
 {
     private readonly TextBlockProperty _message = new("Message", "Message", string.Empty, "Supported placeholders: {TaskName} {TaskStatus}");
 
@@ -564,7 +563,7 @@ public class PageMessageParameterNode : AigcPageTypeDefNode
 /// Diagram item representing a <see cref="PageMessageParameterNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageMessageParameterItem")]
-public class PageMessageParameterItem : FlowDiagramItem<PageMessageParameterNode>, ISubGraphElementCreator
+public class PageMessageParameterItem : FlowDiagramItem<PageMessageParameterNode>, ISubFlowElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageMessageParameterItem"/> class.
@@ -584,19 +583,19 @@ public class PageMessageParameterItem : FlowDiagramItem<PageMessageParameterNode
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new SubGraphMessage(this);
+    public SubFlowElement CreatePageElement() => new SubFlowMessage(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Message";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 }
 #endregion
 
 
-#region PageParameterOutputNode
+#region SubFlowParameterOutputNode
 /// <summary>
 /// Provides output value support for AIGC page actions.
 /// </summary>
@@ -605,7 +604,7 @@ public class PageMessageParameterItem : FlowDiagramItem<PageMessageParameterNode
 [DisplayOrder(2900)]
 [ToolTipsText("Provides output parameter support for AIGC page actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterOutputNode")]
-public class PageParameterOutputNode : AigcPageTypeDefNode
+public class SubFlowParameterOutputNode : SubFlowTypeNode
 {
     private FlowNodeConnector _in;
     private FlowNodeConnector _refInput;
@@ -614,9 +613,9 @@ public class PageParameterOutputNode : AigcPageTypeDefNode
     private object _value;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageParameterOutputNode"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowParameterOutputNode"/> class.
     /// </summary>
-    public PageParameterOutputNode()
+    public SubFlowParameterOutputNode()
         : base(NativeTypes.StringType.TargetId)
     {
         Value = NativeTypes.StringType.CreateOrRepairValue(Value, false);
@@ -732,38 +731,38 @@ public class PageParameterOutputNode : AigcPageTypeDefNode
 }
 
 /// <summary>
-/// Diagram item representing a <see cref="PageParameterOutputNode"/> in the flow diagram.
+/// Diagram item representing a <see cref="SubFlowParameterOutputNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageOutputDiagramItem")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterOutputItem")]
-public class PageParameterOutputItem : FlowDiagramItem<PageParameterOutputNode>, ISubGraphElementCreator
+public class SubFlowParameterOutputItem : FlowDiagramItem<SubFlowParameterOutputNode>, ISubFlowElementCreator
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageParameterOutputItem"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowParameterOutputItem"/> class.
     /// </summary>
-    public PageParameterOutputItem()
+    public SubFlowParameterOutputItem()
         : base()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageParameterOutputItem"/> class with the specified node.
+    /// Initializes a new instance of the <see cref="SubFlowParameterOutputItem"/> class with the specified node.
     /// </summary>
     /// <param name="node">The page parameter output node.</param>
-    public PageParameterOutputItem(PageParameterOutputNode node)
+    public SubFlowParameterOutputItem(SubFlowParameterOutputNode node)
         : base(node)
     {
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new SubGraphParameterOutput(this);
+    public SubFlowElement CreatePageElement() => new SubFlowParameterOutput(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Output";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 }
 #endregion
 
@@ -777,7 +776,7 @@ public class PageParameterOutputItem : FlowDiagramItem<PageParameterOutputNode>,
 [DisplayOrder(2800)]
 [ToolTipsText("Provides article output support for AIGC page actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageArticleOutputNode")]
-public class PageArticleOutputNode : AigcPageTypeDefNode
+public class PageArticleOutputNode : SubFlowTypeNode
 {
     private FlowNodeConnector _refInput;
 
@@ -905,7 +904,7 @@ public class PageArticleOutputNode : AigcPageTypeDefNode
 /// Diagram item representing a <see cref="PageArticleOutputNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageArticleOutputItem")]
-public class PageArticleOutputItem : FlowDiagramItem<PageArticleOutputNode>, ISubGraphElementCreator
+public class PageArticleOutputItem : FlowDiagramItem<PageArticleOutputNode>, ISubFlowElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageArticleOutputItem"/> class.
@@ -925,14 +924,14 @@ public class PageArticleOutputItem : FlowDiagramItem<PageArticleOutputNode>, ISu
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new SubGraphArticleOutput(this);
+    public SubFlowElement CreatePageElement() => new SubFlowArticleOutput(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "Article";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 }
 
 #endregion
@@ -946,7 +945,7 @@ public class PageArticleOutputItem : FlowDiagramItem<PageArticleOutputNode>, ISu
 [DisplayOrder(2750)]
 [ToolTipsText("Provides file output support for AIGC page actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageFileOutputNode")]
-public class PageFileOutputNode : AigcPageTypeDefNode
+public class PageFileOutputNode : SubFlowTypeNode
 {
     private FlowNodeConnector _in;
     private FlowNodeConnector _refInput;
@@ -1067,7 +1066,7 @@ public class PageFileOutputNode : AigcPageTypeDefNode
 /// Diagram item representing a <see cref="PageFileOutputNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageFileOutputItem")]
-public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, ISubGraphElementCreator
+public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, ISubFlowElementCreator
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PageFileOutputItem"/> class.
@@ -1087,14 +1086,14 @@ public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, ISubGraph
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new SubGraphFileOutput(this);
+    public SubFlowElement CreatePageElement() => new SubFlowFileOutput(this);
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "File";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 }
 #endregion
 
@@ -1108,7 +1107,7 @@ public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, ISubGraph
 [DisplayOrder(2700)]
 [ToolTipsText("Provides sub-task output support for AIGC page actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubTaskOutputNode")]
-public class PageSubTaskOutputNode : AigcPageTypeDefNode
+public class PageSubTaskOutputNode : SubFlowTypeNode
 {
     private FlowNodeConnector _refInput;
     private readonly ValueProperty<bool> _allSubTasks = new("AllSubTasks", "All SubTasks", false, "Reference all first-level sub-tasks, otherwise only reference the last sub-task.");
@@ -1226,8 +1225,8 @@ public class PageSubTaskOutputNode : AigcPageTypeDefNode
 /// <summary>
 /// Diagram item representing a <see cref="PageSubTaskOutputNode"/> in the flow diagram.
 /// </summary>
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubTaskOutputDiagramItem")]
-public class PageSubTaskOutputItem : FlowDiagramItem<PageSubTaskOutputNode>, ISubGraphElementCreator
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubTaskOutputItem")]
+public class PageSubTaskOutputItem : FlowDiagramItem<PageSubTaskOutputNode>, ISubFlowElementCreator
 {
 
     /// <summary>
@@ -1248,7 +1247,7 @@ public class PageSubTaskOutputItem : FlowDiagramItem<PageSubTaskOutputNode>, ISu
     }
 
     /// <inheritdoc/>
-    public SubGraphElement CreatePageElement() => new SubGraphSubTaskOutput(this);
+    public SubFlowElement CreatePageElement() => new SubFlowSubTaskOutput(this);
 
 
     /// <inheritdoc/>
@@ -1256,7 +1255,7 @@ public class PageSubTaskOutputItem : FlowDiagramItem<PageSubTaskOutputNode>, ISu
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
-        => AigcPageDefNode.VerifyName(name);
+        => SubFlowNode.VerifyName(name);
 }
 
 #endregion

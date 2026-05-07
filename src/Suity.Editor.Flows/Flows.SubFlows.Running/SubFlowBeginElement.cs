@@ -5,21 +5,21 @@ using Suity.Synchonizing;
 using Suity.Views;
 using static Suity.Helpers.GlobalLocalizer;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
 /// Represents the beginning element of an AIGC page, serving as the entry point for page interactions.
 /// </summary>
-public class SubGraphBeginElement : SubGraphElement, IPageValueElement
+public class SubFlowBeginElement : SubFlowElement, IPageValueElement
 {
     private FlowNodeConnector _connector;
     private object _value;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphBeginElement"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowBeginElement"/> class.
     /// </summary>
     /// <param name="actionItem">The flow diagram item associated with this begin element.</param>
-    public SubGraphBeginElement(FlowDiagramItem actionItem)
+    public SubFlowBeginElement(FlowDiagramItem actionItem)
         : base(actionItem)
     {
     }

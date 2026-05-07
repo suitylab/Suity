@@ -7,12 +7,12 @@ using Suity.Views;
 using System;
 using System.IO;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
 /// Represents a file output element in an sub-graph that handles file path output and validation.
 /// </summary>
-public class SubGraphFileOutput : SubGraphElement, IPageParameterOutput
+public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
 {
     private readonly PageFileOutputItem _outputItem;
     private string _value = string.Empty;
@@ -20,10 +20,10 @@ public class SubGraphFileOutput : SubGraphElement, IPageParameterOutput
 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphFileOutput"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowFileOutput"/> class.
     /// </summary>
     /// <param name="outputItem">The page file output item.</param>
-    public SubGraphFileOutput(PageFileOutputItem outputItem)
+    public SubFlowFileOutput(PageFileOutputItem outputItem)
         : base(outputItem)
     {
         _outputItem = outputItem ?? throw new ArgumentNullException(nameof(outputItem));
@@ -145,17 +145,17 @@ public class SubGraphFileOutput : SubGraphElement, IPageParameterOutput
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubGraphElement other)
     {
-        if (other is SubGraphFileOutput otherOutput)
+        if (other is SubFlowFileOutput otherOutput)
         {
             UpdateFromOther(otherOutput);
         }
     }
 
     /// <summary>
-    /// Updates the current element's value from another <see cref="SubGraphFileOutput"/>.
+    /// Updates the current element's value from another <see cref="SubFlowFileOutput"/>.
     /// </summary>
     /// <param name="otherParameter">The other file output element to copy values from.</param>
-    public void UpdateFromOther(SubGraphFileOutput otherParameter)
+    public void UpdateFromOther(SubFlowFileOutput otherParameter)
     {
         _value = otherParameter._value;
     }

@@ -1,7 +1,7 @@
 using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.AIGC.TaskPages;
-using Suity.Editor.Flows.SubGraphs.Running;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Selecting;
@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using Suity.Editor.Flows.SubFlows;
 
 namespace Suity.Editor.AIGC.Flows.Pages;
 
@@ -25,7 +26,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.AigcSkillDocument")]
 public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSkill
 {
-    private SubGraphInstance _rootElement;
+    private SubFlowInstance _rootElement;
 
     private readonly StringProperty _skillName = new("SkillName", "Skill Name");
 
@@ -139,7 +140,7 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
     /// <summary>
     /// Gets or sets the root page instance for this skill.
     /// </summary>
-    public SubGraphInstance Instance
+    public SubFlowInstance Instance
     {
         get => _rootElement;
         set
@@ -173,7 +174,7 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
     /// <summary>
     /// Gets the base execution flow as a diagram item.
     /// </summary>
-    public PageDefinitionDiagramItem BaseFlowPage => (_baseFlow.Target as PageDefinitionAsset)?.GetDiagramItem();
+    public SubFlowDefinitionDiagramItem BaseFlowPage => (_baseFlow.Target as SubFlowDefinitionAsset)?.GetDiagramItem();
     #endregion
 
     #region IAigcSkill
@@ -307,8 +308,8 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
     /// <summary>
     /// Ensures that a skill instance exists, building one if necessary.
     /// </summary>
-    /// <returns>The current <see cref="SubGraphInstance"/> for this skill.</returns>
-    public SubGraphInstance EnsureSkillInstance()
+    /// <returns>The current <see cref="SubFlowInstance"/> for this skill.</returns>
+    public SubFlowInstance EnsureSkillInstance()
     {
         if (Instance is null)
         {
@@ -336,7 +337,7 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSki
                     Owner = this,
                 };
 
-                var newInstance = new SubGraphInstance(page, option);
+                var newInstance = new SubFlowInstance(page, option);
                 if (last != null)
                 {
                     newInstance.UpdateFromOther(last);
@@ -548,7 +549,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, IAigcToo
             return null;
         }
 
-        var instance = new SubGraphInstance(toolPageItem, option, this);
+        var instance = new SubFlowInstance(toolPageItem, option, this);
 
         string skillName = doc.Name;
         string description = doc.Overview;

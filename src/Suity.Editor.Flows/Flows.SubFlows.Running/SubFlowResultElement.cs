@@ -1,28 +1,27 @@
-using Suity.Editor.AIGC.Flows.Pages;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Synchonizing;
 using Suity.Views;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
 /// Represents a result page element that displays the completion outputs of an AIGC flow page.
 /// </summary>
-public class ResultPageElement : GroupElement
+public class SubFlowResultElement : SubFlowGroupElement
 {
-    readonly PageResultDiagramItem _resultPage;
+    readonly SubFlowResultDiagramItem _resultPage;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ResultPageElement"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowResultElement"/> class.
     /// </summary>
     /// <param name="groupItem">The flow diagram item representing this result group.</param>
     /// <param name="depth">The nesting depth of this element.</param>
     /// <param name="order">The display order of this element. Defaults to -1.</param>
-    public ResultPageElement(FlowDiagramItem groupItem, int depth, int order = -1)
+    public SubFlowResultElement(FlowDiagramItem groupItem, int depth, int order = -1)
         : base(groupItem, depth, order)
     {
         DrawLabel = false;
-        _resultPage = groupItem as PageResultDiagramItem;
+        _resultPage = groupItem as SubFlowResultDiagramItem;
     }
 
     /// <summary>

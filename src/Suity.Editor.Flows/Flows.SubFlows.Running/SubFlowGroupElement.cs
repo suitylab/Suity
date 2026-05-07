@@ -4,27 +4,27 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
 /// Represents a group page element that can contain nested child elements and sub-groups within an AIGC flow diagram.
 /// </summary>
-public class GroupElement : SubGraphElement
+public class SubFlowGroupElement : SubFlowElement
 {
     private readonly FlowDiagramItem _groupItem;
-    private readonly List<SubGraphElement> _list = [];
-    private readonly List<GroupElement> _groups = [];
+    private readonly List<SubFlowElement> _list = [];
+    private readonly List<SubFlowGroupElement> _groups = [];
     private readonly int _depth;
 
     private string _groupName;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="GroupElement"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowGroupElement"/> class.
     /// </summary>
     /// <param name="groupItem">The flow diagram item representing this group.</param>
     /// <param name="depth">The nesting depth of this group element.</param>
     /// <param name="order">The display order of this element. Defaults to 0.</param>
-    public GroupElement(FlowDiagramItem groupItem, int depth, int order = 0)
+    public SubFlowGroupElement(FlowDiagramItem groupItem, int depth, int order = 0)
         : base(groupItem)
     {
         _groupItem = groupItem ?? throw new ArgumentNullException(nameof(groupItem));
@@ -59,7 +59,7 @@ public class GroupElement : SubGraphElement
     /// Adds a child element to this group, automatically nesting it into a sub-group if bounds intersect.
     /// </summary>
     /// <param name="element">The page element to add.</param>
-    internal void AddElement(SubGraphElement element)
+    internal void AddElement(SubFlowElement element)
     {
         if (element is null)
         {
@@ -82,7 +82,7 @@ public class GroupElement : SubGraphElement
             element.Parent = this;
             element.Option = this.Option;
 
-            if (element is GroupElement groupElement)
+            if (element is SubFlowGroupElement groupElement)
             {
                 _groups.Add(groupElement);
             }
@@ -99,7 +99,7 @@ public class GroupElement : SubGraphElement
 
         foreach (var child in node.Children)
         {
-            var groupPage = new GroupElement(child.Data, newDepth);
+            var groupPage = new SubFlowGroupElement(child.Data, newDepth);
             _groups.Add(groupPage);
             _list.Add(groupPage);
             groupPage.AddChildNodes(child);
@@ -110,7 +110,7 @@ public class GroupElement : SubGraphElement
     /// <inheritdoc/>
     public override void Sort()
     {
-        _list.Sort(SubGraphInstance.PageElementSort);
+        _list.Sort(SubFlowInstance.PageElementSort);
 
         foreach (var item in _list)
         {
@@ -162,5 +162,5 @@ public class GroupElement : SubGraphElement
     }
 
     /// <inheritdoc/>
-    public override IEnumerable<SubGraphElement> ChildElements => _list;
+    public override IEnumerable<SubFlowElement> ChildElements => _list;
 }

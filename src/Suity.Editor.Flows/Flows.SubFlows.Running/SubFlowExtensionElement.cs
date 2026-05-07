@@ -4,25 +4,25 @@ using Suity.Flows.Pages;
 using Suity.Views;
 using Suity.Editor.AIGC.TaskPages;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
 /// Represents a sub-page element that groups related flow nodes and delegates completion status to its result page.
 /// </summary>
-public class SubPageElement : GroupElement
+public class SubFlowExtensionElement : SubFlowGroupElement
 {
-    readonly PageSubDiagramItem _subPage;
+    readonly SubflowExtensionDiagramItem _subPage;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubPageElement"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowExtensionElement"/> class.
     /// </summary>
-    /// <param name="groupItem">The flow diagram item representing this sub-page group.</param>
+    /// <param name="extensionItem">The flow diagram item representing this sub-page group.</param>
     /// <param name="depth">The nesting depth of this element.</param>
     /// <param name="order">The display order of this element. Defaults to -1.</param>
-    public SubPageElement(FlowDiagramItem groupItem, int depth, int order = -1)
-        : base(groupItem, depth, order)
+    public SubFlowExtensionElement(FlowDiagramItem extensionItem, int depth, int order = -1)
+        : base(extensionItem, depth, order)
     {
-        _subPage = groupItem as PageSubDiagramItem;
+        _subPage = extensionItem as SubflowExtensionDiagramItem;
     }
 
     /// <summary>

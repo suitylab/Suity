@@ -5,12 +5,12 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System;
 
-namespace Suity.Editor.Flows.SubGraphs.Running;
+namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
 /// Represents a sub-graph element that handles prompt parameter input for sub-graph.
 /// </summary>
-public class SubGraphPromptParameter : SubGraphElement, IPageParameterInput
+public class SubFlowPromptParameter : SubFlowElement, IPageParameterInput
 {
     private readonly PagePromptParameterInputItem _inputItem;
     private FlowNodeConnector _connector;
@@ -18,10 +18,10 @@ public class SubGraphPromptParameter : SubGraphElement, IPageParameterInput
     private readonly TextBlock _cachedPrompt = new();
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubGraphPromptParameter"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowPromptParameter"/> class.
     /// </summary>
     /// <param name="parameterItem">The prompt parameter input item to associate with this element.</param>
-    public SubGraphPromptParameter(PagePromptParameterInputItem parameterItem)
+    public SubFlowPromptParameter(PagePromptParameterInputItem parameterItem)
         : base(parameterItem)
     {
         _inputItem = parameterItem ?? throw new ArgumentNullException(nameof(parameterItem));
@@ -175,17 +175,17 @@ public class SubGraphPromptParameter : SubGraphElement, IPageParameterInput
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubGraphElement other)
     {
-        if (other is SubGraphPromptParameter otherParameter)
+        if (other is SubFlowPromptParameter otherParameter)
         {
             UpdateFromOther(otherParameter);
         }
     }
 
     /// <summary>
-    /// Updates the prompt from another <see cref="SubGraphPromptParameter"/>.
+    /// Updates the prompt from another <see cref="SubFlowPromptParameter"/>.
     /// </summary>
     /// <param name="otherParameter">The source element to copy the prompt from.</param>
-    public void UpdateFromOther(SubGraphPromptParameter otherParameter)
+    public void UpdateFromOther(SubFlowPromptParameter otherParameter)
     {
         string prompt = otherParameter.ResolvePrmopt();
         SetPrompt(prompt);

@@ -4,6 +4,7 @@ using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
+using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
@@ -1162,26 +1163,26 @@ public class GetArticleTaggedContents : AigcPageNode
 
 #region Converters
 /// <summary>
-/// Converts a <see cref="PageDefinitionAsset"/> to an <see cref="IAigcPage"/> by retrieving the diagram item's node.
+/// Converts a <see cref="SubFlowDefinitionAsset"/> to an <see cref="IAigcPage"/> by retrieving the diagram item's node.
 /// </summary>
-public class PageAssetToAigcPageConverter : TypeConverter<PageDefinitionAsset, IAigcPage>
+public class PageAssetToAigcPageConverter : TypeConverter<SubFlowDefinitionAsset, IAigcPage>
 {
     /// <inheritdoc/>
-    public override IAigcPage Convert(PageDefinitionAsset objFrom)
+    public override IAigcPage Convert(SubFlowDefinitionAsset objFrom)
     {
         return objFrom.GetDiagramItem()?.Node;
     }
 }
 
 /// <summary>
-/// Converts an <see cref="IAigcPage"/> to a <see cref="PageDefinitionAsset"/> by retrieving the page definition node's asset.
+/// Converts an <see cref="IAigcPage"/> to a <see cref="SubFlowDefinitionAsset"/> by retrieving the page definition node's asset.
 /// </summary>
-public class AigcPageToPageAssetConverter : TypeConverter<IAigcPage, PageDefinitionAsset>
+public class AigcPageToPageAssetConverter : TypeConverter<IAigcPage, SubFlowDefinitionAsset>
 {
     /// <inheritdoc/>
-    public override PageDefinitionAsset Convert(IAigcPage objFrom)
+    public override SubFlowDefinitionAsset Convert(IAigcPage objFrom)
     {
-        return (objFrom as PageDefinitionNode)?.GetAsset() as PageDefinitionAsset;
+        return (objFrom as SubflowDefinitionNode)?.GetAsset() as SubFlowDefinitionAsset;
     }
 }
 
