@@ -739,9 +739,9 @@ public class AigcTaskPageDocumentView : IDocumentView,
         .InitClass("titleText")
         .InitCenter();
 
-        if (page.Instance is SkillSubFlowInstance instance && instance.SkillAssetSelection?.Target is { } skill)
+        if (page.Instance is { } instance && instance.PresetAssetSelection?.Target is { } preset)
         {
-            gui.Text($" (Skill: {skill.ToDisplayText()})");
+            gui.Text($" (Skill: {preset.ToDisplayText()})");
         }
     }
 

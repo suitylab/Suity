@@ -180,7 +180,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
     private void DefaultInputGui(ImGui gui)
     {
-        var hintText = (_startupAssetSel.Target as IHasSkill)?.GetSkill()?.PromptHint;
+        var hintText = (_startupAssetSel.Target as IHasPreset)?.GetPreset()?.PromptHint;
         if (string.IsNullOrWhiteSpace(hintText))
         {
             hintText = L("Prompt input...");

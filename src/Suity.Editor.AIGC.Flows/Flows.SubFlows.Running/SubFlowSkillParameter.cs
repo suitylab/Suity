@@ -229,7 +229,7 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
     {
         if (Option.Mode != PageElementMode.Skill)
         {
-            if ((Root as IHasSkill)?.GetSkill() is { } skill && skill.TryGetParameter(Name, out var value))
+            if ((Root as IHasPreset)?.GetPreset() is { } skill && skill.TryGetParameter(Name, out var value))
             {
                 //TODO: Do we need to Clone once to avoid modification?
                 return value;

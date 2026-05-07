@@ -292,3 +292,61 @@ public interface ISubFlowAsset : INamed, IHasId
 }
 
 #endregion
+
+#region ISubFlowPreset
+
+/// <summary>
+/// Represents an AIGC skill that provides tools and parameter access.
+/// </summary>
+public interface ISubFlowPreset
+{
+    /// <summary>
+    /// Gets the name of the preset.
+    /// </summary>
+    string SkillName { get; }
+
+    /// <summary>
+    /// Gets the tooltips/description of the skill.
+    /// </summary>
+    string SkillTooltips { get; }
+
+    /// <summary>
+    /// Used to provide guidance on how to use the skill effectively.
+    /// </summary>
+    string PromptHint { get; }
+
+    /// <summary>
+    /// Gets all tools provided by this skill.
+    /// </summary>
+    IEnumerable<ISubFlowAsset> Tools { get; }
+
+    /// <summary>
+    /// Gets whether this skill is a startup page.
+    /// </summary>
+    bool IsStartupPage { get; }
+
+    /// <summary>
+    /// Gets whether this skill uses the parent article.
+    /// </summary>
+    bool UseParentArticle { get; }
+
+    /// <summary>
+    /// Attempts to retrieve a parameter value by name.
+    /// </summary>
+    bool TryGetParameter(string name, out object value);
+}
+
+
+#endregion
+
+#region IHasPreset
+
+public interface IHasPreset
+{
+    /// <summary>
+    /// Gets the skill definition.
+    /// </summary>
+    ISubFlowPreset GetPreset();
+}
+
+#endregion

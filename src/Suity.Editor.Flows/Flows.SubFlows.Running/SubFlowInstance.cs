@@ -4,6 +4,7 @@ using Suity.Drawing;
 using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
+using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
@@ -26,6 +27,10 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 [NativeAlias("Suity.Editor.AIGC.TaskPages.Running.AigcPageInstance")]
 public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInstance
 {
+    /// <summary>
+    /// Property key used to store the preset asset reference.
+    /// </summary>
+    public const string PRESET_PROP = "__preset__";
 
     private readonly SubFlowDefinitionDiagramItem _pageDefinition;
     private readonly SubflowDefinitionNode _pageNode;
@@ -37,6 +42,9 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     private readonly HashSet<SubFlowElement> _allElements = [];
     private SubFlowEndElement _currentEndElement;
 
+    private readonly AssetProperty<ISubFlowAsset> _preset = new(PRESET_PROP, "Preset");
+    private string _presetName;
+
 
     private readonly IConversationImGui _conversation;
 
@@ -45,14 +53,16 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// </summary>
     /// <param name="pageDefinition">The page definition diagram item.</param>
     /// <param name="option">The page element configuration options.</param>
-    /// <param name="skill">Optional skill asset to associate with this page instance.</param>
-    public SubFlowInstance(SubFlowDefinitionDiagramItem pageDefinition, PageElementOption option)
+    /// <param name="preset">Optional preset asset to associate with this page instance.</param>
+    public SubFlowInstance(SubFlowDefinitionDiagramItem pageDefinition, PageElementOption option, ISubFlowAsset preset = null)
         : base(pageDefinition)
     {
         _pageDefinition = pageDefinition ?? throw new ArgumentNullException(nameof(pageDefinition));
         _pageNode = _pageDefinition.Node ?? throw new ArgumentNullException(nameof(pageDefinition));
         _asset = pageDefinition.TargetAsset as SubFlowDefinitionAsset ?? throw new ArgumentNullException(nameof(pageDefinition.TargetAsset));
         Option = option;
+
+        _preset.Target = preset;
 
         _conversation = EditorServices.ImGuiService.CreateConversationImGui(pageDefinition.Name, false);
 
@@ -87,6 +97,13 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
     #region Core Props
 
+    /// <inheritdoc/>
+    public override string Name => _presetName ?? base.Name;
+
+    /// <summary>
+    /// Gets the selection for the preset asset associated with this page.
+    /// </summary>
+    public AssetSelection<ISubFlowAsset> PresetAssetSelection => _preset.Selection;
 
     /// <summary>
     /// Gets the last computation that was executed on this page.
@@ -137,8 +154,16 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <summary>
     /// Gets the tool asset associated with this page.
     /// </summary>
-    /// <returns>The tool asset, falling back to the target asset if no skill is set.</returns>
-    public virtual ISubFlowAsset GetToolAsset() => TargetAsset as ISubFlowAsset;
+    /// <returns>The tool asset, falling back to the target asset if no preset is set.</returns>
+    public virtual ISubFlowAsset GetToolAsset()
+    {
+        if (_preset.Target is { } prestAsset)
+        {
+            return prestAsset;
+        }
+
+        return TargetAsset as ISubFlowAsset;
+    }
 
     /// <summary>
     /// Gets all elements contained within this page.
@@ -284,9 +309,23 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         base.OnBuild();
 
         ParameterCondition = _pageNode.CompletionCondition;
-        UseParentArticle = _pageNode.UseParentArticle == true;
+        UseParentArticle = GetPreset()?.UseParentArticle ?? (PageNode?.UseParentArticle == true);
 
-        Tooltips = _pageNode.GetAttribute<ToolTipsAttribute>()?.ToolTips;
+        //Name
+        if (GetPreset()?.SkillName is { } presetName && !string.IsNullOrWhiteSpace(presetName))
+        {
+            _presetName = presetName;
+        }
+
+        //Tooltips
+        if (GetPreset()?.SkillTooltips is { } presetTooltips && !string.IsNullOrWhiteSpace(presetTooltips))
+        {
+            Tooltips = presetTooltips;
+        }
+        else
+        {
+            Tooltips = PageNode.GetAttribute<ToolTipsAttribute>()?.ToolTips;
+        }
     }
 
     private void CollectGroups(IEnumerable<FlowDiagramItem> groups)
@@ -453,6 +492,8 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <param name="otherRoot">The source page instance to update from.</param>
     public virtual void UpdateFromOther(SubFlowInstance otherRoot)
     {
+        _preset.TargetAsset = otherRoot._preset.TargetAsset;
+
         foreach (var other in otherRoot._dic.Values)
         {
             if (_dic.TryGetValue(other.DiagramItem.Name, out var exist))
@@ -505,6 +546,8 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <inheritdoc/>
     public override void Sync(IPropertySync sync, ISyncContext context)
     {
+        _preset.Sync(sync);
+
         foreach (var element in _list)
         {
             element.Sync(sync, context);
@@ -531,6 +574,12 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     #endregion
 
     #region Get
+
+    /// <summary>
+    /// Gets the preset definition associated with this page, if any.
+    /// </summary>
+    /// <returns>The preset definition, or null if no preset is set.</returns>
+    public ISubFlowPreset GetPreset() => (_preset.Target as IHasPreset)?.GetPreset();
 
     /// <inheritdoc/>
     public override IEnumerable<SubFlowElement> ChildElements => _list;
@@ -900,7 +949,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <summary>
     /// Gets the list of tool assets available to this page.
     /// </summary>
-    /// <returns>An array of tool assets from both the page definition and associated skill.</returns>
+    /// <returns>An array of tool assets from both the page definition and associated preset.</returns>
     public virtual ISubFlowAsset[] GetToolList()
     {
         var tools = _pageNode.Tools.SkipNull();
@@ -1104,10 +1153,18 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     }
 
     /// <summary>
-    /// Gets the definition page, preferring the skill asset if available.
+    /// Gets the definition page, preferring the preset asset if available.
     /// </summary>
-    /// <returns>The skill asset or the base asset as the definition page.</returns>
-    public virtual ISubFlowAsset GetDefinitionPage() => _asset;
+    /// <returns>The preset asset or the base asset as the definition page.</returns>
+    public virtual ISubFlowAsset GetDefinitionPage()
+    {
+        if (_preset.Target is { } preset)
+        {
+            return preset;
+        }
+
+        return _asset;
+    }
 
 
     #endregion
@@ -1138,7 +1195,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <param name="begin">The page begin element that initiated the chat.</param>
     /// <param name="view">Optional flow view for UI integration.</param>
     /// <returns>A task representing the asynchronous chat operation.</returns>
-    internal Task<object> HandleBeginAigcChat(SubFlowBeginElement begin, IFlowView view = null)
+    internal Task<object> HandleBeginChat(SubFlowBeginElement begin, IFlowView view = null)
     {
         if (!IsInDiagram)
         {

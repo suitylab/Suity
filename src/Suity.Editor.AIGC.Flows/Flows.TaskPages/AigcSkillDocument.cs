@@ -25,7 +25,7 @@ namespace Suity.Editor.Flows.TaskPages;
 [DocumentFormat(FormatName = "AigcSkill", Extension = "sskill", DisplayText = "Skill", Icon = "*CoreIcon|Skill", Categoty = "AIGC", CanShowView = false)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.AigcSkillDocument")]
 [NativeAlias("Suity.Editor.AIGC.Flows.AigcSkillDocument")]
-public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSkill
+public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, ISubFlowPreset
 {
     private SubFlowInstance _rootElement;
 
@@ -421,7 +421,7 @@ public class AigcSkillAssetBuilder : AssetBuilder<AigcSkillAsset>
 /// Represents a skill asset that can be used as a tool and contains a page definition.
 /// </summary>
 [NativeType(Name = "AigcSkillAsset", Description = "Skill Asset", CodeBase = "*AIGC", Icon = "*CoreIcon|Skil", Color = FlowColors.Agent)]
-public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlowAsset, IHasSkill
+public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlowAsset, IHasPreset
 {
     readonly EditorAssetRef<ISubFlowDefAsset> _baseFlow = new();
 
@@ -514,7 +514,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlow
 
     #endregion
 
-    #region IAigcToolAsset
+    #region ISubFlowAsset
 
     /// <summary>
     /// Gets the base page definition from the associated skill document.
@@ -525,8 +525,8 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlow
     /// <summary>
     /// Gets the skill definition from the associated skill document.
     /// </summary>
-    /// <returns>The <see cref="IAigcSkill"/> definition, or null.</returns>
-    public IAigcSkill GetSkill() => this.GetDocument<AigcSkillDocument>();
+    /// <returns>The <see cref="ISubFlowPreset"/> definition, or null.</returns>
+    public ISubFlowPreset GetPreset() => this.GetDocument<AigcSkillDocument>();
 
     /// <summary>
     /// Creates a new page instance for this tool asset with the specified options.
@@ -550,7 +550,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlow
             return null;
         }
 
-        var instance = new SkillSubFlowInstance(toolPageItem, option, this);
+        var instance = new SubFlowInstance(toolPageItem, option, this);
 
         string skillName = doc.Name;
         string description = doc.Overview;
