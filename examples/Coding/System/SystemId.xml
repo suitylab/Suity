@@ -10,7 +10,6 @@
   <Object id="00062761-7f4e-4d94-a693-7cf00553f737" name="*AIGC|AigcModelLevel.Low" />
   <Object id="36d50664-445e-49fb-afbf-3dda1929357f" name="*AIGC|AigcModelLevel.Medium" />
   <Object id="b5609555-3d7d-4ff7-9329-19f5da6b236e" name="*AIGC|AigcRead" />
-  <Object id="b835ccd9-2ac5-44e6-95cb-42c9cf397d79" name="*AIGC|AigcSkillAsset" />
   <Object id="44d44bed-9296-4bc6-9a04-e2fce68c381a" name="*AIGC|AIKnowledgeConfig" />
   <Object id="f966dd49-78ab-4231-a830-07c832999fb7" name="*AIGC|AIPromptInfo" />
   <Object id="9787dd72-1cb9-4a64-926f-dca5b33fc095" name="*AIGC|AISubdivideConfig" />
@@ -135,7 +134,7 @@
   <Object id="a6c50133-7223-49c7-ac26-75b6e5aa1604" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowDefAsset" />
   <Object id="8895914c-a8b0-4c29-a83c-fb2efb0c9724" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowInstance" />
   <Object id="826e5ab6-b230-4a94-9d0f-36d10c5da90a" name="*AssetLink|Suity.Editor.Flows.SubFlows.SubFlowDefinitionAsset" />
-  <Object id="413cc85e-1713-4412-bf99-bce7e043455d" name="*AssetLink|Suity.Editor.Flows.TaskPages.AigcSkillAsset" />
+  <Object id="5ec9dea8-3c72-4720-be46-cf5728aaa6af" name="*AssetLink|Suity.Editor.Flows.TaskPages.SubFlowPresetAsset" />
   <Object id="9c99d8fe-3f3e-4c45-bbc8-17d63f9f62a4" name="*AssetLink|Suity.Editor.GroupAsset" />
   <Object id="73e4af74-1020-4f88-b9d3-07d9293255ce" name="*AssetLink|Suity.Editor.ImageAsset" />
   <Object id="c8db7325-863c-4e63-a314-1888e8328085" name="*AssetLink|Suity.Editor.IPagedTextAsset" />
@@ -602,6 +601,7 @@
   <Object id="2aef8f59-7a8f-402e-909a-dff40eb623ea" name="*SubFlow|SubFlowDefinitionAsset" />
   <Object id="70a1566a-7ea4-4b65-a3e0-fbf445d14d6e" name="*SubFlow|SubFlowInstance" />
   <Object id="70a1566a-7ea4-4b65-a3e0-fbf445d14d6e" name="*SubFlow|SubFlowInstance" />
+  <Object id="b2effed2-f00d-45af-a506-1ca5d6f6f154" name="*SubFlow|SubFlowPresetAsset" />
   <Object id="91556408-cf09-4033-a5fa-1759223e1abb" name="*Suity" />
   <Object id="ebdb3e23-2e3f-4b54-bdac-152015486bbb" name="*Suity.Controlling" />
   <Object id="21a73305-22d1-475e-836f-c345b94160d0" name="*Suity.Controlling|Component" />

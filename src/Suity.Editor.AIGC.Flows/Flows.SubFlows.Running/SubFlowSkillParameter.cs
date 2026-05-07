@@ -85,7 +85,7 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
     /// <summary>
     /// Gets a value indicating whether this is a skill input. Always returns <c>true</c> for this element type.
     /// </summary>
-    public bool IsSkillInput => true;
+    public bool IsPresetInput => true;
 
     /// <inheritdoc/>
     public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, LinkedMode);
@@ -126,7 +126,7 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
     /// <inheritdoc/>
     public override void Sync(IPropertySync sync, ISyncContext context)
     {
-        if (Option.Mode == PageElementMode.Skill)
+        if (Option.Mode == PageElementMode.Preset)
         {
             var valueType = ParameterType;
             UpdateDefaultValue(ParameterType);
@@ -156,7 +156,7 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
             .WithWriteBack() // Important, skill parameters need to notify parent to save
             .WithStatus(GetStatus());
 
-        if (Option.Mode != PageElementMode.Skill)
+        if (Option.Mode != PageElementMode.Preset)
         {
             property.WithReadOnly();
         }
@@ -227,7 +227,7 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
     /// <returns>The resolved skill parameter value.</returns>
     public object ResolveSkillDefValue()
     {
-        if (Option.Mode != PageElementMode.Skill)
+        if (Option.Mode != PageElementMode.Preset)
         {
             if ((Root as IHasPreset)?.GetPreset() is { } skill && skill.TryGetParameter(Name, out var value))
             {

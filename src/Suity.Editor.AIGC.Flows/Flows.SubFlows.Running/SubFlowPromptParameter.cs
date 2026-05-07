@@ -39,7 +39,7 @@ public class SubFlowPromptParameter : SubFlowElement, IPageParameterInput
     /// <summary>
     /// Gets a value indicating whether this is a skill input. Always returns <c>false</c> for this element type.
     /// </summary>
-    public bool IsSkillInput => false;
+    public bool IsPresetInput => false;
 
     /// <summary>
     /// Gets a value indicating whether this input is related to task commit.
@@ -129,7 +129,7 @@ public class SubFlowPromptParameter : SubFlowElement, IPageParameterInput
     /// <inheritdoc/>
     public override void Sync(IPropertySync sync, ISyncContext context)
     {
-        if (Option.Mode == PageElementMode.Skill)
+        if (Option.Mode == PageElementMode.Preset)
         {
             return;
         }
@@ -144,7 +144,7 @@ public class SubFlowPromptParameter : SubFlowElement, IPageParameterInput
     /// <inheritdoc/>
     public override void SetupView(IViewObjectSetup setup)
     {
-        if (Option.Mode == PageElementMode.Skill)
+        if (Option.Mode == PageElementMode.Preset)
         {
             return;
         }

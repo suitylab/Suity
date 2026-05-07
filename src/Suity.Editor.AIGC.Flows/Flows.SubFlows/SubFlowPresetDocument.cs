@@ -1,6 +1,5 @@
 using Suity.Collections;
 using Suity.Drawing;
-using Suity.Editor.AIGC;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows.SubFlows;
@@ -20,16 +19,17 @@ using System.Linq;
 namespace Suity.Editor.Flows.TaskPages;
 
 /// <summary>
-/// Document representing an AIGC skill, containing page definitions, tools, and configuration.
+/// Document representing an Sub-flow preset, containing page definitions, tools, and configuration.
 /// </summary>
-[DocumentFormat(FormatName = "AigcSkill", Extension = "sskill", DisplayText = "Skill", Icon = "*CoreIcon|Skill", Categoty = "AIGC", CanShowView = false)]
+[DocumentFormat(FormatName = "SubFlowPreset", Extension = "spreset", DisplayText = "Preset", Icon = "*CoreIcon|Skill", Categoty = "AIGC", CanShowView = false)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.AigcSkillDocument")]
 [NativeAlias("Suity.Editor.AIGC.Flows.AigcSkillDocument")]
-public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, ISubFlowPreset
+[NativeAlias("Suity.Editor.Flows.TaskPages.AigcSkillDocument")]
+public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, ISubFlowPreset
 {
     private SubFlowInstance _rootElement;
 
-    private readonly StringProperty _skillName = new("SkillName", "Skill Name");
+    private readonly StringProperty _presetName = new("PresetName", "Preset Name");
 
     private readonly StringProperty _description = new("Description", "Description");
 
@@ -43,26 +43,26 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, ISubFlow
     private readonly AssetListProperty<ISubFlowAsset> _tools
         = new("Tools", "Tools");
 
-    private readonly ValueProperty<bool> _isStartupPage
-        = new("IsStartupPage", "Startup Page", false, "When enabled, this skill can be used as the startup page.");
+    private readonly ValueProperty<bool> _isStartup
+        = new("IsStartup", "Is Startup", false, "When enabled, this preset can be used as the startup page.");
 
     private readonly ValueProperty<bool> _useParentArticle =
         new("UseParentArticle", "Use Parent Article", false, "Use parent article as the article record for this page content. This setting will override the value of the base execution flow.");
 
     private readonly TextBlockProperty _overview
-        = new("Overview", "Overview", string.Empty, "Used to provide a brief summary of the skill.");
+        = new("Overview", "Overview", string.Empty, "Used to provide a brief summary of the preset.");
 
     private readonly TextBlockProperty _promptHint
-        = new("PromptHint", "Prompt Hint", string.Empty, "Used to provide guidance on how to use the skill effectively.");
+        = new("PromptHint", "Prompt Hint", string.Empty, "Used to provide guidance on how to use the preset effectively.");
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AigcSkillDocument"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowPresetDocument"/> class.
     /// </summary>
-    public AigcSkillDocument()
+    public SubFlowPresetDocument()
     {
-        _skillName.ValueChanged += (s, e) =>
+        _presetName.ValueChanged += (s, e) =>
         {
-            string id = _skillName.Value;
+            string id = _presetName.Value;
             if (NamingVerifier.VerifyNameSpace(id))
             {
                 this.AssetBuilder.SetImportedId(id);
@@ -102,13 +102,13 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, ISubFlow
     #region Props
 
     /// <summary>
-    /// Gets the name of the skill. Falls back to the file name if no explicit name is set.
+    /// Gets the name of the preset. Falls back to the file name if no explicit name is set.
     /// </summary>
     public string Name
     {
         get
         {
-            string name = _skillName.Text;
+            string name = _presetName.Text;
             if (!string.IsNullOrWhiteSpace(name))
             {
                 return name;
@@ -124,22 +124,22 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, ISubFlow
     }
 
     /// <summary>
-    /// Gets the description text of the skill.
+    /// Gets the description text of the preset.
     /// </summary>
     public string Description => _description.Text;
 
     /// <summary>
-    /// Gets the overview text of the skill.
+    /// Gets the overview text of the preset.
     /// </summary>
     public string Overview => _overview.Text;
 
     /// <summary>
-    /// Gets the prompt hint text for the skill, which can be used to provide guidance on how to use the skill effectively.
+    /// Gets the prompt hint text for the preset, which can be used to provide guidance on how to use the preset effectively.
     /// </summary>
     public string PromptHint => _promptHint.Text;
 
     /// <summary>
-    /// Gets or sets the root page instance for this skill.
+    /// Gets or sets the root page instance for this preset.
     /// </summary>
     public SubFlowInstance Instance
     {
@@ -178,17 +178,17 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, ISubFlow
     public SubFlowDefinitionDiagramItem BaseFlowPage => (_baseFlow.Target as SubFlowDefinitionAsset)?.GetDiagramItem();
     #endregion
 
-    #region IAigcSkill
+    #region ISubFlowPreset
 
     /// <summary>
-    /// Gets the skill name, alias for <see cref="Name"/>.
+    /// Gets the preset name, alias for <see cref="Name"/>.
     /// </summary>
-    public string SkillName => this.Name;
+    public string PresetName => this.Name;
 
     /// <summary>
-    /// Gets the tooltip text for the skill, using overview if available, otherwise description.
+    /// Gets the tooltip text for the preset, using overview if available, otherwise description.
     /// </summary>
-    public string SkillTooltips
+    public string PresetTooltips
     {
         get
         {
@@ -202,14 +202,14 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, ISubFlow
     }
 
     /// <summary>
-    /// Gets the collection of tools associated with this skill.
+    /// Gets the collection of tools associated with this preset.
     /// </summary>
     public IEnumerable<ISubFlowAsset> Tools => _tools.List.Select(o => o.Target).SkipNull();
 
     /// <summary>
-    /// Gets a value indicating whether this skill can be used as a startup page.
+    /// Gets a value indicating whether this preset can be used as a startup page.
     /// </summary>
-    public bool IsStartupPage => _isStartupPage.Value;
+    public bool IsStartupPage => _isStartup.Value;
 
     /// <summary>
     /// Gets a value indicating whether to use the parent article as the article record for this page content.
@@ -217,14 +217,14 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, ISubFlow
     public bool UseParentArticle => _useParentArticle.Value;
 
     /// <summary>
-    /// Attempts to retrieve a parameter value by name from the skill instance.
+    /// Attempts to retrieve a parameter value by name from the preset instance.
     /// </summary>
     /// <param name="name">The parameter name.</param>
     /// <param name="value">When this method returns, contains the parameter value if found; otherwise, null.</param>
     /// <returns>True if the parameter was found; otherwise, false.</returns>
     public bool TryGetParameter(string name, out object value)
     {
-        var instance = EnsureSkillInstance();
+        var instance = EnsureSubFlowInstance();
         if (instance != null)
         {
             return instance.TryGetParameter(null, name, out value);
@@ -241,25 +241,25 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, ISubFlow
     {
         base.OnSync(sync, context);
 
-        _skillName.Sync(sync);
+        _presetName.Sync(sync);
         _description.Sync(sync);
         _iconSelection.Sync(sync);
         _colorSelection.Sync(sync);
 
         _baseFlow.Sync(sync);
         _tools.Sync(sync);
-        _isStartupPage.Sync(sync);
+        _isStartup.Sync(sync);
         _useParentArticle.Sync(sync);
 
         _overview.Sync(sync);
         _promptHint.Sync(sync);
 
-        var element = EnsureSkillInstance();
+        var element = EnsureSubFlowInstance();
         sync.Sync("Page", element, SyncFlag.GetOnly | SyncFlag.AffectsParent);
 
-        if (sync.IsSetterOf(_isStartupPage.Property.Name))
+        if (sync.IsSetterOf(_isStartup.Property.Name))
         {
-            AssetBuilder.SetIsStartupPage(_isStartupPage.Value);
+            AssetBuilder.SetIsStartupPage(_isStartup.Value);
         }
 
         if (sync.IsSetter())
@@ -273,44 +273,44 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, ISubFlow
     {
         base.OnSetupView(setup);
 
-        if (string.IsNullOrWhiteSpace(_skillName.Text))
+        if (string.IsNullOrWhiteSpace(_presetName.Text))
         {
             if (FileName.FullPath is { } fullPath && !string.IsNullOrWhiteSpace(fullPath))
             {
                 string hintName = Path.GetFileNameWithoutExtension(fullPath);
-                _skillName.Property.WithHintText(hintName);
+                _presetName.Property.WithHintText(hintName);
             }
         }
 
         setup.LabelWithIcon("Properties", CoreIconCache.Field);
-        _skillName.InspectorField(setup);
+        _presetName.InspectorField(setup);
         _description.InspectorField(setup);
         _overview.InspectorField(setup);
         _promptHint.InspectorField(setup);
         _iconSelection.InspectorField(setup);
         _colorSelection.InspectorField(setup);
 
-        setup.LabelWithIcon("Skill", CoreIconCache.Skill);
+        setup.LabelWithIcon("Preset", CoreIconCache.Skill);
         _baseFlow.InspectorField(setup);
         _tools.InspectorField(setup);
-        _isStartupPage.InspectorField(setup);
+        _isStartup.InspectorField(setup);
         _useParentArticle.InspectorField(setup);
 
-        setup.LabelWithIcon("Skill Settings", CoreIconCache.Page);
-        setup.InspectorField(Instance, new ViewProperty("Page", "Skill Parameters").WithExpand());
+        setup.LabelWithIcon("Preset Settings", CoreIconCache.Page);
+        setup.InspectorField(Instance, new ViewProperty("Page", "Preset Parameters").WithExpand());
     }
 
     /// <summary>
-    /// Gets the underlying page definition for this skill.
+    /// Gets the underlying page definition for this preset.
     /// </summary>
     /// <returns>The <see cref="ISubFlowDef"/> definition, or null if not available.</returns>
     public ISubFlowDef GetPageDefinition() => _baseFlow.Target?.GetBaseDefinition();
 
     /// <summary>
-    /// Ensures that a skill instance exists, building one if necessary.
+    /// Ensures that a preset instance exists, building one if necessary.
     /// </summary>
-    /// <returns>The current <see cref="SubFlowInstance"/> for this skill.</returns>
-    public SubFlowInstance EnsureSkillInstance()
+    /// <returns>The current <see cref="SubFlowInstance"/> for this preset.</returns>
+    public SubFlowInstance EnsureSubFlowInstance()
     {
         if (Instance is null)
         {
@@ -334,7 +334,7 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, ISubFlow
             {
                 var option = new PageElementOption
                 {
-                    Mode = PageElementMode.Skill,
+                    Mode = PageElementMode.Preset,
                     Owner = this,
                 };
 
@@ -379,56 +379,55 @@ public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, ISubFlow
 }
 
 /// <summary>
-/// Asset builder for <see cref="AigcSkillAsset"/>, handling updates to base flow and startup page settings.
+/// Asset builder for <see cref="SubFlowPresetAsset"/>, handling updates to base flow and startup page settings.
 /// </summary>
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.AigcSkillAssetBuilder")]
-public class AigcSkillAssetBuilder : AssetBuilder<AigcSkillAsset>
+public class SubFlowPresetAssetBuilder : AssetBuilder<SubFlowPresetAsset>
 {
     ISubFlowDefAsset _baseFlow;
     bool _startupPage;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AigcSkillAssetBuilder"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowPresetAssetBuilder"/> class.
     /// </summary>
-    public AigcSkillAssetBuilder()
+    public SubFlowPresetAssetBuilder()
     {
-        AddAutoUpdate(nameof(AigcSkillAsset.BaseFlow), v => v.BaseFlow = _baseFlow);
-        AddAutoUpdate(nameof(AigcSkillAsset.IsStartupPage), v => v.IsStartupPage = _startupPage);
+        AddAutoUpdate(nameof(SubFlowPresetAsset.BaseFlow), v => v.BaseFlow = _baseFlow);
+        AddAutoUpdate(nameof(SubFlowPresetAsset.IsStartupPage), v => v.IsStartupPage = _startupPage);
     }
 
     /// <summary>
-    /// Sets the base execution flow for the skill asset.
+    /// Sets the base execution flow for the preset asset.
     /// </summary>
     /// <param name="baseflow">The base flow page definition asset.</param>
     public void SetBaseFlow(ISubFlowDefAsset baseflow)
     {
         _baseFlow = baseflow;
-        this.UpdateAuto(nameof(AigcSkillAsset.BaseFlow));
+        this.UpdateAuto(nameof(SubFlowPresetAsset.BaseFlow));
     }
 
     /// <summary>
-    /// Sets whether this skill is configured as a startup page.
+    /// Sets whether this preset is configured as a startup page.
     /// </summary>
     /// <param name="isStartupPage">True if this is a startup page; otherwise, false.</param>
     public void SetIsStartupPage(bool isStartupPage)
     {
         _startupPage = isStartupPage;
-        this.UpdateAuto(nameof(AigcSkillAsset.IsStartupPage));
+        this.UpdateAuto(nameof(SubFlowPresetAsset.IsStartupPage));
     }
 }
 
 /// <summary>
-/// Represents a skill asset that can be used as a tool and contains a page definition.
+/// Represents a preset asset that can be used as a tool and contains a page definition.
 /// </summary>
-[NativeType(Name = "AigcSkillAsset", Description = "Skill Asset", CodeBase = "*AIGC", Icon = "*CoreIcon|Skil", Color = FlowColors.Agent)]
-public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlowAsset, IHasPreset
+[NativeType(Name = "SubFlowPresetAsset", Description = "Preset Asset", CodeBase = "SubFlow", Icon = "*CoreIcon|Skil", Color = FlowColors.Agent)]
+public class SubFlowPresetAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlowAsset, IHasPreset
 {
     readonly EditorAssetRef<ISubFlowDefAsset> _baseFlow = new();
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AigcSkillAsset"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowPresetAsset"/> class.
     /// </summary>
-    public AigcSkillAsset()
+    public SubFlowPresetAsset()
     {
         UpdateAssetTypes(typeof(ISubFlowAsset));
 
@@ -445,7 +444,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlow
     }
 
     /// <summary>
-    /// Gets a value indicating whether this skill is configured as a startup page.
+    /// Gets a value indicating whether this preset is configured as a startup page.
     /// </summary>
     public bool IsStartupPage { get; internal set; }
 
@@ -462,7 +461,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlow
     /// <param name="context">The sync context.</param>
     public void Sync(IPropertySync sync, ISyncContext context)
     {
-        if (this.GetDocument<AigcSkillDocument>() is { } doc)
+        if (this.GetDocument<SubFlowPresetDocument>() is { } doc)
         {
             (doc as ISyncObject)?.Sync(sync, context);
 
@@ -489,7 +488,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlow
         setup.InspectorField(AssetKey, new ViewProperty(nameof(AssetKey), "Asset Key") { ReadOnly = true });
         setup.InspectorField(NativeTypeName, new ViewProperty(nameof(NativeTypeName), "Asset Type") { ReadOnly = true });
 
-        if (this.GetDocument<AigcSkillDocument>() is { } doc)
+        if (this.GetDocument<SubFlowPresetDocument>() is { } doc)
         {
             (doc as IViewObject)?.SetupView(setup);
         }
@@ -502,7 +501,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlow
     /// </summary>
     void IInspectorEditNotify.NotifyInspectorEdited()
     {
-        var doc = this.GetDocument<AigcSkillDocument>();
+        var doc = this.GetDocument<SubFlowPresetDocument>();
         if (doc != null)
         {
             doc.MarkDirty(this);
@@ -517,16 +516,16 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlow
     #region ISubFlowAsset
 
     /// <summary>
-    /// Gets the base page definition from the associated skill document.
+    /// Gets the base page definition from the associated preset document.
     /// </summary>
     /// <returns>The <see cref="ISubFlowDef"/> definition, or null.</returns>
-    public ISubFlowDef GetBaseDefinition() => this.GetDocument<AigcSkillDocument>()?.GetPageDefinition();
+    public ISubFlowDef GetBaseDefinition() => this.GetDocument<SubFlowPresetDocument>()?.GetPageDefinition();
 
     /// <summary>
-    /// Gets the skill definition from the associated skill document.
+    /// Gets the preset definition from the associated preset document.
     /// </summary>
     /// <returns>The <see cref="ISubFlowPreset"/> definition, or null.</returns>
-    public ISubFlowPreset GetPreset() => this.GetDocument<AigcSkillDocument>();
+    public ISubFlowPreset GetPreset() => this.GetDocument<SubFlowPresetDocument>();
 
     /// <summary>
     /// Creates a new page instance for this tool asset with the specified options.
@@ -535,7 +534,7 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlow
     /// <returns>A new <see cref="ISubFlowInstance"/>, or null if creation fails.</returns>
     public ISubFlowInstance CreateInstance(PageElementOption option)
     {
-        if (this.GetDocument<AigcSkillDocument>() is not { } doc)
+        if (this.GetDocument<SubFlowPresetDocument>() is not { } doc)
         {
             return null;
         }
@@ -545,14 +544,14 @@ public class AigcSkillAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlow
             return null;
         }
 
-        if (doc.EnsureSkillInstance() is not { } root)
+        if (doc.EnsureSubFlowInstance() is not { } root)
         {
             return null;
         }
 
         var instance = new SubFlowInstance(toolPageItem, option, this);
 
-        string skillName = doc.Name;
+        string presetName = doc.Name;
         string description = doc.Overview;
         if (string.IsNullOrWhiteSpace(description))
         {

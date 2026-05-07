@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SuityAsset version="1.0" format="AigcSkill">
+<SuityAsset version="1.0" format="SubFlowPreset">
   <AssetId>23f73287-34b4-4797-b05c-b67324cca0bb</AssetId>
-  <SkillName>
-  </SkillName>
+  <PresetName>
+  </PresetName>
   <Description>
   </Description>
   <Icon>
@@ -28,7 +28,7 @@
       <Id>c36df34f-f6ad-4ace-bc2f-a01013c33a18</Id>
     </Item>
   </Tools>
-  <IsStartupPage>True</IsStartupPage>
+  <IsStartup>True</IsStartup>
   <UseParentArticle>True</UseParentArticle>
   <Overview>
     <Text>This skill can write programming documents, technical specification documents, as well as write and interact with complete program versions. When submitting a request, please do not write additional technical details and let this skill determine which technical specifications to adopt.</Text>
@@ -37,7 +37,7 @@
     <Text>Web application built with JavaScript/TypeScript.</Text>
   </PromptHint>
   <Page>
-    <__skill__ />
+    <__preset__ />
     <SkillDescription type="SAssetKey" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb">
       <Value>
         <Id>5a5d53fe-0133-4c31-9fb4-913f868a715c</Id>

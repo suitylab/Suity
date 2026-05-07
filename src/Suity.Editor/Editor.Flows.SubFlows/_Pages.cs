@@ -89,7 +89,7 @@ public interface IPageParameterInput : IPageParameter
     /// <summary>
     /// Gets whether this parameter is a skill input.
     /// </summary>
-    bool IsSkillInput { get; }
+    bool IsPresetInput { get; }
 
     /// <summary>
     /// Gets the value from the outer flow computation.

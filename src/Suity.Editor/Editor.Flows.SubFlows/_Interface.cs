@@ -205,9 +205,9 @@ public enum PageElementMode
     Function,
 
     /// <summary>
-    /// A skill mode.
+    /// A preset mode.
     /// </summary>
-    Skill,
+    Preset,
 }
 
 #endregion
@@ -303,12 +303,12 @@ public interface ISubFlowPreset
     /// <summary>
     /// Gets the name of the preset.
     /// </summary>
-    string SkillName { get; }
+    string PresetName { get; }
 
     /// <summary>
     /// Gets the tooltips/description of the skill.
     /// </summary>
-    string SkillTooltips { get; }
+    string PresetTooltips { get; }
 
     /// <summary>
     /// Used to provide guidance on how to use the skill effectively.

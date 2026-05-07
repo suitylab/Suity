@@ -312,13 +312,13 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         UseParentArticle = GetPreset()?.UseParentArticle ?? (PageNode?.UseParentArticle == true);
 
         //Name
-        if (GetPreset()?.SkillName is { } presetName && !string.IsNullOrWhiteSpace(presetName))
+        if (GetPreset()?.PresetName is { } presetName && !string.IsNullOrWhiteSpace(presetName))
         {
             _presetName = presetName;
         }
 
         //Tooltips
-        if (GetPreset()?.SkillTooltips is { } presetTooltips && !string.IsNullOrWhiteSpace(presetTooltips))
+        if (GetPreset()?.PresetTooltips is { } presetTooltips && !string.IsNullOrWhiteSpace(presetTooltips))
         {
             Tooltips = presetTooltips;
         }
@@ -736,7 +736,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
         foreach (var parameter in _dic.Values.OfType<IPageParameterInput>())
         {
-            if (parameter.IsSkillInput)
+            if (parameter.IsPresetInput)
             {
                 continue;
             }
