@@ -67,7 +67,7 @@ Suity.Editor.AIGC.Flows extends the Suity.Editor.Flows framework with AI-specifi
 - **Page Canvas Node** - Page canvas node for visual page editing
 - **Rect Tree Builder** - Rectangle tree builder for page element spatial layout
 - **Page Elements** - Begin, end, parameter, task, workspace, tool, sub-page, result, group, message, file output, article output, prompt parameter, and sub-task output elements
-- **AIGC Skill Document** - Skill document definition
+- **AIGC preset Document** - Preset document definition
 - **Knowledge Article List** - Knowledge article list management
 
 ### Task Page System

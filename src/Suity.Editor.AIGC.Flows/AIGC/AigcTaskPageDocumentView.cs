@@ -741,7 +741,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
         if (page.Instance is { } instance && instance.PresetAssetSelection?.Target is { } preset)
         {
-            gui.Text($" (Skill: {preset.ToDisplayText()})");
+            gui.Text($" (Preset: {preset.ToDisplayText()})");
         }
     }
 

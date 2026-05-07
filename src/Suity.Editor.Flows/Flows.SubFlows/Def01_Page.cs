@@ -255,7 +255,7 @@ public class SubFlowDefinitionAsset : Asset, ISubFlowDefAsset, ISubFlowAsset
     #region ISubFlowAsset
 
     /// <inheritdoc/>
-    public bool IsStartupPage => false;
+    public bool IsStartup => false;
 
     /// <inheritdoc/>
     public ISubFlowDef GetBaseDefinition() => GetDiagramItem()?.Node;

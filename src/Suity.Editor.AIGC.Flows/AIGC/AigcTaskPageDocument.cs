@@ -458,11 +458,11 @@ public class StartupPageFilter : IAssetFilter
     /// <inheritdoc/>
     public bool FilterAsset(Asset asset)
     {
-        if (asset is not ISubFlowAsset skillAsset)
+        if (asset is not ISubFlowAsset subFlow)
         {
             return false;
         }
 
-        return skillAsset.IsStartupPage;
+        return subFlow.IsStartup;
     }
 }

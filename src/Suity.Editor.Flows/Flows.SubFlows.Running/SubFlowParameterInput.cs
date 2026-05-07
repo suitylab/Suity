@@ -57,7 +57,7 @@ public class SubFlowParameterInput : SubFlowElement, IPageParameterInput
     public bool LinkedMode { get; private set; }
 
     /// <summary>
-    /// Gets a value indicating whether this is a skill input. Always returns <c>false</c> for this element type.
+    /// Gets a value indicating whether this is a preset input. Always returns <c>false</c> for this element type.
     /// </summary>
     public bool IsPresetInput => false;
 

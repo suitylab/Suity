@@ -2493,6 +2493,16 @@ namespace Suity.Editor {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
+        internal static byte[] Preset {
+            get {
+                object obj = ResourceManager.GetObject("Preset", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
         internal static byte[] Preview {
             get {
                 object obj = ResourceManager.GetObject("Preview", resourceCulture);

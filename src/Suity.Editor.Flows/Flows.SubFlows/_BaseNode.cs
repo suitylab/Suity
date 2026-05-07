@@ -138,9 +138,9 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
     }
 
     /// <summary>
-    /// Gets a value indicating whether this is a skill parameter.
+    /// Gets a value indicating whether this is a preset parameter.
     /// </summary>
-    public virtual bool IsSkillParameter => false;
+    public virtual bool IsPresetParameter => false;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SubFlowTypeNode"/> class with a specified type ID.

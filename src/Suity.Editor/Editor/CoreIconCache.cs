@@ -494,6 +494,8 @@ public static class CoreIconCache
 
     public static BitmapDef Power { get; } = CoreIcon.Power.ToBitmap();
 
+    public static BitmapDef Preset { get; } = CoreIcon.Preset.ToBitmap();
+
     public static BitmapDef Preview { get; } = CoreIcon.Preview.ToBitmap();
 
     public static BitmapDef Problems { get; } = CoreIcon.Problems.ToBitmap();

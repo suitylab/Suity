@@ -37,7 +37,7 @@ public class SubFlowPromptParameter : SubFlowElement, IPageParameterInput
     public bool TaskCompletion { get; private set; }
 
     /// <summary>
-    /// Gets a value indicating whether this is a skill input. Always returns <c>false</c> for this element type.
+    /// Gets a value indicating whether this is a preset input. Always returns <c>false</c> for this element type.
     /// </summary>
     public bool IsPresetInput => false;
 

@@ -278,7 +278,7 @@ public interface ISubFlowAsset : INamed, IHasId
     /// <summary>
     /// Gets whether this tool asset is a startup page.
     /// </summary>
-    bool IsStartupPage { get; }
+    bool IsStartup { get; }
 
     /// <summary>
     /// Gets the base page definition.

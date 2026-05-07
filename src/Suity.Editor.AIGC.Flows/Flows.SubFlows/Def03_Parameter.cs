@@ -105,16 +105,17 @@ public class PagePromptParameterInputItem : FlowDiagramItem<PagePromptParameterI
 }
 #endregion
 
-#region PageSkillParameterInputNode
+#region PagePresetParameterNode
 /// <summary>
-/// Provides skill parameter support for AIGC page actions.
+/// Provides preset parameter support for AIGC page actions.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.AgentBg, HasHeader = false, Width = 100, Height = 20)]
-[DisplayText("AIGC Page Skill Parameter", "*CoreIcon|Skill")]
+[DisplayText("Sub-flow preset Parameter", "*CoreIcon|Preset")]
 [DisplayOrder(2990)]
-[ToolTipsText("Provides skill parameter support for AIGC page actions.")]
+[ToolTipsText("Provides preset parameter support for AIGC page actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSkillParameterNode")]
-public class PageSkillParameterNode : SubFlowTypeNode
+[NativeAlias("Suity.Editor.Flows.SubFlows.PageSkillParameterNode")]
+public class PagePresetParameterNode : SubFlowTypeNode
 {
     private FlowNodeConnector _out;
     private FlowNodeConnector _refInput;
@@ -124,9 +125,9 @@ public class PageSkillParameterNode : SubFlowTypeNode
 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageSkillParameterNode"/> class.
+    /// Initializes a new instance of the <see cref="PagePresetParameterNode"/> class.
     /// </summary>
-    public PageSkillParameterNode()
+    public PagePresetParameterNode()
         : base(NativeTypes.StringType.TargetId)
     {
         Value = NativeTypes.StringType.CreateOrRepairValue(Value, false);
@@ -137,13 +138,13 @@ public class PageSkillParameterNode : SubFlowTypeNode
     }
 
     /// <inheritdoc/>
-    public override ImageDef DefaultIcon => CoreIconCache.Skill;
+    public override ImageDef DefaultIcon => CoreIconCache.Preset;
 
     /// <inheritdoc/>
     public override Color? BackgroundColor => TitleColor;
 
     /// <summary>
-    /// Gets or sets the default value for this skill parameter.
+    /// Gets or sets the default value for this preset parameter.
     /// </summary>
     public object Value
     {
@@ -152,7 +153,7 @@ public class PageSkillParameterNode : SubFlowTypeNode
     }
 
     /// <inheritdoc/>
-    public override bool IsSkillParameter => true;
+    public override bool IsPresetParameter => true;
 
 
     /// <inheritdoc/>
@@ -259,33 +260,34 @@ public class PageSkillParameterNode : SubFlowTypeNode
 }
 
 /// <summary>
-/// Diagram item representing a <see cref="PageSkillParameterNode"/> in the flow diagram.
+/// Diagram item representing a <see cref="PagePresetParameterNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSkillParameterItem")]
-public class PageSkillParameterItem : FlowDiagramItem<PageSkillParameterNode>, ISubFlowElementCreator
+[NativeAlias("Suity.Editor.Flows.SubFlows.PageSkillParameterItem")]
+public class PagePresetParameterItem : FlowDiagramItem<PagePresetParameterNode>, ISubFlowElementCreator
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageSkillParameterItem"/> class.
+    /// Initializes a new instance of the <see cref="PagePresetParameterItem"/> class.
     /// </summary>
-    public PageSkillParameterItem()
+    public PagePresetParameterItem()
         : base()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageSkillParameterItem"/> class with the specified node.
+    /// Initializes a new instance of the <see cref="PagePresetParameterItem"/> class with the specified node.
     /// </summary>
-    /// <param name="node">The page skill parameter node.</param>
-    public PageSkillParameterItem(PageSkillParameterNode node)
+    /// <param name="node">The page preset parameter node.</param>
+    public PagePresetParameterItem(PagePresetParameterNode node)
         : base(node)
     {
     }
 
     /// <inheritdoc/>
-    public SubFlowElement CreatePageElement() => new SubFlowSkillParameter(this);
+    public SubFlowElement CreatePageElement() => new SubFlowPresetParameter(this);
 
     /// <inheritdoc/>
-    protected internal override string OnGetSuggestedPrefix() => "SkillParamater";
+    protected internal override string OnGetSuggestedPrefix() => "PresetParamater";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)

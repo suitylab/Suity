@@ -21,7 +21,7 @@ namespace Suity.Editor.Flows.TaskPages;
 /// <summary>
 /// Document representing an Sub-flow preset, containing page definitions, tools, and configuration.
 /// </summary>
-[DocumentFormat(FormatName = "SubFlowPreset", Extension = "spreset", DisplayText = "Preset", Icon = "*CoreIcon|Skill", Categoty = "AIGC", CanShowView = false)]
+[DocumentFormat(FormatName = "SubFlowPreset", Extension = "spreset", DisplayText = "Preset", Icon = "*CoreIcon|Preset", Categoty = "AIGC", CanShowView = false)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.AigcSkillDocument")]
 [NativeAlias("Suity.Editor.AIGC.Flows.AigcSkillDocument")]
 [NativeAlias("Suity.Editor.Flows.TaskPages.AigcSkillDocument")]
@@ -290,7 +290,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         _iconSelection.InspectorField(setup);
         _colorSelection.InspectorField(setup);
 
-        setup.LabelWithIcon("Preset", CoreIconCache.Skill);
+        setup.LabelWithIcon("Preset", CoreIconCache.Preset);
         _baseFlow.InspectorField(setup);
         _tools.InspectorField(setup);
         _isStartup.InspectorField(setup);
@@ -392,7 +392,7 @@ public class SubFlowPresetAssetBuilder : AssetBuilder<SubFlowPresetAsset>
     public SubFlowPresetAssetBuilder()
     {
         AddAutoUpdate(nameof(SubFlowPresetAsset.BaseFlow), v => v.BaseFlow = _baseFlow);
-        AddAutoUpdate(nameof(SubFlowPresetAsset.IsStartupPage), v => v.IsStartupPage = _startupPage);
+        AddAutoUpdate(nameof(SubFlowPresetAsset.IsStartup), v => v.IsStartup = _startupPage);
     }
 
     /// <summary>
@@ -412,7 +412,7 @@ public class SubFlowPresetAssetBuilder : AssetBuilder<SubFlowPresetAsset>
     public void SetIsStartupPage(bool isStartupPage)
     {
         _startupPage = isStartupPage;
-        this.UpdateAuto(nameof(SubFlowPresetAsset.IsStartupPage));
+        this.UpdateAuto(nameof(SubFlowPresetAsset.IsStartup));
     }
 }
 
@@ -446,10 +446,10 @@ public class SubFlowPresetAsset : Asset, IViewObject, IInspectorEditNotify, ISub
     /// <summary>
     /// Gets a value indicating whether this preset is configured as a startup page.
     /// </summary>
-    public bool IsStartupPage { get; internal set; }
+    public bool IsStartup { get; internal set; }
 
     /// <inheritdoc/>
-    public override ImageDef DefaultIcon => CoreIconCache.Skill;
+    public override ImageDef DefaultIcon => CoreIconCache.Preset;
 
     /// <inheritdoc/>
     public override bool CanExportToLibrary => true;

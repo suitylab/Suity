@@ -84,7 +84,7 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
     #region IPageParameterInput
 
     /// <summary>
-    /// Gets a value indicating whether this element is a skill input. Always returns false.
+    /// Gets a value indicating whether this element is a preset input. Always returns false.
     /// </summary>
     public bool IsPresetInput => false;
 

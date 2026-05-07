@@ -8,20 +8,20 @@ using System;
 namespace Suity.Editor.Flows.SubFlows.Running;
 
 /// <summary>
-/// Represents a sub-graph element that handles skill parameter input for AIGC tasks.
+/// Represents a sub-graph element that handles preset parameter input for AIGC tasks.
 /// </summary>
-public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
+public class SubFlowPresetParameter : SubFlowElement, IPageParameterInput
 {
-    private readonly PageSkillParameterItem _inputItem;
+    private readonly PagePresetParameterItem _inputItem;
     private object _value;
     private FlowNodeConnector _connector;
 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubFlowSkillParameter"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowPresetParameter"/> class.
     /// </summary>
-    /// <param name="parameterItem">The skill parameter item to associate with this element.</param>
-    public SubFlowSkillParameter(PageSkillParameterItem parameterItem)
+    /// <param name="parameterItem">The preset parameter item to associate with this element.</param>
+    public SubFlowPresetParameter(PagePresetParameterItem parameterItem)
         : base(parameterItem)
     {
         _inputItem = parameterItem ?? throw new ArgumentNullException(nameof(parameterItem));
@@ -31,9 +31,9 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
     public override FlowNodeConnector OuterConnector => _connector;
 
     /// <summary>
-    /// Gets the underlying skill parameter item.
+    /// Gets the underlying preset parameter item.
     /// </summary>
-    public PageSkillParameterItem ParameterItem => _inputItem;
+    public PagePresetParameterItem ParameterItem => _inputItem;
 
     #region IPageParameterInput
 
@@ -43,9 +43,9 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
     public TypeDefinition ParameterType { get; private set; }
 
     /// <summary>
-    /// Gets the resolved skill definition value.
+    /// Gets the resolved preset definition value.
     /// </summary>
-    public object Value => ResolveSkillDefValue();
+    public object Value => ResolvePresetValue();
 
     /// <summary>
     /// Gets or sets a value indicating whether a value has been explicitly set.
@@ -60,7 +60,7 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
     }
 
     /// <inheritdoc/>
-    public object EnsureValue() => ResolveSkillDefValue();
+    public object EnsureValue() => ResolvePresetValue();
 
     /// <summary>
     /// Gets a value indicating whether this input is related to task completion.
@@ -83,7 +83,7 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
     public bool LinkedMode { get; private set; }
 
     /// <summary>
-    /// Gets a value indicating whether this is a skill input. Always returns <c>true</c> for this element type.
+    /// Gets a value indicating whether this is a preset input. Always returns <c>true</c> for this element type.
     /// </summary>
     public bool IsPresetInput => true;
 
@@ -131,14 +131,14 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
             var valueType = ParameterType;
             UpdateDefaultValue(ParameterType);
 
-            // Skill parameters need to notify parent to save
+            // preset parameters need to notify parent to save
             _value = sync.Sync(Name, _value, SyncFlag.AffectsParent);
         }
         else
         {
             if (sync.Intent == SyncIntent.View && sync.IsGetter())
             {
-                var value = ResolveSkillDefValue();
+                var value = ResolvePresetValue();
                 sync.Sync(Name, value, SyncFlag.GetOnly);
             }
         }
@@ -153,7 +153,7 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
         var property = new ViewProperty(Name, DisplayText)
             .WithExpand()
             .WithOptional()
-            .WithWriteBack() // Important, skill parameters need to notify parent to save
+            .WithWriteBack() // Important, preset parameters need to notify parent to save
             .WithStatus(GetStatus());
 
         if (Option.Mode != PageElementMode.Preset)
@@ -181,17 +181,17 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubFlowElement other)
     {
-        if (other is SubFlowSkillParameter otherParameter)
+        if (other is SubFlowPresetParameter otherParameter)
         {
             UpdateFromOther(otherParameter);
         }
     }
 
     /// <summary>
-    /// Updates the value from another <see cref="SubFlowSkillParameter"/>.
+    /// Updates the value from another <see cref="SubFlowPresetParameter"/>.
     /// </summary>
     /// <param name="otherParameter">The source element to copy the value from.</param>
-    public void UpdateFromOther(SubFlowSkillParameter otherParameter)
+    public void UpdateFromOther(SubFlowPresetParameter otherParameter)
     {
         _value = otherParameter._value;
     }
@@ -222,14 +222,14 @@ public class SubFlowSkillParameter : SubFlowElement, IPageParameterInput
     }
 
     /// <summary>
-    /// Resolves the value from the skill definition, or falls back to the local value.
+    /// Resolves the value from the preset definition, or falls back to the local value.
     /// </summary>
-    /// <returns>The resolved skill parameter value.</returns>
-    public object ResolveSkillDefValue()
+    /// <returns>The resolved preset parameter value.</returns>
+    public object ResolvePresetValue()
     {
         if (Option.Mode != PageElementMode.Preset)
         {
-            if ((Root as IHasPreset)?.GetPreset() is { } skill && skill.TryGetParameter(Name, out var value))
+            if ((Root as IHasPreset)?.GetPreset() is { } preset && preset.TryGetParameter(Name, out var value))
             {
                 //TODO: Do we need to Clone once to avoid modification?
                 return value;
