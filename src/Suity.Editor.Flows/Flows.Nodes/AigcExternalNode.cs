@@ -1,9 +1,8 @@
 ﻿using Suity.Drawing;
-using Suity.Editor.Flows;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.FLows.External;
+namespace Suity.Editor.Flows.Nodes;
 
 /// <summary>
 /// Base class for flow nodes that interact with external services or systems.

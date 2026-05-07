@@ -1,5 +1,5 @@
 ﻿using Suity.Editor.AIGC.StreamUpdaters;
-using Suity.Editor.Flows;
+using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.FLows.External;
+namespace Suity.Editor.Flows.Nodes;
 
 #region RunShellCommand
 
@@ -17,6 +17,7 @@ namespace Suity.Editor.AIGC.FLows.External;
 /// A flow node that executes a shell command cross-platform and captures the console output asynchronously.
 /// </summary>
 [DisplayText("Run Shell Command", "*CoreIcon|System")]
+[NativeAlias("Suity.Editor.AIGC.FLows.External.RunShellCommand")]
 public class RunShellCommand : AigcExternalNode
 {
     private readonly FlowNodeConnector _in;

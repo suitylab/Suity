@@ -1,7 +1,7 @@
 ﻿using Suity.Drawing;
-using Suity.Editor.AIGC.Properties;
 using Suity.Editor.AIGC.TaskPages;
 using Suity.Editor.Documents;
+using Suity.Editor.Properties;
 using Suity.Editor.Selecting;
 using Suity.Helpers;
 using Suity.Views.Graphics;
@@ -11,7 +11,6 @@ using Suity.Views.Im.PropertyEditing;
 using System;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.AIGC;
