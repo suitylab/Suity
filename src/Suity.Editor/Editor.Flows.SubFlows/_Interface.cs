@@ -104,7 +104,7 @@ public interface ISubFlowElement : INamed
 }
 
 /// <summary>
-/// Represents an instance of an AIGC page, providing access to its definition, skill, tool asset, elements, and parameters.
+/// Represents an instance of an AIGC page, providing access to its definition, preset, tool asset, elements, and parameters.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Sub-flow Instance", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.TaskPages.IAigcPageInstance")]
@@ -265,7 +265,7 @@ public interface IFlowCallerContext
 #region ISubFlowAsset
 
 /// <summary>
-/// Represents a tool asset that can create page instances and provides access to page and skill definitions.
+/// Represents a tool asset that can create page instances and provides access to page and preset definitions.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "AIGC Tool Asset", Color = FlowColors.Tool, Icon = "*CoreIcon|Tool")]
 public interface ISubFlowAsset : INamed, IHasId
@@ -296,7 +296,7 @@ public interface ISubFlowAsset : INamed, IHasId
 #region ISubFlowPreset
 
 /// <summary>
-/// Represents an AIGC skill that provides tools and parameter access.
+/// Represents an Sub-flow preset that provides tools and parameter access.
 /// </summary>
 public interface ISubFlowPreset
 {
@@ -306,27 +306,27 @@ public interface ISubFlowPreset
     string PresetName { get; }
 
     /// <summary>
-    /// Gets the tooltips/description of the skill.
+    /// Gets the tooltips/description of the preset.
     /// </summary>
     string PresetTooltips { get; }
 
     /// <summary>
-    /// Used to provide guidance on how to use the skill effectively.
+    /// Used to provide guidance on how to use the preset effectively.
     /// </summary>
     string PromptHint { get; }
 
     /// <summary>
-    /// Gets all tools provided by this skill.
+    /// Gets all tools provided by this preset.
     /// </summary>
     IEnumerable<ISubFlowAsset> Tools { get; }
 
     /// <summary>
-    /// Gets whether this skill is a startup page.
+    /// Gets whether this preset is a startup page.
     /// </summary>
     bool IsStartupPage { get; }
 
     /// <summary>
-    /// Gets whether this skill uses the parent article.
+    /// Gets whether this preset uses the parent article.
     /// </summary>
     bool UseParentArticle { get; }
 
@@ -344,7 +344,7 @@ public interface ISubFlowPreset
 public interface IHasPreset
 {
     /// <summary>
-    /// Gets the skill definition.
+    /// Gets the preset definition.
     /// </summary>
     ISubFlowPreset GetPreset();
 }

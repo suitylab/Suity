@@ -87,7 +87,7 @@ public interface IPageParameter : IPageValueElement
 public interface IPageParameterInput : IPageParameter
 {
     /// <summary>
-    /// Gets whether this parameter is a skill input.
+    /// Gets whether this parameter is a preset input.
     /// </summary>
     bool IsPresetInput { get; }
 
