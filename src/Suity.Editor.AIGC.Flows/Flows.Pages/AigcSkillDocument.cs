@@ -24,6 +24,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 /// </summary>
 [DocumentFormat(FormatName = "AigcSkill", Extension = "sskill", DisplayText = "Skill", Icon = "*CoreIcon|Skill", Categoty = "AIGC", CanShowView = false)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.AigcSkillDocument")]
+[NativeAlias("Suity.Editor.AIGC.Flows.AigcSkillDocument")]
 public class AigcSkillDocument : SAssetDocument<AigcSkillAssetBuilder>, IAigcSkill
 {
     private SubFlowInstance _rootElement;

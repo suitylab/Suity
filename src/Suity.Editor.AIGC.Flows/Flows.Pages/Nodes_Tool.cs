@@ -30,6 +30,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 [DisplayText("Page Resource Reference", "*CoreIcon|Page")]
 [DisplayOrder(4950)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionRefNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.PageDefinitionReference")]
 public class PageDefinitionReference : AigcPageNode
 {
     readonly AssetProperty<SubFlowDefinitionAsset> _page = new("Page", "Page");
@@ -93,6 +94,7 @@ public class PageDefinitionReference : AigcPageNode
 [DisplayText("Get Self Page Definition", "*CoreIcon|Page")]
 [DisplayOrder(4960)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetSelfPageNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetSelfPageDefinition")]
 public class GetSelfPageDefinition : AigcPageNode
 {
     readonly FlowNodeConnector _out;
@@ -134,6 +136,7 @@ public class GetSelfPageDefinition : AigcPageNode
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetPageToolPagesNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetSelfToolPagesNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetCurrentToolListNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetCurrentToolList")]
 public class GetCurrentToolList : AigcPageNode
 {
     readonly ConnectorValueProperty<bool> _documentTools = new("DocumentTools", "Document Tools", false, "Whether to include tools defined in the main document.");
@@ -191,6 +194,7 @@ public class GetCurrentToolList : AigcPageNode
 [SimpleFlowNodeStyle(Color = AigcColors.Page)]
 [DisplayText("Set Page Title", "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetPageTitleNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.SetPageTitle")]
 public class SetPageTitle : AigcPageNode
 {
     readonly FlowNodeConnector _in;
@@ -253,6 +257,7 @@ public class SetPageTitle : AigcPageNode
 [DisplayOrder(3000)]
 [ToolTipsText("Parse the calling object from the incoming JSON text and tool page list.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.ParseToolCallingNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.ParseToolCalling")]
 public class ParseToolCalling : AigcPageNode
 {
     readonly FlowNodeConnector _in;
@@ -391,6 +396,7 @@ public class ParseToolCalling : AigcPageNode
 [DisplayOrder(2950)]
 [ToolTipsText("Parse the calling object from the incoming JSON text and tool page list.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.ParseTagToolCallingNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.ParseTagToolCalling")]
 public class ParseTagToolCalling : AigcPageNode
 {
     readonly FlowNodeConnector _in;
@@ -480,6 +486,7 @@ public class ParseTagToolCalling : AigcPageNode
 [ToolTipsText("Create an empty tool calling object based on the page definition.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.CreateEmptyToolCallingNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.CreateToolCallingNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.CreateToolCalling")]
 public class CreateToolCalling : AigcPageNode
 {
     readonly FlowNodeConnector _in;
@@ -550,6 +557,7 @@ public class CreateToolCalling : AigcPageNode
 /// <summary>
 /// Represents a single parameter definition for a tool call, including name, description, and type.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.ToolCallParameter")]
 public class ToolCallParameter : INamed, IViewObject, ITextDisplay
 {
     private StringProperty _name = new("Name", "Parameter Name");
@@ -683,6 +691,7 @@ public class ToolCallParameter : INamed, IViewObject, ITextDisplay
 [DisplayText("Create Tool Calling With Parameter", "*CoreIcon|Tool")]
 [DisplayOrder(2960)]
 [ToolTipsText("Create a tool calling object with parameters based on the page definition.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.CreateToolCallingWithParameter")]
 public class CreateToolCallingWithParameter : AigcPageNode
 {
     FlowNodeConnector _in;
@@ -888,6 +897,7 @@ public class CreateToolCallingWithParameter : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.PageParameter, HasHeader = false)]
 [DisplayText("Get Page Instance Parameter", "*CoreIcon|Page")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetPageInstanceParameter")]
 public class GetPageInstanceParameter : AigcPageNode
 {
     FlowNodeConnector _pageInstance;
@@ -992,6 +1002,7 @@ public class GetPageInstanceParameter : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.PageParameter)]
 [DisplayText("Set Page Instance Parameter", "*CoreIcon|Page")]
+[NativeAlias("Suity.Editor.AIGC.Flows.SetPageInstanceParameter")]
 public class SetPageInstanceParameter : AigcPageNode
 {
     FlowNodeConnector _in;
@@ -1117,6 +1128,7 @@ public class SetPageInstanceParameter : AigcPageNode
 [DisplayText("Set Page Parameter", "*CoreIcon|Parameter")]
 [DisplayOrder(2799)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetPageParameterNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.SetPageParameter")]
 public class SetPageParameter : AigcPageNode
 {
     private FlowNodeConnector _in;
@@ -1232,6 +1244,7 @@ public class SetPageParameter : AigcPageNode
 [DisplayText("AIGC Page Parameter Reference", "*CoreIcon|Parameter")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterRefNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterRef")]
+[NativeAlias("Suity.Editor.AIGC.Flows.PageParameterReference")]
 public class PageParameterReference : AigcPageNode
 {
     private FlowNodeConnector _out;

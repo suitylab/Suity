@@ -44,6 +44,7 @@ public class KnowledgeArticleItem
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Knowledge Article List", Icon = "*CoreIcon|Knowledge", Color = "#5C7CFA")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.KnowledgeArticleList")]
+[NativeAlias("Suity.Editor.AIGC.Flows.KnowledgeArticleList")]
 public class KnowledgeArticleList
 {
     /// <summary>

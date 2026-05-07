@@ -1,4 +1,5 @@
 using Suity.Editor.Flows;
+using Suity.Editor.Types;
 
 namespace Suity.Editor.AIGC.Flows;
 
@@ -45,6 +46,7 @@ public class WorkflowChatProvider : StandaloneAsset<ILLmChatProvider>, ILLmChatP
 /// Chat implementation for AIGC workflows.
 /// </summary>
 [DisplayText("AIGC Workflow", "*CoreIcon|Workflow")]
+[NativeAlias("Suity.Editor.AIGC.Flows.WorkflowChat")]
 internal class WorkflowChat : BaseFlowChat
 {
     /// <summary>

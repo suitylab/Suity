@@ -65,7 +65,8 @@ public class AigcArtcitlesStyle : FlowNodeBaseStyle<AigcArticleNode>
 /// Node that retrieves an article from an asset reference.
 /// </summary>
 [DisplayText("Get Article")]
-[NativeAlias("Suity.Editor.AIGC.Flows.GetArticleByAssetKey", UseForSaving = true)]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetArticleByAssetKey")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetArticle")]
 public class GetArticle : AigcArticleNode
 {
     private readonly ConnectorAssetProperty<ArticleAsset> _asset
@@ -139,6 +140,7 @@ public class GetArticle : AigcArticleNode
 /// </summary>
 [DisplayText("Get Article By Url")]
 [ToolTipsText("Get article by URL starting with 'article://...', supports getting child article nodes.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetArticleByUrl")]
 public class GetArticleByUrl : AigcArticleNode
 {
     private readonly ConnectorStringProperty _url
@@ -221,6 +223,7 @@ public class GetArticleByUrl : AigcArticleNode
 /// </summary>
 [FlowConnectorAlias("DocNodeOut", "ArticleOut")]
 [DisplayText("Get Article From Parent")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetArticleFromParent")]
 public class GetArticleFromParent : AigcArticleNode
 {
     private readonly FlowNodeConnector _parentArticleIn;
@@ -309,6 +312,7 @@ public class GetArticleFromParent : AigcArticleNode
 [DisplayText("Get Or Create Article")]
 [ToolTipsText("Get or create a child article within the parent article.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.CreateArticle")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetOrCreateArticle")]
 public class GetOrCreateArticle : AigcArticleNode
 {
     private readonly FlowNodeConnector _in;
@@ -430,6 +434,7 @@ public class GetOrCreateArticle : AigcArticleNode
 /// </summary>
 [DisplayText("Set Article")]
 [ToolTipsText("Set article title, content, etc.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.SetArticle")]
 public class SetArticle : AigcArticleNode
 {
     private readonly FlowNodeConnector _in;
@@ -510,6 +515,7 @@ public class SetArticle : AigcArticleNode
 /// Node that retrieves various information from an article, including basic properties, content, and hierarchy.
 /// </summary>
 [DisplayText("Get Article Information")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetArticleInformation")]
 public class GetArticleInformation : AigcArticleNode
 {
     private FlowNodeConnector _articleIn;
@@ -737,6 +743,7 @@ public enum ArticleFilters
 /// </summary>
 [DisplayText("Enumerate Child Articles")]
 [ToolTipsText("Enumerate child articles within an article, parent article node must be provided.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.ForeachArticles")]
 public class ForeachArticles : AigcArticleNode
 {
     private readonly FlowNodeConnector _in;
@@ -910,6 +917,7 @@ public class ForeachArticles : AigcArticleNode
 /// </summary>
 [DisplayText("Clone Article Outline")]
 [ToolTipsText("Clone an article outline (containing only title and overview) to a new article node.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.CloneArticleOutline")]
 public class CloneArticleOutline : AigcArticleNode
 {
     private readonly FlowNodeConnector _in;
@@ -988,6 +996,7 @@ public class CloneArticleOutline : AigcArticleNode
 /// </summary>
 [DisplayText("Clone Article")]
 [ToolTipsText("Clone a single article")]
+[NativeAlias("Suity.Editor.AIGC.Flows.CloneArticle")]
 public class CloneArticle : AigcArticleNode
 {
     private readonly FlowNodeConnector _in;
@@ -1087,6 +1096,7 @@ public class CloneArticle : AigcArticleNode
 /// </summary>
 [DisplayText("Manual Select Article")]
 [ToolTipsText("Manually select an article through the UI interface")]
+[NativeAlias("Suity.Editor.AIGC.Flows.ManualSelectArticle")]
 //TODO: UI dialog now uses async mode, implementing with Coroutine will cause issues.
 [NotAvailable] 
 public class ManualSelectArticle : AigcArticleNode
@@ -1348,6 +1358,7 @@ public class ManualSelectArticle : AigcArticleNode
 /// </summary>
 [DisplayText("Guide To Content")]
 [ToolTipsText("Transcribe the writing guide from the article to the content, and delete the writing guide.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.ArticleGuideToContent")]
 public class ArticleGuideToContent : AigcArticleNode
 {
     private readonly FlowNodeConnector _in;
@@ -1436,6 +1447,7 @@ public class ArticleGuideToContent : AigcArticleNode
 [SimpleFlowNodeStyle(HasHeader = false)]
 [DisplayText("Article Full Content")]
 [ToolTipsText("Get the full content text of the article, including child article content, in Markdown format.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.ArticleFullContent")]
 public class ArticleFullContent : AigcArticleNode
 {
     private readonly FlowNodeConnector _articleIn;

@@ -22,6 +22,7 @@ namespace Suity.Editor.AIGC.Flows;
 /// </summary>
 [DisplayText("Get Struct Definition Text", "*CoreIcon|Structure")]
 [ToolTipsText("Get standard Json Schema description text for the struct.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetStructDefinition")]
 public class GetStructDefinition : AigcFlowNode
 {
     private readonly FlowNodeConnector _out;
@@ -77,6 +78,7 @@ public class GetStructDefinition : AigcFlowNode
 /// </summary>
 [DisplayText("Get Multiple Struct Definitions Text", "*CoreIcon|Structure")]
 [ToolTipsText("Get standard Json Schema description text for multiple structs")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetStructsDefinition")]
 public class GetStructsDefinition : AigcFlowNode
 {
     private readonly FlowNodeConnector _out;
@@ -128,6 +130,7 @@ public class GetStructsDefinition : AigcFlowNode
 /// </summary>
 [DisplayText("Manual Select Asset", "*CoreIcon|Asset")]
 [NativeAlias("Suity.Editor.AIGC.Flows.ManualSelectAssetNode", false)]
+[NativeAlias("Suity.Editor.AIGC.Flows.ManualSelectAsset")]
 //TODO: UI dialog now uses async mode, implementing with Coroutine will cause issues.
 [NotAvailable]
 public class ManualSelectAsset : AigcFlowNode

@@ -1,6 +1,7 @@
 using Suity.Drawing;
 using Suity.Editor.Flows;
 using Suity.Editor.Selecting;
+using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -15,6 +16,7 @@ namespace Suity.Editor.AIGC.Flows;
 [SimpleFlowNodeStyle(Color = AigcColors.Workflow)]
 [DisplayText("AIGC Workflow", "*CoreIcon|Workflow")]
 [ToolTipsText("AIGC workflow starting node")]
+[NativeAlias("Suity.Editor.AIGC.Flows.WorkflowNode")]
 public class WorkflowNode : DesignFlowNode, IAigcRunWorkflow, IWorkflowSetup
 {
     private readonly FlowNodeConnector _begin;
@@ -114,6 +116,7 @@ public class WorkflowNode : DesignFlowNode, IAigcRunWorkflow, IWorkflowSetup
 /// <summary>
 /// Diagram item representing a <see cref="WorkflowNode"/> in the flow diagram.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.WorkflowDiagramItem")]
 public class WorkflowDiagramItem : FlowDiagramItem<WorkflowNode, WorkflowAssetBuilder>
 {
     /// <summary>

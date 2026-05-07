@@ -9,12 +9,14 @@ using System;
 
 namespace Suity.Editor.AIGC.Flows.Pages;
 
+#region GetTaskWorkSpace
 /// <summary>
 /// A flow node that retrieves the workspace associated with the current AIGC task page.
 /// Outputs the workspace asset through a data output connector.
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Task WorkSpace", "*CoreIcon|WorkSpace")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetTaskWorkSpace")]
 public class GetTaskWorkSpace : AigcPageNode
 {
     readonly FlowNodeConnector _taskWorkSpace;
@@ -40,13 +42,16 @@ public class GetTaskWorkSpace : AigcPageNode
         compute.SetValue(_taskWorkSpace, workSpace?.GetAsset());
     }
 }
+#endregion
 
+#region CreateTaskWorkSpace
 /// <summary>
 /// A flow node that creates a new workspace for the current AIGC task page,
 /// or optionally retrieves an existing one if it already exists.
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = true)]
 [DisplayText("Create Task WorkSpace", "*CoreIcon|WorkSpace")]
+[NativeAlias("Suity.Editor.AIGC.Flows.CreateTaskWorkSpace")]
 public class CreateTaskWorkSpace : AigcPageNode
 {
     readonly FlowNodeConnector _in;
@@ -129,3 +134,5 @@ public class CreateTaskWorkSpace : AigcPageNode
         compute.SetResult(this, _out);
     }
 }
+
+#endregion

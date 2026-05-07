@@ -26,6 +26,7 @@ public abstract class AigcXmlNode : FlowNode
 /// Node that extracts XML tags from text and outputs them as data connectors.
 /// </summary>
 [DisplayText("Extract Xml Tag", "*CoreIcon|Tag")]
+[NativeAlias("Suity.Editor.AIGC.Flows.ExtractXmlsTagNode")]
 public class ExtractXmlsTagNode : AigcXmlNode
 {
     readonly ListProperty<string> _tagNames = new("TagNames", "Tag Names");
@@ -129,6 +130,7 @@ public class ExtractXmlsTagNode : AigcXmlNode
 /// Node that extracts XML tags from text and routes execution to the matching tag's action connector.
 /// </summary>
 [DisplayText("Extract Xml Tag Action", "*CoreIcon|Tag")]
+[NativeAlias("Suity.Editor.AIGC.Flows.ExtractXmlsTagAction")]
 public class ExtractXmlsTagAction : AigcXmlNode
 {
     readonly ListProperty<string> _tagNames = new("TagNames", "Tag Names");
@@ -238,6 +240,7 @@ public class ExtractXmlsTagAction : AigcXmlNode
 /// </summary>
 [SimpleFlowNodeStyle(HasHeader = false)]
 [DisplayText("Get Xml Attribute", "*CoreIcon|Tag")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetXmlTagAttributesNode")]
 public class GetXmlTagAttributesNode : AigcXmlNode
 {
     readonly ListProperty<string> _attributeNames = new("AttributeNames", "Attribute Names");
@@ -325,6 +328,7 @@ public class GetXmlTagAttributesNode : AigcXmlNode
 /// Node that sets specified attributes on an XML tag.
 /// </summary>
 [DisplayText("Set Xml Attribute", "*CoreIcon|Tag")]
+[NativeAlias("Suity.Editor.AIGC.Flows.SetXmlTagAttributesNode")]
 public class SetXmlTagAttributesNode : AigcXmlNode
 {
     readonly ListProperty<string> _attributeNames = new("AttributeNames", "Attribute Names");
@@ -420,6 +424,7 @@ public class SetXmlTagAttributesNode : AigcXmlNode
 /// </summary>
 [SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Get Xml Content", "*CoreIcon|Tag")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetXmlTagContentNode")]
 public class GetXmlTagContentNode : AigcXmlNode
 {
     readonly private FlowNodeConnector _tagIn;
@@ -471,6 +476,7 @@ public class GetXmlTagContentNode : AigcXmlNode
 /// Node that sets the inner text content of an XML tag.
 /// </summary>
 [DisplayText("Set Xml Content", "*CoreIcon|Tag")]
+[NativeAlias("Suity.Editor.AIGC.Flows.SetXmlTagContentNode")]
 public class SetXmlTagContentNode : AigcXmlNode
 {
     readonly private FlowNodeConnector _in;

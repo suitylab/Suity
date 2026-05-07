@@ -1,5 +1,6 @@
 using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.Flows;
+using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -15,6 +16,7 @@ namespace Suity.Editor.AIGC.Flows;
 /// </summary>
 [DisplayText("AI Workflow Log", "*CoreIcon|Conversation")]
 [ToolTipsText("Output workflow logs, can support forced pause.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.WorkflowLog")]
 public class WorkflowLog : AigcFlowNode
 {
     private readonly FlowNodeConnector _in;

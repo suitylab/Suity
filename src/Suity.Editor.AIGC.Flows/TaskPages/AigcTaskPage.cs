@@ -30,6 +30,7 @@ namespace Suity.Editor.AIGC.TaskPages;
 /// Represents an AIGC task page that manages AI-generated content tasks within a document flow.
 /// Implements design node functionality, task page interface, view double-click actions, and navigation.
 /// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.AigcTaskPage")]
 public class AigcTaskPage : DesignNode,
     IAigcTaskPage, 
     IViewDoubleClickAction,

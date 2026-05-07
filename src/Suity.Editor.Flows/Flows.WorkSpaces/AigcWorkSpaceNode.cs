@@ -1,9 +1,8 @@
 using Suity.Drawing;
-using Suity.Editor.Flows;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.Flows.WorkSpaces;
+namespace Suity.Editor.Flows.WorkSpaces;
 
 /// <summary>
 /// Base class for flow nodes that interact with workspaces.

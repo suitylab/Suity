@@ -6,14 +6,12 @@ using Suity.Editor.Design;
 using Suity.Editor.Expressions;
 using Suity.Editor.Flows;
 using Suity.Editor.Selecting;
-using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,6 +26,7 @@ namespace Suity.Editor.AIGC.Flows;
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.LLm, HasHeader = false)]
 [DisplayText("Get Global LLM Model", "*CoreIcon|Chat")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetGlobalLLmModel")]
 public class GetGlobalLLmModel : AigcFlowNode
 {
     private readonly ConnectorValueProperty<AigcModelLevel> _level = new("Level", "Level", AigcModelLevel.Default, "The level of the LLM model. Uses global setting when 'Default' is selected.");
@@ -87,6 +86,7 @@ public class GetGlobalLLmModel : AigcFlowNode
 /// </summary>
 [DisplayText("LLM Call Options")]
 [NativeType(CodeBase = "AIGC", Description = "LLM Call Options")]
+[NativeAlias("Suity.Editor.AIGC.Flows.LLmCallOptionEx")]
 public class LLmCallOptionEx : IViewObject
 {
     private readonly ValueProperty<bool> _enableSearch = new(nameof(EnableSearch), "Enable Search", false, "This feature requires language model support.");
@@ -131,6 +131,7 @@ public class LLmCallOptionEx : IViewObject
 [SimpleFlowNodeStyle(Color = AigcColors.LLm)]
 [DisplayText("Call LLM", "*CoreIcon|Chat")]
 [ToolTipsText("Main entry point for calling large language models.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.CallLLm")]
 public class CallLLm : AigcFlowNode
 {
     /// <summary>

@@ -1,6 +1,7 @@
 using Suity.Drawing;
 using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.Flows;
+using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -16,6 +17,7 @@ namespace Suity.Editor.AIGC.Flows;
 [SimpleFlowNodeStyle(Color = AigcColors.LLm)]
 [DisplayText("LLM Classifier", "*CoreIcon|Chat")]
 [ToolTipsText("Call large language model to perform classification.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.LLmClassifier")]
 public class LLmClassifier : AigcFlowNode
 {
     /// <summary>

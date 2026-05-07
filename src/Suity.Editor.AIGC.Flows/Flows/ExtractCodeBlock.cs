@@ -1,5 +1,6 @@
 using Suity.Editor.Flows;
 using Suity.Editor.Helpers;
+using Suity.Editor.Types;
 
 namespace Suity.Editor.AIGC.Flows;
 
@@ -8,6 +9,7 @@ namespace Suity.Editor.AIGC.Flows;
 /// </summary>
 [DisplayText("Extract Code Block Text", "*CoreIcon|Code")]
 [ToolTipsText("Extract text from the first code block in Markdown text, if not found, output the entire text.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.ExtractCodeBlock")]
 public class ExtractCodeBlock : AigcFlowNode
 {
     private readonly FlowNodeConnector _textIn;

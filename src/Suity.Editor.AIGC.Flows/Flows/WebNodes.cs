@@ -1,5 +1,6 @@
 using HtmlAgilityPack;
 using Suity.Editor.Flows;
+using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -18,6 +19,7 @@ namespace Suity.Editor.AIGC.Flows;
 /// </summary>
 [DisplayText("Browse Web", "*CoreIcon|Web")]
 [ToolTipsText("Access a webpage via URL and get its HTML text")]
+[NativeAlias("Suity.Editor.AIGC.Flows.BrowseWeb")]
 public class BrowseWeb : AigcFlowNode
 {
     private FlowNodeConnector _in;

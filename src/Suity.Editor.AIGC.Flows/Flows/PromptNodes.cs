@@ -19,6 +19,7 @@ namespace Suity.Editor.AIGC.Flows;
 /// Node that replaces a single keyword placeholder in a prompt with specified content.
 /// </summary>
 [DisplayText("Replace Single Prompt", "*CoreIcon|Prompt")]
+[NativeAlias("Suity.Editor.AIGC.Flows.ReplaceOnePrompt")]
 public class ReplaceOnePrompt : AigcFlowNode
 {
     FlowNodeConnector _in;
@@ -105,6 +106,7 @@ public class ReplaceOnePrompt : AigcFlowNode
 /// </summary>
 [DisplayText("Build Prompt", "*CoreIcon|Prompt")]
 [NativeAlias("Suity.Editor.AIGC.Flows.BuildPrompts")]
+[NativeAlias("Suity.Editor.AIGC.Flows.BuildPrompt")]
 public class BuildPrompt : AigcFlowNode
 {
     FlowNodeConnector _in;
@@ -235,6 +237,7 @@ public class BuildPrompt : AigcFlowNode
 /// Node that replaces multiple keyword placeholders in a prompt with input values.
 /// </summary>
 [DisplayText("Replace Multiple Prompts", "*CoreIcon|Prompt")]
+[NativeAlias("Suity.Editor.AIGC.Flows.ReplaceMultiplePrompts")]
 public class ReplaceMultiplePrompts : AigcFlowNode
 {
     FlowNodeConnector _in;
@@ -383,6 +386,7 @@ public class ReplaceMultiplePrompts : AigcFlowNode
 /// </summary>
 [SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Get Local Language Name", "*CoreIcon|Prompt")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetSpeechLanguage")]
 public class GetSpeechLanguage : AigcFlowNode
 {
     private readonly FlowNodeConnector _out;

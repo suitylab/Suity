@@ -1,6 +1,7 @@
 using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.Services;
+using Suity.Editor.Types;
 
 namespace Suity.Editor.AIGC.Flows;
 
@@ -9,6 +10,7 @@ namespace Suity.Editor.AIGC.Flows;
 /// </summary>
 [DocumentFormat(FormatName = "AigcFlow", Extension = "aigcflow", DisplayText = "AIGC Flow", Icon = "*CoreIcon|Workflow", Categoty = "AIGC", Order = 100, Iteration = LoadingIterations.Iteration2)]
 [EditorFeature(EditorFeatures.AigcWorkflow)]
+[NativeAlias("Suity.Editor.AIGC.Flows.AigcFlowDocument")]
 public class AigcFlowDocument : BaseAigcFlowDocument<AigcDiagramAssetBuilder>
 {
     /// <summary>

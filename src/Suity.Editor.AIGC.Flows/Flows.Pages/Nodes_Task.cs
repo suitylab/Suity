@@ -23,6 +23,7 @@ namespace Suity.Editor.AIGC.Flows.Pages;
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG)]
 [DisplayText("Append Task Page", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.AppendTaskPageNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.AppendTaskPage")]
 public class AppendTaskPage : AigcPageNode
 {
     readonly FlowNodeConnector _in;
@@ -118,6 +119,7 @@ public class AppendTaskPage : AigcPageNode
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG)]
 [DisplayText("Add Sub Task Page", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.AddSubTaskPageNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.AddSubTaskPage")]
 public class AddSubTaskPage : AigcPageNode
 {
     readonly FlowNodeConnector _in;
@@ -212,6 +214,7 @@ public class AddSubTaskPage : AigcPageNode
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Task Chat History", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskChatHistoryNode")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetTaskChatHistory")]
 public class GetTaskChatHistory : AigcPageNode
 {
     readonly FlowNodeConnector _chatHistory;
@@ -265,6 +268,7 @@ public class GetTaskChatHistory : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Initial Task Prompt", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetInitialTaskPrompt")]
 public class GetInitialTaskPrompt : AigcPageNode
 {
     readonly FlowNodeConnector _prompt;
@@ -296,6 +300,7 @@ public class GetInitialTaskPrompt : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Current Task Prompt", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetCurrentTaskPrompt")]
 public class GetCurrentTaskPrompt : AigcPageNode
 {
     readonly FlowNodeConnector _prompt;
@@ -347,6 +352,7 @@ public class GetCurrentTaskPrompt : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Task Prompt", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetTaskPrompt")]
 public class GetTaskPrompt : AigcPageNode
 {
     readonly FlowNodeConnector _task;
@@ -402,6 +408,7 @@ public class GetTaskPrompt : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Task Commit Context", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetTaskCommit")]
 public class GetTaskCommit : AigcPageNode
 {
     readonly FlowNodeConnector _task;
@@ -442,6 +449,7 @@ public class GetTaskCommit : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
 [DisplayText("Get SubTask Commit Context", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetSubTaskCommit")]
 public class GetSubTaskCommit : AigcPageNode
 {
     readonly FlowNodeConnector _parentTask;
@@ -514,6 +522,7 @@ public class GetSubTaskCommit : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Current Task Context Text", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetTaskContextText")]
 public class GetTaskContextText : AigcPageNode
 {
     readonly FlowNodeConnector _task;
@@ -568,6 +577,7 @@ public class GetTaskContextText : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.Page, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Get Self Task", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetSelfTask")]
 [DisplayOrder(4960)]
 public class GetSelfTask : AigcPageNode
 {
@@ -605,6 +615,7 @@ public class GetSelfTask : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.Page, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Get Last Sub Task", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetLastSubTask")]
 [DisplayOrder(4950)]
 public class GetLastSubTask : AigcPageNode
 {
@@ -676,6 +687,7 @@ public class GetLastSubTask : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Task Information", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetTaskInfomation")]
 public class GetTaskInfomation : AigcPageNode
 {
     readonly FlowNodeConnector _task;
@@ -780,6 +792,7 @@ public class GetTaskInfomation : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = AigcColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Current Task", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetCurrentTask")]
 public class GetCurrentTask : AigcPageNode
 {
     readonly FlowNodeConnector _out;
@@ -811,6 +824,7 @@ public class GetCurrentTask : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = ArticleAsset.ArticleBgColorCode, HasHeader = false)]
 [DisplayText("Get Task Article", "*CoreIcon|Article")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetTaskArticle")]
 public class GetTaskArticle : AigcPageNode
 {
     readonly FlowNodeConnector _task;
@@ -874,6 +888,7 @@ public class GetTaskArticle : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = ArticleAsset.ArticleBgColorCode, HasHeader = false)]
 [DisplayText("Get Task Knowledge Articles", "*CoreIcon|Article")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetTaskKnowledgeArticles")]
 public class GetTaskKnowledgeArticles : AigcPageNode
 {
     readonly FlowNodeConnector _task;
@@ -921,6 +936,7 @@ public class GetTaskKnowledgeArticles : AigcPageNode
 [SimpleFlowNodeStyle(Color = ArticleAsset.ArticleBgColorCode)]
 [DisplayText("Add Knowledge Article", "*CoreIcon|Article")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.ApplyArticleToKnowledgeBase")]
+[NativeAlias("Suity.Editor.AIGC.Flows.AddKnowledgeArticle")]
 public class AddKnowledgeArticle : AigcPageNode
 {
     readonly FlowNodeConnector _in;
@@ -975,6 +991,7 @@ public class AddKnowledgeArticle : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = ArticleAsset.ArticleBgColorCode, HasHeader = false)]
 [DisplayText("Get Knowledge Article List", "*CoreIcon|Knowledge")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetKnowledgeArticleList")]
 public class GetKnowledgeArticleList : AigcPageNode
 {
     readonly FlowNodeConnector _articles;
@@ -1016,6 +1033,7 @@ public class GetKnowledgeArticleList : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = ArticleAsset.ArticleBgColorCode, HasHeader = false)]
 [DisplayText("Get Articles From Knowledge", "*CoreIcon|Knowledge")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetArticlesFromKnowledge")]
 public class GetArticlesFromKnowledge : AigcPageNode
 {
     readonly FlowNodeConnector _knowledgeList;
@@ -1069,6 +1087,7 @@ public class GetArticlesFromKnowledge : AigcPageNode
 /// </summary>
 [SimpleFlowNodeStyle(Color = ArticleAsset.ArticleBgColorCode, HasHeader = false)]
 [DisplayText("Get Article Tagged Contents", "*CoreIcon|Article")]
+[NativeAlias("Suity.Editor.AIGC.Flows.GetArticleTaggedContents")]
 public class GetArticleTaggedContents : AigcPageNode
 {
     readonly FlowNodeConnector _articles;
