@@ -81,7 +81,7 @@ public class SubFlowBeginElement : SubFlowElement, IPageValueElement
                 return;
             }
 
-            this.Root?.HandleBeginChat(this, view);
+            this.Root?.HandleBeginAigcChat(this, view);
         }
     }
 

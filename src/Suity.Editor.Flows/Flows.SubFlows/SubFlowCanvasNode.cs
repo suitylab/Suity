@@ -19,7 +19,7 @@ namespace Suity.Editor.Flows.SubFlows;
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageCanvasNode")]
 public class SubFlowCanvasNode : ExpandedCanvasAssetNode<SubFlowDefinitionAsset>
 {
-    private readonly ImSubPropertyGrid _propGrid = new("AigcPage", true);
+    private readonly ImSubPropertyGrid _propGrid = new("Canvas", true);
 
     private SubFlowInstance _rootElement;
     private IInspectorContext _inpectorContext;

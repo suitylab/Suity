@@ -1130,6 +1130,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         }
     }
 
+    //TODO: Handle this in the independent interface.
 
     /// <summary>
     /// Handles the start of a chat flow from a page begin element.
@@ -1137,7 +1138,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <param name="begin">The page begin element that initiated the chat.</param>
     /// <param name="view">Optional flow view for UI integration.</param>
     /// <returns>A task representing the asynchronous chat operation.</returns>
-    internal Task<object> HandleBeginChat(SubFlowBeginElement begin, IFlowView view = null)
+    internal Task<object> HandleBeginAigcChat(SubFlowBeginElement begin, IFlowView view = null)
     {
         if (!IsInDiagram)
         {

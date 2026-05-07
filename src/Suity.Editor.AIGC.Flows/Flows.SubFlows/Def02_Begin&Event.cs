@@ -11,7 +11,7 @@ using System.Drawing;
 
 namespace Suity.Editor.Flows.SubFlows;
 
-#region PageEventNode TODO: Move to Suity.Editor.AIGC.Flows
+#region PageEventNode
 
 /// <summary>
 /// Provides event trigger support for task pages, such as event startup, etc.
@@ -238,6 +238,86 @@ public class PageEventDiagramItem : FlowDiagramItem<PageEventNode>, ISubFlowElem
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "TaskEvent";
+
+    /// <inheritdoc/>
+    protected internal override bool OnVerifyName(string name)
+        => SubFlowNode.VerifyName(name);
+}
+#endregion
+
+#region PageCommitNode
+
+/// <summary>
+/// Ends the flow and submits the result upward.
+/// </summary>
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
+[DisplayText("Sub-flow Action End - Commit", "*CoreIcon|Task")]
+[DisplayOrder(3899)]
+[ToolTipsText("End the flow and submit the result upward.")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageCommitNode")]
+public class PageCommitNode : BaseSubFlowEndNode, IFlowNodeComputeAsync, ISubFlowEndNode
+{
+    /// <summary>
+    /// The type of commit this end node represents.
+    /// </summary>
+    protected TaskCommitTypes _endType;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PageCommitNode"/> class.
+    /// </summary>
+    public PageCommitNode() : base(TaskCommitTypes.TaskFinished) { }
+
+    /// <inheritdoc/>
+    public override TaskCommitTypes EndType => _endType;
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _endType = sync.Sync("CommitType", _endType);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSetupViewContent(IViewObjectSetup setup)
+    {
+        base.OnSetupViewContent(setup);
+
+        setup.InspectorField(_endType, new ViewProperty("CommitType", "Commit Method"));
+    }
+}
+
+/// <summary>
+/// Diagram item representing a <see cref="PageCommitNode"/> in the flow diagram.
+/// </summary>
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageCommitDiagramItem")]
+public class PageCommitDiagramItem : FlowDiagramItem<PageCommitNode>, ISubFlowElementCreator
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PageCommitDiagramItem"/> class.
+    /// </summary>
+    public PageCommitDiagramItem()
+        : base()
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PageCommitDiagramItem"/> class with the specified node.
+    /// </summary>
+    /// <param name="node">The page commit node.</param>
+    public PageCommitDiagramItem(PageCommitNode node)
+        : base(node)
+    {
+    }
+
+    /// <summary>
+    /// Creates a new page end element from this diagram item.
+    /// </summary>
+    /// <returns>A new <see cref="SubFlowEndElement"/>.</returns>
+    public SubFlowElement CreatePageElement() => new SubFlowEndElement(this);
+
+    /// <inheritdoc/>
+    protected internal override string OnGetSuggestedPrefix() => "Commit";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)

@@ -144,7 +144,7 @@ public class SubFlowBeginDiagramItem : FlowDiagramItem<SubFlowBeginNode>, ISubFl
 }
 #endregion
 
-#region BaseSubFlowEndNode TODO: Remove PageCommitTypes
+#region BaseSubFlowEndNode
 
 /// <summary>
 /// Abstract base class for page end nodes that handle flow completion and commit operations.
@@ -152,10 +152,6 @@ public class SubFlowBeginDiagramItem : FlowDiagramItem<SubFlowBeginNode>, ISubFl
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageBaseEndNode")]
 public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsync, ISubFlowEndNode
 {
-    /// <summary>
-    /// The type of commit this end node represents.
-    /// </summary>
-    protected TaskCommitTypes _endType;
 
     private FlowNodeConnector _end;
     private FlowNodeConnector _refInput;
@@ -167,8 +163,6 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
     /// <param name="endType">The type of commit this end node represents.</param>
     protected BaseSubFlowEndNode(TaskCommitTypes endType)
     {
-        _endType = endType;
-
         base.FlowNodeGui = OnGui;
         Optional = true;
 
@@ -178,7 +172,7 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
     /// <summary>
     /// Gets the type of commit this end node represents.
     /// </summary>
-    public TaskCommitTypes EndType => _endType;
+    public virtual TaskCommitTypes EndType => TaskCommitTypes.None;
 
     /// <inheritdoc/>
     protected override void OnSyncValue(IPropertySync sync, ISyncContext context)
@@ -206,7 +200,7 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
         }
 
         var node = gui.FlowSingleConnectorFrame(_end, context, text, editorGui: DrawExEditorGui);
-        if (ToColor(_endType) is { } color)
+        if (ToColor(EndType) is { } color)
         {
             node.OverrideColor(color);
         }
@@ -328,7 +322,7 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
 #region SubFlowEndNode
 
 /// <summary>
-/// Provides action end support for AIGC pages.
+/// Provides action end support for Sub-flow pages.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.Workflow, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Sub-flow Action End", "*CoreIcon|End")]
@@ -374,78 +368,6 @@ public class SubFlowEndDiagramItem : FlowDiagramItem<SubFlowEndNode>, ISubFlowEl
 
     /// <inheritdoc/>
     protected internal override string OnGetSuggestedPrefix() => "End";
-
-    /// <inheritdoc/>
-    protected internal override bool OnVerifyName(string name)
-        => SubFlowNode.VerifyName(name);
-}
-#endregion
-
-#region PageCommitNode
-
-/// <summary>
-/// Ends the flow and submits the result upward.
-/// </summary>
-[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
-[DisplayText("Sub-flow Action End - Commit", "*CoreIcon|Task")]
-[DisplayOrder(3899)]
-[ToolTipsText("End the flow and submit the result upward.")]
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageCommitNode")]
-public class PageCommitNode : BaseSubFlowEndNode, IFlowNodeComputeAsync, ISubFlowEndNode
-{
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PageCommitNode"/> class.
-    /// </summary>
-    public PageCommitNode() : base(TaskCommitTypes.TaskFinished) { }
-
-    /// <inheritdoc/>
-    protected override void OnSync(IPropertySync sync, ISyncContext context)
-    {
-        base.OnSync(sync, context);
-
-        _endType = sync.Sync("CommitType", _endType);
-    }
-
-    /// <inheritdoc/>
-    protected override void OnSetupViewContent(IViewObjectSetup setup)
-    {
-        base.OnSetupViewContent(setup);
-
-        setup.InspectorField(_endType, new ViewProperty("CommitType", "Commit Method"));
-    }
-}
-
-/// <summary>
-/// Diagram item representing a <see cref="PageCommitNode"/> in the flow diagram.
-/// </summary>
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageCommitDiagramItem")]
-public class PageCommitDiagramItem : FlowDiagramItem<PageCommitNode>, ISubFlowElementCreator
-{
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PageCommitDiagramItem"/> class.
-    /// </summary>
-    public PageCommitDiagramItem()
-        : base()
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PageCommitDiagramItem"/> class with the specified node.
-    /// </summary>
-    /// <param name="node">The page commit node.</param>
-    public PageCommitDiagramItem(PageCommitNode node)
-        : base(node)
-    {
-    }
-
-    /// <summary>
-    /// Creates a new page end element from this diagram item.
-    /// </summary>
-    /// <returns>A new <see cref="SubFlowEndElement"/>.</returns>
-    public SubFlowElement CreatePageElement() => new SubFlowEndElement(this);
-
-    /// <inheritdoc/>
-    protected internal override string OnGetSuggestedPrefix() => "Commit";
 
     /// <inheritdoc/>
     protected internal override bool OnVerifyName(string name)
