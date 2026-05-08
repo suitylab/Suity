@@ -30,7 +30,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     readonly TextBlockProperty _initialTaskPrompt = new("InitialTaskPrompt", "Initial Task Prompt", string.Empty);
     readonly AssetProperty<ISubFlowAsset> _startupPage = new("StartupPage", "Startup Page") { Filter = StartupPageFilter.Instance };
     readonly AssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
-    readonly AssetListProperty<IToolDefAsset> _tools = new("Tools", "Tools List");
+    readonly AssetListProperty<IPageAsset> _tools = new("Tools", "Tools List");
     readonly AssetListProperty<IArticleAsset> _knowledgeArticles
         = new("KnowledgeArticles", "Knowledge Articles", "Reading materials used as knowledge reference.") { Filter = ReadingMaterialFilter.Instance };
     readonly ValueProperty<int> _maxChatHistory = new("MaxChatHistory", "Max Chat History", 30, "Maximum number of chat history entries to keep, <=0 means unlimited");
@@ -75,7 +75,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// <summary>
     /// Gets the collection of tool pages available for task execution.
     /// </summary>
-    public IEnumerable<IToolDefAsset> ToolPages => _tools.Targets;
+    public IEnumerable<IPageAsset> ToolPages => _tools.Targets;
 
     /// <summary>
     /// Gets or sets the maximum number of chat history entries to keep. A value of 0 or less means unlimited.
@@ -98,7 +98,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// <summary>
     /// Gets the list of configured tool pages, excluding null entries.
     /// </summary>
-    public IToolDefAsset[] GetToolList() => ToolPages.SkipNull().ToArray() ?? [];
+    public IPageAsset[] GetToolList() => ToolPages.SkipNull().ToArray() ?? [];
 
     #endregion
 

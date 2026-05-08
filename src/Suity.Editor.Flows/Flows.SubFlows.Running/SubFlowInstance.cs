@@ -950,7 +950,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// Gets the list of tool assets available to this page.
     /// </summary>
     /// <returns>An array of tool assets from both the page definition and associated preset.</returns>
-    public virtual IToolDefAsset[] GetToolList()
+    public virtual IPageAsset[] GetToolList()
     {
         var tools = _pageNode.Tools.SkipNull();
         return [.. tools];

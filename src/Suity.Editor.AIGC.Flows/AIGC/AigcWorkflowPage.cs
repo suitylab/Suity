@@ -854,14 +854,14 @@ public class AigcWorkflowPage : DesignNode,
     /// </summary>
     /// <param name="includeDocumentTools">If true, includes tools from the document.</param>
     /// <returns>An array of available tool assets.</returns>
-    public IToolDefAsset[] GetToolList(bool includeDocumentTools)
+    public IPageAsset[] GetToolList(bool includeDocumentTools)
     {
         if (EnsureInstance() is not { } instance)
         {
             return [];
         }
 
-        IEnumerable<IToolDefAsset> tools = instance.GetToolList();
+        IEnumerable<IPageAsset> tools = instance.GetToolList();
         if (includeDocumentTools && this.GetDocument() is AigcTaskPageDocument doc)
         {
             tools = tools.Concat(doc.GetToolList());

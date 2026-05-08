@@ -409,9 +409,9 @@
         <Type>Planning</Type>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageSkillParameterItem" X="-160" Y="-120" Width="68" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PagePresetParameterItem" X="-160" Y="-120" Width="68" Height="17">
       <Name>SkillDescription</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.PageSkillParameterNode">
+      <Node type="Suity.Editor.Flows.SubFlows.PagePresetParameterNode">
         <Name>SkillDescription</Name>
         <Description>Skill Description</Description>
         <Icon />
@@ -426,9 +426,9 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageSkillParameterItem" X="-160" Y="-100" Width="40" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PagePresetParameterItem" X="-160" Y="-100" Width="40" Height="17">
       <Name>Rules</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.PageSkillParameterNode">
+      <Node type="Suity.Editor.Flows.SubFlows.PagePresetParameterNode">
         <Name>Rules</Name>
         <Description>Rules</Description>
         <Icon />

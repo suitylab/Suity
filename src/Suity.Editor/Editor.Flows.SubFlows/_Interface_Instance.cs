@@ -9,8 +9,9 @@ namespace Suity.Editor.Flows.SubFlows;
 
 #region IToolInstance
 
-[NativeType(CodeBase = "AIGC", Description = "Sub-flow Instance", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
-public interface IToolInstance
+[NativeType(CodeBase = "SubFlow", Description = "Page Instance", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
+[NativeAlias("*AIGC|IPageInstance")]
+public interface IPageInstance
 {
     /// <summary>
     /// Converts this page instance to a simple type representation.
@@ -51,10 +52,11 @@ public interface ISubFlowElement : INamed
 /// <summary>
 /// Represents an instance of an AIGC page, providing access to its definition, preset, tool asset, elements, and parameters.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Sub-flow Instance", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
+[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Instance", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.TaskPages.IAigcPageInstance")]
 [NativeAlias("*AIGC|IAigcPageInstance")]
-public interface ISubFlowInstance : ISubFlowElement, IToolInstance
+[NativeAlias("*AIGC|ISubFlowInstance")]
+public interface ISubFlowInstance : ISubFlowElement, IPageInstance
 {
     /// <summary>
     /// Gets the owner of this page instance.

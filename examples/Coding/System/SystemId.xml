@@ -35,12 +35,6 @@
   <Object id="8f5f88ea-47aa-4ee0-912f-2798c4ee05ad" name="*AIGC|IAigcWorkflowPage" />
   <Object id="f5eea3e3-f771-40f5-afa1-58dc2e2ee6f2" name="*AIGC|ILLmModel" />
   <Object id="04fd9a4f-dbc7-4fee-af06-58b10b527112" name="*AIGC|ImageGenAsset" />
-  <Object id="339b452b-0d3a-47c8-bbdb-de6ebc7a9d38" name="*AIGC|ISubFlowAsset" />
-  <Object id="97428a0b-35ed-448c-b5f9-30cd91d13c6a" name="*AIGC|ISubFlowDefAsset" />
-  <Object id="02582c69-f4bf-461d-94f0-9cfd2ac09214" name="*AIGC|ISubFlowInstance" />
-  <Object id="02582c69-f4bf-461d-94f0-9cfd2ac09214" name="*AIGC|ISubFlowInstance" />
-  <Object id="1e29242e-9c9e-4428-b79b-6aa855c2ba1b" name="*AIGC|IToolDefAsset" />
-  <Object id="09125c77-e177-4acf-8358-211c4f943caa" name="*AIGC|IToolInstance" />
   <Object id="6a031e9e-d61e-436a-aad1-b02203721a32" name="*AIGC|KeywordKnowledge" />
   <Object id="d29d3452-8a11-411f-bffd-0a069e012b0a" name="*AIGC|KnowledgeArticleList" />
   <Object id="495047cc-3b56-4d2e-9c58-133918e54d5e" name="*AIGC|KnowledgeBase" />
@@ -133,12 +127,15 @@
   <Object id="d1c49547-aa83-417e-9436-5f9fe905bf04" name="*AssetLink|Suity.Editor.Flows.AIGC.WorkflowAsset" />
   <Object id="be8c2840-ebdd-4cae-8b20-e6a264cfaadc" name="*AssetLink|Suity.Editor.Flows.AIGC.WorkflowChatProvider" />
   <Object id="8f9a7fb0-b52f-4be0-9217-b7cad5f2e9f2" name="*AssetLink|Suity.Editor.Flows.SubFlows.IBranchConnection" />
+  <Object id="06347d67-9d6f-45b6-8e4c-54d5b7d03a3f" name="*AssetLink|Suity.Editor.Flows.SubFlows.IPageAsset" />
+  <Object id="1d3663d1-41b9-412e-aa0f-44a11141f45a" name="*AssetLink|Suity.Editor.Flows.SubFlows.IPageInstance" />
   <Object id="82ef80a4-9f54-42b6-aae0-40e090363eed" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlow" />
   <Object id="e002059d-99eb-4ee6-9a0d-ed4a3adbe4b0" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowAsset" />
   <Object id="a6c50133-7223-49c7-ac26-75b6e5aa1604" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowDefAsset" />
   <Object id="8895914c-a8b0-4c29-a83c-fb2efb0c9724" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowInstance" />
-  <Object id="1fa0396c-33fe-439f-84be-24da42877692" name="*AssetLink|Suity.Editor.Flows.SubFlows.IToolDefAsset" />
-  <Object id="c5b7a4ab-203b-4c2a-84e1-31fd10d9ada9" name="*AssetLink|Suity.Editor.Flows.SubFlows.IToolInstance" />
+  <Object id="1fc5aa87-1a38-4000-b8dc-35cefeaa234f" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowPreset" />
+  <Object id="2ade807a-0165-4732-a706-5639cb870e86" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowPresetAsset" />
+  <Object id="ce9c5e8c-d19c-4ff4-b445-edc320fe5964" name="*AssetLink|Suity.Editor.Flows.SubFlows.IToolAsset" />
   <Object id="826e5ab6-b230-4a94-9d0f-36d10c5da90a" name="*AssetLink|Suity.Editor.Flows.SubFlows.SubFlowDefinitionAsset" />
   <Object id="5ec9dea8-3c72-4720-be46-cf5728aaa6af" name="*AssetLink|Suity.Editor.Flows.TaskPages.SubFlowPresetAsset" />
   <Object id="9c99d8fe-3f3e-4c45-bbc8-17d63f9f62a4" name="*AssetLink|Suity.Editor.GroupAsset" />
@@ -605,6 +602,24 @@
   <Object id="4f7ed151-b5b6-4ce0-9f3c-ec2a4ea67c8c" name="*SiliconFlowLLm" />
   <Object id="0d7fe790-7370-4374-9178-6870246c699f" name="*SubFlow" />
   <Object id="3ac40d65-d15b-4021-b18e-d0408fcb29c7" name="*SubFlow|IBranchConnection" />
+  <Object id="6072f32d-473e-483e-a9a7-757d5a032a68" name="*SubFlow|IPageAsset" />
+  <Object id="6072f32d-473e-483e-a9a7-757d5a032a68" name="*SubFlow|IPageAsset" />
+  <Object id="fc913777-4de9-4d72-91f5-8ac5bc07eb63" name="*SubFlow|IPageInstance" />
+  <Object id="fc913777-4de9-4d72-91f5-8ac5bc07eb63" name="*SubFlow|IPageInstance" />
+  <Object id="21ce2354-87c3-4eb1-9040-c14e424f9ff6" name="*SubFlow|ISubFlow" />
+  <Object id="21ce2354-87c3-4eb1-9040-c14e424f9ff6" name="*SubFlow|ISubFlow" />
+  <Object id="21ce2354-87c3-4eb1-9040-c14e424f9ff6" name="*SubFlow|ISubFlow" />
+  <Object id="21ce2354-87c3-4eb1-9040-c14e424f9ff6" name="*SubFlow|ISubFlow" />
+  <Object id="de83a1b8-6a49-4e31-81de-cb9ee4828c8a" name="*SubFlow|ISubFlowAsset" />
+  <Object id="de83a1b8-6a49-4e31-81de-cb9ee4828c8a" name="*SubFlow|ISubFlowAsset" />
+  <Object id="93fd979a-77fd-44d8-bf13-b1ce60a75186" name="*SubFlow|ISubFlowDefAsset" />
+  <Object id="93fd979a-77fd-44d8-bf13-b1ce60a75186" name="*SubFlow|ISubFlowDefAsset" />
+  <Object id="1101c1c5-41bd-4b67-bb65-8dd95b9c9783" name="*SubFlow|ISubFlowInstance" />
+  <Object id="1101c1c5-41bd-4b67-bb65-8dd95b9c9783" name="*SubFlow|ISubFlowInstance" />
+  <Object id="1101c1c5-41bd-4b67-bb65-8dd95b9c9783" name="*SubFlow|ISubFlowInstance" />
+  <Object id="da61c28b-a351-4788-a611-31d8facb18f1" name="*SubFlow|ISubFlowPreset" />
+  <Object id="8ad332ed-c138-4142-820c-a281cccaa0e4" name="*SubFlow|ISubFlowPresetAsset" />
+  <Object id="3ab97a0a-6a21-4497-839d-afd9f7b95876" name="*SubFlow|IToolAsset" />
   <Object id="2aef8f59-7a8f-402e-909a-dff40eb623ea" name="*SubFlow|SubFlowDefinitionAsset" />
   <Object id="70a1566a-7ea4-4b65-a3e0-fbf445d14d6e" name="*SubFlow|SubFlowInstance" />
   <Object id="70a1566a-7ea4-4b65-a3e0-fbf445d14d6e" name="*SubFlow|SubFlowInstance" />
@@ -649,9 +664,6 @@
   <Object id="ae2fbbb1-bb48-4d93-971f-1cae5c652f84" name="*Suity|IDataTransport" />
   <Object id="4bbdb419-7fa3-450f-ab9c-621e2f749095" name="*Suity|IMonitable" />
   <Object id="ac3c00fc-cb22-447a-9c7d-db4f1cb5638d" name="*Suity|IRemoteControl" />
-  <Object id="38697daf-e926-48f0-9157-ff6d0da4ae3a" name="*Suity|ISubFlow" />
-  <Object id="38697daf-e926-48f0-9157-ff6d0da4ae3a" name="*Suity|ISubFlow" />
-  <Object id="38697daf-e926-48f0-9157-ff6d0da4ae3a" name="*Suity|ISubFlow" />
   <Object id="01979b0f-1d99-4910-971d-c92bc4f1a5fb" name="*Suity|JsonContentTypes" />
   <Object id="46672860-8c47-4b41-8fe5-05bca04c6742" name="*Suity|JsonContentTypes.Boolean" />
   <Object id="1bb848b6-92cf-438a-a590-6333b3a636fb" name="*Suity|JsonContentTypes.Content" />

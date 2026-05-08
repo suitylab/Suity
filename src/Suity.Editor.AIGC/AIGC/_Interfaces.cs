@@ -3,7 +3,6 @@ using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
 using Suity.Editor.WorkSpaces;
-using Suity.Views.Named;
 using System.Collections.Generic;
 
 namespace Suity.Editor.AIGC;
@@ -186,7 +185,7 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     /// </summary>
     /// <param name="includeDocumentTools">If true, includes tools from the document.</param>
     /// <returns>An array of available tool assets.</returns>
-    IToolDefAsset[] GetToolList(bool includeDocumentTools);
+    IPageAsset[] GetToolList(bool includeDocumentTools);
 }
 
 #endregion

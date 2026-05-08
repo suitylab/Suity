@@ -30,7 +30,7 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlow
 
     FlowNodeConnector _resultConnector;
 
-    readonly AssetListProperty<IToolDefAsset> _tools = new("Tools", "Tool List");
+    readonly AssetListProperty<IPageAsset> _tools = new("Tools", "Tool List");
     readonly ValueProperty<bool> _useParentArticle = new("UseParentArticle", "Use Parent Article", false, "Use the parent article as the article record for this page's content.");
 
     /// <summary>
@@ -73,7 +73,7 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlow
     /// <summary>
     /// Gets the collection of tools associated with this page.
     /// </summary>
-    public IEnumerable<IToolDefAsset> Tools => _tools.Targets;
+    public IEnumerable<IPageAsset> Tools => _tools.Targets;
 
     /// <summary>
     /// Gets a value indicating whether to use the parent article as the article record for this page's content.
@@ -233,7 +233,7 @@ public class SubFlowDefinitionDiagramItem : FlowDiagramItem<SubflowDefinitionNod
 [NativeType(CodeBase = "SubFlow", Description = "Sub-flow Definition", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
 public class SubFlowDefinitionAsset : Asset,
     ISubFlowDefAsset,
-    IToolDefAsset,
+    IPageAsset,
     ISubFlowAsset
 {
     /// <inheritdoc/>
@@ -256,7 +256,7 @@ public class SubFlowDefinitionAsset : Asset,
     #region IToolDefAsset
 
     /// <inheritdoc/>
-    public IToolInstance CreateToolInstance(PageElementOption option)
+    public IPageInstance CreatePageInstance(PageElementOption option)
         => CreateSubFlowInstance(option);
 
     #endregion
