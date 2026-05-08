@@ -7,6 +7,24 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.Flows.SubFlows;
 
+#region IToolInstance
+
+[NativeType(CodeBase = "AIGC", Description = "Sub-flow Instance", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
+public interface IToolInstance
+{
+    /// <summary>
+    /// Converts this page instance to a simple type representation.
+    /// </summary>
+    SimpleType ToSimpleType();
+
+    /// <summary>
+    /// Sets a parameter value by name.
+    /// </summary>
+    void SetParameter(string name, object value);
+}
+
+#endregion
+
 #region ISubFlowElement
 
 /// <summary>
@@ -36,7 +54,7 @@ public interface ISubFlowElement : INamed
 [NativeType(CodeBase = "AIGC", Description = "Sub-flow Instance", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.TaskPages.IAigcPageInstance")]
 [NativeAlias("*AIGC|IAigcPageInstance")]
-public interface ISubFlowInstance : ISubFlowElement
+public interface ISubFlowInstance : ISubFlowElement, IToolInstance
 {
     /// <summary>
     /// Gets the owner of this page instance.
@@ -72,16 +90,6 @@ public interface ISubFlowInstance : ISubFlowElement
     /// Gets the task commit information.
     /// </summary>
     ChatHistoryText GetTaskCommit();
-
-    /// <summary>
-    /// Converts this page instance to a simple type representation.
-    /// </summary>
-    SimpleType ToSimpleType();
-
-    /// <summary>
-    /// Sets a parameter value by name.
-    /// </summary>
-    void SetParameter(string name, object value);
 
     /// <summary>
     /// Gets all input parameters for this page.

@@ -253,6 +253,14 @@ public class SubFlowDefinitionAsset : Asset,
     /// <returns>The <see cref="SubFlowDefinitionDiagramItem"/>, or null.</returns>
     public SubFlowDefinitionDiagramItem GetDiagramItem() => this.GetStorageObject(true) as SubFlowDefinitionDiagramItem;
 
+    #region IToolDefAsset
+
+    /// <inheritdoc/>
+    public IToolInstance CreateToolInstance(PageElementOption option)
+        => CreateSubFlowInstance(option);
+
+    #endregion
+
     #region ISubFlowAsset
 
     /// <inheritdoc/>
@@ -262,7 +270,7 @@ public class SubFlowDefinitionAsset : Asset,
     public ISubFlow GetBaseDefinition() => GetDiagramItem()?.Node;
 
     /// <inheritdoc/>
-    public ISubFlowInstance CreateInstance(PageElementOption option)
+    public ISubFlowInstance CreateSubFlowInstance(PageElementOption option)
     {
         if (GetDiagramItem() is not { } toolPageItem)
         {
@@ -684,7 +692,7 @@ public class ISubFlowAssetArrayToTextConverter : AssetLinkArrayToTextConverter<I
                 Mode = PageElementMode.Function,
             };
 
-            var element = obj.CreateInstance(option);
+            var element = obj.CreateSubFlowInstance(option);
             if (element is null)
             {
                 continue;

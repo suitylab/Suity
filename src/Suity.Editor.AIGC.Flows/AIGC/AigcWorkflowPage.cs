@@ -1410,7 +1410,7 @@ public class AigcWorkflowPage : DesignNode,
             Owner = taskPage,
         };
 
-        var pageInstance = pageDefAsset.CreateInstance(option) as SubFlowInstance
+        var pageInstance = pageDefAsset.CreateSubFlowInstance(option) as SubFlowInstance
             ?? throw new NullReferenceException("Task is not a AigcPageInstance.");
 
         taskPage.Instance = pageInstance;

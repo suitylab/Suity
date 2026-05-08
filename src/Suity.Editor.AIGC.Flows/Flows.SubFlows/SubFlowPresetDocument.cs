@@ -516,6 +516,14 @@ public class SubFlowPresetAsset : Asset,
 
     #endregion
 
+    #region IToolDefAsset
+
+    /// <inheritdoc/>
+    public IToolInstance CreateToolInstance(PageElementOption option)
+        => CreateSubFlowInstance(option);
+
+    #endregion
+
     #region ISubFlowAsset
 
     /// <summary>
@@ -535,7 +543,7 @@ public class SubFlowPresetAsset : Asset,
     /// </summary>
     /// <param name="option">The page element options.</param>
     /// <returns>A new <see cref="ISubFlowInstance"/>, or null if creation fails.</returns>
-    public ISubFlowInstance CreateInstance(PageElementOption option)
+    public ISubFlowInstance CreateSubFlowInstance(PageElementOption option)
     {
         if (this.GetDocument<SubFlowPresetDocument>() is not { } doc)
         {

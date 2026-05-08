@@ -16,6 +16,8 @@ public interface IToolDefAsset : INamed, IHasId
     /// Gets the description of the tool asset.
     /// </summary>
     string Description { get; }
+
+    IToolInstance CreateToolInstance(PageElementOption option);
 }
 
 #endregion
@@ -41,7 +43,7 @@ public interface ISubFlowAsset : IToolDefAsset
     /// <summary>
     /// Creates a new page instance with the specified options.
     /// </summary>
-    ISubFlowInstance CreateInstance(PageElementOption option);
+    ISubFlowInstance CreateSubFlowInstance(PageElementOption option);
 }
 
 #endregion

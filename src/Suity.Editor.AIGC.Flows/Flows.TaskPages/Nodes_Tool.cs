@@ -357,7 +357,7 @@ public class ParseToolCalling : TaskPageNode
                 Mode = PageElementMode.Function,
             };
 
-            var pageInstance = pageDefAsset.CreateInstance(option);
+            var pageInstance = pageDefAsset.CreateSubFlowInstance(option);
             var simpleType = pageInstance.ToSimpleType();
 
             var dic = EditorServices.JsonResource.FromJson(jobj, simpleType);
@@ -531,7 +531,7 @@ public class CreateToolCalling : TaskPageNode
                     Mode = PageElementMode.Function,
                 };
 
-                var pageInstance = toolPage.CreateInstance(option);
+                var pageInstance = toolPage.CreateSubFlowInstance(option);
 
                 compute.SetValue(_pageInstance, pageInstance);
                 compute.SetResult(this, _out);
@@ -739,7 +739,7 @@ public class CreateToolCallingWithParameter : TaskPageNode
                     Mode = PageElementMode.Function,
                 };
 
-                var pageInstance = toolPageAsset.CreateInstance(option);
+                var pageInstance = toolPageAsset.CreateSubFlowInstance(option);
 
                 _parameters.List.Clear();
 
@@ -828,7 +828,7 @@ public class CreateToolCallingWithParameter : TaskPageNode
                     Mode = PageElementMode.Function,
                 };
 
-                var pageInstance = toolPageAsset.CreateInstance(option);
+                var pageInstance = toolPageAsset.CreateSubFlowInstance(option);
 
                 var parameters = GetParameters();
                 foreach (var parameter in parameters)
