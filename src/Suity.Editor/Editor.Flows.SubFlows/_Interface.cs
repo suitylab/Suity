@@ -4,6 +4,48 @@ using System.Collections.Generic;
 
 namespace Suity.Editor.Flows.SubFlows;
 
+#region IToolDefAsset
+
+/// <summary>
+/// Represents a tool asset that can create page instances and provides access to page and preset definitions.
+/// </summary>
+[NativeType(CodeBase = "AIGC", Description = "Tool Definition Asset", Color = FlowColors.Tool, Icon = "*CoreIcon|Tool")]
+public interface IToolDefAsset : INamed, IHasId
+{
+    /// <summary>
+    /// Gets the description of the tool asset.
+    /// </summary>
+    string Description { get; }
+}
+
+#endregion
+
+#region ISubFlowAsset
+
+/// <summary>
+/// Represents a sub-flow asset that can create page instances and provides access to page and preset definitions.
+/// </summary>
+[NativeType(CodeBase = "AIGC", Description = "Sub-flow Asset", Color = FlowColors.Tool, Icon = "*CoreIcon|Workflow")]
+public interface ISubFlowAsset : IToolDefAsset
+{
+    /// <summary>
+    /// Gets whether this tool asset is a startup page.
+    /// </summary>
+    bool IsStartup { get; }
+
+    /// <summary>
+    /// Gets the base page definition.
+    /// </summary>
+    ISubFlow GetBaseDefinition();
+
+    /// <summary>
+    /// Creates a new page instance with the specified options.
+    /// </summary>
+    ISubFlowInstance CreateInstance(PageElementOption option);
+}
+
+#endregion
+
 #region ISubFlowPage
 
 /// <summary>
@@ -12,17 +54,17 @@ namespace Suity.Editor.Flows.SubFlows;
 [NativeType(CodeBase = "Suity", Description = "Sub-flow Definition", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.TaskPages.IAigcPage")]
 [NativeAlias("Suity.Editor.Flows.SubFlows.ISubFlowDef")]
-public interface ISubFlowPage : INamed
+public interface ISubFlow : INamed
 {
     /// <summary>
     /// Gets the page definition.
     /// </summary>
-    ISubFlowPage GetPageDefinition();
+    ISubFlow GetDefinitionPage();
 
     /// <summary>
     /// Gets the page result.
     /// </summary>
-    ISubFlowPage GetPageResult();
+    ISubFlow GetResultPage();
 
     /// <summary>
     /// Gets the associated document item for this page.
@@ -38,12 +80,8 @@ public interface ISubFlowPage : INamed
 /// Represents an asset that defines an Sub-flow definition page.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "Sub-flow Definition Asset", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
-public interface ISubFlowDefAsset : INamed, IHasId
+public interface ISubFlowDefAsset : ISubFlowAsset
 {
-    /// <summary>
-    /// Gets the base definition of the page.
-    /// </summary>
-    ISubFlowPage GetBaseDefinition();
 }
 
 #endregion
@@ -82,53 +120,6 @@ public enum SubFlowEventTypes
 
 #endregion
 
-#region IToolDefAsset
-
-/// <summary>
-/// Represents a tool asset that can create page instances and provides access to page and preset definitions.
-/// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Tool Definition Asset", Color = FlowColors.Tool, Icon = "*CoreIcon|Tool")]
-public interface IToolDefAsset
-{
-    /// <summary>
-    /// Gets the description of the tool asset.
-    /// </summary>
-    string Description { get; }
-}
-
-#endregion
-
-#region ISubFlowAsset
-
-/// <summary>
-/// Represents a sub-flow asset that can create page instances and provides access to page and preset definitions.
-/// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Sub-flow Asset", Color = FlowColors.Tool, Icon = "*CoreIcon|Workflow")]
-public interface ISubFlowAsset : INamed, IHasId
-{
-    /// <summary>
-    /// Gets the description of the tool asset.
-    /// </summary>
-    string Description { get; }
-
-    /// <summary>
-    /// Gets whether this tool asset is a startup page.
-    /// </summary>
-    bool IsStartup { get; }
-
-    /// <summary>
-    /// Gets the base page definition.
-    /// </summary>
-    ISubFlowPage GetBaseDefinition();
-
-    /// <summary>
-    /// Creates a new page instance with the specified options.
-    /// </summary>
-    ISubFlowInstance CreateInstance(PageElementOption option);
-}
-
-#endregion
-
 #region ISubFlowPreset
 
 /// <summary>
@@ -136,6 +127,11 @@ public interface ISubFlowAsset : INamed, IHasId
 /// </summary>
 public interface ISubFlowPreset
 {
+    /// <summary>
+    /// Gets the base execution flow page definition asset.
+    /// </summary>
+    ISubFlowDefAsset BaseFlow { get; }
+
     /// <summary>
     /// Gets the name of the preset.
     /// </summary>
@@ -175,9 +171,9 @@ public interface ISubFlowPreset
 
 #endregion
 
-#region IHasPreset
+#region ISubFlowPresetAsset
 
-public interface IHasPreset
+public interface ISubFlowPresetAsset : ISubFlowAsset
 {
     /// <summary>
     /// Gets the preset definition.

@@ -46,7 +46,7 @@ public interface ISubFlowInstance : ISubFlowElement
     /// <summary>
     /// Gets the base definition of this page.
     /// </summary>
-    ISubFlowPage BaseDefinition { get; }
+    ISubFlow BaseDefinition { get; }
 
     /// <summary>
     /// Gets the tool asset associated with this page.

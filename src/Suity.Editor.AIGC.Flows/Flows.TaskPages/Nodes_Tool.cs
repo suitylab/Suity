@@ -313,20 +313,20 @@ public class ParseToolCalling : TaskPageNode
     /// <summary>
     /// Creates a page instance based on page definition, name and JSON data.
     /// </summary>
-    /// <param name="toolPages">Page definition asset list.</param>
+    /// <param name="toolDefs">Page definition asset list.</param>
     /// <param name="toolName">Target page name.</param>
     /// <param name="toolJson">Configuration JSON string.</param>
     /// <returns>Successfully created AigcPageInstance, null if failed.</returns>
-    public static ISubFlowInstance CreatePageInstance(ISubFlowAsset[] toolPages, string toolName, string toolJson)
+    public static ISubFlowInstance CreatePageInstance(ISubFlowAsset[] toolDefs, string toolName, string toolJson)
     {
         // 1. Basic parameter validation
-        if (toolPages == null || toolPages.Length == 0 || string.IsNullOrWhiteSpace(toolName) || string.IsNullOrWhiteSpace(toolJson))
+        if (toolDefs == null || toolDefs.Length == 0 || string.IsNullOrWhiteSpace(toolName) || string.IsNullOrWhiteSpace(toolJson))
         {
             return null;
         }
 
         // 2. Find the corresponding ToolPage
-        var pageDefAsset = toolPages.FirstOrDefault(o => o?.Name == toolName);
+        var pageDefAsset = toolDefs.FirstOrDefault(o => o?.Name == toolName);
         if (pageDefAsset is null)
         {
             return null;

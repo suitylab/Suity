@@ -1310,7 +1310,7 @@ public class AigcWorkflowPage : DesignNode,
     public void QueueRefreshView() => this.GetDocument()?.View?.RefreshView();
 
     /// <summary>
-    /// Creates a new task page from an <see cref="ISubFlowPage"/> definition.
+    /// Creates a new task page from an <see cref="ISubFlow"/> definition.
     /// </summary>
     /// <param name="page">The page to create the task from.</param>
     /// <param name="title">Optional title for the task page.</param>
@@ -1319,7 +1319,7 @@ public class AigcWorkflowPage : DesignNode,
     /// <returns>The newly created task page.</returns>
     /// <exception cref="NullReferenceException">Thrown when the page is not a PageDefinitionNode or PageDefinitionAsset.</exception>
     /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
-    public AigcWorkflowPage CreateTaskPage(ISubFlowPage page, string title = null, string taskPrompt = null, string commitName = null)
+    public AigcWorkflowPage CreateTaskPage(ISubFlow page, string title = null, string taskPrompt = null, string commitName = null)
     {
         var asset = (page as SubflowDefinitionNode)?.GetAsset() as SubFlowDefinitionAsset
             ?? throw new NullReferenceException("page is not a PageDefinitionNode or PageDefinitionAsset.");

@@ -1181,24 +1181,24 @@ public class GetArticleTaggedContents : TaskPageNode
 
 #region Converters
 /// <summary>
-/// Converts a <see cref="SubFlowDefinitionAsset"/> to an <see cref="ISubFlowPage"/> by retrieving the diagram item's node.
+/// Converts a <see cref="SubFlowDefinitionAsset"/> to an <see cref="ISubFlow"/> by retrieving the diagram item's node.
 /// </summary>
-public class PageAssetToAigcPageConverter : TypeConverter<SubFlowDefinitionAsset, ISubFlowPage>
+public class PageAssetToAigcPageConverter : TypeConverter<SubFlowDefinitionAsset, ISubFlow>
 {
     /// <inheritdoc/>
-    public override ISubFlowPage Convert(SubFlowDefinitionAsset objFrom)
+    public override ISubFlow Convert(SubFlowDefinitionAsset objFrom)
     {
         return objFrom.GetDiagramItem()?.Node;
     }
 }
 
 /// <summary>
-/// Converts an <see cref="ISubFlowPage"/> to a <see cref="SubFlowDefinitionAsset"/> by retrieving the page definition node's asset.
+/// Converts an <see cref="ISubFlow"/> to a <see cref="SubFlowDefinitionAsset"/> by retrieving the page definition node's asset.
 /// </summary>
-public class AigcPageToPageAssetConverter : TypeConverter<ISubFlowPage, SubFlowDefinitionAsset>
+public class AigcPageToPageAssetConverter : TypeConverter<ISubFlow, SubFlowDefinitionAsset>
 {
     /// <inheritdoc/>
-    public override SubFlowDefinitionAsset Convert(ISubFlowPage objFrom)
+    public override SubFlowDefinitionAsset Convert(ISubFlow objFrom)
     {
         return (objFrom as SubflowDefinitionNode)?.GetAsset() as SubFlowDefinitionAsset;
     }

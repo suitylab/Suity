@@ -147,7 +147,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <summary>
     /// Gets the base page definition that this instance is based on.
     /// </summary>
-    public ISubFlowPage BaseDefinition => _pageNode;
+    public ISubFlow BaseDefinition => _pageNode;
 
     public SubflowDefinitionNode PageNode => _pageNode;
 
@@ -214,7 +214,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
         var items = doc.ItemCollection.AllItems
             .OfType<FlowDiagramItem>()
-            .Where(o => o.Node is not ISubFlowPage)
+            .Where(o => o.Node is not ISubFlow)
             .Where(o => o.Bound.IntersectsWith(page.Bound))
             .ToList();
 
@@ -236,7 +236,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         }
 
         // Build main result page
-        if (page.Node?.GetPageResult() is FlowNode { DiagramItem: FlowDiagramItem mainResultPage })
+        if (page.Node?.GetResultPage() is FlowNode { DiagramItem: FlowDiagramItem mainResultPage })
         {
             CollectResultPages([mainResultPage], ref pageList);
         }
@@ -255,7 +255,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         }
 
         // Build result pages of sub pages
-        var subResultPages = subPages.Select(o => (o.Node?.GetPageResult() as FlowNode)?.DiagramItem)
+        var subResultPages = subPages.Select(o => (o.Node?.GetResultPage() as FlowNode)?.DiagramItem)
             .OfType<FlowDiagramItem>()
             .ToArray();
         if (subResultPages.Length > 0)
@@ -281,7 +281,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         {
             items = doc.ItemCollection.AllItems
             .OfType<FlowDiagramItem>()
-            .Where(o => o.Node is not ISubFlowPage)
+            .Where(o => o.Node is not ISubFlow)
             .Where(o => o.Node is not IGroupFlowNode)
             .Where(o => pageList.Any(page => page.Bound.IntersectsWith(o.Bound)))
             .ToList();
@@ -394,12 +394,12 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
             (pages ??= []).Add(page);
 
-            if (pages.FirstOrDefault(o => (o.DiagramItem.Node as ISubFlowPage)?.GetPageResult() == flowNode) is { } defPage)
+            if (pages.FirstOrDefault(o => (o.DiagramItem.Node as ISubFlow)?.GetResultPage() == flowNode) is { } defPage)
             {
                 defPage.ResultPage = page;
                 page.Order = defPage.Order - 5;
             }
-            else if ((this.DiagramItem.Node as ISubFlowPage)?.GetPageResult() == flowNode)
+            else if ((this.DiagramItem.Node as ISubFlow)?.GetResultPage() == flowNode)
             {
                 // RootPage result page
                 this.ResultPage = page;
@@ -579,7 +579,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// Gets the preset definition associated with this page, if any.
     /// </summary>
     /// <returns>The preset definition, or null if no preset is set.</returns>
-    public ISubFlowPreset GetPreset() => (_preset.Target as IHasPreset)?.GetPreset();
+    public ISubFlowPreset GetPreset() => (_preset.Target as ISubFlowPresetAsset)?.GetPreset();
 
     /// <inheritdoc/>
     public override IEnumerable<SubFlowElement> ChildElements => _list;

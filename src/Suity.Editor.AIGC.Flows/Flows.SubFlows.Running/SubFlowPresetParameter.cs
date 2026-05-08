@@ -229,7 +229,7 @@ public class SubFlowPresetParameter : SubFlowElement, IPageParameterInput
     {
         if (Option.Mode != PageElementMode.Preset)
         {
-            if ((Root as IHasPreset)?.GetPreset() is { } preset && preset.TryGetParameter(Name, out var value))
+            if ((Root as ISubFlowPresetAsset)?.GetPreset() is { } preset && preset.TryGetParameter(Name, out var value))
             {
                 //TODO: Do we need to Clone once to avoid modification?
                 return value;
