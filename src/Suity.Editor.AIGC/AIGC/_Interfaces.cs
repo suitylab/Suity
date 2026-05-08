@@ -3,6 +3,7 @@ using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
 using Suity.Editor.WorkSpaces;
+using Suity.Views.Named;
 using System.Collections.Generic;
 
 namespace Suity.Editor.AIGC;
@@ -50,6 +51,8 @@ public interface IAigcTaskHost
 [NativeType(CodeBase = "AIGC", Description = "AIGC Task Page", Color = FlowColors.Task, Icon = "*CoreIcon|Task")]
 public interface IAigcTaskPage
 {
+    public string PageName { get; }
+
     /// <summary>
     /// Gets the task name, preferring the description over the name if available.
     /// </summary>
@@ -64,6 +67,17 @@ public interface IAigcTaskPage
     /// Gets the task host document for this task page.
     /// </summary>
     IAigcTaskHost TaskHost { get; }
+
+    /// <summary>
+    /// Gets the task commit information.
+    /// </summary>
+    ChatHistoryText GetTaskCommit();
+
+    /// <summary>
+    /// Gets a value indicating whether this task and all its sub-tasks are done.
+    /// </summary>
+    /// <returns>True if all done, false if any not done, or null if undetermined.</returns>
+    bool? GetAllDone();
 }
 
 #endregion
@@ -138,13 +152,13 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     /// Gets the last sub-task in this task's collection.
     /// </summary>
     /// <returns>The last sub-task, or null if no sub-tasks exist.</returns>
-    IAigcWorkflowPage GetLastSubTask();
+    IAigcTaskPage GetLastSubTask();
 
     /// <summary>
     /// Gets all sub-tasks as an array.
     /// </summary>
     /// <returns>An array of all sub-tasks.</returns>
-    IAigcWorkflowPage[] GetAllSubTasks();
+    IAigcTaskPage[] GetAllSubTasks();
 
     /// <summary>
     /// Resolves the article for this task, checking for transferable article parameters first.
@@ -172,7 +186,7 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     /// </summary>
     /// <param name="includeDocumentTools">If true, includes tools from the document.</param>
     /// <returns>An array of available tool assets.</returns>
-    ISubFlowAsset[] GetToolList(bool includeDocumentTools);
+    IToolDefAsset[] GetToolList(bool includeDocumentTools);
 }
 
 #endregion

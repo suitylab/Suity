@@ -82,7 +82,7 @@ public enum SubFlowEventTypes
 
 #endregion
 
-#region IToolDefinitionAsset
+#region IToolDefAsset
 
 /// <summary>
 /// Represents a tool asset that can create page instances and provides access to page and preset definitions.
@@ -154,7 +154,7 @@ public interface ISubFlowPreset
     /// <summary>
     /// Gets all tools provided by this preset.
     /// </summary>
-    IEnumerable<ISubFlowAsset> Tools { get; }
+    IEnumerable<IToolDefAsset> Tools { get; }
 
     /// <summary>
     /// Gets whether this preset is a startup page.

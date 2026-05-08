@@ -498,14 +498,14 @@ public class GetSubTaskCommit : TaskPageNode
         if (allSubTasks)
         {
             var commits = parentTask.GetAllSubTasks()
-                .Select(t => t.GetPageInstance()?.GetTaskCommit())
+                .Select(t => t.GetTaskCommit())
                 .ToArray();
 
             commit = string.Join(Environment.NewLine, commits.Where(c => !string.IsNullOrEmpty(c)));
         }
         else
         {
-            commit = parentTask.GetLastSubTask()?.GetPageInstance().GetTaskCommit() ?? string.Empty;
+            commit = parentTask.GetLastSubTask()?.GetTaskCommit() ?? string.Empty;
         }
 
         compute.SetValue(_commit, commit);
@@ -665,7 +665,7 @@ public class GetLastSubTask : TaskPageNode
 
         if (needDone && subTask != null)
         {
-            bool isDone = subTask.GetPageInstance()?.GetIsDone() == true;
+            bool isDone = subTask.GetAllDone() == true;
             if (!isDone)
             {
                 subTask = null;

@@ -30,7 +30,7 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlowPag
 
     FlowNodeConnector _resultConnector;
 
-    readonly AssetListProperty<ISubFlowAsset> _tools = new("Tools", "Tool List");
+    readonly AssetListProperty<IToolDefAsset> _tools = new("Tools", "Tool List");
     readonly ValueProperty<bool> _useParentArticle = new("UseParentArticle", "Use Parent Article", false, "Use the parent article as the article record for this page's content.");
 
     /// <summary>
@@ -73,7 +73,7 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlowPag
     /// <summary>
     /// Gets the collection of tools associated with this page.
     /// </summary>
-    public IEnumerable<ISubFlowAsset> Tools => _tools.Targets;
+    public IEnumerable<IToolDefAsset> Tools => _tools.Targets;
 
     /// <summary>
     /// Gets a value indicating whether to use the parent article as the article record for this page's content.

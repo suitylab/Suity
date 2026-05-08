@@ -74,13 +74,13 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
     {
         if (AllSubTasks)
         {
-            var contents = GetAllSubTasks().Select(o => o?.GetPageInstance()?.GetTaskCommit()).SkipNull();
+            var contents = GetAllSubTasks().Select(o => o?.GetTaskCommit()).SkipNull();
             return string.Join("\r\n\r\n", contents);
         }
         else
         {
             var subTask = GetLastSubTask();
-            return subTask?.GetPageInstance()?.GetTaskCommit() ?? ChatHistoryText.Empty;
+            return subTask?.GetTaskCommit() ?? ChatHistoryText.Empty;
         }
     }
 
@@ -102,7 +102,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
         {
             if (!AllSubTasks)
             {
-                string toolName = GetLastSubTask()?.GetPageInstance()?.Name;
+                string toolName = GetLastSubTask()?.PageName;
                 return toolName;
             }
             else
@@ -168,7 +168,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
     /// Gets the last sub-task associated with this output element.
     /// </summary>
     /// <returns>The last sub-task, or <c>null</c> if no sub-tasks exist.</returns>
-    public IAigcWorkflowPage GetLastSubTask()
+    public IAigcTaskPage GetLastSubTask()
     {
         var taskService = Option.Owner as IAigcWorkflowPage;
         return taskService?.GetLastSubTask();
@@ -178,7 +178,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
     /// Gets all sub-tasks associated with this output element.
     /// </summary>
     /// <returns>An array of all sub-tasks, or an empty array if none exist.</returns>
-    public IAigcWorkflowPage[] GetAllSubTasks()
+    public IAigcTaskPage[] GetAllSubTasks()
     {
         var taskService = Option.Owner as IAigcWorkflowPage;
         return taskService?.GetAllSubTasks() ?? [];
@@ -202,7 +202,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
                 return false;
             }
 
-            done = tasks.All(o => (o?.GetPageInstance()?.GetAllDone()).IsTrueOrEmpty());
+            done = tasks.All(o => (o?.GetAllDone()).IsTrueOrEmpty());
         }
         else
         {
@@ -212,7 +212,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
                 return false;
             }
 
-            var taskIsDone = task?.GetPageInstance()?.GetAllDone();
+            var taskIsDone = task?.GetAllDone();
             done = taskIsDone.IsTrueOrEmpty();
         }
 

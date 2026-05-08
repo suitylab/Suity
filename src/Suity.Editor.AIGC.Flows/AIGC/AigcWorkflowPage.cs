@@ -31,7 +31,7 @@ namespace Suity.Editor.AIGC;
 [NativeAlias("Suity.Editor.AIGC.Flows.AigcTaskPage")]
 [NativeAlias("Suity.Editor.AIGC.TaskPages.AigcTaskPage")]
 public class AigcWorkflowPage : DesignNode,
-    IAigcTaskPage, 
+    IAigcWorkflowPage, 
     IViewDoubleClickAction,
     INavigable,
     IDrawEditorImGui
@@ -292,9 +292,9 @@ public class AigcWorkflowPage : DesignNode,
 
     #region IAigcTaskPage
 
-    /// <summary>
-    /// Gets the task name, preferring the description over the name if available.
-    /// </summary>
+    public string PageName => GetPageInstance()?.Name;
+
+    /// <inheritdoc/>
     public string TaskName
     {
         get
@@ -309,15 +309,21 @@ public class AigcWorkflowPage : DesignNode,
         }
     }
 
-    /// <summary>
-    /// Gets the current text status of the task.
-    /// </summary>
+    /// <inheritdoc/>
     public TextStatus TaskStatus => OnGetTextStatus();
 
-    /// <summary>
-    /// Gets the task host document for this task page.
-    /// </summary>
+    /// <inheritdoc/>
     public IAigcTaskHost TaskHost => this.GetDocument() as AigcTaskPageDocument;
+
+    /// <inheritdoc/>
+    public ChatHistoryText GetTaskCommit() => GetPageInstance()?.GetTaskCommit();
+
+    /// <inheritdoc/>
+    public bool? GetAllDone() => EnsureInstance()?.GetAllDone();
+
+    #endregion
+
+    #region IAigcWorkflowPage
 
     /// <summary>
     /// Gets the page instance, ensuring it is built if necessary.
@@ -669,7 +675,7 @@ public class AigcWorkflowPage : DesignNode,
     {
         if (Count > 0)
         {
-            return GetItemAt(Count - 1) as AigcWorkflowPage;
+            return GetItemAt(Count - 1) as IAigcTaskPage;
         }
         else
         {
@@ -683,7 +689,7 @@ public class AigcWorkflowPage : DesignNode,
     /// <returns>An array of all sub-tasks.</returns>
     public IAigcTaskPage[] GetAllSubTasks()
     {
-        return Items.OfType<AigcWorkflowPage>()
+        return Items.OfType<IAigcTaskPage>()
             .SkipNull()
             .ToArray();
     }
@@ -848,14 +854,14 @@ public class AigcWorkflowPage : DesignNode,
     /// </summary>
     /// <param name="includeDocumentTools">If true, includes tools from the document.</param>
     /// <returns>An array of available tool assets.</returns>
-    public ISubFlowAsset[] GetToolList(bool includeDocumentTools)
+    public IToolDefAsset[] GetToolList(bool includeDocumentTools)
     {
         if (EnsureInstance() is not { } instance)
         {
             return [];
         }
 
-        IEnumerable<ISubFlowAsset> tools = instance.GetToolList();
+        IEnumerable<IToolDefAsset> tools = instance.GetToolList();
         if (includeDocumentTools && this.GetDocument() is AigcTaskPageDocument doc)
         {
             tools = tools.Concat(doc.GetToolList());
@@ -1071,12 +1077,6 @@ public class AigcWorkflowPage : DesignNode,
     /// </summary>
     /// <returns>True if all outputs are done, false if any is not done, or null if no outputs are defined.</returns>
     public bool? GetIsDoneOutputs() => EnsureInstance()?.GetIsDoneOutputs();
-
-    /// <summary>
-    /// Gets a value indicating whether this task and all its sub-tasks are done.
-    /// </summary>
-    /// <returns>True if all done, false if any not done, or null if undetermined.</returns>
-    public bool? GetAllDone() => EnsureInstance()?.GetAllDone();
 
     /// <summary>
     /// Gets a value indicating whether the task is done, and with all sub-tasks also done.

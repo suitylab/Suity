@@ -40,7 +40,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     private readonly AssetProperty<ISubFlowDefAsset> _baseFlow
         = new("BaseFlow", "Base Execution Flow");
 
-    private readonly AssetListProperty<ISubFlowAsset> _tools
+    private readonly AssetListProperty<IToolDefAsset> _tools
         = new("Tools", "Tools");
 
     private readonly ValueProperty<bool> _isStartup
@@ -204,7 +204,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     /// <summary>
     /// Gets the collection of tools associated with this preset.
     /// </summary>
-    public IEnumerable<ISubFlowAsset> Tools => _tools.List.Select(o => o.Target).SkipNull();
+    public IEnumerable<IToolDefAsset> Tools => _tools.List.Select(o => o.Target).SkipNull();
 
     /// <summary>
     /// Gets a value indicating whether this preset can be used as a startup page.
