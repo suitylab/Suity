@@ -197,7 +197,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
             return false;
         }
 
-        var taskPage = Option.Owner as IAigcTaskPage;
+        var taskPage = Option.Owner as IAigcWorkflowPage;
         var workSpace = taskPage.TaskHost?.WorkSpace;
         if (workSpace is null)
         {

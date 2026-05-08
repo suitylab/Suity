@@ -5,60 +5,7 @@
   <Description>
   </Description>
   <Icon />
-  <Tasks>
-    <Item type="Suity.Editor.AIGC.AigcTaskPage">
-      <Name>#Task-qjpXH7cgYYFT</Name>
-      <List type="NamedItemList" />
-      <Description>
-      </Description>
-      <Icon />
-      <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-      <CommitName>
-      </CommitName>
-      <Workflow>
-        <Id>23f73287-34b4-4797-b05c-b67324cca0bb</Id>
-      </Workflow>
-      <Article />
-      <TaskPrompt>
-        <Text>
-        </Text>
-      </TaskPrompt>
-      <Page>
-        <__preset__ />
-        <review type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
-          <Value type="Suity.Views.TextBlock">
-            <Text>
-            </Text>
-          </Value>
-        </review>
-        <analysis type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
-          <Value type="Suity.Views.TextBlock">
-            <Text>
-            </Text>
-          </Value>
-        </analysis>
-        <roadmap type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
-          <Value type="Suity.Views.TextBlock">
-            <Text>
-            </Text>
-          </Value>
-        </roadmap>
-        <plan type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
-          <Value type="Suity.Views.TextBlock">
-            <Text>
-            </Text>
-          </Value>
-        </plan>
-        <answer type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
-          <Value type="Suity.Views.TextBlock">
-            <Text>
-            </Text>
-          </Value>
-        </answer>
-        <SubTaskCommit type="System.Boolean">False</SubTaskCommit>
-      </Page>
-    </Item>
-  </Tasks>
+  <Tasks />
   <InitialTaskPrompt>
     <Text>
     </Text>

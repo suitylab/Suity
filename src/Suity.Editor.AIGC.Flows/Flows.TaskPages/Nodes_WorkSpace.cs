@@ -35,7 +35,7 @@ public class GetTaskWorkSpace : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var taskPage = compute.Context.GetArgument<IAigcTaskPage>();
+        var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
 
         var workSpace = taskPage?.TaskHost?.WorkSpace;
 
@@ -100,7 +100,7 @@ public class CreateTaskWorkSpace : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var taskPage = compute.Context.GetArgument<IAigcTaskPage>();
+        var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
         if (taskPage?.TaskHost is not { } host)
         {
             throw new NullReferenceException("TaskHost is null.");

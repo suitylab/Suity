@@ -309,7 +309,7 @@ public class SubFlowArticleOutput : SubFlowElement, IArticleResolver, IPageParam
     /// <returns>The resolved base article, or null if not available.</returns>
     public IArticle ResolveArticleBase(bool autoCreate)
     {
-        if (Option.Owner is not IAigcTaskPage taskService)
+        if (Option.Owner is not IAigcWorkflowPage taskService)
         {
             return null;
         }

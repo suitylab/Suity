@@ -168,9 +168,9 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
     /// Gets the last sub-task associated with this output element.
     /// </summary>
     /// <returns>The last sub-task, or <c>null</c> if no sub-tasks exist.</returns>
-    public IAigcTaskPage GetLastSubTask()
+    public IAigcWorkflowPage GetLastSubTask()
     {
-        var taskService = Option.Owner as IAigcTaskPage;
+        var taskService = Option.Owner as IAigcWorkflowPage;
         return taskService?.GetLastSubTask();
     }
 
@@ -178,9 +178,9 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
     /// Gets all sub-tasks associated with this output element.
     /// </summary>
     /// <returns>An array of all sub-tasks, or an empty array if none exist.</returns>
-    public IAigcTaskPage[] GetAllSubTasks()
+    public IAigcWorkflowPage[] GetAllSubTasks()
     {
-        var taskService = Option.Owner as IAigcTaskPage;
+        var taskService = Option.Owner as IAigcWorkflowPage;
         return taskService?.GetAllSubTasks() ?? [];
     }
 

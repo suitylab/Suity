@@ -19,7 +19,7 @@ public class GotoDiagramMenu : MenuCommand
         : base("Goto Diagram", CoreIconCache.Aigc)
     {
         AcceptOneItemOnly = true;
-        AcceptedCommonType = typeof(AigcTaskPage);
+        AcceptedCommonType = typeof(AigcWorkflowPage);
     }
 
     /// <inheritdoc/>
@@ -31,7 +31,7 @@ public class GotoDiagramMenu : MenuCommand
     /// <inheritdoc/>
     public override void DoCommand()
     {
-        if (Selection?.FirstOrDefault() is not AigcTaskPage task)
+        if (Selection?.FirstOrDefault() is not AigcWorkflowPage task)
         {
             return;
         }

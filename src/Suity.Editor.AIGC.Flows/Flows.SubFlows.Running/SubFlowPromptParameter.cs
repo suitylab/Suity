@@ -192,7 +192,7 @@ public class SubFlowPromptParameter : SubFlowElement, IPageParameterInput
 
     private string ResolvePrmopt()
     {
-        var task = Option.Owner as IAigcTaskPage;
+        var task = Option.Owner as IAigcWorkflowPage;
         
         if (task?.GetPrompt(false) is string prompt)
         {
@@ -206,7 +206,7 @@ public class SubFlowPromptParameter : SubFlowElement, IPageParameterInput
     {
         _cachedPrompt.Text = prompt;
 
-        if (Option.Owner is IAigcTaskPage task)
+        if (Option.Owner is IAigcWorkflowPage task)
         {
             task.SetPrompt(prompt);
         }

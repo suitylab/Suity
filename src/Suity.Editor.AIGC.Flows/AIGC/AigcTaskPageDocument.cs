@@ -44,7 +44,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
         ItemCollection.FieldName = "Tasks";
         ItemCollection.FieldDescription = "Tasks";
 
-        ItemCollection.AddItemType<AigcTaskPage>("Task Node");
+        ItemCollection.AddItemType<AigcWorkflowPage>("Workflow Task");
     }
 
     #region Startup
@@ -115,27 +115,27 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     public int Count => ItemCollection.Count;
 
     /// <summary>
-    /// Gets the total number of <see cref="AigcTaskPage"/> instances in the document.
+    /// Gets the total number of <see cref="IAigcTaskPage"/> instances in the document.
     /// </summary>
-    public int GetTotalTaskCount() => ItemCollection.AllItems.OfType<AigcTaskPage>().Count();
+    public int GetTotalTaskCount() => ItemCollection.AllItems.OfType<IAigcTaskPage>().Count();
 
     /// <summary>
     /// Gets the task with the specified ID.
     /// </summary>
     /// <param name="taskId">The ID of the task to retrieve.</param>
-    /// <returns>The <see cref="AigcTaskPage"/> with the specified ID, or null if not found.</returns>
-    public AigcTaskPage GetTask(string taskId) => ItemCollection.GetItem(taskId) as AigcTaskPage;
+    /// <returns>The <see cref="IAigcTaskPage"/> with the specified ID, or null if not found.</returns>
+    public IAigcTaskPage GetTask(string taskId) => ItemCollection.GetItem(taskId) as IAigcTaskPage;
 
     /// <summary>
     /// Gets the task at the specified index in the collection.
     /// </summary>
     /// <param name="index">The zero-based index of the task to retrieve.</param>
-    /// <returns>The <see cref="AigcTaskPage"/> at the specified index, or null if the index is out of range.</returns>
-    public AigcTaskPage GetTaskAt(int index)
+    /// <returns>The <see cref="IAigcTaskPage"/> at the specified index, or null if the index is out of range.</returns>
+    public IAigcTaskPage GetTaskAt(int index)
     {
         if (index >= 0 && index < ItemCollection.Count)
         {
-            return ItemCollection.GetItemAt(index) as AigcTaskPage;
+            return ItemCollection.GetItemAt(index) as IAigcTaskPage;
         }
         else
         {
@@ -146,13 +146,13 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// <summary>
     /// Gets all tasks in the document as an enumerable sequence.
     /// </summary>
-    public IEnumerable<AigcTaskPage> Tasks => ItemCollection.Items.OfType<AigcTaskPage>();
+    public IEnumerable<IAigcTaskPage> Tasks => ItemCollection.Items.OfType<IAigcTaskPage>();
 
     /// <summary>
     /// Gets the first top level task that has not been fully completed, searching from the last task backward.
     /// </summary>
-    /// <returns>The first top level running <see cref="AigcTaskPage"/>, or null if all tasks are done.</returns>
-    public AigcTaskPage GetUnfinishedChildTask()
+    /// <returns>The first top level running <see cref="IAigcTaskPage"/>, or null if all tasks are done.</returns>
+    public AigcWorkflowPage GetUnfinishedChildTask()
     {
         int c = Count;
         if (c == 0)
@@ -160,11 +160,11 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
             return null;
         }
 
-        AigcTaskPage working = null;
+        AigcWorkflowPage working = null;
 
         for (int i = c - 1; i >= 0; i--)
         {
-            var task = GetTaskAt(i);
+            var task = GetTaskAt(i) as AigcWorkflowPage;
             if (task is null)
             {
                 continue;
@@ -188,8 +188,8 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// <summary>
     /// Gets the last task that is currently unfinished or the most recent task if all are completed.
     /// </summary>
-    /// <returns>The last unfinished <see cref="AigcTaskPage"/>, or null if no tasks exist.</returns>
-    public AigcTaskPage GetUnfinishedChildTaskDeep()
+    /// <returns>The last unfinished <see cref="IAigcTaskPage"/>, or null if no tasks exist.</returns>
+    public IAigcTaskPage GetUnfinishedChildTaskDeep()
     {
         if (Count == 0)
         {
@@ -215,15 +215,20 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// <summary>
     /// Adds a task to the document's task collection.
     /// </summary>
-    /// <param name="task">The <see cref="AigcTaskPage"/> to add.</param>
-    public void AddTask(AigcTaskPage task)
+    /// <param name="task">The <see cref="IAigcTaskPage"/> to add.</param>
+    public void AddTask(IAigcTaskPage task)
     {
         if (task is null)
         {
             throw new ArgumentNullException(nameof(task));
         }
 
-        ItemCollection.AddItem(task);
+        if (task is not NamedItem item)
+        {
+            throw new ArgumentException("Task must be a NamedItem.", nameof(task));
+        }
+
+        ItemCollection.AddItem(item);
 
         MarkDirtyAndSaveDelayed(this);
 
@@ -273,7 +278,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// <inheritdoc/>
     protected internal override async Task<bool> OnGuiConfigNewItem(SNamedRootCollection items, INamedNode parentNode, NamedItem item)
     {
-        if (item is AigcTaskPage page)
+        if (item is AigcWorkflowPage workflowPage)
         {
             var selection = new AssetSelection<SubFlowDefinitionAsset>();
             if (!await selection.ShowSelectionGUIAsync("Select Task Page"))
@@ -281,8 +286,8 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
                 return false;
             }
 
-            page.Name = AllocateTaskId();
-            page.Workflow = selection.Target;
+            workflowPage.Name = AllocateTaskId();
+            workflowPage.Workflow = selection.Target;
             return true;
         }
 
@@ -317,7 +322,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     {
         if (value is SubFlowDefinitionAsset pageDef)
         {
-            return new AigcTaskPage(pageDef)
+            return new AigcWorkflowPage(pageDef)
             {
                 Name = AllocateTaskId(),
             };

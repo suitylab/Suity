@@ -24,7 +24,7 @@ internal class AigcTaskPageRunner : AIAssistant
     private readonly AigcTaskPageDocument _document;
     private readonly DocumentUsageToken _usageToken = new(nameof(AigcTaskPageRunner));
 
-    private AigcTaskPage _lastTask;
+    private IAigcTaskPage _lastTask;
     private AIRequest _lastRequest;
 
 
@@ -85,7 +85,7 @@ internal class AigcTaskPageRunner : AIAssistant
             return AICallResult.FromFailed("Startup page not set");
         }
 
-        var startupTask = AigcTaskPage.CreateTaskPage(_document, startupPageAsset);
+        var startupTask = AigcWorkflowPage.CreateTaskPage(_document, startupPageAsset);
         if (startupTask is null)
         {
             return AICallResult.FromFailed("Failed to create startup page");
@@ -138,62 +138,58 @@ internal class AigcTaskPageRunner : AIAssistant
                 return AICallResult.FromMessage("All tasks have been completed.");
             }
 
-            if (task.GetIsDoneInputs().IsFalse())
+            if (task is AigcWorkflowPage workflow)
             {
-                return AICallResult.FromFailed("Task input is missing, it may be stuck. Task canceled.");
-            }
-
-            if (task == _lastTask)
-            {
-                if (task.GetAllDone().IsTrueOrEmpty())
+                (bool flowControl, AICallResult value) = await RunWorkflow(request, workflow);
+                if (!flowControl)
                 {
-                    return AICallResult.Success;
-                }
-                else
-                {
-                    return AICallResult.FromFailed("Task is not completed, it may be stuck. Task canceled.");
+                    return value;
                 }
             }
+        }
+    }
 
-            _lastTask = task;
+    private async Task<(bool flowControl, AICallResult value)> RunWorkflow(AIRequest request, AigcWorkflowPage workflow)
+    {
+        if (workflow.GetIsDoneInputs().IsFalse())
+        {
+            return (flowControl: false, value: AICallResult.FromFailed("Task input is missing, it may be stuck. Task canceled."));
+        }
 
-            var runResult = await RunTask(request, task, SubFlowEventTypes.TaskBegin, null, null);
+        if (workflow == _lastTask)
+        {
+            if (workflow.GetAllDone().IsTrueOrEmpty())
+            {
+                return (flowControl: false, value: AICallResult.Success);
+            }
+            else
+            {
+                return (flowControl: false, value: AICallResult.FromFailed("Task is not completed, it may be stuck. Task canceled."));
+            }
+        }
+
+        _lastTask = workflow;
+
+        var runResult = await RunWorkflow(request, workflow, SubFlowEventTypes.TaskBegin, null, null);
+        if (request.Cancel.IsCancellationRequested)
+        {
+            return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
+        }
+
+        // When a workflow is completed but no end event is triggered,
+        // try to trigger the sub-task completion event to ensure the parent task can correctly perceive the completion status of the sub-task.
+        if (workflow.GetAllDone().IsFalse() && workflow.GetAllSubTaskDone() == true)
+        {
+            var lastTask = workflow.GetTaskAt(workflow.Count - 1);
+
+            runResult = await RunWorkflow(request, workflow, SubFlowEventTypes.SubTaskFinished, lastTask?.CommitName, null);
             if (request.Cancel.IsCancellationRequested)
             {
-                return AICallResult.FromFailed("Task canceled.");
+                return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
             }
-
-            // When a task is completed but no end event is triggered,
-            // try to trigger the sub-task completion event to ensure the parent task can correctly perceive the completion status of the sub-task.
-            if (task.GetAllDone().IsFalse() && task.GetAllSubTaskDone() == true)
-            {
-                var lastTask = task.GetTaskAt(task.Count - 1);
-
-                runResult = await RunTask(request, task, SubFlowEventTypes.SubTaskFinished, lastTask?.CommitName, null);
-                if (request.Cancel.IsCancellationRequested)
-                {
-                    return AICallResult.FromFailed("Task canceled.");
-                }
-            }
-
-            //if (runResult.EndType != PageCommitTypes.None)
-            //{
-            //    try
-            //    {
-            //        // Commit to its parent task, if the task is committed as finished or failed, to trigger parent task continue running or some other logic.
-            //        await CommitToParent(request, task, runResult);
-            //    }
-            //    catch (TaskCanceledException)
-            //    {
-            //        return AICallResult.FromFailed("Task canceled.");
-            //    }
-            //    catch (Exception err)
-            //    {
-            //        request.Conversation.AddException(err);
-            //        return AICallResult.FromFailed("Task interrupted.");
-            //    }
-            //}
         }
+
+        return (flowControl: true, value: null);
     }
 
 
@@ -201,21 +197,21 @@ internal class AigcTaskPageRunner : AIAssistant
     /// Executes a task event and returns the result of the execution.
     /// </summary>
     /// <param name="request">The AI request containing conversation and cancellation context.</param>
-    /// <param name="task">The task page to execute the event on.</param>
+    /// <param name="workflow">The workflow task page to execute the event on.</param>
     /// <param name="eventType">The type of event to trigger.</param>
     /// <param name="commitName">The name of the commit, if applicable.</param>
     /// <param name="parameter">The parameter to pass to the event handler.</param>
     /// <returns>A <see cref="TaskRunResult"/> containing the end type and result parameter.</returns>
-    private async Task<TaskRunResult> RunTask(AIRequest request, AigcTaskPage task, SubFlowEventTypes eventType, string commitName, object parameter)
+    private async Task<TaskRunResult> RunWorkflow(AIRequest request, AigcWorkflowPage workflow, SubFlowEventTypes eventType, string commitName, object parameter)
     {
-        SelectTask(task);
+        SelectTask(workflow);
 
         try
         {
-            string name = task.Name;
-            if (!string.IsNullOrWhiteSpace(task.Description))
+            string name = workflow.Name;
+            if (!string.IsNullOrWhiteSpace(workflow.Description))
             {
-                name = $"{task.Description} ({name})";
+                name = $"{workflow.Description} ({name})";
             }
 
             string message = "Run Task: ";
@@ -227,10 +223,10 @@ internal class AigcTaskPageRunner : AIAssistant
             request.Conversation.AddSystemMessage(message, msg =>
             {
                 msg.AddCode(name);
-                msg.AddButton("Locate", () => SelectTask(task));
+                msg.AddButton("Locate", () => SelectTask(workflow));
             });
 
-            bool handled = await task.HandleEvent(request, eventType, commitName, parameter);
+            bool handled = await workflow.HandleEvent(request, eventType, commitName, parameter);
             if (request.Cancel.IsCancellationRequested)
             {
                 return new(TaskCommitTypes.None, "Task is cancelled.");
@@ -241,13 +237,13 @@ internal class AigcTaskPageRunner : AIAssistant
                 return new(TaskCommitTypes.None, "Task is not handled.");
             }
 
-            bool? isDone = task.GetAllDone();
+            bool? isDone = workflow.GetAllDone();
             if (!isDone.IsTrueOrEmpty())
             {
                 return new(TaskCommitTypes.None, "Task is not done.");
             }
 
-            var end = task.Instance?.CurrentEndElement;
+            var end = workflow.Instance?.CurrentEndElement;
             if (end is null)
             {
                 return new(TaskCommitTypes.None, "Task it not finished.");
@@ -275,11 +271,11 @@ internal class AigcTaskPageRunner : AIAssistant
     /// <param name="task">The child task that completed execution.</param>
     /// <param name="runResult">The result of the child task execution.</param>
     /// <returns>An <see cref="AICallResult"/> indicating the success or failure of the reporting process.</returns>
-    private async Task<AICallResult> CommitToParent(AIRequest request, AigcTaskPage task, TaskRunResult runResult)
+    private async Task<AICallResult> CommitToParent(AIRequest request, AigcWorkflowPage task, TaskRunResult runResult)
     {
         while (task != null)
         {
-            if (task.ParentNode is not AigcTaskPage parent)
+            if (task.ParentNode is not AigcWorkflowPage parent)
             {
                 break;
             }
@@ -303,7 +299,7 @@ internal class AigcTaskPageRunner : AIAssistant
             var parameter = runResult.Parameter;
             string commitName = task.CommitName;
 
-            runResult = await RunTask(request, parent, eventType, commitName, parameter);
+            runResult = await RunWorkflow(request, parent, eventType, commitName, parameter);
             task = parent;
 
             if (request.Cancel.IsCancellationRequested)
@@ -315,7 +311,7 @@ internal class AigcTaskPageRunner : AIAssistant
         return AICallResult.Success;
     }
 
-    private void SelectTask(AigcTaskPage task)
+    private void SelectTask(AigcWorkflowPage task)
     {
         if (task is null)
         {

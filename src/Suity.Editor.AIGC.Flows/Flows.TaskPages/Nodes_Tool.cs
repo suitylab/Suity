@@ -176,7 +176,7 @@ public class GetCurrentToolList : TaskPageNode
     {
         bool documentTools = _documentTools.GetValue(compute, this);
 
-        var service = compute.Context.GetArgument<IAigcTaskPage>();
+        var service = compute.Context.GetArgument<IAigcWorkflowPage>();
         var toolPages = service?.GetToolList(documentTools).ToArray() ?? [];
 
         compute.SetValue(_toolPages, toolPages);
@@ -1402,26 +1402,26 @@ public class PageParameterReference : TaskPageNode
 #region Converters
 
 /// <summary>
-/// Converts an <see cref="IAigcTaskPage"/> to its associated <see cref="ISubFlowInstance"/>.
+/// Converts an <see cref="IAigcWorkflowPage"/> to its associated <see cref="ISubFlowInstance"/>.
 /// </summary>
-public class TaskPageToPageInstanceConverter : TypeConverter<IAigcTaskPage, ISubFlowInstance>
+public class TaskPageToPageInstanceConverter : TypeConverter<IAigcWorkflowPage, ISubFlowInstance>
 {
     /// <inheritdoc/>
-    public override ISubFlowInstance Convert(IAigcTaskPage objFrom)
+    public override ISubFlowInstance Convert(IAigcWorkflowPage objFrom)
     {
         return objFrom.GetPageInstance();
     }
 }
 
 /// <summary>
-/// Converts an <see cref="ISubFlowInstance"/> to its owning <see cref="IAigcTaskPage"/>.
+/// Converts an <see cref="ISubFlowInstance"/> to its owning <see cref="IAigcWorkflowPage"/>.
 /// </summary>
-public class PageInstanceToTaskPageConverter : TypeConverter<ISubFlowInstance, IAigcTaskPage>
+public class PageInstanceToTaskPageConverter : TypeConverter<ISubFlowInstance, IAigcWorkflowPage>
 {
     /// <inheritdoc/>
-    public override IAigcTaskPage Convert(ISubFlowInstance objFrom)
+    public override IAigcWorkflowPage Convert(ISubFlowInstance objFrom)
     {
-        return objFrom.Owner as IAigcTaskPage;
+        return objFrom.Owner as IAigcWorkflowPage;
     }
 }
 

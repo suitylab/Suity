@@ -47,7 +47,7 @@ public class PagePromptParameterInputNode : SubFlowTypeNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        if (compute.Context.GetArgument<IAigcTaskPage>() is not { } task)
+        if (compute.Context.GetArgument<IAigcWorkflowPage>() is not { } task)
         {
             compute.SetValue(_prompt, string.Empty);
             return;

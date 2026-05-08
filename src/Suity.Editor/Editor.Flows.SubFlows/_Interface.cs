@@ -265,7 +265,7 @@ public interface IFlowCallerContext
 #region ISubFlowAsset
 
 /// <summary>
-/// Represents a tool asset that can create page instances and provides access to page and preset definitions.
+/// Represents a sub-flow asset that can create page instances and provides access to page and preset definitions.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "AIGC Tool Asset", Color = FlowColors.Tool, Icon = "*CoreIcon|Tool")]
 public interface ISubFlowAsset : INamed, IHasId

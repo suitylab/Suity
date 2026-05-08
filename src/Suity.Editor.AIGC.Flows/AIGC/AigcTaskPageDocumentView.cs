@@ -55,7 +55,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
     private readonly IPropertyGrid _propGrid;
 
-    private AigcTaskPage _currentPage;
+    private AigcWorkflowPage _currentPage;
     private readonly GuiOptionalValue _pageNaviOption = new();
     private PageViewCategory _pageCategory;
     private AigcTaskPageRunner _currentRunner;
@@ -353,7 +353,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
             }
             else if (sel.Any())
             {
-                if (sel.CountOne() && sel.FirstOrDefault() is AigcTaskPage page)
+                if (sel.CountOne() && sel.FirstOrDefault() is AigcWorkflowPage page)
                 {
                     OnTaskPageGui(gui, page);
                 }
@@ -522,7 +522,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
     }
 
 
-    private void OnTaskPageGui(ImGui gui, AigcTaskPage page)
+    private void OnTaskPageGui(ImGui gui, AigcWorkflowPage page)
     {
         gui.VerticalLayout("#task_page-" + page.Name)
         .OnInitialize(n =>
@@ -594,7 +594,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
         });
     }
 
-    private void ChatGui(ImGui gui, AigcTaskPage page)
+    private void ChatGui(ImGui gui, AigcWorkflowPage page)
     {
         if (page.Instance is not { } instance)
         {
@@ -666,7 +666,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
         });
     }
 
-    private void ContextGui(ImGui gui, AigcTaskPage page)
+    private void ContextGui(ImGui gui, AigcWorkflowPage page)
     {
         gui.ScrollableFrame("#chat-history-" + page.Name, GuiOrientation.Vertical)
         .InitFullSize()
@@ -723,7 +723,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
         });
     }
 
-    private void TaskTitleGui(ImGui gui, AigcTaskPage page)
+    private void TaskTitleGui(ImGui gui, AigcWorkflowPage page)
     {
         if (page.Instance?.GetAllStatusIcon() is { } statusIcon)
         {
@@ -940,7 +940,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
             _currentPage = null;
             _propGrid.InspectObjects([], context: _inspectorContext);
         }
-        else if (_treeView.SelectedObjects.FirstOrDefault() is AigcTaskPage pageNode && pageNode.Instance is { } root)
+        else if (_treeView.SelectedObjects.FirstOrDefault() is AigcWorkflowPage pageNode && pageNode.Instance is { } root)
         {
             _currentPage = pageNode;
             _propGrid.InspectObjects([root], context: _inspectorContext);
@@ -968,7 +968,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
     /// Navigates to the diagram associated with the specified task.
     /// </summary>
     /// <param name="task">The task whose diagram to navigate to.</param>
-    internal void HandleGotoWorkflow(AigcTaskPage task)
+    internal void HandleGotoWorkflow(AigcWorkflowPage task)
     {
         if (task is null)
         {

@@ -139,7 +139,7 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
     {
         string text = _text ?? string.Empty;
 
-        if (Option.Owner is IAigcTaskPage task)
+        if (Option.Owner is IAigcWorkflowPage task)
         {
             text = text.Replace("{TaskName}", task.TaskName);
             text = text.Replace("{TaskStatus}", task.TaskStatus.ToString());
