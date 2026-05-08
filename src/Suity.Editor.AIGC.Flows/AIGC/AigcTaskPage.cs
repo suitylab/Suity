@@ -36,10 +36,11 @@ public class AigcTaskPage : DesignNode,
     INavigable,
     IDrawEditorImGui
 {
-    readonly AssetProperty<ISubFlowAsset> _pageDef = new("PageDefinition", "Page");
+    readonly StringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "Name used when committing to parent task.");
+
+    readonly AssetProperty<ISubFlowAsset> _workflow = new("Workflow", "Workflow");
     readonly AssetProperty<ArticleContainerAsset> _article = new("Article", "Article");
     readonly TextBlockProperty _taskPrompt = new("TaskPrompt", "Task Prompt", string.Empty);
-    readonly StringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "Name used when committing to parent task.");
 
     private SubFlowInstance _instance;
     private readonly QueueOnceAction _buildAction;
@@ -49,9 +50,9 @@ public class AigcTaskPage : DesignNode,
     /// </summary>
     public AigcTaskPage()
     {
-        _pageDef.TargetUpdated += _pageDef_TargetUpdated;
-        _pageDef.SelectionChanged += _pageDef_SelectionChanged;
-        _pageDef.ListenEnabled = true;
+        _workflow.TargetUpdated += _pageDef_TargetUpdated;
+        _workflow.SelectionChanged += _pageDef_SelectionChanged;
+        _workflow.ListenEnabled = true;
 
         _buildAction = new(() => BuildInstance());
     }
@@ -63,18 +64,28 @@ public class AigcTaskPage : DesignNode,
     public AigcTaskPage(SubFlowDefinitionAsset pageDef)
         : this()
     {
-        _pageDef.Target = pageDef;
+        _workflow.Target = pageDef;
     }
 
     #region Core Prop
 
+
+    /// <summary>
+    /// Gets or sets the commit name used when committing results to the parent task.
+    /// </summary>
+    public string CommitName
+    {
+        get => _commitName.Text ?? string.Empty;
+        set => _commitName.Text = value ?? string.Empty;
+    }
+
     /// <summary>
     /// Gets or sets the page definition asset that defines the structure and behavior of this task page.
     /// </summary>
-    public ISubFlowAsset PageDefinition
+    public ISubFlowAsset Workflow
     {
-        get => _pageDef.Target;
-        set => _pageDef.Target = value;
+        get => _workflow.Target;
+        set => _workflow.Target = value;
     }
 
     /// <summary>
@@ -91,7 +102,7 @@ public class AigcTaskPage : DesignNode,
     /// </summary>
     /// <returns>The <see cref="SubFlowDefinitionDiagramItem"/> for this page, or null if not available.</returns>
     public SubFlowDefinitionDiagramItem GetDefinitionItem()
-        => (PageDefinition?.GetBaseDefinition() as SubflowDefinitionNode)?.DiagramItem as SubFlowDefinitionDiagramItem;
+        => (Workflow?.GetBaseDefinition() as SubflowDefinitionNode)?.DiagramItem as SubFlowDefinitionDiagramItem;
 
     /// <summary>
     /// Gets or sets the page instance associated with this task page.
@@ -146,15 +157,6 @@ public class AigcTaskPage : DesignNode,
     }
 
     /// <summary>
-    /// Gets or sets the commit name used when committing results to the parent task.
-    /// </summary>
-    public string CommitName
-    {
-        get => _commitName.Text ?? string.Empty;
-        set => _commitName.Text = value ?? string.Empty;
-    } 
-
-    /// <summary>
     /// Gets the parent task page, if this task is a sub-task of another task.
     /// </summary>
     public AigcTaskPage ParentTask => ParentNode as AigcTaskPage;
@@ -177,10 +179,10 @@ public class AigcTaskPage : DesignNode,
     {
         base.OnSync(sync, context);
 
-        _pageDef.Sync(sync);
+        _commitName.Sync(sync);
+        _workflow.Sync(sync);
         _article.Sync(sync);
         _taskPrompt.Sync(sync);
-        _commitName.Sync(sync);
 
         sync.Sync("Page", EnsureInstance(), SyncFlag.GetOnly);
     }
@@ -190,12 +192,12 @@ public class AigcTaskPage : DesignNode,
     {
         base.OnSetupView(setup);
 
-        CheckRebuild();
-
-        _pageDef.InspectorField(setup);
+        _commitName.InspectorField(setup);
+        _workflow.InspectorField(setup);
         _article.InspectorField(setup);
         _taskPrompt.InspectorField(setup);
-        _commitName.InspectorField(setup);
+
+        CheckRebuild();
     }
 
     /// <inheritdoc/>
@@ -1399,7 +1401,7 @@ public class AigcTaskPage : DesignNode,
         {
             Name = name,
             Description = title ?? string.Empty,
-            PageDefinition = pageDefAsset,
+            Workflow = pageDefAsset,
         };
 
         var option = new PageElementOption
@@ -1465,7 +1467,7 @@ public class AigcTaskPage : DesignNode,
         {
             Name = name,
             Description = title ?? string.Empty,
-            PageDefinition = pageDefAsset,
+            Workflow = pageDefAsset,
         };
 
         var option = new PageElementOption

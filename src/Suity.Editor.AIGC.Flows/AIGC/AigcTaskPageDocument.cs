@@ -282,7 +282,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
             }
 
             page.Name = AllocateTaskId();
-            page.PageDefinition = selection.Target;
+            page.Workflow = selection.Target;
             return true;
         }
 

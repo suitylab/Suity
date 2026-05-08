@@ -6,33 +6,35 @@
   </Description>
   <Icon />
   <Tasks>
-    <Item type="Suity.Editor.AIGC.TaskPages.AigcTaskPage">
+    <Item type="Suity.Editor.AIGC.AigcTaskPage">
       <Name>#Task-qjpXH7cgYYFT</Name>
       <List type="NamedItemList" />
       <Description>
       </Description>
       <Icon />
       <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-      <PageDefinition>
-        <Id>3729204d-ba2b-475e-8b8c-a2684693e89c</Id>
-      </PageDefinition>
+      <CommitName>
+      </CommitName>
+      <Workflow>
+        <Id>23f73287-34b4-4797-b05c-b67324cca0bb</Id>
+      </Workflow>
       <Article />
       <TaskPrompt>
         <Text>
         </Text>
       </TaskPrompt>
-      <CommitName>
-      </CommitName>
       <Page>
-        <__skill__ />
+        <__preset__ />
         <review type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
           <Value type="Suity.Views.TextBlock">
-            <Text>gdfg</Text>
+            <Text>
+            </Text>
           </Value>
         </review>
         <analysis type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
           <Value type="Suity.Views.TextBlock">
-            <Text>dfg</Text>
+            <Text>
+            </Text>
           </Value>
         </analysis>
         <roadmap type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
