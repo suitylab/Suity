@@ -303,8 +303,8 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     /// <summary>
     /// Gets the underlying page definition for this preset.
     /// </summary>
-    /// <returns>The <see cref="ISubFlowDef"/> definition, or null if not available.</returns>
-    public ISubFlowDef GetPageDefinition() => _baseFlow.Target?.GetBaseDefinition();
+    /// <returns>The <see cref="ISubFlowPage"/> definition, or null if not available.</returns>
+    public ISubFlowPage GetPageDefinition() => _baseFlow.Target?.GetBaseDefinition();
 
     /// <summary>
     /// Ensures that a preset instance exists, building one if necessary.
@@ -420,7 +420,12 @@ public class SubFlowPresetAssetBuilder : AssetBuilder<SubFlowPresetAsset>
 /// Represents a preset asset that can be used as a tool and contains a page definition.
 /// </summary>
 [NativeType(Name = "SubFlowPresetAsset", Description = "Preset Asset", CodeBase = "SubFlow", Icon = "*CoreIcon|Skil", Color = FlowColors.Agent)]
-public class SubFlowPresetAsset : Asset, IViewObject, IInspectorEditNotify, ISubFlowAsset, IHasPreset
+public class SubFlowPresetAsset : Asset, 
+    IViewObject,
+    IInspectorEditNotify,
+    ISubFlowAsset,
+    IToolDefAsset,
+    IHasPreset
 {
     readonly EditorAssetRef<ISubFlowDefAsset> _baseFlow = new();
 
@@ -518,8 +523,8 @@ public class SubFlowPresetAsset : Asset, IViewObject, IInspectorEditNotify, ISub
     /// <summary>
     /// Gets the base page definition from the associated preset document.
     /// </summary>
-    /// <returns>The <see cref="ISubFlowDef"/> definition, or null.</returns>
-    public ISubFlowDef GetBaseDefinition() => this.GetDocument<SubFlowPresetDocument>()?.GetPageDefinition();
+    /// <returns>The <see cref="ISubFlowPage"/> definition, or null.</returns>
+    public ISubFlowPage GetBaseDefinition() => this.GetDocument<SubFlowPresetDocument>()?.GetPageDefinition();
 
     /// <summary>
     /// Gets the preset definition from the associated preset document.

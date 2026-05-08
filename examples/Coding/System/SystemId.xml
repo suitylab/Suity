@@ -32,12 +32,14 @@
   <Object id="3fe5f3c0-7e16-4346-b6ba-5f3deba04e0b" name="*AIGC|FlowContextScopes.Global" />
   <Object id="42b640b9-3350-4e88-aead-90b852bd206a" name="*AIGC|FlowContextScopes.Local" />
   <Object id="18f8d2fd-3de5-4152-80ec-4ff6143f97fa" name="*AIGC|IAigcTaskPage" />
+  <Object id="8f5f88ea-47aa-4ee0-912f-2798c4ee05ad" name="*AIGC|IAigcWorkflowPage" />
   <Object id="f5eea3e3-f771-40f5-afa1-58dc2e2ee6f2" name="*AIGC|ILLmModel" />
   <Object id="04fd9a4f-dbc7-4fee-af06-58b10b527112" name="*AIGC|ImageGenAsset" />
   <Object id="339b452b-0d3a-47c8-bbdb-de6ebc7a9d38" name="*AIGC|ISubFlowAsset" />
   <Object id="97428a0b-35ed-448c-b5f9-30cd91d13c6a" name="*AIGC|ISubFlowDefAsset" />
   <Object id="02582c69-f4bf-461d-94f0-9cfd2ac09214" name="*AIGC|ISubFlowInstance" />
   <Object id="02582c69-f4bf-461d-94f0-9cfd2ac09214" name="*AIGC|ISubFlowInstance" />
+  <Object id="1e29242e-9c9e-4428-b79b-6aa855c2ba1b" name="*AIGC|IToolDefAsset" />
   <Object id="6a031e9e-d61e-436a-aad1-b02203721a32" name="*AIGC|KeywordKnowledge" />
   <Object id="d29d3452-8a11-411f-bffd-0a069e012b0a" name="*AIGC|KnowledgeArticleList" />
   <Object id="495047cc-3b56-4d2e-9c58-133918e54d5e" name="*AIGC|KnowledgeBase" />
@@ -94,6 +96,7 @@
   <Object id="886637bc-a0a1-4ccd-9192-019aeacd293c" name="*AssetLink|Suity.Editor.AIGC.Assistants.MainAssistantChatProvider" />
   <Object id="e4f266c7-5634-4d59-81a9-d56bbe2d9fdb" name="*AssetLink|Suity.Editor.AIGC.Assistants.PromptAsset" />
   <Object id="93f02858-5d18-4bf0-814c-e4b516f78def" name="*AssetLink|Suity.Editor.AIGC.IAigcTaskPage" />
+  <Object id="a7a3ba4a-dbee-4685-b894-dc85f94e1cda" name="*AssetLink|Suity.Editor.AIGC.IAigcWorkflowPage" />
   <Object id="73e9e467-1515-4468-a3d6-975793e93cbf" name="*AssetLink|Suity.Editor.AIGC.ILLmModel" />
   <Object id="1fff8183-0093-4464-aa2b-af80ce9e0785" name="*AssetLink|Suity.Editor.AIGC.ImageGenAsset" />
   <Object id="62637705-3d43-4136-b03f-bead04cb82ec" name="*AssetLink|Suity.Editor.AIGC.InternalLLmModelAsset" />
@@ -130,9 +133,10 @@
   <Object id="be8c2840-ebdd-4cae-8b20-e6a264cfaadc" name="*AssetLink|Suity.Editor.Flows.AIGC.WorkflowChatProvider" />
   <Object id="8f9a7fb0-b52f-4be0-9217-b7cad5f2e9f2" name="*AssetLink|Suity.Editor.Flows.SubFlows.IBranchConnection" />
   <Object id="e002059d-99eb-4ee6-9a0d-ed4a3adbe4b0" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowAsset" />
-  <Object id="71d33b49-cbfb-4c53-92cd-96846c47a9fb" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowDef" />
   <Object id="a6c50133-7223-49c7-ac26-75b6e5aa1604" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowDefAsset" />
   <Object id="8895914c-a8b0-4c29-a83c-fb2efb0c9724" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowInstance" />
+  <Object id="6bcf27dd-4974-433d-9e0d-379a01e3b696" name="*AssetLink|Suity.Editor.Flows.SubFlows.ISubFlowPage" />
+  <Object id="1fa0396c-33fe-439f-84be-24da42877692" name="*AssetLink|Suity.Editor.Flows.SubFlows.IToolDefAsset" />
   <Object id="826e5ab6-b230-4a94-9d0f-36d10c5da90a" name="*AssetLink|Suity.Editor.Flows.SubFlows.SubFlowDefinitionAsset" />
   <Object id="5ec9dea8-3c72-4720-be46-cf5728aaa6af" name="*AssetLink|Suity.Editor.Flows.TaskPages.SubFlowPresetAsset" />
   <Object id="9c99d8fe-3f3e-4c45-bbc8-17d63f9f62a4" name="*AssetLink|Suity.Editor.GroupAsset" />
@@ -643,7 +647,9 @@
   <Object id="ae2fbbb1-bb48-4d93-971f-1cae5c652f84" name="*Suity|IDataTransport" />
   <Object id="4bbdb419-7fa3-450f-ab9c-621e2f749095" name="*Suity|IMonitable" />
   <Object id="ac3c00fc-cb22-447a-9c7d-db4f1cb5638d" name="*Suity|IRemoteControl" />
-  <Object id="c4605fe3-2f1a-4f7b-9e49-a7de0e5bfbee" name="*Suity|ISubFlowDef" />
+  <Object id="94be0023-27d2-4e66-a29f-cdc80b9663b6" name="*Suity|ISubFlowPage" />
+  <Object id="94be0023-27d2-4e66-a29f-cdc80b9663b6" name="*Suity|ISubFlowPage" />
+  <Object id="94be0023-27d2-4e66-a29f-cdc80b9663b6" name="*Suity|ISubFlowPage" />
   <Object id="01979b0f-1d99-4910-971d-c92bc4f1a5fb" name="*Suity|JsonContentTypes" />
   <Object id="46672860-8c47-4b41-8fe5-05bca04c6742" name="*Suity|JsonContentTypes.Boolean" />
   <Object id="1bb848b6-92cf-438a-a590-6333b3a636fb" name="*Suity|JsonContentTypes.Content" />

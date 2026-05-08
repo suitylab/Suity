@@ -24,13 +24,12 @@ namespace Suity.Editor.Flows.SubFlows;
 [DisplayOrder(5000)]
 [ToolTipsText("Sub-flow interactive page definition")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionNode")]
-public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
+public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlowPage
 {
     Guid _id;
 
     FlowNodeConnector _resultConnector;
 
-    [Obsolete]
     readonly AssetListProperty<ISubFlowAsset> _tools = new("Tools", "Tool List");
     readonly ValueProperty<bool> _useParentArticle = new("UseParentArticle", "Use Parent Article", false, "Use the parent article as the article record for this page's content.");
 
@@ -74,7 +73,6 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
     /// <summary>
     /// Gets the collection of tools associated with this page.
     /// </summary>
-    [Obsolete]
     public IEnumerable<ISubFlowAsset> Tools => _tools.Targets;
 
     /// <summary>
@@ -124,10 +122,10 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
     #region ISubFlowDef
 
     /// <inheritdoc/>
-    public override ISubFlowDef GetPageDefinition() => null;
+    public override ISubFlowPage GetPageDefinition() => null;
 
     /// <inheritdoc/>
-    public override ISubFlowDef GetPageResult()
+    public override ISubFlowPage GetPageResult()
     {
         if (this.Diagram is not { } diagram)
         {
@@ -140,7 +138,7 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
 
         }
 
-        return node as ISubFlowDef;
+        return node as ISubFlowPage;
     }
 
     /// <inheritdoc/>
@@ -233,7 +231,10 @@ public class SubFlowDefinitionDiagramItem : FlowDiagramItem<SubflowDefinitionNod
 /// Asset representing a page definition that can be used as a tool.
 /// </summary>
 [NativeType(CodeBase = "SubFlow", Description = "Sub-flow Definition", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
-public class SubFlowDefinitionAsset : Asset, ISubFlowDefAsset, ISubFlowAsset
+public class SubFlowDefinitionAsset : Asset,
+    ISubFlowDefAsset,
+    IToolDefAsset,
+    ISubFlowAsset
 {
     /// <inheritdoc/>
     public override ImageDef DefaultIcon => CoreIconCache.Page;
@@ -258,7 +259,7 @@ public class SubFlowDefinitionAsset : Asset, ISubFlowDefAsset, ISubFlowAsset
     public bool IsStartup => false;
 
     /// <inheritdoc/>
-    public ISubFlowDef GetBaseDefinition() => GetDiagramItem()?.Node;
+    public ISubFlowPage GetBaseDefinition() => GetDiagramItem()?.Node;
 
     /// <inheritdoc/>
     public ISubFlowInstance CreateInstance(PageElementOption option)
@@ -293,7 +294,7 @@ public class SubFlowDefinitionAssetBuilder : AssetBuilder<SubFlowDefinitionAsset
 [DisplayOrder(4999)]
 [ToolTipsText("Sub-flow interactive page's detached branch page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubNode")]
-public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
+public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, ISubFlowPage
 {
     readonly AssetProperty<SubFlowDefinitionAsset> _page = new("Page", "Page");
 
@@ -383,10 +384,10 @@ public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
     #region ISubFlowDef
 
     /// <inheritdoc/>
-    public override ISubFlowDef GetPageDefinition() => null;
+    public override ISubFlowPage GetPageDefinition() => null;
 
     /// <inheritdoc/>
-    public override ISubFlowDef GetPageResult()
+    public override ISubFlowPage GetPageResult()
     {
         if (this.Diagram is not { } diagram)
         {
@@ -399,7 +400,7 @@ public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
 
         }
 
-        return node as ISubFlowDef;
+        return node as ISubFlowPage;
     }
 
     /// <inheritdoc/>
@@ -443,7 +444,7 @@ public class SubflowBranchDiagramItem : FlowDiagramItem<SubflowBranchNode>
 [DisplayOrder(4998)]
 [ToolTipsText("Sub-flow interactive page's detached result page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageResultNode")]
-public class SubFlowResultNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
+public class SubFlowResultNode : SubflowDefNode, IGroupFlowNode, ISubFlowPage
 {
     FlowNodeConnector _defConnector;
 
@@ -497,7 +498,7 @@ public class SubFlowResultNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
     #region ISubFlowDef
 
     /// <inheritdoc/>
-    public override ISubFlowDef GetPageDefinition()
+    public override ISubFlowPage GetPageDefinition()
     {
         if (this.Diagram is not { } diagram)
         {
@@ -510,11 +511,11 @@ public class SubFlowResultNode : SubflowDefNode, IGroupFlowNode, ISubFlowDef
 
         }
 
-        return node as ISubFlowDef;
+        return node as ISubFlowPage;
     }
 
     /// <inheritdoc/>
-    public override ISubFlowDef GetPageResult() => null;
+    public override ISubFlowPage GetPageResult() => null;
 
     /// <inheritdoc/>
     public override object GetDocumentItem() => this.DiagramItem;
@@ -550,24 +551,24 @@ public class SubFlowResultDiagramItem : FlowDiagramItem<SubFlowResultNode>
 #region Converters
 
 /// <summary>
-/// Converts a <see cref="SubFlowDefinitionAsset"/> to an <see cref="ISubFlowDef"/>.
+/// Converts a <see cref="SubFlowDefinitionAsset"/> to an <see cref="ISubFlowPage"/>.
 /// </summary>
-public class SubFlowDefinitionAssetToISubFlowDefConverter : AssetLinkToTypeConverter<SubFlowDefinitionAsset, ISubFlowDef>
+public class SubFlowDefinitionAssetToISubFlowDefConverter : AssetLinkToTypeConverter<SubFlowDefinitionAsset, ISubFlowPage>
 {
     /// <inheritdoc/>
-    public override ISubFlowDef Convert(SubFlowDefinitionAsset objFrom)
+    public override ISubFlowPage Convert(SubFlowDefinitionAsset objFrom)
     {
         return objFrom.GetDiagramItem()?.Node;
     }
 }
 
 /// <summary>
-/// Converts an <see cref="ISubFlowDef"/> to a <see cref="SubFlowDefinitionAsset"/>.
+/// Converts an <see cref="ISubFlowPage"/> to a <see cref="SubFlowDefinitionAsset"/>.
 /// </summary>
-public class ISubFlowDefToSubFlowDefinitionAssetConverter : TypeToAssetLinkConverter<ISubFlowDef, SubFlowDefinitionAsset>
+public class ISubFlowDefToSubFlowDefinitionAssetConverter : TypeToAssetLinkConverter<ISubFlowPage, SubFlowDefinitionAsset>
 {
     /// <inheritdoc/>
-    public override SubFlowDefinitionAsset Convert(ISubFlowDef objFroms)
+    public override SubFlowDefinitionAsset Convert(ISubFlowPage objFroms)
     {
         if (objFroms is SubflowDefinitionNode node)
         {

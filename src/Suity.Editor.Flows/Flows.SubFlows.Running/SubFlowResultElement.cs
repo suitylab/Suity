@@ -56,7 +56,7 @@ public class SubFlowResultElement : SubFlowGroupElement
         }
 
         string resultTitle = (Node as IGroupFlowNode)?.GroupName;
-        var defNode = (this.Node as ISubFlowDef)?.GetPageDefinition();
+        var defNode = (this.Node as ISubFlowPage)?.GetPageDefinition();
         string label;
 
         if (defNode != null)
