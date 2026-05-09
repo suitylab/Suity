@@ -70,7 +70,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
     public bool ChatHistory { get; private set; }
 
     /// <inheritdoc/>
-    public ChatHistoryText ResolveChatHistory()
+    public HistoryText ResolveChatHistory()
     {
         if (AllSubTasks)
         {
@@ -80,7 +80,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
         else
         {
             var subTask = GetLastSubTask();
-            return subTask?.GetTaskCommit() ?? ChatHistoryText.Empty;
+            return subTask?.GetTaskCommit() ?? HistoryText.Empty;
         }
     }
 

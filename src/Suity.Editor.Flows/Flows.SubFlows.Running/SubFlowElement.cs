@@ -460,7 +460,7 @@ public abstract class SubFlowElement : IViewObject, ISubFlowElement
     /// <param name="type">The type definition of the value.</param>
     /// <param name="value">The value to convert.</param>
     /// <returns>The converted chat history text, or the original value's string representation.</returns>
-    public static ChatHistoryText ConvertChatHistoryText(TypeDefinition type, object value, bool assetKeyMode)
+    public static HistoryText ConvertChatHistoryText(TypeDefinition type, object value, bool assetKeyMode)
     {
         if (assetKeyMode) 
         {
@@ -480,7 +480,7 @@ public abstract class SubFlowElement : IViewObject, ISubFlowElement
             }
         }
 
-        var historyText = TypeDefinition.FromNative<ChatHistoryText>();
+        var historyText = TypeDefinition.FromNative<HistoryText>();
         var state = EditorServices.TypeConvertService.TryConvert(type, historyText, false, value, out var converted);
         var result = state == TypeConvertState.Unconvertible ? value : converted;
 

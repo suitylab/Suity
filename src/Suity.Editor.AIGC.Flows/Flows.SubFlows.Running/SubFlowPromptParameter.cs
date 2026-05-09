@@ -86,7 +86,7 @@ public class SubFlowPromptParameter : SubFlowElement, IPageParameterInput
     }
 
     /// <inheritdoc/>
-    public ChatHistoryText ResolveChatHistory() => ResolvePrmopt();
+    public HistoryText ResolveChatHistory() => ResolvePrmopt();
 
     /// <inheritdoc/>
     public void SetValue(object value)

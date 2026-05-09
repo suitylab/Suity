@@ -84,7 +84,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     /// Resolves the chat history text representation of the file path value.
     /// </summary>
     /// <returns>The file path as chat history text.</returns>
-    public ChatHistoryText ResolveChatHistory()
+    public HistoryText ResolveChatHistory()
     {
         return _value?.ToString();
     }

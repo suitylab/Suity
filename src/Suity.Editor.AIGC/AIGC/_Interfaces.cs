@@ -70,7 +70,7 @@ public interface IAigcTaskPage
     /// <summary>
     /// Gets the task commit information.
     /// </summary>
-    ChatHistoryText GetTaskCommit();
+    HistoryText GetTaskCommit();
 
     /// <summary>
     /// Gets a value indicating whether this task and all its sub-tasks are done.

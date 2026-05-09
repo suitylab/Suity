@@ -23,7 +23,7 @@ public class IArticleAssetToTextConverter : TypeToTextConverter<IArticleAsset>
 }
 
 /// <summary>
-/// Converts <see cref="IArticleAsset"/> or arrays of article assets to <see cref="ChatHistoryText"/> format.
+/// Converts <see cref="IArticleAsset"/> or arrays of article assets to <see cref="HistoryText"/> format.
 /// </summary>
 public class IArticleAssetToChatHistoryTextConverter : ITypeDefinitionConverter
 {
@@ -40,14 +40,14 @@ public class IArticleAssetToChatHistoryTextConverter : ITypeDefinitionConverter
     /// <summary>
     /// Gets the target types this converter produces.
     /// </summary>
-    public TypeDefinition[] TypesTo => [TypeDefinition.FromNative<ChatHistoryText>()];
+    public TypeDefinition[] TypesTo => [TypeDefinition.FromNative<HistoryText>()];
 
     /// <summary>
     /// Converts an object to the specified target type.
     /// </summary>
     /// <param name="objFrom">The source object to convert.</param>
     /// <param name="typeTo">The target type definition.</param>
-    /// <returns>The converted object as <see cref="ChatHistoryText"/>.</returns>
+    /// <returns>The converted object as <see cref="HistoryText"/>.</returns>
     public object ConvertType(object objFrom, TypeDefinition typeTo)
     {
         if (objFrom is not string && objFrom is System.Collections.IEnumerable ary)
@@ -66,7 +66,7 @@ public class IArticleAssetToChatHistoryTextConverter : ITypeDefinitionConverter
     /// </summary>
     /// <param name="ary">The collection of article assets to convert.</param>
     /// <returns>The combined chat history text.</returns>
-    public static ChatHistoryText ConvertArray(System.Collections.IEnumerable ary)
+    public static HistoryText ConvertArray(System.Collections.IEnumerable ary)
     {
         var builder = new StringBuilder();
         foreach (var item in ary)
@@ -85,8 +85,8 @@ public class IArticleAssetToChatHistoryTextConverter : ITypeDefinitionConverter
     /// Converts a single object to chat history text.
     /// </summary>
     /// <param name="objFrom">The object to convert (can be <see cref="IArticleAsset"/> or <see cref="SAssetKey"/>).</param>
-    /// <returns>The chat history text representation, or <see cref="ChatHistoryText.Empty"/> if conversion fails.</returns>
-    public static ChatHistoryText ConvertObject(object objFrom)
+    /// <returns>The chat history text representation, or <see cref="HistoryText.Empty"/> if conversion fails.</returns>
+    public static HistoryText ConvertObject(object objFrom)
     {
         if (objFrom is IArticleAsset articleAsset)
         {
@@ -98,7 +98,7 @@ public class IArticleAssetToChatHistoryTextConverter : ITypeDefinitionConverter
         }
         else
         {
-            return ChatHistoryText.Empty;
+            return HistoryText.Empty;
         }
     }
 
@@ -106,12 +106,12 @@ public class IArticleAssetToChatHistoryTextConverter : ITypeDefinitionConverter
     /// Gets the formatted article text with title and content wrapped in article tags.
     /// </summary>
     /// <param name="articleAsset">The article asset to format.</param>
-    /// <returns>The formatted article text, or <see cref="ChatHistoryText.Empty"/> if the asset is null.</returns>
-    public static ChatHistoryText GetArticleAsset(IArticleAsset articleAsset)
+    /// <returns>The formatted article text, or <see cref="HistoryText.Empty"/> if the asset is null.</returns>
+    public static HistoryText GetArticleAsset(IArticleAsset articleAsset)
     {
         if (articleAsset is null)
         {
-            return ChatHistoryText.Empty;
+            return HistoryText.Empty;
         }
 
         string title = articleAsset.GetTitle(true);

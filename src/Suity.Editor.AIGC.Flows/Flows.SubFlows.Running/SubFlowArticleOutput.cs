@@ -228,7 +228,7 @@ public class SubFlowArticleOutput : SubFlowElement, IArticleResolver, IPageParam
     /// Resolves the chat history text content for this output element.
     /// </summary>
     /// <returns>The resolved chat history text, or an empty string if not available.</returns>
-    public ChatHistoryText ResolveChatHistory()
+    public HistoryText ResolveChatHistory()
     {
         var article = ResolveArticle(false);
 

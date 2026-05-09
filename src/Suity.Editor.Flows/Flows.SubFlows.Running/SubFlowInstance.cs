@@ -789,10 +789,10 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     }
 
     /// <summary>
-    /// Gets the input chat history formatted as a <see cref="ChatHistoryText"/>.
+    /// Gets the input chat history formatted as a <see cref="HistoryText"/>.
     /// </summary>
     /// <returns>The formatted input chat history.</returns>
-    public ChatHistoryText GetInputChatHistory()
+    public HistoryText GetInputChatHistory()
     {
         var builder = new StringBuilder();
 
@@ -838,10 +838,10 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     }
 
     /// <summary>
-    /// Gets the output chat history formatted as a <see cref="ChatHistoryText"/>.
+    /// Gets the output chat history formatted as a <see cref="HistoryText"/>.
     /// </summary>
     /// <returns>The formatted output chat history.</returns>
-    public ChatHistoryText GetOutputChatHistory()
+    public HistoryText GetOutputChatHistory()
     {
         var builder = new StringBuilder();
 
@@ -888,10 +888,10 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     }
 
     /// <summary>
-    /// Gets the task commit data formatted as a <see cref="ChatHistoryText"/>.
+    /// Gets the task commit data formatted as a <see cref="HistoryText"/>.
     /// </summary>
     /// <returns>The formatted task commit data.</returns>
-    public ChatHistoryText GetTaskCommit()
+    public HistoryText GetTaskCommit()
     {
         var builder = new StringBuilder();
 

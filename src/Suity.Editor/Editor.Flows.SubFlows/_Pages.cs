@@ -78,7 +78,7 @@ public interface IPageParameter : IPageValueElement
     /// <summary>
     /// Resolves and returns the chat history content.
     /// </summary>
-    ChatHistoryText ResolveChatHistory();
+    HistoryText ResolveChatHistory();
 }
 
 /// <summary>

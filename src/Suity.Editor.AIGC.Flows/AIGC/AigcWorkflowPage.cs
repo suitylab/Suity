@@ -316,7 +316,7 @@ public class AigcWorkflowPage : DesignNode,
     public IAigcTaskHost TaskHost => this.GetDocument() as AigcTaskPageDocument;
 
     /// <inheritdoc/>
-    public ChatHistoryText GetTaskCommit() => GetPageInstance()?.GetTaskCommit();
+    public HistoryText GetTaskCommit() => GetPageInstance()?.GetTaskCommit();
 
     /// <inheritdoc/>
     public bool? GetAllDone() => EnsureInstance()?.GetAllDone();

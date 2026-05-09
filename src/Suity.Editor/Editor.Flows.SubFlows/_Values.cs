@@ -2,50 +2,17 @@ using Suity.Editor.Types;
 
 namespace Suity.Editor.Flows.SubFlows;
 
-#region SubFlowEventTypes
-
 /// <summary>
-/// Represents the types of events that can occur during an Sub-flow task lifecycle.
+/// Represents a wrapper for history text content with implicit conversion support.
 /// </summary>
-public enum SubFlowEventTypes
+[NativeType(CodeBase = "SubFlow")]
+[NativeAlias("*AIGC|ChatHistoryText")]
+public record HistoryText
 {
     /// <summary>
-    /// No event.
+    /// Gets an empty <see cref="HistoryText"/> instance.
     /// </summary>
-    [DisplayText("None")]
-    None,
-
-    /// <summary>
-    /// Indicates that a task has begun.
-    /// </summary>
-    [DisplayText("Task Start")]
-    TaskBegin,
-
-    /// <summary>
-    /// Indicates that a subtask has completed successfully.
-    /// </summary>
-    [DisplayText("Subtask Completed")]
-    SubTaskFinished,
-
-    /// <summary>
-    /// Indicates that a subtask has failed.
-    /// </summary>
-    [DisplayText("Subtask Failed")]
-    SubTaskFailed,
-}
-
-#endregion
-
-/// <summary>
-/// Represents a wrapper for chat history text content with implicit conversion support.
-/// </summary>
-[NativeType(CodeBase = "AIGC")]
-public record ChatHistoryText
-{
-    /// <summary>
-    /// Gets an empty <see cref="ChatHistoryText"/> instance.
-    /// </summary>
-    public static ChatHistoryText Empty { get; } = new ChatHistoryText(string.Empty);
+    public static HistoryText Empty { get; } = new(string.Empty);
 
     /// <summary>
     /// Gets the underlying text content.
@@ -53,9 +20,9 @@ public record ChatHistoryText
     public string Text { get; init; }
 
     /// <summary>
-    /// Initializes a new instance of <see cref="ChatHistoryText"/> with the specified text.
+    /// Initializes a new instance of <see cref="HistoryText"/> with the specified text.
     /// </summary>
-    public ChatHistoryText(string text)
+    public HistoryText(string text)
     {
         Text = text ?? string.Empty;
     }
@@ -69,21 +36,21 @@ public record ChatHistoryText
     }
 
     /// <summary>
-    /// Implicitly converts a <see cref="ChatHistoryText"/> to a <see cref="string"/>.
+    /// Implicitly converts a <see cref="HistoryText"/> to a <see cref="string"/>.
     /// </summary>
-    public static implicit operator string(ChatHistoryText text)
+    public static implicit operator string(HistoryText text)
     {
         return text.Text;
     }
 
     /// <summary>
-    /// Implicitly converts a <see cref="string"/> to a <see cref="ChatHistoryText"/>. Returns <see cref="Empty"/> if the text is null or whitespace.
+    /// Implicitly converts a <see cref="string"/> to a <see cref="HistoryText"/>. Returns <see cref="Empty"/> if the text is null or whitespace.
     /// </summary>
-    public static implicit operator ChatHistoryText(string text)
+    public static implicit operator HistoryText(string text)
     {
         if (!string.IsNullOrWhiteSpace(text))
         {
-            return new ChatHistoryText(text);
+            return new HistoryText(text);
         }
         else
         {

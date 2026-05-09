@@ -88,7 +88,7 @@ public class SubFlowPresetParameter : SubFlowElement, IPageParameterInput
     public bool IsPresetInput => true;
 
     /// <inheritdoc/>
-    public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, LinkedMode);
+    public HistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, LinkedMode);
 
     #endregion
 

@@ -24,7 +24,6 @@
   <Object id="a9abdbf9-6000-4404-975f-1db9618048ba" name="*AIGC|ArticleFilters.NotBlankGuide" />
   <Object id="2c2f9ff6-650d-4de8-af8d-7898c776b1e9" name="*AIGC|ArticleFilters.NotBlankNote" />
   <Object id="0c2505fd-b928-458f-906e-401325a55b2e" name="*AIGC|Assistant" />
-  <Object id="bb505458-e323-4e8c-ac2b-4a124daff65c" name="*AIGC|ChatHistoryText" />
   <Object id="2ef906a6-2cc4-44e4-b3d0-c11321b5edfc" name="*AIGC|EmbeddingAsset" />
   <Object id="f0780b8a-f4b7-4cc8-860a-be57c98c148d" name="*AIGC|FeatureKnowledge" />
   <Object id="c0c5c1eb-f42f-4142-8edb-9f59872df9f5" name="*AIGC|FlowContextScopes" />
@@ -601,6 +600,8 @@
   <Object id="7f713bf6-15ac-4bfa-94fe-d3029c57ee00" name="*SiliconFlowImage" />
   <Object id="4f7ed151-b5b6-4ce0-9f3c-ec2a4ea67c8c" name="*SiliconFlowLLm" />
   <Object id="0d7fe790-7370-4374-9178-6870246c699f" name="*SubFlow" />
+  <Object id="fc26ad23-d56e-4557-8b2e-99d20bba6b95" name="*SubFlow|HistoryText" />
+  <Object id="fc26ad23-d56e-4557-8b2e-99d20bba6b95" name="*SubFlow|HistoryText" />
   <Object id="3ac40d65-d15b-4021-b18e-d0408fcb29c7" name="*SubFlow|IBranchConnection" />
   <Object id="6072f32d-473e-483e-a9a7-757d5a032a68" name="*SubFlow|IPageAsset" />
   <Object id="6072f32d-473e-483e-a9a7-757d5a032a68" name="*SubFlow|IPageAsset" />

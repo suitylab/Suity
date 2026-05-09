@@ -81,17 +81,17 @@ public interface ISubFlowInstance : ISubFlowElement, IPageInstance
     /// <summary>
     /// Gets the input chat history.
     /// </summary>
-    ChatHistoryText GetInputChatHistory();
+    HistoryText GetInputChatHistory();
 
     /// <summary>
     /// Gets the output chat history.
     /// </summary>
-    ChatHistoryText GetOutputChatHistory();
+    HistoryText GetOutputChatHistory();
 
     /// <summary>
     /// Gets the task commit information.
     /// </summary>
-    ChatHistoryText GetTaskCommit();
+    HistoryText GetTaskCommit();
 
     /// <summary>
     /// Gets all input parameters for this page.

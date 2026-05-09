@@ -82,7 +82,7 @@ public class SubFlowParameterOutput : SubFlowElement, IPageParameterOutput
     public bool LinkedMode { get; private set; }
 
     /// <inheritdoc/>
-    public ChatHistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, LinkedMode);
+    public HistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, LinkedMode);
 
     #endregion
 
