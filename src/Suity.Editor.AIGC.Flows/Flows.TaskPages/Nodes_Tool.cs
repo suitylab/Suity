@@ -103,7 +103,7 @@ public class GetSelfPageDefinition : TaskPageNode
     /// </summary>
     public GetSelfPageDefinition()
     {
-        var type = TypeDefinition.FromAssetLink<ISubFlowAsset>();
+        var type = TypeDefinition.FromAssetLink<IPageAsset>();
 
         _out = this.AddDataOutputConnector("SelfPage", type, "Self Page Definition");
     }
