@@ -20,7 +20,7 @@ namespace Suity.Editor.Flows.SubFlows;
 /// Sub-flow interactive page definition node that can act as a group and page.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.Page)]
-[DisplayText("Sub-flow Page", "*CoreIcon|Page")]
+[DisplayText("Sub-flow Page", "*CoreIcon|Workflow")]
 [DisplayOrder(5000)]
 [ToolTipsText("Sub-flow interactive page definition")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionNode")]
@@ -43,7 +43,7 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlow
     }
 
     /// <inheritdoc/>
-    public override ImageDef DefaultIcon => CoreIconCache.Page;
+    public override ImageDef DefaultIcon => CoreIconCache.Workflow;
 
     /// <summary>
     /// Gets the group name, using description if available, otherwise the node name.
@@ -230,21 +230,21 @@ public class SubFlowDefinitionDiagramItem : FlowDiagramItem<SubflowDefinitionNod
 /// <summary>
 /// Asset representing a page definition that can be used as a tool.
 /// </summary>
-[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Definition", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
+[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Definition", Color = FlowColors.Page, Icon = "*CoreIcon|Workflow")]
 public class SubFlowDefinitionAsset : Asset,
-    ISubFlowDefAsset,
     IPageAsset,
-    ISubFlowAsset
+    ISubFlowAsset,
+    ISubFlowDefAsset
 {
     /// <inheritdoc/>
-    public override ImageDef DefaultIcon => CoreIconCache.Page;
+    public override ImageDef DefaultIcon => CoreIconCache.Workflow;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SubFlowDefinitionAsset"/> class.
     /// </summary>
     public SubFlowDefinitionAsset()
     {
-        UpdateAssetTypes(typeof(ISubFlowDefAsset), typeof(ISubFlowAsset));
+        UpdateAssetTypes(typeof(IPageAsset), typeof(ISubFlowAsset), typeof(ISubFlowDefAsset));
     }
 
     /// <summary>
@@ -253,7 +253,7 @@ public class SubFlowDefinitionAsset : Asset,
     /// <returns>The <see cref="SubFlowDefinitionDiagramItem"/>, or null.</returns>
     public SubFlowDefinitionDiagramItem GetDiagramItem() => this.GetStorageObject(true) as SubFlowDefinitionDiagramItem;
 
-    #region IToolDefAsset
+    #region IPageAsset
 
     /// <inheritdoc/>
     public IPageInstance CreatePageInstance(PageElementOption option)

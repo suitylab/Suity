@@ -42,7 +42,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     private readonly HashSet<SubFlowElement> _allElements = [];
     private SubFlowEndElement _currentEndElement;
 
-    private readonly AssetProperty<ISubFlowAsset> _preset = new(PRESET_PROP, "Preset");
+    private readonly AssetProperty<ISubFlowPresetAsset> _preset = new(PRESET_PROP, "Preset");
     private string _presetName;
 
 
@@ -54,7 +54,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <param name="pageDefinition">The page definition diagram item.</param>
     /// <param name="option">The page element configuration options.</param>
     /// <param name="preset">Optional preset asset to associate with this page instance.</param>
-    public SubFlowInstance(SubFlowDefinitionDiagramItem pageDefinition, PageElementOption option, ISubFlowAsset preset = null)
+    public SubFlowInstance(SubFlowDefinitionDiagramItem pageDefinition, PageElementOption option, ISubFlowPresetAsset preset = null)
         : base(pageDefinition)
     {
         _pageDefinition = pageDefinition ?? throw new ArgumentNullException(nameof(pageDefinition));
@@ -103,7 +103,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <summary>
     /// Gets the selection for the preset asset associated with this page.
     /// </summary>
-    public AssetSelection<ISubFlowAsset> PresetAssetSelection => _preset.Selection;
+    public AssetSelection<ISubFlowPresetAsset> PresetAssetSelection => _preset.Selection;
 
     /// <summary>
     /// Gets the last computation that was executed on this page.
@@ -137,38 +137,290 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
     #endregion
 
-    #region ISubFlowInstance
+    #region IPageInstance
 
-    /// <summary>
-    /// Gets the owner of this page instance.
-    /// </summary>
+
+    /// <inheritdoc/>
     public object Owner => Option?.Owner;
 
     /// <summary>
-    /// Gets the base page definition that this instance is based on.
+    /// Converts this page instance to a <see cref="SimpleType"/> representation.
     /// </summary>
+    /// <returns>A <see cref="SimpleType"/> describing the page's input parameters.</returns>
+    public SimpleType ToSimpleType()
+    {
+        List<SimpleField> fields = [];
+
+        if (_dic.Values.OfType<SubFlowBeginElement>().FirstOrDefault() is { } begin)
+        {
+            if (begin.ParameterType is { } fieldType && !TypeDefinition.IsNullOrEmpty(fieldType))
+            {
+                if (fieldType == NativeTypes.TextBlockType)
+                {
+                    fieldType = NativeTypes.StringType;
+                }
+
+                var attr = begin.Node as IAttributeGetter;
+                var range = attr?.GetAttribute<NumericRangeAttribute>();
+                var selection = attr?.GetAttribute<SelectionDesignAttribute>();
+                var tooltips = attr?.GetAttribute<ToolTipsAttribute>();
+
+                var field = new SimpleField
+                {
+                    Name = begin.Name,
+                    Tooltips = tooltips?.ToolTips,
+                    Type = fieldType,
+                    Range = range,
+                    Selection = selection,
+                };
+
+                fields.Add(field);
+            }
+        }
+
+        foreach (var parameter in _dic.Values.OfType<IPageParameterInput>())
+        {
+            if (parameter.IsPresetInput)
+            {
+                continue;
+            }
+
+            var fieldType = parameter.ParameterType;
+            if (fieldType == NativeTypes.TextBlockType)
+            {
+                fieldType = NativeTypes.StringType;
+            }
+
+            var node = (parameter as SubFlowElement)?.DiagramItem?.Node as DesignFlowNode;
+            var range = node?.GetAttribute<NumericRangeAttribute>();
+            var selection = node?.GetAttribute<SelectionDesignAttribute>();
+            var tooltips = node?.GetAttribute<ToolTipsAttribute>();
+
+            var field = new SimpleField
+            {
+                Name = parameter.Name,
+                Tooltips = tooltips?.ToolTips,
+                Type = fieldType,
+                Range = range,
+                Selection = selection,
+            };
+
+            fields.Add(field);
+        }
+
+        var name = this.Name;
+        var typeToolTips = this.Tooltips;
+
+        var type = new SimpleType
+        {
+            Name = name,
+            Tooltips = typeToolTips,
+            Fields = [.. fields],
+        };
+
+        return type;
+    }
+
+    /// <summary>
+    /// Gets all input parameters defined on this page.
+    /// </summary>
+    /// <returns>An enumerable of page parameter inputs.</returns>
+    public IEnumerable<IPageParameterInput> GetInputParameters()
+    {
+        return GetAllChildElements().OfType<IPageParameterInput>();
+    }
+
+    /// <summary>
+    /// Sets the value of a named parameter on this page.
+    /// </summary>
+    /// <param name="name">The name of the parameter.</param>
+    /// <param name="value">The value to set.</param>
+    public void SetParameter(string name, object value)
+    {
+        if (_dic.TryGetValue(name, out var element) && element is IPageParameter parameter)
+        {
+            parameter.SetValue(value);
+
+            ParameterSet?.Invoke(this, parameter);
+        }
+    }
+
+    #endregion
+
+    #region ISubFlowInstance
+
+    /// <inheritdoc/>
     public ISubFlow BaseDefinition => _pageNode;
 
     public SubflowDefinitionNode PageNode => _pageNode;
 
-    /// <summary>
-    /// Gets the tool asset associated with this page.
-    /// </summary>
-    /// <returns>The tool asset, falling back to the target asset if no preset is set.</returns>
-    public virtual ISubFlowAsset GetToolAsset()
+    /// <inheritdoc/>
+    public virtual ISubFlowAsset GetSubFlowAsset()
     {
         if (_preset.Target is { } prestAsset)
         {
             return prestAsset;
         }
 
-        return TargetAsset as ISubFlowAsset;
+        return _asset;
     }
 
-    /// <summary>
-    /// Gets all elements contained within this page.
-    /// </summary>
+    /// <inheritdoc/>
     public IEnumerable<ISubFlowElement> Elements => _allElements;
+
+    /// <inheritdoc/>
+    public HistoryText GetInputChatHistory()
+    {
+        var builder = new StringBuilder();
+
+        var inputs = GetAllChildElements(true).OfType<IPageParameterInput>()
+            .Where(o => o.ChatHistory && o.GetCanOutputHistory(FlowDirections.Input))
+            .ToArray();
+
+        foreach (var element in inputs)
+        {
+            if (element is IPageMessage)
+            {
+                try
+                {
+                    var text = element.ResolveChatHistory();
+                    builder.AppendLine(text.Text);
+                }
+                catch (Exception)
+                {
+                    builder.AppendLine("---");
+                }
+            }
+            else
+            {
+                string attr = ResolveElementXmlAttr(element as SubFlowElement);
+                builder.AppendLine($"<{element.Name}{attr}>");
+
+                try
+                {
+                    var text = element.ResolveChatHistory();
+                    builder.AppendLine(text.Text);
+                }
+                catch (Exception)
+                {
+                    builder.AppendLine("---");
+                }
+                builder.AppendLine($"</{element.Name}>");
+            }
+
+            builder.AppendLine();
+        }
+
+        return builder.ToString();
+    }
+
+    /// <inheritdoc/>
+    public HistoryText GetOutputChatHistory()
+    {
+        var builder = new StringBuilder();
+
+        var outputs = GetAllChildElements(true).OfType<IPageParameterOutput>()
+            .Where(o => o.ChatHistory && o.GetCanOutputHistory(FlowDirections.Output))
+            .ToArray();
+
+        builder.Length = 0;
+        foreach (var element in outputs)
+        {
+            if (element is IPageMessage)
+            {
+                try
+                {
+                    var text = element.ResolveChatHistory();
+                    builder.AppendLine(text.Text);
+                }
+                catch (Exception)
+                {
+                    builder.AppendLine("---");
+                }
+            }
+            else
+            {
+                string attr = ResolveElementXmlAttr(element as SubFlowElement);
+                builder.AppendLine($"<{element.Name}{attr}>");
+
+                try
+                {
+                    var text = element.ResolveChatHistory();
+                    builder.AppendLine(text.Text);
+                }
+                catch (Exception)
+                {
+                    builder.AppendLine("---");
+                }
+                builder.AppendLine($"</{element.Name}>");
+            }
+
+            builder.AppendLine();
+        }
+
+        return builder.ToString();
+    }
+
+    /// <inheritdoc/>
+    public HistoryText GetTaskCommit()
+    {
+        var builder = new StringBuilder();
+
+        var outputs = GetAllChildElements(true).OfType<IPageParameter>()
+            .Where(o => o.TaskCommit)
+            .ToArray();
+
+        builder.Length = 0;
+        foreach (var element in outputs)
+        {
+            string attr = ResolveElementXmlAttr(element as SubFlowElement);
+            builder.AppendLine($"<{element.Name}{attr}>");
+
+            try
+            {
+                var text = element.ResolveChatHistory();
+                builder.AppendLine(text.Text);
+            }
+            catch (Exception)
+            {
+                builder.AppendLine("---");
+            }
+            builder.AppendLine($"</{element.Name}>");
+            builder.AppendLine();
+        }
+
+        return builder.ToString();
+    }
+
+    /// <inheritdoc/>
+    public bool? GetAllDone()
+    {
+        if (GetIsDone().IsFalse())
+        {
+            return false;
+        }
+
+        var pages = _groups.OfType<SubFlowBranchElement>().OfType<SubFlowElement>().ConcatOne(this);
+
+        bool? v = null;
+        foreach (var page in pages)
+        {
+            if (page.GetIsDone() is { } doneV)
+            {
+                if (doneV)
+                {
+                    v ??= true;
+                }
+                else
+                {
+                    v = false;
+                    break;
+                }
+            }
+        }
+
+        return v;
+    }
 
     #endregion
 
@@ -516,29 +768,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         return clone;
     }
 
-    /// <summary>
-    /// Sets the value of a named parameter on this page.
-    /// </summary>
-    /// <param name="name">The name of the parameter.</param>
-    /// <param name="value">The value to set.</param>
-    public void SetParameter(string name, object value)
-    {
-        if (_dic.TryGetValue(name, out var element) && element is IPageParameter parameter)
-        {
-            parameter.SetValue(value);
 
-            ParameterSet?.Invoke(this, parameter);
-        }
-    }
-
-    /// <summary>
-    /// Gets all input parameters defined on this page.
-    /// </summary>
-    /// <returns>An enumerable of page parameter inputs.</returns>
-    public IEnumerable<IPageParameterInput> GetInputParameters()
-    {
-        return GetAllChildElements().OfType<IPageParameterInput>();
-    }
 
     #endregion
 
@@ -627,38 +857,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <returns>True if all outputs are done, false if any is not done, or null if no outputs are defined.</returns>
     public bool? GetIsDoneOutputs() => GetIsDoneOutputs(ParameterCondition);
 
-    /// <summary>
-    /// Gets a value indicating whether all pages (including sub-pages) are done.
-    /// </summary>
-    /// <returns>True if all pages are done, false if any is not done, or null if no inputs are defined.</returns>
-    public bool? GetAllDone()
-    {
-        if (GetIsDone().IsFalse())
-        {
-            return false;
-        }
 
-        var pages = _groups.OfType<SubFlowBranchElement>().OfType<SubFlowElement>().ConcatOne(this);
-
-        bool? v = null;
-        foreach (var page in pages)
-        {
-            if (page.GetIsDone() is { } doneV)
-            {
-                if (doneV)
-                {
-                    v ??= true;
-                }
-                else
-                {
-                    v = false;
-                    break;
-                }
-            }
-        }
-
-        return v;
-    }
 
     /// <summary>
     /// Gets the overall status of all pages as a <see cref="TextStatus"/>.
@@ -699,83 +898,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// </summary>
     public SubFlowEndElement CurrentEndElement => _currentEndElement;
 
-    /// <summary>
-    /// Converts this page instance to a <see cref="SimpleType"/> representation.
-    /// </summary>
-    /// <returns>A <see cref="SimpleType"/> describing the page's input parameters.</returns>
-    public SimpleType ToSimpleType()
-    {
-        List<SimpleField> fields = [];
 
-        if (_dic.Values.OfType<SubFlowBeginElement>().FirstOrDefault() is { } begin)
-        {
-            if (begin.ParameterType is { } fieldType && !TypeDefinition.IsNullOrEmpty(fieldType))
-            {
-                if (fieldType == NativeTypes.TextBlockType)
-                {
-                    fieldType = NativeTypes.StringType;
-                }
-
-                var attr = begin.Node as IAttributeGetter;
-                var range = attr?.GetAttribute<NumericRangeAttribute>();
-                var selection = attr?.GetAttribute<SelectionDesignAttribute>();
-                var tooltips = attr?.GetAttribute<ToolTipsAttribute>();
-
-                var field = new SimpleField
-                {
-                    Name = begin.Name,
-                    Tooltips = tooltips?.ToolTips,
-                    Type = fieldType,
-                    Range = range,
-                    Selection = selection,
-                };
-
-                fields.Add(field);
-            }
-        }
-
-        foreach (var parameter in _dic.Values.OfType<IPageParameterInput>())
-        {
-            if (parameter.IsPresetInput)
-            {
-                continue;
-            }
-
-            var fieldType = parameter.ParameterType;
-            if (fieldType == NativeTypes.TextBlockType)
-            {
-                fieldType = NativeTypes.StringType;
-            }
-
-            var node = (parameter as SubFlowElement)?.DiagramItem?.Node as DesignFlowNode;
-            var range = node?.GetAttribute<NumericRangeAttribute>();
-            var selection = node?.GetAttribute<SelectionDesignAttribute>();
-            var tooltips = node?.GetAttribute<ToolTipsAttribute>();
-
-            var field = new SimpleField
-            {
-                Name = parameter.Name,
-                Tooltips = tooltips?.ToolTips,
-                Type = fieldType,
-                Range = range,
-                Selection = selection,
-            };
-
-            fields.Add(field);
-        }
-
-        var name = this.Name;
-        var typeToolTips = this.Tooltips;
-
-        var type = new SimpleType
-        {
-            Name = name,
-            Tooltips = typeToolTips,
-            Fields = [.. fields],
-        };
-
-        return type;
-    }
 
     /// <summary>
     /// Converts this page instance to an <see cref="IDataWritable"/> representation.
@@ -788,138 +911,8 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         return type.ToDataWritable();
     }
 
-    /// <summary>
-    /// Gets the input chat history formatted as a <see cref="HistoryText"/>.
-    /// </summary>
-    /// <returns>The formatted input chat history.</returns>
-    public HistoryText GetInputChatHistory()
-    {
-        var builder = new StringBuilder();
 
-        var inputs = GetAllChildElements(true).OfType<IPageParameterInput>()
-            .Where(o => o.ChatHistory && o.GetCanOutputHistory(FlowDirections.Input))
-            .ToArray();
 
-        foreach (var element in inputs)
-        {
-            if (element is IPageMessage)
-            {
-                try
-                {
-                    var text = element.ResolveChatHistory();
-                    builder.AppendLine(text.Text);
-                }
-                catch (Exception)
-                {
-                    builder.AppendLine("---");
-                }
-            }
-            else
-            {
-                string attr = ResolveElementXmlAttr(element as SubFlowElement);
-                builder.AppendLine($"<{element.Name}{attr}>");
-
-                try
-                {
-                    var text = element.ResolveChatHistory();
-                    builder.AppendLine(text.Text);
-                }
-                catch (Exception)
-                {
-                    builder.AppendLine("---");
-                }
-                builder.AppendLine($"</{element.Name}>");
-            }
-
-            builder.AppendLine();
-        }
-
-        return builder.ToString();
-    }
-
-    /// <summary>
-    /// Gets the output chat history formatted as a <see cref="HistoryText"/>.
-    /// </summary>
-    /// <returns>The formatted output chat history.</returns>
-    public HistoryText GetOutputChatHistory()
-    {
-        var builder = new StringBuilder();
-
-        var outputs = GetAllChildElements(true).OfType<IPageParameterOutput>()
-            .Where(o => o.ChatHistory && o.GetCanOutputHistory(FlowDirections.Output))
-            .ToArray();
-
-        builder.Length = 0;
-        foreach (var element in outputs)
-        {
-            if (element is IPageMessage)
-            {
-                try
-                {
-                    var text = element.ResolveChatHistory();
-                    builder.AppendLine(text.Text);
-                }
-                catch (Exception)
-                {
-                    builder.AppendLine("---");
-                }
-            }
-            else
-            {
-                string attr = ResolveElementXmlAttr(element as SubFlowElement);
-                builder.AppendLine($"<{element.Name}{attr}>");
-
-                try
-                {
-                    var text = element.ResolveChatHistory();
-                    builder.AppendLine(text.Text);
-                }
-                catch (Exception)
-                {
-                    builder.AppendLine("---");
-                }
-                builder.AppendLine($"</{element.Name}>");
-            }
-
-            builder.AppendLine();
-        }
-
-        return builder.ToString();
-    }
-
-    /// <summary>
-    /// Gets the task commit data formatted as a <see cref="HistoryText"/>.
-    /// </summary>
-    /// <returns>The formatted task commit data.</returns>
-    public HistoryText GetTaskCommit()
-    {
-        var builder = new StringBuilder();
-
-        var outputs = GetAllChildElements(true).OfType<IPageParameter>()
-            .Where(o => o.TaskCommit)
-            .ToArray();
-
-        builder.Length = 0;
-        foreach (var element in outputs)
-        {
-            string attr = ResolveElementXmlAttr(element as SubFlowElement);
-            builder.AppendLine($"<{element.Name}{attr}>");
-
-            try
-            {
-                var text = element.ResolveChatHistory();
-                builder.AppendLine(text.Text);
-            }
-            catch (Exception)
-            {
-                builder.AppendLine("---");
-            }
-            builder.AppendLine($"</{element.Name}>");
-            builder.AppendLine();
-        }
-
-        return builder.ToString();
-    }
 
     private string ResolveElementXmlAttr(SubFlowElement element)
     {

@@ -11,12 +11,22 @@ namespace Suity.Editor.Flows.SubFlows;
 
 [NativeType(CodeBase = "SubFlow", Description = "Page Instance", Color = FlowColors.Task, Icon = "*CoreIcon|Page")]
 [NativeAlias("*AIGC|IPageInstance")]
-public interface IPageInstance
+public interface IPageInstance : INamed
 {
+    /// <summary>
+    /// Gets the owner of this sub-flow instance.
+    /// </summary>
+    object Owner { get; }
+
     /// <summary>
     /// Converts this page instance to a simple type representation.
     /// </summary>
     SimpleType ToSimpleType();
+
+    /// <summary>
+    /// Gets all input parameters for this page.
+    /// </summary>
+    IEnumerable<IPageParameterInput> GetInputParameters();
 
     /// <summary>
     /// Sets a parameter value by name.
@@ -59,49 +69,43 @@ public interface ISubFlowElement : INamed
 public interface ISubFlowInstance : ISubFlowElement, IPageInstance
 {
     /// <summary>
-    /// Gets the owner of this page instance.
-    /// </summary>
-    object Owner { get; }
-
-    /// <summary>
-    /// Gets the base definition of this page.
+    /// Gets the base page definition that this instance is based on.
     /// </summary>
     ISubFlow BaseDefinition { get; }
 
     /// <summary>
-    /// Gets the tool asset associated with this page.
+    /// Gets the sub-flow asset associated with this page. If there is a preset set, this will be used instead.
     /// </summary>
-    ISubFlowAsset GetToolAsset();
+    /// <returns>The sub-flow asset, falling back to the target asset if no preset is set.</returns>
+    ISubFlowAsset GetSubFlowAsset();
 
     /// <summary>
-    /// Gets all elements contained in this page.
+    /// Gets all elements contained within this page.
     /// </summary>
     IEnumerable<ISubFlowElement> Elements { get; }
 
     /// <summary>
-    /// Gets the input chat history.
+    /// Gets the input chat history formatted as a <see cref="HistoryText"/>.
     /// </summary>
+    /// <returns>The formatted input chat history.</returns>
     HistoryText GetInputChatHistory();
 
     /// <summary>
-    /// Gets the output chat history.
+    /// Gets the output chat history formatted as a <see cref="HistoryText"/>.
     /// </summary>
+    /// <returns>The formatted output chat history.</returns>
     HistoryText GetOutputChatHistory();
 
     /// <summary>
-    /// Gets the task commit information.
+    /// Gets the task commit data formatted as a <see cref="HistoryText"/>.
     /// </summary>
+    /// <returns>The formatted task commit data.</returns>
     HistoryText GetTaskCommit();
 
     /// <summary>
-    /// Gets all input parameters for this page.
+    /// Gets a value indicating whether all pages (including sub-pages) are done.
     /// </summary>
-    IEnumerable<IPageParameterInput> GetInputParameters();
-
-    /// <summary>
-    /// Gets whether all child elements are done/completed.
-    /// </summary>
-    /// <returns>True if all child elements are done, false if not, or null if indeterminate.</returns>
+    /// <returns>True if all pages are done, false if any is not done, or null if no inputs are defined.</returns>
     bool? GetAllDone();
 }
 #endregion

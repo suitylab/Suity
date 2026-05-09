@@ -418,12 +418,12 @@ public class SubFlowPresetAssetBuilder : AssetBuilder<SubFlowPresetAsset>
 /// Represents a preset asset that can be used as a tool and contains a page definition.
 /// </summary>
 [NativeType(Name = "SubFlowPresetAsset", Description = "Preset Asset", CodeBase = "SubFlow", Icon = "*CoreIcon|Skil", Color = FlowColors.Agent)]
-public class SubFlowPresetAsset : Asset, 
-    IViewObject,
-    IInspectorEditNotify,
-    ISubFlowAsset,
+public class SubFlowPresetAsset : Asset,
     IPageAsset,
-    ISubFlowPresetAsset
+    ISubFlowAsset,
+    ISubFlowPresetAsset,
+    IViewObject,
+    IInspectorEditNotify
 {
     readonly EditorAssetRef<ISubFlowDefAsset> _baseFlow = new();
 
@@ -432,7 +432,7 @@ public class SubFlowPresetAsset : Asset,
     /// </summary>
     public SubFlowPresetAsset()
     {
-        UpdateAssetTypes(typeof(ISubFlowAsset));
+        UpdateAssetTypes(typeof(IPageAsset), typeof(ISubFlowAsset), typeof(ISubFlowPresetAsset));
 
         base.AddUpdateRelationship(_baseFlow);
     }
@@ -516,7 +516,7 @@ public class SubFlowPresetAsset : Asset,
 
     #endregion
 
-    #region IToolDefAsset
+    #region IPageAsset
 
     /// <inheritdoc/>
     public IPageInstance CreatePageInstance(PageElementOption option)

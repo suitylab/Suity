@@ -39,8 +39,8 @@ public class AppendTaskPage : TaskPageNode
     /// </summary>
     public AppendTaskPage()
     {
-        var instanceType = TypeDefinition.FromNative<ISubFlowInstance>();
-        var type = TypeDefinition.FromNative<ISubFlowAsset>();
+        var instanceType = TypeDefinition.FromNative<IPageInstance>();
+        var type = TypeDefinition.FromAssetLink<IPageAsset>();
 
         _in = this.AddActionInputConnector("In", "Input");
         _inPageInstance = this.AddDataInputConnector("PageInstance", instanceType, "Page Instance");
@@ -80,8 +80,8 @@ public class AppendTaskPage : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var pageInstance = compute.GetValue<ISubFlowInstance>(_inPageInstance);
-        var page = compute.GetValue<ISubFlowAsset>(_inPage);
+        var pageInstance = compute.GetValue<IPageInstance>(_inPageInstance);
+        var page = compute.GetValue<IPageAsset>(_inPage);
         if (pageInstance is null && page is null)
         {
             throw new NullReferenceException("At least one of the required inputs (PageInstance or Page) is null.");
@@ -135,8 +135,8 @@ public class AddSubTaskPage : TaskPageNode
     /// </summary>
     public AddSubTaskPage()
     {
-        var instanceType = TypeDefinition.FromNative<ISubFlowInstance>();
-        var type = TypeDefinition.FromNative<ISubFlowAsset>();
+        var instanceType = TypeDefinition.FromNative<IPageInstance>();
+        var type = TypeDefinition.FromAssetLink<IPageAsset>();
 
         _in = this.AddActionInputConnector("In", "Input");
         _inPageInstance = this.AddDataInputConnector("PageInstance", instanceType, "Page Instance");
@@ -176,8 +176,8 @@ public class AddSubTaskPage : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var pageInstance = compute.GetValue<ISubFlowInstance>(_inPageInstance);
-        var page = compute.GetValue<ISubFlowAsset>(_inPage);
+        var pageInstance = compute.GetValue<IPageInstance>(_inPageInstance);
+        var page = compute.GetValue<IPageAsset>(_inPage);
         if (pageInstance is null && page is null)
         {
             throw new NullReferenceException("At least one of the required inputs (PageInstance or Page) is null.");
@@ -433,7 +433,7 @@ public class GetTaskCommit : TaskPageNode
             throw new FlowComputaionException(this, "Task is null.");
         }
 
-        string commit = task?.GetPageInstance()?.GetTaskCommit() ?? string.Empty;
+        string commit = task?.GetTaskCommit() ?? string.Empty;
 
         compute.SetValue(_commit, commit);
     }
@@ -551,15 +551,15 @@ public class GetTaskContextText : TaskPageNode
             throw new FlowComputaionException(this, "Task is null.");
         }
 
-        var pageInstance = task.GetPageInstance();
-        if (pageInstance is null)
+        var subFlowInstance = task.GetSubFlowInstance();
+        if (subFlowInstance is null)
         {
             throw new FlowComputaionException(this, "Task page instance is null.");
         }
 
-        string inputChat = pageInstance.GetInputChatHistory() ?? string.Empty;
-        string outputChat = pageInstance.GetOutputChatHistory() ?? string.Empty;
-        string commit = pageInstance.GetTaskCommit() ?? string.Empty;
+        string inputChat = subFlowInstance.GetInputChatHistory() ?? string.Empty;
+        string outputChat = subFlowInstance.GetOutputChatHistory() ?? string.Empty;
+        string commit = subFlowInstance.GetTaskCommit() ?? string.Empty;
         
         compute.SetValue(_inputChat, inputChat);
         compute.SetValue(_outputChat, outputChat);
