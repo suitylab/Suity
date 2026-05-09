@@ -30,7 +30,7 @@ public class DefaultEditorColorConfig : DefaultColorConfig, IEditorColorConfig
     /// <summary>
     /// Gets the default instance of DefaultEditorColorConfig.
     /// </summary>
-    public new static readonly DefaultEditorColorConfig Default = new DefaultEditorColorConfig();
+    public new static DefaultEditorColorConfig Default { get; } = new();
 
     /// <summary>
     /// Initializes a new instance of the DefaultEditorColorConfig class.

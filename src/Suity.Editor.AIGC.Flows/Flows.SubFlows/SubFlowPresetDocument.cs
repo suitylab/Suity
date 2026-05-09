@@ -536,7 +536,7 @@ public class SubFlowPresetAsset : Asset,
     /// Gets the preset definition from the associated preset document.
     /// </summary>
     /// <returns>The <see cref="ISubFlowPreset"/> definition, or null.</returns>
-    public ISubFlowPreset GetPreset() => this.GetDocument<SubFlowPresetDocument>();
+    public ISubFlowPreset GetPresetDefinition() => this.GetDocument<SubFlowPresetDocument>();
 
     /// <summary>
     /// Creates a new page instance for this tool asset with the specified options.

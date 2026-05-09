@@ -1,13 +1,15 @@
-using static Suity.Helpers.GlobalLocalizer;
 using Suity;
 using Suity.Collections;
+using Suity.Drawing;
+using Suity.Editor;
+using Suity.Editor.Services;
 using Suity.Synchonizing.Core;
 using Suity.Views.Graphics;
 using System;
 using System.Drawing;
 using System.Linq;
-using Suity.Editor;
-using Suity.Drawing;
+using System.Xml.Linq;
+using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Views.Im.PropertyEditing;
 
@@ -87,7 +89,7 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
                         ?? PropertyEditorProviderBK.Instance.GetRowFunction(commonType, target.PresetType);
             } while (false);
 
-            target.RowFunction ??= NullPropertyField;
+            target.RowFunction ??= UnknownPropertyField;
         }
 
         ImGuiNode? node = null;
@@ -96,30 +98,9 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
             node = func.Invoke(gui, target, rowAction);
         }
 
-        if (!target.IsRoot && node is null)
+        if (node is null && !target.IsRoot)
         {
-            node = gui.PropertyRow(target.Id, target.DisplayName, target.Status, (n, c, p) => 
-            {
-                if (p.HasFlag(GuiPipeline.Main) && c == PropertyGridColumn.Main)
-                {
-                    var values = target.GetValues();
-                    if (values.CountOne() || values.AllEqual())
-                    {
-                        string str = values.First()?.ToString() ?? string.Empty;
-                        string shortcut = EditorUtility.ToShortcutString(str);
-                        gui.Text("text-shortcut", shortcut);
-                    }
-                    else if (values.Any())
-                    {
-                        gui.Text("text-shortcut", "...");
-                    }
-                    else
-                    {
-                        gui.Text("text-shortcut", "-");
-                    }
-                }
-                rowAction?.Invoke(n, c, p);
-            });
+            UnknownPropertyField(gui, target, rowAction);
         }
 
         if (node is { })
@@ -149,7 +130,40 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
     }
 
     /// <inheritdoc/>
-    public override ImGuiNode? NullPropertyField(ImGui gui, PropertyTarget target, PropertyRowAction? rowAction) => null;
+    public override ImGuiNode? UnknownPropertyField(ImGui gui, PropertyTarget target, PropertyRowAction? rowAction)
+    {
+        return gui.PropertyRow(target.Id, target.DisplayName, target.Status, (n, c, p) =>
+        {
+            if (p.HasFlag(GuiPipeline.Main) && c == PropertyGridColumn.Main)
+            {
+                var values = target.GetValues();
+                if (values.CountOne() || values.AllEqual())
+                {
+                    var first = values.First();
+                    if (first != null)
+                    {
+                        string str = values.First()?.ToString() ?? "(null)";
+                        string shortcut = EditorUtility.ToShortcutString(str);
+                        gui.Text("text-shortcut", shortcut);
+                    }
+                    else
+                    {
+                        gui.Text("text-null", "(null)")
+                        .InitFontColor(DefaultEditorColorConfig.Default.GetStatusColor(TextStatus.Disabled));
+                    }
+                }
+                else if (values.Any())
+                {
+                    gui.Text("text-shortcut", "...");
+                }
+                else
+                {
+                    gui.Text("text-shortcut", "-");
+                }
+            }
+            rowAction?.Invoke(n, c, p);
+        });
+    }
 
     /// <inheritdoc/>
     public override ImGuiNode EnumPropertyField(ImGui gui, PropertyTarget target, PropertyRowAction? rowAction)

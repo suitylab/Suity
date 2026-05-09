@@ -291,7 +291,7 @@ internal abstract class PropertyFieldExternal
     /// <param name="target">The property target to render.</param>
     /// <param name="rowAction">An optional row action handler.</param>
     /// <returns>An <see cref="ImGuiNode"/> representing the null property field.</returns>
-    public abstract ImGuiNode? NullPropertyField(ImGui gui, PropertyTarget target, PropertyRowAction? rowAction);
+    public abstract ImGuiNode? UnknownPropertyField(ImGui gui, PropertyTarget target, PropertyRowAction? rowAction);
 
     /// <summary>
     /// Renders a property field for enum values.

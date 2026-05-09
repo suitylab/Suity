@@ -561,16 +561,16 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         base.OnBuild();
 
         ParameterCondition = _pageNode.CompletionCondition;
-        UseParentArticle = GetPreset()?.UseParentArticle ?? (PageNode?.UseParentArticle == true);
+        UseParentArticle = GetPresetDefinition()?.UseParentArticle ?? (PageNode?.UseParentArticle == true);
 
         //Name
-        if (GetPreset()?.PresetName is { } presetName && !string.IsNullOrWhiteSpace(presetName))
+        if (GetPresetDefinition()?.PresetName is { } presetName && !string.IsNullOrWhiteSpace(presetName))
         {
             _presetName = presetName;
         }
 
         //Tooltips
-        if (GetPreset()?.PresetTooltips is { } presetTooltips && !string.IsNullOrWhiteSpace(presetTooltips))
+        if (GetPresetDefinition()?.PresetTooltips is { } presetTooltips && !string.IsNullOrWhiteSpace(presetTooltips))
         {
             Tooltips = presetTooltips;
         }
@@ -809,7 +809,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// Gets the preset definition associated with this page, if any.
     /// </summary>
     /// <returns>The preset definition, or null if no preset is set.</returns>
-    public ISubFlowPreset GetPreset() => (_preset.Target as ISubFlowPresetAsset)?.GetPreset();
+    public ISubFlowPreset GetPresetDefinition() => _preset.Target?.GetPresetDefinition();
 
     /// <inheritdoc/>
     public override IEnumerable<SubFlowElement> ChildElements => _list;
@@ -947,7 +947,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     {
         var tools = _pageNode.Tools.SkipNull();
 
-        if (GetPreset()?.Tools?.ToArray() is { } exTools && exTools.Length > 0)
+        if (GetPresetDefinition()?.Tools?.ToArray() is { } exTools && exTools.Length > 0)
         {
             tools = tools.Concat(exTools.SkipNull());
         }

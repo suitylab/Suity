@@ -319,9 +319,13 @@ public static class AvaDrawingHelper
                                    TextAlignment.Left, TextWrapping.NoWrap, double.PositiveInfinity);
 
         var textLayout = LayoutCache.GetOrCreate(key, () =>
-            new TextLayout(text, typeface, font.Size, Brushes.Black,
-                           TextAlignment.Left, TextWrapping.NoWrap, maxWidth: double.PositiveInfinity)
-        );
+        {
+            var processedText = text?.Replace("\r", "").Replace("\n", " ") ?? "";
+
+            return new TextLayout(
+                processedText, typeface, font.Size, Brushes.Black, TextAlignment.Left, TextWrapping.NoWrap, maxWidth: double.PositiveInfinity
+                );
+        });
 
         return new System.Drawing.SizeF((float)textLayout.Width, (float)textLayout.Height);
     }

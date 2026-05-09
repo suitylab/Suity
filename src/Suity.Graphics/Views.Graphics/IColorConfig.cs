@@ -29,7 +29,7 @@ public class DefaultColorConfig : IColorConfig
     /// <summary>
     /// Gets the singleton default instance.
     /// </summary>
-    public static readonly DefaultColorConfig Default = new();
+    public static DefaultColorConfig Default { get; } = new();
 
     protected DefaultColorConfig()
     {

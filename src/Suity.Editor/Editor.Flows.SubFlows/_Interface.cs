@@ -152,7 +152,7 @@ public interface ISubFlowPresetAsset : ISubFlowAsset
     /// <summary>
     /// Gets the preset definition.
     /// </summary>
-    ISubFlowPreset GetPreset();
+    ISubFlowPreset GetPresetDefinition();
 }
 
 #endregion
