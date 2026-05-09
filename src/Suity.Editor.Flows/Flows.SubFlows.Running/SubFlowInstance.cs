@@ -946,6 +946,12 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     public virtual IPageAsset[] GetToolList()
     {
         var tools = _pageNode.Tools.SkipNull();
+
+        if (GetPreset()?.Tools?.ToArray() is { } exTools && exTools.Length > 0)
+        {
+            tools = tools.Concat(exTools.SkipNull());
+        }
+
         return [.. tools];
     }
 

@@ -60,7 +60,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="300" Y="-130" Width="136" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="300" Y="-130" Width="136" Height="107">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -71,7 +71,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="140" Y="10" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="140" Y="10" Width="38" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -137,7 +137,7 @@
       <Name>###GetPageToolPagesNode02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="750" Y="170" Width="166" Height="78">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="750" Y="170" Width="162" Height="74">
       <Name>###ParseTagToolCallingNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.ParseTagToolCalling">
         <AttributeName>name</AttributeName>
@@ -152,7 +152,7 @@
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="750" Y="310" Width="134" Height="100">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="750" Y="310" Width="130" Height="96">
       <Name>###AddSubTaskPageNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
         <PageTitle>
@@ -170,14 +170,14 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="50" Width="111" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="50" Width="107" Height="52">
       <Name>###SetPageTitleNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.SetPageTitle">
         <Title>
         </Title>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-130" Width="119" Height="100">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-130" Width="115" Height="96">
       <Name>###ExtractXmlsTagNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagNode">
         <TagNames>
@@ -276,7 +276,7 @@
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="160" Width="131" Height="100">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="160" Width="127" Height="96">
       <Name>###AppendTaskPageNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
         <PageTitle>
@@ -308,7 +308,7 @@
         </Page>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="140" Y="-100" Width="107" Height="100">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="160" Y="-100" Width="103" Height="96">
       <Name>###BuildPrompt01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
@@ -325,7 +325,7 @@
         <UpdateKeywords>False</UpdateKeywords>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="120" Width="150" Height="78">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="120" Width="146" Height="74">
       <Name>###ExtractXmlsTagAction01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagAction">
         <TagNames>
@@ -344,7 +344,7 @@
         <IsArray>True</IsArray>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="770" Y="-90" Width="131" Height="100">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="770" Y="-90" Width="127" Height="96">
       <Name>###AppendTaskPageNode02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
         <PageTitle>
@@ -540,7 +540,7 @@
         <Value type="System.Boolean">True</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="500" Y="280" Width="137" Height="64">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="500" Y="280" Width="133" Height="60">
       <Name>###SetPageParameter01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.SetPageParameter">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">

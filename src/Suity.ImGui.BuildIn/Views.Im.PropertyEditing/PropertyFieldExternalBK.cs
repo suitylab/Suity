@@ -98,7 +98,28 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
 
         if (!target.IsRoot && node is null)
         {
-            node = gui.PropertyRow(target.Id, target.DisplayName, target.Status, rowAction);
+            node = gui.PropertyRow(target.Id, target.DisplayName, target.Status, (n, c, p) => 
+            {
+                if (p.HasFlag(GuiPipeline.Main) && c == PropertyGridColumn.Main)
+                {
+                    var values = target.GetValues();
+                    if (values.CountOne() || values.AllEqual())
+                    {
+                        string str = values.First()?.ToString() ?? string.Empty;
+                        string shortcut = EditorUtility.ToShortcutString(str);
+                        gui.Text("text-shortcut", shortcut);
+                    }
+                    else if (values.Any())
+                    {
+                        gui.Text("text-shortcut", "...");
+                    }
+                    else
+                    {
+                        gui.Text("text-shortcut", "-");
+                    }
+                }
+                rowAction?.Invoke(n, c, p);
+            });
         }
 
         if (node is { })

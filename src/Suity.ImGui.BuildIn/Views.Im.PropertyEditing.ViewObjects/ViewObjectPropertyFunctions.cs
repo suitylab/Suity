@@ -10,8 +10,6 @@ using System.Linq;
 
 namespace Suity.Views.Im.PropertyEditing.ViewObjects;
 
-#region ViewObjectSetups
-
 /// <summary>
 /// Provides property population and row rendering functions for <see cref="IViewObject"/> types.
 /// </summary>
@@ -309,5 +307,3 @@ public static class ViewObjectPropertyFunctions
         return childTarget;
     }
 }
-
-#endregion

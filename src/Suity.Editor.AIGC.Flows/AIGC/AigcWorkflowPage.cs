@@ -252,6 +252,7 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
     private void _instance_ConfigComputation(object sender, IFlowComputation compute)
     {
         compute.Context.SetArgument<IAigcTaskPage>(this);
+        compute.Context.SetArgument<IAigcWorkflowPage>(this);
 
         var doc = this.GetDocument() as AigcTaskPageDocument;
         compute.Context.SetArgument<WorkSpace>(doc?.WorkSpace);
