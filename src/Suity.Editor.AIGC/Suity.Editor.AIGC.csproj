@@ -17,8 +17,4 @@
     <ProjectReference Include="..\Suity\Suity.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Flows.TaskPages\" />
-  </ItemGroup>
-
 </Project>
