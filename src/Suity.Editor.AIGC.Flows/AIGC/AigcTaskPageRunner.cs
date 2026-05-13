@@ -64,8 +64,14 @@ internal class AigcTaskPageRunner : AIAssistant
         }
     }
 
+    /// <summary>
+    /// Gets a value indicating whether the task runner is currently executing a task.
+    /// </summary>
     public bool IsRunning => _lastRequest != null;
 
+    /// <summary>
+    /// Requests cancellation of the currently running task.
+    /// </summary>
     public void RequestCancel()
     {
         _lastRequest?.RequestCancel?.Invoke();
@@ -85,7 +91,7 @@ internal class AigcTaskPageRunner : AIAssistant
             return AICallResult.FromFailed("Startup page not set");
         }
 
-        var startupTask = AigcWorkflowPage.CreateTaskPage(_document, startupPageAsset);
+        var startupTask = AigcWorkflowPage.CreateWorkflowPage(_document, startupPageAsset);
         if (startupTask is null)
         {
             return AICallResult.FromFailed("Failed to create startup page");

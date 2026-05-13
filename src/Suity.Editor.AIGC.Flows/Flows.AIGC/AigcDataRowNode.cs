@@ -7,6 +7,9 @@ namespace Suity.Editor.Flows.AIGC;
 /// <summary>
 /// Base class for data row related AIGC flow nodes, providing async computation support.
 /// </summary>
+/// <summary>
+/// Base class for data row related AIGC flow nodes, providing async computation support.
+/// </summary>
 [DisplayText("Data Row", "*CoreIcon|Row")]
 [ToolTipsText("Data row related nodes")]
 public abstract class AigcDataRowNode : FlowNode, IFlowNodeComputeAsync

@@ -23,14 +23,28 @@ using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.AIGC;
 
-public enum PageViewCategory
-{
-    Page,
-    Chat,
-    Context,
-}
-
 /// <summary>
+    /// Represents the category of page view in the task page document view.
+    /// </summary>
+    public enum PageViewCategory
+    {
+        /// <summary>
+        /// Displays the page properties view.
+        /// </summary>
+        Page,
+
+        /// <summary>
+        /// Displays the chat/LLM interaction view.
+        /// </summary>
+        Chat,
+
+        /// <summary>
+        /// Displays the chat history context view.
+        /// </summary>
+        Context,
+    }
+
+    /// <summary>
 /// Document view for <see cref="AigcTaskPageDocument"/>, providing tree-based navigation, property editing, and AI task interaction UI.
 /// </summary>
 [DocumentViewUsage(typeof(AigcTaskPageDocument))]
@@ -355,7 +369,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
             {
                 if (sel.CountOne() && sel.FirstOrDefault() is AigcWorkflowPage page)
                 {
-                    OnTaskPageGui(gui, page);
+                    OnWorkflowPageGui(gui, page);
                 }
                 else
                 {
@@ -522,7 +536,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
     }
 
 
-    private void OnTaskPageGui(ImGui gui, AigcWorkflowPage page)
+    private void OnWorkflowPageGui(ImGui gui, AigcWorkflowPage page)
     {
         gui.VerticalLayout("#task_page-" + page.Name)
         .OnInitialize(n =>

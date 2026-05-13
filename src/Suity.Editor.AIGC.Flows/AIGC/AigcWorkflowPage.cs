@@ -1,4 +1,3 @@
-using LiteDB;
 using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
@@ -16,6 +15,7 @@ using Suity.Synchonizing;
 using Suity.UndoRedos;
 using Suity.Views;
 using Suity.Views.Im;
+using Suity.Views.Named;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -297,6 +297,9 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
     /// <inheritdoc/>
     public IPageInstance GetPageInstance() => EnsureInstance();
 
+    /// <summary>
+    /// Gets the name of the page instance.
+    /// </summary>
     public string PageName => GetPageInstance()?.Name;
 
     /// <inheritdoc/>
@@ -330,6 +333,9 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
 
     #region IAigcWorkflowPage
 
+    /// <summary>
+    /// Gets the sub-flow instance associated with this workflow page.
+    /// </summary>
     public ISubFlowInstance GetSubFlowInstance() => EnsureInstance();
 
     /// <summary>
@@ -449,8 +455,12 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
         }*/
 
         var task = CreateTaskPage(asset, title, taskPrompt, commitName);
+        if (task is not NamedItem item)
+        {
+            return false;
+        }
 
-        this.ParentList?.Add(task);
+        this.ParentList?.Add(item);
 
         doc.MarkDirtyAndSaveDelayed(this);
 
@@ -488,8 +498,12 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
         }*/
 
         var task = CreateTaskPage(pageInstance, title, taskPrompt, commitName);
+        if (task is not NamedItem item)
+        {
+            return false;
+        }
 
-        this.ParentList?.Add(task);
+        this.ParentList?.Add(item);
 
         doc.MarkDirtyAndSaveDelayed(this);
 
@@ -520,8 +534,12 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
         }
 
         var task = CreateTaskPage(asset, title, taskPrompt, commitName);
+        if (task is not NamedItem { } item)
+        {
+            return false;
+        }
 
-        this.AddItem(task);
+        this.AddItem(item);
 
         doc.MarkDirtyAndSaveDelayed(this);
 
@@ -552,8 +570,12 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
         }
 
         var task = CreateTaskPage(pageInstance, title, taskPrompt, commitName);
+        if (task is not NamedItem item)
+        {
+            return false;
+        }
 
-        this.AddItem(task);
+        this.AddItem(item);
 
         doc.MarkDirtyAndSaveDelayed(this);
 
@@ -1214,6 +1236,9 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
         return begin.Node is PageEventNode node && node.MathEvent(eventType, commitName);
     }
 
+    /// <summary>
+    /// Navigates to the workflow associated with this task page.
+    /// </summary>
     public void HandleGotoWorkflow()
     {
         (this.GetDocument()?.View as AigcTaskPageDocumentView)?.HandleGotoWorkflow(this);
@@ -1311,28 +1336,6 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
     /// </summary>
     public void QueueRefreshView() => this.GetDocument()?.View?.RefreshView();
 
-    /// <summary>
-    /// Creates a new task page from an <see cref="ISubFlow"/> definition.
-    /// </summary>
-    /// <param name="page">The page to create the task from.</param>
-    /// <param name="title">Optional title for the task page.</param>
-    /// <param name="taskPrompt">Optional task prompt for the task page.</param>
-    /// <param name="commitName">Optional commit name for the task page.</param>
-    /// <returns>The newly created task page.</returns>
-    /// <exception cref="NullReferenceException">Thrown when the page is not a PageDefinitionNode or PageDefinitionAsset.</exception>
-    /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
-    public AigcWorkflowPage CreateTaskPage(ISubFlow page, string title = null, string taskPrompt = null, string commitName = null)
-    {
-        var asset = (page as SubflowDefinitionNode)?.GetAsset() as SubFlowDefinitionAsset
-            ?? throw new NullReferenceException("page is not a PageDefinitionNode or PageDefinitionAsset.");
-
-        if (this.GetDocument() is not AigcTaskPageDocument doc)
-        {
-            throw new InvalidOperationException("AigcTaskPageDocument not found.");
-        }
-
-        return CreateTaskPage(doc, asset, title, taskPrompt, commitName);
-    }
 
     /// <summary>
     /// Creates a new task page from a tool asset.
@@ -1343,7 +1346,7 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
-    public AigcWorkflowPage CreateTaskPage(IPageAsset asset, string title = null, string taskPrompt = null, string commitName = null)
+    public IAigcTaskPage CreateTaskPage(IPageAsset asset, string title = null, string taskPrompt = null, string commitName = null)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -1362,7 +1365,7 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
-    public AigcWorkflowPage CreateTaskPage(IPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null)
+    public IAigcTaskPage CreateTaskPage(IPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -1372,8 +1375,41 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
         return CreateTaskPage(doc, pageInstance, title, taskPrompt, commitName);
     }
 
+    /// <summary>
+    /// Creates a new task page from an <see cref="ISubFlow"/> definition.
+    /// </summary>
+    /// <param name="page">The page to create the task from.</param>
+    /// <param name="title">Optional title for the task page.</param>
+    /// <param name="taskPrompt">Optional task prompt for the task page.</param>
+    /// <param name="commitName">Optional commit name for the task page.</param>
+    /// <returns>The newly created task page.</returns>
+    /// <exception cref="NullReferenceException">Thrown when the page is not a PageDefinitionNode or PageDefinitionAsset.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
+    public AigcWorkflowPage CreateWorkflowPage(ISubFlow page, string title = null, string taskPrompt = null, string commitName = null)
+    {
+        var asset = (page as SubflowDefinitionNode)?.GetAsset() as SubFlowDefinitionAsset
+            ?? throw new NullReferenceException("page is not a PageDefinitionNode or PageDefinitionAsset.");
 
-    public static AigcWorkflowPage CreateTaskPage(AigcTaskPageDocument doc, IPageAsset pageAsset, string title = null, string taskPrompt = null, string commitName = null)
+        if (this.GetDocument() is not AigcTaskPageDocument doc)
+        {
+            throw new InvalidOperationException("AigcTaskPageDocument not found.");
+        }
+
+        return CreateWorkflowPage(doc, asset, title, taskPrompt, commitName);
+    }
+
+
+    /// <summary>
+    /// Creates a new task page from a page asset within the specified document.
+    /// </summary>
+    /// <param name="doc">The document to create the task page in.</param>
+    /// <param name="pageAsset">The page asset to create the task from.</param>
+    /// <param name="title">Optional title for the task page.</param>
+    /// <param name="taskPrompt">Optional task prompt for the task page.</param>
+    /// <param name="commitName">Optional commit name for the task page.</param>
+    /// <returns>The newly created task page.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="doc"/> or <paramref name="pageAsset"/> is null.</exception>
+    public static IAigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, IPageAsset pageAsset, string title = null, string taskPrompt = null, string commitName = null)
     {
         if (doc is null)
         {
@@ -1388,10 +1424,42 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
         switch (pageAsset)
         {
             case ISubFlowAsset subFlowAsset:
-                return CreateTaskPage(doc, subFlowAsset, title, taskPrompt, commitName);
+                return CreateWorkflowPage(doc, subFlowAsset, title, taskPrompt, commitName);
 
             default:
                 throw new NotSupportedException($"{pageAsset.GetType().FullName} is not supported.");
+        }
+    }
+
+    /// <summary>
+    /// Creates a new task page from a page instance within the specified document.
+    /// </summary>
+    /// <param name="doc">The document to create the task page in.</param>
+    /// <param name="pageInstance">The page instance to create the task from.</param>
+    /// <param name="title">Optional title for the task page.</param>
+    /// <param name="taskPrompt">Optional task prompt for the task page.</param>
+    /// <param name="commitName">Optional commit name for the task page.</param>
+    /// <returns>The newly created task page.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="doc"/> or <paramref name="pageInstance"/> is null.</exception>
+    public static IAigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, IPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null)
+    {
+        if (doc is null)
+        {
+            throw new ArgumentNullException(nameof(doc));
+        }
+
+        if (pageInstance is null)
+        {
+            throw new ArgumentNullException(nameof(pageInstance));
+        }
+
+        switch (pageInstance)
+        {
+            case ISubFlowInstance subFlowInstance:
+                return CreateWorkflowPage(doc, subFlowInstance, title, taskPrompt, commitName);
+
+            default:
+                throw new NotSupportedException($"{pageInstance.GetType().FullName} is not supported.");
         }
     }
 
@@ -1405,8 +1473,13 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="subFlowAsset"/> is null.</exception>
-    public static AigcWorkflowPage CreateTaskPage(AigcTaskPageDocument doc, ISubFlowAsset subFlowAsset, string title = null, string taskPrompt = null, string commitName = null)
+    public static AigcWorkflowPage CreateWorkflowPage(AigcTaskPageDocument doc, ISubFlowAsset subFlowAsset, string title = null, string taskPrompt = null, string commitName = null)
     {
+        if (doc is null)
+        {
+            throw new ArgumentNullException(nameof(doc));
+        }
+
         if (subFlowAsset is null)
         {
             throw new ArgumentNullException(nameof(subFlowAsset));
@@ -1453,28 +1526,6 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
         return taskPage;
     }
 
-    public static AigcWorkflowPage CreateTaskPage(AigcTaskPageDocument doc, IPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null)
-    {
-        if (doc is null)
-        {
-            throw new ArgumentNullException(nameof(doc));
-        }
-
-        if (pageInstance is null)
-        {
-            throw new ArgumentNullException(nameof(pageInstance));
-        }
-
-        switch (pageInstance)
-        {
-            case ISubFlowInstance subFlowInstance:
-                return CreateTaskPage(doc, subFlowInstance, title, taskPrompt, commitName);
-
-            default:
-                throw new NotSupportedException($"{pageInstance.GetType().FullName} is not supported.");
-        }
-    }
-
     /// <summary>
     /// Creates a new task page from an existing page instance within the specified document.
     /// </summary>
@@ -1485,7 +1536,7 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="subFlowInstance"/> is null.</exception>
-    public static AigcWorkflowPage CreateTaskPage(AigcTaskPageDocument doc, ISubFlowInstance subFlowInstance, string title = null, string taskPrompt = null, string commitName = null)
+    public static AigcWorkflowPage CreateWorkflowPage(AigcTaskPageDocument doc, ISubFlowInstance subFlowInstance, string title = null, string taskPrompt = null, string commitName = null)
     {
         if (doc is null)
         {

@@ -8,17 +8,20 @@ namespace Suity.Editor.Flows.AIGC;
 /// <summary>
 /// Selection list containing all available AIGC flow nodes for the node factory palette.
 /// </summary>
-internal class AigcFlowSelectionList : FlowNodeSelectionNode
-{
-    /// <summary>
-    /// Gets the singleton instance of the AIGC flow selection list.
+/// <summary>
+    /// Selection list containing all available AIGC flow nodes for the node factory palette.
     /// </summary>
-    public static AigcFlowSelectionList Instance { get; } = new();
+    internal class AigcFlowSelectionList : FlowNodeSelectionNode
+    {
+        /// <summary>
+        /// Gets the singleton instance of the AIGC flow selection list.
+        /// </summary>
+        public static AigcFlowSelectionList Instance { get; } = new();
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AigcFlowSelectionList"/> class.
-    /// </summary>
-    private AigcFlowSelectionList()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AigcFlowSelectionList"/> class.
+        /// </summary>
+        private AigcFlowSelectionList()
     {
         Add<WorkflowNode>();
         //Add<AgentFlowNode>();

@@ -15,12 +15,24 @@ using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.AIGC;
 
+/// <summary>
+/// Provides the startup window interface for AIGC workflow initialization.
+/// </summary>
 public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 {
+    /// <summary>
+    /// Gets the singleton instance of the startup window.
+    /// </summary>
     public static AigcStartupWindow Instance { get; private set; }
 
+    /// <summary>
+    /// Gets the 128x128 logo bitmap for the startup window.
+    /// </summary>
     public static BitmapDef Logo128 { get; } = Resources.Logo128.ToBitmap();
 
+    /// <summary>
+    /// Gets the color filter applied to the logo image.
+    /// </summary>
     public static Color LogoFilterColor { get; } = Color.FromArgb(128, 128, 128, 128);
 
     private class StartupSelection : AssetSelection<ISubFlowAsset>
@@ -38,6 +50,9 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
     private string _msgInput = "";
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AigcStartupWindow"/> class.
+    /// </summary>
     public AigcStartupWindow()
     {
         Instance ??= this;
@@ -48,6 +63,9 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
         _startupAssetTarget = PropertyTargetUtility.CreatePropertyTarget(_startupAssetSel, "Select Startup Agent");
     }
 
+    /// <summary>
+    /// Gets or sets the selected chat asset ID.
+    /// </summary>
     public Guid SelectedChatAssetId
     {
         get => _startupAssetSel.Id;
@@ -78,21 +96,29 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
     #region IToolWindow
 
+    /// <inheritdoc/>
     public string WindowId => nameof(AigcStartupWindow);
 
+    /// <inheritdoc/>
     public string Title => "AI Startup";
 
+    /// <inheritdoc/>
     public ImageDef Icon => CoreIconCache.Startup;
 
+    /// <inheritdoc/>
     public DockHint DockHint => DockHint.Document;
 
+    /// <inheritdoc/>
     public bool CanDockDocument => true;
 
+    /// <inheritdoc/>
     public object GetUIObject() => this;
 
+    /// <inheritdoc/>
     public void NotifyHide()
     { }
 
+    /// <inheritdoc/>
     public void NotifyShow()
     {
         _startupAssetSel.Target = _startupAssetSel.GetList()?.GetItems()?.FirstOrDefault() as ISubFlowAsset;

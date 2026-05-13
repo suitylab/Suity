@@ -7,14 +7,20 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
 
+/// <summary>
+/// Plugin that provides AIGC workflow execution capability.
+/// Implements <see cref="IAigcWorkflowRunner"/> to enable workflow running functionality.
+/// </summary>
 public class AigcWorkflowPlugin : BackendPlugin, IAigcWorkflowRunner
 {
 
+    /// <inheritdoc/>
     protected internal override void Awake(PluginContext context)
     {
         base.Awake(context);
     }
 
+    /// <inheritdoc/>
     public override object GetService(Type serviceType)
     {
         if (serviceType == typeof(IAigcWorkflowRunner))
@@ -27,6 +33,7 @@ public class AigcWorkflowPlugin : BackendPlugin, IAigcWorkflowRunner
 
     #region IAigcWorkflowRunner
 
+    /// <inheritdoc/>
     public async Task<object> RunWorkflow(AIRequest request, AigcWorkflowOption workflowOption)
     {
         var conversation = request.Conversation;
@@ -113,6 +120,7 @@ public class AigcWorkflowPlugin : BackendPlugin, IAigcWorkflowRunner
         }
     }
 
+    /// <inheritdoc/>
     public ILLmChatProvider ChatProvider => WorkflowChatProvider.Instance;
 
     #endregion

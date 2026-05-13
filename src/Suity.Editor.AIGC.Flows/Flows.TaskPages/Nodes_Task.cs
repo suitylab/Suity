@@ -457,7 +457,7 @@ public class GetSubTaskCommit : TaskPageNode
     readonly FlowNodeConnector _commit;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="GetTaskCommit"/> class.
+    /// Initializes a new instance of the <see cref="GetSubTaskCommit"/> class.
     /// </summary>
     public GetSubTaskCommit()
     {
