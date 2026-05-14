@@ -4,6 +4,8 @@ using Suity.Editor.Selecting;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
 
@@ -52,6 +54,12 @@ public class AigcToolPage : AigcTaskPage,
         return !string.IsNullOrWhiteSpace(name);
     }
 
+    /// <inheritdoc/>
+    protected override TextStatus OnGetTextStatus() => TextStatus.Unchecked;
+
+    /// <inheritdoc/>
+    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? CoreIconCache.Tool;
+
     #endregion
 
     #region Virtual (IAigcTaskPage)
@@ -59,17 +67,6 @@ public class AigcToolPage : AigcTaskPage,
     public override IPageAsset GetPageAsset() => null;
 
     public override IPageInstance GetPageInstance() => null;
-
-    #endregion
-
-    #region Virtual (ITextDisplay)
-
-    /// <inheritdoc/>
-    protected override TextStatus OnGetTextStatus() => TextStatus.Unchecked;
-
-    /// <inheritdoc/>
-    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? CoreIconCache.Tool;
-
 
     #endregion
 
@@ -88,5 +85,10 @@ public class TestTool : ToolAsset
     public override IPageInstance CreatePageInstance(PageCreateOption option)
     {
         return null;
+    }
+
+    public override async Task<bool> RunTask(IToolInstance toolInstance, CancellationToken cancellation)
+    {
+        return false;
     }
 }

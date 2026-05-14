@@ -466,4 +466,11 @@ public abstract class SObjectController :
     }
 
     #endregion
+
+    public static SObject CreateObject<T>()
+        where T : SObjectController, new()
+    {
+        var controller = new T();
+        return new SObject(controller);
+    }
 }

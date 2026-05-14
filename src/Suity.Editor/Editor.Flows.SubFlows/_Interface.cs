@@ -1,5 +1,4 @@
-﻿using Suity.Drawing;
-using Suity.Editor.Types;
+﻿using Suity.Editor.Types;
 using Suity.Views.Named;
 using System.Collections.Generic;
 
@@ -42,11 +41,6 @@ public interface ISubFlowAsset : IPageAsset
     /// Gets the base page definition.
     /// </summary>
     ISubFlow GetBaseDefinition();
-
-    /// <summary>
-    /// Creates a new page instance with the specified options.
-    /// </summary>
-    ISubFlowInstance CreateSubFlowInstance(PageCreateOption option);
 }
 
 #endregion
@@ -158,29 +152,3 @@ public interface ISubFlowPresetAsset : ISubFlowAsset
 
 #endregion
 
-#region IToolAsset
-
-[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Tool Asset", Color = FlowColors.Page, Icon = "*CoreIcon|Tool")]
-public interface IToolAsset : IPageAsset
-{
-}
-
-
-#endregion
-
-#region ToolAsset
-
-public abstract class ToolAsset : StandaloneAsset<IToolAsset>, IToolAsset
-{
-    protected ToolAsset()
-    {
-    }
-
-    public override ImageDef DefaultIcon => CoreIconCache.Tool;
-
-    public override ImageDef GetIcon() => CoreIconCache.Tool;
-
-    public abstract IPageInstance CreatePageInstance(PageCreateOption option);
-}
-
-#endregion

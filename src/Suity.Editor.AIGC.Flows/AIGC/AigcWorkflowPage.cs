@@ -180,6 +180,17 @@ public class AigcWorkflowPage : AigcTaskPage,
         _buildAction.DoQueuedAction();
     }
 
+    /// <inheritdoc/>
+    protected override TextStatus OnGetTextStatus() => EnsureInstance()?.GetAllStatus() ?? TextStatus.Normal;
+
+    /// <inheritdoc/>
+    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? EnsureInstance()?.Icon ?? CoreIconCache.Task;
+
+    protected override void OnDoubleClick() => ShowWorkflow();
+
+    protected override object OnGetNavigationTarget() => Instance?.DiagramItem?.TargetAsset;
+
+
     #endregion
 
     #region Virtual (IAigcTaskPage)
@@ -243,25 +254,6 @@ public class AigcWorkflowPage : AigcTaskPage,
         // Exact match with PageEventNode and eventType, commitName.
         return begin.Node is PageEventNode node && node.MathEvent(eventType, commitName);
     }
-
-    #endregion
-
-    #region Virtual (ITextDisplay)
-
-    /// <inheritdoc/>
-    protected override TextStatus OnGetTextStatus() => EnsureInstance()?.GetAllStatus() ?? TextStatus.Normal;
-
-    /// <inheritdoc/>
-    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? EnsureInstance()?.Icon ?? CoreIconCache.Task;
-
-    #endregion
-
-    #region Vitual (Other)
-
-    protected override void OnDoubleClick() => ShowWorkflow();
-
-    protected override object OnGetNavigationTarget() => Instance?.DiagramItem?.TargetAsset;
-
 
     #endregion
 
@@ -1102,7 +1094,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             Owner = taskPage,
         };
 
-        var pageInstance = subFlowAsset.CreateSubFlowInstance(option) as SubFlowInstance
+        var pageInstance = subFlowAsset.CreatePageInstance(option) as SubFlowInstance
             ?? throw new NullReferenceException($"Failed to create sub-flow instance for {subFlowAsset.Name}.");
 
         taskPage.Instance = pageInstance;
@@ -1173,7 +1165,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             Owner = taskPage,
         };
 
-        var newInstance = subFlowAsset.CreateSubFlowInstance(option) as SubFlowInstance
+        var newInstance = subFlowAsset.CreatePageInstance(option) as SubFlowInstance
             ?? throw new NullReferenceException($"Failed to create sub-flow instance for {subFlowAsset.Name}.");
 
         newInstance.UpdateFromOther(subFlowInstance);

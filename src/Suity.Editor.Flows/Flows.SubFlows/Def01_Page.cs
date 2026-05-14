@@ -256,8 +256,7 @@ public class SubFlowDefinitionAsset : Asset,
     #region IPageAsset
 
     /// <inheritdoc/>
-    public IPageInstance CreatePageInstance(PageCreateOption option)
-        => CreateSubFlowInstance(option);
+    public IPageInstance CreatePageInstance(PageCreateOption option) => CreateSubFlowInstance(option);
 
     #endregion
 
