@@ -686,7 +686,7 @@ public static class SItemExtensions
     public static ISelectionList GetSelectionList(this SObject obj)
     {
         IAssetFilter filter = obj.GetAssetFilter();
-        return obj?.InputType?.GetImplementations(filter);
+        return obj?.InputType?.GetImplementationList(filter);
     }
 
     /// <summary>
@@ -696,7 +696,7 @@ public static class SItemExtensions
     /// <param name="filter">The asset filter.</param>
     public static ISelectionList GetSelectionList(this SObject obj, IAssetFilter filter)
     {
-        return obj?.InputType?.GetImplementations(filter);
+        return obj?.InputType?.GetImplementationList(filter);
     }
 
     /// <summary>
@@ -706,7 +706,7 @@ public static class SItemExtensions
     /// <param name="filter">The asset filter.</param>
     public static ISelectionList GetSelectionList(this TypeDefinition type, IAssetFilter filter)
     {
-        return type?.GetImplementations(filter);
+        return type?.GetImplementationList(filter);
     }
 
     #endregion

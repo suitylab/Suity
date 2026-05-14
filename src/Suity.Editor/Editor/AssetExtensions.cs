@@ -406,7 +406,14 @@ public static class AssetExtensions
     {
         collection ??= EmptyAssetCollection<TAsset>.Empty;
 
-        return new AssetSelectionList<TAsset>(collection, filter);
+        if (filter != null)
+        {
+            return new AssetSelectionList<TAsset>(collection, filter);
+        }
+        else
+        {
+            return collection;
+        }
     }
 
     /// <summary>

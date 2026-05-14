@@ -92,7 +92,7 @@ public abstract class EditorObjectSelection<TObject> : ISelection, IReference, I
     /// Gets the selection list for this selection.
     /// </summary>
     /// <returns>The selection list.</returns>
-    public abstract ISelectionList GetList();
+    public abstract ISelectionList GetSelectionList();
 
     #endregion
 

@@ -181,7 +181,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
         if (_document.StartupPage is null)
         {
-            _document.StartupPage = _document.StartupPageSelection?.GetList()?.GetItems()?.FirstOrDefault() as ISubFlowAsset;
+            _document.StartupPage = _document.StartupPageSelection?.GetSelectionList()?.GetItems()?.FirstOrDefault() as ISubFlowAsset;
         }
 
         _undoManager = host.GetService<UndoRedoManager>() ?? new UndoRedoManager();

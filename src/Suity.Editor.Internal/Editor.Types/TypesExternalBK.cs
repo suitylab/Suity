@@ -790,7 +790,7 @@ internal class TypesExternalBK : TypesExternal
     }
 
     /// <inheritdoc/>
-    public override ISelectionList GetImplementations(TypeDefinition type, IAssetFilter filter = null)
+    public override ISelectionList GetImplementationList(TypeDefinition type, IAssetFilter filter = null)
     {
         if (type is null)
         {

@@ -57,7 +57,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
     {
         Instance ??= this;
 
-        _startupAssetSel.Target = _startupAssetSel.GetList()?.GetItems()?.FirstOrDefault() as ISubFlowAsset;
+        _startupAssetSel.Target = _startupAssetSel.GetSelectionList()?.GetItems()?.FirstOrDefault() as ISubFlowAsset;
         _startupAssetSel.TargetUpdated += (s, e, ref handled) => { _guiRef.QueueRefresh(); };
         _startupAssetSel.ListenEnabled = true;
         _startupAssetTarget = PropertyTargetUtility.CreatePropertyTarget(_startupAssetSel, "Select Startup Agent");
@@ -73,7 +73,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
         {
             if (value == Guid.Empty)
             {
-                value = (_startupAssetSel.GetList()?.GetItems()?.FirstOrDefault() as Asset)?.Id ?? Guid.Empty;
+                value = (_startupAssetSel.GetSelectionList()?.GetItems()?.FirstOrDefault() as Asset)?.Id ?? Guid.Empty;
             }
 
             _startupAssetSel.Id = value;
@@ -121,7 +121,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
     /// <inheritdoc/>
     public void NotifyShow()
     {
-        _startupAssetSel.Target = _startupAssetSel.GetList()?.GetItems()?.FirstOrDefault() as ISubFlowAsset;
+        _startupAssetSel.Target = _startupAssetSel.GetSelectionList()?.GetItems()?.FirstOrDefault() as ISubFlowAsset;
 
         _guiRef.QueueRefresh(true);
     }

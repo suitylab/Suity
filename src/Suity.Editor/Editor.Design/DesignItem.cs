@@ -230,6 +230,24 @@ public abstract class DesignItem : SNamedItem,
 
     protected virtual object OnGetRedirectedObject(int viewId) => this;
 
+
+
+
+    #endregion
+
+    #region ITextDisplay (Virtual)
+
+    protected override string OnGetDisplayText()
+    {
+        string name = this.Description;
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            name = this.Name;
+        }
+
+        return name;
+    }
+
     protected override TextStatus OnGetTextStatus()
     {
         var status = base.OnGetTextStatus();
@@ -245,6 +263,8 @@ public abstract class DesignItem : SNamedItem,
 
         return TextStatus.Normal;
     }
+
+    protected override ImageDef OnGetIcon() => SelectedIcon;
 
     #endregion
 
@@ -340,8 +360,6 @@ public abstract class DesignItem : SNamedItem,
         setup.InspectorField(_color, new ViewProperty("Color", "Color", CoreIconCache.Color)
             .WithColor(_color != Color.Empty ? _color : (Color?)null));
     }
-
-    protected override ImageDef OnGetIcon() => SelectedIcon;
 
     protected override IEnumerable<Guid> OnFilterUsingList(IEnumerable<Guid> ids)
     {

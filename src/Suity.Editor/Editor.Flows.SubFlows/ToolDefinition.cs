@@ -4,7 +4,7 @@ using Suity.Helpers;
 
 namespace Suity.Editor.Flows.SubFlows;
 
-[NativeAbstract("*Suity|Tool")]
+[NativeAbstract("*Suity|ToolDefinition")]
 public class ToolDefinition : SObjectController
 {
     public override string ToString()

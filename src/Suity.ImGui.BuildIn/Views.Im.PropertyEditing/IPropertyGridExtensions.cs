@@ -657,7 +657,7 @@ public static class IPropertyGridExtensions
         }
 
         var selection = new SKeySelection(sobj.ObjectType);
-        var result = await selection.GetList().ShowSelectionGUIAsync("Select data source");
+        var result = await selection.GetSelectionList().ShowSelectionGUIAsync("Select data source");
         if (result is null || !result.IsSuccess)
         {
             return;

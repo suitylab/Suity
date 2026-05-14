@@ -159,6 +159,10 @@ internal class NativeTypeExternalBK : NativeTypeExternal
             .WithGroup(group)
             .ResolveDefinition();
 
+        NativeTypes.ToolDefinitionType = new DAbstract("ToolDefinition", "*CoreIcon|Tool")
+            .WithGroup(group)
+            .ResolveDefinition();
+
         NativeTypes.HandlerType = new DAbstract("Handler", "*CoreIcon|Handler")
             .WithGroup(group)
             .ResolveDefinition();

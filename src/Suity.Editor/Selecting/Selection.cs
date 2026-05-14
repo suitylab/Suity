@@ -38,7 +38,7 @@ public sealed class Selection : ISelection, ISyncObject
     /// <summary>
     /// Gets the selection list associated with this selection.
     /// </summary>
-    public ISelectionList GetList() => _list ?? EmptySelectionList.Empty;
+    public ISelectionList GetSelectionList() => _list ?? EmptySelectionList.Empty;
 
     /// <summary>
     /// Gets or sets the key of the currently selected item.
@@ -158,7 +158,7 @@ public sealed class Selection<T> : ISelection, ISyncObject
     /// <summary>
     /// Gets the selection list associated with this selection.
     /// </summary>
-    public ISelectionList GetList() => _list  ?? EmptySelectionList.Empty;
+    public ISelectionList GetSelectionList() => _list  ?? EmptySelectionList.Empty;
 
     /// <summary>
     /// Gets or sets the key of the currently selected item.

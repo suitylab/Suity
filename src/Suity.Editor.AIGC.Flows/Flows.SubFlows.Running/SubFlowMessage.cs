@@ -141,8 +141,8 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
 
         if (Option.Owner is IAigcWorkflowPage task)
         {
-            text = text.Replace("{TaskName}", task.TaskName);
-            text = text.Replace("{TaskStatus}", task.TaskStatus.ToString());
+            text = text.Replace("{TaskName}", task.DisplayText);
+            text = text.Replace("{TaskStatus}", task.DisplayStatus.ToString());
         }
 
         return text;

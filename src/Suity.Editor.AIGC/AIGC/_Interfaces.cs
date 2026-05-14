@@ -3,6 +3,8 @@ using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
 using Suity.Editor.WorkSpaces;
+using Suity.Views;
+using Suity.Views.Named;
 using System.Collections.Generic;
 
 namespace Suity.Editor.AIGC;
@@ -48,24 +50,18 @@ public interface IAigcTaskHost
 /// Represents an AIGC task page that manages task execution, subtasks, prompts, and chat history.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "AIGC Task Page", Color = FlowColors.Task, Icon = "*CoreIcon|Task")]
-public interface IAigcTaskPage
+public interface IAigcTaskPage : INamed, ITextDisplay
 {
+    /// <summary>
+    /// Gets the page asset associated with this task.
+    /// </summary>
+    /// <returns></returns>
+    IPageAsset GetPageAsset();
+
     /// <summary>
     /// Gets the page instance associated with this task.
     /// </summary>
     IPageInstance GetPageInstance();
-
-    public string PageName { get; }
-
-    /// <summary>
-    /// Gets the task name, preferring the description over the name if available.
-    /// </summary>
-    public string TaskName { get; }
-
-    /// <summary>
-    /// Gets the current text status of the task.
-    /// </summary>
-    public TextStatus TaskStatus { get; }
 
     /// <summary>
     /// Gets the task host document for this task page.
@@ -189,5 +185,13 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     /// <returns>An array of available tool assets.</returns>
     IPageAsset[] GetToolList(bool includeDocumentTools);
 }
+
+#endregion
+
+#region IAigcToolPage
+
+public interface IAigcToolPage : IAigcTaskPage
+{
+} 
 
 #endregion

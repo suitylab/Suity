@@ -591,7 +591,7 @@ public static class DialogUtility
         ISelectionService service = EditorServices.SelectionService;
         if (service != null)
         {
-            SelectionResult result = await service.ShowSelectionGUIAsync(selection.GetList(), title, option);
+            SelectionResult result = await service.ShowSelectionGUIAsync(selection.GetSelectionList(), title, option);
             if (result?.IsSuccess == true)
             {
                 selection.SelectedKey = result.SelectedKey;

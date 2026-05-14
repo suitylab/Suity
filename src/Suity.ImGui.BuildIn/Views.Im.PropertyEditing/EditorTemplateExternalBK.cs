@@ -685,7 +685,7 @@ internal class EditorTemplateExternalBK : EditorTemplateExternal
         node.OnContent(() =>
         {
             ImageDef? icon = EditorUtility.GetIcon(val)
-                ?? EditorUtility.GetIcon(val.GetList()?.GetItem(val.SelectedKey)?.ToDisplayIcon());
+                ?? EditorUtility.GetIcon(val.GetSelectionList()?.GetItem(val.SelectedKey)?.ToDisplayIcon());
 
             if (icon is { })
             {
@@ -747,7 +747,7 @@ internal class EditorTemplateExternalBK : EditorTemplateExternal
                 return;
             }
 
-            var list = val.GetList();
+            var list = val.GetSelectionList();
 
             if (list is null)
             {

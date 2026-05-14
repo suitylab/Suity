@@ -195,6 +195,21 @@ public abstract class DesignNode : SNamedNode,
         return this;
     }
 
+    #endregion
+
+    #region ITextDisplay (Virtual)
+
+    protected override string OnGetDisplayText()
+    {
+        string name = this.Description;
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            name = this.Name;
+        }
+
+        return name;
+    }
+
     protected override TextStatus OnGetTextStatus()
     {
         var status = base.OnGetTextStatus();
@@ -210,6 +225,8 @@ public abstract class DesignNode : SNamedNode,
 
         return TextStatus.Normal;
     }
+
+    protected override ImageDef OnGetIcon() => SelectedIcon;
 
     #endregion
 
@@ -386,8 +403,6 @@ setup.ExtendedField(_attributes.Array, new ViewProperty("Attributes", "Property"
                 .WithColor(_color != Color.Empty ? _color : (Color?)null));
         }
     }
-
-    protected override ImageDef OnGetIcon() => SelectedIcon;
 
     #endregion
 

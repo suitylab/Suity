@@ -130,7 +130,7 @@ namespace Suity.Editor.Values
                 return;
             }
 
-            var list = _key.GetList();
+            var list = _key.GetSelectionList();
 
             var id = UpdateLateBinding(list, true);
             if (id == Guid.Empty)

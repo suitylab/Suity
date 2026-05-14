@@ -31,7 +31,7 @@ namespace Suity.Editor.AIGC;
 [NativeAlias("Suity.Editor.AIGC.Flows.AigcTaskPage")]
 [NativeAlias("Suity.Editor.AIGC.TaskPages.AigcTaskPage")]
 [NativeAlias("Suity.Editor.AIGC.AigcWorkflowPage")]
-public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
+public class AigcWorkflowPage : DesignNode,
     IAigcWorkflowPage, 
     IViewDoubleClickAction,
     INavigable,
@@ -167,10 +167,7 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
     #region Virtual / Override 
 
     /// <inheritdoc/>
-    protected internal override string OnGetSuggestedPrefix() => "#Task-";
-
-    /// <inheritdoc/>
-    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? EnsureInstance()?.Icon ?? CoreIconCache.Task;
+    protected internal override string OnGetSuggestedPrefix() => "#Workflow-";
 
     /// <inheritdoc/>
     protected override bool OnCanEditText() => false;
@@ -216,8 +213,6 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
         _buildAction.DoQueuedAction();
     }
 
-    /// <inheritdoc/>
-    protected override TextStatus OnGetTextStatus() => EnsureInstance()?.GetAllStatus() ?? TextStatus.Normal;
 
     #endregion
 
@@ -292,33 +287,23 @@ public class AigcWorkflowPage : DesignNode, //TODO: rename to AigcSubFlowPage
     }
     #endregion
 
+    #region ITextDisplay (Virtual)
+
+    /// <inheritdoc/>
+    protected override TextStatus OnGetTextStatus() => EnsureInstance()?.GetAllStatus() ?? TextStatus.Normal;
+
+    /// <inheritdoc/>
+    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? EnsureInstance()?.Icon ?? CoreIconCache.Task;
+
+    #endregion
+
     #region IAigcTaskPage
 
     /// <inheritdoc/>
+    public IPageAsset GetPageAsset() => _workflow.Target;
+
+    /// <inheritdoc/>
     public IPageInstance GetPageInstance() => EnsureInstance();
-
-    /// <summary>
-    /// Gets the name of the page instance.
-    /// </summary>
-    public string PageName => GetPageInstance()?.Name;
-
-    /// <inheritdoc/>
-    public string TaskName
-    {
-        get
-        {
-            string name = this.Description;
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                name = this.Name;
-            }
-
-            return name;
-        }
-    }
-
-    /// <inheritdoc/>
-    public TextStatus TaskStatus => OnGetTextStatus();
 
     /// <inheritdoc/>
     public IAigcTaskHost TaskHost => this.GetDocument() as AigcTaskPageDocument;

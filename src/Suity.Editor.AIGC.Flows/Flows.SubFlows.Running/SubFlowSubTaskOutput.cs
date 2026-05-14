@@ -102,7 +102,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
         {
             if (!AllSubTasks)
             {
-                string toolName = GetLastSubTask()?.PageName;
+                string toolName = GetLastSubTask()?.GetPageAsset()?.Name ?? string.Empty;
                 return toolName;
             }
             else

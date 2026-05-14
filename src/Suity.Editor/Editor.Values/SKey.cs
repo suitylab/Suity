@@ -137,15 +137,15 @@ public class SKey : SItem,
         set => _selection.SelectedKey = value;
     }
 
-    ISelectionList ISelection.GetList()
+    ISelectionList ISelection.GetSelectionList()
     {
         if (InputType.OriginType?.IsAbstractStruct == true)
         {
-            return _selection.GetList();
+            return _selection.GetSelectionList();
         }
         else
         {
-            return _selection.GetList();
+            return _selection.GetSelectionList();
         }
     }
 

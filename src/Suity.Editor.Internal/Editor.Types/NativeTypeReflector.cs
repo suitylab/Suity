@@ -272,12 +272,12 @@ internal sealed class NativeTypeReflector
             };
 
             // Configure abstract struct implementation
-            NativeAbstractAttribute sideAttr = type.GetAttributeCached<NativeAbstractAttribute>();
-            if (sideAttr != null)
+            NativeAbstractAttribute abstractAttr = type.GetAttributeCached<NativeAbstractAttribute>();
+            if (abstractAttr != null)
             {
-                if (sideAttr.AbstractTypes.Length > 0)
+                if (abstractAttr.AbstractTypes.Length > 0)
                 {
-                    nativeClass.SetBaseType(sideAttr.AbstractTypes[0]);
+                    nativeClass.SetBaseType(abstractAttr.AbstractTypes[0]);
                 }
             }
             else if (!string.IsNullOrWhiteSpace(structAttr.BaseType))

@@ -81,14 +81,14 @@ public class SKeySelection : AssetSelection
     /// <summary>
     /// Gets the selection list, returning the abstract list for abstract struct types.
     /// </summary>
-    public override ISelectionList GetList()
+    public override ISelectionList GetSelectionList()
     {
         if (_baseType != null && _baseType.IsAbstractStruct && _abstractList != null)
         {
             return _abstractList;
         }
 
-        return base.GetList();
+        return base.GetSelectionList();
     }
 
     /// <summary>

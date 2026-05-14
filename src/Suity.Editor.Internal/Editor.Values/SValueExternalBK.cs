@@ -1377,7 +1377,7 @@ internal sealed class SValueExternalBK : SValueExternal
         }
         else
         {
-            result = await type.GetImplementations(filter).ShowSelectionGUIAsync(title);
+            result = await type.GetImplementationList(filter).ShowSelectionGUIAsync(title);
         }
 
         if (!result.IsSuccess)

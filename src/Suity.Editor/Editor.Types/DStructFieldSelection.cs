@@ -28,7 +28,7 @@ public class DStructFieldSelection : EditorObjectSelection<DStructField>
     }
 
     /// <inheritdoc />
-    public override ISelectionList GetList() => _list ?? EmptySelectionList.Empty as ISelectionList;
+    public override ISelectionList GetSelectionList() => _list ?? EmptySelectionList.Empty as ISelectionList;
 
     /// <summary>
     /// Gets or sets the object type.

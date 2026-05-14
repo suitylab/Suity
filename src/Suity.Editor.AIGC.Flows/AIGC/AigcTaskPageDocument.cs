@@ -44,7 +44,8 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
         ItemCollection.FieldName = "Tasks";
         ItemCollection.FieldDescription = "Tasks";
 
-        ItemCollection.AddItemType<AigcWorkflowPage>("Workflow Task");
+        ItemCollection.AddItemType<AigcWorkflowPage>("Workflow");
+        ItemCollection.AddItemType<AigcToolPage>("Tool");
     }
 
     #region Startup
@@ -281,13 +282,25 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
         if (item is AigcWorkflowPage workflowPage)
         {
             var selection = new AssetSelection<SubFlowDefinitionAsset>();
-            if (!await selection.ShowSelectionGUIAsync("Select Task Page"))
+            if (!await selection.ShowSelectionGUIAsync("Select Workflow"))
             {
                 return false;
             }
 
             workflowPage.Name = AllocateTaskId();
             workflowPage.Workflow = selection.Target;
+            return true;
+        }
+        else if (item is AigcToolPage toolPage)
+        {
+            var selection = new DImplementationSelection(NativeTypes.ToolDefinitionType);
+            if (!await selection.ShowSelectionGUIAsync("Select Tool"))
+            {
+                return false;
+            }
+
+            toolPage.Name = AllocateTaskId();
+            toolPage.Tool = selection.Target;
             return true;
         }
 

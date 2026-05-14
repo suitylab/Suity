@@ -197,7 +197,7 @@ internal abstract class TypesExternal
     /// <param name="type">The type definition.</param>
     /// <param name="filter">Optional asset filter.</param>
     /// <returns>The selection list of implementations.</returns>
-    public abstract ISelectionList GetImplementations(TypeDefinition type, IAssetFilter filter = null);
+    public abstract ISelectionList GetImplementationList(TypeDefinition type, IAssetFilter filter = null);
 
     /// <summary>
     /// Gets the icon for a type definition.

@@ -6,7 +6,6 @@ using Suity.Synchonizing;
 using Suity.Synchonizing.Core;
 using Suity.Views;
 using System;
-using System.Drawing;
 
 namespace Suity.Editor.Selecting;
 
@@ -163,39 +162,15 @@ public abstract class AssetSelection : ISelection,
         }
     }
 
-    /// <summary>
-    /// Gets or sets the selected key.
-    /// </summary>
+    /// <inheritdoc />
     public string SelectedKey
     {
         get => _assetRef.AssetKey;
         set => _assetRef.AssetKey = value;
     }
 
-    /// <summary>
-    /// Gets the asset collection for this selection.
-    /// </summary>
-    /// <returns>The asset collection.</returns>
-    public IGeneralAssetCollection GetCollection()
-    {
-        if (ContentTypeId != Guid.Empty)
-        {
-            return AssetManager.Instance.GetAssetCollection(ContentTypeId);
-        }
-
-        if (!string.IsNullOrEmpty(ContentTypeName))
-        {
-            return AssetManager.Instance.GetAssetCollection(ContentTypeName);
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// Gets the selection list for this selection.
-    /// </summary>
-    /// <returns>The selection list.</returns>
-    public virtual ISelectionList GetList()
+    /// <inheritdoc />
+    public virtual ISelectionList GetSelectionList()
     {
         IAssetCollection<Asset> collection = GetCollection();
 
@@ -248,6 +223,25 @@ public abstract class AssetSelection : ISelection,
     }
 
     #endregion
+
+    /// <summary>
+    /// Gets the asset collection for this selection.
+    /// </summary>
+    /// <returns>The asset collection.</returns>
+    public IGeneralAssetCollection GetCollection()
+    {
+        if (ContentTypeId != Guid.Empty)
+        {
+            return AssetManager.Instance.GetAssetCollection(ContentTypeId);
+        }
+
+        if (!string.IsNullOrEmpty(ContentTypeName))
+        {
+            return AssetManager.Instance.GetAssetCollection(ContentTypeName);
+        }
+
+        return null;
+    }
 
     /// <summary>
     /// Validates whether the given asset is valid for this selection.
@@ -501,7 +495,7 @@ public class SValueSelection : AssetSelection<ValueAsset>, ISupportAnalysis, ITe
     public TypeDefinition ValueType => _valuetype;
 
     /// <inheritdoc />
-    public override ISelectionList GetList()
+    public override ISelectionList GetSelectionList()
     {
         var collection = ValueManager.Instance.GetValueCollection(_valuetype);
         if (collection != null)

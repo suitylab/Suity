@@ -2,7 +2,6 @@ using Suity.Drawing;
 using Suity.Synchonizing;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace Suity.Selecting;
 
@@ -14,7 +13,7 @@ public interface ISelection : ISyncObject
     /// <summary>
     /// Gets the selection list associated with this selection.
     /// </summary>
-    ISelectionList GetList();
+    ISelectionList GetSelectionList();
 
     /// <summary>
     /// Gets or sets the key of the currently selected item.

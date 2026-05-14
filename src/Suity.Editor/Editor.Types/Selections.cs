@@ -32,7 +32,7 @@ public abstract class BaseTypeDesignSelection : ITypeDesignSelection, ISelection
     /// <summary>
     /// Gets the selection list.
     /// </summary>
-    public abstract ISelectionList GetList();
+    public abstract ISelectionList GetSelectionList();
 
     /// <summary>
     /// Event raised when the target is updated.
@@ -281,7 +281,7 @@ public override string ToString()
 
 public class TypeDesignSelection : BaseTypeDesignSelection, IEquatable<TypeDesignSelection>
 {
-    public override ISelectionList GetList() => TypeDesignSelectionList.Instance;
+    public override ISelectionList GetSelectionList() => TypeDesignSelectionList.Instance;
 
     public bool Equals(TypeDesignSelection other)
     {
@@ -296,7 +296,7 @@ public class TypeDesignSelection : BaseTypeDesignSelection, IEquatable<TypeDesig
 
 public class DataLinkTypeDesignSelection : BaseTypeDesignSelection, IEquatable<DataLinkTypeDesignSelection>
 {
-    public override ISelectionList GetList() => TypeDesignDataLinkSelectionList.Instance;
+    public override ISelectionList GetSelectionList() => TypeDesignDataLinkSelectionList.Instance;
 
     public bool Equals(DataLinkTypeDesignSelection other)
     {
@@ -315,7 +315,7 @@ public class DataLinkTypeDesignSelection : BaseTypeDesignSelection, IEquatable<D
 
 internal sealed class TypeDesignSelectionList : BaseSelectionNode
 {
-    public static TypeDesignSelectionList Instance { get; } = new TypeDesignSelectionList();
+    public static TypeDesignSelectionList Instance { get; } = new();
 
     readonly Dictionary<string, ISelectionItem> _items = [];
 
@@ -435,7 +435,7 @@ internal class TypeDesignPrimitiveSelectionList : BaseSelectionNode
 
 internal class TypeDesignNativeSelectionList : BaseSelectionNode
 {
-    public static TypeDesignNativeSelectionList Instance { get; } = new TypeDesignNativeSelectionList();
+    public static TypeDesignNativeSelectionList Instance { get; } = new();
 
     public override string SelectionKey => "Native";
 
@@ -479,7 +479,7 @@ internal class TypeDesignNativeSelectionList : BaseSelectionNode
 
 internal class TypeDesignStructSelectionList : BaseSelectionNode
 {
-    public static TypeDesignStructSelectionList Instance { get; } = new TypeDesignStructSelectionList();
+    public static TypeDesignStructSelectionList Instance { get; } = new();
 
     public override string SelectionKey => "Struct";
 
@@ -519,7 +519,7 @@ internal class TypeDesignStructSelectionList : BaseSelectionNode
 
 internal class TypeDesignAbstractSelectionList : BaseSelectionNode
 {
-    public static TypeDesignAbstractSelectionList Instance { get; } = new TypeDesignAbstractSelectionList();
+    public static TypeDesignAbstractSelectionList Instance { get; } = new();
 
     public override string SelectionKey => "Abstract";
 
@@ -580,7 +580,7 @@ internal class TypeDesignAbstractSelectionList : BaseSelectionNode
 
 internal class TypeDesignEnumSelectionList : BaseSelectionNode
 {
-    public static TypeDesignEnumSelectionList Instance { get; } = new TypeDesignEnumSelectionList();
+    public static TypeDesignEnumSelectionList Instance { get; } = new();
 
     public override string SelectionKey => "Enum";
 
@@ -641,7 +641,7 @@ internal class TypeDesignEnumSelectionList : BaseSelectionNode
 
 internal class TypeDesignFunctionSelectionList : BaseSelectionNode
 {
-    public static TypeDesignFunctionSelectionList Instance { get; } = new TypeDesignFunctionSelectionList();
+    public static TypeDesignFunctionSelectionList Instance { get; } = new();
 
     public override string SelectionKey => "Function";
 
@@ -681,7 +681,7 @@ internal class TypeDesignFunctionSelectionList : BaseSelectionNode
 
 internal class TypeDesignDataLinkSelectionList : BaseSelectionNode
 {
-    public static TypeDesignDataLinkSelectionList Instance { get; } = new TypeDesignDataLinkSelectionList();
+    public static TypeDesignDataLinkSelectionList Instance { get; } = new();
 
     public override string SelectionKey => AssetDefNames.Data;
 
@@ -742,7 +742,7 @@ internal class TypeDesignDataLinkSelectionList : BaseSelectionNode
 
 internal class TypeDesignAbstractLinkSelectionList : BaseSelectionNode
 {
-    public static TypeDesignAbstractLinkSelectionList Instance { get; } = new TypeDesignAbstractLinkSelectionList();
+    public static TypeDesignAbstractLinkSelectionList Instance { get; } = new();
 
     public override string SelectionKey => "AbstractDataLink";
 
@@ -803,7 +803,7 @@ DisplayText = o.DisplayText + " " + L("Abstract Link"),
 
 internal class TypeDesignAssetLinkSelectionList : BaseSelectionNode
 {
-    public static TypeDesignAssetLinkSelectionList Instance { get; } = new TypeDesignAssetLinkSelectionList();
+    public static TypeDesignAssetLinkSelectionList Instance { get; } = new();
 
     public override string SelectionKey => "AssetLink";
 
@@ -864,7 +864,7 @@ DisplayText = o.DisplayText + " " + L("Asset Link"),
 
 internal class TypeDesignControllerSelectionList : BaseSelectionNode
 {
-    public static TypeDesignControllerSelectionList Instance { get; } = new TypeDesignControllerSelectionList();
+    public static TypeDesignControllerSelectionList Instance { get; } = new();
 
     public override string SelectionKey => "Controller";
 
@@ -902,7 +902,7 @@ internal class TypeDesignControllerSelectionList : BaseSelectionNode
 
 internal class TypeDesignDelegateSelectionList : BaseSelectionNode
 {
-    public static TypeDesignDelegateSelectionList Instance { get; } = new TypeDesignDelegateSelectionList();
+    public static TypeDesignDelegateSelectionList Instance { get; } = new();
 
     public override string SelectionKey => "Delegate";
 

@@ -71,7 +71,7 @@ public class SAssetKey : SItem,
     /// <summary>
     /// Gets the selection list.
     /// </summary>
-    ISelectionList ISelection.GetList() => _selection.GetList();
+    ISelectionList ISelection.GetSelectionList() => _selection.GetSelectionList();
 
     /// <summary>
     /// Gets whether the selection is valid.

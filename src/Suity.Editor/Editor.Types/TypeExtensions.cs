@@ -73,8 +73,8 @@ public static class TypeExtensions
     /// <summary>
     /// Gets the implementations of a type.
     /// </summary>
-    public static ISelectionList GetImplementations(this TypeDefinition type, IAssetFilter filter = null)
-        => TypesExternal._external.GetImplementations(type, filter);
+    public static ISelectionList GetImplementationList(this TypeDefinition type, IAssetFilter filter = null)
+        => TypesExternal._external.GetImplementationList(type, filter);
 
     /// <summary>
     /// Gets the icon for a type.
