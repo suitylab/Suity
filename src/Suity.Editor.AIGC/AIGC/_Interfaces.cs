@@ -1,4 +1,5 @@
-﻿using Suity.Editor.Documents;
+﻿using Suity.Editor.AIGC.Assistants;
+using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
@@ -6,6 +7,7 @@ using Suity.Editor.WorkSpaces;
 using Suity.Views;
 using Suity.Views.Named;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
 
@@ -53,6 +55,11 @@ public interface IAigcTaskHost
 public interface IAigcTaskPage : INamed, ITextDisplay
 {
     /// <summary>
+    /// Gets the task host document for this task page.
+    /// </summary>
+    IAigcTaskHost TaskHost { get; }
+
+    /// <summary>
     /// Gets the page asset associated with this task.
     /// </summary>
     /// <returns></returns>
@@ -64,20 +71,14 @@ public interface IAigcTaskPage : INamed, ITextDisplay
     IPageInstance GetPageInstance();
 
     /// <summary>
-    /// Gets the task host document for this task page.
+    /// Handles an AI request event by finding matching begin elements and executing them.
     /// </summary>
-    IAigcTaskHost TaskHost { get; }
-
-    /// <summary>
-    /// Gets the task commit information.
-    /// </summary>
-    HistoryText GetTaskCommit();
-
-    /// <summary>
-    /// Gets a value indicating whether this task and all its sub-tasks are done.
-    /// </summary>
-    /// <returns>True if all done, false if any not done, or null if undetermined.</returns>
-    bool? GetAllDone();
+    /// <param name="request">The AI request to process.</param>
+    /// <param name="eventType">The type of event to handle.</param>
+    /// <param name="commitName">The commit name to match against event nodes.</param>
+    /// <param name="parameter">The parameter to pass to the event handler.</param>
+    /// <returns>True if any events were handled; otherwise, false.</returns>
+    Task<bool> RunTask(AIRequest request, TaskEventTypes eventType, string commitName, object parameter);
 }
 
 #endregion

@@ -330,7 +330,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
             }
             else
             {
-                var option = new PageElementOption
+                var option = new PageCreateOption
                 {
                     Mode = PageElementMode.Preset,
                     Owner = this,
@@ -519,7 +519,7 @@ public class SubFlowPresetAsset : Asset,
     #region IPageAsset
 
     /// <inheritdoc/>
-    public IPageInstance CreatePageInstance(PageElementOption option)
+    public IPageInstance CreatePageInstance(PageCreateOption option)
         => CreateSubFlowInstance(option);
 
     #endregion
@@ -543,7 +543,7 @@ public class SubFlowPresetAsset : Asset,
     /// </summary>
     /// <param name="option">The page element options.</param>
     /// <returns>A new <see cref="ISubFlowInstance"/>, or null if creation fails.</returns>
-    public ISubFlowInstance CreateSubFlowInstance(PageElementOption option)
+    public ISubFlowInstance CreateSubFlowInstance(PageCreateOption option)
     {
         if (this.GetDocument<SubFlowPresetDocument>() is not { } doc)
         {

@@ -81,64 +81,16 @@ public abstract class AigcTaskPage : DesignNode,
     #region Virtual (IAigcTaskPage)
 
     /// <inheritdoc/>
+    public virtual IAigcTaskHost TaskHost => this.GetDocument() as AigcTaskPageDocument;
+
+    /// <inheritdoc/>
     public virtual IPageAsset GetPageAsset() => null;
 
     /// <inheritdoc/>
     public virtual IPageInstance GetPageInstance() => null;
 
     /// <inheritdoc/>
-    public virtual IAigcTaskHost TaskHost => this.GetDocument() as AigcTaskPageDocument;
-
-    /// <inheritdoc/>
-    public virtual HistoryText GetTaskCommit() => null;
-
-    /// <inheritdoc/>
-    public virtual bool? GetAllDone() => null;
-
-    #endregion
-
-    #region Virtual (Task)
-
-
-    /// <summary>
-    /// Gets a value indicating whether this task is done.
-    /// </summary>
-    /// <returns>True if done, false if not done, or null if undetermined.</returns>
-    public virtual bool? GetIsDone() => null;
-
-    /// <summary>
-    /// Gets a value indicating whether all input parameters are done.
-    /// </summary>
-    /// <returns>True if all inputs are done, false if any is not done, or null if no inputs are defined.</returns>
-    public virtual bool? GetIsDoneInputs() => null;
-
-    /// <summary>
-    /// Gets a value indicating whether all input parameters are done based on the specified condition.
-    /// </summary>
-    /// <returns>True if all outputs are done, false if any is not done, or null if no outputs are defined.</returns>
-    public virtual bool? GetIsDoneOutputs() => null;
-
-
-    /// <summary>
-    /// Sets a parameter value on the page instance by name, with automatic type conversion.
-    /// </summary>
-    /// <param name="name">The name of the parameter to set.</param>
-    /// <param name="value">The value to set. Can be null.</param>
-    /// <returns>True if the parameter was found and set successfully; otherwise, false.</returns>
-    public virtual bool SetParameter(string name, object value) => false;
-
-
-    /// <summary>
-    /// Handles an AI request event by finding matching begin elements and executing them.
-    /// </summary>
-    /// <param name="request">The AI request to process.</param>
-    /// <param name="eventType">The type of event to handle.</param>
-    /// <param name="commitName">The commit name to match against event nodes.</param>
-    /// <param name="parameter">The parameter to pass to the event handler.</param>
-    /// <returns>True if any events were handled; otherwise, false.</returns>
-    public virtual async Task<bool> RunTask(AIRequest request, SubFlowEventTypes eventType, string commitName, object parameter) => false;
-
-    public virtual TaskCommitInfo GetTaskCommitInfo() => null;
+    public virtual async Task<bool> RunTask(AIRequest request, TaskEventTypes eventType, string commitName, object parameter) => false;
 
     #endregion
 
@@ -228,7 +180,7 @@ public abstract class AigcTaskPage : DesignNode,
                 continue;
             }
 
-            var allDone = task.GetAllDone();
+            var allDone = task.GetPageInstance()?.GetAllDone();
             if (allDone.IsFalse())
             {
                 unfinished = task;
@@ -323,7 +275,7 @@ public abstract class AigcTaskPage : DesignNode,
     /// <returns>True if this task and all sub-tasks are done, false if any is not done.</returns>
     public bool GetAllDoneWithSubTasks()
     {
-        var allDone = GetAllDone();
+        var allDone = GetPageInstance()?.GetAllDone();
         if (allDone.IsFalse())
         {
             return false;
@@ -348,7 +300,7 @@ public abstract class AigcTaskPage : DesignNode,
             return null;
         }
 
-        return Items.OfType<AigcTaskPage>().All(o => o.GetAllDone().IsTrueOrEmpty());
+        return Items.OfType<AigcTaskPage>().All(o => (o.GetPageInstance()?.GetAllDone()).IsTrueOrEmpty());
     }
     
 

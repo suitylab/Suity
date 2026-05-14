@@ -19,7 +19,7 @@ public interface IPageAsset : INamed, IHasId
     /// </summary>
     string Description { get; }
 
-    IPageInstance CreatePageInstance(PageElementOption option);
+    IPageInstance CreatePageInstance(PageCreateOption option);
 }
 
 #endregion
@@ -46,7 +46,7 @@ public interface ISubFlowAsset : IPageAsset
     /// <summary>
     /// Creates a new page instance with the specified options.
     /// </summary>
-    ISubFlowInstance CreateSubFlowInstance(PageElementOption option);
+    ISubFlowInstance CreateSubFlowInstance(PageCreateOption option);
 }
 
 #endregion
@@ -180,7 +180,7 @@ public abstract class ToolAsset : StandaloneAsset<IToolAsset>, IToolAsset
 
     public override ImageDef GetIcon() => CoreIconCache.Tool;
 
-    public abstract IPageInstance CreatePageInstance(PageElementOption option);
+    public abstract IPageInstance CreatePageInstance(PageCreateOption option);
 }
 
 #endregion

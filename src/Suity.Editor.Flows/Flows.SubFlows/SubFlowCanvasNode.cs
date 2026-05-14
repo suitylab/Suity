@@ -233,7 +233,7 @@ public class SubFlowCanvasNode : ExpandedCanvasAssetNode<SubFlowDefinitionAsset>
             }
             else
             {
-                var option = new PageElementOption
+                var option = new PageCreateOption
                 {
                     Mode = PageElementMode.Page,
                     Owner = this,

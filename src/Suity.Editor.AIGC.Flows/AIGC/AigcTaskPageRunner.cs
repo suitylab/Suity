@@ -154,14 +154,17 @@ internal class AigcTaskPageRunner : AIAssistant
 
     private async Task<(bool flowControl, AICallResult value)> RunTask(AIRequest request, AigcTaskPage task)
     {
-        if (task.GetIsDoneInputs().IsFalse())
+        if ((task.GetPageInstance()?.GetIsDoneInputs()).IsFalse())
         {
             return (flowControl: false, value: AICallResult.FromFailed("Task input is missing, it may be stuck. Task canceled."));
         }
 
+        bool? allDone;
+
         if (task == _lastTask)
         {
-            if (task.GetAllDone().IsTrueOrEmpty())
+            allDone = task.GetPageInstance()?.GetAllDone();
+            if (allDone.IsTrueOrEmpty())
             {
                 return (flowControl: false, value: AICallResult.Success);
             }
@@ -173,7 +176,7 @@ internal class AigcTaskPageRunner : AIAssistant
 
         _lastTask = task;
 
-        var runResult = await RunTask(request, task, SubFlowEventTypes.TaskBegin, null, null);
+        var runResult = await RunTask(request, task, TaskEventTypes.TaskBegin, null, null);
         if (request.Cancel.IsCancellationRequested)
         {
             return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
@@ -181,11 +184,12 @@ internal class AigcTaskPageRunner : AIAssistant
 
         // When a task is completed but no end event is triggered,
         // try to trigger the sub-task completion event to ensure the parent task can correctly perceive the completion status of the sub-task.
-        if (task.GetAllDone().IsFalse() && task.GetAllSubTaskDone() == true)
+        allDone = task.GetPageInstance()?.GetAllDone();
+        if (allDone.IsFalse() && task.GetAllSubTaskDone() == true)
         {
             var lastTask = task.GetTaskAt(task.Count - 1);
 
-            runResult = await RunTask(request, task, SubFlowEventTypes.SubTaskFinished, lastTask?.CommitName, null);
+            runResult = await RunTask(request, task, TaskEventTypes.SubTaskFinished, lastTask?.CommitName, null);
             if (request.Cancel.IsCancellationRequested)
             {
                 return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
@@ -205,7 +209,7 @@ internal class AigcTaskPageRunner : AIAssistant
     /// <param name="commitName">The name of the commit, if applicable.</param>
     /// <param name="parameter">The parameter to pass to the event handler.</param>
     /// <returns>A <see cref="TaskRunResult"/> containing the end type and result parameter.</returns>
-    private async Task<TaskRunResult> RunTask(AIRequest request, AigcTaskPage task, SubFlowEventTypes eventType, string commitName, object parameter)
+    private async Task<TaskRunResult> RunTask(AIRequest request, AigcTaskPage task, TaskEventTypes eventType, string commitName, object parameter)
     {
         SelectTask(task);
 
@@ -218,7 +222,7 @@ internal class AigcTaskPageRunner : AIAssistant
             }
 
             string message = "Run Task: ";
-            if (eventType != SubFlowEventTypes.None)
+            if (eventType != TaskEventTypes.None)
             {
                 message = $"Handle event: {eventType}";
             }
@@ -240,13 +244,13 @@ internal class AigcTaskPageRunner : AIAssistant
                 return new(TaskCommitTypes.None, "Task is not handled.");
             }
 
-            bool? isDone = task.GetAllDone();
+            bool? isDone = task.GetPageInstance()?.GetAllDone();
             if (!isDone.IsTrueOrEmpty())
             {
                 return new(TaskCommitTypes.None, "Task is not done.");
             }
 
-            var end = task.GetTaskCommitInfo();
+            var end = task.GetPageInstance()?.GetTaskCommitInfo();
             if (end is null)
             {
                 return new(TaskCommitTypes.None, "Task it not finished.");
@@ -294,7 +298,7 @@ internal class AigcTaskPageRunner : AIAssistant
             }
 
             var eventType = ToEventType(runResult.EndType);
-            if (eventType == SubFlowEventTypes.None)
+            if (eventType == TaskEventTypes.None)
             {
                 return AICallResult.Empty;
             }
@@ -336,23 +340,23 @@ internal class AigcTaskPageRunner : AIAssistant
     }
 
     /// <summary>
-    /// Converts a <see cref="TaskCommitTypes"/> value to the corresponding <see cref="SubFlowEventTypes"/> value.
+    /// Converts a <see cref="TaskCommitTypes"/> value to the corresponding <see cref="TaskEventTypes"/> value.
     /// </summary>
     /// <param name="endType">The page commit type to convert.</param>
-    /// <returns>The corresponding <see cref="SubFlowEventTypes"/> value.</returns>
-    public static SubFlowEventTypes ToEventType(TaskCommitTypes endType)
+    /// <returns>The corresponding <see cref="TaskEventTypes"/> value.</returns>
+    public static TaskEventTypes ToEventType(TaskCommitTypes endType)
     {
         switch (endType)
         {
             case TaskCommitTypes.TaskFinished:
-                return SubFlowEventTypes.SubTaskFinished;
+                return TaskEventTypes.SubTaskFinished;
 
             case TaskCommitTypes.TaskFailed:
-                return SubFlowEventTypes.SubTaskFailed;
+                return TaskEventTypes.SubTaskFailed;
 
             case TaskCommitTypes.None:
             default:
-                return SubFlowEventTypes.None;
+                return TaskEventTypes.None;
         }
 
     }

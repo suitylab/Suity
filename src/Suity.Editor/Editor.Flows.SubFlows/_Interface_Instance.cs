@@ -31,7 +31,40 @@ public interface IPageInstance : INamed
     /// <summary>
     /// Sets a parameter value by name.
     /// </summary>
-    void SetParameter(string name, object value);
+    bool SetParameter(string name, object value);
+
+    /// <summary>
+    /// Gets a value indicating whether this task is done.
+    /// </summary>
+    /// <returns>True if done, false if not done, or null if undetermined.</returns>
+    bool? GetIsDone();
+
+    /// <summary>
+    /// Gets a value indicating whether all input parameters are done.
+    /// </summary>
+    /// <returns>True if all inputs are done, false if any is not done, or null if no inputs are defined.</returns>
+    bool? GetIsDoneInputs();
+
+    /// <summary>
+    /// Gets a value indicating whether all input parameters are done based on the specified condition.
+    /// </summary>
+    /// <returns>True if all outputs are done, false if any is not done, or null if no outputs are defined.</returns>
+    bool? GetIsDoneOutputs();
+
+    /// <summary>
+    /// Gets a value indicating whether all pages (including sub-pages) are done.
+    /// </summary>
+    /// <returns>True if all pages are done, false if any is not done, or null if no inputs are defined.</returns>
+    bool? GetAllDone();
+
+
+    /// <summary>
+    /// Gets the task commit data formatted as a <see cref="HistoryText"/>.
+    /// </summary>
+    /// <returns>The formatted task commit data.</returns>
+    HistoryText GetTaskCommit();
+
+    TaskCommitInfo GetTaskCommitInfo();
 }
 
 #endregion
@@ -96,25 +129,14 @@ public interface ISubFlowInstance : ISubFlowElement, IPageInstance
     /// <returns>The formatted output chat history.</returns>
     HistoryText GetOutputChatHistory();
 
-    /// <summary>
-    /// Gets the task commit data formatted as a <see cref="HistoryText"/>.
-    /// </summary>
-    /// <returns>The formatted task commit data.</returns>
-    HistoryText GetTaskCommit();
-
-    /// <summary>
-    /// Gets a value indicating whether all pages (including sub-pages) are done.
-    /// </summary>
-    /// <returns>True if all pages are done, false if any is not done, or null if no inputs are defined.</returns>
-    bool? GetAllDone();
 }
 #endregion
 
-#region PageElementOption
+#region PageCreateOption
 /// <summary>
 /// Provides options for configuring a page element.
 /// </summary>
-public class PageElementOption
+public class PageCreateOption
 {
     /// <summary>
     /// Gets the mode of the page element.

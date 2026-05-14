@@ -433,7 +433,7 @@ public class GetTaskCommit : TaskPageNode
             throw new FlowComputaionException(this, "Task is null.");
         }
 
-        string commit = task?.GetTaskCommit() ?? string.Empty;
+        string commit = task?.GetPageInstance()?.GetTaskCommit() ?? string.Empty;
 
         compute.SetValue(_commit, commit);
     }
@@ -498,14 +498,14 @@ public class GetSubTaskCommit : TaskPageNode
         if (allSubTasks)
         {
             var commits = parentTask.GetAllSubTasks()
-                .Select(t => t.GetTaskCommit())
+                .Select(t => t.GetPageInstance()?.GetTaskCommit())
                 .ToArray();
 
             commit = string.Join(Environment.NewLine, commits.Where(c => !string.IsNullOrEmpty(c)));
         }
         else
         {
-            commit = parentTask.GetLastSubTask()?.GetTaskCommit() ?? string.Empty;
+            commit = parentTask.GetLastSubTask()?.GetPageInstance()?.GetTaskCommit() ?? string.Empty;
         }
 
         compute.SetValue(_commit, commit);
@@ -665,8 +665,10 @@ public class GetLastSubTask : TaskPageNode
 
         if (needDone && subTask != null)
         {
-            bool isDone = subTask.GetAllDone() == true;
-            if (!isDone)
+            bool? allDone = subTask.GetPageInstance()?.GetAllDone();
+
+            bool done = allDone == true;
+            if (!done)
             {
                 subTask = null;
             }
@@ -777,7 +779,7 @@ public class GetTaskInfomation : TaskPageNode
 
         if (diagram.GetIsLinked(_isDone))
         {
-            compute.SetValue(_isDone, task.GetIsDone() == true);
+            compute.SetValue(_isDone, task.GetPageInstance()?.GetIsDone() == true);
         }
     }
 }

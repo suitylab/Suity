@@ -317,7 +317,7 @@ public class PageFunctionNode : AssetRefFlowNode<SubFlowDefinitionAsset>, IFlowN
             }
             else
             {
-                var option = new PageElementOption
+                var option = new PageCreateOption
                 {
                     Mode = PageElementMode.Function,
                     Owner = this,

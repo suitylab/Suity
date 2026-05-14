@@ -256,7 +256,7 @@ public class SubFlowDefinitionAsset : Asset,
     #region IPageAsset
 
     /// <inheritdoc/>
-    public IPageInstance CreatePageInstance(PageElementOption option)
+    public IPageInstance CreatePageInstance(PageCreateOption option)
         => CreateSubFlowInstance(option);
 
     #endregion
@@ -270,7 +270,7 @@ public class SubFlowDefinitionAsset : Asset,
     public ISubFlow GetBaseDefinition() => GetDiagramItem()?.Node;
 
     /// <inheritdoc/>
-    public ISubFlowInstance CreateSubFlowInstance(PageElementOption option)
+    public ISubFlowInstance CreateSubFlowInstance(PageCreateOption option)
     {
         if (GetDiagramItem() is not { } toolPageItem)
         {

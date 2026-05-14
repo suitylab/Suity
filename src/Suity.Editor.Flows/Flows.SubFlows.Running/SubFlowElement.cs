@@ -34,7 +34,7 @@ public abstract class SubFlowElement : IViewObject, ISubFlowElement
     /// <summary>
     /// Gets or sets the configuration options for this page element.
     /// </summary>
-    public PageElementOption Option { get; internal set; }
+    public PageCreateOption Option { get; internal set; }
 
     /// <summary>
     /// Gets the name of this element.

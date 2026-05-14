@@ -54,7 +54,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <param name="pageDefinition">The page definition diagram item.</param>
     /// <param name="option">The page element configuration options.</param>
     /// <param name="preset">Optional preset asset to associate with this page instance.</param>
-    public SubFlowInstance(SubFlowDefinitionDiagramItem pageDefinition, PageElementOption option, ISubFlowPresetAsset preset = null)
+    public SubFlowInstance(SubFlowDefinitionDiagramItem pageDefinition, PageCreateOption option, ISubFlowPresetAsset preset = null)
         : base(pageDefinition)
     {
         _pageDefinition = pageDefinition ?? throw new ArgumentNullException(nameof(pageDefinition));
@@ -235,14 +235,33 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// </summary>
     /// <param name="name">The name of the parameter.</param>
     /// <param name="value">The value to set.</param>
-    public void SetParameter(string name, object value)
+    public bool SetParameter(string name, object value)
     {
-        if (_dic.TryGetValue(name, out var element) && element is IPageParameter parameter)
+        if (_dic.GetValueSafe(name) is not IPageParameter parameter)
         {
-            parameter.SetValue(value);
-
-            ParameterSet?.Invoke(this, parameter);
+            return false;
         }
+
+        if (value != null)
+        {
+            var valueType = TypeDefinition.FromNative(value.GetType());
+            if (!TypeDefinition.IsNullOrEmpty(valueType))
+            {
+                var c = EditorServices.TypeConvertService.TryConvert(valueType, parameter.ParameterType, false, value, out var result);
+                if (c == TypeConvertState.Unconvertible)
+                {
+                    return false;
+                }
+
+                value = result;
+            }
+        }
+
+        parameter.SetValue(value);
+
+        ParameterSet?.Invoke(this, parameter);
+
+        return true;
     }
 
     #endregion
@@ -760,7 +779,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// </summary>
     /// <param name="option">The options to apply to the cloned instance.</param>
     /// <returns>A new <see cref="SubFlowInstance"/> that is a copy of this instance.</returns>
-    public SubFlowInstance Clone(PageElementOption option)
+    public SubFlowInstance Clone(PageCreateOption option)
     {
         var clone = new SubFlowInstance(_pageDefinition, option);
         clone.UpdateFromOther(this);
@@ -857,6 +876,17 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <returns>True if all outputs are done, false if any is not done, or null if no outputs are defined.</returns>
     public bool? GetIsDoneOutputs() => GetIsDoneOutputs(ParameterCondition);
 
+    public TaskCommitInfo GetTaskCommitInfo()
+    {
+        if (CurrentEndElement is { } end)
+        {
+            return new TaskCommitInfo(end.EndType, end.Value);
+        }
+        else
+        {
+            return null;
+        }
+    }
 
 
     /// <summary>

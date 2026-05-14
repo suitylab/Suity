@@ -352,7 +352,7 @@ public class ParseToolCalling : TaskPageNode
         // 4. Create instance and assign values
         try
         {
-            var option = new PageElementOption
+            var option = new PageCreateOption
             {
                 Mode = PageElementMode.Function,
             };
@@ -526,7 +526,7 @@ public class CreateToolCalling : TaskPageNode
 
             try
             {
-                var option = new PageElementOption
+                var option = new PageCreateOption
                 {
                     Mode = PageElementMode.Function,
                 };
@@ -734,7 +734,7 @@ public class CreateToolCallingWithParameter : TaskPageNode
         {
             try
             {
-                var option = new PageElementOption
+                var option = new PageCreateOption
                 {
                     Mode = PageElementMode.Function,
                 };
@@ -823,7 +823,7 @@ public class CreateToolCallingWithParameter : TaskPageNode
 
             try
             {
-                var option = new PageElementOption
+                var option = new PageCreateOption
                 {
                     Mode = PageElementMode.Function,
                 };

@@ -25,7 +25,7 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
 {
     private FlowNodeConnector _begin;
 
-    readonly ValueProperty<SubFlowEventTypes> _eventType = new("EventType", "Event Type", SubFlowEventTypes.TaskBegin);
+    readonly ValueProperty<TaskEventTypes> _eventType = new("EventType", "Event Type", TaskEventTypes.TaskBegin);
     readonly StringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "The submission name of the sub-task.");
 
     /// <summary>
@@ -42,7 +42,7 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
     /// <summary>
     /// Gets the type of event this node responds to.
     /// </summary>
-    public SubFlowEventTypes EventType => _eventType.Value;
+    public TaskEventTypes EventType => _eventType.Value;
 
     /// <summary>
     /// Gets the commit name associated with this event node.
@@ -55,7 +55,7 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
     /// <param name="eventType">The event type to match.</param>
     /// <param name="commitName">The commit name to match, or null for any commit.</param>
     /// <returns>True if the event matches; otherwise, false.</returns>
-    public bool MathEvent(SubFlowEventTypes eventType, string commitName = null)
+    public bool MathEvent(TaskEventTypes eventType, string commitName = null)
     {
         // Event type must match
         if (eventType != _eventType.Value)
@@ -188,19 +188,19 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
     /// </summary>
     /// <param name="eventType">The event type.</param>
     /// <returns>The associated color, or null.</returns>
-    public static Color? ToColor(SubFlowEventTypes eventType)
+    public static Color? ToColor(TaskEventTypes eventType)
     {
         switch (eventType)
         {
 
-            case SubFlowEventTypes.SubTaskFinished:
+            case TaskEventTypes.SubTaskFinished:
                 return DEvent.EventTypeColor;
 
-            case SubFlowEventTypes.SubTaskFailed:
+            case TaskEventTypes.SubTaskFailed:
                 return FlowColors.ErrorColor;
 
-            case SubFlowEventTypes.TaskBegin:
-            case SubFlowEventTypes.None:
+            case TaskEventTypes.TaskBegin:
+            case TaskEventTypes.None:
             default:
                 return FlowColors.WorkflowColor;
         }

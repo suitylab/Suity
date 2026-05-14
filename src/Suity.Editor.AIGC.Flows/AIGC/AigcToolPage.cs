@@ -22,29 +22,6 @@ public class AigcToolPage : AigcTaskPage,
         set => _tool.Target = value;
     }
 
-    #region ITextDisplay (Virtual)
-
-    /// <inheritdoc/>
-    protected override TextStatus OnGetTextStatus() => TextStatus.Unchecked;
-
-    /// <inheritdoc/>
-    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? CoreIconCache.Tool;
-
-
-    #endregion
-
-    #region IAigcTaskPage
-
-    public override IPageAsset GetPageAsset() => null;
-
-    public override bool? GetAllDone() => null;
-
-    public override IPageInstance GetPageInstance() => null;
-
-    public override HistoryText GetTaskCommit() => null;
-
-    #endregion
-
     #region Virtual / Override
 
     /// <inheritdoc/>
@@ -77,7 +54,26 @@ public class AigcToolPage : AigcTaskPage,
 
     #endregion
 
-    
+    #region Virtual (IAigcTaskPage)
+
+    public override IPageAsset GetPageAsset() => null;
+
+    public override IPageInstance GetPageInstance() => null;
+
+    #endregion
+
+    #region Virtual (ITextDisplay)
+
+    /// <inheritdoc/>
+    protected override TextStatus OnGetTextStatus() => TextStatus.Unchecked;
+
+    /// <inheritdoc/>
+    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? CoreIconCache.Tool;
+
+
+    #endregion
+
+
 }
 
 [NativeType("TestTool", CodeBase = "*Suity")]
@@ -89,7 +85,7 @@ public class TestTool : ToolAsset
     {
     }
 
-    public override IPageInstance CreatePageInstance(PageElementOption option)
+    public override IPageInstance CreatePageInstance(PageCreateOption option)
     {
         return null;
     }

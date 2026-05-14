@@ -74,13 +74,13 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
     {
         if (AllSubTasks)
         {
-            var contents = GetAllSubTasks().Select(o => o?.GetTaskCommit()).SkipNull();
+            var contents = GetAllSubTasks().Select(o => o?.GetPageInstance()?.GetTaskCommit()).SkipNull();
             return string.Join("\r\n\r\n", contents);
         }
         else
         {
             var subTask = GetLastSubTask();
-            return subTask?.GetTaskCommit() ?? HistoryText.Empty;
+            return subTask?.GetPageInstance()?.GetTaskCommit() ?? HistoryText.Empty;
         }
     }
 
@@ -202,7 +202,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
                 return false;
             }
 
-            done = tasks.All(o => (o?.GetAllDone()).IsTrueOrEmpty());
+            done = tasks.All(o => (o?.GetPageInstance()?.GetAllDone()).IsTrueOrEmpty());
         }
         else
         {
@@ -212,7 +212,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
                 return false;
             }
 
-            var taskIsDone = task?.GetAllDone();
+            var taskIsDone = task?.GetPageInstance()?.GetAllDone();
             done = taskIsDone.IsTrueOrEmpty();
         }
 

@@ -50,7 +50,7 @@ public class SubFlowDefinitionAssetToTextConverter : TypeToTextConverter<SubFlow
             return null;
         }
 
-        var option = new PageElementOption
+        var option = new PageCreateOption
         {
             Mode = PageElementMode.Function,
         };
@@ -78,7 +78,7 @@ public class SubFlowDefinitionAssetArrayToTextConverter : AssetLinkArrayToTextCo
                 continue;
             }
 
-            var option = new PageElementOption
+            var option = new PageCreateOption
             {
                 Mode = PageElementMode.Function,
             };
@@ -105,7 +105,7 @@ public class IPageAssetToTextConverter : TypeToTextConverter<IPageAsset>
     /// <inheritdoc/>
     public override string Convert(IPageAsset objFrom)
     {
-        var option = new PageElementOption
+        var option = new PageCreateOption
         {
             Mode = PageElementMode.Function,
         };
@@ -128,7 +128,7 @@ public class IPageAssetArrayToTextConverter : AssetLinkArrayToTextConverter<IPag
 
         foreach (var obj in objFroms.SkipNull())
         {
-            var option = new PageElementOption
+            var option = new PageCreateOption
             {
                 Mode = PageElementMode.Function,
             };

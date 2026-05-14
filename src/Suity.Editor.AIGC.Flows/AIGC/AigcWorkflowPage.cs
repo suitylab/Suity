@@ -191,63 +191,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     public override IPageInstance GetPageInstance() => EnsureInstance();
 
     /// <inheritdoc/>
-    public override HistoryText GetTaskCommit() => EnsureInstance()?.GetTaskCommit();
-
-    /// <inheritdoc/>
-    public override bool? GetAllDone() => EnsureInstance()?.GetAllDone();
-
-    #endregion
-
-    #region Virtual (Task)
-
-
-    /// <inheritdoc/>
-    public override bool? GetIsDone() => EnsureInstance()?.GetIsDone();
-
-    /// <inheritdoc/>
-    public override bool? GetIsDoneInputs() => EnsureInstance()?.GetIsDoneInputs();
-
-    /// <inheritdoc/>
-    public override bool? GetIsDoneOutputs() => EnsureInstance()?.GetIsDoneOutputs();
-
-    /// <inheritdoc/>
-    public override bool SetParameter(string name, object value)
-    {
-        if (_instance?.GetElement(name) is not IPageParameter p)
-        {
-            return false;
-        }
-
-        if (value != null)
-        {
-            var valueType = TypeDefinition.FromNative(value.GetType());
-            if (!TypeDefinition.IsNullOrEmpty(valueType))
-            {
-                var c = EditorServices.TypeConvertService.TryConvert(valueType, p.ParameterType, false, value, out var result);
-                if (c == TypeConvertState.Unconvertible)
-                {
-                    return false;
-                }
-
-                value = result;
-            }
-        }
-
-        p.SetValue(value);
-
-        return true;
-    }
-
-
-    /// <summary>
-    /// Run task with specific event by finding matching begin elements and executing them.
-    /// </summary>
-    /// <param name="request">The AI request to process.</param>
-    /// <param name="eventType">The type of event to handle.</param>
-    /// <param name="commitName">The commit name to match against event nodes.</param>
-    /// <param name="parameter">The parameter to pass to the event handler.</param>
-    /// <returns>True if any events were handled; otherwise, false.</returns>
-    public override async Task<bool> RunTask(AIRequest request, SubFlowEventTypes eventType, string commitName, object parameter)
+    public override async Task<bool> RunTask(AIRequest request, TaskEventTypes eventType, string commitName, object parameter)
     {
         if (EnsureInstance() is not { } instance)
         {
@@ -281,8 +225,6 @@ public class AigcWorkflowPage : AigcTaskPage,
                 continue;
             }
 
-            // request.Conversation.AddRunningMessage("Execute event: " + element.Name);
-
             begin.SetValue(parameter);
             await instance.HandleBeginTask(request, begin);
         }
@@ -290,9 +232,9 @@ public class AigcWorkflowPage : AigcTaskPage,
         return true;
     }
 
-    private bool MatchBeginElement(SubFlowBeginElement begin, SubFlowEventTypes eventType, string commitName)
+    private bool MatchBeginElement(SubFlowBeginElement begin, TaskEventTypes eventType, string commitName)
     {
-        if (eventType == SubFlowEventTypes.TaskBegin && begin.Node is SubFlowBeginNode)
+        if (eventType == TaskEventTypes.TaskBegin && begin.Node is SubFlowBeginNode)
         {
             // PageBeginNode can be used for TaskBegin event without commitName, for better compatibility with old version page definitions.
             return true;
@@ -300,19 +242,6 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         // Exact match with PageEventNode and eventType, commitName.
         return begin.Node is PageEventNode node && node.MathEvent(eventType, commitName);
-    }
-
-
-    public override TaskCommitInfo GetTaskCommitInfo()
-    {
-        if (Instance?.CurrentEndElement is { } end)
-        {
-            return new TaskCommitInfo(end.EndType, end.Value);
-        }
-        else
-        {
-            return null;
-        }
     }
 
     #endregion
@@ -1080,7 +1009,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             }
             else
             {
-                var option = new PageElementOption
+                var option = new PageCreateOption
                 {
                     Mode = PageElementMode.Task,
                     Owner = this,
@@ -1167,7 +1096,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             Workflow = subFlowAsset,
         };
 
-        var option = new PageElementOption
+        var option = new PageCreateOption
         {
             Mode = PageElementMode.Task,
             Owner = taskPage,
@@ -1238,7 +1167,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             Workflow = subFlowAsset,
         };
 
-        var option = new PageElementOption
+        var option = new PageCreateOption
         {
             Mode = PageElementMode.Task,
             Owner = taskPage,
