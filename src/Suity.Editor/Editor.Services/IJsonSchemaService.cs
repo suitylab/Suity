@@ -96,6 +96,11 @@ public class SimpleField
     public string Name { get; init; }
 
     /// <summary>
+    /// Gets or sets the description.
+    /// </summary>
+    public string Description { get; init; }
+
+    /// <summary>
     /// Gets or sets the tooltips.
     /// </summary>
     public string Tooltips { get; init; }

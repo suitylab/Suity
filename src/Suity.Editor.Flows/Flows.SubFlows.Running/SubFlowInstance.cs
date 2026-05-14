@@ -199,6 +199,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             var field = new SimpleField
             {
                 Name = parameter.Name,
+                Description = parameter.ToDisplayTextL(),
                 Tooltips = tooltips?.ToolTips,
                 Type = fieldType,
                 Range = range,
@@ -219,15 +220,6 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         };
 
         return type;
-    }
-
-    /// <summary>
-    /// Gets all input parameters defined on this page.
-    /// </summary>
-    /// <returns>An enumerable of page parameter inputs.</returns>
-    public IEnumerable<IPageParameterInput> GetInputParameters()
-    {
-        return GetAllChildElements().OfType<IPageParameterInput>();
     }
 
     /// <summary>

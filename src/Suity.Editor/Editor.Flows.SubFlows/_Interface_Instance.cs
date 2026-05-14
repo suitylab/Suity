@@ -24,11 +24,6 @@ public interface IPageInstance : INamed
     SimpleType ToSimpleType();
 
     /// <summary>
-    /// Gets all input parameters for this page.
-    /// </summary>
-    IEnumerable<IPageParameterInput> GetInputParameters();
-
-    /// <summary>
     /// Sets a parameter value by name.
     /// </summary>
     bool SetParameter(string name, object value);

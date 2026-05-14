@@ -730,7 +730,7 @@ public class CreateToolCallingWithParameter : TaskPageNode
 
     private void ParseFromToolDef()
     {
-        if (_toolDef.Target is { } toolPageAsset)
+        if (_toolDef.Target is { } pageAsset)
         {
             try
             {
@@ -739,18 +739,19 @@ public class CreateToolCallingWithParameter : TaskPageNode
                     Mode = PageElementMode.Function,
                 };
 
-                var pageInstance = toolPageAsset.CreatePageInstance(option);
+                var pageInstance = pageAsset.CreatePageInstance(option);
 
                 _parameters.List.Clear();
 
-                foreach (var element in pageInstance.GetInputParameters())
+                var simpleType = pageInstance.ToSimpleType();
+                foreach (var input in simpleType.Fields)
                 {
-                    if (string.IsNullOrWhiteSpace(element.Name))
+                    if (string.IsNullOrWhiteSpace(input.Name))
                     {
                         continue;
                     }
 
-                    var type = element.ParameterType;
+                    var type = input.Type;
                     if (TypeDefinition.IsNullOrEmpty(type))
                     {
                         continue;
@@ -758,8 +759,8 @@ public class CreateToolCallingWithParameter : TaskPageNode
 
                     var parameter = new ToolCallParameter
                     {
-                        Name = element.Name,
-                        Description = element.ToDisplayTextL(),
+                        Name = input.Name,
+                        Description = input.Description,
                         ParameterType = type,
                     };
 
