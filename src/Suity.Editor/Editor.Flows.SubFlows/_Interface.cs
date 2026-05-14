@@ -1,4 +1,5 @@
-﻿using Suity.Editor.Types;
+﻿using Suity.Drawing;
+using Suity.Editor.Types;
 using Suity.Views.Named;
 using System.Collections.Generic;
 
@@ -164,5 +165,22 @@ public interface IToolAsset : IPageAsset
 {
 }
 
+
+#endregion
+
+#region ToolAsset
+
+public abstract class ToolAsset : StandaloneAsset<IToolAsset>, IToolAsset
+{
+    protected ToolAsset()
+    {
+    }
+
+    public override ImageDef DefaultIcon => CoreIconCache.Tool;
+
+    public override ImageDef GetIcon() => CoreIconCache.Tool;
+
+    public abstract IPageInstance CreatePageInstance(PageElementOption option);
+}
 
 #endregion

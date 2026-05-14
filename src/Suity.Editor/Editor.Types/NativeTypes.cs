@@ -217,11 +217,6 @@ public static class NativeTypes
     public static TypeDefinition AttributeType { get; internal set; }
 
     /// <summary>
-    /// Gets the Tool type definition.
-    /// </summary>
-    public static TypeDefinition ToolDefinitionType { get; internal set; }
-
-    /// <summary>
     /// Gets the Handler type definition.
     /// </summary>
     public static TypeDefinition HandlerType { get; internal set; }

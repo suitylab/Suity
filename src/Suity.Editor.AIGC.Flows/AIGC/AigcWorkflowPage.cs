@@ -31,14 +31,12 @@ namespace Suity.Editor.AIGC;
 [NativeAlias("Suity.Editor.AIGC.Flows.AigcTaskPage")]
 [NativeAlias("Suity.Editor.AIGC.TaskPages.AigcTaskPage")]
 [NativeAlias("Suity.Editor.AIGC.AigcWorkflowPage")]
-public class AigcWorkflowPage : DesignNode,
+public class AigcWorkflowPage : AigcTaskPage,
     IAigcWorkflowPage, 
     IViewDoubleClickAction,
     INavigable,
     IDrawEditorImGui
 {
-    readonly StringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "Name used when committing to parent task.");
-
     readonly AssetProperty<ISubFlowAsset> _workflow = new("Workflow", "Workflow");
     readonly AssetProperty<ArticleContainerAsset> _article = new("Article", "Article");
     readonly TextBlockProperty _taskPrompt = new("TaskPrompt", "Task Prompt", string.Empty);
@@ -69,16 +67,6 @@ public class AigcWorkflowPage : DesignNode,
     }
 
     #region Core Prop
-
-
-    /// <summary>
-    /// Gets or sets the commit name used when committing results to the parent task.
-    /// </summary>
-    public string CommitName
-    {
-        get => _commitName.Text ?? string.Empty;
-        set => _commitName.Text = value ?? string.Empty;
-    }
 
     /// <summary>
     /// Gets or sets the page definition asset that defines the structure and behavior of this task page.
@@ -144,11 +132,6 @@ public class AigcWorkflowPage : DesignNode,
     }
 
     /// <summary>
-    /// Gets the document associated with this task page as an <see cref="AigcTaskPageDocument"/>.
-    /// </summary>
-    public AigcTaskPageDocument TaskPageDocument => this.GetDocument() as AigcTaskPageDocument;
-
-    /// <summary>
     /// Gets or sets the task prompt text that describes the current task.
     /// </summary>
     public string TaskPrompt
@@ -156,11 +139,6 @@ public class AigcWorkflowPage : DesignNode,
         get => _taskPrompt.Text ?? string.Empty;
         set => _taskPrompt.Text = value ?? string.Empty;
     }
-
-    /// <summary>
-    /// Gets the parent task page, if this task is a sub-task of another task.
-    /// </summary>
-    public AigcWorkflowPage ParentTask => ParentNode as AigcWorkflowPage;
 
     #endregion
 
@@ -170,14 +148,10 @@ public class AigcWorkflowPage : DesignNode,
     protected internal override string OnGetSuggestedPrefix() => "#Workflow-";
 
     /// <inheritdoc/>
-    protected override bool OnCanEditText() => false;
-
-    /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)
     {
         base.OnSync(sync, context);
 
-        _commitName.Sync(sync);
         _workflow.Sync(sync);
         _article.Sync(sync);
         _taskPrompt.Sync(sync);
@@ -190,18 +164,11 @@ public class AigcWorkflowPage : DesignNode,
     {
         base.OnSetupView(setup);
 
-        _commitName.InspectorField(setup);
         _workflow.InspectorField(setup);
         _article.InspectorField(setup);
         _taskPrompt.InspectorField(setup);
 
         CheckRebuild();
-    }
-
-    /// <inheritdoc/>
-    protected internal override bool OnVerifyName(string name)
-    {
-        return !string.IsNullOrWhiteSpace(name);
     }
 
     /// <inheritdoc/>
@@ -212,6 +179,159 @@ public class AigcWorkflowPage : DesignNode,
         // Purpose is to refresh IInspectorContext
         _buildAction.DoQueuedAction();
     }
+
+    #endregion
+
+    #region Virtual (IAigcTaskPage)
+
+    /// <inheritdoc/>
+    public override IPageAsset GetPageAsset() => _workflow.Target;
+
+    /// <inheritdoc/>
+    public override IPageInstance GetPageInstance() => EnsureInstance();
+
+    /// <inheritdoc/>
+    public override HistoryText GetTaskCommit() => EnsureInstance()?.GetTaskCommit();
+
+    /// <inheritdoc/>
+    public override bool? GetAllDone() => EnsureInstance()?.GetAllDone();
+
+    #endregion
+
+    #region Virtual (Task)
+
+
+    /// <inheritdoc/>
+    public override bool? GetIsDone() => EnsureInstance()?.GetIsDone();
+
+    /// <inheritdoc/>
+    public override bool? GetIsDoneInputs() => EnsureInstance()?.GetIsDoneInputs();
+
+    /// <inheritdoc/>
+    public override bool? GetIsDoneOutputs() => EnsureInstance()?.GetIsDoneOutputs();
+
+    /// <inheritdoc/>
+    public override bool SetParameter(string name, object value)
+    {
+        if (_instance?.GetElement(name) is not IPageParameter p)
+        {
+            return false;
+        }
+
+        if (value != null)
+        {
+            var valueType = TypeDefinition.FromNative(value.GetType());
+            if (!TypeDefinition.IsNullOrEmpty(valueType))
+            {
+                var c = EditorServices.TypeConvertService.TryConvert(valueType, p.ParameterType, false, value, out var result);
+                if (c == TypeConvertState.Unconvertible)
+                {
+                    return false;
+                }
+
+                value = result;
+            }
+        }
+
+        p.SetValue(value);
+
+        return true;
+    }
+
+
+    /// <summary>
+    /// Run task with specific event by finding matching begin elements and executing them.
+    /// </summary>
+    /// <param name="request">The AI request to process.</param>
+    /// <param name="eventType">The type of event to handle.</param>
+    /// <param name="commitName">The commit name to match against event nodes.</param>
+    /// <param name="parameter">The parameter to pass to the event handler.</param>
+    /// <returns>True if any events were handled; otherwise, false.</returns>
+    public override async Task<bool> RunTask(AIRequest request, SubFlowEventTypes eventType, string commitName, object parameter)
+    {
+        if (EnsureInstance() is not { } instance)
+        {
+            return false;
+        }
+
+        var begins = instance.GetAllChildElements(true)
+            .OfType<SubFlowBeginElement>()
+            .Where(o => MatchBeginElement(o, eventType, commitName))
+            .ToArray();
+
+        if (begins.Length == 0)
+        {
+            return false;
+        }
+
+        foreach (var begin in begins)
+        {
+            var parentDefPage = begin.FindParentDefPage();
+            if (parentDefPage is null)
+            {
+                continue;
+            }
+
+            if (parentDefPage.GetIsDone().IsTrueOrEmpty())
+            {
+                request.Conversation.AddDisabledMessage("Skip completed event: " + eventType, msg =>
+                {
+                    msg.AddCode(begin.Name);
+                });
+                continue;
+            }
+
+            // request.Conversation.AddRunningMessage("Execute event: " + element.Name);
+
+            begin.SetValue(parameter);
+            await instance.HandleBeginTask(request, begin);
+        }
+
+        return true;
+    }
+
+    private bool MatchBeginElement(SubFlowBeginElement begin, SubFlowEventTypes eventType, string commitName)
+    {
+        if (eventType == SubFlowEventTypes.TaskBegin && begin.Node is SubFlowBeginNode)
+        {
+            // PageBeginNode can be used for TaskBegin event without commitName, for better compatibility with old version page definitions.
+            return true;
+        }
+
+        // Exact match with PageEventNode and eventType, commitName.
+        return begin.Node is PageEventNode node && node.MathEvent(eventType, commitName);
+    }
+
+
+    public override TaskCommitInfo GetTaskCommitInfo()
+    {
+        if (Instance?.CurrentEndElement is { } end)
+        {
+            return new TaskCommitInfo(end.EndType, end.Value);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    #endregion
+
+    #region Virtual (ITextDisplay)
+
+    /// <inheritdoc/>
+    protected override TextStatus OnGetTextStatus() => EnsureInstance()?.GetAllStatus() ?? TextStatus.Normal;
+
+    /// <inheritdoc/>
+    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? EnsureInstance()?.Icon ?? CoreIconCache.Task;
+
+    #endregion
+
+    #region Vitual (Other)
+
+    protected override void OnDoubleClick() => ShowWorkflow();
+
+    protected override object OnGetNavigationTarget() => Instance?.DiagramItem?.TargetAsset;
 
 
     #endregion
@@ -285,35 +405,6 @@ public class AigcWorkflowPage : DesignNode,
     {
         _buildAction.DoQueuedAction();
     }
-    #endregion
-
-    #region ITextDisplay (Virtual)
-
-    /// <inheritdoc/>
-    protected override TextStatus OnGetTextStatus() => EnsureInstance()?.GetAllStatus() ?? TextStatus.Normal;
-
-    /// <inheritdoc/>
-    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? EnsureInstance()?.Icon ?? CoreIconCache.Task;
-
-    #endregion
-
-    #region IAigcTaskPage
-
-    /// <inheritdoc/>
-    public IPageAsset GetPageAsset() => _workflow.Target;
-
-    /// <inheritdoc/>
-    public IPageInstance GetPageInstance() => EnsureInstance();
-
-    /// <inheritdoc/>
-    public IAigcTaskHost TaskHost => this.GetDocument() as AigcTaskPageDocument;
-
-    /// <inheritdoc/>
-    public HistoryText GetTaskCommit() => EnsureInstance()?.GetTaskCommit();
-
-    /// <inheritdoc/>
-    public bool? GetAllDone() => EnsureInstance()?.GetAllDone();
-
     #endregion
 
     #region IAigcWorkflowPage
@@ -881,26 +972,6 @@ public class AigcWorkflowPage : DesignNode,
 
     #endregion
 
-    #region IViewDoubleClickAction
-
-    /// <inheritdoc/>
-    void IViewDoubleClickAction.DoubleClick()
-    {
-        HandleGotoWorkflow();
-    }
-
-    #endregion
-
-    #region INavigable
-
-    /// <inheritdoc/>
-    object INavigable.GetNavigationTarget()
-    {
-        return Instance?.DiagramItem?.TargetAsset;
-    }
-
-    #endregion
-
     #region IDrawEditorImGui
 
     /// <inheritdoc/>
@@ -921,7 +992,7 @@ public class AigcWorkflowPage : DesignNode,
                     .InitClass("smallBtn")
                     .InitCenter()
                     .InitToolTips("Open workflow")
-                    .OnClick(HandleGotoWorkflow);
+                    .OnClick(ShowWorkflow);
                 }
             }
         }
@@ -931,305 +1002,37 @@ public class AigcWorkflowPage : DesignNode,
 
     #endregion
 
-    #region Task
-
-    /// <summary>
-    /// Gets a value indicating whether this task has no sub-tasks.
-    /// </summary>
-    public bool IsTaskEmpty => Count == 0;
-
-    /// <summary>
-    /// Gets the task at the specified index.
-    /// </summary>
-    /// <param name="index">The zero-based index of the task to retrieve.</param>
-    /// <returns>The task at the specified index, or null if the index is out of range.</returns>
-    public AigcWorkflowPage GetTaskAt(int index)
-    {
-        if (index >= 0 && index < Count)
-        {
-            return GetItemAt(index) as AigcWorkflowPage;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /// <summary>
-    /// Gets an enumerable collection of all tasks.
-    /// </summary>
-    public IEnumerable<AigcWorkflowPage> Tasks => Items.OfType<AigcWorkflowPage>();
-
-    /// <summary>
-    /// Gets the unfinished child task, searching from the last task backward.
-    /// </summary>
-    /// <returns>The first unfinished child <see cref="AigcWorkflowPage"/>, or null if all tasks are done.</returns>
-    public AigcWorkflowPage GetUnfinishedChildTask()
-    {
-        int c = Count;
-        if (c == 0)
-        {
-            return null;
-        }
-
-        AigcWorkflowPage unfinished = null;
-
-        for (int i = c - 1; i >= 0; i--)
-        {
-            var task = GetTaskAt(i);
-            if (task is null)
-            {
-                continue;
-            }
-
-            var allDone = task.GetAllDone();
-            if (allDone.IsFalse())
-            {
-                unfinished = task;
-                continue;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return unfinished;
-    }
-
-    /// <summary>
-    /// Gets the unfinished child task, recursively checking sub-tasks.
-    /// </summary>
-    /// <returns>The last unfinished child task, or null if no tasks exist.</returns>
-    public AigcWorkflowPage GetUnfinishedChildTaskDeep()
-    {
-        if (Count == 0)
-        {
-            return null;
-        }
-
-        var task = GetUnfinishedChildTask();
-        if (task != null)
-        {
-            return task.GetUnfinishedChildTaskDeep() ?? task;
-        }
-
-        // This is the last completed task.
-        //task = GetTaskAt(Count - 1);
-        //if (task != null)
-        //{
-        //    return task.GetUnfinishedChildTaskDeep() ?? task;
-        //}
-
-        return null;
-    }
-
-    /// <summary>
-    /// Gets the previous task in the parent list.
-    /// </summary>
-    /// <returns>The previous task, or null if this is the first task.</returns>
-    public AigcWorkflowPage GetPreviousTask()
-    {
-        int index = this.GetIndex();
-        if (index < 0 || index == 0)
-        {
-            return null;
-        }
-
-        return GetTaskAt(index - 1);
-    }
-
-    /// <summary>
-    /// Gets the next task in the parent list.
-    /// </summary>
-    /// <returns>The next task, or null if this is the last task.</returns>
-    public AigcWorkflowPage GetNextTask()
-    {
-        int index = this.GetIndex();
-        if (index < 0 || index == ParentList.Count - 1)
-        {
-            return null;
-        }
-
-        return GetTaskAt(index + 1);
-    }
-
-    /// <summary>
-    /// Adds a task to this task's collection.
-    /// </summary>
-    /// <param name="task">The task to add.</param>
-    /// <exception cref="ArgumentNullException">Thrown when <paramref name="task"/> is null.</exception>
-    public void AddTask(AigcWorkflowPage task)
-    {
-        if (task is null)
-        {
-            throw new ArgumentNullException(nameof(task));
-        }
-
-        AddItem(task);
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether this task is done.
-    /// </summary>
-    /// <returns>True if done, false if not done, or null if undetermined.</returns>
-    public bool? GetIsDone() => EnsureInstance()?.GetIsDone();
-
-    /// <summary>
-    /// Gets a value indicating whether all input parameters are done.
-    /// </summary>
-    /// <returns>True if all inputs are done, false if any is not done, or null if no inputs are defined.</returns>
-    public bool? GetIsDoneInputs() => EnsureInstance()?.GetIsDoneInputs();
-
-    /// <summary>
-    /// Gets a value indicating whether all input parameters are done based on the specified condition.
-    /// </summary>
-    /// <returns>True if all outputs are done, false if any is not done, or null if no outputs are defined.</returns>
-    public bool? GetIsDoneOutputs() => EnsureInstance()?.GetIsDoneOutputs();
-
-    /// <summary>
-    /// Gets a value indicating whether the task is done, and with all sub-tasks also done.
-    /// </summary>
-    /// <returns>True if this task and all sub-tasks are done, false if any is not done.</returns>
-    public bool GetAllDoneWithSubTasks()
-    {
-        var allDone = GetAllDone();
-        if (allDone.IsFalse())
-        {
-            return false;
-        }
-
-        if (Count == 0)
-        {
-            return true;
-        }
-
-        return Items.OfType<AigcWorkflowPage>().All(o => o.GetAllDoneWithSubTasks());
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether all sub-tasks are done.
-    /// </summary>
-    /// <returns>True if all sub-tasks are done, false if any is not done, or null if no sub-tasks exist.</returns>
-    public bool? GetAllSubTaskDone()
-    {
-        if (Count == 0)
-        {
-            return null;
-        }
-
-        return Items.OfType<AigcWorkflowPage>().All(o => o.GetAllDone().IsTrueOrEmpty());
-    }
-
-    /// <summary>
-    /// Sets a parameter value on the page instance by name, with automatic type conversion.
-    /// </summary>
-    /// <param name="name">The name of the parameter to set.</param>
-    /// <param name="value">The value to set. Can be null.</param>
-    /// <returns>True if the parameter was found and set successfully; otherwise, false.</returns>
-    public bool SetParameter(string name, object value)
-    {
-        if (_instance?.GetElement(name) is not IPageParameter p)
-        {
-            return false;
-        }
-
-        if (value != null)
-        {
-            var valueType = TypeDefinition.FromNative(value.GetType());
-            if (!TypeDefinition.IsNullOrEmpty(valueType))
-            {
-                var c = EditorServices.TypeConvertService.TryConvert(valueType, p.ParameterType, false, value, out var result);
-                if (c == TypeConvertState.Unconvertible)
-                {
-                    return false;
-                }
-                
-                value = result;
-            }
-        }
-
-        p.SetValue(value);
-
-        return true;
-    }
-
-    #endregion
-
-    #region Handle
-
-    /// <summary>
-    /// Handles an AI request event by finding matching begin elements and executing them.
-    /// </summary>
-    /// <param name="request">The AI request to process.</param>
-    /// <param name="eventType">The type of event to handle.</param>
-    /// <param name="commitName">The commit name to match against event nodes.</param>
-    /// <param name="parameter">The parameter to pass to the event handler.</param>
-    /// <returns>True if any events were handled; otherwise, false.</returns>
-    public async Task<bool> HandleEvent(AIRequest request, SubFlowEventTypes eventType, string commitName, object parameter)
-    {
-        if (EnsureInstance() is not { } instance)
-        {
-            return false;
-        }
-
-        var begins = instance.GetAllChildElements(true)
-            .OfType<SubFlowBeginElement>()
-            .Where(o => MatchBeginElement(o, eventType, commitName))
-            .ToArray();
-
-        if (begins.Length == 0)
-        {
-            return false;
-        }
-
-        foreach (var begin in begins)
-        {
-            var parentDefPage = begin.FindParentDefPage();
-            if (parentDefPage is null)
-            {
-                continue;
-            }
-
-            if (parentDefPage.GetIsDone().IsTrueOrEmpty())
-            {
-                request.Conversation.AddDisabledMessage("Skip completed event: " + eventType, msg => 
-                {
-                    msg.AddCode(begin.Name);
-                });
-                continue;
-            }
-
-            // request.Conversation.AddRunningMessage("Execute event: " + element.Name);
-
-            begin.SetValue(parameter);
-            await instance.HandleBeginTask(request, begin);
-        }
-
-        return true;
-    }
-
-    private bool MatchBeginElement(SubFlowBeginElement begin, SubFlowEventTypes eventType, string commitName)
-    {
-        if (eventType == SubFlowEventTypes.TaskBegin && begin.Node is SubFlowBeginNode)
-        {
-            // PageBeginNode can be used for TaskBegin event without commitName, for better compatibility with old version page definitions.
-            return true;
-        }
-
-        // Exact match with PageEventNode and eventType, commitName.
-        return begin.Node is PageEventNode node && node.MathEvent(eventType, commitName);
-    }
+    
 
     /// <summary>
     /// Navigates to the workflow associated with this task page.
     /// </summary>
-    public void HandleGotoWorkflow()
+    public void ShowWorkflow()
     {
         (this.GetDocument()?.View as AigcTaskPageDocumentView)?.HandleGotoWorkflow(this);
     }
 
-    #endregion
+    /// <summary>
+    /// Queues a view refresh on the associated document view.
+    /// </summary>
+    public void QueueRefreshView() => this.GetDocument()?.View?.RefreshView();
+
+    /// <summary>
+    /// Ensures the page instance is built and returns it.
+    /// Builds the instance if it doesn't exist or is not in the diagram.
+    /// </summary>
+    /// <returns>The built page instance, or null if no definition is available.</returns>
+    public SubFlowInstance EnsureInstance()
+    {
+        if (_instance != null && _instance.IsInDiagram)
+        {
+            return _instance;
+        }
+        else
+        {
+            return BuildInstance();
+        }
+    }
 
     /// <summary>
     /// Checks if the instance needs to be rebuilt and queues the build action if necessary.
@@ -1258,23 +1061,6 @@ public class AigcWorkflowPage : DesignNode,
         else
         {
             return null;
-        }
-    }
-
-    /// <summary>
-    /// Ensures the page instance is built and returns it.
-    /// Builds the instance if it doesn't exist or is not in the diagram.
-    /// </summary>
-    /// <returns>The built page instance, or null if no definition is available.</returns>
-    public SubFlowInstance EnsureInstance()
-    {
-        if (_instance != null && _instance.IsInDiagram)
-        {
-            return _instance;
-        }
-        else
-        {
-            return BuildInstance();
         }
     }
 
@@ -1316,49 +1102,8 @@ public class AigcWorkflowPage : DesignNode,
         }
     }
 
-    /// <summary>
-    /// Queues a view refresh on the associated document view.
-    /// </summary>
-    public void QueueRefreshView() => this.GetDocument()?.View?.RefreshView();
 
 
-    /// <summary>
-    /// Creates a new task page from a tool asset.
-    /// </summary>
-    /// <param name="asset">The tool asset to create the task from.</param>
-    /// <param name="title">Optional title for the task page.</param>
-    /// <param name="taskPrompt">Optional task prompt for the task page.</param>
-    /// <param name="commitName">Optional commit name for the task page.</param>
-    /// <returns>The newly created task page.</returns>
-    /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
-    public IAigcTaskPage CreateTaskPage(IPageAsset asset, string title = null, string taskPrompt = null, string commitName = null)
-    {
-        if (this.GetDocument() is not AigcTaskPageDocument doc)
-        {
-            throw new InvalidOperationException("AigcTaskPageDocument not found.");
-        }
-
-        return CreateTaskPage(doc, asset, title, taskPrompt, commitName);
-    }
-
-    /// <summary>
-    /// Creates a new task page from an existing page instance.
-    /// </summary>
-    /// <param name="pageInstance">The page instance to create the task from.</param>
-    /// <param name="title">Optional title for the task page.</param>
-    /// <param name="taskPrompt">Optional task prompt for the task page.</param>
-    /// <param name="commitName">Optional commit name for the task page.</param>
-    /// <returns>The newly created task page.</returns>
-    /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
-    public IAigcTaskPage CreateTaskPage(IPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null)
-    {
-        if (this.GetDocument() is not AigcTaskPageDocument doc)
-        {
-            throw new InvalidOperationException("AigcTaskPageDocument not found.");
-        }
-
-        return CreateTaskPage(doc, pageInstance, title, taskPrompt, commitName);
-    }
 
     /// <summary>
     /// Creates a new task page from an <see cref="ISubFlow"/> definition.
@@ -1381,71 +1126,6 @@ public class AigcWorkflowPage : DesignNode,
         }
 
         return CreateWorkflowPage(doc, asset, title, taskPrompt, commitName);
-    }
-
-
-    /// <summary>
-    /// Creates a new task page from a page asset within the specified document.
-    /// </summary>
-    /// <param name="doc">The document to create the task page in.</param>
-    /// <param name="pageAsset">The page asset to create the task from.</param>
-    /// <param name="title">Optional title for the task page.</param>
-    /// <param name="taskPrompt">Optional task prompt for the task page.</param>
-    /// <param name="commitName">Optional commit name for the task page.</param>
-    /// <returns>The newly created task page.</returns>
-    /// <exception cref="ArgumentNullException">Thrown when <paramref name="doc"/> or <paramref name="pageAsset"/> is null.</exception>
-    public static IAigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, IPageAsset pageAsset, string title = null, string taskPrompt = null, string commitName = null)
-    {
-        if (doc is null)
-        {
-            throw new ArgumentNullException(nameof(doc));
-        }
-
-        if (pageAsset is null)
-        {
-            throw new ArgumentNullException(nameof(pageAsset));
-        }
-
-        switch (pageAsset)
-        {
-            case ISubFlowAsset subFlowAsset:
-                return CreateWorkflowPage(doc, subFlowAsset, title, taskPrompt, commitName);
-
-            default:
-                throw new NotSupportedException($"{pageAsset.GetType().FullName} is not supported.");
-        }
-    }
-
-    /// <summary>
-    /// Creates a new task page from a page instance within the specified document.
-    /// </summary>
-    /// <param name="doc">The document to create the task page in.</param>
-    /// <param name="pageInstance">The page instance to create the task from.</param>
-    /// <param name="title">Optional title for the task page.</param>
-    /// <param name="taskPrompt">Optional task prompt for the task page.</param>
-    /// <param name="commitName">Optional commit name for the task page.</param>
-    /// <returns>The newly created task page.</returns>
-    /// <exception cref="ArgumentNullException">Thrown when <paramref name="doc"/> or <paramref name="pageInstance"/> is null.</exception>
-    public static IAigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, IPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null)
-    {
-        if (doc is null)
-        {
-            throw new ArgumentNullException(nameof(doc));
-        }
-
-        if (pageInstance is null)
-        {
-            throw new ArgumentNullException(nameof(pageInstance));
-        }
-
-        switch (pageInstance)
-        {
-            case ISubFlowInstance subFlowInstance:
-                return CreateWorkflowPage(doc, subFlowInstance, title, taskPrompt, commitName);
-
-            default:
-                throw new NotSupportedException($"{pageInstance.GetType().FullName} is not supported.");
-        }
     }
 
     /// <summary>
@@ -1582,5 +1262,4 @@ public class AigcWorkflowPage : DesignNode,
 
         return taskPage;
     }
-
 }

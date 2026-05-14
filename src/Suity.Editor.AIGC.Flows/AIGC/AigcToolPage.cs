@@ -1,23 +1,22 @@
 ﻿using Suity.Drawing;
-using Suity.Editor.Design;
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Selecting;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
 
 namespace Suity.Editor.AIGC;
 
-public class AigcToolPage : DesignItem,
+public class AigcToolPage : AigcTaskPage,
     IAigcToolPage
 {
-    DImplementationSelection _tool;
+    readonly AssetProperty<ToolAsset> _tool = new("Tool", "Tool");
 
     public AigcToolPage()
     {
-        _tool = new(NativeTypes.ToolDefinitionType);
     }
 
-    public DStruct Tool
+    public ToolAsset Tool
     {
         get => _tool.Target;
         set => _tool.Target = value;
@@ -34,17 +33,15 @@ public class AigcToolPage : DesignItem,
 
     #endregion
 
-    #region IAigcToolPage
+    #region IAigcTaskPage
 
-    public IAigcTaskHost TaskHost => null;
+    public override IPageAsset GetPageAsset() => null;
 
-    public bool? GetAllDone() => null;
+    public override bool? GetAllDone() => null;
 
-    public IPageAsset GetPageAsset() => null;
+    public override IPageInstance GetPageInstance() => null;
 
-    public IPageInstance GetPageInstance() => null;
-
-    public HistoryText GetTaskCommit() => null;
+    public override HistoryText GetTaskCommit() => null;
 
     #endregion
 
@@ -61,7 +58,7 @@ public class AigcToolPage : DesignItem,
     {
         base.OnSync(sync, context);
 
-        _tool = sync.Sync("ToolDef", _tool, SyncFlag.NotNull);
+        _tool.Sync(sync);
     }
 
     /// <inheritdoc/>
@@ -69,7 +66,7 @@ public class AigcToolPage : DesignItem,
     {
         base.OnSetupView(setup);
 
-        setup.InspectorField(_tool, new ViewProperty("ToolDef", "Tool Definition"));
+        _tool.InspectorField(setup);
     }
 
     /// <inheritdoc/>
@@ -84,7 +81,16 @@ public class AigcToolPage : DesignItem,
 }
 
 [NativeType("TestTool", CodeBase = "*Suity")]
-public class TestTool : ToolDefinition
+[AssetAutoCreate]
+public class TestTool : ToolAsset
 {
+    public TestTool()
+        : base()
+    {
+    }
 
+    public override IPageInstance CreatePageInstance(PageElementOption option)
+    {
+        return null;
+    }
 }

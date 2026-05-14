@@ -192,6 +192,6 @@ public interface IAigcWorkflowPage : IAigcTaskPage
 
 public interface IAigcToolPage : IAigcTaskPage
 {
-} 
+}
 
 #endregion

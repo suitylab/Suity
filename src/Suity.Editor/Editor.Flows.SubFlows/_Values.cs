@@ -3,6 +3,32 @@ using Suity.Editor.Types;
 namespace Suity.Editor.Flows.SubFlows;
 
 /// <summary>
+/// Defines the types of page commit events that can occur in the Sub-flow.
+/// </summary>
+public enum TaskCommitTypes
+{
+    /// <summary>
+    /// No commit type specified.
+    /// </summary>
+    [DisplayText("None")]
+    None,
+
+    /// <summary>
+    /// Indicates the task has finished successfully.
+    /// </summary>
+    [DisplayText("Task Finished")]
+    TaskFinished,
+
+    /// <summary>
+    /// Indicates the task has failed.
+    /// </summary>
+    [DisplayText("Task Failed")]
+    TaskFailed,
+}
+
+public record TaskCommitInfo(TaskCommitTypes EndType, object Value);
+
+/// <summary>
 /// Represents a wrapper for history text content with implicit conversion support.
 /// </summary>
 [NativeType(CodeBase = "SubFlow")]
