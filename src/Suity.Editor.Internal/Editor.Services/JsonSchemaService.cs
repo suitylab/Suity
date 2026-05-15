@@ -92,13 +92,12 @@ internal class JsonSchemaService : IJsonSchemaService
                 continue;
             }
 
-            var typeDef = TypeDefinition.FromNative(fieldInfo.Type);
             var field = new SimpleField
             {
                 Name = prop.Name,
                 Description = prop.Description,
                 Tooltips = prop.Styles.GetToolTips(),
-                Type = typeDef,
+                Type = fieldInfo.Type,
                 Optional = prop.Optional,
                 Range = prop.Attributes?.GetAttribute<NumericRangeAttribute>(),
                 Selection = prop.Attributes?.GetAttribute<SelectionDesignAttribute>(),
@@ -1018,7 +1017,7 @@ public class ObjectSchema : IDataWritable
 
 class GetFieldSetup : IViewObjectSetup
 {
-    public record FieldInfo(Type Type, ViewProperty Property);
+    public record FieldInfo(TypeDefinition Type, ViewProperty Property);
 
     readonly List<FieldInfo> _fields = [];
 
@@ -1026,7 +1025,7 @@ class GetFieldSetup : IViewObjectSetup
     {
     }
 
-    public FieldInfo[] Fields => _fields.ToArray();
+    public FieldInfo[] Fields => [.. _fields];
 
 
     #region IViewObjectSetup
@@ -1042,7 +1041,8 @@ class GetFieldSetup : IViewObjectSetup
             return;
         }
 
-        var field = new FieldInfo(type, property);
+        var field = new FieldInfo(typeDef, property);
+        _fields.Add(field);
     }
 
     public IEnumerable<object> GetObjects() => [];
