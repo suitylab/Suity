@@ -215,6 +215,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         var type = new SimpleType
         {
             Name = name,
+            Description = _pageDefinition?.ToDisplayTextL(),
             Tooltips = typeToolTips,
             Fields = [.. fields],
         };

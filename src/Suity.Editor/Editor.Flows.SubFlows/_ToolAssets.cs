@@ -2,6 +2,7 @@
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -84,8 +85,8 @@ public abstract class ToolInstance : IToolInstance
 #region ToolAsset<TInput, TOutput>
 
 public abstract class ToolAsset<TInput, TOutput> : ToolAsset
-    where TInput : SObjectController
-    where TOutput : SObjectController
+    where TInput : IViewObject
+    where TOutput : IViewObject
 {
 }
 
@@ -94,8 +95,8 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset
 #region ToolInstance<TInput, TOutput>
 
 public class ToolInstance<TInput, TOutput> : ToolInstance
-    where TInput : SObjectController
-    where TOutput : SObjectController
+    where TInput : IViewObject
+    where TOutput : IViewObject
 {
     public ToolInstance(PageCreateOption option, ToolAsset tool) : base(option, tool)
     {

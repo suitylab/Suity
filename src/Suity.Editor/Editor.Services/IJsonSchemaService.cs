@@ -1,5 +1,6 @@
 using Suity.Editor.Design;
 using Suity.Editor.Types;
+using Suity.Views;
 using System;
 using System.Collections.Generic;
 
@@ -51,6 +52,11 @@ public class SimpleType
     /// Gets or sets the name of the type.
     /// </summary>
     public string Name { get; init; }
+
+    /// <summary>
+    /// Gets or sets the description.
+    /// </summary>
+    public string Description { get; init; }
 
     /// <summary>
     /// Gets or sets the tooltips.
@@ -169,6 +175,8 @@ public interface IJsonSchemaService
     T GetObject<T>(string jsonText) where T : class;
 
     object GetObject(Type type, string jsonText);
+
+    SimpleType GetViewObjectSimpleType(IViewObject viewObject);
 
 
     /// <summary>

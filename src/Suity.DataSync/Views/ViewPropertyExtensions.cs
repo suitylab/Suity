@@ -160,9 +160,9 @@ public static class ViewPropertyExtensions
         return WithHeaderStyle(viewProperty, "Emboss");
     }
 
-    public static ViewProperty WithToolTips(this ViewProperty viewProperty, string toolTip)
+    public static ViewProperty WithToolTips(this ViewProperty viewProperty, string toolTips)
     {
-        viewProperty.EnsureStyles().SetAttribute("ToolTip", toolTip);
+        viewProperty.EnsureStyles().SetAttribute("ToolTips", toolTips);
         return viewProperty;
     }
 
@@ -218,9 +218,9 @@ public static class ViewPropertyExtensions
         return reader.GetAttribute("HeaderStyle");
     }
 
-    public static string GetToolTip(this INodeReader reader)
+    public static string GetToolTips(this INodeReader reader)
     {
-        return reader.GetAttribute("ToolTip");
+        return reader.GetAttribute("ToolTips");
     }
 
     public static string GetUnit(this INodeReader reader)

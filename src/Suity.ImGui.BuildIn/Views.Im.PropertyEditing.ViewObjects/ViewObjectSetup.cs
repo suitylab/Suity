@@ -93,7 +93,7 @@ internal abstract class BaseViewObjectSetup(PropertyTarget target) : MarshalByRe
 
         childTarget.HideTitle = property.HideTitle;
 
-        childTarget.ToolTips = L(property.Styles?.GetToolTip());
+        childTarget.ToolTips = L(property.Styles?.GetToolTips());
         childTarget.ToolTips ??= L(type.ToToolTipsText());
 
         childTarget.Attributes = property.Attributes;

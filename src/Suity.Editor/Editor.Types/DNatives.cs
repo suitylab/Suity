@@ -1,9 +1,6 @@
 using Suity.Drawing;
 using Suity.Helpers;
-using Suity.NodeQuery;
-using Suity.Views;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Suity.Editor.Types;
@@ -53,32 +50,6 @@ public class DNativeStruct : DStruct, INativeType
     /// <inheritdoc />
     public override Guid GetFieldId(string name)
         => TypesExternal._external.ResolveNativeFieldId(this, name);
-
-    private class GetFieldSetup : IViewObjectSetup
-    {
-        public INodeReader Styles => EmptyNodeReader.Empty;
-
-        public object Parent => null;
-
-        public void AddField(Type type, ViewProperty property)
-        {
-            var typeDef = TypeDefinition.FromNative(type);
-            if (TypeDefinition.IsNullOrEmpty(typeDef))
-            {
-                return;
-            }
-
-            //DStructField field = new DStructField()
-        }
-
-        public IEnumerable<object> GetObjects() => [];
-
-        public object GetService(Type serviceType) => null;
-
-        public bool IsTypeSupported(Type type) => true;
-
-        public bool IsViewIdSupported(int viewId) => viewId == ViewIds.Inspector;
-    }
 }
 
 #endregion

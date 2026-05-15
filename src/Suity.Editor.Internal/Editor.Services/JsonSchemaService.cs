@@ -6,6 +6,8 @@ using Suity.Editor.Design;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Json;
+using Suity.NodeQuery;
+using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -75,6 +77,46 @@ internal class JsonSchemaService : IJsonSchemaService
         return JsonConvert.DeserializeObject(jsonText, type);
     }
 
+
+    public SimpleType GetViewObjectSimpleType(IViewObject viewObject)
+    {
+        var setup = new GetFieldSetup();
+        viewObject.SetupView(setup);
+
+        List<SimpleField> fields = [];
+        foreach (var fieldInfo in setup.Fields)
+        {
+            var prop = fieldInfo.Property;
+            if (prop.ReadOnly)
+            {
+                continue;
+            }
+
+            var typeDef = TypeDefinition.FromNative(fieldInfo.Type);
+            var field = new SimpleField
+            {
+                Name = prop.Name,
+                Description = prop.Description,
+                Tooltips = prop.Styles.GetToolTips(),
+                Type = typeDef,
+                Optional = prop.Optional,
+                Range = prop.Attributes?.GetAttribute<NumericRangeAttribute>(),
+                Selection = prop.Attributes?.GetAttribute<SelectionDesignAttribute>(),
+            };
+
+            fields.Add(field);
+        }
+
+        var simpleType = new SimpleType
+        {
+            Name = viewObject.GetType().FullName,
+            Description = viewObject.ToDisplayTextL(),
+            Tooltips = viewObject.ToToolTipsTextL(),
+            Fields = [.. fields],
+        };
+
+        return simpleType;
+    }
 
     /// <inheritdoc/>
     public IDataWritable CreateSchema(DCompond type, SchemaGenerateOptions options = null)
@@ -535,6 +577,7 @@ internal class JsonSchemaService : IJsonSchemaService
         }
     }
 
+
 } 
 #endregion
 
@@ -969,4 +1012,47 @@ public class ObjectSchema : IDataWritable
         return jsonWriter.ToString();
     }
 }
+#endregion
+
+#region GetFieldSetup
+
+class GetFieldSetup : IViewObjectSetup
+{
+    public record FieldInfo(Type Type, ViewProperty Property);
+
+    readonly List<FieldInfo> _fields = [];
+
+    public GetFieldSetup()
+    {
+    }
+
+    public FieldInfo[] Fields => _fields.ToArray();
+
+
+    #region IViewObjectSetup
+    public INodeReader Styles => EmptyNodeReader.Empty;
+
+    public object Parent => null;
+
+    public void AddField(Type type, ViewProperty property)
+    {
+        var typeDef = TypeDefinition.FromNative(type);
+        if (TypeDefinition.IsNullOrEmpty(typeDef))
+        {
+            return;
+        }
+
+        var field = new FieldInfo(type, property);
+    }
+
+    public IEnumerable<object> GetObjects() => [];
+
+    public object GetService(Type serviceType) => null;
+
+    public bool IsTypeSupported(Type type) => true;
+
+    public bool IsViewIdSupported(int viewId) => viewId == ViewIds.Inspector; 
+    #endregion
+}
+
 #endregion
