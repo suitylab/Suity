@@ -43,8 +43,10 @@ public class TestTool : ToolAsset<TestTool.TestInput, TestTool.TestOutput>
         }
     }
 
-    protected override async Task<TestOutput> RunTask(TestInput input, CancellationToken cancellation)
+    protected override async Task<TestOutput> RunTask(TestInput input, IConversationHandler conversation, CancellationToken cancellation)
     {
+        conversation.AddMessage("Handle");
+
         return new TestOutput
         {
             Text = "Handle: " + input?.Text,

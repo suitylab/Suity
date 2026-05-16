@@ -1026,12 +1026,14 @@ public abstract class StandaloneAsset : Asset
     /// <summary>
     /// Initializes a new instance of StandaloneAsset with name
     /// </summary>
-    public StandaloneAsset(Type[] types, string name, bool active = true)
+    public StandaloneAsset(Type[] types, string name, bool resolveId = true)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new ArgumentNullException(nameof(name));
         }
+
+        _ex.LocalName = name;
 
         VerifyTypes(types);
 
@@ -1040,7 +1042,7 @@ public abstract class StandaloneAsset : Asset
             UpdateAssetTypes(types);
         }
 
-        if (active)
+        if (resolveId)
         {
             ResolveId();
         }

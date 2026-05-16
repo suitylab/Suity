@@ -19,7 +19,7 @@ namespace Suity.Editor.Flows.SubFlows;
 [NativeType(CodeBase = "SubFlow", Description = "Sub-flow Tool Asset", Color = FlowColors.Page, Icon = "*CoreIcon|Tool")]
 public interface IToolAsset : IPageAsset
 {
-    Task<bool> RunTask(IToolInstance toolInstance, CancellationToken cancellation);
+    Task<bool> RunTask(IToolInstance toolInstance, IConversationHandler conversation, CancellationToken cancellation);
 }
 
 
@@ -50,7 +50,7 @@ public abstract class ToolAsset : StandaloneAsset, IToolAsset
     public override ImageDef GetIcon() => CoreIconCache.Tool;
 
     public abstract IPageInstance CreatePageInstance(PageCreateOption option);
-    public abstract Task<bool> RunTask(IToolInstance toolInstance, CancellationToken cancellation);
+    public abstract Task<bool> RunTask(IToolInstance toolInstance, IConversationHandler conversation, CancellationToken cancellation);
 }
 
 #endregion
@@ -118,7 +118,7 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset
         return new ToolInstance<TInput, TOutput>(option, this);
     }
 
-    public sealed override async Task<bool> RunTask(IToolInstance toolInstance, CancellationToken cancellation)
+    public sealed override async Task<bool> RunTask(IToolInstance toolInstance, IConversationHandler conversation, CancellationToken cancellation)
     {
         if (toolInstance is not ToolInstance<TInput, TOutput> myInstance)
         {
@@ -132,7 +132,7 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset
 
         try
         {
-            var output = await RunTask(myInstance.Input, cancellation);
+            var output = await RunTask(myInstance.Input, conversation, cancellation);
             if (output != null)
             {
                 myInstance.SetOutput(output);
@@ -152,7 +152,7 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset
         }
     }
 
-    protected abstract Task<TOutput> RunTask(TInput input, CancellationToken cancellation);
+    protected abstract Task<TOutput> RunTask(TInput input, IConversationHandler conversation, CancellationToken cancellation);
 }
 
 #endregion
