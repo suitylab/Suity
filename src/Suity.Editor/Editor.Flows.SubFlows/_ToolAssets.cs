@@ -38,10 +38,10 @@ public interface IToolInstance : IPageInstance
 
 #region ToolAsset
 
-public abstract class ToolAsset : StandaloneAsset<IToolAsset>, IToolAsset
+public abstract class ToolAsset : StandaloneAsset, IToolAsset
 {
     protected ToolAsset()
-        : base(true, [typeof(IPageAsset)])
+        : base([typeof(IToolAsset), typeof(IPageAsset)])
     {
     }
 

@@ -772,10 +772,10 @@ internal class ProjectIdResolver : IObjectIdResolver
         }
 
         string sysFileName = _project.SystemDirectory.PathAppend(SystemIdXmlFileName);
-        SaveIdXml(sysFileName, o => o.FullName.StartsWith("*"));
+        SaveIdXml(sysFileName, o => o.FullName?.StartsWith("*") == true);
 
         string objFileName = _project.SystemDirectory.PathAppend(ObjectIdXmlFileName);
-        SaveIdXml(objFileName, o => !o.FullName.StartsWith("*"));
+        SaveIdXml(objFileName, o => !o.FullName?.StartsWith("*") == true);
     }
 
     /// <summary>

@@ -1001,27 +1001,20 @@ public abstract class Asset : EditorObject,
 /// <summary>
 /// Standalone asset base class
 /// </summary>
-public abstract class StandaloneAsset<T> : Asset
+public abstract class StandaloneAsset : Asset
 {
     /// <summary>
     /// Initializes a new instance of StandaloneAsset
     /// </summary>
-    public StandaloneAsset(bool resolveId = true, Type[] additionalTypes = null)
+    public StandaloneAsset(Type[] types, bool resolveId = true)
     {
-        if (this is not T)
-        {
-            throw new InvalidOperationException($"{typeof(T).Name} is not assignable from {this.GetType().Name}.");
-        }
-
         _ex.LocalName = $"*{this.GetType().FullName}";
 
-        if (additionalTypes != null)
+        VerifyTypes(types);
+
+        if (types?.Length > 0)
         {
-            UpdateAssetTypes(additionalTypes.ConcatOne(typeof(T)));
-        }
-        else
-        {
-            UpdateAssetTypes(typeof(T));
+            UpdateAssetTypes(types);
         }
 
         if (resolveId)
@@ -1033,27 +1026,18 @@ public abstract class StandaloneAsset<T> : Asset
     /// <summary>
     /// Initializes a new instance of StandaloneAsset with name
     /// </summary>
-    public StandaloneAsset(string name, bool active = true, Type[] additionalTypes = null)
+    public StandaloneAsset(Type[] types, string name, bool active = true)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new ArgumentNullException(nameof(name));
         }
 
-        if (!(this is T))
-        {
-            throw new InvalidOperationException($"{typeof(T)} is not assignable from {this.GetType()}.");
-        }
+        VerifyTypes(types);
 
-        _ex.LocalName = name;
-
-        if (additionalTypes != null)
+        if (types?.Length > 0)
         {
-            UpdateAssetTypes(additionalTypes.ConcatOne(typeof(T)));
-        }
-        else
-        {
-            UpdateAssetTypes(typeof(T));
+            UpdateAssetTypes(types);
         }
 
         if (active)
@@ -1071,4 +1055,46 @@ public abstract class StandaloneAsset<T> : Asset
     /// Display text for this asset
     /// </summary>
     public override string DisplayText => this.GetType().ToDisplayText() ?? this.GetType().Name;
+
+    private void VerifyTypes(Type[] types)
+    {
+        if (types is null || types.Length == 0)
+        {
+            return;
+        }
+
+        foreach (var type in types)
+        {
+            if (type is null)
+            {
+                throw new ArgumentException("types contains null");
+            }
+            if (!type.IsAssignableFrom(this.GetType()))
+            {
+                throw new ArgumentException("types contains non-assignable type: " + type.FullName);
+            }
+        }
+    }
+}
+
+/// <summary>
+/// Standalone asset base class
+/// </summary>
+public abstract class StandaloneAsset<T> : StandaloneAsset
+{
+    /// <summary>
+    /// Initializes a new instance of StandaloneAsset
+    /// </summary>
+    public StandaloneAsset(bool resolveId = true)
+        : base([typeof(T)], resolveId)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of StandaloneAsset with name
+    /// </summary>
+    public StandaloneAsset(string name, bool active = true)
+        : base([typeof(T)], name, active)
+    {
+    }
 }
