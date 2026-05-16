@@ -89,7 +89,7 @@ public class AigcToolPage : AigcTaskPage,
             return false;
         }
 
-        return await tool.RunTask(instance, request.Cancel);
+        return await tool.RunTask(instance, request.Cancellation);
     }
 
     #endregion

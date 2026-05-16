@@ -104,7 +104,7 @@ public class MermaidAssistant : AIAssistant
         var callReq = new LLmCallRequest(prompt)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = "Mermaid",
         };
 

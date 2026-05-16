@@ -28,7 +28,7 @@ public static class RAGExtensions
 
         // Query knowledge base
         int topK = AIAssistantService.Config.KnowledgeConfig.GetTopK(multiple);
-        var ragResults = await vec.QueryVectorDocuments(query, topK, request.Cancel);
+        var ragResults = await vec.QueryVectorDocuments(query, topK, request.Cancellation);
         if (ragResults is null || ragResults.Length == 0)
         {
             //throw new LLmException("No information obtained from knowledge base.");
@@ -60,12 +60,12 @@ public static class RAGExtensions
     /// <returns></returns>
     public static async Task<string> QueryFeatureKnowledge(this IFeatureKnowledge featureRag, AIRequest request, string featureName)
     {
-        var sourceVec = featureRag.GetBaseVectorRAG(request.Cancel)
+        var sourceVec = featureRag.GetBaseVectorRAG(request.Cancellation)
             ?? throw new AigcException("Unable to get source vector knowledge base of feature knowledge base");
 
-        var refIds = await featureRag.GetFeatureSourceRefIds(featureName, request.Cancel) ?? [];
+        var refIds = await featureRag.GetFeatureSourceRefIds(featureName, request.Cancellation) ?? [];
 
-        var ragResults = await sourceVec.QueryVectorDocuments(refIds, featureName, null, request.Cancel);
+        var ragResults = await sourceVec.QueryVectorDocuments(refIds, featureName, null, request.Cancellation);
         if (ragResults is null || ragResults.Length == 0)
         {
             //throw new LLmException("No information obtained from knowledge base.");

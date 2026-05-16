@@ -161,7 +161,7 @@ internal class AIAssistantServiceBK : AIAssistantService
     {
         var call = request.CreateLLmCall(LLmModelPreset.Classify);
         string sysPrompt = AIAssistantPlugin.Instance.ClassifyConfig.PromptMainClassifier.Text;
-        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancel);
+        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancellation);
 
         if (Enum.TryParse<UserMainInputTypes>(result, out var resultType))
         {
@@ -182,7 +182,7 @@ internal class AIAssistantServiceBK : AIAssistantService
         string selPrompt = AIAssistantPlugin.Instance.ClassifyConfig.GetPromptSelection(hasSelection);
         string sysPrompt = selPrompt + AIAssistantPlugin.Instance.ClassifyConfig.PromptDocumentClassifier.Text;
 
-        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancel);
+        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancellation);
 
         if (Enum.TryParse<UserOperationTypes>(result, out var resultType))
         {
@@ -203,7 +203,7 @@ internal class AIAssistantServiceBK : AIAssistantService
         string selPrompt = AIAssistantPlugin.Instance.ClassifyConfig.GetPromptSelection(hasSelection);
         string sysPrompt = selPrompt + AIAssistantPlugin.Instance.ClassifyConfig.PromptKnowledgeClassifier.Text;
 
-        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancel);
+        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancellation);
 
         if (Enum.TryParse<UserOperationTypes>(result, out var resultType))
         {
@@ -224,7 +224,7 @@ internal class AIAssistantServiceBK : AIAssistantService
         string selPrompt = AIAssistantPlugin.Instance.ClassifyConfig.GetPromptSelection(hasSelection);
         string sysPrompt = selPrompt + AIAssistantPlugin.Instance.ClassifyConfig.PromptQueryScopeClassifier.Text;
 
-        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancel);
+        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancellation);
 
         if (Enum.TryParse<QueryScopeTypes>(result, out var resultType))
         {
@@ -244,7 +244,7 @@ internal class AIAssistantServiceBK : AIAssistantService
 
         string sysPrompt = AIAssistantPlugin.Instance.ClassifyConfig.PromptGenerateMultipleClassifier.Text;
 
-        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancel);
+        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancellation);
 
         if (Enum.TryParse<GenerateMultipleTypes>(result, out var resultType))
         {
@@ -264,7 +264,7 @@ internal class AIAssistantServiceBK : AIAssistantService
 
         string sysPrompt = AIAssistantPlugin.Instance.ClassifyConfig.PromptGenerateSourceClassifier.Text;
 
-        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancel);
+        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancellation);
 
         if (Enum.TryParse<GenerateSourceTypes>(result, out var resultType))
         {
@@ -300,7 +300,7 @@ internal class AIAssistantServiceBK : AIAssistantService
 
         sysPrompt = string.Format(sysPrompt, _targetTypesStr);
 
-        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancel);
+        string result = await call.Call(sysPrompt, [request.UserMessage], request.Cancellation);
 
         return result switch
         {
@@ -318,7 +318,7 @@ internal class AIAssistantServiceBK : AIAssistantService
 
         string sysPrompt = AIAssistantPlugin.Instance.ClassifyConfig.PromptCorrelationClassifier.Text;
 
-        string result = await call.Call(sysPrompt, [request.UserMessage, source], request.Cancel);
+        string result = await call.Call(sysPrompt, [request.UserMessage, source], request.Cancellation);
 
         result = result?.Trim() ?? string.Empty;
 
@@ -351,7 +351,7 @@ internal class AIAssistantServiceBK : AIAssistantService
         var callReq = new LLmCallRequest(sysPrompt, request.UserMessage, request.Knowledge)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Text Segmentation"),
         };
         var result = await call.CallFunction<MultipleSection>(callReq);
@@ -369,7 +369,7 @@ internal class AIAssistantServiceBK : AIAssistantService
         var callReq = new LLmCallRequest(sysPrompt, request.UserMessage)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Task Decomposition"),
         };
 
@@ -397,7 +397,7 @@ internal class AIAssistantServiceBK : AIAssistantService
         var callReq = new LLmCallRequest(sysPrompt, request.UserMessage)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Brainstorming"),
         };
 
@@ -443,7 +443,7 @@ internal class AIAssistantServiceBK : AIAssistantService
         var callReq = new LLmCallRequest(prompt, request.UserMessage)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Select AI Assistant"),
         };
         var result = await call.Call(callReq);
@@ -527,7 +527,7 @@ If the user's request is not recognized, please select 'Not-Found'.
         var callReq = new LLmCallRequest(sysPrompt, request.UserMessage)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Select Assistant"),
         };
         var result = await call.CallFunction<AssistantCallChain>(callReq, o => o.Varify());
@@ -696,7 +696,7 @@ If the user's request is not recognized, please select 'Not-Found'.
         var callReq = new LLmCallRequest(sysPrompt, request.UserMessage)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Select Tool"),
         };
         var result = await call.CallFunction(callReq, toolTypeAry, o => o != null);
@@ -808,7 +808,7 @@ The name should be an in PascalCase English identifier, and can contain multiple
             var callReq = new LLmCallRequest(sysPrompt, request.UserMessage)
             {
                 Conversation = request.Conversation,
-                Cancel = request.Cancel,
+                Cancel = request.Cancellation,
                 Title = L("Create Naming Identifier"),
             };
             string id = await call.Call(callReq);
@@ -835,7 +835,7 @@ The name should be an in PascalCase English identifier, and can contain multiple
         var callReq = new LLmCallRequest(sysPrompt, request.UserMessage, request.Result)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Summary"),
         };
         string resp = await call.Call(callReq);
@@ -867,7 +867,7 @@ Please export the changes between the two texts in a concise and clear manner.
         call.AppendUserMessage("Text before: \r\n\r\n" + request.Before);
         call.AppendUserMessage("Text after: \r\n\r\n" + request.Result);
 
-        string resp = await call.Call(request.Cancel);
+        string resp = await call.Call(request.Cancellation);
 
         request.Conversation?.AddSystemMessage(resp);
 
@@ -896,7 +896,7 @@ Please export the updated brief summary in a concise and clear manner.
         call.AppendUserMessage("Text origin: \r\n\r\n" + request.Before);
         call.AppendUserMessage("Text partial updated: \r\n\r\n" + request.Result);
 
-        string resp = await call.Call(request.Cancel);
+        string resp = await call.Call(request.Cancellation);
 
         request.Conversation?.AddSystemMessage(resp);
 
@@ -933,7 +933,7 @@ Attempt to fix these defects, and output the repaired JSON document.
  ";
 
         var call = request.CreateLLmCall(LLmModelPreset.CodeRepair);
-        string fix = await call.Call(sysPrompt, [json], request.Cancel);
+        string fix = await call.Call(sysPrompt, [json], request.Cancellation);
 
         return fix;
     }
@@ -960,7 +960,7 @@ Attempt to fix these defects, and output the repaired JSON document.
 ";
 
         var call = request.CreateLLmCall(LLmModelPreset.CodeRepair);
-        string fix = await call.Call(sysPrompt, [json], request.Cancel);
+        string fix = await call.Call(sysPrompt, [json], request.Cancellation);
 
         if (EditorServices.JsonResource.TryExtractJson(fix, out obj))
         {

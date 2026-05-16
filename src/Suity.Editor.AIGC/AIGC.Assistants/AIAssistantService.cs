@@ -407,7 +407,7 @@ public abstract class AIAssistantService
     /// <returns>The result from the task execution.</returns>
     public Task<T> DoRetryAction<T>(AIRequest request, string title, Func<Task<T>> task, bool acceptNull = false) where T : class
     {
-        return DoRetryAction(title, task, acceptNull, request.RetryCount, request.Conversation, request.Cancel);
+        return DoRetryAction(title, task, acceptNull, request.RetryCount, request.Conversation, request.Cancellation);
     }
 
     #endregion

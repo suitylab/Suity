@@ -46,7 +46,7 @@ public class AssistantChat : BaseLLmChat
             Conversation = _conversation,
             FuncContext = this._context,
             Option = option,
-            Cancel = cancelSource.Token,
+            Cancellation = cancelSource.Token,
             RequestCancel = () =>
             {
                 cancelSource.Cancel();
@@ -139,7 +139,7 @@ public class BasicChatAssistant : AIAssistant
         // Normal chat
         var call = request.CreateLLmCall(LLmModelPreset.Chat);
 
-        var result = await call.Call(string.Empty, [request.UserMessage], request.Cancel) ?? string.Empty;
+        var result = await call.Call(string.Empty, [request.UserMessage], request.Cancellation) ?? string.Empty;
 
         if (call.Appender?.DisplayingFullResult == true)
         {

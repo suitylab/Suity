@@ -144,7 +144,7 @@ internal class ArticleGenerateAssistant : BaseArticleAssistant
         var callReq = new LLmCallRequest(prompt)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Generate Article"),
         };
 
@@ -206,7 +206,7 @@ internal class ArticleOptimizeAssistant : BaseArticleAssistant
         var callReq = new LLmCallRequest(prompt)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Optimize Article"),
         };
 
@@ -261,7 +261,7 @@ internal class ArticleSummarizeAssistant : BaseArticleAssistant
         var callReq = new LLmCallRequest(prompt)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Summarize Article"),
         };
 
@@ -323,7 +323,7 @@ internal class ArticleSubdivideAssistant : BaseArticleAssistant
         var callReq = new LLmCallRequest(prompt)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Subdivide Article"),
         };
 
@@ -391,7 +391,7 @@ internal class ArticleSegmentAssistant : BaseArticleAssistant
         var callReq = new LLmCallRequest(prompt)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Subdivide Article"),
         };
 
@@ -471,7 +471,7 @@ internal class ArticleAnswerQuestionAssistant : BaseArticleAssistant
         var callReq = new LLmCallRequest(prompt)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Answer question"),
         };
 

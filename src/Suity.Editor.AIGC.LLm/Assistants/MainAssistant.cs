@@ -318,7 +318,7 @@ IMPORTANT Notice:
         var callReq = new LLmCallRequest(prompt, request.UserMessage)
         {
             Conversation = request.Conversation,
-            Cancel = request.Cancel,
+            Cancel = request.Cancellation,
             Title = L("Get Multiple Tasks"),
         };
         var instructions = await call.CallFunction<InstructionInfo>(callReq);
