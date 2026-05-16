@@ -1,10 +1,14 @@
 ﻿using Suity.Drawing;
+using Suity.Editor.Design;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.Synchonizing;
+using Suity.Synchonizing.Preset;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,6 +29,9 @@ public interface IToolAsset : IPageAsset
 
 public interface IToolInstance : IPageInstance
 {
+    object InputObject { get; }
+    object OutputObject { get; }
+    Exception ErrorInfo { get; }
 }
 
 #endregion
@@ -65,6 +72,10 @@ public abstract class ToolInstance : IToolInstance
     public object Owner => Option.Owner;
     public string Name => Tool.Name;
 
+    public abstract object InputObject { get; }
+    public abstract object OutputObject { get; }
+    public abstract Exception ErrorInfo { get; }
+
     public abstract SimpleType ToSimpleType();
 
     public abstract bool? GetAllDone();
@@ -85,9 +96,49 @@ public abstract class ToolInstance : IToolInstance
 #region ToolAsset<TInput, TOutput>
 
 public abstract class ToolAsset<TInput, TOutput> : ToolAsset
-    where TInput : IViewObject
-    where TOutput : IViewObject
+    where TInput : class, IViewObject, new()
+    where TOutput : class, IViewObject
 {
+    public sealed override IPageInstance CreatePageInstance(PageCreateOption option)
+    {
+        return new ToolInstance<TInput, TOutput>(option, this);
+    }
+
+    public sealed override async Task<bool> RunTask(IToolInstance toolInstance, CancellationToken cancellation)
+    {
+        if (toolInstance is not ToolInstance<TInput, TOutput> myInstance)
+        {
+            return false;
+        }
+
+        if (myInstance.Tool != this)
+        {
+            return false;
+        }
+
+        try
+        {
+            var output = await RunTask(myInstance.Input, cancellation);
+            if (output != null)
+            {
+                myInstance.SetOutput(output);
+                return true;
+            }
+            else
+            {
+                myInstance.SetError(new NullReferenceException("Output is null"));
+                return false;
+            }
+        }
+        catch (Exception error)
+        {
+            myInstance.SetError(error);
+
+            return false;
+        }
+    }
+
+    protected abstract Task<TOutput> RunTask(TInput input, CancellationToken cancellation);
 }
 
 #endregion
@@ -95,51 +146,136 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset
 #region ToolInstance<TInput, TOutput>
 
 public class ToolInstance<TInput, TOutput> : ToolInstance
-    where TInput : IViewObject
-    where TOutput : IViewObject
+    where TInput : class, IViewObject, new()
+    where TOutput : class, IViewObject
 {
+    private TInput _input;
+    private TOutput _output;
+    private Exception _errorInfo;
+
     public ToolInstance(PageCreateOption option, ToolAsset tool) : base(option, tool)
     {
+        _input = new();
     }
 
+    public TInput Input => _input;
+    public TOutput Output => _output;
+
+    #region Virtual / Override
+
+    public override object InputObject => _input;
+
+    public override object OutputObject => _output;
+
+    public override Exception ErrorInfo => _errorInfo;
+
+    
     public override SimpleType ToSimpleType()
     {
-        throw new NotImplementedException();
+        return EditorServices.JsonSchemaService.GetViewObjectSimpleType(_input);
     }
 
     public override bool? GetAllDone() => GetIsDone();
 
-    public override bool? GetIsDone()
-    {
-        throw new NotImplementedException();
-    }
+    public override bool? GetIsDone() => _output != null;
 
-    public override bool? GetIsDoneInputs()
-    {
-        throw new NotImplementedException();
-    }
+    public override bool? GetIsDoneInputs() => _input != null;
 
-    public override bool? GetIsDoneOutputs()
-    {
-        throw new NotImplementedException();
-    }
+    public override bool? GetIsDoneOutputs() => _output != null;
 
     public override bool SetParameter(string name, object value)
     {
-        throw new NotImplementedException();
+        _input.SetProperty(name, value);
+        return true;
     }
 
 
     public override HistoryText GetTaskCommit()
     {
-        throw new NotImplementedException();
+        if (_output is not { } output)
+        {
+            return HistoryText.Empty;
+        }
+
+        var simpleType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(output);
+
+        var sync = new GetAllPropertySync(SyncIntent.Serialize, false);
+        output.Sync(sync, SyncContext.Empty);
+
+        var builder = new StringBuilder();
+
+        foreach (var field in simpleType.Fields)
+        {
+            if (!sync.Values.TryGetValue(field.Name, out var value))
+            {
+                continue;
+            }
+
+            string attr = ResolveElementXmlAttr(value, field);
+            builder.AppendLine($"<{simpleType.Name}{attr}>");
+
+            try
+            {
+                var text = SubFlowExtensions.ConvertChatHistoryText(field.Type, value, true);
+                builder.AppendLine(text.Text);
+            }
+            catch (Exception)
+            {
+                builder.AppendLine("---");
+            }
+            builder.AppendLine($"</{simpleType.Name}>");
+            builder.AppendLine();
+        }
+
+        return builder.ToString();
     }
 
     public override TaskCommitInfo GetTaskCommitInfo()
     {
-        throw new NotImplementedException();
+        if (_output != null)
+        {
+            return new(TaskCommitTypes.TaskFinished, _output);
+        }
+        else
+        {
+            return new(TaskCommitTypes.None, null);
+        }
+    } 
+    #endregion
+
+    public void SetOutput(TOutput output)
+    {
+        _output = output;
+        _errorInfo = null;
     }
 
+    public void SetError(Exception error)
+    {
+        _errorInfo = error;
+        _output = null;
+    }
+
+    private string ResolveElementXmlAttr(object value, SimpleField field)
+    {
+        if (value is null)
+        {
+            return string.Empty;
+        }
+
+        string tooltips = field.Tooltips;
+        if (string.IsNullOrWhiteSpace(tooltips))
+        {
+            tooltips = field.Description;
+        }
+
+        string desc = string.Empty;
+        if (string.IsNullOrWhiteSpace(tooltips))
+        {
+            desc = $" description='{tooltips}'";
+        }
+
+        return desc;
+    }
 }
 
 #endregion

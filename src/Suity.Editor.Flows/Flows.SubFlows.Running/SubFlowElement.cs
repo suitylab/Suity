@@ -452,40 +452,4 @@ public abstract class SubFlowElement : IViewObject, ISubFlowElement
 
         return rectA.X.CompareTo(rectB.X);
     }
-
-
-    /// <summary>
-    /// Converts a value to a chat history text representation using the type conversion service.
-    /// </summary>
-    /// <param name="type">The type definition of the value.</param>
-    /// <param name="value">The value to convert.</param>
-    /// <returns>The converted chat history text, or the original value's string representation.</returns>
-    public static HistoryText ConvertChatHistoryText(TypeDefinition type, object value, bool assetKeyMode)
-    {
-        if (assetKeyMode) 
-        {
-            switch (value)
-            {
-                case Asset asset:
-                    return asset.AssetKey;
-
-                case SAssetKey assetKey:
-                    return assetKey.SelectedKey;
-
-                case SKey sKey:
-                    return sKey.SelectedKey;
-
-                default:
-                    break;
-            }
-        }
-
-        var historyText = TypeDefinition.FromNative<HistoryText>();
-        var state = EditorServices.TypeConvertService.TryConvert(type, historyText, false, value, out var converted);
-        var result = state == TypeConvertState.Unconvertible ? value : converted;
-
-        return result?.ToString();
-    }
-
-
 }

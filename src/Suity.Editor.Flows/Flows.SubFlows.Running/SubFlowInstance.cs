@@ -382,7 +382,6 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             .Where(o => o.TaskCommit)
             .ToArray();
 
-        builder.Length = 0;
         foreach (var element in outputs)
         {
             string attr = ResolveElementXmlAttr(element as SubFlowElement);
@@ -934,9 +933,6 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         return type.ToDataWritable();
     }
 
-
-
-
     private string ResolveElementXmlAttr(SubFlowElement element)
     {
         if (element is null)
@@ -944,7 +940,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             return string.Empty;
         }
 
-        var attr = (element as SubFlowElement)?.Node as IAttributeGetter;
+        var attr = element?.Node as IAttributeGetter;
         var tooltips = attr?.GetAttribute<ToolTipsAttribute>();
         string desc = string.Empty;
         if (tooltips != null)

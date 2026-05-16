@@ -99,7 +99,7 @@ public class SubFlowEndElement : SubFlowElement, IPageParameterOutput
     /// Resolves the chat history text representation of the current value.
     /// </summary>
     /// <returns>The chat history text.</returns>
-    public HistoryText ResolveChatHistory() => ConvertChatHistoryText(ParameterType, _value, LinkedMode);
+    public HistoryText ResolveChatHistory() => SubFlowExtensions.ConvertChatHistoryText(ParameterType, _value, LinkedMode);
 
 
 
