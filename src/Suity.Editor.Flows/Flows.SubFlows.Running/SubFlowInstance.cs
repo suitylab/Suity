@@ -888,14 +888,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     public TextStatus GetAllStatus()
     {
         bool? done = GetAllDone();
-        if (done is { } doneV)
-        {
-            return doneV ? TextStatus.Checked : TextStatus.Unchecked;
-        }
-        else
-        {
-            return TextStatus.Normal;
-        }
+        return done.ToCheckedStatus();
     }
 
     /// <summary>

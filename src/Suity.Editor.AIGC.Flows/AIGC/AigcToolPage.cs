@@ -1,10 +1,9 @@
 ﻿using Suity.Drawing;
+using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Selecting;
-using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
@@ -13,6 +12,8 @@ public class AigcToolPage : AigcTaskPage,
     IAigcToolPage
 {
     readonly AssetProperty<ToolAsset> _tool = new("Tool", "Tool");
+
+    private IToolInstance _toolInstance;
 
     public AigcToolPage()
     {
@@ -38,6 +39,8 @@ public class AigcToolPage : AigcTaskPage,
         base.OnSync(sync, context);
 
         _tool.Sync(sync);
+
+        sync.Sync("Page", EnsureInstance(), SyncFlag.GetOnly);
     }
 
     /// <inheritdoc/>
@@ -55,7 +58,11 @@ public class AigcToolPage : AigcTaskPage,
     }
 
     /// <inheritdoc/>
-    protected override TextStatus OnGetTextStatus() => TextStatus.Unchecked;
+    protected override TextStatus OnGetTextStatus()
+    {
+        var done = EnsureInstance()?.GetAllDone();
+        return done.ToCheckedStatus();
+    }
 
     /// <inheritdoc/>
     protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? CoreIconCache.Tool;
@@ -64,31 +71,45 @@ public class AigcToolPage : AigcTaskPage,
 
     #region Virtual (IAigcTaskPage)
 
-    public override IPageAsset GetPageAsset() => null;
+    public override IPageAsset GetPageAsset() => _tool.Target;
 
-    public override IPageInstance GetPageInstance() => null;
+    public override IPageInstance GetPageInstance() => EnsureInstance();
+
+    public override async Task<bool> RunTask(AIRequest request, TaskEventTypes eventType, string commitName, object parameter)
+    {
+        var tool = _tool.Target;
+        if (tool is null)
+        {
+            return false;
+        }
+
+        var instance = EnsureInstance();
+        if (instance is null)
+        {
+            return false;
+        }
+
+        return await tool.RunTask(instance, request.Cancel);
+    }
 
     #endregion
 
+    private IToolInstance EnsureInstance()
+    {
+        if (_toolInstance is null)
+        {
+            var option = new PageCreateOption 
+            {
+                 Owner = this,
+                 Mode = PageElementMode.Page,
+            };
+
+            _toolInstance = _tool.Target?.CreatePageInstance(option) as IToolInstance;
+        }
+
+        return _toolInstance;
+    }
+
 
 }
 
-[NativeType("TestTool", CodeBase = "*Suity")]
-[AssetAutoCreate]
-public class TestTool : ToolAsset
-{
-    public TestTool()
-        : base()
-    {
-    }
-
-    public override IPageInstance CreatePageInstance(PageCreateOption option)
-    {
-        return null;
-    }
-
-    public override async Task<bool> RunTask(IToolInstance toolInstance, CancellationToken cancellation)
-    {
-        return false;
-    }
-}

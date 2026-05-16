@@ -81,16 +81,16 @@ public abstract class AigcTaskPage : DesignNode,
     #region Virtual (IAigcTaskPage)
 
     /// <inheritdoc/>
-    public virtual IAigcTaskHost TaskHost => this.GetDocument() as AigcTaskPageDocument;
+    public IAigcTaskHost TaskHost => this.GetDocument() as AigcTaskPageDocument;
 
     /// <inheritdoc/>
-    public virtual IPageAsset GetPageAsset() => null;
+    public abstract IPageAsset GetPageAsset();
 
     /// <inheritdoc/>
-    public virtual IPageInstance GetPageInstance() => null;
+    public abstract IPageInstance GetPageInstance();
 
     /// <inheritdoc/>
-    public virtual async Task<bool> RunTask(AIRequest request, TaskEventTypes eventType, string commitName, object parameter) => false;
+    public abstract Task<bool> RunTask(AIRequest request, TaskEventTypes eventType, string commitName, object parameter);
 
     #endregion
 

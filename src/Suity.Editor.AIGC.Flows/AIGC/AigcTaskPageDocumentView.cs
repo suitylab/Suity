@@ -69,7 +69,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
     private readonly IPropertyGrid _propGrid;
 
-    private AigcWorkflowPage _currentPage;
+    private AigcTaskPage _currentPage;
     private readonly GuiOptionalValue _pageNaviOption = new();
     private PageViewCategory _pageCategory;
     private AigcTaskPageRunner _currentRunner;
@@ -367,15 +367,21 @@ public class AigcTaskPageDocumentView : IDocumentView,
             }
             else if (sel.Any())
             {
-                if (sel.CountOne() && sel.FirstOrDefault() is AigcWorkflowPage page)
+                if (sel.CountOne())
                 {
-                    OnWorkflowPageGui(gui, page);
+                    var first = sel.FirstOrDefault();
+                    if (first is AigcWorkflowPage workflow)
+                    {
+                        OnWorkflowPageGui(gui, workflow);
+                    }
+                    else if (first is AigcToolPage tool)
+                    {
+                        OnToolPageGui(gui, tool);
+                    }
                 }
                 else
                 {
-                    gui.VerticalLayout("#blank")
-                    .InitFullHeight()
-                    .InitWidthRest();
+                    OnBlackPageGui(gui);
                 }
             }
             else if (_document != null)
@@ -536,9 +542,9 @@ public class AigcTaskPageDocumentView : IDocumentView,
     }
 
 
-    private void OnWorkflowPageGui(ImGui gui, AigcWorkflowPage page)
+    private void OnWorkflowPageGui(ImGui gui, AigcWorkflowPage workflow)
     {
-        gui.VerticalLayout("#task_page-" + page.Name)
+        gui.VerticalLayout("#workflow_page-" + workflow.Name)
         .OnInitialize(n =>
         {
             n.InitTheme(_theme);
@@ -597,16 +603,96 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         break;
 
                     case PageViewCategory.Chat:
-                        ChatGui(gui, page);
+                        ChatGui(gui, workflow);
                         break;
 
                     case PageViewCategory.Context:
-                        ContextGui(gui, page);
+                        ContextGui(gui, workflow);
                         break;
                 }
             });
         });
     }
+
+    private void OnToolPageGui(ImGui gui, AigcToolPage tool)
+    {
+        gui.VerticalLayout("#tool_page-" + tool.Name)
+        .OnInitialize(n =>
+        {
+            n.InitTheme(_theme);
+            n.InitFullHeight();
+            n.InitWidthRest();
+        })
+        .OnContent(() =>
+        {
+            _guiNaviContainerRef.Node = gui.HorizontalFrame("title")
+            .InitFullWidth()
+            //.InitHeight(80)
+            .InitFitVertical()
+            .OnContent(() =>
+            {
+                //_guiNaviContainerRef.Node = gui.HorizontalLayout("#left")
+                //.InitWidthRest(64)
+                //.InitPadding(0)
+                ////.InitVerticalAlignment(GuiAlignment.Center)
+                //.OnContent(() =>
+                //{
+
+                //});
+
+                NaviButton(gui, PageViewCategory.Page, CoreIconCache.Task, "Page view");
+                NaviButton(gui, PageViewCategory.Chat, CoreIconCache.Chat, "LLm chat view");
+                NaviButton(gui, PageViewCategory.Context, CoreIconCache.Text, "Chat history context");
+
+                //TaskTitleGui(gui, page);
+
+                gui.VerticalLine("#spacing01")
+                .OnInitialize(n =>
+                {
+                    //n.InitOverrideMargin(0, 0, 10, 10);
+                    n.InitHeight(40);
+                    n.InitWidth(20);
+                    n.InitOverrideBorder(1, Color.White.MultiplyAlpha(0.2f));
+                });
+
+                gui.Button("#workflowBtn", "Workflow", CoreIconCache.Workflow)
+                .InitClass("naviBtn")
+                .InitToolTips("Go to workflow")
+                .OnClick(() =>
+                {
+                    HandleGotoWorkflow();
+                });
+            });
+
+            gui.VerticalLayout("#content")
+            .InitSizeRest()
+            .OnContent(() =>
+            {
+                switch (_pageCategory)
+                {
+                    case PageViewCategory.Page:
+                        _propGrid.OnGui(gui);
+                        break;
+
+                    //case PageViewCategory.Chat:
+                    //    ChatGui(gui, workflow);
+                    //    break;
+
+                    //case PageViewCategory.Context:
+                    //    ContextGui(gui, workflow);
+                    //    break;
+                }
+            });
+        });
+    }
+
+    private void OnBlackPageGui(ImGui gui)
+    {
+        gui.VerticalLayout("#blank")
+        .InitFullHeight()
+        .InitWidthRest();
+    }
+
 
     private void ChatGui(ImGui gui, AigcWorkflowPage page)
     {
@@ -954,10 +1040,10 @@ public class AigcTaskPageDocumentView : IDocumentView,
             _currentPage = null;
             _propGrid.InspectObjects([], context: _inspectorContext);
         }
-        else if (_treeView.SelectedObjects.FirstOrDefault() is AigcWorkflowPage pageNode && pageNode.Instance is { } root)
+        else if (_treeView.SelectedObjects.FirstOrDefault() is AigcTaskPage pageNode && pageNode.GetPageInstance() is { } instance)
         {
             _currentPage = pageNode;
-            _propGrid.InspectObjects([root], context: _inspectorContext);
+            _propGrid.InspectObjects([instance], context: _inspectorContext);
         }
         else
         {
@@ -976,7 +1062,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
     /// <summary>
     /// Navigates to the diagram associated with the currently selected task.
     /// </summary>
-    internal void HandleGotoWorkflow() => HandleGotoWorkflow(_currentPage);
+    internal void HandleGotoWorkflow() => HandleGotoWorkflow(_currentPage as AigcWorkflowPage);
 
     /// <summary>
     /// Navigates to the diagram associated with the specified task.

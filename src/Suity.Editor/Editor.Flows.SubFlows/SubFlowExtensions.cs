@@ -92,4 +92,16 @@ public static class SubFlowExtensions
     /// <param name="done">The nullable boolean value to evaluate.</param>
     /// <returns>True if the value is false; false if null or true.</returns>
     public static bool IsFalse(this bool? done) => done == false;
+
+    public static TextStatus ToCheckedStatus(this bool? done)
+    {
+        if (done is { } doneV)
+        {
+            return doneV ? TextStatus.Checked : TextStatus.Unchecked;
+        }
+        else
+        {
+            return TextStatus.Normal;
+        }
+    }
 }

@@ -29,8 +29,8 @@ public interface IToolAsset : IPageAsset
 
 public interface IToolInstance : IPageInstance
 {
-    object InputObject { get; }
-    object OutputObject { get; }
+    IViewObject InputObject { get; }
+    IViewObject OutputObject { get; }
     Exception ErrorInfo { get; }
 }
 
@@ -56,7 +56,7 @@ public abstract class ToolAsset : StandaloneAsset<IToolAsset>, IToolAsset
 
 #region ToolInstance
 
-public abstract class ToolInstance : IToolInstance
+public abstract class ToolInstance : IToolInstance, IViewObject
 {
     public PageCreateOption Option { get; }
     public ToolAsset Tool { get; }
@@ -72,8 +72,8 @@ public abstract class ToolInstance : IToolInstance
     public object Owner => Option.Owner;
     public string Name => Tool.Name;
 
-    public abstract object InputObject { get; }
-    public abstract object OutputObject { get; }
+    public abstract IViewObject InputObject { get; }
+    public abstract IViewObject OutputObject { get; }
     public abstract Exception ErrorInfo { get; }
 
     public abstract SimpleType ToSimpleType();
@@ -87,6 +87,19 @@ public abstract class ToolInstance : IToolInstance
 
     public abstract HistoryText GetTaskCommit();
     public abstract TaskCommitInfo GetTaskCommitInfo();
+
+    #endregion
+
+    #region IViewObject
+
+    public virtual void Sync(IPropertySync sync, ISyncContext context)
+    {
+    }
+
+    public virtual void SetupView(IViewObjectSetup setup)
+    {
+    }
+
 
     #endregion
 }
@@ -149,7 +162,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
     where TInput : class, IViewObject, new()
     where TOutput : class, IViewObject
 {
-    private TInput _input;
+    private readonly TInput _input;
     private TOutput _output;
     private Exception _errorInfo;
 
@@ -163,9 +176,9 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     #region Virtual / Override
 
-    public override object InputObject => _input;
+    public override IViewObject InputObject => _input;
 
-    public override object OutputObject => _output;
+    public override IViewObject OutputObject => _output;
 
     public override Exception ErrorInfo => _errorInfo;
 
@@ -240,7 +253,27 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         {
             return new(TaskCommitTypes.None, null);
         }
-    } 
+    }
+    #endregion
+
+    #region Virtual (Sync)
+
+    public override void Sync(IPropertySync sync, ISyncContext context)
+    {
+        base.Sync(sync, context);
+
+        sync.Sync("Input", _input, SyncFlag.GetOnly);
+        _output = sync.Sync("Output", _output);
+    }
+
+    public override void SetupView(IViewObjectSetup setup)
+    {
+        base.SetupView(setup);
+
+        setup.InspectorField(_input, new ViewProperty("Input").WithExpand());
+        setup.InspectorField(_output, new ViewProperty("Output").WithExpand());
+    }
+
     #endregion
 
     public void SetOutput(TOutput output)
