@@ -1,3 +1,4 @@
+using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.Analyzing;
 using Suity.Editor.CodeRender;
@@ -8,6 +9,7 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace Suity.Editor;
 
@@ -1004,7 +1006,7 @@ public abstract class StandaloneAsset<T> : Asset
     /// <summary>
     /// Initializes a new instance of StandaloneAsset
     /// </summary>
-    public StandaloneAsset(bool resolveId = true)
+    public StandaloneAsset(bool resolveId = true, Type[] additionalTypes = null)
     {
         if (this is not T)
         {
@@ -1013,7 +1015,14 @@ public abstract class StandaloneAsset<T> : Asset
 
         _ex.LocalName = $"*{this.GetType().FullName}";
 
-        UpdateAssetTypes(typeof(T));
+        if (additionalTypes != null)
+        {
+            UpdateAssetTypes(additionalTypes.ConcatOne(typeof(T)));
+        }
+        else
+        {
+            UpdateAssetTypes(typeof(T));
+        }
 
         if (resolveId)
         {
@@ -1024,7 +1033,7 @@ public abstract class StandaloneAsset<T> : Asset
     /// <summary>
     /// Initializes a new instance of StandaloneAsset with name
     /// </summary>
-    public StandaloneAsset(string name, bool active = true)
+    public StandaloneAsset(string name, bool active = true, Type[] additionalTypes = null)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -1038,7 +1047,14 @@ public abstract class StandaloneAsset<T> : Asset
 
         _ex.LocalName = name;
 
-        UpdateAssetTypes(typeof(T));
+        if (additionalTypes != null)
+        {
+            UpdateAssetTypes(additionalTypes.ConcatOne(typeof(T)));
+        }
+        else
+        {
+            UpdateAssetTypes(typeof(T));
+        }
 
         if (active)
         {

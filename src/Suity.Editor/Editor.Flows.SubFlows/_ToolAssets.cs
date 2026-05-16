@@ -41,6 +41,7 @@ public interface IToolInstance : IPageInstance
 public abstract class ToolAsset : StandaloneAsset<IToolAsset>, IToolAsset
 {
     protected ToolAsset()
+        : base(true, [typeof(IPageAsset)])
     {
     }
 
