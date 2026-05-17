@@ -526,7 +526,7 @@ public static class AIAssistantExtensions
         request.Conversation.AddSystemMessage(L("Obtained input knowledge base: ") + ft);
 
         var query = await request.CreateQueryKeywords();
-        return await ft.EnumerateFeature(query, request.TopK, request.Cancellation);
+        return await ft.EnumerateFeature(query, request.TopK, request.Cancel);
     }
 
     /// <summary>
@@ -1032,7 +1032,7 @@ public static class AIAssistantExtensions
     public static async Task<string> ConversationInput(this AIRequest request, string message)
     {
         request.Conversation.AddSystemMessage(message);
-        string prompt = await request.Conversation.WaitForTextInput(request.Cancellation);
+        string prompt = await request.Conversation.WaitForTextInput(request.Cancel);
 
         return prompt;
     }
@@ -1051,7 +1051,7 @@ public static class AIAssistantExtensions
             m.AddButton(button, L(button));
         });
 
-        string prompt = await request.Conversation.WaitForTextOrButtonInput(request.Cancellation);
+        string prompt = await request.Conversation.WaitForTextOrButtonInput(request.Cancel);
 
         return prompt;
     }
@@ -1069,7 +1069,7 @@ public static class AIAssistantExtensions
             m.AddButtons(string.Empty, new() { Key = "Yes", Text = L("Yes") }, new() { Key = "No", Text = L("No") });
         });
 
-        string button = await request.Conversation.WaitForButtonInput(request.Cancellation);
+        string button = await request.Conversation.WaitForButtonInput(request.Cancel);
 
         msgItem.Dispose();
 

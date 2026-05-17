@@ -108,6 +108,7 @@ public class RunShellCommand : ExternalNode
         return _out;
     }
 
+    #region Static
     private static readonly Regex AnsiRegex = new(@"\x1b\[[0-9;]*[a-zA-Z]|\x1b[()][a-zA-Z0-9]|\x1b\][^\x07]*\x07|\x1b\[[0-9;]*[A-Z]", RegexOptions.Compiled);
 
     private static string StripAnsiCodes(string text)
@@ -206,7 +207,8 @@ public class RunShellCommand : ExternalNode
 
     [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
     private static extern int GetConsoleOutputCP();
-    private static int GetConsoleCodePage() => GetConsoleOutputCP();
+    private static int GetConsoleCodePage() => GetConsoleOutputCP(); 
+    #endregion
 }
 
 #endregion
