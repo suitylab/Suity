@@ -89,7 +89,9 @@ public class AigcToolPage : AigcTaskPage,
             return false;
         }
 
-        return await tool.RunTask(instance, request.Conversation, request.Cancel);
+        var context = new ToolCallContext(instance, request.Conversation, request.Cancellation);
+
+        return await tool.RunTask(context);
     }
 
     #endregion

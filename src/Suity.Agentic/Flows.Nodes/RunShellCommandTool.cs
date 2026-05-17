@@ -1,9 +1,91 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Suity.Editor.AIGC;
+using Suity.Editor.AIGC.StreamUpdaters;
+using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Types;
+using Suity.Synchonizing;
+using Suity.Views;
+using System;
+using System.Threading.Tasks;
 
 namespace Suity.Editor.Flows.Nodes;
 
-internal class RunShellCommandTool
+[NativeType("RunShellCommand", CodeBase = "*Suity")]
+[AssetAutoCreate]
+public class RunShellCommandTool : ToolAsset<RunShellCommandTool.Input, RunShellCommandTool.Output>
 {
+    public class Input : IViewObject
+    {
+        readonly TextBlockProperty _command = new("Command");
+
+        public string Command { get => _command.Text; set => _command.Text = value; }
+
+        public void Sync(IPropertySync sync, ISyncContext context)
+        {
+            _command.Sync(sync);
+        }
+        public void SetupView(IViewObjectSetup setup)
+        {
+            _command.InspectorField(setup);
+        }
+    }
+
+    public class Output : IViewObject
+    {
+        readonly TextBlockProperty _result = new("Result");
+
+        public string Result { get => _result.Text; set => _result.Text = value; }
+
+        public void Sync(IPropertySync sync, ISyncContext context)
+        {
+            _result.Sync(sync);
+        }
+        public void SetupView(IViewObjectSetup setup)
+        {
+            _result.InspectorField(setup);
+        }
+    }
+
+    protected override async Task<Output> RunTask(Input input, ToolCallContext context)
+    {
+        var host = (context.ToolInstance.Owner as IAigcTaskPage)?.TaskHost;
+        if (host is null)
+        {
+            throw new NullReferenceException("Task host is null");
+        }
+
+        if (host.WorkSpace is not { } workSpace)
+        {
+            throw new NullReferenceException("Work space is null");
+        }
+
+        string workingDirectory = workSpace.MasterDirectory;
+        if (string.IsNullOrWhiteSpace(workingDirectory))
+        {
+            throw new NullReferenceException("Working directory is empty");
+        }
+
+        string command = input.Command;
+
+        SimpleStreamUpdater? updater = null;
+        Action<string>? onOutput = null;
+
+        if (context.Conversation != null)
+        {
+            updater = new SimpleStreamUpdater { Conversation = context.Conversation };
+            onOutput = updater.Append;
+        }
+
+        try
+        {
+            string output = await RunShellCommand.ExecuteCommandAsync(command, workingDirectory, onOutput, context.Cancellation);
+            return new Output
+            {
+                Result = output,
+            };
+        }
+        finally
+        {
+            updater?.Dispose();
+        }
+    }
 }

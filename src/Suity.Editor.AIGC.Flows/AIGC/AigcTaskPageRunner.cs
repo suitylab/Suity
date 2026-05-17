@@ -127,7 +127,7 @@ internal class AigcTaskPageRunner : AIAssistant
     {
         while (true)
         {
-            if (request.Cancel.IsCancellationRequested)
+            if (request.Cancellation.IsCancellationRequested)
             {
                 return AICallResult.FromFailed("Task canceled.");
             }
@@ -177,7 +177,7 @@ internal class AigcTaskPageRunner : AIAssistant
         _lastTask = task;
 
         var runResult = await RunTask(request, task, TaskEventTypes.TaskBegin, null, null);
-        if (request.Cancel.IsCancellationRequested)
+        if (request.Cancellation.IsCancellationRequested)
         {
             return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
         }
@@ -190,7 +190,7 @@ internal class AigcTaskPageRunner : AIAssistant
             var lastTask = task.GetTaskAt(task.Count - 1);
 
             runResult = await RunTask(request, task, TaskEventTypes.SubTaskFinished, lastTask?.CommitName, null);
-            if (request.Cancel.IsCancellationRequested)
+            if (request.Cancellation.IsCancellationRequested)
             {
                 return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
             }
@@ -234,7 +234,7 @@ internal class AigcTaskPageRunner : AIAssistant
             });
 
             bool handled = await task.RunTask(request, eventType, commitName, parameter);
-            if (request.Cancel.IsCancellationRequested)
+            if (request.Cancellation.IsCancellationRequested)
             {
                 return new(TaskCommitTypes.None, "Task is cancelled.");
             }
@@ -309,7 +309,7 @@ internal class AigcTaskPageRunner : AIAssistant
             runResult = await RunTask(request, parent, eventType, commitName, parameter);
             task = parent;
 
-            if (request.Cancel.IsCancellationRequested)
+            if (request.Cancellation.IsCancellationRequested)
             {
                 return AICallResult.Empty;
             }

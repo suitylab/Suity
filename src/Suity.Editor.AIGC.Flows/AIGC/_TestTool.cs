@@ -2,16 +2,15 @@
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
 
 [NativeType("TestTool", CodeBase = "*Suity")]
 [AssetAutoCreate]
-public class TestTool : ToolAsset<TestTool.TestInput, TestTool.TestOutput>
+public class TestTool : ToolAsset<TestTool.Input, TestTool.Output>
 {
-    public class TestInput : IViewObject
+    public class Input : IViewObject
     {
         readonly TextBlockProperty _text = new("Text");
 
@@ -27,7 +26,7 @@ public class TestTool : ToolAsset<TestTool.TestInput, TestTool.TestOutput>
         }
     }
 
-    public class TestOutput : IViewObject
+    public class Output : IViewObject
     {
         readonly TextBlockProperty _text = new("Text");
 
@@ -43,11 +42,11 @@ public class TestTool : ToolAsset<TestTool.TestInput, TestTool.TestOutput>
         }
     }
 
-    protected override async Task<TestOutput> RunTask(TestInput input, IConversationHandler conversation, CancellationToken cancellation)
+    protected override async Task<Output> RunTask(Input input, ToolCallContext context)
     {
-        conversation.AddMessage("Handle");
+        context.Conversation.AddMessage("Handle");
 
-        return new TestOutput
+        return new Output
         {
             Text = "Handle: " + input?.Text,
         };

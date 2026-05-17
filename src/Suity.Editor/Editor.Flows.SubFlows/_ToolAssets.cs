@@ -14,12 +14,18 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.Flows.SubFlows;
 
+#region ToolCallContext
+
+public record ToolCallContext(IToolInstance ToolInstance, IConversationHandler Conversation, CancellationToken Cancellation);
+
+#endregion
+
 #region IToolAsset
 
 [NativeType(CodeBase = "SubFlow", Description = "Sub-flow Tool Asset", Color = FlowColors.Page, Icon = "*CoreIcon|Tool")]
 public interface IToolAsset : IPageAsset
 {
-    Task<bool> RunTask(IToolInstance toolInstance, IConversationHandler conversation, CancellationToken cancellation);
+    Task<bool> RunTask(ToolCallContext context);
 }
 
 
@@ -50,7 +56,7 @@ public abstract class ToolAsset : StandaloneAsset, IToolAsset
     public override ImageDef GetIcon() => CoreIconCache.Tool;
 
     public abstract IPageInstance CreatePageInstance(PageCreateOption option);
-    public abstract Task<bool> RunTask(IToolInstance toolInstance, IConversationHandler conversation, CancellationToken cancellation);
+    public abstract Task<bool> RunTask(ToolCallContext context);
 }
 
 #endregion
@@ -118,9 +124,9 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset
         return new ToolInstance<TInput, TOutput>(option, this);
     }
 
-    public sealed override async Task<bool> RunTask(IToolInstance toolInstance, IConversationHandler conversation, CancellationToken cancellation)
+    public sealed override async Task<bool> RunTask(ToolCallContext context)
     {
-        if (toolInstance is not ToolInstance<TInput, TOutput> myInstance)
+        if (context?.ToolInstance is not ToolInstance<TInput, TOutput> myInstance)
         {
             return false;
         }
@@ -132,7 +138,7 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset
 
         try
         {
-            var output = await RunTask(myInstance.Input, conversation, cancellation);
+            var output = await RunTask(myInstance.Input, context);
             if (output != null)
             {
                 myInstance.SetOutput(output);
@@ -152,7 +158,7 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset
         }
     }
 
-    protected abstract Task<TOutput> RunTask(TInput input, IConversationHandler conversation, CancellationToken cancellation);
+    protected abstract Task<TOutput> RunTask(TInput input, ToolCallContext context);
 }
 
 #endregion

@@ -42,7 +42,7 @@ public class AigcWorkflowPlugin : BackendPlugin, IAigcWorkflowRunner
             return null;
         }
 
-        var cancel = request.Cancel;
+        var cancel = request.Cancellation;
 
         var ctx = request.FuncContext != null ? new FunctionContext(request.FuncContext) : new FunctionContext();
         ctx.SetArgument<IConversationHandler>(conversation);

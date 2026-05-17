@@ -118,7 +118,7 @@ public class RunShellCommand : ExternalNode
         return AnsiRegex.Replace(text, "");
     }
 
-    private static async Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token)
+    public static async Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token)
     {
         bool isWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
         string shell = isWindows ? "cmd.exe" : "/bin/bash";

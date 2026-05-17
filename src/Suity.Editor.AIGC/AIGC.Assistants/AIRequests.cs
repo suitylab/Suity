@@ -55,7 +55,7 @@ public class AIRequest
     /// <summary>
     /// Cancellation token
     /// </summary>
-    public CancellationToken Cancel { get; init; }
+    public CancellationToken Cancellation { get; init; }
 
     /// <summary>
     /// Action to request cancellation of the ongoing operation. This can be invoked by the assistant to signal that it wants to stop processing, for example when a user clicks a cancel button in the conversation interface.
@@ -169,7 +169,7 @@ public class AIRequest
         TopK = source.TopK;
         ComplexField = source.ComplexField;
         Conversation = source.Conversation;
-        Cancel = source.Cancel;
+        Cancellation = source.Cancellation;
         FuncContext = source.FuncContext;
         ItemName = source.ItemName;
         Depth = increaseDepth ? source.Depth + 1 : source.Depth;
@@ -221,7 +221,7 @@ public class AIRequest
     /// <param name="button">The button key that was clicked.</param>
     /// <returns>A task representing the async button handling operation.</returns>
     public Task HandleButtonClick(string button)
-        => FuncContext?.GetArgument<IConversationHostAsync>()?.HandleButtonClickAsync(button, Cancel);
+        => FuncContext?.GetArgument<IConversationHostAsync>()?.HandleButtonClickAsync(button, Cancellation);
 
 
     /// <summary>

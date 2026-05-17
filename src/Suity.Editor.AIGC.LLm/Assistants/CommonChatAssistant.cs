@@ -26,7 +26,7 @@ public class CommonChatAssistant : AIAssistant
     {
         var call = AIAssistantPlugin.Instance.CreatePresetCall(LLmModelPreset.Chat, ctx: request.FuncContext);
 
-        var result = await call.Call(string.Empty, [request.UserMessage], request.Cancel) ?? string.Empty;
+        var result = await call.Call(string.Empty, [request.UserMessage], request.Cancellation) ?? string.Empty;
 
         request.Conversation.AddSystemMessage(result);
 
