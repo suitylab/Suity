@@ -7,24 +7,9 @@ using System.Threading.Tasks;
 namespace Suity.Editor.AIGC;
 
 [NativeType("TestTool", CodeBase = "*Suity")]
-public class TestTool : ToolAsset<TestTool.Input, TestTool.Output>
+[DisplayText("Test Tool")]
+public class TestTool : PageTool<TestTool.Output>
 {
-    public class Input : IViewObject
-    {
-        readonly TextBlockProperty _text = new("Text");
-
-        public string Text { get => _text.Text; set => _text.Text = value; }
-
-        public void Sync(IPropertySync sync, ISyncContext context)
-        {
-            _text.Sync(sync);
-        }
-        public void SetupView(IViewObjectSetup setup)
-        {
-            _text.InspectorField(setup);
-        }
-    }
-
     public class Output : IViewObject
     {
         readonly TextBlockProperty _text = new("Text");
@@ -41,13 +26,27 @@ public class TestTool : ToolAsset<TestTool.Input, TestTool.Output>
         }
     }
 
-    protected override async Task<Output> RunTask(Input input, ToolCallContext context)
+
+    readonly TextBlockProperty _text = new("Text");
+    public string Text { get => _text.Text; set => _text.Text = value; }
+
+    public override void Sync(IPropertySync sync, ISyncContext context)
+    {
+        _text.Sync(sync);
+    }
+
+    public override void SetupView(IViewObjectSetup setup)
+    {
+        _text.InspectorField(setup);
+    }
+
+    public override async Task<Output> RunTask(ToolCallContext context)
     {
         context.Conversation.AddMessage("Handle");
 
         return new Output
         {
-            Text = "Handle: " + input?.Text,
+            Text = "Handle: " + Text,
         };
     }
 

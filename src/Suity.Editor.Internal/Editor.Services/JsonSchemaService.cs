@@ -96,7 +96,7 @@ internal class JsonSchemaService : IJsonSchemaService
             {
                 Name = prop.Name,
                 Description = prop.Description,
-                Tooltips = prop.Styles.GetToolTips(),
+                Tooltips = prop.Styles?.GetToolTips(),
                 Type = fieldInfo.Type,
                 Optional = prop.Optional,
                 Range = prop.Attributes?.GetAttribute<NumericRangeAttribute>(),
@@ -1035,6 +1035,11 @@ class GetFieldSetup : IViewObjectSetup
 
     public void AddField(Type type, ViewProperty property)
     {
+        if (type == typeof(TextBlock))
+        {
+            type = typeof(string);
+        }
+
         var typeDef = TypeDefinition.FromNative(type);
         if (TypeDefinition.IsNullOrEmpty(typeDef))
         {

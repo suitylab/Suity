@@ -110,9 +110,9 @@ public class IPageAssetToTextConverter : TypeToTextConverter<IPageAsset>
             Mode = PageElementMode.Function,
         };
 
-        var element = objFrom.CreatePageInstance(option);
+        var instance = objFrom.CreatePageInstance(option);
 
-        return element?.ToSimpleType().ToString();
+        return instance?.ToSimpleType().ToString();
     }
 }
 
@@ -133,13 +133,13 @@ public class IPageAssetArrayToTextConverter : AssetLinkArrayToTextConverter<IPag
                 Mode = PageElementMode.Function,
             };
 
-            var element = obj.CreatePageInstance(option);
-            if (element is null)
+            var instance = obj.CreatePageInstance(option);
+            if (instance is null)
             {
                 continue;
             }
 
-            string s = element.ToSimpleType().ToString();
+            string s = instance.ToSimpleType().ToString();
 
             if (!string.IsNullOrWhiteSpace(s))
             {

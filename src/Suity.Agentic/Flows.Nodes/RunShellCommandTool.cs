@@ -10,24 +10,10 @@ using System.Threading.Tasks;
 namespace Suity.Editor.Flows.Nodes;
 
 [NativeType("RunShellCommand", CodeBase = "*Suity")]
-public class RunShellCommandTool : ToolAsset<RunShellCommandTool.Input, RunShellCommandTool.Output>
+[DisplayText("Run shell command")]
+[ToolTipsText("Run a single shell command. Do not run multiple commands and a same time.")]
+public class RunShellCommandTool : PageTool<RunShellCommandTool.Output>
 {
-    public class Input : IViewObject
-    {
-        readonly TextBlockProperty _command = new("Command");
-
-        public string Command { get => _command.Text; set => _command.Text = value; }
-
-        public void Sync(IPropertySync sync, ISyncContext context)
-        {
-            _command.Sync(sync);
-        }
-        public void SetupView(IViewObjectSetup setup)
-        {
-            _command.InspectorField(setup);
-        }
-    }
-
     public class Output : IViewObject
     {
         readonly TextBlockProperty _result = new("Result");
@@ -44,7 +30,20 @@ public class RunShellCommandTool : ToolAsset<RunShellCommandTool.Input, RunShell
         }
     }
 
-    protected override async Task<Output> RunTask(Input input, ToolCallContext context)
+    readonly TextBlockProperty _command = new("Command");
+
+    public string Command { get => _command.Text; set => _command.Text = value; }
+
+    public override void Sync(IPropertySync sync, ISyncContext context)
+    {
+        _command.Sync(sync);
+    }
+    public override void SetupView(IViewObjectSetup setup)
+    {
+        _command.InspectorField(setup);
+    }
+
+    public override async Task<Output> RunTask(ToolCallContext context)
     {
         var host = (context.ToolInstance.Owner as IAigcTaskPage)?.TaskHost;
         if (host is null)
@@ -63,7 +62,7 @@ public class RunShellCommandTool : ToolAsset<RunShellCommandTool.Input, RunShell
             throw new NullReferenceException("Working directory is empty");
         }
 
-        string command = input.Command;
+        string command = this.Command;
 
         SimpleStreamUpdater? updater = null;
         Action<string>? onOutput = null;

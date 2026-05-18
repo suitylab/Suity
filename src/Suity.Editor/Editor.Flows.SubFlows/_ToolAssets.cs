@@ -43,8 +43,8 @@ public interface IToolInstance : IPageInstance
 
 public abstract class ToolAsset : StandaloneAsset, IToolAsset
 {
-    protected ToolAsset()
-        : base([typeof(IToolAsset), typeof(IPageAsset)])
+    protected ToolAsset(bool resolveId = true)
+        : base([typeof(IToolAsset), typeof(IPageAsset)], resolveId)
     {
     }
 
@@ -113,9 +113,15 @@ public abstract class ToolInstance : IToolInstance, IViewObject
 #region ToolAsset<TInput, TOutput>
 
 public abstract class ToolAsset<TInput, TOutput> : ToolAsset
-    where TInput : class, IViewObject, new()
+    where TInput : class, IViewObject
     where TOutput : class, IViewObject
 {
+    protected ToolAsset(bool resolveId = true)
+        : base(resolveId)
+    {
+        
+    }
+
     public sealed override IPageInstance CreatePageInstance(PageCreateOption option)
     {
         return new ToolInstance<TInput, TOutput>(option, this);
@@ -163,7 +169,7 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset
 #region ToolInstance<TInput, TOutput>
 
 public class ToolInstance<TInput, TOutput> : ToolInstance
-    where TInput : class, IViewObject, new()
+    where TInput : class, IViewObject
     where TOutput : class, IViewObject
 {
     private readonly TInput _input;
@@ -172,7 +178,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     public ToolInstance(PageCreateOption option, ToolAsset tool) : base(option, tool)
     {
-        _input = new();
+        _input = Activator.CreateInstance<TInput>();
     }
 
     public TInput Input => _input;
@@ -314,5 +320,24 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         return desc;
     }
 }
+
+#endregion
+
+#region PageTool
+
+public abstract class PageTool : IViewObject
+{
+    public abstract void Sync(IPropertySync sync, ISyncContext context);
+    public abstract void SetupView(IViewObjectSetup setup);
+    public abstract Type OutputType { get; }
+}
+
+public abstract class PageTool<TOutput> : PageTool
+{
+    public abstract Task<TOutput> RunTask(ToolCallContext context);
+
+    public sealed override Type OutputType => typeof(TOutput);
+}
+
 
 #endregion
