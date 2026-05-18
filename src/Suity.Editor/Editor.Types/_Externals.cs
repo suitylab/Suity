@@ -224,11 +224,18 @@ internal class NativeTypeExternal
     public virtual TypeDefinition GetBuildInTypeDefinition(string fullName) => TypeDefinition.Empty;
 
     /// <summary>
+    /// Resolves the type definition from native object.
+    /// </summary>
+    /// <param name="nativeObj">Native object to resolve, supported types: <see cref="Type"/>, <see cref="TypeDefinition"/>, <see cref="Guid"/>, <see cref="SItem"/>, and other native types.</param>
+    /// <returns>The type definition.</returns>
+    public virtual TypeDefinition ResolveNativeTypeDefinition(object nativeObj) => TypeDefinition.Empty;
+
+    /// <summary>
     /// Gets the type definition for a native type.
     /// </summary>
     /// <param name="type">The native type.</param>
     /// <returns>The type definition.</returns>
-    public virtual TypeDefinition GetTypeDefinition(Type type) => TypeDefinition.Empty;
+    public virtual TypeDefinition GetNativeTypeDefinition(Type type) => TypeDefinition.Empty;
 
     /// <summary>
     /// Gets the asset link definition for a native type.

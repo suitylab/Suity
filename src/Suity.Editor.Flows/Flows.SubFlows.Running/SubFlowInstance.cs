@@ -237,7 +237,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
         if (value != null)
         {
-            var valueType = TypeDefinition.FromNative(value.GetType());
+            var valueType = TypeDefinition.ResolveNative(value);
             if (!TypeDefinition.IsNullOrEmpty(valueType))
             {
                 var c = EditorServices.TypeConvertService.TryConvert(valueType, parameter.ParameterType, false, value, out var result);

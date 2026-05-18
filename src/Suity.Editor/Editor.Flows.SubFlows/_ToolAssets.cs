@@ -1,13 +1,10 @@
 ﻿using Suity.Drawing;
-using Suity.Editor.Design;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
-using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Synchonizing.Preset;
 using Suity.Views;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;

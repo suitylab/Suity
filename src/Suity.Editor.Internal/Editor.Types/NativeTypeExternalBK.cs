@@ -1,4 +1,5 @@
 using Suity.Editor.Design;
+using Suity.Editor.Values;
 using Suity.Views;
 using System;
 
@@ -348,7 +349,40 @@ internal class NativeTypeExternalBK : NativeTypeExternal
     };
 
     /// <inheritdoc/>
-    public override TypeDefinition GetTypeDefinition(Type type)
+    public override TypeDefinition ResolveNativeTypeDefinition(object any)
+    {
+        if (any is Type type)
+        {
+            return GetNativeTypeDefinition(type);
+        }
+
+        if (any is TypeDefinition typeDef)
+        {
+            return typeDef;
+        }
+
+        if (any is Guid guid)
+        {
+            return TypesExternalBK.Instance.Resolve(guid);
+        }
+
+        if (any is SItem sItem)
+        {
+            if (sItem is SObject sObj)
+            {
+                return sObj.ObjectType;
+            }
+            else
+            {
+                return sItem.InputType;
+            }
+        }
+
+        return GetNativeTypeDefinition(any.GetType());
+    }
+
+    /// <inheritdoc/>
+    public override TypeDefinition GetNativeTypeDefinition(Type type)
     {
         if (type is null)
         {

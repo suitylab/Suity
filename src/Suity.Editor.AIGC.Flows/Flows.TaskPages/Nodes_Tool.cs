@@ -313,20 +313,20 @@ public class ParseToolCalling : TaskPageNode
     /// <summary>
     /// Creates a page instance based on page definition, name and JSON data.
     /// </summary>
-    /// <param name="toolDefs">Page definition asset list.</param>
-    /// <param name="toolName">Target page name.</param>
-    /// <param name="toolJson">Configuration JSON string.</param>
+    /// <param name="pageDefs">Page definition asset list.</param>
+    /// <param name="pageName">Target page name.</param>
+    /// <param name="jsonStr">Configuration JSON string.</param>
     /// <returns>Successfully created AigcPageInstance, null if failed.</returns>
-    public static IPageInstance CreatePageInstance(IPageAsset[] toolDefs, string toolName, string toolJson)
+    public static IPageInstance CreatePageInstance(IPageAsset[] pageDefs, string pageName, string jsonStr)
     {
         // 1. Basic parameter validation
-        if (toolDefs == null || toolDefs.Length == 0 || string.IsNullOrWhiteSpace(toolName) || string.IsNullOrWhiteSpace(toolJson))
+        if (pageDefs == null || pageDefs.Length == 0 || string.IsNullOrWhiteSpace(pageName) || string.IsNullOrWhiteSpace(jsonStr))
         {
             return null;
         }
 
         // 2. Find the corresponding ToolPage
-        var pageDefAsset = toolDefs.FirstOrDefault(o => o?.Name == toolName);
+        var pageDefAsset = pageDefs.FirstOrDefault(o => o?.Name == pageName);
         if (pageDefAsset is null)
         {
             return null;
@@ -336,7 +336,7 @@ public class ParseToolCalling : TaskPageNode
         JsonObject jobj = null;
         try
         {
-            jobj = ComputerBeacon.Json.Parser.Parse(toolJson) as JsonObject;
+            jobj = ComputerBeacon.Json.Parser.Parse(jsonStr) as JsonObject;
         }
         catch (Exception)
         {

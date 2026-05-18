@@ -18,6 +18,7 @@ namespace Suity.Editor.Flows.Nodes;
 /// </summary>
 [DisplayText("Run Shell Command", "*CoreIcon|System")]
 [NativeAlias("Suity.Editor.AIGC.FLows.External.RunShellCommand")]
+[NativeAlias("Suity.Editor.Flows.Nodes.RunShellCommand")]
 public class RunShellCommand : ExternalNode
 {
     private readonly FlowNodeConnector _in;

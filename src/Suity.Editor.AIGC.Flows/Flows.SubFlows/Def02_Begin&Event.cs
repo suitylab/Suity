@@ -162,7 +162,7 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
                 }
                 else
                 {
-                    sourceType = TypeDefinition.FromNative(param.GetType());
+                    sourceType = TypeDefinition.ResolveNative(param);
                 }
 
                 EditorServices.TypeConvertService.TryConvert(sourceType, type, false, param, out var converted);

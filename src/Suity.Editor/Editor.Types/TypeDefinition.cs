@@ -1,3 +1,4 @@
+using Suity.Editor.Values;
 using Suity.Synchonizing.Core;
 using System;
 using System.Collections.Generic;
@@ -423,6 +424,14 @@ public abstract class TypeDefinition : IEquatable<TypeDefinition>
     public static TypeDefinition Resolve(Guid id)
         => TypesExternal._external.Resolve(id);
 
+    /// <summary>
+    /// Resolve native type definition.
+    /// </summary>
+    /// <param name="nativeObj">Native object to resolve, supported types: <see cref="Type"/>, <see cref="TypeDefinition"/>, <see cref="Guid"/>, <see cref="SItem"/>, and other native types.</param>
+    /// <returns></returns>
+    public static TypeDefinition ResolveNative(object nativeObj)
+        => NativeTypeExternal._external.ResolveNativeTypeDefinition(nativeObj);
+
     public static string GetPrefix(TypeDefinition type)
     {
         if (TypeDefinition.IsNullOrEmpty(type))
@@ -447,10 +456,10 @@ public abstract class TypeDefinition : IEquatable<TypeDefinition>
         => TypesExternal._external.ResolveExportedDefinition(key, out prefix, out originKey);
 
     public static TypeDefinition FromNative<T>()
-        => NativeTypeExternal._external.GetTypeDefinition(typeof(T));
+        => NativeTypeExternal._external.GetNativeTypeDefinition(typeof(T));
 
     public static TypeDefinition FromNative(Type type)
-        => NativeTypeExternal._external.GetTypeDefinition(type);
+        => NativeTypeExternal._external.GetNativeTypeDefinition(type);
 
     public static TypeDefinition FromAssetLink<T>()
          => NativeTypeExternal._external.GetAssetLinkDefinition(typeof(T));

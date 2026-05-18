@@ -526,16 +526,7 @@ internal class TypeConvertService : ITypeConvertService
             return TypeConvertState.Assignable;
         }
 
-        TypeDefinition typeDefFrom;
-        if (objFrom is SItem sItem)
-        {
-            typeDefFrom = sItem.InputType;
-        }
-        else
-        {
-            typeDefFrom = TypeDefinition.FromNative(objFrom.GetType());
-        }
-
+        var typeDefFrom = TypeDefinition.ResolveNative(objFrom);
         if (TypeDefinition.IsNullOrEmpty(typeDefFrom))
         {
             result = null;

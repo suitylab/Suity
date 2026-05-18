@@ -1,7 +1,6 @@
 using Suity.Drawing;
 using Suity.Editor.Properties;
 using Suity.Helpers;
-using System.Drawing;
 
 namespace Suity.Editor.AIGC.API;
 
@@ -57,6 +56,7 @@ internal class LmStudioCall : BaseOpenAICall
 /// <summary>
 /// LLM model asset for LM Studio provider.
 /// </summary>
+[NotAvailable]
 public class LmStudioLLmModelAsset : ThirdPartyLLmModelAsset
 {
     /// <summary>

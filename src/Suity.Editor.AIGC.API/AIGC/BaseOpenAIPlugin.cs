@@ -5,7 +5,6 @@ using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace Suity.Editor.AIGC.API;
 

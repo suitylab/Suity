@@ -1,7 +1,6 @@
 using Suity.Drawing;
 using Suity.Editor.Properties;
 using Suity.Helpers;
-using System.Drawing;
 
 namespace Suity.Editor.AIGC.API;
 
@@ -57,8 +56,14 @@ internal class DeepSeekCall : BaseOpenAICall
 /// <summary>
 /// LLM model asset for DeepSeek provider.
 /// </summary>
+[NotAvailable]
 public class DeepSeekLLmModelAsset : ThirdPartyLLmModelAsset
 {
+    public DeepSeekLLmModelAsset()
+    {
+        
+    }
+
     /// <summary>
     /// Gets the default icon for DeepSeek models.
     /// </summary>
