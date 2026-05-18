@@ -24,7 +24,7 @@ public record ToolCallContext(IToolInstance ToolInstance, IConversationHandler C
 [NativeType(CodeBase = "SubFlow", Description = "Sub-flow Tool Asset", Color = FlowColors.Page, Icon = "*CoreIcon|Tool")]
 public interface IToolAsset : IPageAsset
 {
-    Task<bool> RunTask(ToolCallContext context);
+    Task<bool> Run(ToolCallContext context);
 }
 
 
@@ -57,7 +57,7 @@ public abstract class ToolAsset : StandaloneAsset, IToolAsset
     public override ImageDef GetIcon() => CoreIconCache.Tool;
 
     public abstract IPageInstance CreatePageInstance(PageCreateOption option);
-    public abstract Task<bool> RunTask(ToolCallContext context);
+    public abstract Task<bool> Run(ToolCallContext context);
 }
 
 #endregion
@@ -135,7 +135,7 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset
         return new ToolInstance<TInput, TOutput>(option, this);
     }
 
-    public sealed override async Task<bool> RunTask(ToolCallContext context)
+    public sealed override async Task<bool> Run(ToolCallContext context)
     {
         if (context?.ToolInstance is not ToolInstance<TInput, TOutput> myInstance)
         {
@@ -376,7 +376,7 @@ public abstract class PageTool : IViewObject
 
 public abstract class PageTool<TOutput> : PageTool
 {
-    public abstract Task<TOutput> RunTask(ToolCallContext context);
+    public abstract Task<TOutput> Run(ToolCallContext context);
 
     public sealed override Type OutputType => typeof(TOutput);
 }

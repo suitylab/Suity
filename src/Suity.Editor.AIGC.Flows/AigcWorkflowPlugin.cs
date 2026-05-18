@@ -179,7 +179,7 @@ public class PageToolAsset<TInput, TOutput> : ToolAsset<TInput, TOutput>
             msg.AddCode(this.ToDisplayTextL());
         });
 
-        return input.RunTask(context);
+        return input.Run(context);
     }
 
     public override string DisplayText => typeof(TInput).ToDisplayText();

@@ -43,7 +43,7 @@ public class RunShellCommand : PageTool<RunShellCommand.Output>
         _command.InspectorField(setup);
     }
 
-    public override async Task<Output> RunTask(ToolCallContext context)
+    public override async Task<Output> Run(ToolCallContext context)
     {
         var host = (context.ToolInstance.Owner as IAigcTaskPage)?.TaskHost;
         if (host is null)
@@ -63,6 +63,13 @@ public class RunShellCommand : PageTool<RunShellCommand.Output>
         }
 
         string command = this.Command;
+        if (string.IsNullOrWhiteSpace(command))
+        {
+            return new Output
+            {
+                Result = "Command is empty",
+            };
+        }
 
         SimpleStreamUpdater? updater = null;
         Action<string>? onOutput = null;

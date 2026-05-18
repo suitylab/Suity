@@ -99,7 +99,7 @@ public class AigcToolPage : AigcTaskPage,
 
         var context = new ToolCallContext(instance, request.Conversation, request.Cancellation);
 
-        return await tool.RunTask(context);
+        return await tool.Run(context);
     }
 
     #endregion

@@ -40,7 +40,7 @@ public class TestTool : PageTool<TestTool.Output>
         _text.InspectorField(setup);
     }
 
-    public override async Task<Output> RunTask(ToolCallContext context)
+    public override async Task<Output> Run(ToolCallContext context)
     {
         context.Conversation.AddMessage("Handle");
 
