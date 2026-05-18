@@ -6,7 +6,6 @@ namespace Suity.Editor.Flows.AIGC;
 /// <summary>
 /// Asset provider for creating workflow-based chat instances.
 /// </summary>
-[AssetAutoCreate]
 [DisplayText("AIGC Workflow", "*CoreIcon|Workflow")]
 [ToolTipsText("Run AIGC workflow.")]
 public class WorkflowChatProvider : StandaloneAsset<ILLmChatProvider>, ILLmChatProvider

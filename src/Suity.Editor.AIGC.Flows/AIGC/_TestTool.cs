@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace Suity.Editor.AIGC;
 
 [NativeType("TestTool", CodeBase = "*Suity")]
-[AssetAutoCreate]
 public class TestTool : ToolAsset<TestTool.Input, TestTool.Output>
 {
     public class Input : IViewObject

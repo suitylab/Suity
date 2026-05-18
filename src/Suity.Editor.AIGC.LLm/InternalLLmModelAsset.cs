@@ -3,7 +3,7 @@ namespace Suity.Editor.AIGC;
 /// <summary>
 /// Base class for internal LLM model assets within the AIGC module.
 /// </summary>
-public class InternalLLmModelAsset : LLmModelAsset
+public abstract class InternalLLmModelAsset : LLmModelAsset
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="InternalLLmModelAsset"/> class.

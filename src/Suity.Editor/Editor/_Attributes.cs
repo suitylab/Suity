@@ -116,7 +116,7 @@ public sealed class AssetTypeBindingAttribute : Attribute
 #endregion
 
 #region AssetAutoCreateAttribute
-[AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
 public sealed class AssetAutoCreateAttribute : Attribute
 {
 }

@@ -11,7 +11,6 @@ namespace Suity.Editor.AIGC;
 /// <summary>
 /// A manual LLM model asset that allows users to provide responses manually instead of calling an external LLM.
 /// </summary>
-[AssetAutoCreate]
 [DisplayText("Manual Response")]
 public class ManualLLmModelAsset : InternalLLmModelAsset
 {

@@ -368,7 +368,6 @@ public class InstructionInfo
 /// <summary>
 /// Auto-created chat provider for the <see cref="MainAssistant"/>.
 /// </summary>
-[AssetAutoCreate]
 public class MainAssistantChatProvider : AssistantChatProvider<MainAssistant>
 {
     /// <summary>

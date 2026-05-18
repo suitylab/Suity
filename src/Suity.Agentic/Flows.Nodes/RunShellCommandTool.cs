@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 namespace Suity.Editor.Flows.Nodes;
 
 [NativeType("RunShellCommand", CodeBase = "*Suity")]
-[AssetAutoCreate]
 public class RunShellCommandTool : ToolAsset<RunShellCommandTool.Input, RunShellCommandTool.Output>
 {
     public class Input : IViewObject

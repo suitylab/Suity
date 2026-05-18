@@ -1001,6 +1001,7 @@ public abstract class Asset : EditorObject,
 /// <summary>
 /// Standalone asset base class
 /// </summary>
+[AssetAutoCreate]
 public abstract class StandaloneAsset : Asset
 {
     /// <summary>
