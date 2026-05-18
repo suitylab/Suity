@@ -56,7 +56,7 @@ public enum TaskCommitTypes
     TaskFailed,
 }
 
-public record TaskCommitInfo(TaskCommitTypes EndType, object Value);
+public record TaskCommitParameter(TaskCommitTypes EndType, object Value);
 
 /// <summary>
 /// Represents a wrapper for history text content with implicit conversion support.

@@ -133,7 +133,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <summary>
     /// Gets the conversation interface for this page instance.
     /// </summary>
-    public IConversationImGui Conversation => _conversation;
+    public IConversationHandler Conversation => _conversation;
 
     #endregion
 
@@ -868,11 +868,11 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <returns>True if all outputs are done, false if any is not done, or null if no outputs are defined.</returns>
     public bool? GetIsDoneOutputs() => GetIsDoneOutputs(ParameterCondition);
 
-    public TaskCommitInfo GetTaskCommitInfo()
+    public TaskCommitParameter GetTaskCommitParameter()
     {
         if (CurrentEndElement is { } end)
         {
-            return new TaskCommitInfo(end.EndType, end.Value);
+            return new TaskCommitParameter(end.EndType, end.Value);
         }
         else
         {

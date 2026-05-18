@@ -176,7 +176,7 @@ public interface IJsonSchemaService
 
     object GetObject(Type type, string jsonText);
 
-    SimpleType GetViewObjectSimpleType(IViewObject viewObject);
+    SimpleType GetViewObjectSimpleType(IViewObject viewObject, string name = null);
 
 
     /// <summary>

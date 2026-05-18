@@ -674,13 +674,13 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         _propGrid.OnGui(gui);
                         break;
 
-                    //case PageViewCategory.Chat:
-                    //    ChatGui(gui, workflow);
-                    //    break;
+                    case PageViewCategory.Chat:
+                        ChatGui(gui, tool);
+                        break;
 
-                    //case PageViewCategory.Context:
-                    //    ContextGui(gui, workflow);
-                    //    break;
+                    case PageViewCategory.Context:
+                        ContextGui(gui, tool);
+                        break;
                 }
             });
         });
@@ -694,9 +694,9 @@ public class AigcTaskPageDocumentView : IDocumentView,
     }
 
 
-    private void ChatGui(ImGui gui, AigcWorkflowPage page)
+    private void ChatGui(ImGui gui, AigcTaskPage page)
     {
-        if (page.Instance is not { } instance)
+        if (page.GetPageInstance() is not { } instance)
         {
             return;
         }
@@ -706,7 +706,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
         .InitHeightRest(120)
         .OnContent(() =>
         {
-            instance.Conversation.OnNodeGui(gui);
+            (instance?.Conversation as IConversationImGui)?.OnNodeGui(gui);
         });
 
         bool started = IsRunning;
@@ -754,7 +754,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
             {
                 if (IsRunning && !string.IsNullOrWhiteSpace(_msgInput))
                 {
-                    if (page.Instance?.Conversation is { } conversation && conversation is IConversationHost host)
+                    if (page.GetPageInstance()?.Conversation is { } conversation && conversation is IConversationHost host)
                     {
                         conversation.AddUserMessage(_msgInput);
                         host.HandleMessageInput(_msgInput);
@@ -817,6 +817,30 @@ public class AigcTaskPageDocumentView : IDocumentView,
             });
 
             gui.TextAreaInput("#commit", null, page.Instance?.GetTaskCommit())
+            .InitFullWidth()
+            .InitFitVertical()
+            .InitReadonly(true);
+        });
+    }
+
+    private void ContextGui(ImGui gui, AigcToolPage page)
+    {
+        gui.ScrollableFrame("#chat-history-" + page.Name, GuiOrientation.Vertical)
+        .InitFullSize()
+        .OnContent(() =>
+        {
+            gui.HorizontalLayout("#commit-title")
+            .InitFullWidth()
+            .InitFitVertical()
+            .OnContent(() =>
+            {
+                gui.Image("icon", CoreIconCache.Complete).InitClass("titleIcon");
+                gui.Text("commit", "Commit to parent task")
+                .InitClass("titleText")
+                .InitCenter();
+            });
+
+            gui.TextAreaInput("#commit", null, page.GetPageInstance()?.GetTaskCommit())
             .InitFullWidth()
             .InitFitVertical()
             .InitReadonly(true);

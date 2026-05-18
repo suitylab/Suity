@@ -250,7 +250,7 @@ internal class AigcTaskPageRunner : AIAssistant
                 return new(TaskCommitTypes.None, "Task is not done.");
             }
 
-            var end = task.GetPageInstance()?.GetTaskCommitInfo();
+            var end = task.GetPageInstance()?.GetTaskCommitParameter();
             if (end is null)
             {
                 return new(TaskCommitTypes.None, "Task it not finished.");

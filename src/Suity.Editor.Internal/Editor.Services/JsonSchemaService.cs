@@ -78,7 +78,7 @@ internal class JsonSchemaService : IJsonSchemaService
     }
 
 
-    public SimpleType GetViewObjectSimpleType(IViewObject viewObject)
+    public SimpleType GetViewObjectSimpleType(IViewObject viewObject, string name = null)
     {
         var setup = new GetFieldSetup();
         viewObject.SetupView(setup);
@@ -106,9 +106,14 @@ internal class JsonSchemaService : IJsonSchemaService
             fields.Add(field);
         }
 
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            name = viewObject.GetType().FullName;
+        }
+
         var simpleType = new SimpleType
         {
-            Name = viewObject.GetType().FullName,
+            Name = name,
             Description = viewObject.ToDisplayTextL(),
             Tooltips = viewObject.ToToolTipsTextL(),
             Fields = [.. fields],
@@ -121,10 +126,15 @@ internal class JsonSchemaService : IJsonSchemaService
     public IDataWritable CreateSchema(DCompond type, SchemaGenerateOptions options = null)
     {
         var prop = _CreateSchemaProperty(type, options?.Depth ?? DEFAULT_DEPTH, options);
-        string desc = type.GetAttribute<ToolTipsAttribute>()?.ToolTips;
-        if (string.IsNullOrWhiteSpace(desc))
+
+        string desc = null;
+        if (!string.IsNullOrWhiteSpace(prop.Description))
         {
-            desc = null;
+            desc = type.GetAttribute<ToolTipsAttribute>()?.ToolTips;
+            if (string.IsNullOrWhiteSpace(desc))
+            {
+                desc = null;
+            }
         }
 
         return new ObjectSchema(type.Name, desc, prop);
@@ -134,10 +144,15 @@ internal class JsonSchemaService : IJsonSchemaService
     public IDataWritable CreateSchema(SimpleType type, SchemaGenerateOptions options = null)
     {
         var prop = _CreateSchemaProperty(type, options?.Depth ?? DEFAULT_DEPTH, options);
-        string desc = type.Tooltips;
-        if (string.IsNullOrWhiteSpace(desc))
+
+        string desc = null;
+        if (string.IsNullOrWhiteSpace(prop.Description))
         {
-            desc = null;
+            desc = type.Tooltips;
+            if (string.IsNullOrWhiteSpace(desc))
+            {
+                desc = null;
+            }
         }
 
         return new ObjectSchema(type.Name, desc, prop);

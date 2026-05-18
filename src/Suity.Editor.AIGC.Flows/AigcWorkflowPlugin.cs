@@ -167,12 +167,18 @@ public class PageToolAsset<TInput, TOutput> : ToolAsset<TInput, TOutput>
         }
 
         this.LocalName = $"*PageTool|{typeName.TrimStart('*')}";
+        this.Description = typeof(TInput).ToDisplayText();
 
         ResolveId();
     }
 
     protected override Task<TOutput> RunTask(TInput input, ToolCallContext context)
     {
+        context.ToolInstance.Conversation?.AddSystemMessage("Run tool", msg => 
+        {
+            msg.AddCode(this.ToDisplayTextL());
+        });
+
         return input.RunTask(context);
     }
 

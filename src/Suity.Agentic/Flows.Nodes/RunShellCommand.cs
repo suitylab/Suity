@@ -1,215 +1,94 @@
-﻿using Suity.Editor.AIGC.StreamUpdaters;
+﻿using Suity.Editor.AIGC;
+using Suity.Editor.AIGC.StreamUpdaters;
+using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
-using System.Diagnostics;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.Flows.Nodes;
 
-#region RunShellCommand
-
-/// <summary>
-/// A flow node that executes a shell command cross-platform and captures the console output asynchronously.
-/// </summary>
-[DisplayText("Run Shell Command", "*CoreIcon|System")]
-[NativeAlias("Suity.Editor.AIGC.FLows.External.RunShellCommand")]
-[NativeAlias("Suity.Editor.Flows.Nodes.RunShellCommand")]
-public class RunShellCommand : ExternalNode
+[NativeType("RunShellCommand", CodeBase = "*Suity")]
+[DisplayText("Run shell command")]
+[ToolTipsText("Run a single shell command. Do not run multiple commands and a same time.")]
+public class RunShellCommand : PageTool<RunShellCommand.Output>
 {
-    private readonly FlowNodeConnector _in;
-    private readonly ConnectorStringProperty _command = new("Command", "Command", "", "The shell command to execute.");
-    private readonly ConnectorStringProperty _workingDirectory = new("WorkingDirectory", "Working Directory", "", "The working directory for the command. If empty, uses the current directory.");
-    private readonly ConnectorValueProperty<int> _timeout = new("Timeout", "Timeout (s)", 0, "Maximum time to wait for command completion in seconds. 0 means no timeout.");
-    private readonly FlowNodeConnector _out;
-    private readonly FlowNodeConnector _result;
-
-    public RunShellCommand()
+    public class Output : IViewObject
     {
-        _in = this.AddActionInputConnector("In", "Input");
-        _command.AddConnector(this);
-        _workingDirectory.AddConnector(this);
-        _timeout.AddConnector(this);
-        _out = this.AddActionOutputConnector("Out", "Output");
-        _result = this.AddDataOutputConnector("Result", "string", "Result");
-    }
+        readonly TextBlockProperty _result = new("Result");
 
-    protected override void OnSync(IPropertySync sync, ISyncContext context)
-    {
-        base.OnSync(sync, context);
+        public string Result { get => _result.Text; set => _result.Text = value; }
 
-        _command.Sync(sync);
-        _workingDirectory.Sync(sync);
-        _timeout.Sync(sync);
-    }
-
-    protected override void OnSetupView(IViewObjectSetup setup)
-    {
-        base.OnSetupView(setup);
-
-        _command.InspectorField(setup, this);
-        _workingDirectory.InspectorField(setup, this);
-        _timeout.InspectorField(setup, this);
-    }
-
-    public override async Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)
-    {
-        string command = _command.GetValue(compute, this);
-        if (string.IsNullOrWhiteSpace(command))
+        public void Sync(IPropertySync sync, ISyncContext context)
         {
-            throw new ArgumentException("Command is null or empty.");
+            _result.Sync(sync);
+        }
+        public void SetupView(IViewObjectSetup setup)
+        {
+            _result.InspectorField(setup);
+        }
+    }
+
+    readonly TextBlockProperty _command = new("Command");
+
+    public string Command { get => _command.Text; set => _command.Text = value; }
+
+    public override void Sync(IPropertySync sync, ISyncContext context)
+    {
+        _command.Sync(sync);
+    }
+    public override void SetupView(IViewObjectSetup setup)
+    {
+        _command.InspectorField(setup);
+    }
+
+    public override async Task<Output> RunTask(ToolCallContext context)
+    {
+        var host = (context.ToolInstance.Owner as IAigcTaskPage)?.TaskHost;
+        if (host is null)
+        {
+            throw new NullReferenceException("Task host is null");
         }
 
-        int timeoutSec = _timeout.GetValue(compute, this);
-        int timeoutMs = timeoutSec > 0 ? timeoutSec * 1000 : Timeout.Infinite;
+        if (host.WorkSpace is not { } workSpace)
+        {
+            throw new NullReferenceException("Work space is null");
+        }
 
-        string workingDirectory = _workingDirectory.GetValue(compute, this);
+        string workingDirectory = workSpace.MasterDirectory;
         if (string.IsNullOrWhiteSpace(workingDirectory))
         {
-            workingDirectory = null;
+            throw new NullReferenceException("Working directory is empty");
         }
 
-        var conversation = compute.Context.GetArgument<IConversationHandler>();
+        string command = this.Command;
+
         SimpleStreamUpdater? updater = null;
         Action<string>? onOutput = null;
 
-        if (conversation != null)
+        if (context.ToolInstance.Conversation != null)
         {
-            updater = new SimpleStreamUpdater { Conversation = conversation };
+            updater = new SimpleStreamUpdater { Conversation = context.ToolInstance.Conversation };
             onOutput = updater.Append;
         }
 
         try
         {
-            // Merge external cancellaTtion token with timeout token
-            using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancel);
-            if (timeoutMs != Timeout.Infinite)
+            context.ToolInstance.Conversation?.AddRunningMessage("Run command", msg => 
             {
-                cts.CancelAfter(timeoutMs);
-            }
+                msg.AddCode(command);
+            });
 
-            string output = await ExecuteCommandAsync(command, workingDirectory, onOutput, cts.Token);
-            compute.SetValue(_result, output);
-        }
-        catch (OperationCanceledException)
-        {
-            string message = cancel.IsCancellationRequested ? "Command cancelled by user." : $"Command timed out after {timeoutSec}s.";
-            compute.SetValue(_result, message);
-            onOutput?.Invoke($"\n[SYSTEM] {message}\n");
+            string output = await RunShellCommandNode.ExecuteCommandAsync(command, workingDirectory, onOutput, context.Cancellation);
+            return new Output
+            {
+                Result = output,
+            };
         }
         finally
         {
             updater?.Dispose();
         }
-
-        return _out;
     }
-
-    #region Static
-    private static readonly Regex AnsiRegex = new(@"\x1b\[[0-9;]*[a-zA-Z]|\x1b[()][a-zA-Z0-9]|\x1b\][^\x07]*\x07|\x1b\[[0-9;]*[A-Z]", RegexOptions.Compiled);
-
-    private static string StripAnsiCodes(string text)
-    {
-        if (string.IsNullOrEmpty(text))
-            return text;
-        return AnsiRegex.Replace(text, "");
-    }
-
-    public static async Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token)
-    {
-        bool isWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
-        string shell = isWindows ? "cmd.exe" : "/bin/bash";
-        string arguments = isWindows ? $"/C {command}" : $"-c \"{command.Replace("\"", "\\\"")}\"";
-
-        Encoding outputEncoding;
-        if (isWindows)
-        {
-            int consoleCodePage = GetConsoleCodePage();
-            outputEncoding = Encoding.GetEncoding(consoleCodePage);
-        }
-        else
-        {
-            outputEncoding = Encoding.UTF8;
-        }
-
-        var startInfo = new ProcessStartInfo
-        {
-            FileName = shell,
-            Arguments = arguments,
-            WorkingDirectory = workingDirectory,
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            CreateNoWindow = true,
-            StandardOutputEncoding = outputEncoding,
-            StandardErrorEncoding = outputEncoding,
-        };
-
-        var outputBuilder = new StringBuilder();
-        var errorBuilder = new StringBuilder();
-
-        using var process = new Process { StartInfo = startInfo };
-
-        process.OutputDataReceived += (sender, e) =>
-        {
-            if (e.Data != null)
-            {
-                string cleanLine = StripAnsiCodes(e.Data);
-                outputBuilder.AppendLine(cleanLine);
-                onOutput?.Invoke(cleanLine + Environment.NewLine);
-            }
-        };
-
-        process.ErrorDataReceived += (sender, e) =>
-        {
-            if (e.Data != null)
-            {
-                string cleanLine = StripAnsiCodes(e.Data);
-                errorBuilder.AppendLine(cleanLine);
-                onOutput?.Invoke("[STDERR] " + cleanLine + Environment.NewLine);
-            }
-        };
-
-        if (!process.Start())
-        {
-            return "Failed to start process.";
-        }
-
-        process.BeginOutputReadLine();
-        process.BeginErrorReadLine();
-
-        try
-        {
-            // Asynchronously wait for process to exit, binding cancellation token (including timeout)
-            await process.WaitForExitAsync(token);
-        }
-        catch (OperationCanceledException)
-        {
-            if (!process.HasExited)
-            {
-                process.Kill(true); // Recursively kill the process tree
-            }
-            throw; // Continue throwing to be caught by upper layer
-        }
-
-        StringBuilder result = new StringBuilder(outputBuilder.ToString());
-        if (errorBuilder.Length > 0)
-        {
-            if (result.Length > 0) result.AppendLine();
-            result.Append("[STDERR]").AppendLine().Append(errorBuilder);
-        }
-
-        return result.ToString();
-    }
-
-    [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
-    private static extern int GetConsoleOutputCP();
-    private static int GetConsoleCodePage() => GetConsoleOutputCP(); 
-    #endregion
 }
-
-#endregion

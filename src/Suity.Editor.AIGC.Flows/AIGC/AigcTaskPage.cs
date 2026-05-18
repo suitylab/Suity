@@ -1,7 +1,6 @@
 ﻿using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
 using Suity.Editor.Flows.SubFlows;
-using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -373,6 +372,9 @@ public abstract class AigcTaskPage : DesignNode,
             case ISubFlowAsset subFlowAsset:
                 return AigcWorkflowPage.CreateWorkflowPage(doc, subFlowAsset, title, taskPrompt, commitName);
 
+            case IToolAsset toolAsset:
+                return AigcToolPage.CreatToolPage(doc, toolAsset, title, taskPrompt, commitName);
+
             default:
                 throw new NotSupportedException($"{pageAsset.GetType().FullName} is not supported.");
         }
@@ -404,6 +406,9 @@ public abstract class AigcTaskPage : DesignNode,
         {
             case ISubFlowInstance subFlowInstance:
                 return AigcWorkflowPage.CreateWorkflowPage(doc, subFlowInstance, title, taskPrompt, commitName);
+
+            case IToolInstance toolInstance:
+                return AigcToolPage.CreatToolPage(doc, toolInstance, title, taskPrompt, commitName);
 
             default:
                 throw new NotSupportedException($"{pageInstance.GetType().FullName} is not supported.");

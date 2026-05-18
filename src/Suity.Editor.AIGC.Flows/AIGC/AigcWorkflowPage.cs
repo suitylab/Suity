@@ -1136,7 +1136,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         if (subFlowInstance.GetSubFlowAsset() is not { } subFlowAsset)
         {
-            throw new NullReferenceException("SubFlowInstance does not have a SubFlowAsset.");
+            throw new NullReferenceException("Sub-flow instance does not have a sub-flow asset.");
         }
 
         //var item = pageDefAsset.GetBaseDefinition()?.GetDocumentItem() as SubFlowDefinitionDiagramItem

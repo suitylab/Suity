@@ -2,9 +2,11 @@
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
+using Suity.Synchonizing.Core;
 using Suity.Synchonizing.Preset;
 using Suity.Views;
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,6 +34,8 @@ public interface IToolAsset : IPageAsset
 
 public interface IToolInstance : IPageInstance
 {
+    IToolAsset GetToolAsset();
+
     IViewObject InputObject { get; }
     IViewObject OutputObject { get; }
     Exception ErrorInfo { get; }
@@ -75,10 +79,12 @@ public abstract class ToolInstance : IToolInstance, IViewObject
 
     public object Owner => Option.Owner;
     public string Name => Tool.Name;
+    public IToolAsset GetToolAsset() => Tool;
 
     public abstract IViewObject InputObject { get; }
     public abstract IViewObject OutputObject { get; }
     public abstract Exception ErrorInfo { get; }
+    public abstract IConversationHandler Conversation { get; }
 
     public abstract SimpleType ToSimpleType();
 
@@ -90,7 +96,7 @@ public abstract class ToolInstance : IToolInstance, IViewObject
     public abstract bool SetParameter(string name, object value);
 
     public abstract HistoryText GetTaskCommit();
-    public abstract TaskCommitInfo GetTaskCommitInfo();
+    public abstract TaskCommitParameter GetTaskCommitParameter();
 
     #endregion
 
@@ -106,6 +112,8 @@ public abstract class ToolInstance : IToolInstance, IViewObject
 
 
     #endregion
+
+    public abstract void UpdateFromOther(IToolInstance other);
 }
 
 #endregion
@@ -172,13 +180,20 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
     where TInput : class, IViewObject
     where TOutput : class, IViewObject
 {
+    private readonly IConversationImGui _conversation;
+
     private readonly TInput _input;
+    private readonly SimpleType _inputType;
+
     private TOutput _output;
     private Exception _errorInfo;
 
     public ToolInstance(PageCreateOption option, ToolAsset tool) : base(option, tool)
     {
         _input = Activator.CreateInstance<TInput>();
+        _inputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(_input, Tool.Name);
+
+        _conversation = EditorServices.ImGuiService.CreateConversationImGui(typeof(TInput).Name, false);
     }
 
     public TInput Input => _input;
@@ -192,11 +207,10 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     public override Exception ErrorInfo => _errorInfo;
 
-    
-    public override SimpleType ToSimpleType()
-    {
-        return EditorServices.JsonSchemaService.GetViewObjectSimpleType(_input);
-    }
+    public override IConversationHandler Conversation => _conversation;
+
+
+    public override SimpleType ToSimpleType() => _inputType;
 
     public override bool? GetAllDone() => GetIsDone();
 
@@ -208,7 +222,29 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     public override bool SetParameter(string name, object value)
     {
+        var field = _inputType.Fields.FirstOrDefault(o => o.Name == name);
+        if (field is null)
+        {
+            return false;
+        }
+
+        if (value != null)
+        {
+            var valueType = TypeDefinition.ResolveNative(value);
+            if (!TypeDefinition.IsNullOrEmpty(valueType))
+            {
+                var c = EditorServices.TypeConvertService.TryConvert(valueType, field.Type, false, value, out var result);
+                if (c == TypeConvertState.Unconvertible)
+                {
+                    return false;
+                }
+
+                value = result;
+            }
+        }
+
         _input.SetProperty(name, value);
+
         return true;
     }
 
@@ -220,7 +256,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
             return HistoryText.Empty;
         }
 
-        var simpleType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(output);
+        var simpleType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(output, Tool.Name);
 
         var sync = new GetAllPropertySync(SyncIntent.Serialize, false);
         output.Sync(sync, SyncContext.Empty);
@@ -234,12 +270,12 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
                 continue;
             }
 
-            string attr = ResolveElementXmlAttr(value, field);
+            string attr = ResolveElementXmlAttr(value.Value, field);
             builder.AppendLine($"<{simpleType.Name}{attr}>");
 
             try
             {
-                var text = SubFlowExtensions.ConvertChatHistoryText(field.Type, value, true);
+                var text = SubFlowExtensions.ConvertChatHistoryText(field.Type, value.Value, true);
                 builder.AppendLine(text.Text);
             }
             catch (Exception)
@@ -253,7 +289,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         return builder.ToString();
     }
 
-    public override TaskCommitInfo GetTaskCommitInfo()
+    public override TaskCommitParameter GetTaskCommitParameter()
     {
         if (_output != null)
         {
@@ -286,6 +322,12 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     #endregion
 
+    public override void UpdateFromOther(IToolInstance other)
+    {
+        Cloner.CloneProperty(other.InputObject, _input);
+        _output = Cloner.Clone(other.OutputObject) as TOutput;
+    }
+
     public void SetOutput(TOutput output)
     {
         _output = output;
@@ -312,7 +354,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         }
 
         string desc = string.Empty;
-        if (string.IsNullOrWhiteSpace(tooltips))
+        if (!string.IsNullOrWhiteSpace(tooltips))
         {
             desc = $" description='{tooltips}'";
         }

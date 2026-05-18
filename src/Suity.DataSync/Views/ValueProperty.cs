@@ -411,7 +411,16 @@ public class TextBlockProperty : ValueProperty<TextBlock>
         }
         else
         {
-            Value = sync.Sync(Property.Name, Value, flag | SyncFlag.NotNull) ?? new TextBlock();
+            // handle auto convertion from string
+            if (sync.IsSingleSetterOf(Property.Name) && sync.Value is string)
+            {
+                string str = sync.Sync<string>(Property.Name, null, flag | SyncFlag.NotNull);
+                Value.Text = str;
+            }
+            else
+            {
+                Value = sync.Sync(Property.Name, Value, flag | SyncFlag.NotNull) ?? new TextBlock();
+            }
 
             if (sync.IsSetter() && string.IsNullOrWhiteSpace(Value.Text) && !string.IsNullOrWhiteSpace(AutoFillText))
             {

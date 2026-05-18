@@ -1,5 +1,6 @@
 ﻿using Suity.Editor.Services;
 using Suity.Editor.Types;
+using Suity.Views;
 using Suity.Views.Named;
 using System.Collections.Generic;
 using System.Threading;
@@ -17,6 +18,11 @@ public interface IPageInstance : INamed
     /// Gets the owner of this sub-flow instance.
     /// </summary>
     object Owner { get; }
+
+    /// <summary>
+    /// Gets the conversation interface for this page instance.
+    /// </summary>
+    public IConversationHandler Conversation { get; }
 
     /// <summary>
     /// Converts this page instance to a simple type representation.
@@ -59,7 +65,7 @@ public interface IPageInstance : INamed
     /// <returns>The formatted task commit data.</returns>
     HistoryText GetTaskCommit();
 
-    TaskCommitInfo GetTaskCommitInfo();
+    TaskCommitParameter GetTaskCommitParameter();
 }
 
 #endregion
