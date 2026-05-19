@@ -18,7 +18,7 @@ namespace Suity.Editor.Flows.SubFlows;
 public record ToolCallContext
 {
     public IToolInstance ToolInstance { get; init; }
-    public string WorkingDirectory { get; init; }
+    public string WorkSpaceDirectory { get; init; }
     public IConversationHandler Conversation { get; init; }
     public CancellationToken Cancellation { get; init; }
 }
@@ -325,7 +325,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         base.SetupView(setup);
 
         setup.InspectorField(_input, new ViewProperty("Input").WithExpand());
-        setup.InspectorField(_output, new ViewProperty("Output").WithExpand());
+        setup.InspectorField(_output, new ViewProperty("Output").WithExpand().WithOptional());
     }
 
     #endregion

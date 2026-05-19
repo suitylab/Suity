@@ -49,8 +49,8 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// </summary>
     public AigcWorkflowPage()
     {
-        _workflow.TargetUpdated += _pageDef_TargetUpdated;
-        _workflow.SelectionChanged += _pageDef_SelectionChanged;
+        _workflow.TargetUpdated += _workflow_TargetUpdated;
+        _workflow.SelectionChanged += _workflow_SelectionChanged;
         _workflow.ListenEnabled = true;
 
         _buildAction = new(() => BuildInstance());
@@ -316,13 +316,13 @@ public class AigcWorkflowPage : AigcTaskPage,
         QueueRefreshView();
     }
 
-    private void _pageDef_SelectionChanged(object sender, EventArgs e)
+    private void _workflow_SelectionChanged(object sender, EventArgs e)
     {
         // Cannot use Queue, loading data requires immediate update
         _buildAction.DoAction();
     }
 
-    private void _pageDef_TargetUpdated(object sender, EntryEventArgs e, ref bool handled)
+    private void _workflow_TargetUpdated(object sender, EntryEventArgs e, ref bool handled)
     {
         _buildAction.DoQueuedAction();
     }
@@ -991,9 +991,11 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <returns>The built page instance, or null if no definition is available.</returns>
     private SubFlowInstance BuildInstance()
     {
+        SubFlowInstance instance = null;
+
         if (GetDefinitionItem() is { } page)
         {
-            var instance = Instance;
+            instance = Instance;
 
             if (instance != null && instance.IsInDiagram && instance.DiagramItem == page)
             {
@@ -1013,14 +1015,15 @@ public class AigcWorkflowPage : AigcTaskPage,
                     Instance.UpdateFromOther(instance);
                 }
             }
-
-            return instance;
         }
         else
         {
             Instance = null;
-            return null;
         }
+
+        this.TaskPageDocument?.View?.DoServiceAction<IViewRefresh>(o => o.QueueRefreshView());
+
+        return instance;
     }
 
 

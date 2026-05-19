@@ -3,6 +3,7 @@ using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Selecting;
+using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -16,9 +17,15 @@ public class AigcToolPage : AigcTaskPage,
     readonly AssetProperty<IToolAsset> _tool = new("Tool", "Tool");
 
     private IToolInstance _toolInstance;
+    private readonly QueueOnceAction _buildAction;
 
     public AigcToolPage()
     {
+        _tool.TargetUpdated += _tool_TargetUpdated;
+        _tool.SelectionChanged += _tool_SelectionChanged;
+        _tool.ListenEnabled = true;
+        
+        _buildAction = new(() => BuildInstance());
     }
 
     public IToolAsset Tool
@@ -100,7 +107,7 @@ public class AigcToolPage : AigcTaskPage,
         var context = new ToolCallContext
         {
             ToolInstance = instance,
-            WorkingDirectory = this.TaskPageDocument?.WorkSpace?.MasterDirectory,
+            WorkSpaceDirectory = this.TaskPageDocument?.WorkSpace?.MasterDirectory,
             Conversation = request.Conversation,
             Cancellation = request.Cancellation,
         };
@@ -114,18 +121,37 @@ public class AigcToolPage : AigcTaskPage,
     {
         if (_toolInstance is null)
         {
-            var option = new PageCreateOption 
-            {
-                 Owner = this,
-                 Mode = PageElementMode.Page,
-            };
-
-            _toolInstance = _tool.Target?.CreatePageInstance(option) as IToolInstance;
+            BuildInstance();
         }
 
         return _toolInstance;
     }
 
+    private IToolInstance BuildInstance()
+    {
+        var option = new PageCreateOption
+        {
+            Owner = this,
+            Mode = PageElementMode.Page,
+        };
+
+        _toolInstance = _tool.Target?.CreatePageInstance(option) as IToolInstance;
+
+        this.TaskPageDocument?.View?.DoServiceAction<IViewRefresh>(o => o.QueueRefreshView());
+
+        return _toolInstance;
+    }
+
+    private void _tool_SelectionChanged(object sender, EventArgs e)
+    {
+        // Cannot use Queue, loading data requires immediate update
+        _buildAction.DoAction();
+    }
+
+    private void _tool_TargetUpdated(object sender, EntryEventArgs e, ref bool handled)
+    {
+        _buildAction.DoQueuedAction();
+    }
 
     public static AigcToolPage CreatToolPage(AigcTaskPageDocument doc, IToolAsset toolAsset, string title = null, string taskPrompt = null, string commitName = null)
     {

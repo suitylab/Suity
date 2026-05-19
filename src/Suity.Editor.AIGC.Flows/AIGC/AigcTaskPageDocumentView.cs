@@ -248,6 +248,10 @@ public class AigcTaskPageDocumentView : IDocumentView,
     public void RefreshView()
     {
         _treeView?.UpdateDisplayedObject();
+        UpdateInspector();
+
+        _treeView.QueueRefresh();
+        _guiRef.QueueRefresh();
     }
 
     #endregion
@@ -1059,6 +1063,14 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
     private void _treeView_SelectionChanged(object sender, EventArgs e)
     {
+        UpdateInspector();
+
+        _treeView.QueueRefresh();
+        _guiRef.QueueRefresh();
+    }
+
+    private void UpdateInspector()
+    {
         if (_treeView.SelectedObjects.CountMoreThanOne())
         {
             _currentPage = null;
@@ -1074,9 +1086,6 @@ public class AigcTaskPageDocumentView : IDocumentView,
             _currentPage = null;
             _propGrid.InspectObjects([], context: _inspectorContext);
         }
-
-        _treeView.QueueRefresh();
-        _guiRef.QueueRefresh();
     }
 
     private void _grid_Edited(object sender, ObjectPropertyEventArgs e)

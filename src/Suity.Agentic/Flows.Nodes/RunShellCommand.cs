@@ -44,10 +44,10 @@ public class RunShellCommand : ToolCommand<RunShellCommand.Output>
 
     public override async Task<Output> Run(ToolCallContext context)
     {
-        string workingDirectory = context.WorkingDirectory;
-        if (string.IsNullOrWhiteSpace(workingDirectory))
+        string directory = context.WorkSpaceDirectory;
+        if (string.IsNullOrWhiteSpace(directory))
         {
-            throw new NullReferenceException("Working directory is not set");
+            throw new NullReferenceException("Workspace directory is not set");
         }
 
         string command = this.Command;
@@ -72,7 +72,7 @@ public class RunShellCommand : ToolCommand<RunShellCommand.Output>
                 msg.AddCode(command);
             });
 
-            string output = await RunShellCommandNode.ExecuteCommandAsync(command, workingDirectory, onOutput, context.Cancellation);
+            string output = await RunShellCommandNode.ExecuteCommandAsync(command, directory, onOutput, context.Cancellation);
             return new Output
             {
                 Result = output,
