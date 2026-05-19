@@ -52,25 +52,10 @@ public interface IToolInstance : IPageInstance
 
 public abstract class ToolAsset : StandaloneAsset, IToolAsset
 {
-    private string _toolName;
-
     protected ToolAsset(bool resolveId = true)
         : base([typeof(IToolAsset), typeof(IPageAsset)], resolveId)
     {
     }
-
-    public string ToolName { get => _toolName; set => _toolName = value; }
-
-    protected override string GetName()
-    {
-        if (!string.IsNullOrWhiteSpace(_toolName))
-        {
-            return _toolName;
-        }
-
-        return base.GetName();
-    }
-
 
     public override ImageDef DefaultIcon => CoreIconCache.Tool;
 
@@ -214,7 +199,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         string name = SubFlowExtensions.UseFullName ? tool.FullName : tool.Name;
 
         _input = Activator.CreateInstance<TInput>();
-        _inputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(_input, name);
+        _inputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(_input, name, tool.FullName);
 
         _conversation = EditorServices.ImGuiService.CreateConversationImGui(typeof(TInput).Name, false);
     }

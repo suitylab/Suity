@@ -70,7 +70,7 @@ public interface IJsonSchemaService
 
     object GetObject(Type type, string jsonText);
 
-    SimpleType GetViewObjectSimpleType(IViewObject viewObject, string name = null);
+    SimpleType GetViewObjectSimpleType(IViewObject viewObject, string name = null, string fullName = null);
 
 
     /// <summary>

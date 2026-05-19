@@ -1,5 +1,6 @@
 ﻿using Suity.Editor.Design;
 using Suity.Editor.Services;
+using System.Collections.Generic;
 
 namespace Suity.Editor.Types;
 
@@ -14,6 +15,11 @@ public class SimpleType
     public string Name { get; init; }
 
     /// <summary>
+    /// Gets or sets the full name of the type, which can be used for more detailed schema representations.
+    /// </summary>
+    public string FullName { get; init; }
+
+    /// <summary>
     /// Gets or sets the description.
     /// </summary>
     public string Description { get; init; }
@@ -26,13 +32,30 @@ public class SimpleType
     /// <summary>
     /// Gets or sets the fields.
     /// </summary>
-    public SimpleField[] Fields { get; init; }
+    public IReadOnlyList<SimpleField> Fields { get; init; }
 
     /// <summary>
     /// Initializes a new instance of the SimpleType class.
     /// </summary>
     public SimpleType()
     {
+    }
+
+    /// <summary>
+    /// Creates a clone of this instance.
+    /// </summary>
+    /// <param name="newName">The new name for the cloned instance. If null, the original name is used.</param>
+    /// <returns>A new instance of SimpleType with the same values.</returns>
+    public SimpleType Clone(string newName = null)
+    {
+        return new SimpleType
+        {
+            Name = newName ?? Name,
+            FullName = FullName,
+            Description = Description,
+            Tooltips = Tooltips,
+            Fields = Fields
+        };
     }
 
     /// <summary>

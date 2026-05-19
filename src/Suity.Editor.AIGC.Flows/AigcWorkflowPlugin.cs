@@ -1,9 +1,11 @@
-﻿using Suity.Editor.AIGC.Assistants;
+﻿using Suity.Drawing;
+using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.AIGC;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
 using Suity.Helpers;
+using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
@@ -15,16 +17,29 @@ namespace Suity.Editor.AIGC;
 /// Plugin that provides AIGC workflow execution capability.
 /// Implements <see cref="IAigcWorkflowRunner"/> to enable workflow running functionality.
 /// </summary>
-public class AigcWorkflowPlugin : BackendPlugin, IAigcWorkflowRunner
+public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
 {
     public static AigcWorkflowPlugin Instance { get; private set; }
 
     readonly Dictionary<Type, ToolAsset> _pageToolAssets = [];
 
+    private readonly ValueProperty<bool> _useFullName 
+        = new("UseFullName", "Use Full Name", false, "Use full name in tool schema representation.");
+
+
     public AigcWorkflowPlugin()
     {
         Instance ??= this;
+
+        _useFullName.ValueChanged += (s, e) => 
+        {
+            SubFlowExtensions.UseFullName = _useFullName.Value;
+        };
     }
+
+    public override string Description => "AIGC Workflow";
+
+    public override ImageDef Icon => CoreIconCache.Workflow;
 
     /// <inheritdoc/>
     protected internal override void Awake(PluginContext context)
@@ -39,6 +54,19 @@ public class AigcWorkflowPlugin : BackendPlugin, IAigcWorkflowRunner
             var asset = (ToolAsset)Activator.CreateInstance(assetType);
             _pageToolAssets.Add(inputType, asset);
         }
+    }
+
+
+    /// <inheritdoc/>
+    public void Sync(IPropertySync sync, ISyncContext context)
+    {
+        _useFullName.Sync(sync);
+    }
+
+    /// <inheritdoc/>
+    public void SetupView(IViewObjectSetup setup)
+    {
+        _useFullName.InspectorField(setup);
     }
 
     /// <inheritdoc/>
@@ -166,12 +194,13 @@ public class ToolCommandAsset<TInput, TOutput> : ToolAsset<TInput, TOutput>
             typeName = typeof(TInput).FullName;
         }
 
-        this.ToolName = typeof(TInput).Name;
         this.LocalName = $"*PageTool|{typeName.TrimStart('*')}";
         this.Description = typeof(TInput).ToDisplayText();
 
         ResolveId();
     }
+
+    protected override string GetName() => typeof(TInput).Name;
 
     protected override Task<TOutput> RunTask(TInput input, ToolCallContext context)
     {

@@ -78,7 +78,7 @@ internal class JsonSchemaService : IJsonSchemaService
     }
 
 
-    public SimpleType GetViewObjectSimpleType(IViewObject viewObject, string name = null)
+    public SimpleType GetViewObjectSimpleType(IViewObject viewObject, string name = null, string fullName = null)
     {
         var setup = new GetFieldSetup();
         viewObject.SetupView(setup);
@@ -106,14 +106,13 @@ internal class JsonSchemaService : IJsonSchemaService
             fields.Add(field);
         }
 
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            name = viewObject.GetType().FullName;
-        }
+        name ??= viewObject.GetType().Name;
+        fullName ??= viewObject.GetType().FullName;
 
         var simpleType = new SimpleType
         {
             Name = name,
+            FullName = fullName,
             Description = viewObject.ToDisplayTextL(),
             Tooltips = viewObject.ToToolTipsTextL(),
             Fields = [.. fields],
