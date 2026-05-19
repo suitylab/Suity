@@ -73,6 +73,7 @@
     </SpeechLanguage>
     <PromptOverrides base="@f966dd49-78ab-4231-a830-07c832999fb7[]" />
   </Plugin>
+  <Plugin name="AigcWorkflowPlugin" />
   <Plugin name="AIHubMixPlugin">
     <ApiKey>
     </ApiKey>

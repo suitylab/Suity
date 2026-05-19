@@ -98,7 +98,6 @@
   <Object id="6284e8a7-f1ce-4c49-a035-bc25f12903e2" name="*AssetLink|Suity.Editor.AIGC.LLmModelAsset" />
   <Object id="5bd8cfa9-8c8c-43f9-a184-2837e7042922" name="*AssetLink|Suity.Editor.AIGC.LLmModelGroupAsset" />
   <Object id="b91a1a74-ebaf-4b8d-99a0-3441456e3ef8" name="*AssetLink|Suity.Editor.AIGC.ManualLLmModelAsset" />
-  <Object id="8b7d9291-5219-4b97-b5cf-11281900a303" name="*AssetLink|Suity.Editor.AIGC.PageToolAsset`2" />
   <Object id="c605bac3-5e77-4a8d-b19a-7562c99dac41" name="*AssetLink|Suity.Editor.AIGC.RAG.IFeatureKnowledge" />
   <Object id="f5efcc7c-1a7d-4a38-9163-048a657be6ac" name="*AssetLink|Suity.Editor.AIGC.RAG.IKeywordKnowledge" />
   <Object id="4a6f80b6-b044-4abe-b600-578322be888f" name="*AssetLink|Suity.Editor.AIGC.RAG.IKnowledgeBase" />
@@ -106,6 +105,7 @@
   <Object id="d8bd1266-9e18-40d4-9609-0e857075cf6d" name="*AssetLink|Suity.Editor.AIGC.ThirdPartyImageGenAsset" />
   <Object id="199422fd-cdec-423c-a065-8c90395589c5" name="*AssetLink|Suity.Editor.AIGC.ThirdPartyLLmEmbeddingAsset" />
   <Object id="5286dde0-667f-4cb8-a375-0df317c46d06" name="*AssetLink|Suity.Editor.AIGC.ThirdPartyLLmModelAsset" />
+  <Object id="1338918f-1ec1-4b3b-864c-0d55b0d08d20" name="*AssetLink|Suity.Editor.AIGC.ToolCommandAsset`2" />
   <Object id="6654a55e-ef96-4437-b516-31ae3d6b5d92" name="*AssetLink|Suity.Editor.AssemblyAsset" />
   <Object id="ad0c49f1-9204-414f-af0d-dcaa052952c9" name="*AssetLink|Suity.Editor.CodeRender.Material" />
   <Object id="0d9b2cde-2c29-43db-9e38-e81e3c68431a" name="*AssetLink|Suity.Editor.CodeRender.RenderType" />
@@ -585,7 +585,21 @@
   <Object id="9ebc6c0b-2ec7-46a8-8f00-acb6d263fd3e" name="*OpenAILLm" />
   <Object id="a65e9185-c73b-426c-941a-0a548bf605f0" name="*OpenRouterImage" />
   <Object id="b1e71df7-61e2-4726-9d32-b6a4bc962833" name="*OpenRouterLLm" />
+  <Object id="6240f92e-d9e9-455b-beaa-1b27c4f187d3" name="*PageTool|Suity|ApplyDiffPatch" />
+  <Object id="f3884b05-3c4e-4b25-9723-7a896e255b8d" name="*PageTool|Suity|BatchApplyDiffPatches" />
+  <Object id="3304a564-e5dc-43d8-a00f-141bab290211" name="*PageTool|Suity|BatchCreateNewFiles" />
+  <Object id="1d7c4267-b004-429b-8070-b74e2710dd69" name="*PageTool|Suity|BatchReadFile" />
+  <Object id="00764838-cdc5-40d1-b636-0046358dd38b" name="*PageTool|Suity|BatchReplaceStringInFiles" />
+  <Object id="02c01430-74d8-4e59-a7b5-6094cb171ec3" name="*PageTool|Suity|CreateNewFile" />
+  <Object id="922c7589-8c57-43b2-91c2-3873029a817a" name="*PageTool|Suity|GetFileMetadata" />
+  <Object id="72bfd38f-adb1-4e2a-9185-08a558e30272" name="*PageTool|Suity|GetWorkspaceTree" />
+  <Object id="d9bb5548-e340-4bd3-91ec-76d0f35b1449" name="*PageTool|Suity|ListDirectory" />
+  <Object id="4fa5a672-755e-4cfe-97af-79eecb75b4ce" name="*PageTool|Suity|ReadFile" />
+  <Object id="a7728094-c0dc-4189-9ca6-9bb5b37117b4" name="*PageTool|Suity|ReplaceStringInFile" />
+  <Object id="dc35e117-c8f5-493b-8bd6-ffb27b18833f" name="*PageTool|Suity|RewriteEntireFile" />
   <Object id="0c0e6e87-c484-44be-8d2b-1e00a40300e0" name="*PageTool|Suity|RunShellCommand" />
+  <Object id="8fe14aad-8164-4636-94f5-8bc755df34b5" name="*PageTool|Suity|SearchFile" />
+  <Object id="c98801ac-2dd8-46e7-8eb6-e1350fb72fa0" name="*PageTool|Suity|SearchFileRegex" />
   <Object id="2a2bdf10-c3c9-451d-b858-47a3a958160d" name="*PageTool|Suity|TestTool" />
   <Object id="d6b9951a-8505-422b-a6ea-83eff9cc1d45" name="*RenderType" />
   <Object id="89d19efa-d824-4d81-b6c0-c0485518726a" name="*RenderType|Abstract" />
@@ -662,10 +676,16 @@
   <Object id="7163f923-dadf-453c-942f-33cfe7d5b28b" name="*Suity.Gaming|GameSelector" />
   <Object id="9c522856-3f1f-4d72-87f2-ef94da4ab3a8" name="*Suity.Gaming|TacticAI" />
   <Object id="8202c961-7ea6-4dbf-a464-0e53f0ba7396" name="*Suity.Gaming|TacticAI.NodeId" />
+  <Object id="c92e03fa-e22a-4ab6-9c49-551f150bc46c" name="*Suity|ApplyDiffPatch" />
   <Object id="3a2515b5-75e8-4e69-b1bc-06efc294cc01" name="*Suity|ArticleContainerAsset" />
   <Object id="438f92d9-bfef-496c-b0b0-439bb7cb9b62" name="*Suity|Attribute" />
+  <Object id="d35fc3e9-72f3-4292-88c0-a111c49b2891" name="*Suity|BatchApplyDiffPatches" />
+  <Object id="eb51a051-91d5-4216-953a-5e6781c34748" name="*Suity|BatchCreateNewFiles" />
+  <Object id="1b5f8cb2-9564-4dd8-9be5-136c833f3a96" name="*Suity|BatchReadFile" />
+  <Object id="f042db0e-bc86-4693-a923-c0c1fe35def3" name="*Suity|BatchReplaceStringInFiles" />
   <Object id="c30b4a25-23f0-4e12-9779-c9c7d86e09e4" name="*Suity|ByteArray" />
   <Object id="0f588e9a-8cb9-4924-a308-ca3132ba37ca" name="*Suity|ClientHandler" />
+  <Object id="e9ed07b7-9b14-411c-bdfd-f585e1a5a752" name="*Suity|CreateNewFile" />
   <Object id="275c2aaf-be2d-4d2b-b36e-0fd8c1fc1917" name="*Suity|DefaultHandler" />
   <Object id="9abba293-d430-434e-996f-6603ac3bb59f" name="*Suity|DTypeFamily" />
   <Object id="030988fa-861b-4ae5-a5a6-0c7f5f85085d" name="*Suity|EmptyResult" />
@@ -673,6 +693,8 @@
   <Object id="55e5309f-b57b-4297-8057-f72b8c9395f9" name="*Suity|ErrorResult.Location" />
   <Object id="5536b7f6-24d3-4005-a952-afaad8828099" name="*Suity|ErrorResult.Message" />
   <Object id="d507b33d-782e-4f65-918a-6bfd85ebb73c" name="*Suity|ErrorResult.StatusCode" />
+  <Object id="181a1c7d-5a14-4502-ba71-eb24fcb93b57" name="*Suity|GetFileMetadata" />
+  <Object id="54b6a3ee-c60b-4076-b3fc-9bcbed8be2ec" name="*Suity|GetWorkspaceTree" />
   <Object id="7dbb0e76-8fd4-44ae-9c3d-ec283e58f49a" name="*Suity|Handler" />
   <Object id="1d085265-fda7-4f1f-ad09-f397b1a5d34c" name="*Suity|IArticleAsset" />
   <Object id="ae2fbbb1-bb48-4d93-971f-1cae5c652f84" name="*Suity|IDataTransport" />
@@ -683,9 +705,15 @@
   <Object id="1bb848b6-92cf-438a-a590-6333b3a636fb" name="*Suity|JsonContentTypes.Content" />
   <Object id="bfc9bc2e-9479-4d1a-bfb4-263df241a5c8" name="*Suity|JsonContentTypes.Numeric" />
   <Object id="c63a722e-08be-4c10-a59f-55fafd10fbb8" name="*Suity|JsonContentTypes.String" />
+  <Object id="d004b6c6-88be-4da1-ad7b-ce0a4001729f" name="*Suity|ListDirectory" />
   <Object id="79ac1ee2-6f42-4556-8418-bfc538627a6b" name="*Suity|ObjectPrototype" />
+  <Object id="b94c1f57-a82a-4c9c-b0ce-bc1787217baf" name="*Suity|ReadFile" />
+  <Object id="1854028f-c25b-4621-be5c-bea757723a81" name="*Suity|ReplaceStringInFile" />
+  <Object id="aecef0de-02d2-4fce-bb78-f0d16e67c00b" name="*Suity|RewriteEntireFile" />
   <Object id="a2ae2d74-8890-4463-ab7a-b20fb3c1a5dd" name="*Suity|RunShellCommand" />
   <Object id="0c3d4f2d-0cbb-4831-8e21-82bbf3a7476d" name="*Suity|SAssetKey" />
+  <Object id="dcaa2e6b-c9de-4862-be53-3c9742925292" name="*Suity|SearchFile" />
+  <Object id="2ba34c45-cb3e-496a-8fe9-9e7c15eeeee4" name="*Suity|SearchFileRegex" />
   <Object id="3e20bc9e-0ca6-4679-a013-801011fba045" name="*Suity|ServerHandler" />
   <Object id="76592d70-6b2f-41e0-a483-15991ffc9678" name="*Suity|SKey" />
   <Object id="1536810d-ec68-4c2c-afe8-a0dd5b7acdec" name="*Suity|TestTool" />

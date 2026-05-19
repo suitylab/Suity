@@ -29,7 +29,7 @@
         <UseParentArticle>True</UseParentArticle>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="500" Y="140" Width="140" Height="110">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="500" Y="140" Width="150" Height="150">
       <Name>CodePlanningResult</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
         <Name>CodePlanningResult</Name>
@@ -344,6 +344,31 @@
       <Name>###GetCurrentTask01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTask" />
     </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="510" Y="230" Width="60" Height="17">
+      <Name>SelectedRule</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>SelectedRule</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>6d9a5040-b6d7-4daa-b06f-6f2f27f02012</Id>
+        </ValueType>
+        <Value type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+          <Value type="Suity.Views.TextBlock">
+            <Text>
+            </Text>
+          </Value>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="370" Y="120" Width="28" Height="17">
+      <Name>###PassValue01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </DataType>
+      </Node>
+    </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
   <Links>
@@ -550,6 +575,18 @@
       <FromConnector>Out</FromConnector>
       <ToNode>###CreateToolCallingWithParameter01</ToNode>
       <ToConnector>p_DomainContext</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>LanguageRule</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###PassValue01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>SelectedRule</ToNode>
+      <ToConnector>In</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

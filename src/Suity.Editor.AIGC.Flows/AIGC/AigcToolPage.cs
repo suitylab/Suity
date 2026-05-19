@@ -17,15 +17,12 @@ public class AigcToolPage : AigcTaskPage,
     readonly AssetProperty<IToolAsset> _tool = new("Tool", "Tool");
 
     private IToolInstance _toolInstance;
-    private readonly QueueOnceAction _buildAction;
 
     public AigcToolPage()
     {
         _tool.TargetUpdated += _tool_TargetUpdated;
         _tool.SelectionChanged += _tool_SelectionChanged;
         _tool.ListenEnabled = true;
-        
-        _buildAction = new(() => BuildInstance());
     }
 
     public IToolAsset Tool
@@ -75,7 +72,18 @@ public class AigcToolPage : AigcTaskPage,
     /// <inheritdoc/>
     protected override TextStatus OnGetTextStatus()
     {
-        var done = EnsureInstance()?.GetAllDone();
+        var instance = EnsureInstance();
+        if (instance is null)
+        {
+            return TextStatus.Disabled;
+        }
+
+        if (instance.ErrorInfo != null)
+        {
+            return TextStatus.Error;
+        }
+
+        var done = instance.GetAllDone();
         return done.ToCheckedStatus();
     }
 
@@ -135,7 +143,13 @@ public class AigcToolPage : AigcTaskPage,
             Mode = PageElementMode.Page,
         };
 
+        var old = _toolInstance;
         _toolInstance = _tool.Target?.CreatePageInstance(option) as IToolInstance;
+
+        if (_toolInstance is ToolInstance toolInstance && toolInstance.GetType() == old?.GetType())
+        {
+            toolInstance.UpdateFromOther(old);
+        }
 
         this.TaskPageDocument?.View?.DoServiceAction<IViewRefresh>(o => o.QueueRefreshView());
 
@@ -144,13 +158,12 @@ public class AigcToolPage : AigcTaskPage,
 
     private void _tool_SelectionChanged(object sender, EventArgs e)
     {
-        // Cannot use Queue, loading data requires immediate update
-        _buildAction.DoAction();
+        BuildInstance();
     }
 
     private void _tool_TargetUpdated(object sender, EntryEventArgs e, ref bool handled)
     {
-        _buildAction.DoQueuedAction();
+        BuildInstance();
     }
 
     public static AigcToolPage CreatToolPage(AigcTaskPageDocument doc, IToolAsset toolAsset, string title = null, string taskPrompt = null, string commitName = null)

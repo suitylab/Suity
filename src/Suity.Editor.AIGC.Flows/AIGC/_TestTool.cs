@@ -28,20 +28,29 @@ public class TestTool : ToolCommand<TestTool.Output>
 
 
     readonly TextBlockProperty _text = new("Text");
+    readonly ValueProperty<bool> _throwError = new("ThrowError", "Throw Error");
+
     public string Text { get => _text.Text; set => _text.Text = value; }
 
     public override void Sync(IPropertySync sync, ISyncContext context)
     {
         _text.Sync(sync);
+        _throwError.Sync(sync);
     }
 
     public override void SetupView(IViewObjectSetup setup)
     {
         _text.InspectorField(setup);
+        _throwError.InspectorField(setup);
     }
 
     public override async Task<Output> Run(ToolCallContext context)
     {
+        if (_throwError.Value)
+        {
+            throw new System.Exception("TestTool error");
+        }
+
         context.Conversation.AddMessage("Handle");
 
         return new Output

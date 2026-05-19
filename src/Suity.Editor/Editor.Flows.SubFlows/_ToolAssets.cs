@@ -259,18 +259,28 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     public override HistoryText GetTaskCommit()
     {
+        var builder = new StringBuilder();
+        string tagName = Tool.Name;
+
+        if (_errorInfo != null)
+        {
+            builder.AppendLine($"<ToolCall name={tagName}>");
+            builder.AppendLine("==== Error ====");
+            builder.AppendLine(_errorInfo.ToString());
+            builder.AppendLine("</ToolCall>");
+            builder.AppendLine();
+
+            return builder.ToString();
+        }
+
         if (_output is not { } output)
         {
             return HistoryText.Empty;
         }
-
-        string tagName = Tool.Name;
-
         var sync = new GetAllPropertySync(SyncIntent.Serialize, false);
         output.Sync(sync, SyncContext.Empty);
 
-        var builder = new StringBuilder();
-
+        builder.AppendLine($"<ToolCall name={tagName}>");
         foreach (var field in _inputType.Fields)
         {
             if (!sync.Values.TryGetValue(field.Name, out var value))
@@ -279,7 +289,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
             }
 
             string attr = ResolveElementXmlAttr(value.Value, field);
-            builder.AppendLine($"<{tagName}{attr}>");
+            builder.AppendLine($"<{field.Name}{attr}>");
 
             try
             {
@@ -290,9 +300,13 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
             {
                 builder.AppendLine("---");
             }
-            builder.AppendLine($"</{tagName}>");
+
+            builder.AppendLine($"</{field.Name}>");
             builder.AppendLine();
         }
+
+        builder.AppendLine("</ToolCall>");
+        builder.AppendLine();
 
         return builder.ToString();
     }
@@ -318,6 +332,11 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
         sync.Sync("Input", _input, SyncFlag.GetOnly);
         _output = sync.Sync("Output", _output);
+        if (_errorInfo != null)
+        {
+            string errorMsg = _errorInfo.ToString();
+            sync.Sync("ErrorMessage", new TextBlock(errorMsg), SyncFlag.GetOnly);
+        }
     }
 
     public override void SetupView(IViewObjectSetup setup)
@@ -325,7 +344,15 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         base.SetupView(setup);
 
         setup.InspectorField(_input, new ViewProperty("Input").WithExpand());
-        setup.InspectorField(_output, new ViewProperty("Output").WithExpand().WithOptional());
+
+        if (_errorInfo != null)
+        {
+            setup.InspectorFieldOf<TextBlock>(new ViewProperty("ErrorMessage").WithReadOnly().WithStatus(TextStatus.Error));
+        }
+        else
+        {
+            setup.InspectorField(_output, new ViewProperty("Output").WithExpand().WithOptional());
+        }
     }
 
     #endregion
