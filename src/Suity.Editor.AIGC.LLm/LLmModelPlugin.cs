@@ -54,7 +54,7 @@ public class LLmModelPlugin : EditorPlugin, IViewObject
 
 
     private readonly StringProperty _localizedLanguage
-        = new(nameof(LocalizedLanguage), "Localiazed speech language of AI response.");
+        = new(nameof(LocalizedLanguage), "AI Output Language", string.Empty, "Localized speech language of AI response.");
 
 
     private readonly ValueProperty<bool> _aiCallLog
