@@ -44,6 +44,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
     private readonly AssetProperty<ISubFlowPresetAsset> _preset = new(PRESET_PROP, "Preset");
     private string _presetName;
+    private string _presetFullName;
 
 
     private readonly IConversationImGui _conversation;
@@ -143,6 +144,8 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <inheritdoc/>
     public object Owner => Option?.Owner;
 
+    public string FullName => _presetFullName ?? _asset.AssetKey ?? base.Name;
+
     /// <summary>
     /// Converts this page instance to a <see cref="SimpleType"/> representation.
     /// </summary>
@@ -209,7 +212,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             fields.Add(field);
         }
 
-        var name = this.Name;
+        var name = SubFlowExtensions.UseFullName ? this.FullName : this.Name;
         var typeToolTips = this.Tooltips;
 
         var type = new SimpleType
@@ -571,13 +574,22 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     {
         base.OnBuild();
 
+        var presetAsset = _preset.Target;
+        var preset = presetAsset?.GetPresetDefinition();
+
         ParameterCondition = _pageNode.CompletionCondition;
-        UseParentArticle = GetPresetDefinition()?.UseParentArticle ?? (PageNode?.UseParentArticle == true);
+        UseParentArticle = preset?.UseParentArticle ?? (PageNode?.UseParentArticle == true);
 
         //Name
-        if (GetPresetDefinition()?.PresetName is { } presetName && !string.IsNullOrWhiteSpace(presetName))
+        if (preset?.PresetName is { } presetName && !string.IsNullOrWhiteSpace(presetName))
         {
             _presetName = presetName;
+            _presetFullName = (presetAsset as Asset)?.AssetKey ?? presetName;
+        }
+        else
+        {
+            _presetName = null;
+            _presetFullName = null;
         }
 
         //Tooltips

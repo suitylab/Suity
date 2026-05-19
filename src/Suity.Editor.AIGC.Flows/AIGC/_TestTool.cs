@@ -8,7 +8,7 @@ namespace Suity.Editor.AIGC;
 
 [NativeType("TestTool", CodeBase = "*Suity")]
 [DisplayText("Test Tool")]
-public class TestTool : PageTool<TestTool.Output>
+public class TestTool : ToolCommand<TestTool.Output>
 {
     public class Output : IViewObject
     {

@@ -31,11 +31,11 @@ public class AigcWorkflowPlugin : BackendPlugin, IAigcWorkflowRunner
     {
         base.Awake(context);
 
-        var pageToolTypes = typeof(PageTool<>).GetAvailableDerivedTypes();
-        foreach (var inputType in pageToolTypes)
+        var commandTypes = typeof(ToolCommand<>).GetAvailableDerivedTypes();
+        foreach (var inputType in commandTypes)
         {
             var outputType = inputType.BaseType.GetGenericArguments()[0];
-            var assetType = typeof(PageToolAsset<,>).MakeGenericType(inputType, outputType);
+            var assetType = typeof(ToolCommandAsset<,>).MakeGenericType(inputType, outputType);
             var asset = (ToolAsset)Activator.CreateInstance(assetType);
             _pageToolAssets.Add(inputType, asset);
         }
@@ -148,11 +148,11 @@ public class AigcWorkflowPlugin : BackendPlugin, IAigcWorkflowRunner
 }
 
 [NotAvailable]
-public class PageToolAsset<TInput, TOutput> : ToolAsset<TInput, TOutput>
-    where TInput : PageTool<TOutput>
+public class ToolCommandAsset<TInput, TOutput> : ToolAsset<TInput, TOutput>
+    where TInput : ToolCommand<TOutput>
     where TOutput : class, IViewObject
 {
-    public PageToolAsset()
+    public ToolCommandAsset()
         : base(false)
     {
         var typeDef = TypeDefinition.FromNative<TInput>();
@@ -166,6 +166,7 @@ public class PageToolAsset<TInput, TOutput> : ToolAsset<TInput, TOutput>
             typeName = typeof(TInput).FullName;
         }
 
+        this.ToolName = typeof(TInput).Name;
         this.LocalName = $"*PageTool|{typeName.TrimStart('*')}";
         this.Description = typeof(TInput).ToDisplayText();
 

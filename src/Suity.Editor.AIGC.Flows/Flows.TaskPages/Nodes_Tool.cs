@@ -448,15 +448,15 @@ public class ParseTagToolCalling : TaskPageNode
     public override void Compute(IFlowComputation compute)
     {
         // 1. Get input data
-        var toolPages = compute.GetValues<IPageAsset>(_toolPages, true) ?? [];
+        var pages = compute.GetValues<IPageAsset>(_toolPages, true) ?? [];
         var tag = compute.GetValue<LooseXmlTag>(_xmlTag);
         string attributeName = _attributeName.GetValue(compute, this);
 
-        string toolJson = tag?.InnerText;
-        string toolName = tag?.GetAttribute(attributeName);
+        string pageJson = tag?.InnerText;
+        string pageName = tag?.GetAttribute(attributeName);
 
         // 2. Call the extraction function
-        var pageInstance = ParseToolCalling.CreatePageInstance(toolPages, toolName, toolJson);
+        var pageInstance = ParseToolCalling.CreatePageInstance(pages, pageName, pageJson);
 
         // 3. Set output based on result
         if (pageInstance != null)

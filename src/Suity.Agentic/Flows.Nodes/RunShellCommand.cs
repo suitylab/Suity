@@ -1,5 +1,4 @@
-﻿using Suity.Editor.AIGC;
-using Suity.Editor.AIGC.StreamUpdaters;
+﻿using Suity.Editor.AIGC.StreamUpdaters;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
@@ -12,7 +11,7 @@ namespace Suity.Editor.Flows.Nodes;
 [NativeType("RunShellCommand", CodeBase = "*Suity")]
 [DisplayText("Run shell command")]
 [ToolTipsText("Run a single shell command. Do not run multiple commands and a same time.")]
-public class RunShellCommand : PageTool<RunShellCommand.Output>
+public class RunShellCommand : ToolCommand<RunShellCommand.Output>
 {
     public class Output : IViewObject
     {
@@ -45,30 +44,16 @@ public class RunShellCommand : PageTool<RunShellCommand.Output>
 
     public override async Task<Output> Run(ToolCallContext context)
     {
-        var host = (context.ToolInstance.Owner as IAigcTaskPage)?.TaskHost;
-        if (host is null)
-        {
-            throw new NullReferenceException("Task host is null");
-        }
-
-        if (host.WorkSpace is not { } workSpace)
-        {
-            throw new NullReferenceException("Work space is null");
-        }
-
-        string workingDirectory = workSpace.MasterDirectory;
+        string workingDirectory = context.WorkingDirectory;
         if (string.IsNullOrWhiteSpace(workingDirectory))
         {
-            throw new NullReferenceException("Working directory is empty");
+            throw new NullReferenceException("Working directory is not set");
         }
 
         string command = this.Command;
         if (string.IsNullOrWhiteSpace(command))
         {
-            return new Output
-            {
-                Result = "Command is empty",
-            };
+            throw new NullReferenceException("Command is not set");
         }
 
         SimpleStreamUpdater? updater = null;

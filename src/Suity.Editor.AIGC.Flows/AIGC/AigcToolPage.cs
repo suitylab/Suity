@@ -97,7 +97,13 @@ public class AigcToolPage : AigcTaskPage,
             return false;
         }
 
-        var context = new ToolCallContext(instance, request.Conversation, request.Cancellation);
+        var context = new ToolCallContext
+        {
+            ToolInstance = instance,
+            WorkingDirectory = this.TaskPageDocument?.WorkSpace?.MasterDirectory,
+            Conversation = request.Conversation,
+            Cancellation = request.Cancellation,
+        };
 
         return await tool.Run(context);
     }

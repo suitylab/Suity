@@ -20,6 +20,11 @@ public interface IPageInstance : INamed
     object Owner { get; }
 
     /// <summary>
+    /// Gets the full name of this page instance.
+    /// </summary>
+    public string FullName { get; }
+
+    /// <summary>
     /// Gets the conversation interface for this page instance.
     /// </summary>
     public IConversationHandler Conversation { get; }

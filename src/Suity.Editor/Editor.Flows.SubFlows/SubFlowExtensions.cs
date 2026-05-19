@@ -10,6 +10,11 @@ namespace Suity.Editor.Flows.SubFlows;
 public static class SubFlowExtensions
 {
     /// <summary>
+    /// Indicates whether to use the full name in schema representations.
+    /// </summary>
+    public static bool UseFullName { get; set; } = false;
+
+    /// <summary>
     /// Determines whether the specified <see cref="PageElementMode"/> represents a task or page mode.
     /// </summary>
     /// <param name="mode">The page element mode to check.</param>

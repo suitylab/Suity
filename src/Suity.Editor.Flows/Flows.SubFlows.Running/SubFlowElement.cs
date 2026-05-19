@@ -1,7 +1,4 @@
 using Suity.Drawing;
-using Suity.Editor.Services;
-using Suity.Editor.Types;
-using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;

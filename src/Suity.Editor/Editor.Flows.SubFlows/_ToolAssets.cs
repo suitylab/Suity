@@ -15,8 +15,13 @@ namespace Suity.Editor.Flows.SubFlows;
 
 #region ToolCallContext
 
-public record ToolCallContext(IToolInstance ToolInstance, IConversationHandler Conversation, CancellationToken Cancellation);
-
+public record ToolCallContext
+{
+    public IToolInstance ToolInstance { get; init; }
+    public string WorkingDirectory { get; init; }
+    public IConversationHandler Conversation { get; init; }
+    public CancellationToken Cancellation { get; init; }
+}
 #endregion
 
 #region IToolAsset
@@ -47,10 +52,25 @@ public interface IToolInstance : IPageInstance
 
 public abstract class ToolAsset : StandaloneAsset, IToolAsset
 {
+    private string _toolName;
+
     protected ToolAsset(bool resolveId = true)
         : base([typeof(IToolAsset), typeof(IPageAsset)], resolveId)
     {
     }
+
+    public string ToolName { get => _toolName; set => _toolName = value; }
+
+    protected override string GetName()
+    {
+        if (!string.IsNullOrWhiteSpace(_toolName))
+        {
+            return _toolName;
+        }
+
+        return base.GetName();
+    }
+
 
     public override ImageDef DefaultIcon => CoreIconCache.Tool;
 
@@ -79,6 +99,7 @@ public abstract class ToolInstance : IToolInstance, IViewObject
 
     public object Owner => Option.Owner;
     public string Name => Tool.Name;
+    public string FullName => Tool.FullName; // equivalent to Tool.AssetKey
     public IToolAsset GetToolAsset() => Tool;
 
     public abstract IViewObject InputObject { get; }
@@ -190,8 +211,10 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     public ToolInstance(PageCreateOption option, ToolAsset tool) : base(option, tool)
     {
+        string name = SubFlowExtensions.UseFullName ? tool.FullName : tool.Name;
+
         _input = Activator.CreateInstance<TInput>();
-        _inputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(_input, Tool.Name);
+        _inputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(_input, name);
 
         _conversation = EditorServices.ImGuiService.CreateConversationImGui(typeof(TInput).Name, false);
     }
@@ -256,14 +279,14 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
             return HistoryText.Empty;
         }
 
-        var simpleType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(output, Tool.Name);
+        string tagName = Tool.Name;
 
         var sync = new GetAllPropertySync(SyncIntent.Serialize, false);
         output.Sync(sync, SyncContext.Empty);
 
         var builder = new StringBuilder();
 
-        foreach (var field in simpleType.Fields)
+        foreach (var field in _inputType.Fields)
         {
             if (!sync.Values.TryGetValue(field.Name, out var value))
             {
@@ -271,7 +294,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
             }
 
             string attr = ResolveElementXmlAttr(value.Value, field);
-            builder.AppendLine($"<{simpleType.Name}{attr}>");
+            builder.AppendLine($"<{tagName}{attr}>");
 
             try
             {
@@ -282,7 +305,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
             {
                 builder.AppendLine("---");
             }
-            builder.AppendLine($"</{simpleType.Name}>");
+            builder.AppendLine($"</{tagName}>");
             builder.AppendLine();
         }
 
@@ -365,21 +388,15 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
 #endregion
 
-#region PageTool
+#region ToolCommand
 
-public abstract class PageTool : IViewObject
+public abstract class ToolCommand<TOutput> : IViewObject
+    where TOutput : class, IViewObject
 {
-    public abstract void Sync(IPropertySync sync, ISyncContext context);
-    public abstract void SetupView(IViewObjectSetup setup);
-    public abstract Type OutputType { get; }
-}
+    public virtual void Sync(IPropertySync sync, ISyncContext context) { }
+    public virtual void SetupView(IViewObjectSetup setup) { }
 
-public abstract class PageTool<TOutput> : PageTool
-{
     public abstract Task<TOutput> Run(ToolCallContext context);
-
-    public sealed override Type OutputType => typeof(TOutput);
 }
-
 
 #endregion
