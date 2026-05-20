@@ -109,4 +109,36 @@ public static class SubFlowExtensions
             return TextStatus.Normal;
         }
     }
+
+    public static TextStatus ToCheckedStatus(this TaskCommitStatus status)
+    {
+        switch (status)
+        {
+            case TaskCommitStatus.TaskFinished:
+                return TextStatus.Checked;
+
+            case TaskCommitStatus.TaskFailed:
+                return TextStatus.Error;
+
+            case TaskCommitStatus.None:
+            default:
+                return TextStatus.Unchecked;
+        }
+    }
+
+    public static TaskEventTypes ToEventType(this TaskCommitStatus status)
+    {
+        switch (status)
+        {
+            case TaskCommitStatus.TaskFinished:
+                return TaskEventTypes.SubTaskFinished;
+
+            case TaskCommitStatus.TaskFailed:
+                return TaskEventTypes.SubTaskFailed;
+
+            case TaskCommitStatus.None:
+            default:
+                return TaskEventTypes.None;
+        }
+    }
 }

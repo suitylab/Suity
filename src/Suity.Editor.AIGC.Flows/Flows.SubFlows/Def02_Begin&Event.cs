@@ -260,15 +260,15 @@ public class PageCommitNode : BaseSubFlowEndNode, IFlowNodeComputeAsync, ISubFlo
     /// <summary>
     /// The type of commit this end node represents.
     /// </summary>
-    protected TaskCommitTypes _endType;
+    protected TaskCommitStatus _endType;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PageCommitNode"/> class.
     /// </summary>
-    public PageCommitNode() : base(TaskCommitTypes.TaskFinished) { }
+    public PageCommitNode() : base(TaskCommitStatus.TaskFinished) { }
 
     /// <inheritdoc/>
-    public override TaskCommitTypes EndType => _endType;
+    public override TaskCommitStatus EndType => _endType;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)

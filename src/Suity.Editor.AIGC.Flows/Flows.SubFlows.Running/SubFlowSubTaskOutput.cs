@@ -192,7 +192,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
             return null;
         }
 
-        bool done;
+        bool isDone;
 
         if (AllSubTasks)
         {
@@ -202,7 +202,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
                 return false;
             }
 
-            done = tasks.All(o => (o?.GetPageInstance()?.GetIsDone()).IsTrueOrEmpty());
+            isDone = tasks.All(o => (o?.GetPageInstance()?.GetIsDone()).IsTrueOrEmpty());
         }
         else
         {
@@ -213,9 +213,9 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
             }
 
             var taskIsDone = task?.GetPageInstance()?.GetIsDone();
-            done = taskIsDone.IsTrueOrEmpty();
+            isDone = taskIsDone.IsTrueOrEmpty();
         }
 
-        return done;
+        return isDone;
     }
 }

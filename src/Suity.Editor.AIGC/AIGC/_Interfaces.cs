@@ -60,6 +60,11 @@ public interface IAigcTaskPage : INamed, ITextDisplay
     IAigcTaskHost TaskHost { get; }
 
     /// <summary>
+    /// Gets the task status.
+    /// </summary>
+    TaskCommitStatus GetStatus();
+
+    /// <summary>
     /// Gets the page asset associated with this task.
     /// </summary>
     /// <returns></returns>

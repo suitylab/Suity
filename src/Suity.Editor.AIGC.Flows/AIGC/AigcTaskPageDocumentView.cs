@@ -853,7 +853,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
     private void TaskTitleGui(ImGui gui, AigcWorkflowPage page)
     {
-        if (page.Instance?.GetAllStatusIcon() is { } statusIcon)
+        if (page.Instance?.GetDoneStatusIcon() is { } statusIcon)
         {
             gui.Image("#statusIcon", statusIcon).InitClass("icon");
         }

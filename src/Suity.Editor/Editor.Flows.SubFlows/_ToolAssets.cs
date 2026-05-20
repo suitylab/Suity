@@ -191,7 +191,9 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
     private readonly SimpleType _inputType;
 
     private TOutput _output;
-    private Exception _errorInfo;
+    private TextBlockProperty _errorMessage = new("Error", "Error Message");
+
+    private Exception _lastError;
 
     public ToolInstance(PageCreateOption option, ToolAsset tool) : base(option, tool)
     {
@@ -212,7 +214,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     public override IViewObject OutputObject => _output;
 
-    public override Exception ErrorInfo => _errorInfo;
+    public override Exception ErrorInfo => _lastError;
 
     public override IConversationHandler Conversation => _conversation;
 
@@ -259,11 +261,11 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         var builder = new StringBuilder();
         string tagName = Tool.Name;
 
-        if (_errorInfo != null)
+        if (_lastError != null)
         {
             builder.AppendLine($"<ToolCall name={tagName}>");
             builder.AppendLine("==== Error ====");
-            builder.AppendLine(_errorInfo.ToString());
+            builder.AppendLine(_lastError.ToString());
             builder.AppendLine("</ToolCall>");
             builder.AppendLine();
 
@@ -277,8 +279,10 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         var sync = new GetAllPropertySync(SyncIntent.Serialize, false);
         output.Sync(sync, SyncContext.Empty);
 
+        var outputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(output);
+
         builder.AppendLine($"<ToolCall name={tagName}>");
-        foreach (var field in _inputType.Fields)
+        foreach (var field in outputType.Fields)
         {
             if (!sync.Values.TryGetValue(field.Name, out var value))
             {
@@ -310,13 +314,17 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     public override TaskCommitParameter GetTaskCommitParameter()
     {
-        if (_output != null)
+        if (_lastError !=  null)
         {
-            return new(TaskCommitTypes.TaskFinished, _output);
+            return new(TaskCommitStatus.TaskFailed, _lastError.ToString());
+        }
+        else if (_output != null)
+        {
+            return new(TaskCommitStatus.TaskFinished, _output);
         }
         else
         {
-            return new(TaskCommitTypes.None, null);
+            return new(TaskCommitStatus.None, null);
         }
     }
     #endregion
@@ -329,11 +337,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
         sync.Sync("Input", _input, SyncFlag.GetOnly);
         _output = sync.Sync("Output", _output);
-        if (_errorInfo != null)
-        {
-            string errorMsg = _errorInfo.ToString();
-            sync.Sync("ErrorMessage", new TextBlock(errorMsg), SyncFlag.GetOnly);
-        }
+        _errorMessage.Sync(sync);
     }
 
     public override void SetupView(IViewObjectSetup setup)
@@ -341,15 +345,8 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         base.SetupView(setup);
 
         setup.InspectorField(_input, new ViewProperty("Input").WithExpand());
-
-        if (_errorInfo != null)
-        {
-            setup.InspectorFieldOf<TextBlock>(new ViewProperty("ErrorMessage").WithReadOnly().WithStatus(TextStatus.Error));
-        }
-        else
-        {
-            setup.InspectorField(_output, new ViewProperty("Output").WithExpand().WithOptional());
-        }
+        setup.InspectorField(_output, new ViewProperty("Output").WithExpand().WithOptional());
+        _errorMessage.InspectorField(setup);
     }
 
     #endregion
@@ -363,12 +360,13 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
     public void SetOutput(TOutput output)
     {
         _output = output;
-        _errorInfo = null;
+        _lastError = null;
     }
 
     public void SetError(Exception error)
     {
-        _errorInfo = error;
+        _lastError = error ?? new Exception("Unknown error");
+        _errorMessage.Text = error.ToString() ?? "Unknown error";
         _output = null;
     }
 

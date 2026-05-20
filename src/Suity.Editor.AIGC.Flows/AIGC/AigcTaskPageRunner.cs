@@ -13,7 +13,7 @@ namespace Suity.Editor.AIGC;
 /// </summary>
 /// <param name="EndType">The type of page commit that ended the task.</param>
 /// <param name="Parameter">The parameter associated with the task result.</param>
-internal record TaskRunResult(TaskCommitTypes EndType, object Parameter);
+internal record TaskRunResult(TaskCommitStatus EndType, object Parameter);
 
 /// <summary>
 /// Runner that orchestrates the execution of AIGC task pages, handling task creation, execution, and parent reporting.
@@ -159,12 +159,12 @@ internal class AigcTaskPageRunner : AIAssistant
             return (flowControl: false, value: AICallResult.FromFailed("Task input is missing, it may be stuck. Task canceled."));
         }
 
-        bool? allDone;
+        TaskCommitStatus status;
 
         if (task == _lastTask)
         {
-            allDone = task.GetPageInstance()?.GetIsDone();
-            if (allDone.IsTrueOrEmpty())
+            status = task.GetStatus();
+            if (status != TaskCommitStatus.None)
             {
                 return (flowControl: false, value: AICallResult.Success);
             }
@@ -184,15 +184,18 @@ internal class AigcTaskPageRunner : AIAssistant
 
         // When a task is completed but no end event is triggered,
         // try to trigger the sub-task completion event to ensure the parent task can correctly perceive the completion status of the sub-task.
-        allDone = task.GetPageInstance()?.GetIsDone();
-        if (allDone.IsFalse() && task.GetAllSubTaskDone() == true)
+        status = task.GetStatus();
+        if (status == TaskCommitStatus.None && task.GetAllSubTaskDone() == true)
         {
-            var lastTask = task.GetTaskAt(task.Count - 1);
-
-            runResult = await RunTask(request, task, TaskEventTypes.SubTaskFinished, lastTask?.CommitName, null);
-            if (request.Cancellation.IsCancellationRequested)
+            if (task.GetTaskAt(task.Count - 1) is { } lastTask)
             {
-                return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
+                var eventType = lastTask.GetStatus().ToEventType();
+
+                runResult = await RunTask(request, task, eventType, lastTask.CommitName, null);
+                if (request.Cancellation.IsCancellationRequested)
+                {
+                    return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
+                }
             }
         }
 
@@ -236,38 +239,39 @@ internal class AigcTaskPageRunner : AIAssistant
             bool handled = await task.RunTask(request, eventType, commitName, parameter);
             if (request.Cancellation.IsCancellationRequested)
             {
-                return new(TaskCommitTypes.None, "Task is cancelled.");
+                return new(TaskCommitStatus.None, "Task is cancelled.");
             }
 
             if (!handled)
             {
-                return new(TaskCommitTypes.None, "Task is not handled.");
+                return new(TaskCommitStatus.None, "Task is not handled.");
             }
 
             bool? isDone = task.GetPageInstance()?.GetIsDone();
             if (!isDone.IsTrueOrEmpty())
             {
-                return new(TaskCommitTypes.None, "Task is not done.");
+                return new(TaskCommitStatus.None, "Task is not done.");
             }
 
             var end = task.GetPageInstance()?.GetTaskCommitParameter();
             if (end is null)
             {
-                return new(TaskCommitTypes.None, "Task it not finished.");
+                return new(TaskCommitStatus.None, "Task it not finished.");
             }
             else
             {
+                task.CommitStatus = end.EndType;
                 return new(end.EndType, end.Value);
             }
         }
         catch (TaskCanceledException)
         {
-            return new(TaskCommitTypes.None, "Task is cancelled.");
+            return new(TaskCommitStatus.None, "Task is cancelled.");
         }
         catch (Exception err)
         {
             request.Conversation.AddException(err);
-            return new(TaskCommitTypes.TaskFailed, $"{err.GetType().FullName} ({err.Message})");
+            return new(TaskCommitStatus.TaskFailed, $"{err.GetType().FullName} ({err.Message})");
         }
     }
 
@@ -287,7 +291,7 @@ internal class AigcTaskPageRunner : AIAssistant
                 break;
             }
 
-            if (!task.GetAllDoneWithSubTasks())
+            if (!task.GetAllDone())
             {
                 break;
             }
@@ -340,21 +344,21 @@ internal class AigcTaskPageRunner : AIAssistant
     }
 
     /// <summary>
-    /// Converts a <see cref="TaskCommitTypes"/> value to the corresponding <see cref="TaskEventTypes"/> value.
+    /// Converts a <see cref="TaskCommitStatus"/> value to the corresponding <see cref="TaskEventTypes"/> value.
     /// </summary>
     /// <param name="endType">The page commit type to convert.</param>
     /// <returns>The corresponding <see cref="TaskEventTypes"/> value.</returns>
-    public static TaskEventTypes ToEventType(TaskCommitTypes endType)
+    public static TaskEventTypes ToEventType(TaskCommitStatus endType)
     {
         switch (endType)
         {
-            case TaskCommitTypes.TaskFinished:
+            case TaskCommitStatus.TaskFinished:
                 return TaskEventTypes.SubTaskFinished;
 
-            case TaskCommitTypes.TaskFailed:
+            case TaskCommitStatus.TaskFailed:
                 return TaskEventTypes.SubTaskFailed;
 
-            case TaskCommitTypes.None:
+            case TaskCommitStatus.None:
             default:
                 return TaskEventTypes.None;
         }

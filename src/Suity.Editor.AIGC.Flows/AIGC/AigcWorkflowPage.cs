@@ -181,7 +181,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     }
 
     /// <inheritdoc/>
-    protected override TextStatus OnGetTextStatus() => EnsureInstance()?.GetAllStatus() ?? TextStatus.Normal;
+    protected override TextStatus OnGetTextStatus() => GetStatus().ToCheckedStatus();
 
     /// <inheritdoc/>
     protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? EnsureInstance()?.Icon ?? CoreIconCache.Task;

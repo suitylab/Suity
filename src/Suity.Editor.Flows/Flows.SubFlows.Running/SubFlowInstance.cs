@@ -408,18 +408,24 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     }
 
     /// <inheritdoc/>
-    public bool? GetIsDone()
+    public override bool? GetIsDone()
     {
-        if (GetMainPageDone().IsFalse())
+        var mainPageDone = GetMainPageDone();
+        if (mainPageDone.IsFalse())
         {
             return false;
         }
 
-        var pages = _groups.OfType<SubFlowBranchElement>().OfType<SubFlowElement>().ConcatOne(this);
+        var pages = _groups.OfType<SubFlowBranchElement>().OfType<SubFlowElement>();
 
-        bool? v = null;
+        bool? v = mainPageDone;
         foreach (var page in pages)
         {
+            if (page == this)
+            {
+                continue;
+            }
+
             if (page.GetIsDone() is { } doneV)
             {
                 if (doneV)
@@ -898,7 +904,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// Gets the overall status of all pages as a <see cref="TextStatus"/>.
     /// </summary>
     /// <returns>Checked if all done, Unchecked if any not done, or Normal if undetermined.</returns>
-    public TextStatus GetAllStatus()
+    public TextStatus GetDoneStatus()
     {
         bool? done = GetIsDone();
         return done.ToCheckedStatus();
@@ -908,7 +914,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// Gets the status icon representing the completion state of all pages.
     /// </summary>
     /// <returns>A check icon if all done, uncheck icon if any not done, or null if undetermined.</returns>
-    public ImageDef GetAllStatusIcon()
+    public ImageDef GetDoneStatusIcon()
     {
         bool? done = GetIsDone();
         if (done is { } doneV)

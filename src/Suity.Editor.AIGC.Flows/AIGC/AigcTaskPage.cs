@@ -16,6 +16,7 @@ public abstract class AigcTaskPage : DesignNode,
     INavigable
 {
     readonly StringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "Name used when committing to parent task.");
+    readonly ValueProperty<TaskCommitStatus> _commitStatus = new("CommitStatus", "Commit Status", TaskCommitStatus.None, "Explicitly defines the status of the task commit. ‘None’ indicates that the status depends on the parameter completion");
 
     protected AigcTaskPage()
     {
@@ -43,6 +44,19 @@ public abstract class AigcTaskPage : DesignNode,
         set => _commitName.Text = value ?? string.Empty;
     }
 
+    public TaskCommitStatus CommitStatus
+    {
+        get => _commitStatus.Value;
+        set
+        {
+            if (_commitStatus != value)
+            {
+                _commitStatus.Value = value;
+                this.TaskPageDocument?.MarkDirtyAndSaveDelayed(this);
+            }
+        }
+    }
+
     #endregion
 
     #region Virtual / Override
@@ -54,11 +68,23 @@ public abstract class AigcTaskPage : DesignNode,
     protected override bool OnCanEditText() => false;
 
     /// <inheritdoc/>
+    protected internal override bool OnVerifyName(string name)
+    {
+        return !string.IsNullOrWhiteSpace(name);
+    }
+
+
+    #endregion
+
+    #region Virtual (SyncObject / ViewObject)
+
+    /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)
     {
         base.OnSync(sync, context);
 
         _commitName.Sync(sync);
+        _commitStatus.Sync(sync);
     }
 
     /// <inheritdoc/>
@@ -67,12 +93,7 @@ public abstract class AigcTaskPage : DesignNode,
         base.OnSetupView(setup);
 
         _commitName.InspectorField(setup);
-    }
-
-    /// <inheritdoc/>
-    protected internal override bool OnVerifyName(string name)
-    {
-        return !string.IsNullOrWhiteSpace(name);
+        _commitStatus.InspectorField(setup);
     }
 
     #endregion
@@ -81,6 +102,25 @@ public abstract class AigcTaskPage : DesignNode,
 
     /// <inheritdoc/>
     public IAigcTaskHost TaskHost => this.GetDocument() as AigcTaskPageDocument;
+
+    public virtual TaskCommitStatus GetStatus()
+    {
+        var status = CommitStatus;
+        if (status == TaskCommitStatus.None)
+        {
+            var isDone = GetPageInstance()?.GetIsDone();
+            if (isDone == true)
+            {
+                return TaskCommitStatus.TaskFinished;
+            }
+            else if (isDone == false)
+            {
+                return TaskCommitStatus.None;
+            }
+        }
+
+        return status;
+    }
 
     /// <inheritdoc/>
     public abstract IPageAsset GetPageAsset();
@@ -169,7 +209,7 @@ public abstract class AigcTaskPage : DesignNode,
             return null;
         }
 
-        AigcTaskPage unfinished = null;
+        AigcTaskPage working = null;
 
         for (int i = c - 1; i >= 0; i--)
         {
@@ -179,10 +219,10 @@ public abstract class AigcTaskPage : DesignNode,
                 continue;
             }
 
-            var allDone = task.GetPageInstance()?.GetIsDone();
-            if (allDone.IsFalse())
+            var allDone = task.GetAllDone();
+            if (!allDone)
             {
-                unfinished = task;
+                working = task;
                 continue;
             }
             else
@@ -191,7 +231,7 @@ public abstract class AigcTaskPage : DesignNode,
             }
         }
 
-        return unfinished;
+        return working;
     }
 
     /// <summary>
@@ -272,10 +312,10 @@ public abstract class AigcTaskPage : DesignNode,
     /// Gets a value indicating whether the task is done, and with all sub-tasks also done.
     /// </summary>
     /// <returns>True if this task and all sub-tasks are done, false if any is not done.</returns>
-    public bool GetAllDoneWithSubTasks()
+    public bool GetAllDone()
     {
-        var allDone = GetPageInstance()?.GetIsDone();
-        if (allDone.IsFalse())
+        var status = this.GetStatus();
+        if (status == TaskCommitStatus.None)
         {
             return false;
         }
@@ -285,7 +325,7 @@ public abstract class AigcTaskPage : DesignNode,
             return true;
         }
 
-        return Items.OfType<AigcTaskPage>().All(o => o.GetAllDoneWithSubTasks());
+        return Items.OfType<AigcTaskPage>().All(o => o.GetAllDone());
     }
 
     /// <summary>

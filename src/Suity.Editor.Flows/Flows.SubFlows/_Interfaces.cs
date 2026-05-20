@@ -44,7 +44,7 @@ public interface ISubFlowEndNode : ISubFlowTypeNode
     /// <summary>
     /// Gets the type of page commit that occurs when this end node is reached.
     /// </summary>
-    TaskCommitTypes EndType { get; }
+    TaskCommitStatus EndType { get; }
 }
 
 /// <summary>

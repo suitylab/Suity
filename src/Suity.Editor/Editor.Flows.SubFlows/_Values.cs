@@ -33,9 +33,9 @@ public enum TaskEventTypes
 }
 
 /// <summary>
-/// Defines the types of page commit events that can occur in the Sub-flow.
+/// Defines the possible statuses for a task commit, indicating the outcome of a task or subtask.
 /// </summary>
-public enum TaskCommitTypes
+public enum TaskCommitStatus
 {
     /// <summary>
     /// No commit type specified.
@@ -56,7 +56,7 @@ public enum TaskCommitTypes
     TaskFailed,
 }
 
-public record TaskCommitParameter(TaskCommitTypes EndType, object Value);
+public record TaskCommitParameter(TaskCommitStatus EndType, object Value);
 
 /// <summary>
 /// Represents a wrapper for history text content with implicit conversion support.

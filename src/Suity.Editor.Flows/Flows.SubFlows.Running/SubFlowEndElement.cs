@@ -43,7 +43,7 @@ public class SubFlowEndElement : SubFlowElement, IPageParameterOutput
     /// <summary>
     /// Gets the type of page commit operation for this end element.
     /// </summary>
-    public TaskCommitTypes EndType { get; private set; }
+    public TaskCommitStatus EndType { get; private set; }
 
     /// <summary>
     /// Gets the current value of this output parameter.
@@ -121,7 +121,7 @@ public class SubFlowEndElement : SubFlowElement, IPageParameterOutput
 
         ParameterType = EndNode?.TypeDef ?? TypeDefinition.Empty;
         EndNode = _endItem.Node as ISubFlowEndNode;
-        EndType = EndNode?.EndType ?? TaskCommitTypes.None;
+        EndType = EndNode?.EndType ?? TaskCommitStatus.None;
         LinkedMode = EndNode?.LinkedMode == true;
     }
 

@@ -219,7 +219,7 @@ public class SubFlowCanvasNode : ExpandedCanvasAssetNode<SubFlowDefinitionAsset>
     }
 
     /// <inheritdoc/>
-    public override TextStatus DisplayStatus => _rootElement?.GetAllStatus() ?? TextStatus.Normal;
+    public override TextStatus DisplayStatus => _rootElement?.GetDoneStatus() ?? TextStatus.Normal;
 
     private void BuildPropertyGrid()
     {

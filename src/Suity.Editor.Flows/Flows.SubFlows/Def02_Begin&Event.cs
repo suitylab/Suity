@@ -161,7 +161,7 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
     /// Initializes a new instance of the <see cref="BaseSubFlowEndNode"/> class with the specified end type.
     /// </summary>
     /// <param name="endType">The type of commit this end node represents.</param>
-    protected BaseSubFlowEndNode(TaskCommitTypes endType)
+    protected BaseSubFlowEndNode(TaskCommitStatus endType)
     {
         base.FlowNodeGui = OnGui;
         Optional = true;
@@ -172,7 +172,7 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
     /// <summary>
     /// Gets the type of commit this end node represents.
     /// </summary>
-    public virtual TaskCommitTypes EndType => TaskCommitTypes.None;
+    public virtual TaskCommitStatus EndType => TaskCommitStatus.None;
 
     /// <inheritdoc/>
     protected override void OnSyncValue(IPropertySync sync, ISyncContext context)
@@ -299,17 +299,17 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
     /// </summary>
     /// <param name="endType">The commit type.</param>
     /// <returns>The associated color, or null.</returns>
-    public static Color? ToColor(TaskCommitTypes endType)
+    public static Color? ToColor(TaskCommitStatus endType)
     {
         switch (endType)
         {
-            case TaskCommitTypes.None:
+            case TaskCommitStatus.None:
                 return FlowColors.WorkflowColor;
 
-            case TaskCommitTypes.TaskFinished:
+            case TaskCommitStatus.TaskFinished:
                 return DEvent.EventTypeColor;
 
-            case TaskCommitTypes.TaskFailed:
+            case TaskCommitStatus.TaskFailed:
                 return FlowColors.ErrorColor;
 
             default:
@@ -334,7 +334,7 @@ public class SubFlowEndNode : BaseSubFlowEndNode
     /// <summary>
     /// Initializes a new instance of the <see cref="SubFlowEndNode"/> class.
     /// </summary>
-    public SubFlowEndNode() : base(TaskCommitTypes.None) { }
+    public SubFlowEndNode() : base(TaskCommitStatus.None) { }
 }
 
 /// <summary>
