@@ -665,7 +665,7 @@ public class GetLastSubTask : TaskPageNode
 
         if (needDone && subTask != null)
         {
-            bool? allDone = subTask.GetPageInstance()?.GetAllDone();
+            bool? allDone = subTask.GetPageInstance()?.GetIsDone();
 
             bool done = allDone == true;
             if (!done)

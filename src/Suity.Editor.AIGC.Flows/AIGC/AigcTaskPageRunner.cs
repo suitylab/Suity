@@ -163,7 +163,7 @@ internal class AigcTaskPageRunner : AIAssistant
 
         if (task == _lastTask)
         {
-            allDone = task.GetPageInstance()?.GetAllDone();
+            allDone = task.GetPageInstance()?.GetIsDone();
             if (allDone.IsTrueOrEmpty())
             {
                 return (flowControl: false, value: AICallResult.Success);
@@ -184,7 +184,7 @@ internal class AigcTaskPageRunner : AIAssistant
 
         // When a task is completed but no end event is triggered,
         // try to trigger the sub-task completion event to ensure the parent task can correctly perceive the completion status of the sub-task.
-        allDone = task.GetPageInstance()?.GetAllDone();
+        allDone = task.GetPageInstance()?.GetIsDone();
         if (allDone.IsFalse() && task.GetAllSubTaskDone() == true)
         {
             var lastTask = task.GetTaskAt(task.Count - 1);
@@ -244,7 +244,7 @@ internal class AigcTaskPageRunner : AIAssistant
                 return new(TaskCommitTypes.None, "Task is not handled.");
             }
 
-            bool? isDone = task.GetPageInstance()?.GetAllDone();
+            bool? isDone = task.GetPageInstance()?.GetIsDone();
             if (!isDone.IsTrueOrEmpty())
             {
                 return new(TaskCommitTypes.None, "Task is not done.");

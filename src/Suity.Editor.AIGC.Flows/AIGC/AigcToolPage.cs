@@ -83,7 +83,7 @@ public class AigcToolPage : AigcTaskPage,
             return TextStatus.Error;
         }
 
-        var done = instance.GetAllDone();
+        var done = instance.GetIsDone();
         return done.ToCheckedStatus();
     }
 

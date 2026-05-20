@@ -179,7 +179,7 @@ public abstract class AigcTaskPage : DesignNode,
                 continue;
             }
 
-            var allDone = task.GetPageInstance()?.GetAllDone();
+            var allDone = task.GetPageInstance()?.GetIsDone();
             if (allDone.IsFalse())
             {
                 unfinished = task;
@@ -274,7 +274,7 @@ public abstract class AigcTaskPage : DesignNode,
     /// <returns>True if this task and all sub-tasks are done, false if any is not done.</returns>
     public bool GetAllDoneWithSubTasks()
     {
-        var allDone = GetPageInstance()?.GetAllDone();
+        var allDone = GetPageInstance()?.GetIsDone();
         if (allDone.IsFalse())
         {
             return false;
@@ -299,7 +299,7 @@ public abstract class AigcTaskPage : DesignNode,
             return null;
         }
 
-        return Items.OfType<AigcTaskPage>().All(o => (o.GetPageInstance()?.GetAllDone()).IsTrueOrEmpty());
+        return Items.OfType<AigcTaskPage>().All(o => (o.GetPageInstance()?.GetIsDone()).IsTrueOrEmpty());
     }
     
 

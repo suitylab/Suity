@@ -94,7 +94,6 @@ public abstract class ToolInstance : IToolInstance, IViewObject
 
     public abstract SimpleType ToSimpleType();
 
-    public abstract bool? GetAllDone();
     public abstract bool? GetIsDone();
     public abstract bool? GetIsDoneInputs();
     public abstract bool? GetIsDoneOutputs();
@@ -219,8 +218,6 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
 
     public override SimpleType ToSimpleType() => _inputType;
-
-    public override bool? GetAllDone() => GetIsDone();
 
     public override bool? GetIsDone() => _output != null;
 

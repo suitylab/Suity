@@ -408,9 +408,9 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     }
 
     /// <inheritdoc/>
-    public bool? GetAllDone()
+    public bool? GetIsDone()
     {
-        if (GetIsDone().IsFalse())
+        if (GetMainPageDone().IsFalse())
         {
             return false;
         }
@@ -435,6 +435,16 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         }
 
         return v;
+    }
+
+    private bool? GetMainPageDone()
+    {
+        if (!GetIsDoneInputs(ParameterCondition).IsTrueOrEmpty())
+        {
+            return false;
+        }
+
+        return ResultPage?.GetIsDone();
     }
 
     #endregion
@@ -858,16 +868,6 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <returns>The element if found; otherwise, null.</returns>
     public SubFlowElement GetElement(string name) => _dic.GetValueSafe(name);
 
-    /// <inheritdoc/>
-    public override bool? GetIsDone()
-    {
-        if (!GetIsDoneInputs(ParameterCondition).IsTrueOrEmpty())
-        {
-            return false;
-        }
-
-        return ResultPage?.GetIsDone();
-    }
 
     /// <summary>
     /// Gets a value indicating whether all input parameters are done.
@@ -900,7 +900,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <returns>Checked if all done, Unchecked if any not done, or Normal if undetermined.</returns>
     public TextStatus GetAllStatus()
     {
-        bool? done = GetAllDone();
+        bool? done = GetIsDone();
         return done.ToCheckedStatus();
     }
 
@@ -910,7 +910,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <returns>A check icon if all done, uncheck icon if any not done, or null if undetermined.</returns>
     public ImageDef GetAllStatusIcon()
     {
-        bool? done = GetAllDone();
+        bool? done = GetIsDone();
         if (done is { } doneV)
         {
             return doneV ? CoreIconCache.Check : CoreIconCache.Uncheck;

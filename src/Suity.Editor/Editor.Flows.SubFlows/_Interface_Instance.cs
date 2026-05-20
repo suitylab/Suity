@@ -1,5 +1,4 @@
-﻿using Suity.Editor.Services;
-using Suity.Editor.Types;
+﻿using Suity.Editor.Types;
 using Suity.Views;
 using Suity.Views.Named;
 using System.Collections.Generic;
@@ -56,13 +55,6 @@ public interface IPageInstance : INamed
     /// </summary>
     /// <returns>True if all outputs are done, false if any is not done, or null if no outputs are defined.</returns>
     bool? GetIsDoneOutputs();
-
-    /// <summary>
-    /// Gets a value indicating whether all pages (including sub-pages) are done.
-    /// </summary>
-    /// <returns>True if all pages are done, false if any is not done, or null if no inputs are defined.</returns>
-    bool? GetAllDone();
-
 
     /// <summary>
     /// Gets the task commit data formatted as a <see cref="HistoryText"/>.
