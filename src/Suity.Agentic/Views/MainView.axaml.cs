@@ -26,13 +26,13 @@ public partial class MainView : UserControl
             var window = this.GetVisualAncestors().OfType<Window>().FirstOrDefault();
             if (window == null) return;
 
-            if (e.ClickCount == 2 && e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+            if (e.ClickCount == 2)
             {
                 ToggleWindowState(window);
                 return;
             }
 
-            if (e.Source is Visual visual && visual is not Button && visual is not MenuItem)
+            if (e.Source == sender)
             {
                 window.BeginMoveDrag(e);
             }
