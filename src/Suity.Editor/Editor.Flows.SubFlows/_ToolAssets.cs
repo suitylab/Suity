@@ -262,49 +262,44 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         var builder = new StringBuilder();
         string tagName = Tool.Name;
 
-        if (_lastError != null)
-        {
-            builder.AppendLine($"<ToolCall name={tagName}>");
-            builder.AppendLine("==== Error ====");
-            builder.AppendLine(_lastError.ToString());
-            builder.AppendLine("</ToolCall>");
-            builder.AppendLine();
-
-            return builder.ToString();
-        }
-
-        if (_output is not { } output)
-        {
-            return HistoryText.Empty;
-        }
-        var sync = new GetAllPropertySync(SyncIntent.Serialize, false);
-        output.Sync(sync, SyncContext.Empty);
-
-        var outputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(output);
-
         builder.AppendLine($"<ToolCall name={tagName}>");
-        foreach (var field in outputType.Fields)
+        if (!string.IsNullOrWhiteSpace(_errorMessage.Text))
         {
-            if (!sync.Values.TryGetValue(field.Name, out var value))
-            {
-                continue;
-            }
+            builder.AppendLine("<Error>");
+            builder.AppendLine(_errorMessage.Text);
+            builder.AppendLine("</Error>");
+        }
 
-            string attr = ResolveElementXmlAttr(value.Value, field);
-            builder.AppendLine($"<{field.Name}{attr}>");
+        if (_output is { } output)
+        {
+            var sync = new GetAllPropertySync(SyncIntent.Serialize, false);
+            output.Sync(sync, SyncContext.Empty);
 
-            try
-            {
-                var text = SubFlowExtensions.ConvertChatHistoryText(field.Type, value.Value, true);
-                builder.AppendLine(text.Text);
-            }
-            catch (Exception)
-            {
-                builder.AppendLine("---");
-            }
+            var outputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(output);
 
-            builder.AppendLine($"</{field.Name}>");
-            builder.AppendLine();
+            foreach (var field in outputType.Fields)
+            {
+                if (!sync.Values.TryGetValue(field.Name, out var value))
+                {
+                    continue;
+                }
+
+                string attr = ResolveElementXmlAttr(value.Value, field);
+                builder.AppendLine($"<{field.Name}{attr}>");
+
+                try
+                {
+                    var text = SubFlowExtensions.ConvertChatHistoryText(field.Type, value.Value, true);
+                    builder.AppendLine(text.Text);
+                }
+                catch (Exception)
+                {
+                    builder.AppendLine("---");
+                }
+
+                builder.AppendLine($"</{field.Name}>");
+                builder.AppendLine();
+            }
         }
 
         builder.AppendLine("</ToolCall>");
