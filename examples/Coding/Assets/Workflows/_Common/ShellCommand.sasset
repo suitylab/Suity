@@ -77,7 +77,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-50" Width="140" Height="78">
       <Name>###RunShellCommand01</Name>
-      <Node type="Suity.Editor.Flows.Nodes.RunShellCommand">
+      <Node type="Suity.Editor.Flows.Nodes.RunShellCommandNode">
         <Command>
         </Command>
         <WorkingDirectory>

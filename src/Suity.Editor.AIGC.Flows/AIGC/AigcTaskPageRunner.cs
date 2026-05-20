@@ -163,7 +163,7 @@ internal class AigcTaskPageRunner : AIAssistant
 
         if (task == _lastTask)
         {
-            status = task.GetStatus();
+            status = task.GetCommitStatus();
             if (status != TaskCommitStatus.None)
             {
                 return (flowControl: false, value: AICallResult.Success);
@@ -176,22 +176,28 @@ internal class AigcTaskPageRunner : AIAssistant
 
         _lastTask = task;
 
-        var runResult = await RunTask(request, task, TaskEventTypes.TaskBegin, null, null);
-        if (request.Cancellation.IsCancellationRequested)
+        bool hasSubTask = task.Count > 0;
+        if (!hasSubTask)
         {
-            return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
+            // Task begin.
+            var runResult = await RunTask(request, task, TaskEventTypes.TaskBegin, null, null);
+            if (request.Cancellation.IsCancellationRequested)
+            {
+                return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
+            }
         }
 
         // When a task is completed but no end event is triggered,
         // try to trigger the sub-task completion event to ensure the parent task can correctly perceive the completion status of the sub-task.
-        status = task.GetStatus();
+        status = task.GetCommitStatus();
         if (status == TaskCommitStatus.None && task.GetAllSubTaskDone() == true)
         {
             if (task.GetTaskAt(task.Count - 1) is { } lastTask)
             {
-                var eventType = lastTask.GetStatus().ToEventType();
+                // Task commit.
+                var eventType = lastTask.GetCommitStatus().ToEventType();
 
-                runResult = await RunTask(request, task, eventType, lastTask.CommitName, null);
+                var commitResult = await RunTask(request, task, eventType, lastTask.CommitName, null);
                 if (request.Cancellation.IsCancellationRequested)
                 {
                     return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));

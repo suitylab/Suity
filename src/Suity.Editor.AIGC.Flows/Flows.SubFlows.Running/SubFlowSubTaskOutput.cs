@@ -202,7 +202,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
                 return false;
             }
 
-            isDone = tasks.All(o => (o?.GetPageInstance()?.GetIsDone()).IsTrueOrEmpty());
+            isDone = tasks.All(o => o.GetCommitStatus() != TaskCommitStatus.None);
         }
         else
         {
@@ -212,8 +212,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
                 return false;
             }
 
-            var taskIsDone = task?.GetPageInstance()?.GetIsDone();
-            isDone = taskIsDone.IsTrueOrEmpty();
+            isDone = task.GetCommitStatus() != TaskCommitStatus.None;
         }
 
         return isDone;

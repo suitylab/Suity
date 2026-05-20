@@ -412,6 +412,9 @@ public class GetTaskCommit : TaskPageNode
 {
     readonly FlowNodeConnector _task;
     readonly FlowNodeConnector _commit;
+    readonly FlowNodeConnector _commitName;
+    readonly FlowNodeConnector _commitStatus;
+
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GetTaskCommit"/> class.
@@ -421,21 +424,36 @@ public class GetTaskCommit : TaskPageNode
         var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
 
         _task = this.AddDataInputConnector("Task", taskType, "Task");
-        _commit = AddDataOutputConnector("Commit", "string", "Commit Info");
+
+        _commit = AddDataOutputConnector("Commit", "string", "Commit Context");
+        _commitName = AddDataOutputConnector("CommitName", "string", "Commit Name");
+        _commitStatus = AddDataOutputConnector("CommitStatus", "string", "Commit Status");
     }
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var task = compute.GetValue<IAigcWorkflowPage>(_task);
-        if (task is null)
+        var task = compute.GetValue<IAigcWorkflowPage>(_task) as AigcWorkflowPage
+            ?? throw new NullReferenceException("Task is null.");
+
+        var diagram = this.Diagram
+            ?? throw new NullReferenceException("Diagram is null.");
+
+        if (diagram.GetIsLinked(_commit))
         {
-            throw new FlowComputaionException(this, "Task is null.");
+            string commit = task?.GetPageInstance()?.GetTaskCommit() ?? string.Empty;
+            compute.SetValue(_commit, commit);
         }
 
-        string commit = task?.GetPageInstance()?.GetTaskCommit() ?? string.Empty;
+        if (diagram.GetIsLinked(_commitName))
+        {
+            compute.SetValue(_commitName, task.CommitName);
+        }
 
-        compute.SetValue(_commit, commit);
+        if (diagram.GetIsLinked(_commitStatus))
+        {
+            compute.SetValue(_commitStatus, task.GetCommitStatus());
+        }
     }
 }
 
@@ -680,7 +698,7 @@ public class GetLastSubTask : TaskPageNode
 
 #endregion
 
-#region GetTaskInfomation
+#region GetTaskInformation
 
 /// <summary>
 /// A flow node that retrieves various information about a specified task,
@@ -689,7 +707,8 @@ public class GetLastSubTask : TaskPageNode
 [SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Task Information", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskInfomation")]
-public class GetTaskInfomation : TaskPageNode
+[NativeAlias("Suity.Editor.Flows.TaskPages.GetTaskInfomation")]
+public class GetTaskInformation : TaskPageNode
 {
     readonly FlowNodeConnector _task;
 
@@ -705,9 +724,9 @@ public class GetTaskInfomation : TaskPageNode
     readonly FlowNodeConnector _isDone;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="GetTaskInfomation"/> class, setting up output connectors for task information properties.
+    /// Initializes a new instance of the <see cref="GetTaskInformation"/> class, setting up output connectors for task information properties.
     /// </summary>
-    public GetTaskInfomation()
+    public GetTaskInformation()
     {
         var type = TypeDefinition.FromNative<IAigcWorkflowPage>();
         var aryType = type.MakeArrayType();

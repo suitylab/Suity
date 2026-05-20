@@ -680,9 +680,13 @@
   <Object id="3a2515b5-75e8-4e69-b1bc-06efc294cc01" name="*Suity|ArticleContainerAsset" />
   <Object id="438f92d9-bfef-496c-b0b0-439bb7cb9b62" name="*Suity|Attribute" />
   <Object id="d35fc3e9-72f3-4292-88c0-a111c49b2891" name="*Suity|BatchApplyDiffPatches" />
+  <Object id="0dd66bca-0935-4a82-9a62-4741e4eb5508" name="*Suity|BatchApplyDiffPatches.FilePatchItem" />
   <Object id="eb51a051-91d5-4216-953a-5e6781c34748" name="*Suity|BatchCreateNewFiles" />
+  <Object id="cce6b109-6fa3-41fe-9bd4-19d859fee717" name="*Suity|BatchCreateNewFiles.FileWriteItem" />
   <Object id="1b5f8cb2-9564-4dd8-9be5-136c833f3a96" name="*Suity|BatchReadFile" />
+  <Object id="c9bccf22-fbb6-4d35-b1a3-a618b177e57c" name="*Suity|BatchReadFiles.FileResult" />
   <Object id="f042db0e-bc86-4693-a923-c0c1fe35def3" name="*Suity|BatchReplaceStringInFiles" />
+  <Object id="7618f3f1-a64a-42ed-a80e-628ba5319fe1" name="*Suity|BatchReplaceStringInFiles.FileEditItem" />
   <Object id="c30b4a25-23f0-4e12-9779-c9c7d86e09e4" name="*Suity|ByteArray" />
   <Object id="0f588e9a-8cb9-4924-a308-ca3132ba37ca" name="*Suity|ClientHandler" />
   <Object id="e9ed07b7-9b14-411c-bdfd-f585e1a5a752" name="*Suity|CreateNewFile" />

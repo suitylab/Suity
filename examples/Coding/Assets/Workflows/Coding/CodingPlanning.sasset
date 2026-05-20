@@ -75,7 +75,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="140" Width="136" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="140" Width="136" Height="107">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -86,7 +86,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="230" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="230" Width="38" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -111,7 +111,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="150" Width="107" Height="89">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="150" Width="103" Height="85">
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
@@ -167,11 +167,11 @@
         </ValueType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="360" Y="250" Width="95" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="360" Y="250" Width="91" Height="107">
       <Name>###SetArticle01</Name>
       <Node type="Suity.Editor.Flows.AIGC.SetArticle" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="290" Width="119" Height="78">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="290" Width="115" Height="74">
       <Name>###ExtractXmlsTagNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagNode">
         <TagNames>
@@ -212,7 +212,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="-290" Width="95" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="-290" Width="91" Height="107">
       <Name>###SetArticle02</Name>
       <Node type="Suity.Editor.Flows.AIGC.SetArticle" />
     </Item>
@@ -222,7 +222,7 @@
         <AutoCreate>True</AutoCreate>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="20" Y="-160" Width="149" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="20" Y="-160" Width="145" Height="52">
       <Name>###AddKnowledgeArticle01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AddKnowledgeArticle" />
     </Item>
@@ -257,7 +257,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-70" Width="198" Height="78">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-70" Width="194" Height="74">
       <Name>###CreateToolCallingWithParameter01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreateToolCallingWithParameter">
         <ToolDefinition>
@@ -313,7 +313,7 @@
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="220" Y="-70" Width="134" Height="100">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="220" Y="-70" Width="130" Height="96">
       <Name>###AddSubTaskPage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
         <PageTitle>
@@ -350,6 +350,7 @@
         <Name>SelectedRule</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <TaskCommit>True</TaskCommit>
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>6d9a5040-b6d7-4daa-b06f-6f2f27f02012</Id>
         </ValueType>

@@ -75,7 +75,7 @@ public abstract class AigcTaskPage : DesignNode,
     }
 
     /// <inheritdoc/>
-    protected override TextStatus OnGetTextStatus() => GetStatus().ToCheckedStatus();
+    protected override TextStatus OnGetTextStatus() => GetCommitStatus().ToCheckedStatus();
 
 
     /// <inheritdoc/>
@@ -110,7 +110,7 @@ public abstract class AigcTaskPage : DesignNode,
     /// <inheritdoc/>
     public IAigcTaskHost TaskHost => this.GetDocument() as AigcTaskPageDocument;
 
-    public virtual TaskCommitStatus GetStatus()
+    public virtual TaskCommitStatus GetCommitStatus()
     {
         var status = CommitStatus;
         if (status == TaskCommitStatus.None)
@@ -321,7 +321,7 @@ public abstract class AigcTaskPage : DesignNode,
     /// <returns>True if this task and all sub-tasks are done, false if any is not done.</returns>
     public bool GetAllDone()
     {
-        var status = this.GetStatus();
+        var status = this.GetCommitStatus();
         if (status == TaskCommitStatus.None)
         {
             return false;
@@ -346,7 +346,7 @@ public abstract class AigcTaskPage : DesignNode,
             return null;
         }
 
-        return Items.OfType<AigcTaskPage>().All(o => (o.GetPageInstance()?.GetIsDone()).IsTrueOrEmpty());
+        return Items.OfType<AigcTaskPage>().All(o => o.GetCommitStatus() != TaskCommitStatus.None);
     }
     
 
