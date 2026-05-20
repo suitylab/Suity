@@ -15,6 +15,7 @@ namespace Suity.Editor.AIGC;
 [ToolTipsText("Replace exact strings in multiple files at once. Use for cross-file refactoring like updating global constants or base class method calls.")]
 public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.Output>
 {
+    [NativeType("BatchReplaceStringInFiles.FileEditItem", CodeBase = "*Suity")]
     public class FileEditItem : IViewObject
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");

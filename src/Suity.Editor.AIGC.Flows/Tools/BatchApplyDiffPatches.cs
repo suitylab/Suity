@@ -16,6 +16,7 @@ namespace Suity.Editor.AIGC;
 [ToolTipsText("Apply multiple unified diff patches at once. Use for complex feature development involving multiple file changes with atomicity.")]
 public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
 {
+    [NativeType("BatchApplyDiffPatches.FilePatchItem", CodeBase = "*Suity")]
     public class FilePatchItem : IViewObject
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");

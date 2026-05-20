@@ -2,6 +2,7 @@ using Suity.Editor.Design;
 using Suity.Editor.Values;
 using Suity.Views;
 using System;
+using System.Collections.Generic;
 
 namespace Suity.Editor.Types;
 
@@ -387,6 +388,20 @@ internal class NativeTypeExternalBK : NativeTypeExternal
         if (type is null)
         {
             return null;
+        }
+
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+        {
+            var elementType = type.GetGenericArguments()[0];
+            var elementDef = GetNativeTypeDefinition(elementType);
+            return elementDef.MakeArrayType();
+        }
+
+        if (type.IsArray)
+        {
+            var elementType = type.GetElementType();
+            var elementDef = GetNativeTypeDefinition(elementType);
+            return elementDef.MakeArrayType();
         }
 
         var dtype = NativeTypeReflector.Instance.GetDType(type);

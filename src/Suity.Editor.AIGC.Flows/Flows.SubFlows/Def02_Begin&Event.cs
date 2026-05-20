@@ -26,7 +26,7 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
     private FlowNodeConnector _begin;
 
     readonly ValueProperty<TaskEventTypes> _eventType = new("EventType", "Event Type", TaskEventTypes.TaskBegin);
-    readonly StringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "The submission name of the sub-task.");
+    readonly StringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "The commit code of the sub-task.");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PageEventNode"/> class.

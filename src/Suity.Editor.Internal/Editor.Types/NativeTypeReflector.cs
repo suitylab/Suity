@@ -154,9 +154,9 @@ internal sealed class NativeTypeReflector
             return;
         }
 
-        if (!string.IsNullOrWhiteSpace(attr.Name) && !NamingVerifier.VerifyIdentifier(attr.Name))
+        if (!string.IsNullOrWhiteSpace(attr.Name) && !NamingVerifier.VerifyNameSpace(attr.Name))
         {
-            Logs.LogError($"Invalid native type name : {attr.Name} for type {type.FullName}, it must be a valid identifier. Please check your 'NativeType' attribute.");
+            Logs.LogWarning($"Invalid native type name : {attr.Name} for type {type.FullName}, it must be a valid identifier. Please check your 'NativeType' attribute.");
         }
 
         if (string.IsNullOrWhiteSpace(attr.CodeBase))

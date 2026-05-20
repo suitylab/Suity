@@ -15,6 +15,7 @@ namespace Suity.Editor.AIGC;
 [ToolTipsText("Read multiple files at once. More efficient than reading files one by one when Agent needs to compare multiple files or process search results.")]
 public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
 {
+    [NativeType("BatchReadFiles.FileResult", CodeBase = "*Suity")]
     public class FileResult : IViewObject
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");

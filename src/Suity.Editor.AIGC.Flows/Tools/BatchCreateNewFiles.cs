@@ -15,6 +15,7 @@ namespace Suity.Editor.AIGC;
 [ToolTipsText("Create multiple new files at once. Use when initializing new modules, scaffolding, or creating multi-layer architecture code.")]
 public class BatchCreateNewFiles : ToolCommand<BatchCreateNewFiles.Output>
 {
+    [NativeType("BatchCreateNewFiles.FileWriteItem", CodeBase = "*Suity")]
     public class FileWriteItem : IViewObject
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");

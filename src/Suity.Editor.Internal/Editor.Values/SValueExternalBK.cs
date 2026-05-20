@@ -720,14 +720,14 @@ internal sealed class SValueExternalBK : SValueExternal
     }
 
     /// <inheritdoc/>
-    public override bool SupportValue(TypeDefinition typeInfo, object value, bool nullable)
+    public override bool SupportValue(TypeDefinition typeDef, object value, bool nullable)
     {
-        if (typeInfo is null || value is null)
+        if (TypeDefinition.IsNullOrEmpty(typeDef) || value is null)
         {
             return false;
         }
 
-        switch (typeInfo.Relationship)
+        switch (typeDef.Relationship)
         {
             case TypeRelationships.Value:
                 if (value is SDynamic)
@@ -736,7 +736,7 @@ internal sealed class SValueExternalBK : SValueExternal
                 }
                 if (value is SValue svalue)
                 {
-                    Type editedType = GetEditedType(typeInfo);
+                    Type editedType = GetEditedType(typeDef);
                     if (value.GetType() != editedType)
                     {
                         return false;
@@ -746,12 +746,13 @@ internal sealed class SValueExternalBK : SValueExternal
                         return false;
                     }
 
-                    return svalue.Value?.GetType() == typeInfo.NativeType;
+                    return svalue.Value?.GetType() == typeDef.NativeType;
                 }
                 else
                 {
-                    return value.GetType() == typeInfo.NativeType;
+                    return value.GetType() == typeDef.NativeType;
                 }
+
             case TypeRelationships.Struct:
                 {
                     if (value is SDynamic)
@@ -761,7 +762,7 @@ internal sealed class SValueExternalBK : SValueExternal
 
                     SObject obj = value as SObject;
 
-                    if (typeInfo == NativeTypes.ObjectType)
+                    if (typeDef == NativeTypes.ObjectType)
                     {
                         return obj != null;
                     }
@@ -770,14 +771,15 @@ internal sealed class SValueExternalBK : SValueExternal
                         // Regular struct requires exact type match
                         if (nullable)
                         {
-                            return obj != null && obj.InputType == typeInfo && (TypeDefinition.IsNullOrEmpty(obj.ObjectType) || obj.ObjectType == typeInfo);
+                            return obj != null && obj.InputType == typeDef && (TypeDefinition.IsNullOrEmpty(obj.ObjectType) || obj.ObjectType == typeDef);
                         }
                         else
                         {
-                            return obj != null && obj.InputType == typeInfo && obj.ObjectType == typeInfo;
+                            return obj != null && obj.InputType == typeDef && obj.ObjectType == typeDef;
                         }
                     }
                 }
+
             case TypeRelationships.Array:
                 {
                     if (value is SDynamic)
@@ -785,8 +787,9 @@ internal sealed class SValueExternalBK : SValueExternal
                         return true;
                     }
 
-                    return value is SArray ary && ary.InputType == typeInfo;
+                    return value is SArray ary && ary.InputType == typeDef;
                 }
+
             case TypeRelationships.Enum:
                 {
                     if (value is SDynamic)
@@ -794,12 +797,12 @@ internal sealed class SValueExternalBK : SValueExternal
                         return true;
                     }
 
-                    if (value is not SEnum en || en.InputType != typeInfo)
+                    if (value is not SEnum en || en.InputType != typeDef)
                     {
                         return false;
                     }
 
-                    if (typeInfo.Target is DEnum enumInfo)
+                    if (typeDef.Target is DEnum enumInfo)
                     {
                         return enumInfo.GetPublicField(en.Value) != null;
                     }
@@ -809,6 +812,7 @@ internal sealed class SValueExternalBK : SValueExternal
                         return true;
                     }
                 }
+
             case TypeRelationships.DataLink:
                 {
                     if (value is SDynamic)
@@ -816,8 +820,9 @@ internal sealed class SValueExternalBK : SValueExternal
                         return true;
                     }
 
-                    return value is SKey key && key.InputType == typeInfo;
+                    return value is SKey key && key.InputType == typeDef;
                 }
+
             case TypeRelationships.AssetLink:
                 {
                     if (value is SDynamic)
@@ -825,12 +830,14 @@ internal sealed class SValueExternalBK : SValueExternal
                         return true;
                     }
 
-                    return value is SAssetKey assetKey && assetKey.InputType == typeInfo;
+                    return value is SAssetKey assetKey && assetKey.InputType == typeDef;
                 }
+
             case TypeRelationships.Delegate:
                 {
-                    return value is SDelegate d && d.InputType == typeInfo;
+                    return value is SDelegate d && d.InputType == typeDef;
                 }
+
             case TypeRelationships.AbstractFunction:
                 {
                     string afuncKey = (value as SObject)?.ObjectType.Target?.AssetKey;
@@ -839,8 +846,9 @@ internal sealed class SValueExternalBK : SValueExternal
                         return false;
                     }
 
-                    return DTypeManager.Instance.GetFunctionsByReturnType(typeInfo).GetAsset(afuncKey) != null;
+                    return DTypeManager.Instance.GetFunctionsByReturnType(typeDef).GetAsset(afuncKey) != null;
                 }
+
             case TypeRelationships.AbstractStruct:
                 {
                     if (value is SDynamic)
@@ -854,15 +862,27 @@ internal sealed class SValueExternalBK : SValueExternal
                     }
 
                     // Abstract struct requires input type match, and nullable||base type match
-                    if (obj.InputType != typeInfo)
+                    if (obj.InputType != typeDef)
                     {
                         return false;
                     }
 
                     return TypeDefinition.IsNullOrEmpty(obj.ObjectType)
-                        || typeInfo.Target == (obj.ObjectType.Target as DStruct)?.BaseType;
+                        || typeDef.Target == (obj.ObjectType.Target as DStruct)?.BaseType;
                 }
+
             case TypeRelationships.None:
+                {
+                    if (typeDef.Target?.NativeType is { } type)
+                    {
+                        if (typeof(IViewObject).IsAssignableFrom(type))
+                        {
+                            return type.IsAssignableFrom(value.GetType());
+                        }
+                    }
+                }
+                return false;
+
             default:
                 return false;
         }
@@ -904,9 +924,6 @@ internal sealed class SValueExternalBK : SValueExternal
 
         switch (typeInfo.Relationship)
         {
-            case TypeRelationships.None:
-                break;
-
             case TypeRelationships.Value:
                 try
                 {
@@ -1009,6 +1026,9 @@ internal sealed class SValueExternalBK : SValueExternal
             case TypeRelationships.AbstractStruct:
                 break;
 
+            case TypeRelationships.None:
+                break;
+
             default:
                 break;
         }
@@ -1021,7 +1041,7 @@ internal sealed class SValueExternalBK : SValueExternal
     /// <inheritdoc/>
     public override object CreateDefaultValue(TypeDefinition typeDef, IAssetFilter filter = null)
     {
-        if (typeDef is null)
+        if (TypeDefinition.IsNullOrEmpty(typeDef))
         {
             return null;
         }
@@ -1078,6 +1098,25 @@ internal sealed class SValueExternalBK : SValueExternal
                 return new SObject(typeDef, typeDef.PrimaryType);
 
             case TypeRelationships.None:
+                {
+                    if (typeDef.IsNative && typeDef.Target?.NativeType is { } type)
+                    {
+                        if (typeof(IViewObject).IsAssignableFrom(type))
+                        {
+                            try
+                            {
+                                var obj = Activator.CreateInstance(type);
+                                return obj;
+                            }
+                            catch (Exception)
+                            {
+                                return null;
+                            }
+                        }
+                    }
+                }
+                return null;
+
             default:
                 return null;
         }
