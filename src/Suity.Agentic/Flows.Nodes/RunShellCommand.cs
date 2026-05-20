@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.Flows.Nodes;
 
-[NativeType("RunShellCommand", CodeBase = "*Suity")]
+[NativeType("RunShellCommand", CodeBase = "*Suity", Icon = "*CoreIcon|System")]
 [DisplayText("Run shell command")]
 [ToolTipsText("Run a single shell command. Do not run multiple commands and a same time.")]
 public class RunShellCommand : ToolCommand<RunShellCommand.Output>

@@ -1,4 +1,5 @@
-﻿using Suity.Editor.AIGC.Assistants;
+﻿using Suity.Drawing;
+using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Synchonizing;
@@ -73,6 +74,12 @@ public abstract class AigcTaskPage : DesignNode,
         return !string.IsNullOrWhiteSpace(name);
     }
 
+    /// <inheritdoc/>
+    protected override TextStatus OnGetTextStatus() => GetStatus().ToCheckedStatus();
+
+
+    /// <inheritdoc/>
+    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? GetPageInstance()?.Icon ?? CoreIconCache.Task;
 
     #endregion
 

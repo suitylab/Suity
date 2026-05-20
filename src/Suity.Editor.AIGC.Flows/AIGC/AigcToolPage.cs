@@ -69,23 +69,6 @@ public class AigcToolPage : AigcTaskPage,
         return !string.IsNullOrWhiteSpace(name);
     }
 
-    /// <inheritdoc/>
-    protected override TextStatus OnGetTextStatus()
-    {
-        var instance = EnsureInstance();
-        if (instance is null)
-        {
-            return TextStatus.Disabled;
-        }
-
-        if (instance.ErrorInfo != null)
-        {
-            return TextStatus.Error;
-        }
-
-        var done = instance.GetIsDone();
-        return done.ToCheckedStatus();
-    }
 
     /// <inheritdoc/>
     protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? CoreIconCache.Tool;

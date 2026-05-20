@@ -202,6 +202,8 @@ public class ToolCommandAsset<TInput, TOutput> : ToolAsset<TInput, TOutput>
 
     protected override string GetName() => typeof(TInput).Name;
 
+    public override ImageDef GetIcon() => TypeDefinition.FromNative<TInput>()?.Target?.Icon;
+
     protected override Task<TOutput> RunTask(TInput input, ToolCallContext context)
     {
         context.ToolInstance.Conversation?.AddSystemMessage("Run tool", msg => 

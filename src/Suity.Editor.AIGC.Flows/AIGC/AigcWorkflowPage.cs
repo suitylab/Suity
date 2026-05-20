@@ -1,13 +1,11 @@
 using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
-using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Selecting;
-using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
@@ -181,10 +179,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     }
 
     /// <inheritdoc/>
-    protected override TextStatus OnGetTextStatus() => GetStatus().ToCheckedStatus();
-
-    /// <inheritdoc/>
-    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? EnsureInstance()?.Icon ?? CoreIconCache.Task;
+    protected override ImageDef OnGetIcon() => base.OnGetIcon() ?? CoreIconCache.Task;
 
     protected override void OnDoubleClick() => ShowWorkflow();
 

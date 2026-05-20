@@ -85,6 +85,7 @@ public abstract class ToolInstance : IToolInstance, IViewObject
     public object Owner => Option.Owner;
     public string Name => Tool.Name;
     public string FullName => Tool.FullName; // equivalent to Tool.AssetKey
+    public ImageDef Icon => Tool.Icon;
     public IToolAsset GetToolAsset() => Tool;
 
     public abstract IViewObject InputObject { get; }
@@ -327,6 +328,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
             return new(TaskCommitStatus.None, null);
         }
     }
+
     #endregion
 
     #region Virtual (Sync)

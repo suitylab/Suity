@@ -1,4 +1,5 @@
-﻿using Suity.Editor.Types;
+﻿using Suity.Drawing;
+using Suity.Editor.Types;
 using Suity.Views;
 using Suity.Views.Named;
 using System.Collections.Generic;
@@ -22,6 +23,11 @@ public interface IPageInstance : INamed
     /// Gets the full name of this page instance.
     /// </summary>
     public string FullName { get; }
+
+    /// <summary>
+    /// Gets the icon of this page instance.
+    /// </summary>
+    public ImageDef Icon { get; }
 
     /// <summary>
     /// Gets the conversation interface for this page instance.
