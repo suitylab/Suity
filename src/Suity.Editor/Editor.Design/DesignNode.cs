@@ -385,7 +385,7 @@ public abstract class DesignNode : SNamedNode,
 
         if (setup.SupportInspector() && setup.SupportExtended())
         {
-setup.ExtendedField(_attributes.Array, new ViewProperty("Attributes", "Property"));            
+            setup.ExtendedField(_attributes.Array, new ViewProperty("Attributes", "Property"));            
         }
     }
 

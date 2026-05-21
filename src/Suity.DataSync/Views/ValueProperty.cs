@@ -21,6 +21,8 @@ public class ValueProperty<T> : IValueProperty
 
     public string Name => Property.Name;
 
+    public string AliasName { get; set; }
+
     public SyncFlag Flag { get; set; }
 
     public T Value { get; set; }
@@ -71,8 +73,15 @@ public class ValueProperty<T> : IValueProperty
         }
         else
         {
-            Value = sync.Sync(Property.Name, Value, flag, DefaultValue);
-
+            if (!string.IsNullOrWhiteSpace(AliasName))
+            {
+                Value = sync.SyncAlias(Property.Name, AliasName, Value, flag, DefaultValue);
+            }
+            else
+            {
+                Value = sync.Sync(Property.Name, Value, flag, DefaultValue);
+            }
+            
             if (sync.IsSetter(Property.Name))
             {
                 OnValueChanged();

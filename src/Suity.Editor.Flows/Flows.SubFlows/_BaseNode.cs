@@ -50,7 +50,7 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
 
     private bool _editTypeEnabled = true;
 
-    private readonly ValueProperty<bool> _taskCompletion = new("TaskCompletion", "Task Completion", true, "Used to determine if task is completed.");
+    private readonly ValueProperty<bool> _required = new("Required", "Required", true, "Indicates whether this parameter is required to complete the task.");
     private readonly ValueProperty<bool> _chatHistory = new("History", "Chat History", false, "Retained as historical conversation during dialogue.");
     private readonly ValueProperty<bool> _taskCommit = new("TaskCommit", "Task Commit", false, "Submit this value after completing the task.");
     private readonly ValueProperty<bool> _linkedMode = new("LinkedMode", "Linked Mode", false, "When enabled, will be displayed as a link address in task submissions and chat history, instead of content.\r\nOnly effective when value is a link type.");
@@ -61,6 +61,8 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
     protected SubFlowTypeNode()
     {
         _valueType = DTypeManager.Instance.CreateTypeDesignSelection();
+
+        _required.AliasName = "TaskCompletion";
     }
 
     /// <inheritdoc/>
@@ -74,7 +76,7 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
     /// <summary>
     /// Gets or sets a value indicating whether this property is used to determine task completion.
     /// </summary>
-    public bool TaskCompletion { get => _taskCompletion.Value; protected set => _taskCompletion.Value = value; }
+    public bool Required { get => _required.Value; protected set => _required.Value = value; }
 
     /// <summary>
     /// Gets or sets a value indicating whether this property should be submitted after completing the task.
@@ -169,7 +171,7 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
     {
         base.OnSync(sync, context);
 
-        _taskCompletion.Sync(sync);
+        _required.Sync(sync);
         _chatHistory.Sync(sync);
         _taskCommit.Sync(sync);
         _linkedMode.Sync(sync);
@@ -227,7 +229,7 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
     {
         base.OnSetupViewContent(setup);
 
-        _taskCompletion.InspectorField(setup);
+        _required.InspectorField(setup);
         _chatHistory.InspectorField(setup);
         _taskCommit.InspectorField(setup);
         _linkedMode.InspectorField(setup);

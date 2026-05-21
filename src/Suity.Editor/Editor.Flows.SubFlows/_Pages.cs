@@ -60,9 +60,9 @@ public interface IPageValueElement : ISubFlowElement
 public interface IPageParameter : IPageValueElement
 {
     /// <summary>
-    /// Gets whether this parameter indicates task completion.
+    /// Gets whether this parameter is required to complete the task.
     /// </summary>
-    bool TaskCompletion { get; }
+    bool Required { get; }
 
     /// <summary>
     /// Gets whether this parameter represents a task commit.

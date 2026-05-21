@@ -57,7 +57,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
     /// <summary>
     /// Gets a value indicating whether this output is related to task completion.
     /// </summary>
-    public bool TaskCompletion { get; private set; }
+    public bool Required { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether this output is related to task commit.
@@ -121,7 +121,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
 
         AllSubTasks = _outputItem.Node?.AllSubTasks == true;
 
-        TaskCompletion = _outputItem.Node?.TaskCompletion == true;
+        Required = _outputItem.Node?.Required == true;
         TaskCommit = _outputItem.Node?.TaskCommit == true;
         ChatHistory = _outputItem.Node?.ChatHistory == true;
     }
@@ -187,7 +187,7 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
     /// <inheritdoc/>
     public override bool? GetIsDone()
     {
-        if (!TaskCompletion)
+        if (!Required)
         {
             return null;
         }

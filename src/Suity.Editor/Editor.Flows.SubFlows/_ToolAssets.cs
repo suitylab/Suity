@@ -26,7 +26,7 @@ public record ToolCallContext
 
 #region IToolAsset
 
-[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Tool Asset", Color = FlowColors.Page, Icon = "*CoreIcon|Tool")]
+[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Tool Asset", Color = FlowColors.PageGroup, Icon = "*CoreIcon|Tool")]
 public interface IToolAsset : IPageAsset
 {
     Task<bool> Run(ToolCallContext context);

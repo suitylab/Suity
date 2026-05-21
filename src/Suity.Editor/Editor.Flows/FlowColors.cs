@@ -78,17 +78,18 @@ public class FlowColors
     /// Hex color value for task elements.
     /// </summary>
     public const string Task = "#604BCF";
-    
-    
+
+
     /// <summary>
-    /// Hex color value for page elements.
+    /// Hex color value for page group elements.
     /// </summary>
-    public const string Page = "#505050";
+    public const string PageGroup = "#505050";
 
     /// <summary>
     /// Hex color value for page parameter elements.
     /// </summary>
     public const string PageParameter = "#42B0FA";
+
 
     /// <summary>
     /// Hex color value for message elements.

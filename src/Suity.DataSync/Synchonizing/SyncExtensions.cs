@@ -498,7 +498,7 @@ public static class SyncExtensions
     public static T GetService<T>(this ISyncContext context) where T : class
         => context.GetService(typeof(T)) as T;
 
-    public static T SyncRename<T>(this IPropertySync sync, string newName, string oldName, T obj, SyncFlag flag = SyncFlag.None, T defaultValue = default, string description = null)
+    public static T SyncAlias<T>(this IPropertySync sync, string newName, string oldName, T obj, SyncFlag flag = SyncFlag.None, T defaultValue = default, string description = null)
     {
         if (sync.IsGetter())
         {

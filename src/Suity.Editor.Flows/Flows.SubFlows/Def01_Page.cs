@@ -19,7 +19,7 @@ namespace Suity.Editor.Flows.SubFlows;
 /// <summary>
 /// Sub-flow interactive page definition node that can act as a group and page.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.Page)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageGroup)]
 [DisplayText("Sub-flow Page", "*CoreIcon|Workflow")]
 [DisplayOrder(5000)]
 [ToolTipsText("Sub-flow interactive page definition")]
@@ -230,7 +230,7 @@ public class SubFlowDefinitionDiagramItem : FlowDiagramItem<SubflowDefinitionNod
 /// <summary>
 /// Asset representing a page definition that can be used as a tool.
 /// </summary>
-[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Definition", Color = FlowColors.Page, Icon = "*CoreIcon|Workflow")]
+[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Definition", Color = FlowColors.PageGroup, Icon = "*CoreIcon|Workflow")]
 public class SubFlowDefinitionAsset : Asset,
     IPageAsset,
     ISubFlowAsset,
@@ -296,7 +296,7 @@ public class SubFlowDefinitionAssetBuilder : AssetBuilder<SubFlowDefinitionAsset
 /// <summary>
 /// Sub-flow interactive page's detached extension sub-page node.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.Page)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageGroup)]
 [DisplayText("Sub-flow Branch Page", "*CoreIcon|Page")]
 [DisplayOrder(4999)]
 [ToolTipsText("Sub-flow interactive page's detached branch page")]
@@ -446,7 +446,7 @@ public class SubflowBranchDiagramItem : FlowDiagramItem<SubflowBranchNode>
 /// <summary>
 /// Sub-flow interactive page's detached result page node.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.Page)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageGroup)]
 [DisplayText("Sub-flow Result Page", "*CoreIcon|CheckList")]
 [DisplayOrder(4998)]
 [ToolTipsText("Sub-flow interactive page's detached result page")]

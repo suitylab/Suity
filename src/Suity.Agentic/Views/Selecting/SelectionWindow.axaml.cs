@@ -112,10 +112,12 @@ public partial class SelectionWindow : Window, IDrawImGui
                 {
                     if (!string.IsNullOrWhiteSpace(_initKey))
                     {
-                        if (!SelectItem(_initKey))
-                        {
-                            n.BeginEdit();
-                        }
+                        //if (!SelectItem(_initKey))
+                        //{
+                        //    n.BeginEdit();
+                        //}
+                        SelectItem(_initKey);
+                        n.BeginEdit();
                     }
                     else if (!string.IsNullOrWhiteSpace(_lastKey))
                     {

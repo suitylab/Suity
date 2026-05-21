@@ -23,7 +23,7 @@ public class SelectionTreeView : ImGuiTreeView<ISelectionItem>
         _column.NameColumn.RowGui = NameColumnGui;
         _column.PreviewColumn.RowGui = PreviewColumnGui;
 
-        _column.NameColumnWidth = 200;
+        _column.NameColumnWidth = 300;
         _column.PreviewColumnWidth = 600;
     }
 

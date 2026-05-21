@@ -274,7 +274,7 @@ public abstract class StructTypeBase : TypeDesignItem,
         IsValueType = sync.Sync("IsValueType", IsValueType);
         if (AbstractEnabled)
         {
-            BaseType = sync.SyncRename("BaseType", "Side", BaseType, SyncFlag.NotNull);
+            BaseType = sync.SyncAlias("BaseType", "Side", BaseType, SyncFlag.NotNull);
         }
     }
 

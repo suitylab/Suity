@@ -38,6 +38,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     readonly AssetProperty<ISubFlowAsset> _workflow = new("Workflow", "Workflow");
     readonly AssetProperty<ArticleContainerAsset> _article = new("Article", "Article");
     readonly TextBlockProperty _taskPrompt = new("TaskPrompt", "Task Prompt", string.Empty);
+    readonly AssetProperty<PromptAsset> _rule = new("Rule", "Rule", "Prompt asset that defines the rules or instructions for this task.");
 
     private SubFlowInstance _instance;
     private readonly QueueOnceAction _buildAction;
@@ -153,18 +154,20 @@ public class AigcWorkflowPage : AigcTaskPage,
         _workflow.Sync(sync);
         _article.Sync(sync);
         _taskPrompt.Sync(sync);
+        _rule.Sync(sync);
 
         sync.Sync("Page", EnsureInstance(), SyncFlag.GetOnly);
     }
 
     /// <inheritdoc/>
-    protected override void OnSetupView(IViewObjectSetup setup)
+    protected override void OnSetupViewTask(IViewObjectSetup setup)
     {
-        base.OnSetupView(setup);
+        base.OnSetupViewTask(setup);
 
         _workflow.InspectorField(setup);
         _article.InspectorField(setup);
         _taskPrompt.InspectorField(setup);
+        _rule.InspectorField(setup);
 
         CheckRebuild();
     }

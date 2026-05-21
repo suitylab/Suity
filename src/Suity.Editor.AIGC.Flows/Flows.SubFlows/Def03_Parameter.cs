@@ -814,7 +814,7 @@ public class PageMessageParameterNode : SubFlowTypeNode
         base.EditTypeEnabled = false;
         this.FlowNodeGui = OnGui;
 
-        TaskCompletion = false;
+        Required = false;
         TaskCommit = true;
         ChatHistory = true;
 

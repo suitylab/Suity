@@ -34,7 +34,7 @@ public class SubFlowPromptParameter : SubFlowElement, IPageParameterInput
     /// <summary>
     /// Gets a value indicating whether this input is related to task completion.
     /// </summary>
-    public bool TaskCompletion { get; private set; }
+    public bool Required { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether this is a preset input. Always returns <c>false</c> for this element type.
@@ -106,7 +106,7 @@ public class SubFlowPromptParameter : SubFlowElement, IPageParameterInput
     {
         base.OnBuild();
 
-        TaskCompletion = _inputItem.Node?.TaskCompletion == true;
+        Required = _inputItem.Node?.Required == true;
         TaskCommit = _inputItem.Node?.TaskCommit == true;
         ChatHistory = _inputItem.Node?.ChatHistory == true;
     }
@@ -114,7 +114,7 @@ public class SubFlowPromptParameter : SubFlowElement, IPageParameterInput
     /// <inheritdoc/>
     public override bool? GetIsDone()
     {
-        if (TaskCompletion)
+        if (Required)
         {
             var prompt = ResolvePrmopt();
 

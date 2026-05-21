@@ -56,9 +56,9 @@ public class AigcToolPage : AigcTaskPage,
     }
 
     /// <inheritdoc/>
-    protected override void OnSetupView(IViewObjectSetup setup)
+    protected override void OnSetupViewTask(IViewObjectSetup setup)
     {
-        base.OnSetupView(setup);
+        base.OnSetupViewTask(setup);
 
         _tool.InspectorField(setup);
     }

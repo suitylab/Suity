@@ -188,6 +188,11 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
                 continue;
             }
 
+            if (parameter is IPageMessage)
+            {
+                continue;
+            }
+
             var fieldType = parameter.ParameterType;
             if (fieldType == NativeTypes.TextBlockType)
             {

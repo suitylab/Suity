@@ -68,7 +68,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     /// <summary>
     /// Gets a value indicating whether this element signals task completion.
     /// </summary>
-    public bool TaskCompletion { get; private set; }
+    public bool Required { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether this element signals task commit.
@@ -95,7 +95,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     {
         base.OnBuild();
 
-        TaskCompletion = _outputItem.Node?.TaskCompletion == true;
+        Required = _outputItem.Node?.Required == true;
         TaskCommit = _outputItem.Node?.TaskCommit == true;
         ChatHistory = _outputItem.Node?.ChatHistory == true;
     }
@@ -175,7 +175,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     /// <inheritdoc/>
     public override bool? GetIsDone()
     {
-        if (TaskCompletion)
+        if (Required)
         {
             return GetFileExist();
         }

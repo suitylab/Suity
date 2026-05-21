@@ -25,7 +25,7 @@ namespace Suity.Editor.Flows.TaskPages;
 /// <summary>
 /// Provides a reference to a page definition asset and outputs it as data.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.Page, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Page Resource Reference", "*CoreIcon|Page")]
 [DisplayOrder(4950)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionRefNode")]
@@ -89,7 +89,7 @@ public class PageDefinitionReference : TaskPageNode
 /// <summary>
 /// Retrieves the definition of the current (self) page in the flow context.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.Page, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Get Self Page Definition", "*CoreIcon|Page")]
 [DisplayOrder(4960)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetSelfPageNode")]
@@ -190,7 +190,7 @@ public class GetCurrentToolList : TaskPageNode
 /// <summary>
 /// Sets the title of the current page in the flow context.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.Page)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
 [DisplayText("Set Page Title", "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetPageTitleNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetPageTitle")]
@@ -246,18 +246,19 @@ public class SetPageTitle : TaskPageNode
 
 #endregion
 
-#region ParseToolCalling
+#region ParsePageInstance
 
 /// <summary>
-/// Parses a tool calling object from incoming JSON text and a list of available tool pages.
+/// Parses a page instance from incoming JSON text and a list of available tool pages.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
-[DisplayText("Parse Tool Calling", "*CoreIcon|Tool")]
+[DisplayText("Parse Page Instance", "*CoreIcon|Page")]
 [DisplayOrder(3000)]
-[ToolTipsText("Parse the calling object from the incoming JSON text and tool page list.")]
+[ToolTipsText("Parse the page instance from the incoming JSON text and tool page list.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.ParseToolCallingNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.ParseToolCalling")]
-public class ParseToolCalling : TaskPageNode
+[NativeAlias("Suity.Editor.Flows.TaskPages.ParseToolCalling")]
+public class ParsePageInstance : TaskPageNode
 {
     readonly FlowNodeConnector _in;
     readonly FlowNodeConnector _toolPages;
@@ -268,9 +269,9 @@ public class ParseToolCalling : TaskPageNode
     readonly FlowNodeConnector _outNoResult;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ParseToolCalling"/> class, setting up input and output connectors for parsing tool calling data.
+    /// Initializes a new instance of the <see cref="ParsePageInstance"/> class, setting up input and output connectors for parsing tool calling data.
     /// </summary>
-    public ParseToolCalling()
+    public ParsePageInstance()
     {
         var pageType = AssetManager.Instance.GetAssetLink<IPageAsset>().Definition.MakeArrayType();
 
@@ -296,7 +297,7 @@ public class ParseToolCalling : TaskPageNode
         string toolJson = compute.GetValue<string>(_toolJson);
 
         // 2. Call the extraction function
-        var pageInstance = ParseToolCalling.CreatePageInstance(toolPages, toolName, toolJson);
+        var pageInstance = ParsePageInstance.CreatePageInstance(toolPages, toolName, toolJson);
 
         // 3. Set output based on result
         if (pageInstance != null)
@@ -385,18 +386,19 @@ public class ParseToolCalling : TaskPageNode
 
 #endregion
 
-#region ParseTagToolCalling
+#region ParseTagPageInstance
 
 /// <summary>
-/// Parses a tool calling object from an XML tag and a list of available tool pages.
+/// Parses a page instance from an XML tag and a list of available tool pages.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
-[DisplayText("Parse Xml Tag Tool Calling", "*CoreIcon|Tool")]
+[DisplayText("Parse Xml Tag To Page Instance", "*CoreIcon|Page")]
 [DisplayOrder(2950)]
-[ToolTipsText("Parse the calling object from the incoming JSON text and tool page list.")]
+[ToolTipsText("Parse the page instance from the incoming JSON text and tool page list.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.ParseTagToolCallingNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.ParseTagToolCalling")]
-public class ParseTagToolCalling : TaskPageNode
+[NativeAlias("Suity.Editor.Flows.TaskPages.ParseTagToolCalling")]
+public class ParseTagToPageInstance : TaskPageNode
 {
     readonly FlowNodeConnector _in;
     readonly FlowNodeConnector _toolPages;
@@ -407,9 +409,9 @@ public class ParseTagToolCalling : TaskPageNode
     readonly FlowNodeConnector _outNoResult;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ParseTagToolCalling"/> class, setting up input and output connectors for parsing XML tag tool calling data.
+    /// Initializes a new instance of the <see cref="ParseTagToPageInstance"/> class, setting up input and output connectors for parsing XML tag tool calling data.
     /// </summary>
-    public ParseTagToolCalling()
+    public ParseTagToPageInstance()
     {
         var pageType = AssetManager.Instance.GetAssetLink<IPageAsset>().Definition.MakeArrayType();
         var tagType = TypeDefinition.FromNative<LooseXmlTag>();
@@ -456,7 +458,7 @@ public class ParseTagToolCalling : TaskPageNode
         string pageName = tag?.GetAttribute(attributeName);
 
         // 2. Call the extraction function
-        var pageInstance = ParseToolCalling.CreatePageInstance(pages, pageName, pageJson);
+        var pageInstance = ParsePageInstance.CreatePageInstance(pages, pageName, pageJson);
 
         // 3. Set output based on result
         if (pageInstance != null)
@@ -474,19 +476,20 @@ public class ParseTagToolCalling : TaskPageNode
 
 #endregion
 
-#region CreateToolCalling
+#region CreatePageInstance
 
 /// <summary>
-/// Creates an empty tool calling object based on a page definition.
+/// Creates an empty page instance based on a page definition.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
-[DisplayText("Create Tool Calling", "*CoreIcon|Tool")]
+[DisplayText("Create Page Instance", "*CoreIcon|Page")]
 [DisplayOrder(2960)]
-[ToolTipsText("Create an empty tool calling object based on the page definition.")]
+[ToolTipsText("Create an empty page instance based on the page definition.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.CreateEmptyToolCallingNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.CreateToolCallingNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.CreateToolCalling")]
-public class CreateToolCalling : TaskPageNode
+[NativeAlias("Suity.Editor.Flows.TaskPages.CreateToolCalling")]
+public class CreatePageInstance : TaskPageNode
 {
     readonly FlowNodeConnector _in;
     readonly FlowNodeConnector _toolPage;
@@ -495,9 +498,9 @@ public class CreateToolCalling : TaskPageNode
     readonly FlowNodeConnector _pageInstance;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CreateToolCalling"/> class, setting up input and output connectors for creating tool calling objects.
+    /// Initializes a new instance of the <see cref="CreatePageInstance"/> class, setting up input and output connectors for creating tool calling objects.
     /// </summary>
-    public CreateToolCalling()
+    public CreatePageInstance()
     {
         var pageType = AssetManager.Instance.GetAssetLink<IPageAsset>().Definition;
 
@@ -551,13 +554,14 @@ public class CreateToolCalling : TaskPageNode
 
 #endregion
 
-#region CreateToolCallingWithParameter
+#region CreatePageInstanceWithParameter
 
 /// <summary>
-/// Represents a single parameter definition for a tool call, including name, description, and type.
+/// Represents a single parameter definition for a page instance, including name, description, and type.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.ToolCallParameter")]
-public class ToolCallParameter : INamed, IViewObject, ITextDisplay
+[NativeAlias("Suity.Editor.Flows.TaskPages.ToolCallParameter")]
+public class CreatePageParameter : INamed, IViewObject, ITextDisplay
 {
     private StringProperty _name = new("Name", "Parameter Name");
     private StringProperty _description = new("Description", "Description");
@@ -565,9 +569,9 @@ public class ToolCallParameter : INamed, IViewObject, ITextDisplay
     private ValueProperty<bool> _isArray = new("IsArray", "Array", false);
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ToolCallParameter"/> class.
+    /// Initializes a new instance of the <see cref="CreatePageParameter"/> class.
     /// </summary>
-    public ToolCallParameter()
+    public CreatePageParameter()
     {
         _parameterType = DTypeManager.Instance.CreateTypeDesignSelection();
     }
@@ -684,14 +688,15 @@ public class ToolCallParameter : INamed, IViewObject, ITextDisplay
 }
 
 /// <summary>
-/// Creates a tool calling object with configurable parameters based on a page definition.
+/// Creates a page instance with configurable parameters based on a page definition.
 /// </summary>
 [SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
-[DisplayText("Create Tool Calling With Parameter", "*CoreIcon|Tool")]
+[DisplayText("Create Page Instance With Parameter", "*CoreIcon|Page")]
 [DisplayOrder(2960)]
-[ToolTipsText("Create a tool calling object with parameters based on the page definition.")]
+[ToolTipsText("Create a page instance with parameters based on the page definition.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.CreateToolCallingWithParameter")]
-public class CreateToolCallingWithParameter : TaskPageNode
+[NativeAlias("Suity.Editor.Flows.TaskPages.CreateToolCallingWithParameter")]
+public class CreatePageInstanceWithParameter : TaskPageNode
 {
     FlowNodeConnector _in;
 
@@ -699,12 +704,12 @@ public class CreateToolCallingWithParameter : TaskPageNode
     FlowNodeConnector _pageInstance;
 
     readonly AssetProperty<IPageAsset> _toolDef = new("ToolDefinition", "Tool Definition");
-    readonly ListProperty<ToolCallParameter> _parameters = new("Parameters", "Parameters");
+    readonly ListProperty<CreatePageParameter> _parameters = new("Parameters", "Parameters");
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CreateToolCallingWithParameter"/> class.
+    /// Initializes a new instance of the <see cref="CreatePageInstanceWithParameter"/> class.
     /// </summary>
-    public CreateToolCallingWithParameter()
+    public CreatePageInstanceWithParameter()
     {
         UpdateConnector();
 
@@ -757,7 +762,7 @@ public class CreateToolCallingWithParameter : TaskPageNode
                         continue;
                     }
 
-                    var parameter = new ToolCallParameter
+                    var parameter = new CreatePageParameter
                     {
                         Name = input.Name,
                         Description = input.Description,
@@ -861,9 +866,9 @@ public class CreateToolCallingWithParameter : TaskPageNode
     /// Gets the validated list of tool call parameters, filtering out duplicates and invalid entries.
     /// </summary>
     /// <returns>An array of valid tool call parameters.</returns>
-    public ToolCallParameter[] GetParameters()
+    public CreatePageParameter[] GetParameters()
     {
-        List<ToolCallParameter> list = [];
+        List<CreatePageParameter> list = [];
         HashSet<string> visited = [];
 
         foreach (var item in _parameters.List.SkipNull())
@@ -1395,34 +1400,6 @@ public class PageParameterReference : TaskPageNode
         }
 
         return true;
-    }
-}
-
-#endregion
-
-#region Converters
-
-/// <summary>
-/// Converts an <see cref="IAigcTaskPage"/> to its associated <see cref="IPageInstance"/>.
-/// </summary>
-public class TaskPageToPageInstanceConverter : TypeConverter<IAigcTaskPage, IPageInstance>
-{
-    /// <inheritdoc/>
-    public override IPageInstance Convert(IAigcTaskPage objFrom)
-    {
-        return objFrom.GetPageInstance();
-    }
-}
-
-/// <summary>
-/// Converts an <see cref="IPageInstance"/> to its owning <see cref="IAigcTaskPage"/>.
-/// </summary>
-public class PageInstanceToTaskPageConverter : TypeConverter<IPageInstance, IAigcTaskPage>
-{
-    /// <inheritdoc/>
-    public override IAigcTaskPage Convert(IPageInstance objFrom)
-    {
-        return objFrom.Owner as IAigcWorkflowPage;
     }
 }
 

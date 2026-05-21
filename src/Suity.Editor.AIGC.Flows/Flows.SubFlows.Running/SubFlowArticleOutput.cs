@@ -212,7 +212,7 @@ public class SubFlowArticleOutput : SubFlowElement, IArticleResolver, IPageParam
     /// <summary>
     /// Gets a value indicating whether task completion tracking is enabled.
     /// </summary>
-    public bool TaskCompletion { get; private set; }
+    public bool Required { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether task commit tracking is enabled.
@@ -407,7 +407,7 @@ public class SubFlowArticleOutput : SubFlowElement, IArticleResolver, IPageParam
         LinkedMode = node?.LinkedMode == true;
         WritingTarget = node?.WritingTarget ?? ArticleFields.Content;
 
-        TaskCompletion = node?.TaskCompletion == true;
+        Required = node?.Required == true;
         TaskCommit = node?.TaskCommit == true;
         ChatHistory = node?.ChatHistory == true;
 
@@ -524,7 +524,7 @@ public class SubFlowArticleOutput : SubFlowElement, IArticleResolver, IPageParam
     /// <inheritdoc/>
     public override bool? GetIsDone()
     {
-        if (TaskCompletion)
+        if (Required)
         {
             if (_multipleSection)
             {

@@ -39,7 +39,7 @@ public class SubFlowParameterInput : SubFlowElement, IPageParameterInput
     /// <summary>
     /// Gets a value indicating whether this input is related to task completion.
     /// </summary>
-    public bool TaskCompletion { get; private set; }
+    public bool Required { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether this input is related to task commit.
@@ -115,7 +115,7 @@ public class SubFlowParameterInput : SubFlowElement, IPageParameterInput
 
         ParameterType = node?.TypeDef ?? TypeDefinition.Empty;
 
-        TaskCompletion = node?.TaskCompletion == true;
+        Required = node?.Required == true;
         TaskCommit = node?.TaskCommit == true;
         ChatHistory = node?.ChatHistory == true;
         LinkedMode = node?.LinkedMode == true;
@@ -189,7 +189,7 @@ public class SubFlowParameterInput : SubFlowElement, IPageParameterInput
     /// <inheritdoc/>
     public override bool? GetIsDone()
     {
-        if (TaskCompletion)
+        if (Required)
         {
             return !SubFlowHelper.GetIsValueEmpty(Value);
         }

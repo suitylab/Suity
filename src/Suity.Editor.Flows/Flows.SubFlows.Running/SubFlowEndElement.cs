@@ -78,7 +78,7 @@ public class SubFlowEndElement : SubFlowElement, IPageParameterOutput
     /// <summary>
     /// Gets a value indicating whether this element signals task completion.
     /// </summary>
-    public bool TaskCompletion => false;
+    public bool Required => false;
 
     /// <summary>
     /// Gets a value indicating whether this element signals task commit.

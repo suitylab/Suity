@@ -71,7 +71,7 @@ public class EnumItem : EnumItemBase, IMember, IDescriptionDisplay, IPreviewDisp
     protected override void OnSync(IPropertySync sync, ISyncContext context)
     {
         base.OnSync(sync, context);
-        Value = sync.SyncRename("Value", "Id", Value);
+        Value = sync.SyncAlias("Value", "Id", Value);
     }
 
     /// <inheritdoc/>

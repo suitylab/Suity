@@ -42,7 +42,14 @@ public abstract class AigcTaskPage : DesignNode,
     public string CommitName
     {
         get => _commitName.Text ?? string.Empty;
-        set => _commitName.Text = value ?? string.Empty;
+        set
+        {
+            if (_commitName.Text != value)
+            {
+                _commitName.Text = value;
+                this.TaskPageDocument?.MarkDirtyAndSaveDelayed(this);
+            }
+        }
     }
 
     public TaskCommitStatus CommitStatus
@@ -99,6 +106,17 @@ public abstract class AigcTaskPage : DesignNode,
     {
         base.OnSetupView(setup);
 
+        OnSetupViewTask(setup);
+        OnSetupViewCommit(setup);
+    }
+
+    protected virtual void OnSetupViewTask(IViewObjectSetup setup)
+    {
+    }
+
+    protected virtual void OnSetupViewCommit(IViewObjectSetup setup)
+    {
+        setup.LabelWithIcon("Commit", CoreIconCache.Complete);
         _commitName.InspectorField(setup);
         _commitStatus.InspectorField(setup);
     }

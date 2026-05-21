@@ -28,7 +28,7 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
     /// <summary>
     /// Gets a value indicating whether this message signals task completion.
     /// </summary>
-    public bool TaskCompletion { get; private set; }
+    public bool Required { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether this message signals task commit.
@@ -116,7 +116,7 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
     {
         base.OnBuild();
 
-        TaskCompletion = _msg.Node?.TaskCompletion == true;
+        Required = _msg.Node?.Required == true;
         TaskCommit = _msg.Node?.TaskCommit == true;
         ChatHistory = _msg.Node?.ChatHistory == true;
 

@@ -159,7 +159,7 @@ public abstract class TypeToTextConverter<TFrom> : ITypeConverter
     {
         if (objFrom is TFrom from)
         {
-            string s = Convert(from);
+            string s = Convert(from) ?? string.Empty;
             return TypeConvertExtensions.ConvertText(s, typeTo);
         }
 
@@ -509,7 +509,7 @@ public static class TypeConvertExtensions
         string s;
         try
         {
-            s = objFrom.ToString() ?? string.Empty;
+            s = objFrom?.ToString() ?? string.Empty;
         }
         catch (Exception)
         {

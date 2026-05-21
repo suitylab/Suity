@@ -79,7 +79,7 @@ public interface ISubFlow : INamed
 /// <summary>
 /// Represents an asset that defines an Sub-flow definition page.
 /// </summary>
-[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Definition Asset", Color = FlowColors.Page, Icon = "*CoreIcon|Page")]
+[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Definition Asset", Color = FlowColors.PageGroup, Icon = "*CoreIcon|Page")]
 [NativeAlias("*AIGC|ISubFlowDefAsset")]
 public interface ISubFlowDefAsset : ISubFlowAsset
 {
@@ -92,7 +92,7 @@ public interface ISubFlowDefAsset : ISubFlowAsset
 /// <summary>
 /// Represents an Sub-flow preset that provides tools and parameter access.
 /// </summary>
-[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Preset", Color = FlowColors.Page, Icon = "*CoreIcon|Preset")]
+[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Preset", Color = FlowColors.PageGroup, Icon = "*CoreIcon|Preset")]
 public interface ISubFlowPreset
 {
     /// <summary>
@@ -141,7 +141,7 @@ public interface ISubFlowPreset
 
 #region ISubFlowPresetAsset
 
-[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Preset Asset", Color = FlowColors.Page, Icon = "*CoreIcon|Preset")]
+[NativeType(CodeBase = "SubFlow", Description = "Sub-flow Preset Asset", Color = FlowColors.PageGroup, Icon = "*CoreIcon|Preset")]
 public interface ISubFlowPresetAsset : ISubFlowAsset
 {
     /// <summary>

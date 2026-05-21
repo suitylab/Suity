@@ -64,7 +64,7 @@ public class SubFlowParameterOutput : SubFlowElement, IPageParameterOutput
     /// <summary>
     /// Gets a value indicating whether this output is related to task completion.
     /// </summary>
-    public bool TaskCompletion { get; private set; }
+    public bool Required { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether this output is related to task commit.
@@ -95,7 +95,7 @@ public class SubFlowParameterOutput : SubFlowElement, IPageParameterOutput
 
         ParameterType = node?.TypeDef ?? TypeDefinition.Empty;
 
-        TaskCompletion = node?.TaskCompletion == true;
+        Required = node?.Required == true;
         TaskCommit = node?.TaskCommit == true;
         ChatHistory = node?.ChatHistory == true;
         LinkedMode = node?.LinkedMode == true;
@@ -186,7 +186,7 @@ public class SubFlowParameterOutput : SubFlowElement, IPageParameterOutput
     /// <inheritdoc/>
     public override bool? GetIsDone()
     {
-        if (TaskCompletion)
+        if (Required)
         {
             return !SubFlowHelper.GetIsValueEmpty(Value);
         }
