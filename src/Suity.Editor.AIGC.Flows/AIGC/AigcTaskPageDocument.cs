@@ -289,6 +289,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
 
             workflowPage.Name = AllocateTaskId();
             workflowPage.Workflow = selection.Target;
+            workflowPage.Description = selection.Target?.ToDisplayTextL() ?? string.Empty;
             return true;
         }
         else if (item is AigcToolPage toolPage)
@@ -301,6 +302,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
 
             toolPage.Name = AllocateTaskId();
             toolPage.Tool = selection.Target;
+            toolPage.Description = selection.Target?.ToDisplayTextL() ?? string.Empty;
             return true;
         }
 

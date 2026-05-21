@@ -174,7 +174,7 @@ public class AigcToolPage : AigcTaskPage,
         var taskPage = new AigcToolPage()
         {
             Name = name,
-            Description = title ?? string.Empty,
+            Description = title ?? toolAsset?.ToDisplayTextL() ?? string.Empty,
             Tool = toolAsset,
         };
 
@@ -235,7 +235,7 @@ public class AigcToolPage : AigcTaskPage,
         var taskPage = new AigcToolPage()
         {
             Name = name,
-            Description = title ?? string.Empty,
+            Description = title ?? toolAsset?.ToDisplayTextL() ?? string.Empty,
             Tool = toolAsset,
         };
 

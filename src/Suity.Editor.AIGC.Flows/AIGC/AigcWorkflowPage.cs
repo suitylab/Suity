@@ -1110,7 +1110,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         var taskPage = new AigcWorkflowPage()
         {
             Name = name,
-            Description = title ?? string.Empty,
+            Description = title ?? subFlowAsset?.ToDisplayTextL() ?? string.Empty,
             Workflow = subFlowAsset,
         };
 
@@ -1183,7 +1183,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         var taskPage = new AigcWorkflowPage()
         {
             Name = name,
-            Description = title ?? string.Empty,
+            Description = title ?? subFlowAsset?.ToDisplayTextL() ?? string.Empty,
             Workflow = subFlowAsset,
         };
 
