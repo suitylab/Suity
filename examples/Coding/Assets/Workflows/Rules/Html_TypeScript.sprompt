@@ -98,10 +98,11 @@ coverage/
 - Use specific versions or locked versions (via `package-lock.json` or `pnpm-lock.yaml`) to ensure build consistency.
 - Dev dependencies (types, linting, build tools) must be separated from production dependencies.
 
-## Post-Generation Execution Steps
-⚠️ Mandatory Automation: After successfully generating all project files and configurations, execute the following shell commands in strict sequence:
-1. npm install - Install all project dependencies.
-2. npm run dev - Execute immediately after npm install completes successfully to start the Vite development server.
+## Build & Test
+> 🛑 **Conditional Execution Guard**: Execute the following steps **ONLY** when the user explicitly requests to build, run, or test the project. **DO NOT** run these commands automatically during code generation, file scaffolding, or static analysis.
+1. `npm install` - Install all project dependencies.
+2. `npm run dev` - Execute immediately after `npm install` completes successfully to start the Vite development server.
+3. *(If requested)* `npm run build` / `npm run test` - Perform production compilation or run test suites.
 
 ## **Important Notice**
 - 'index.html' file should strickly follow the Entry Point Specification described above, do NOT write any logical or layout code in the index.html.

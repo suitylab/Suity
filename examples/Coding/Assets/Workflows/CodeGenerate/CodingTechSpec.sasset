@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="AigcFlow">
-  <AssetId>48ab476d-78ce-44a1-bb1e-c2e43e1fbb1e</AssetId>
+  <AssetId>5276bc3c-1f39-4769-b428-ee010c3f9dae</AssetId>
   <NameSpace>TaskTaskPage002</NameSpace>
   <Description>
   </Description>
   <Icon />
   <Nodes>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-420" Y="-10" Width="180" Height="120">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-410" Y="-110" Width="180" Height="110">
       <Name>CodeSpecification</Name>
-      <AssetId>8dba2953-d4a3-4fdb-be13-39397b12ae77</AssetId>
+      <AssetId>5685e92a-6704-4d97-982e-519f453e2de5</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
         <Name>CodeSpecification</Name>
         <Description>
@@ -29,7 +29,7 @@
         <UseParentArticle>True</UseParentArticle>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="570" Y="90" Width="140" Height="140">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="540" Y="-80" Width="140" Height="140">
       <Name>CodeSpecificationResult</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
         <Name>CodeSpecificationResult</Name>
@@ -39,7 +39,7 @@
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-410" Y="60" Width="86" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-400" Y="-60" Width="86" Height="17">
       <Name>RequirementDocument</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
         <Name>RequirementDocument</Name>
@@ -62,7 +62,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-410" Y="80" Width="63" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-400" Y="-40" Width="63" Height="17">
       <Name>TechSpecStart</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
         <Name>TechSpecStart</Name>
@@ -73,7 +73,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="-60" Width="136" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="-160" Width="136" Height="111">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -84,11 +84,11 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-140" Y="50" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-130" Y="-50" Width="38" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-80" Width="119" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-240" Width="119" Height="56">
       <Name>###ExtractXmlsTagNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagNode">
         <TagNames>
@@ -96,7 +96,7 @@
         </TagNames>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageArticleOutputItem" X="580" Y="150" Width="51" Height="25">
+    <Item type="Suity.Editor.Flows.SubFlows.PageArticleOutputItem" X="550" Y="-20" Width="51" Height="25">
       <Name>Specification</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageArticleOutputNode">
         <Name>Specification</Name>
@@ -118,7 +118,7 @@
         <PassToSubTasks>True</PassToSubTasks>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="390" Y="110" Width="59" Height="25">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="370" Y="-20" Width="59" Height="25">
       <Name>###PageParameterRefNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.PageParameterReference">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
@@ -126,7 +126,7 @@
         </ValueType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-20" Width="143" Height="89">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-180" Width="143" Height="89">
       <Name>###ForeachArray01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ForeachArray">
         <OutputValueType type="Suity.Editor.Types.TypeDesignSelection">
@@ -134,7 +134,7 @@
         </OutputValueType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="600" Y="-100" Width="142" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="540" Y="-220" Width="142" Height="111">
       <Name>###CreateArticle01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetOrCreateArticle">
         <Id>
@@ -147,7 +147,7 @@
         <Guide />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="460" Y="-30" Width="63" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="470" Y="-160" Width="63" Height="17">
       <Name>###GetXmlTagAttributesNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetXmlTagAttributesNode">
         <AttributeNames>
@@ -155,11 +155,11 @@
         </AttributeNames>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-10" Width="28" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="470" Y="-130" Width="28" Height="17">
       <Name>###GetXmlTagContentNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-410" Y="40" Width="59" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-400" Y="-80" Width="59" Height="17">
       <Name>ProjectName</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
         <Name>ProjectName</Name>
@@ -180,11 +180,11 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="-50" Width="107" Height="89">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-50" Y="-150" Width="107" Height="89">
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>aa326c64-227d-4b5f-a671-903583cb1940</Id>
+          <Id>584bd371-dacc-4416-80d0-a006e9493c28</Id>
         </PromptTemplate>
         <Keywords>
           <Item>PROJECT_NAME</Item>
@@ -196,7 +196,7 @@
         <UpdateKeywords>False</UpdateKeywords>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="580" Y="130" Width="69" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="550" Y="-40" Width="69" Height="17">
       <Name>SpecificationEnd</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
         <Name>SpecificationEnd</Name>
@@ -205,32 +205,13 @@
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-160" Y="30" Width="76" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="-70" Width="76" Height="17">
       <Name>###ArticleFullContent01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ArticleFullContent" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-410" Y="20" Width="63" Height="17">
-      <Name>LanguageRule</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
-        <Name>LanguageRule</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
-          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
-            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
-              <Value type="Suity.Views.TextBlock">
-                <Text>Programing language rule, Fill in full asset key.</Text>
-              </Value>
-            </ToolTips>
-          </Item>
-        </Attributes>
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>e4f266c7-5634-4d59-81a9-d56bbe2d9fdb</Id>
-          <Prefix>&amp;</Prefix>
-        </ValueType>
-        <Value type="SAssetKey" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb">
-          <Value />
-        </Value>
-      </Node>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-120" Y="-90" Width="27" Height="17">
+      <Name>###GetCurrentTaskRule01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -270,12 +251,6 @@
       <FromConnector>Out</FromConnector>
       <ToNode>###CreateArticle01</ToNode>
       <ToConnector>ArticleIn</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###ForeachArray01</FromNode>
-      <FromConnector>ItemOutput</FromConnector>
-      <ToNode>###CreateArticle01</ToNode>
-      <ToConnector>In</ToConnector>
     </Item>
     <Item>
       <FromNode>###ForeachArray01</FromNode>
@@ -344,16 +319,22 @@
       <ToConnector>ArticleIn</ToConnector>
     </Item>
     <Item>
-      <FromNode>LanguageRule</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###BuildPrompts01</ToNode>
-      <ToConnector>k_FRAMEWORK</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###ExtractXmlsTagNode01</FromNode>
       <FromConnector>Tag-section</FromConnector>
       <ToNode>###ForeachArray01</ToNode>
       <ToConnector>Array</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTaskRule01</FromNode>
+      <FromConnector>Rule</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_FRAMEWORK</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ForeachArray01</FromNode>
+      <FromConnector>ItemOutput</FromConnector>
+      <ToNode>###CreateArticle01</ToNode>
+      <ToConnector>In</ToConnector>
     </Item>
     <Item>
       <FromNode>###ForeachArray01</FromNode>

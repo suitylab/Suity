@@ -32,7 +32,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="40" Y="-100" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="40" Y="-100" Width="38" Height="17">
       <Name>###GetSpeechLanguage02</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -145,7 +145,7 @@
         <Description>FullDocument(Optional)</Description>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <TaskCompletion>False</TaskCompletion>
+        <Required>False</Required>
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>6d9a5040-b6d7-4daa-b06f-6f2f27f02012</Id>
         </ValueType>

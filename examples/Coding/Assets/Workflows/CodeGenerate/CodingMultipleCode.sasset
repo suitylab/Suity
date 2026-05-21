@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="AigcFlow">
-  <AssetId>ceba9cb7-63cd-407e-baf4-f4b2cc3815d4</AssetId>
+  <AssetId>aca868c4-2be4-40e8-b2d7-6cf7c44156c4</AssetId>
   <NameSpace>TaskTaskPage002</NameSpace>
   <Description>
   </Description>
   <Icon />
   <Nodes>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-430" Y="-110" Width="210" Height="160">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-430" Y="-110" Width="160" Height="130">
       <Name>MultipleCode</Name>
-      <AssetId>a5f66ac4-2d80-439f-85a0-7b7a4c5dd8e9</AssetId>
+      <AssetId>ea8ce57d-1e2f-499e-8e2e-3bf2fc747f58</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
         <Name>MultipleCode</Name>
         <Description>
@@ -29,7 +29,7 @@
         <UseParentArticle>True</UseParentArticle>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="680" Y="220" Width="140" Height="110">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="610" Y="210" Width="140" Height="110">
       <Name>MultipleCodeResult</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
         <Name>MultipleCodeResult</Name>
@@ -39,7 +39,7 @@
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-420" Y="0" Width="60" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-420" Y="-20" Width="60" Height="17">
       <Name>FileSpecStart</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
         <Name>FileSpecStart</Name>
@@ -61,11 +61,11 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-160" Y="0" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-150" Y="10" Width="38" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-420" Y="-60" Width="59" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-420" Y="-80" Width="59" Height="17">
       <Name>ProjectName</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
         <Name>ProjectName</Name>
@@ -91,7 +91,7 @@
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>750c3fd0-3af6-4321-bac6-83a3bbc516ce</Id>
+          <Id>e628aaad-0ed0-46f2-aca2-526f74164567</Id>
         </PromptTemplate>
         <Keywords>
           <Item>PROJECT_NAME</Item>
@@ -104,7 +104,7 @@
         <UpdateKeywords>False</UpdateKeywords>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="690" Y="260" Width="58" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="620" Y="250" Width="58" Height="17">
       <Name>FileCodeEnd</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
         <Name>FileCodeEnd</Name>
@@ -113,7 +113,7 @@
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-420" Y="-20" Width="83" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-420" Y="-40" Width="83" Height="17">
       <Name>TechnicalSpecification</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
         <Name>TechnicalSpecification</Name>
@@ -154,7 +154,7 @@
       <Name>###GetTaskWorkSpace02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetTaskWorkSpace" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-420" Y="-40" Width="86" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-420" Y="-60" Width="86" Height="17">
       <Name>RequirementDocument</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
         <Name>RequirementDocument</Name>
@@ -218,7 +218,7 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageArticleOutputItem" X="690" Y="280" Width="61" Height="25">
+    <Item type="Suity.Editor.Flows.SubFlows.PageArticleOutputItem" X="620" Y="270" Width="61" Height="25">
       <Name>CodingFileResult</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageArticleOutputNode">
         <Name>CodingFileResult</Name>
@@ -234,7 +234,7 @@
         </Attributes>
         <History>True</History>
         <TaskCommit>True</TaskCommit>
-        <LinkedMode>True</LinkedMode>
+        <AddressMode>True</AddressMode>
         <ArticlePath>File Overview</ArticlePath>
         <WritingTarget>Overview</WritingTarget>
         <MultipleSection>True</MultipleSection>
@@ -268,29 +268,6 @@
         <Type>Coding</Type>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-420" Y="-80" Width="63" Height="17">
-      <Name>LanguageRule</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
-        <Name>LanguageRule</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
-          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
-            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
-              <Value type="Suity.Views.TextBlock">
-                <Text>Programing language rule, Fill in full asset key.</Text>
-              </Value>
-            </ToolTips>
-          </Item>
-        </Attributes>
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>e4f266c7-5634-4d59-81a9-d56bbe2d9fdb</Id>
-          <Prefix>&amp;</Prefix>
-        </ValueType>
-        <Value type="SAssetKey" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb">
-          <Value />
-        </Value>
-      </Node>
-    </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="20" Width="154" Height="67">
       <Name>###CreateTaskWorkSpace01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreateTaskWorkSpace">
@@ -298,114 +275,9 @@
         </WorkSpaceName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubflowBranchDiagramItem" X="-420" Y="160" Width="150" Height="130">
-      <Name>###PageSubNode01</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubflowBranchNode">
-        <Name>###PageSubNode01</Name>
-        <Description>Sub Page</Description>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <Page>
-          <Id>a5f66ac4-2d80-439f-85a0-7b7a4c5dd8e9</Id>
-        </Page>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="-180" Y="150" Width="140" Height="110">
-      <Name>SubTaskResult</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
-        <Name>SubTaskResult</Name>
-        <Description>
-        </Description>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-410" Y="190" Width="69" Height="17">
-      <Name>SubTaskFinished</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
-        <Name>SubTaskFinished</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
-        <EventType>SubTaskFinished</EventType>
-        <CommitName>
-        </CommitName>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="-170" Y="190" Width="57" Height="17">
-      <Name>SubTaskEnd</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
-        <Name>SubTaskEnd</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
-        <CommitType>TaskFinished</CommitType>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="460" Y="240" Width="134" Height="100">
-      <Name>###AddSubTaskPage01</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
-        <PageTitle>
-        </PageTitle>
-        <TaskPrompt />
-        <CommitName>
-        </CommitName>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="200" Y="240" Width="198" Height="67">
-      <Name>###CreateToolCallingWithParameter01</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.CreateToolCallingWithParameter">
-        <ToolDefinition>
-          <Id>dafd7758-4543-4702-9def-5c115ac9a7d7</Id>
-        </ToolDefinition>
-        <Parameters>
-          <Item>
-            <Name>FullDocument</Name>
-            <Description>FullDocument</Description>
-            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
-              <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
-            </ParameterType>
-          </Item>
-          <Item>
-            <Name>SentenceCount</Name>
-            <Description>SentenceCount</Description>
-            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
-              <Id>fd0938ac-b62e-47a6-adab-dc856cacfb40</Id>
-            </ParameterType>
-          </Item>
-        </Parameters>
-        <UpdateParameter>False</UpdateParameter>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="140" Y="310" Width="29" Height="17">
-      <Name>###InputValue02</Name>
-      <Node type="Suity.Editor.Flows.Nodes.InputValue">
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>fd0938ac-b62e-47a6-adab-dc856cacfb40</Id>
-        </ValueType>
-        <Value type="System.Int32">5</Value>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="-170" Y="210" Width="68" Height="17">
-      <Name>SubTaskCommit</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
-        <Name>SubTaskCommit</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
-        </ValueType>
-        <Value type="System.Boolean">False</Value>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-230" Y="210" Width="37" Height="17">
-      <Name>###InputValue01</Name>
-      <Node type="Suity.Editor.Flows.Nodes.InputValue">
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
-        </ValueType>
-        <Value type="System.Boolean">True</Value>
-      </Node>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-140" Y="-10" Width="27" Height="17">
+      <Name>###GetCurrentTaskRule01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -561,12 +433,6 @@
       <ToConnector>ChatModel</ToConnector>
     </Item>
     <Item>
-      <FromNode>LanguageRule</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###BuildPrompts01</ToNode>
-      <ToConnector>k_FRAMEWORK</ToConnector>
-    </Item>
-    <Item>
       <FromNode>FileSpecStart</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###CreateTaskWorkSpace01</ToNode>
@@ -585,57 +451,15 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>SubTaskResult</FromNode>
-      <FromConnector>Definition</FromConnector>
-      <ToNode>###PageSubNode01</ToNode>
-      <ToConnector>Result</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>SubTaskFinished</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>SubTaskEnd</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CreateToolCallingWithParameter01</FromNode>
-      <FromConnector>PageInstance</FromConnector>
-      <ToNode>###AddSubTaskPage01</ToNode>
-      <ToConnector>PageInstance</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CreateToolCallingWithParameter01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###AddSubTaskPage01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###InputValue02</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###CreateToolCallingWithParameter01</ToNode>
-      <ToConnector>p_SentenceCount</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CallLLm01</FromNode>
-      <FromConnector>Result</FromConnector>
-      <ToNode>###CreateToolCallingWithParameter01</ToNode>
-      <ToConnector>p_FullDocument</ToConnector>
+      <FromNode>###GetCurrentTaskRule01</FromNode>
+      <FromConnector>Rule</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_FRAMEWORK</ToConnector>
     </Item>
     <Item>
       <FromNode>###ForeachArray01</FromNode>
       <FromConnector>Output</FromConnector>
-      <ToNode>###CreateToolCallingWithParameter01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###AddSubTaskPage01</FromNode>
-      <FromConnector>Out</FromConnector>
       <ToNode>FileCodeEnd</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###InputValue01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>SubTaskCommit</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
   </Links>

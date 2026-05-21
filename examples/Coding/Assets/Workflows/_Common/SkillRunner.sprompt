@@ -89,9 +89,24 @@ If you decide to answer the question directly, output the result in the `answer`
 ...
 </answer>
 
-If you decide to complete the task (all skill-defined goals met), first output the `answer` the tag to conclude the task, then output the `end` tag as follows:
+If you decide to complete the task (all skill-defined goals met), output the `end` tag to conclude the task as follows:
 <end>
-End the task.
+[Task Completion Summary]
+1. Conclusive Summary:
+   - If a conclusive summary or final answer exists in the chat history, copy it verbatim here.
+   - If no prior summary exists, synthesize a concise conclusion based on the Skill Description and execution results.
+
+2. Deliverable Links (if any):
+   - Scan the conversation history for any output artifacts that qualify as deliverables.
+   - Extract and list file links and article links that were generated or referenced as task outputs.
+   - Format each link as: [Type] Label: URL
+     Example:
+     [File] Report_Draft_v2.pdf: (link address)
+     [Article] Final Analysis: (link address)
+   - If no deliverable links exist, output "None".
+
+3. Skill Alignment Confirmation:
+   - Briefly confirm that all outputs adhere to the Skill Description constraints and objectives.
 </end>
 
 # Rule
@@ -100,6 +115,9 @@ End the task.
 <rules>
 {{RULES}}
 </rules>
+
+Current Rule:
+{{SELECTED_RULE}}
 
 - **Rule Selection Protocol**:
   1. **When to Select**: When the invoked tool requires a "Rule" parameter or rule-based configuration, you MUST select one rule from the provided list.

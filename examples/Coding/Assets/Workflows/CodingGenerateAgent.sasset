@@ -1,34 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>23f73287-34b4-4797-b05c-b67324cca0bb</AssetId>
+  <AssetId>a4186d07-c508-430a-917c-c08699536700</AssetId>
   <PresetName>
   </PresetName>
-  <Description>
-  </Description>
-  <Icon>
-    <Id>3df98773-f0da-4039-aa81-ef4af6f8c015</Id>
-  </Icon>
   <BaseFlow>
     <Id>3729204d-ba2b-475e-8b8c-a2684693e89c</Id>
   </BaseFlow>
   <Tools>
     <Item>
-      <Id>0b58628b-6881-4951-9428-cbfe5d186435</Id>
+      <Id>98a70fcd-c047-4e0d-8799-00f0029e8059</Id>
     </Item>
     <Item>
-      <Id>8dba2953-d4a3-4fdb-be13-39397b12ae77</Id>
+      <Id>5685e92a-6704-4d97-982e-519f453e2de5</Id>
     </Item>
     <Item>
-      <Id>a5f66ac4-2d80-439f-85a0-7b7a4c5dd8e9</Id>
+      <Id>ea8ce57d-1e2f-499e-8e2e-3bf2fc747f58</Id>
     </Item>
     <Item>
-      <Id>23fd6b7e-70ab-43d3-89db-b2c49371b67e</Id>
+      <Id>9bab7558-b19e-4f5c-a1ea-cd78da4a1576</Id>
     </Item>
     <Item>
       <Id>0c0e6e87-c484-44be-8d2b-1e00a40300e0</Id>
     </Item>
   </Tools>
-  <IsStartup>True</IsStartup>
   <UseParentArticle>True</UseParentArticle>
   <Overview>
     <Text>This skill can write programming documents, technical specification documents, as well as write and interact with complete program versions. When submitting a request, please do not write additional technical details and let this skill determine which technical specifications to adopt.</Text>
@@ -36,11 +30,17 @@
   <PromptHint>
     <Text>Web application built with JavaScript/TypeScript.</Text>
   </PromptHint>
+  <Rule />
+  <Description>
+  </Description>
+  <Icon>
+    <Id>3df98773-f0da-4039-aa81-ef4af6f8c015</Id>
+  </Icon>
   <Page>
     <__preset__ />
     <SkillDescription type="SAssetKey" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb">
       <Value>
-        <Id>5a5d53fe-0133-4c31-9fb4-913f868a715c</Id>
+        <Id>7e2caea0-563a-4c48-8a85-c8cb358cf106</Id>
       </Value>
     </SkillDescription>
     <Rules type="SArray" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb[]">

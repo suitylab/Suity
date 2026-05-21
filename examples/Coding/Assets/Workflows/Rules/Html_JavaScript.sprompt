@@ -100,6 +100,12 @@ dist/
 - Use lockfiles (`package-lock.json`, `yarn.lock`, or `pnpm-lock.yaml`) to ensure consistent dev environments.
 - Prefer native browser APIs over external libraries when possible.
 
+## Build & Test
+> 🛑 **Conditional Execution Guard**: Execute the following steps **ONLY** when the user explicitly requests to build, run, or test the project. **DO NOT** run these commands automatically during code generation, file scaffolding, or static analysis.
+1. `npm install` - Install all project dependencies.
+2. `npm run dev` - Execute immediately after `npm install` completes successfully to start the Vite development server.
+3. *(If requested)* `npm run build` / `npm run test` - Perform production compilation or run test suites.
+
 ## **Important Notice**
 - The `index.html` file must strictly follow the Entry Point Specification. **Do NOT** write logical, layout, or interactive code inside `index.html`.
 - Maintain strict separation: Structure in `/index.html`, styling in `/css/`, behavior in `/js/`.
