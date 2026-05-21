@@ -33,7 +33,7 @@ public interface ISubFlowTypeNode
     /// <summary>
     /// Gets a value indicating whether the parameter is displayed as a link address instead of content.
     /// </summary>
-    bool LinkedMode { get; }
+    bool AddressMode { get; }
 }
 
 /// <summary>

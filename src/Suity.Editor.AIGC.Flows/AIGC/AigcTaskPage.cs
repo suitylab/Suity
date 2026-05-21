@@ -44,6 +44,11 @@ public abstract class AigcTaskPage : DesignNode,
         get => _commitName.Text ?? string.Empty;
         set
         {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                value = string.Empty;
+            }
+
             if (_commitName.Text != value)
             {
                 _commitName.Text = value;

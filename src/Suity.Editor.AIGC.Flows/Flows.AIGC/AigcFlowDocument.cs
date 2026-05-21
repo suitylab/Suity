@@ -8,7 +8,7 @@ namespace Suity.Editor.Flows.AIGC;
 /// <summary>
 /// AIGC Flow document type for creating and editing AI workflow diagrams.
 /// </summary>
-[DocumentFormat(FormatName = "AigcFlow", Extension = "aigcflow", DisplayText = "AIGC Workflow", Icon = "*CoreIcon|Workflow", Categoty = "AIGC", Order = 100, Iteration = LoadingIterations.Iteration2)]
+[DocumentFormat(FormatName = "AigcFlow", Extension = "aigcflow", DisplayText = "Workflow", Icon = "*CoreIcon|Workflow", Categoty = "AIGC", Order = 100, Iteration = LoadingIterations.Iteration2)]
 [EditorFeature(EditorFeatures.AigcWorkflow)]
 [NativeAlias("Suity.Editor.AIGC.Flows.AigcFlowDocument")]
 public class AigcFlowDocument : BaseAigcFlowDocument<AigcDiagramAssetBuilder>

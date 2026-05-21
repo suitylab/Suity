@@ -29,7 +29,7 @@
         <UseParentArticle>True</UseParentArticle>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="730" Y="-90" Width="140" Height="140">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="570" Y="90" Width="140" Height="140">
       <Name>CodeSpecificationResult</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
         <Name>CodeSpecificationResult</Name>
@@ -96,7 +96,7 @@
         </TagNames>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageArticleOutputItem" X="740" Y="-30" Width="51" Height="25">
+    <Item type="Suity.Editor.Flows.SubFlows.PageArticleOutputItem" X="580" Y="150" Width="51" Height="25">
       <Name>Specification</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageArticleOutputNode">
         <Name>Specification</Name>
@@ -118,7 +118,7 @@
         <PassToSubTasks>True</PassToSubTasks>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="450" Y="-110" Width="59" Height="25">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="390" Y="110" Width="59" Height="25">
       <Name>###PageParameterRefNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.PageParameterReference">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
@@ -134,7 +134,7 @@
         </OutputValueType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="540" Y="-60" Width="142" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="600" Y="-100" Width="142" Height="111">
       <Name>###CreateArticle01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetOrCreateArticle">
         <Id>
@@ -147,7 +147,7 @@
         <Guide />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="470" Y="0" Width="63" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="460" Y="-30" Width="63" Height="17">
       <Name>###GetXmlTagAttributesNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetXmlTagAttributesNode">
         <AttributeNames>
@@ -155,7 +155,7 @@
         </AttributeNames>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="470" Y="30" Width="28" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-10" Width="28" Height="17">
       <Name>###GetXmlTagContentNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
     </Item>
@@ -196,7 +196,7 @@
         <UpdateKeywords>False</UpdateKeywords>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="740" Y="-50" Width="69" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="580" Y="130" Width="69" Height="17">
       <Name>SpecificationEnd</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
         <Name>SpecificationEnd</Name>
@@ -230,115 +230,6 @@
         <Value type="SAssetKey" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb">
           <Value />
         </Value>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubflowBranchDiagramItem" X="-400" Y="110" Width="150" Height="130">
-      <Name>###PageSubNode01</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubflowBranchNode">
-        <Name>###PageSubNode01</Name>
-        <Description>Sub Page</Description>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <Page>
-          <Id>8dba2953-d4a3-4fdb-be13-39397b12ae77</Id>
-        </Page>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="-100" Y="120" Width="140" Height="110">
-      <Name>SubTaskResult</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
-        <Name>SubTaskResult</Name>
-        <Description>
-        </Description>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-390" Y="140" Width="69" Height="17">
-      <Name>SubTaskFinished</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
-        <Name>SubTaskFinished</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
-        <EventType>SubTaskFinished</EventType>
-        <CommitName>
-        </CommitName>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="-90" Y="160" Width="57" Height="17">
-      <Name>SubTaskEnd</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
-        <Name>SubTaskEnd</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
-        <CommitType>TaskFinished</CommitType>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="540" Y="110" Width="134" Height="100">
-      <Name>###AddSubTaskPage01</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
-        <PageTitle>
-        </PageTitle>
-        <TaskPrompt />
-        <CommitName>
-        </CommitName>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="110" Width="198" Height="67">
-      <Name>###CreateToolCallingWithParameter01</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.CreateToolCallingWithParameter">
-        <ToolDefinition>
-          <Id>dafd7758-4543-4702-9def-5c115ac9a7d7</Id>
-        </ToolDefinition>
-        <Parameters>
-          <Item>
-            <Name>FullDocument</Name>
-            <Description>FullDocument</Description>
-            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
-              <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
-            </ParameterType>
-          </Item>
-          <Item>
-            <Name>SentenceCount</Name>
-            <Description>SentenceCount</Description>
-            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
-              <Id>fd0938ac-b62e-47a6-adab-dc856cacfb40</Id>
-            </ParameterType>
-          </Item>
-        </Parameters>
-        <UpdateParameter>False</UpdateParameter>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="220" Y="180" Width="29" Height="17">
-      <Name>###InputValue02</Name>
-      <Node type="Suity.Editor.Flows.Nodes.InputValue">
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>fd0938ac-b62e-47a6-adab-dc856cacfb40</Id>
-        </ValueType>
-        <Value type="System.Int32">5</Value>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="-90" Y="180" Width="68" Height="17">
-      <Name>SubTaskCommit</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
-        <Name>SubTaskCommit</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
-        </ValueType>
-        <Value type="System.Boolean">False</Value>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-150" Y="180" Width="37" Height="17">
-      <Name>###InputValue01</Name>
-      <Node type="Suity.Editor.Flows.Nodes.InputValue">
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
-        </ValueType>
-        <Value type="System.Boolean">True</Value>
       </Node>
     </Item>
   </Nodes>
@@ -465,51 +356,9 @@
       <ToConnector>Array</ToConnector>
     </Item>
     <Item>
-      <FromNode>SubTaskResult</FromNode>
-      <FromConnector>Definition</FromConnector>
-      <ToNode>###PageSubNode01</ToNode>
-      <ToConnector>Result</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>SubTaskFinished</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>SubTaskEnd</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###InputValue02</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###CreateToolCallingWithParameter01</ToNode>
-      <ToConnector>p_SentenceCount</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CreateToolCallingWithParameter01</FromNode>
-      <FromConnector>PageInstance</FromConnector>
-      <ToNode>###AddSubTaskPage01</ToNode>
-      <ToConnector>PageInstance</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###ForeachArray01</FromNode>
       <FromConnector>Output</FromConnector>
-      <ToNode>###CreateToolCallingWithParameter01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CreateToolCallingWithParameter01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###AddSubTaskPage01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###AddSubTaskPage01</FromNode>
-      <FromConnector>Out</FromConnector>
       <ToNode>SpecificationEnd</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###InputValue01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>SubTaskCommit</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
   </Links>

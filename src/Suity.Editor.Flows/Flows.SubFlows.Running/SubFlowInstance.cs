@@ -393,20 +393,35 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
         foreach (var element in outputs)
         {
-            string attr = ResolveElementXmlAttr(element as SubFlowElement);
-            builder.AppendLine($"<{element.Name}{attr}>");
+            if (element is IPageMessage)
+            {
+                try
+                {
+                    var text = element.ResolveChatHistory();
+                    builder.AppendLine(text.Text);
+                }
+                catch (Exception)
+                {
+                    builder.AppendLine("---");
+                }
+            }
+            else
+            {
+                string attr = ResolveElementXmlAttr(element as SubFlowElement);
+                builder.AppendLine($"<{element.Name}{attr}>");
 
-            try
-            {
-                var text = element.ResolveChatHistory();
-                builder.AppendLine(text.Text);
+                try
+                {
+                    var text = element.ResolveChatHistory();
+                    builder.AppendLine(text.Text);
+                }
+                catch (Exception)
+                {
+                    builder.AppendLine("---");
+                }
+                builder.AppendLine($"</{element.Name}>");
+                builder.AppendLine();
             }
-            catch (Exception)
-            {
-                builder.AppendLine("---");
-            }
-            builder.AppendLine($"</{element.Name}>");
-            builder.AppendLine();
         }
 
         return builder.ToString();

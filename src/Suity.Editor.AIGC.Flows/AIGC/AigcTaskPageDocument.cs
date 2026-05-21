@@ -21,7 +21,7 @@ namespace Suity.Editor.AIGC;
 /// <summary>
 /// Document that manages AIGC task pages, including task creation, configuration, and execution orchestration.
 /// </summary>
-[DocumentFormat(FormatName = "AigcTaskPage", Extension = "aigctask", DisplayText = "AIGC Task Page", Icon = "*CoreIcon|Task", Categoty = "AIGC", Order = 100, Iteration = LoadingIterations.Iteration2)]
+[DocumentFormat(FormatName = "AigcTaskPage", Extension = "aigctask", DisplayText = "Task", Icon = "*CoreIcon|Task", Categoty = "AIGC", Order = 100, Iteration = LoadingIterations.Iteration2)]
 [EditorFeature(EditorFeatures.AigcWorkflow)]
 [NativeAlias("Suity.Editor.AIGC.PageTasks.AigcTaskPageDocument")]
 [NativeAlias("Suity.Editor.AIGC.Flows.AigcTaskPageDocument")]

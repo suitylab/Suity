@@ -550,8 +550,12 @@ internal class AvaDialogServiceAsync : IDialogServiceAsync
         //    }
         //};
 
-        textBox.SelectAll();
-        textBox.Focus();
+        QueuedAction.Do(() =>
+        {
+            win.Focus();
+            textBox.SelectAll();
+            textBox.Focus();
+        });
 
         okButton.Click += (s, e) => { tcs.SetResult(textBox.Text); win.Close(); };
         cancelButton.Click += (s, e) => { tcs.SetResult(null); win.Close(); };
@@ -560,6 +564,8 @@ internal class AvaDialogServiceAsync : IDialogServiceAsync
         var owner = GetMainWindow();
         if (owner != null) await win.ShowDialog(owner);
         else win.Show();
+
+
 
         return await tcs.Task;
     }

@@ -404,7 +404,7 @@ public class SubFlowArticleOutput : SubFlowElement, IArticleResolver, IPageParam
         var node = _outputItem.Node;
 
         PassToSubTasks = node?.PassToSubTasks == true;
-        LinkedMode = node?.LinkedMode == true;
+        LinkedMode = node?.AddressMode == true;
         WritingTarget = node?.WritingTarget ?? ArticleFields.Content;
 
         Required = node?.Required == true;

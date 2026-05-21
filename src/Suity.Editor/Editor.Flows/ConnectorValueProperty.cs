@@ -632,7 +632,8 @@ public class ConnectorAssetProperty<T> : AssetProperty<T>
     {
         if (node.Diagram is { } diagram && Connector is { } connector && diagram.GetIsLinked(connector))
         {
-            return compute.GetValue<T>(connector);
+            var obj = compute.GetValue(connector);
+            return ResolveValue(obj);
         }
         else
         {
@@ -644,7 +645,8 @@ public class ConnectorAssetProperty<T> : AssetProperty<T>
     {
         if (diagram is { } && Connector is { } connector && diagram.GetIsLinked(connector))
         {
-            return compute.GetValue<T>(connector);
+            var obj = compute.GetValue(connector);
+            return ResolveValue(obj);
         }
         else
         {
@@ -653,6 +655,21 @@ public class ConnectorAssetProperty<T> : AssetProperty<T>
     }
 
     public bool GetIsLinked(FlowNode node) => node.Diagram?.GetIsLinked(Connector) == true;
+
+    private T ResolveValue(object obj)
+    {
+        if (obj is T t)
+        {
+            return t;
+        }
+
+        if (obj is SAssetKey sAssetKey && sAssetKey.TargetAsset is T t2)
+        {
+            return t2;
+        }
+
+        return default;
+    }
 }
 
 public class ConnectorAssetProperty<T, TConnector> : AssetProperty<T>

@@ -122,7 +122,7 @@ public class SubFlowEndElement : SubFlowElement, IPageParameterOutput
         ParameterType = EndNode?.TypeDef ?? TypeDefinition.Empty;
         EndNode = _endItem.Node as ISubFlowEndNode;
         EndType = EndNode?.EndType ?? TaskCommitStatus.None;
-        LinkedMode = EndNode?.LinkedMode == true;
+        LinkedMode = EndNode?.AddressMode == true;
     }
 
 

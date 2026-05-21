@@ -153,7 +153,7 @@ public abstract class BaseTextDocument<TAssetBuilder> : BaseTextDocument
 /// <summary>
 /// Represents a simple text document with no special formatting.
 /// </summary>
-[DisplayText("Text Document", "*CoreIcon|Text")]
+[DisplayText("Text", "*CoreIcon|Text")]
 public class TextDocument : BaseTextDocument
 {
     /// <summary>

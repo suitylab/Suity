@@ -53,7 +53,7 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
     private readonly ValueProperty<bool> _required = new("Required", "Required", true, "Indicates whether this parameter is required to complete the task.");
     private readonly ValueProperty<bool> _chatHistory = new("History", "Chat History", false, "Retained as historical conversation during dialogue.");
     private readonly ValueProperty<bool> _taskCommit = new("TaskCommit", "Task Commit", false, "Submit this value after completing the task.");
-    private readonly ValueProperty<bool> _linkedMode = new("LinkedMode", "Linked Mode", false, "When enabled, will be displayed as a link address in task submissions and chat history, instead of content.\r\nOnly effective when value is a link type.");
+    private readonly ValueProperty<bool> _addressMode = new("AddressMode", "Address Mode", false, "When enabled, will be displayed as a link address in task submissions and chat history, instead of content.\r\nOnly effective when value is a link type.");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SubFlowTypeNode"/> class.
@@ -63,10 +63,11 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
         _valueType = DTypeManager.Instance.CreateTypeDesignSelection();
 
         _required.AliasName = "TaskCompletion";
+        _addressMode.AliasName = "LinkedMode";
     }
 
     /// <inheritdoc/>
-    public bool LinkedMode { get => _linkedMode.Value; protected set => _linkedMode.Value = value; }
+    public bool AddressMode { get => _addressMode.Value; protected set => _addressMode.Value = value; }
 
     /// <summary>
     /// Gets or sets a value indicating whether this property is retained as historical conversation during dialogue.
@@ -174,7 +175,7 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
         _required.Sync(sync);
         _chatHistory.Sync(sync);
         _taskCommit.Sync(sync);
-        _linkedMode.Sync(sync);
+        _addressMode.Sync(sync);
 
         if (_editTypeEnabled)
         {
@@ -232,7 +233,7 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
         _required.InspectorField(setup);
         _chatHistory.InspectorField(setup);
         _taskCommit.InspectorField(setup);
-        _linkedMode.InspectorField(setup);
+        _addressMode.InspectorField(setup);
     }
 
     /// <summary>

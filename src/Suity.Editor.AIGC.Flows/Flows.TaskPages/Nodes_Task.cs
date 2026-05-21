@@ -356,6 +356,37 @@ public class GetCurrentTaskPrompt : TaskPageNode
 
 #endregion
 
+#region GetCurrentTaskRule
+
+/// <summary>
+/// A flow node that retrieves the current task rule.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Get Current Task Rule", "*CoreIcon|Task")]
+public class GetCurrentTaskRule : TaskPageNode
+{
+    readonly FlowNodeConnector _rule;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetCurrentTaskRule"/> class.
+    /// </summary>
+    public GetCurrentTaskRule()
+    {
+        var ruleType = TypeDefinition.FromAssetLink<PromptAsset>();
+        _rule = AddDataOutputConnector("Rule", ruleType, "Rule");
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var ruleKey = new SAssetKey(TypeDefinition.FromAssetLink<PromptAsset>(), task?.Rule?.Id ?? Guid.Empty);
+        compute.SetValue(_rule, ruleKey);
+    }
+}
+
+#endregion
+
 #region GetTaskInformation
 
 /// <summary>
@@ -524,13 +555,15 @@ public class GetTaskPrompt : TaskPageNode
 /// <summary>
 /// A flow node that sets the task prompt for a specified task.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = true)]
 [DisplayText("Set Task Prompt", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetTaskPrompt")]
 public class SetTaskPrompt : TaskPageNode
 {
+    readonly FlowNodeConnector _in;
     readonly FlowNodeConnector _task;
     readonly ConnectorTextBlockProperty _prompt;
+    readonly FlowNodeConnector _out;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SetTaskPrompt"/> class.
@@ -539,9 +572,11 @@ public class SetTaskPrompt : TaskPageNode
     {
         var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
 
+        _in = this.AddActionInputConnector("In", "Input");
         _task = this.AddDataInputConnector("Task", taskType, "Task");
         _prompt = new ConnectorTextBlockProperty("Prompt", "Prompt");
         _prompt.AddConnector(this);
+        _out = this.AddActionOutputConnector("Out", "Output");
     }
 
     /// <inheritdoc/>
@@ -570,62 +605,8 @@ public class SetTaskPrompt : TaskPageNode
         {
             task.SetPrompt(prompt);
         }
-    }
-}
 
-#endregion
-
-#region SetTaskRule
-
-/// <summary>
-/// A flow node that sets the task rule for a specified task.
-/// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
-[DisplayText("Set Task Rule", "*CoreIcon|Task")]
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetTaskRule")]
-public class SetTaskRule : TaskPageNode
-{
-    readonly FlowNodeConnector _task;
-    readonly ConnectorAssetProperty<PromptAsset> _rule;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SetTaskRule"/> class.
-    /// </summary>
-    public SetTaskRule()
-    {
-        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
-
-        _task = this.AddDataInputConnector("Task", taskType, "Task");
-        _rule = new ConnectorAssetProperty<PromptAsset>("Rule", "Rule", "Optional rule to apply to the task.");
-        _rule.AddConnector(this);
-    }
-
-    /// <inheritdoc/>
-    protected override void OnSync(IPropertySync sync, ISyncContext context)
-    {
-        base.OnSync(sync, context);
-
-        _rule.Sync(sync);
-    }
-
-    /// <inheritdoc/>
-    protected override void OnSetupView(IViewObjectSetup setup)
-    {
-        base.OnSetupView(setup);
-
-        _rule.InspectorField(setup, this);
-    }
-
-    /// <inheritdoc/>
-    public override void Compute(IFlowComputation compute)
-    {
-        var task = compute.GetValue<IAigcWorkflowPage>(_task);
-        var rule = _rule.GetTarget(compute, this);
-
-        if (task != null)
-        {
-            task.Rule = rule;
-        }
+        compute.SetResult(this, _out);
     }
 }
 
@@ -664,6 +645,67 @@ public class GetTaskRule : TaskPageNode
         var ruleKey = new SAssetKey(ruleType, task?.Rule?.Id ?? Guid.Empty);
 
         compute.SetValue(_rule, ruleKey);
+    }
+}
+
+#endregion
+
+#region SetTaskRule
+
+/// <summary>
+/// A flow node that sets the task rule for a specified task.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = true)]
+[DisplayText("Set Task Rule", "*CoreIcon|Task")]
+public class SetTaskRule : TaskPageNode
+{
+    readonly FlowNodeConnector _in;
+    readonly FlowNodeConnector _task;
+    readonly ConnectorAssetProperty<PromptAsset> _rule;
+    readonly FlowNodeConnector _out;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SetTaskRule"/> class.
+    /// </summary>
+    public SetTaskRule()
+    {
+        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
+
+        _in = this.AddActionInputConnector("In", "Input");
+        _task = this.AddDataInputConnector("Task", taskType, "Task");
+        _rule = new ConnectorAssetProperty<PromptAsset>("Rule", "Rule", "Optional rule to apply to the task.");
+        _rule.AddConnector(this);
+        _out = this.AddActionOutputConnector("Out", "Output");
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _rule.Sync(sync);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _rule.InspectorField(setup, this);
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var task = compute.GetValue<IAigcWorkflowPage>(_task);
+        var rule = _rule.GetTarget(compute, this);
+
+        if (task != null)
+        {
+            task.Rule = rule;
+        }
+
+        compute.SetResult(this, _out);
     }
 }
 
@@ -723,6 +765,36 @@ public class GetTaskCommit : TaskPageNode
         {
             compute.SetValue(_commitStatus, task.GetCommitStatus());
         }
+    }
+}
+
+#endregion
+
+#region GetCurrentTaskCommitName
+
+/// <summary>
+/// A flow node that retrieves the commit name from the current task.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Get Current Task Commit Name", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetCurrentTaskCommitName")]
+public class GetCurrentTaskCommitName : TaskPageNode
+{
+    readonly FlowNodeConnector _commitName;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetCurrentTaskCommitName"/> class.
+    /// </summary>
+    public GetCurrentTaskCommitName()
+    {
+        _commitName = AddDataOutputConnector("CommitName", "string", "Commit Name");
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
+        compute.SetValue(_commitName, task?.CommitName ?? string.Empty);
     }
 }
 

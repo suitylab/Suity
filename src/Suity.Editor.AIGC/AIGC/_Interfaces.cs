@@ -65,6 +65,11 @@ public interface IAigcTaskPage : INamed, ITextDisplay
     IAigcTaskPage ParentTask { get; }
 
     /// <summary>
+    /// Gets the task commit name, which is used to match against event nodes for handling AI request events.
+    /// </summary>
+    string CommitName { get; }
+
+    /// <summary>
     /// Gets the task status.
     /// </summary>
     TaskCommitStatus GetCommitStatus();

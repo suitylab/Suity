@@ -103,7 +103,7 @@ public class SubFlowPresetParameter : SubFlowElement, IPageParameterInput
         Required = node?.Required == true;
         TaskCommit = node?.TaskCommit == true;
         ChatHistory = node?.ChatHistory == true;
-        LinkedMode = node?.LinkedMode == true;
+        LinkedMode = node?.AddressMode == true;
     }
 
     /// <inheritdoc/>

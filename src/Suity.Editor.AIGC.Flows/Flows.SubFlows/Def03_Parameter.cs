@@ -486,7 +486,7 @@ public class PageArticleOutputNode : SubFlowTypeNode
         base.FlowNodeGui = OnGui;
         base.EditTypeEnabled = false;
         base.TypeDef = TypeDefinition.FromNative<IArticle>();
-        base.LinkedMode = true;
+        base.AddressMode = true;
 
         UpdateConnector();
     }
