@@ -192,7 +192,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
     private readonly SimpleType _inputType;
 
     private TOutput _output;
-    private TextBlockProperty _errorMessage = new("Error", "Error Message");
+    private readonly TextBlockProperty _errorMessage = new("Error", "Error Message");
 
     private Exception _lastError;
 
@@ -202,6 +202,9 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
         _input = Activator.CreateInstance<TInput>();
         _inputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(_input, name, tool.FullName);
+
+        _errorMessage.Text = null;
+        _errorMessage.Property.WithOptional();
 
         _conversation = EditorServices.ImGuiService.CreateConversationImGui(typeof(TInput).Name, false);
     }
@@ -358,12 +361,13 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
     {
         _output = output;
         _lastError = null;
+        _errorMessage.Text = null;
     }
 
     public void SetError(Exception error)
     {
         _lastError = error ?? new Exception("Unknown error");
-        _errorMessage.Text = error.ToString() ?? "Unknown error";
+        _errorMessage.Text = _lastError.ToString() ?? "Unknown error";
         _output = null;
     }
 
