@@ -298,41 +298,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             .Where(o => o.ChatHistory && o.GetCanOutputHistory(FlowDirections.Input))
             .ToArray();
 
-        foreach (var element in inputs)
-        {
-            if (element is IPageMessage)
-            {
-                try
-                {
-                    var text = element.ResolveChatHistory();
-                    builder.AppendLine(text.Text);
-                }
-                catch (Exception)
-                {
-                    builder.AppendLine("---");
-                }
-            }
-            else
-            {
-                if (TypeDefinition.IsNullOrEmpty(element.ParameterType))
-                {
-                    continue;
-                }
-
-                var text = ResolveElementChatHistory(element);
-                if (text is null || string.IsNullOrWhiteSpace(text.Text))
-                {
-                    continue;
-                }
-
-                string attr = ResolveElementXmlAttr(element as SubFlowElement);
-                builder.AppendLine($"<{element.Name}{attr}>");
-                builder.AppendLine(text.Text);
-                builder.AppendLine($"</{element.Name}>");
-            }
-
-            builder.AppendLine();
-        }
+        BuildParameter(builder, inputs);
 
         return builder.ToString();
     }
@@ -346,42 +312,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             .Where(o => o.ChatHistory && o.GetCanOutputHistory(FlowDirections.Output))
             .ToArray();
 
-        builder.Length = 0;
-        foreach (var element in outputs)
-        {
-            if (element is IPageMessage)
-            {
-                try
-                {
-                    var text = element.ResolveChatHistory();
-                    builder.AppendLine(text.Text);
-                }
-                catch (Exception)
-                {
-                    builder.AppendLine("---");
-                }
-            }
-            else
-            {
-                if (TypeDefinition.IsNullOrEmpty(element.ParameterType))
-                {
-                    continue;
-                }
-
-                var text = ResolveElementChatHistory(element);
-                if (text is null || string.IsNullOrWhiteSpace(text.Text))
-                {
-                    continue;
-                }
-
-                string attr = ResolveElementXmlAttr(element as SubFlowElement);
-                builder.AppendLine($"<{element.Name}{attr}>");
-                builder.AppendLine(text.Text);
-                builder.AppendLine($"</{element.Name}>");
-            }
-
-            builder.AppendLine();
-        }
+        BuildParameter(builder, outputs);
 
         return builder.ToString();
     }
@@ -391,59 +322,15 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     {
         var builder = new StringBuilder();
 
-        var outputs = GetAllChildElements(true).OfType<IPageParameter>()
+        var commits = GetAllChildElements(true).OfType<IPageParameter>()
             .Where(o => o.TaskCommit)
             .ToArray();
 
-        foreach (var element in outputs)
-        {
-            if (element is IPageMessage)
-            {
-                try
-                {
-                    var text = element.ResolveChatHistory();
-                    builder.AppendLine(text.Text);
-                }
-                catch (Exception)
-                {
-                    builder.AppendLine("---");
-                }
-            }
-            else
-            {
-                if (TypeDefinition.IsNullOrEmpty(element.ParameterType))
-                {
-                    continue;
-                }
-
-                var text = ResolveElementChatHistory(element);
-                if (text is null || string.IsNullOrWhiteSpace(text.Text))
-                {
-                    continue;
-                }
-
-                string attr = ResolveElementXmlAttr(element as SubFlowElement);
-                builder.AppendLine($"<{element.Name}{attr}>");
-                builder.AppendLine(text.Text);
-                builder.AppendLine($"</{element.Name}>");
-                builder.AppendLine();
-            }
-        }
+        BuildParameter(builder, commits);
 
         return builder.ToString();
     }
 
-    private HistoryText ResolveElementChatHistory(IPageParameter element)
-    {
-        try
-        {
-            return element.ResolveChatHistory();
-        }
-        catch (Exception)
-        {
-            return "---";
-        }
-    }
 
     /// <inheritdoc/>
     public override bool? GetIsDone()
@@ -981,6 +868,47 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         var type = ToSimpleType();
 
         return type.ToDataWritable();
+    }
+
+    private void BuildParameter(StringBuilder builder, IPageParameter[] outputs)
+    {
+        foreach (var element in outputs)
+        {
+            var text = ResolveParameterChatHistory(element);
+            if (text is null || string.IsNullOrWhiteSpace(text.Text))
+            {
+                continue;
+            }
+
+            if (element is IPageMessage)
+            {
+                builder.AppendLine(text.Text);
+                continue;
+            }
+
+            if (TypeDefinition.IsNullOrEmpty(element.ParameterType))
+            {
+                continue;
+            }
+
+            string attr = ResolveElementXmlAttr(element as SubFlowElement);
+            builder.AppendLine($"<{element.Name}{attr}>");
+            builder.AppendLine(text.Text);
+            builder.AppendLine($"</{element.Name}>");
+            builder.AppendLine();
+        }
+    }
+
+    private HistoryText ResolveParameterChatHistory(IPageParameter element)
+    {
+        try
+        {
+            return element.ResolveChatHistory();
+        }
+        catch (Exception)
+        {
+            return "---";
+        }
     }
 
     private string ResolveElementXmlAttr(SubFlowElement element)

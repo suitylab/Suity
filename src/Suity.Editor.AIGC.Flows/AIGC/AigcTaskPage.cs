@@ -125,6 +125,8 @@ public abstract class AigcTaskPage : DesignNode,
     {
         setup.LabelWithIcon("Commit", CoreIconCache.Complete);
         _commitName.InspectorField(setup);
+
+        _commitStatus.Property.WithIcon(_commitStatus.Value.ToCheckedStatus().ToStatusIcon());
         _commitStatus.InspectorField(setup);
     }
 
