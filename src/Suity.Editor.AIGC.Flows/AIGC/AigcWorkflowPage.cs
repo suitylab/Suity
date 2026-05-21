@@ -136,7 +136,32 @@ public class AigcWorkflowPage : AigcTaskPage,
     public string TaskPrompt
     {
         get => _taskPrompt.Text ?? string.Empty;
-        set => _taskPrompt.Text = value ?? string.Empty;
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                value = string.Empty;
+            }
+
+            if (_taskPrompt.Text != value)
+            {
+                _taskPrompt.Text = value;
+                this.TaskPageDocument?.MarkDirtyAndSaveDelayed(this);
+            }
+        }
+    }
+
+    public PromptAsset Rule
+    {
+        get => _rule.Target;
+        set
+        {
+            if (_rule.Target != value)
+            {
+                _rule.Target = value;
+                this.TaskPageDocument?.MarkDirtyAndSaveDelayed(this);
+            }
+        }
     }
 
     #endregion
@@ -328,16 +353,10 @@ public class AigcWorkflowPage : AigcTaskPage,
 
     #region IAigcWorkflowPage
 
-    /// <summary>
-    /// Gets the sub-flow instance associated with this workflow page.
-    /// </summary>
+    /// <inheritdoc/>
     public ISubFlowInstance GetSubFlowInstance() => EnsureInstance();
 
-    /// <summary>
-    /// Gets the task prompt, optionally including prompts from the parent hierarchy.
-    /// </summary>
-    /// <param name="inHierarchy">If true, collects prompts from all parent tasks in the hierarchy.</param>
-    /// <returns>The task prompt text, potentially combined with parent prompts.</returns>
+    /// <inheritdoc/>
     public string GetPrompt(bool inHierarchy)
     {
         if (inHierarchy)
@@ -424,9 +443,10 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="asset">The AIGC tool asset to use for the new task.</param>
     /// <param name="title">The title for the new task.</param>
     /// <param name="taskPrompt">The prompt for the new task.</param>
+    /// <param name="rule">The prompt rule for the new task.</param>
     /// <param name="commitName">The commit name for the new task.</param>
     /// <returns>True if the task was successfully appended; otherwise, false.</returns>
-    public bool AppendTask(IPageAsset asset, string title, string taskPrompt, string commitName)
+    public bool AppendTask(IPageAsset asset, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -449,7 +469,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             lastTask?.TaskPrompt = string.Empty;
         }*/
 
-        var task = CreateTaskPage(asset, title, taskPrompt, commitName);
+        var task = CreateTaskPage(asset, title, taskPrompt, rule, commitName);
         if (task is not NamedItem item)
         {
             return false;
@@ -470,9 +490,10 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="pageInstance">The page instance to use for the new task.</param>
     /// <param name="title">The title for the new task.</param>
     /// <param name="taskPrompt">The prompt for the new task.</param>
+    /// <param name="rule">The prompt rule for the new task.</param>
     /// <param name="commitName">The commit name for the new task.</param>
     /// <returns>True if the task was successfully appended; otherwise, false.</returns>
-    public bool AppendTask(IPageInstance pageInstance, string title, string taskPrompt, string commitName)
+    public bool AppendTask(IPageInstance pageInstance, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -492,7 +513,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             lastTask?.TaskPrompt = string.Empty;
         }*/
 
-        var task = CreateTaskPage(pageInstance, title, taskPrompt, commitName);
+        var task = CreateTaskPage(pageInstance, title, taskPrompt, rule, commitName);
         if (task is not NamedItem item)
         {
             return false;
@@ -513,9 +534,10 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="asset">The AIGC tool asset to use for the new sub-task.</param>
     /// <param name="title">The title for the new sub-task.</param>
     /// <param name="taskPrompt">The prompt for the new sub-task.</param>
+    /// <param name="rule">The prompt rule for the new sub-task.</param>
     /// <param name="commitName">The commit name for the new sub-task.</param>
     /// <returns>True if the sub-task was successfully added; otherwise, false.</returns>
-    public bool AddSubTask(IPageAsset asset, string title, string taskPrompt, string commitName)
+    public bool AddSubTask(IPageAsset asset, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -528,7 +550,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             return false;
         }
 
-        var task = CreateTaskPage(asset, title, taskPrompt, commitName);
+        var task = CreateTaskPage(asset, title, taskPrompt, rule, commitName);
         if (task is not NamedItem { } item)
         {
             return false;
@@ -549,9 +571,10 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="pageInstance">The page instance to use for the new sub-task.</param>
     /// <param name="title">The title for the new sub-task.</param>
     /// <param name="taskPrompt">The prompt for the new sub-task.</param>
+    /// <param name="rule">The prompt rule for the new sub-task.</param>
     /// <param name="commitName">The commit name for the new sub-task.</param>
     /// <returns>True if the sub-task was successfully added; otherwise, false.</returns>
-    public bool AddSubTask(IPageInstance pageInstance, string title, string taskPrompt, string commitName)
+    public bool AddSubTask(IPageInstance pageInstance, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -564,7 +587,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             return false;
         }
 
-        var task = CreateTaskPage(pageInstance, title, taskPrompt, commitName);
+        var task = CreateTaskPage(pageInstance, title, taskPrompt, rule, commitName);
         if (task is not NamedItem item)
         {
             return false;
@@ -1033,11 +1056,12 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="page">The page to create the task from.</param>
     /// <param name="title">Optional title for the task page.</param>
     /// <param name="taskPrompt">Optional task prompt for the task page.</param>
+    /// <param name="rule">Optional rule for the task page.</param>
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="NullReferenceException">Thrown when the page is not a PageDefinitionNode or PageDefinitionAsset.</exception>
     /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
-    public AigcWorkflowPage CreateWorkflowPage(ISubFlow page, string title = null, string taskPrompt = null, string commitName = null)
+    public AigcWorkflowPage CreateWorkflowPage(ISubFlow page, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
         var asset = (page as SubflowDefinitionNode)?.GetAsset() as SubFlowDefinitionAsset
             ?? throw new NullReferenceException("page is not a PageDefinitionNode or PageDefinitionAsset.");
@@ -1047,7 +1071,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             throw new InvalidOperationException("AigcTaskPageDocument not found.");
         }
 
-        return CreateWorkflowPage(doc, asset, title, taskPrompt, commitName);
+        return CreateWorkflowPage(doc, asset, title, taskPrompt, rule, commitName);
     }
 
     /// <summary>
@@ -1060,7 +1084,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="subFlowAsset"/> is null.</exception>
-    public static AigcWorkflowPage CreateWorkflowPage(AigcTaskPageDocument doc, ISubFlowAsset subFlowAsset, string title = null, string taskPrompt = null, string commitName = null)
+    public static AigcWorkflowPage CreateWorkflowPage(AigcTaskPageDocument doc, ISubFlowAsset subFlowAsset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
         if (doc is null)
         {
@@ -1105,6 +1129,8 @@ public class AigcWorkflowPage : AigcTaskPage,
             taskPage.SetPrompt(taskPrompt);
         }
 
+        taskPage.Rule = rule;
+
         if (!string.IsNullOrWhiteSpace(commitName))
         {
             taskPage.CommitName = commitName;
@@ -1123,7 +1149,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="subFlowInstance"/> is null.</exception>
-    public static AigcWorkflowPage CreateWorkflowPage(AigcTaskPageDocument doc, ISubFlowInstance subFlowInstance, string title = null, string taskPrompt = null, string commitName = null)
+    public static AigcWorkflowPage CreateWorkflowPage(AigcTaskPageDocument doc, ISubFlowInstance subFlowInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
         if (doc is null)
         {
@@ -1176,7 +1202,9 @@ public class AigcWorkflowPage : AigcTaskPage,
         {
             taskPage.SetPrompt(taskPrompt);
         }
-        
+
+        taskPage.Rule = rule;
+
         if (!string.IsNullOrWhiteSpace(commitName))
         {
             taskPage.CommitName = commitName;

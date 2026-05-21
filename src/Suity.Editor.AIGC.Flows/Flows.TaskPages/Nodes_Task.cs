@@ -1,11 +1,13 @@
 using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.AIGC;
+using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -30,6 +32,7 @@ public class AppendTaskPage : TaskPageNode
     readonly FlowNodeConnector _inPage;
     readonly ConnectorStringProperty _pageTitle = new("PageTitle", "Page Title");
     readonly ConnectorTextBlockProperty _taskPrompt = new("TaskPrompt", "Task Prompt");
+    readonly ConnectorAssetProperty<PromptAsset> _taskRule = new("TaskRule", "Task Rule", "Optional rule to apply to the task.");
     readonly ConnectorStringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "Name used when submitting to parent task.");
 
     readonly FlowNodeConnector _out;
@@ -47,6 +50,7 @@ public class AppendTaskPage : TaskPageNode
         _inPage = this.AddDataInputConnector("Page", type, "Page");
         _pageTitle.AddConnector(this);
         _taskPrompt.AddConnector(this);
+        _taskRule.AddConnector(this);
         _commitName.AddConnector(this);
 
         _out = this.AddActionOutputConnector("Out", "Output");
@@ -64,6 +68,7 @@ public class AppendTaskPage : TaskPageNode
 
         _pageTitle.Sync(sync);
         _taskPrompt.Sync(sync);
+        _taskRule.Sync(sync);
         _commitName.Sync(sync);
     }
 
@@ -74,6 +79,7 @@ public class AppendTaskPage : TaskPageNode
 
         _pageTitle.InspectorField(setup, this);
         _taskPrompt.InspectorField(setup, this);
+        _taskRule.InspectorField(setup, this);
         _commitName.InspectorField(setup, this);
     }
 
@@ -92,15 +98,16 @@ public class AppendTaskPage : TaskPageNode
 
         string title = _pageTitle.GetValue(compute, this);
         string taskPrompt = _taskPrompt.GetText(compute, this);
+        var taskRule = _taskRule.GetTarget(compute, this);
         string commitName = _commitName.GetValue(compute, this);
 
         if (pageInstance != null)
         {
-            service.AppendTask(pageInstance, title, taskPrompt, commitName);
+            service.AppendTask(pageInstance, title, taskPrompt, taskRule, commitName);
         }
         else if (page != null)
         {
-            service.AppendTask(page, title, taskPrompt, commitName);
+            service.AppendTask(page, title, taskPrompt, taskRule, commitName);
         }
         
 
@@ -126,6 +133,7 @@ public class AddSubTaskPage : TaskPageNode
     readonly FlowNodeConnector _inPage;
     readonly ConnectorStringProperty _pageTitle = new("PageTitle", "Page Title");
     readonly ConnectorTextBlockProperty _taskPrompt = new("TaskPrompt", "Task Prompt");
+    readonly ConnectorAssetProperty<PromptAsset> _taskRule = new("TaskRule", "Task Rule", "Optional rule to apply to the task.");
     readonly ConnectorStringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "Name used when submitting to parent task.");
 
     readonly FlowNodeConnector _out;
@@ -143,6 +151,7 @@ public class AddSubTaskPage : TaskPageNode
         _inPage = this.AddDataInputConnector("Page", type, "Page");
         _pageTitle.AddConnector(this);
         _taskPrompt.AddConnector(this);
+        _taskRule.AddConnector(this);
         _commitName.AddConnector(this);
 
         _out = this.AddActionOutputConnector("Out", "Output");
@@ -160,6 +169,7 @@ public class AddSubTaskPage : TaskPageNode
 
         _pageTitle.Sync(sync);
         _taskPrompt.Sync(sync);
+        _taskRule.Sync(sync);
         _commitName.Sync(sync);
     }
 
@@ -170,6 +180,7 @@ public class AddSubTaskPage : TaskPageNode
 
         _pageTitle.InspectorField(setup, this);
         _taskPrompt.InspectorField(setup, this);
+        _taskRule.InspectorField(setup, this);
         _commitName.InspectorField(setup, this);
     }
 
@@ -188,15 +199,16 @@ public class AddSubTaskPage : TaskPageNode
 
         string title = _pageTitle.GetValue(compute, this);
         string taskPrompt = _taskPrompt.GetText(compute, this);
+        var taskRule = _taskRule.GetTarget(compute, this);
         string commitName = _commitName.GetValue(compute, this);
 
         if (pageInstance != null)
         {
-            service.AddSubTask(pageInstance, title, taskPrompt, commitName);
+            service.AddSubTask(pageInstance, title, taskPrompt, taskRule, commitName);
         }
         else if (page != null)
         {
-            service.AddSubTask(page, title, taskPrompt, commitName);
+            service.AddSubTask(page, title, taskPrompt, taskRule, commitName);
         }
 
         compute.SetResult(this, _out);
@@ -344,6 +356,113 @@ public class GetCurrentTaskPrompt : TaskPageNode
 
 #endregion
 
+#region GetTaskInformation
+
+/// <summary>
+/// A flow node that retrieves various information about a specified task,
+/// including ID, title, index, parent task, child tasks, and status flags.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Get Task Information", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskInfomation")]
+[NativeAlias("Suity.Editor.Flows.TaskPages.GetTaskInfomation")]
+public class GetTaskInformation : TaskPageNode
+{
+    readonly FlowNodeConnector _task;
+
+    readonly FlowNodeConnector _taskId;
+    readonly FlowNodeConnector _taskTitle;
+    readonly FlowNodeConnector _taskIndex;
+    readonly FlowNodeConnector _parentTask;
+    readonly FlowNodeConnector _childTaskCount;
+    readonly FlowNodeConnector _childTasks;
+
+    readonly FlowNodeConnector _isInitialTask;
+    readonly FlowNodeConnector _isFirstTask;
+    readonly FlowNodeConnector _isDone;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetTaskInformation"/> class, setting up output connectors for task information properties.
+    /// </summary>
+    public GetTaskInformation()
+    {
+        var type = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var aryType = type.MakeArrayType();
+
+        _task = AddDataInputConnector("Task", type, "Task");
+
+        _taskId = AddDataOutputConnector("TaskId", "string", "Task Id");
+        _taskTitle = AddDataOutputConnector("TaskTitle", "string", "Task Title");
+        _taskIndex = AddDataOutputConnector("TaskIndex", "int", "Task Index");
+        _parentTask = AddDataOutputConnector("ParentTask", type, "Parent Task");
+        _childTaskCount = AddDataOutputConnector("ChildTaskCount", "int", "Child Task Count");
+        _childTasks = AddDataOutputConnector("ChildTasks", aryType, "Sub Tasks");
+
+        _isInitialTask = AddDataOutputConnector("IsInitialTask", "bool", "Is Initial Task");
+        _isFirstTask = AddDataOutputConnector("IsFirstTask", "bool", "Is First Task");
+        _isDone = AddDataOutputConnector("IsDone", "bool", "Is Done");
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        base.Compute(compute);
+
+        var task = compute.GetValue<IAigcWorkflowPage>(_task) as AigcWorkflowPage
+            ?? throw new NullReferenceException("Task is null.");
+
+        var diagram = this.Diagram
+            ?? throw new NullReferenceException("Diagram is null.");
+
+        if (diagram.GetIsLinked(_taskId))
+        {
+            compute.SetValue(_taskId, task.Name);
+        }
+
+        if (diagram.GetIsLinked(_taskTitle))
+        {
+            compute.SetValue(_taskTitle, task.Description);
+        }
+
+        if (diagram.GetIsLinked(_taskIndex))
+        {
+            compute.SetValue(_taskIndex, task.GetIndex());
+        }
+
+        if (diagram.GetIsLinked(_parentTask))
+        {
+            compute.SetValue(_parentTask, task.ParentNode as AigcWorkflowPage);
+        }
+
+        if (diagram.GetIsLinked(_childTaskCount))
+        {
+            compute.SetValue(_childTaskCount, task.Count);
+        }
+
+        if (diagram.GetIsLinked(_childTasks))
+        {
+            compute.SetValue(_childTasks, task.Items.OfType<AigcWorkflowPage>().ToArray());
+        }
+
+        if (diagram.GetIsLinked(_isInitialTask))
+        {
+            compute.SetValue(_isInitialTask, task.GetIndex() == 0 && task.ParentNode is null);
+        }
+
+        if (diagram.GetIsLinked(_isFirstTask))
+        {
+            compute.SetValue(_isFirstTask, task.GetIndex() == 0);
+        }
+
+        if (diagram.GetIsLinked(_isDone))
+        {
+            compute.SetValue(_isDone, task.GetPageInstance()?.GetIsDone() == true);
+        }
+    }
+}
+
+#endregion
+
 #region GetTaskPrompt
 
 /// <summary>
@@ -395,6 +514,44 @@ public class GetTaskPrompt : TaskPageNode
         string prompt = task?.GetPrompt(inHierarchy) ?? string.Empty;
 
         compute.SetValue(_prompt, prompt);
+    }
+}
+
+#endregion
+
+#region GetTaskRule
+
+/// <summary>
+/// A flow node that retrieves the task rule from a specified task.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Get Task Rule", "*CoreIcon|Task")]
+public class GetTaskRule : TaskPageNode
+{
+    readonly FlowNodeConnector _task;
+    readonly FlowNodeConnector _rule;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetTaskRule"/> class.
+    /// </summary>
+    public GetTaskRule()
+    {
+        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var ruleType = TypeDefinition.FromAssetLink<PromptAsset>();
+
+        _task = this.AddDataInputConnector("Task", taskType, "Task");
+        _rule = AddDataOutputConnector("Rule", ruleType, "Rule");
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var ruleType = TypeDefinition.FromAssetLink<PromptAsset>();
+        var task = compute.GetValue<IAigcWorkflowPage>(_task);
+
+        var ruleKey = new SAssetKey(ruleType, task?.Rule?.Id ?? Guid.Empty);
+
+        compute.SetValue(_rule, ruleKey);
     }
 }
 
@@ -693,113 +850,6 @@ public class GetLastSubTask : TaskPageNode
         }
 
         compute.SetValue(_subTask, subTask);
-    }
-}
-
-#endregion
-
-#region GetTaskInformation
-
-/// <summary>
-/// A flow node that retrieves various information about a specified task,
-/// including ID, title, index, parent task, child tasks, and status flags.
-/// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
-[DisplayText("Get Task Information", "*CoreIcon|Task")]
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskInfomation")]
-[NativeAlias("Suity.Editor.Flows.TaskPages.GetTaskInfomation")]
-public class GetTaskInformation : TaskPageNode
-{
-    readonly FlowNodeConnector _task;
-
-    readonly FlowNodeConnector _taskId;
-    readonly FlowNodeConnector _taskTitle;
-    readonly FlowNodeConnector _taskIndex;
-    readonly FlowNodeConnector _parentTask;
-    readonly FlowNodeConnector _childTaskCount;
-    readonly FlowNodeConnector _childTasks;
-
-    readonly FlowNodeConnector _isInitialTask;
-    readonly FlowNodeConnector _isFirstTask;
-    readonly FlowNodeConnector _isDone;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetTaskInformation"/> class, setting up output connectors for task information properties.
-    /// </summary>
-    public GetTaskInformation()
-    {
-        var type = TypeDefinition.FromNative<IAigcWorkflowPage>();
-        var aryType = type.MakeArrayType();
-
-        _task = AddDataInputConnector("Task", type, "Task");
-
-        _taskId = AddDataOutputConnector("TaskId", "string", "Task Id");
-        _taskTitle = AddDataOutputConnector("TaskTitle", "string", "Task Title");
-        _taskIndex = AddDataOutputConnector("TaskIndex", "int", "Task Index");
-        _parentTask = AddDataOutputConnector("ParentTask", type, "Parent Task");
-        _childTaskCount = AddDataOutputConnector("ChildTaskCount", "int", "Child Task Count");
-        _childTasks = AddDataOutputConnector("ChildTasks", aryType, "Sub Tasks");
-
-        _isInitialTask = AddDataOutputConnector("IsInitialTask", "bool", "Is Initial Task");
-        _isFirstTask = AddDataOutputConnector("IsFirstTask", "bool", "Is First Task");
-        _isDone = AddDataOutputConnector("IsDone", "bool", "Is Done");
-    }
-
-    /// <inheritdoc/>
-    public override void Compute(IFlowComputation compute)
-    {
-        base.Compute(compute);
-
-        var task = compute.GetValue<IAigcWorkflowPage>(_task) as AigcWorkflowPage
-            ?? throw new NullReferenceException("Task is null.");
-
-        var diagram = this.Diagram
-            ?? throw new NullReferenceException("Diagram is null.");
-
-        if (diagram.GetIsLinked(_taskId))
-        {
-            compute.SetValue(_taskId, task.Name);
-        }
-
-        if (diagram.GetIsLinked(_taskTitle))
-        {
-            compute.SetValue(_taskTitle, task.Description);
-        }
-        
-        if (diagram.GetIsLinked(_taskIndex))
-        {
-            compute.SetValue(_taskIndex, task.GetIndex());
-        }
-        
-        if (diagram.GetIsLinked(_parentTask))
-        {
-            compute.SetValue(_parentTask, task.ParentNode as AigcWorkflowPage);
-        }
-
-        if (diagram.GetIsLinked(_childTaskCount))
-        {
-            compute.SetValue(_childTaskCount, task.Count);
-        }
-
-        if (diagram.GetIsLinked(_childTasks))
-        {
-            compute.SetValue(_childTasks, task.Items.OfType<AigcWorkflowPage>().ToArray());
-        }
-
-        if (diagram.GetIsLinked(_isInitialTask))
-        {
-            compute.SetValue(_isInitialTask, task.GetIndex() == 0 && task.ParentNode is null);
-        }
-
-        if (diagram.GetIsLinked(_isFirstTask))
-        {
-            compute.SetValue(_isFirstTask, task.GetIndex() == 0);
-        }
-
-        if (diagram.GetIsLinked(_isDone))
-        {
-            compute.SetValue(_isDone, task.GetPageInstance()?.GetIsDone() == true);
-        }
     }
 }
 

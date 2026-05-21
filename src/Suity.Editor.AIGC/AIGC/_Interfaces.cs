@@ -96,6 +96,9 @@ public interface IAigcTaskPage : INamed, ITextDisplay
 [NativeType(CodeBase = "AIGC", Description = "AIGC Workflow Page", Color = FlowColors.Task, Icon = "*CoreIcon|Workflow")]
 public interface IAigcWorkflowPage : IAigcTaskPage
 {
+    /// <summary>
+    /// Gets the sub-flow instance associated with this workflow page.
+    /// </summary>
     ISubFlowInstance GetSubFlowInstance();
 
     /// <summary>
@@ -112,14 +115,21 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     void SetPrompt(string taskPromt);
 
     /// <summary>
+    /// Gets or sets the rule prompt associated with this workflow page.
+    /// </summary>
+    PromptAsset Rule { get; set; }
+
+
+    /// <summary>
     /// Appends a new task to the parent list using the specified tool asset.
     /// </summary>
     /// <param name="asset">The AIGC tool asset to use for the new task.</param>
     /// <param name="title">The title for the new task.</param>
     /// <param name="taskPrompt">The prompt for the new task.</param>
+    /// <param name="rule">The rule prompt for the new task.</param>
     /// <param name="commitName">The commit name for the new task.</param>
     /// <returns>True if the task was successfully appended; otherwise, false.</returns>
-    bool AppendTask(IPageAsset asset, string title = null, string taskPrompt = null, string commitName = null);
+    bool AppendTask(IPageAsset asset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null);
 
     /// <summary>
     /// Appends a new task to the parent list using the specified page instance.
@@ -127,9 +137,10 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     /// <param name="pageInstance">The page instance to use for the new task.</param>
     /// <param name="title">The title for the new task.</param>
     /// <param name="taskPrompt">The prompt for the new task.</param>
+    /// <param name="rule">The rule prompt for the new task.</param>
     /// <param name="commitName">The commit name for the new task.</param>
     /// <returns>True if the task was successfully appended; otherwise, false.</returns>
-    bool AppendTask(IPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null);
+    bool AppendTask(IPageInstance pageInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null);
 
     /// <summary>
     /// Adds a new sub-task using the specified tool asset.
@@ -137,9 +148,10 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     /// <param name="asset">The AIGC tool asset to use for the new sub-task.</param>
     /// <param name="title">The title for the new sub-task.</param>
     /// <param name="taskPrompt">The prompt for the new sub-task.</param>
+    /// <param name="rule">The rule prompt for the new sub-task.</param>
     /// <param name="commitName">The commit name for the new sub-task.</param>
     /// <returns>True if the sub-task was successfully added; otherwise, false.</returns>
-    bool AddSubTask(IPageAsset asset, string title = null, string taskPrompt = null, string commitName = null);
+    bool AddSubTask(IPageAsset asset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null);
 
     /// <summary>
     /// Adds a new sub-task using the specified page instance.
@@ -147,9 +159,10 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     /// <param name="pageInstance">The page instance to use for the new sub-task.</param>
     /// <param name="title">The title for the new sub-task.</param>
     /// <param name="taskPrompt">The prompt for the new sub-task.</param>
+    /// <param name="rule">The rule prompt for the new sub-task.</param>
     /// <param name="commitName">The commit name for the new sub-task.</param>
     /// <returns>True if the sub-task was successfully added; otherwise, false.</returns>
-    bool AddSubTask(IPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null);
+    bool AddSubTask(IPageInstance pageInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null);
 
     /// <summary>
     /// Gets the last sub-task in this task's collection.

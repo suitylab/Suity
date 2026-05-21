@@ -378,17 +378,18 @@ public abstract class AigcTaskPage : DesignNode,
     /// <param name="asset">The tool asset to create the task from.</param>
     /// <param name="title">Optional title for the task page.</param>
     /// <param name="taskPrompt">Optional task prompt for the task page.</param>
+    /// <param name="rule">Optional rule for the task page.</param>
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
-    public IAigcTaskPage CreateTaskPage(IPageAsset asset, string title = null, string taskPrompt = null, string commitName = null)
+    public IAigcTaskPage CreateTaskPage(IPageAsset asset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
             throw new InvalidOperationException("AigcTaskPageDocument not found.");
         }
 
-        return CreateTaskPage(doc, asset, title, taskPrompt, commitName);
+        return CreateTaskPage(doc, asset, title, taskPrompt, rule, commitName);
     }
 
     /// <summary>
@@ -397,17 +398,18 @@ public abstract class AigcTaskPage : DesignNode,
     /// <param name="pageInstance">The page instance to create the task from.</param>
     /// <param name="title">Optional title for the task page.</param>
     /// <param name="taskPrompt">Optional task prompt for the task page.</param>
+    /// <param name="rule">Optional rule for the task page.</param>
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
-    public IAigcTaskPage CreateTaskPage(IPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null)
+    public IAigcTaskPage CreateTaskPage(IPageInstance pageInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
         if (this.GetDocument() is not AigcTaskPageDocument doc)
         {
             throw new InvalidOperationException("AigcTaskPageDocument not found.");
         }
 
-        return CreateTaskPage(doc, pageInstance, title, taskPrompt, commitName);
+        return CreateTaskPage(doc, pageInstance, title, taskPrompt, rule, commitName);
     }
 
     /// <summary>
@@ -417,10 +419,11 @@ public abstract class AigcTaskPage : DesignNode,
     /// <param name="pageAsset">The page asset to create the task from.</param>
     /// <param name="title">Optional title for the task page.</param>
     /// <param name="taskPrompt">Optional task prompt for the task page.</param>
+    /// <param name="rule">Optional rule for the task page.</param>
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="doc"/> or <paramref name="pageAsset"/> is null.</exception>
-    public static IAigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, IPageAsset pageAsset, string title = null, string taskPrompt = null, string commitName = null)
+    public static IAigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, IPageAsset pageAsset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
         if (doc is null)
         {
@@ -435,7 +438,7 @@ public abstract class AigcTaskPage : DesignNode,
         switch (pageAsset)
         {
             case ISubFlowAsset subFlowAsset:
-                return AigcWorkflowPage.CreateWorkflowPage(doc, subFlowAsset, title, taskPrompt, commitName);
+                return AigcWorkflowPage.CreateWorkflowPage(doc, subFlowAsset, title, taskPrompt, rule, commitName);
 
             case IToolAsset toolAsset:
                 return AigcToolPage.CreatToolPage(doc, toolAsset, title, taskPrompt, commitName);
@@ -452,10 +455,11 @@ public abstract class AigcTaskPage : DesignNode,
     /// <param name="pageInstance">The page instance to create the task from.</param>
     /// <param name="title">Optional title for the task page.</param>
     /// <param name="taskPrompt">Optional task prompt for the task page.</param>
+    /// <param name="rule">Optional rule for the task page.</param>
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="doc"/> or <paramref name="pageInstance"/> is null.</exception>
-    public static IAigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, IPageInstance pageInstance, string title = null, string taskPrompt = null, string commitName = null)
+    public static IAigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, IPageInstance pageInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
         if (doc is null)
         {
@@ -470,7 +474,7 @@ public abstract class AigcTaskPage : DesignNode,
         switch (pageInstance)
         {
             case ISubFlowInstance subFlowInstance:
-                return AigcWorkflowPage.CreateWorkflowPage(doc, subFlowInstance, title, taskPrompt, commitName);
+                return AigcWorkflowPage.CreateWorkflowPage(doc, subFlowInstance, title, taskPrompt, rule, commitName);
 
             case IToolInstance toolInstance:
                 return AigcToolPage.CreatToolPage(doc, toolInstance, title, taskPrompt, commitName);
