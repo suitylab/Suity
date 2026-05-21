@@ -71,6 +71,8 @@ public class SearchFileRegex : ToolCommand<SearchFileRegex.Output>
         }
 
         string targetPath = string.IsNullOrWhiteSpace(DirPath) ? workspaceDir : DirPath;
+        string outputBasePath = workspaceDir;
+        bool useRelativeOutput = !string.IsNullOrWhiteSpace(DirPath) && !Path.IsPathRooted(DirPath);
 
         if (!Path.IsPathRooted(targetPath))
         {
@@ -108,7 +110,7 @@ public class SearchFileRegex : ToolCommand<SearchFileRegex.Output>
         var results = new List<string>();
         int totalMatches = 0;
 
-        SearchDirectory(targetPath, regex, extensions, results, ref totalMatches);
+        SearchDirectory(targetPath, outputBasePath, useRelativeOutput, regex, extensions, results, ref totalMatches);
 
         return Task.FromResult(new Output
         {
@@ -117,7 +119,7 @@ public class SearchFileRegex : ToolCommand<SearchFileRegex.Output>
         });
     }
 
-    private void SearchDirectory(string dirPath, Regex regex, HashSet<string> extensions, List<string> results, ref int totalMatches)
+    private void SearchDirectory(string dirPath, string outputBasePath, bool useRelativeOutput, Regex regex, HashSet<string> extensions, List<string> results, ref int totalMatches)
     {
         try
         {
@@ -134,6 +136,10 @@ public class SearchFileRegex : ToolCommand<SearchFileRegex.Output>
 
                 try
                 {
+                    string outputPath = useRelativeOutput && file.StartsWith(outputBasePath, StringComparison.OrdinalIgnoreCase)
+                        ? file.Substring(outputBasePath.Length).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                        : file;
+
                     var lines = File.ReadAllLines(file);
                     for (int i = 0; i < lines.Length; i++)
                     {
@@ -141,7 +147,7 @@ public class SearchFileRegex : ToolCommand<SearchFileRegex.Output>
                         if (matches.Count > 0)
                         {
                             totalMatches += matches.Count;
-                            results.Add($"{file}({i + 1}): {lines[i]}");
+                            results.Add($"{outputPath}({i + 1}): {lines[i]}");
                         }
                     }
                 }
@@ -152,7 +158,7 @@ public class SearchFileRegex : ToolCommand<SearchFileRegex.Output>
 
             foreach (var subDir in Directory.GetDirectories(dirPath))
             {
-                SearchDirectory(subDir, regex, extensions, results, ref totalMatches);
+                SearchDirectory(subDir, outputBasePath, useRelativeOutput, regex, extensions, results, ref totalMatches);
             }
         }
         catch (UnauthorizedAccessException)

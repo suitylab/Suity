@@ -78,6 +78,8 @@ public class SearchFile : ToolCommand<SearchFile.Output>
         }
 
         string targetPath = string.IsNullOrWhiteSpace(DirPath) ? workspaceDir : DirPath;
+        string outputBasePath = workspaceDir;
+        bool useRelativeOutput = !string.IsNullOrWhiteSpace(DirPath) && !Path.IsPathRooted(DirPath);
 
         if (!Path.IsPathRooted(targetPath))
         {
@@ -107,7 +109,7 @@ public class SearchFile : ToolCommand<SearchFile.Output>
         var results = new List<string>();
         int totalMatches = 0;
 
-        SearchDirectory(targetPath, searchQuery, extensions, results, ref totalMatches);
+        SearchDirectory(targetPath, outputBasePath, useRelativeOutput, searchQuery, extensions, results, ref totalMatches);
 
         return Task.FromResult(new Output
         {
@@ -116,7 +118,7 @@ public class SearchFile : ToolCommand<SearchFile.Output>
         });
     }
 
-    private void SearchDirectory(string dirPath, string searchQuery, HashSet<string> extensions, List<string> results, ref int totalMatches)
+    private void SearchDirectory(string dirPath, string outputBasePath, bool useRelativeOutput, string searchQuery, HashSet<string> extensions, List<string> results, ref int totalMatches)
     {
         try
         {
@@ -133,6 +135,10 @@ public class SearchFile : ToolCommand<SearchFile.Output>
 
                 try
                 {
+                    string outputPath = useRelativeOutput && file.StartsWith(outputBasePath, StringComparison.OrdinalIgnoreCase)
+                        ? file.Substring(outputBasePath.Length).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                        : file;
+
                     var lines = File.ReadAllLines(file);
                     for (int i = 0; i < lines.Length; i++)
                     {
@@ -142,7 +148,7 @@ public class SearchFile : ToolCommand<SearchFile.Output>
                         if (found)
                         {
                             totalMatches++;
-                            results.Add($"{file}({i + 1}): {lines[i]}");
+                            results.Add($"{outputPath}({i + 1}): {lines[i]}");
                         }
                     }
                 }
@@ -153,7 +159,7 @@ public class SearchFile : ToolCommand<SearchFile.Output>
 
             foreach (var subDir in Directory.GetDirectories(dirPath))
             {
-                SearchDirectory(subDir, searchQuery, extensions, results, ref totalMatches);
+                SearchDirectory(subDir, outputBasePath, useRelativeOutput, searchQuery, extensions, results, ref totalMatches);
             }
         }
         catch (UnauthorizedAccessException)
