@@ -1,6 +1,8 @@
+using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Views;
 using System;
+using System.Drawing;
 
 namespace Suity.Editor.Flows.SubFlows;
 
@@ -72,5 +74,52 @@ public static class SubFlowHelper
             decimal m => m == 0m,
             _ => false
         };
+    }
+
+
+    /// <summary>
+    /// Converts a page commit type to its corresponding display color.
+    /// </summary>
+    /// <param name="endType">The commit type.</param>
+    /// <returns>The associated color, or null.</returns>
+    public static Color? ToColor(this TaskCommitStatus endType)
+    {
+        switch (endType)
+        {
+            case TaskCommitStatus.None:
+                return FlowColors.PageParameterColor;
+
+            case TaskCommitStatus.TaskFinished:
+                return FlowColors.WorkflowColor;
+
+            case TaskCommitStatus.TaskFailed:
+                return FlowColors.ErrorColor;
+
+            default:
+                return null;
+        }
+    }
+
+    /// <summary>
+    /// Converts an event type to its corresponding display color.
+    /// </summary>
+    /// <param name="eventType">The event type.</param>
+    /// <returns>The associated color, or null.</returns>
+    public static Color? ToColor(this TaskEventTypes eventType)
+    {
+        switch (eventType)
+        {
+
+            case TaskEventTypes.SubTaskFinished:
+                return FlowColors.WorkflowColor;
+
+            case TaskEventTypes.SubTaskFailed:
+                return FlowColors.ErrorColor;
+
+            case TaskEventTypes.TaskBegin:
+            case TaskEventTypes.None:
+            default:
+                return FlowColors.PageParameterColor;
+        }
     }
 }

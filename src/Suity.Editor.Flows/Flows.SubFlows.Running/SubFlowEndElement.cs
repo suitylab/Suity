@@ -83,23 +83,23 @@ public class SubFlowEndElement : SubFlowElement, IPageParameterOutput
     /// <summary>
     /// Gets a value indicating whether this element signals task commit.
     /// </summary>
-    public bool TaskCommit => false;
+    public bool TaskCommit { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether this element contributes to chat history.
     /// </summary>
-    public bool ChatHistory => false;
+    public bool ChatHistory { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether the parameter is displayed as a link address instead of content.
     /// </summary>
-    public bool LinkedMode { get; private set; }
+    public bool AddressMode { get; private set; }
 
     /// <summary>
     /// Resolves the chat history text representation of the current value.
     /// </summary>
     /// <returns>The chat history text.</returns>
-    public HistoryText ResolveChatHistory() => SubFlowExtensions.ConvertChatHistoryText(ParameterType, _value, LinkedMode);
+    public HistoryText ResolveChatHistory() => SubFlowExtensions.ConvertChatHistoryText(ParameterType, _value, AddressMode);
 
 
 
@@ -119,10 +119,14 @@ public class SubFlowEndElement : SubFlowElement, IPageParameterOutput
     {
         base.OnBuild();
 
-        ParameterType = EndNode?.TypeDef ?? TypeDefinition.Empty;
-        EndNode = _endItem.Node as ISubFlowEndNode;
-        EndType = EndNode?.EndType ?? TaskCommitStatus.None;
-        LinkedMode = EndNode?.AddressMode == true;
+        var endNode = EndNode = _endItem.Node as ISubFlowEndNode;
+
+        ParameterType = endNode?.TypeDef ?? TypeDefinition.Empty;
+        EndType = endNode?.EndType ?? TaskCommitStatus.None;
+
+        TaskCommit = endNode?.TaskCommit == true;
+        ChatHistory = endNode?.ChatHistory == true;
+        AddressMode = endNode?.AddressMode == true;
     }
 
 

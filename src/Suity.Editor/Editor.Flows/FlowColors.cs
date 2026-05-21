@@ -66,8 +66,7 @@ public class FlowColors
     /// <summary>
     /// Hex color value for workflow elements.
     /// </summary>
-    public const string Workflow = "#13A839";
-
+    public const string Workflow = "#2EBF52"; // "#13A839";
 
     /// <summary>
     /// Hex color value for task background.
@@ -123,6 +122,10 @@ public class FlowColors
     /// </summary>
     public static Color WorkflowColor { get; } = ColorTranslators.FromHtml(Workflow);
 
+    /// <summary>
+    /// Color object for page parameter
+    /// </summary>
+    public static Color PageParameterColor { get; } = ColorTranslators.FromHtml(PageParameter);
 
     /// <summary>
     /// Color object for node header with semi-transparent white overlay.

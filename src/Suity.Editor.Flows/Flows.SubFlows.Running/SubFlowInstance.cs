@@ -314,18 +314,20 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             }
             else
             {
+                if (TypeDefinition.IsNullOrEmpty(element.ParameterType))
+                {
+                    continue;
+                }
+
+                var text = ResolveElementChatHistory(element);
+                if (text is null || string.IsNullOrWhiteSpace(text.Text))
+                {
+                    continue;
+                }
+
                 string attr = ResolveElementXmlAttr(element as SubFlowElement);
                 builder.AppendLine($"<{element.Name}{attr}>");
-
-                try
-                {
-                    var text = element.ResolveChatHistory();
-                    builder.AppendLine(text.Text);
-                }
-                catch (Exception)
-                {
-                    builder.AppendLine("---");
-                }
+                builder.AppendLine(text.Text);
                 builder.AppendLine($"</{element.Name}>");
             }
 
@@ -361,18 +363,20 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             }
             else
             {
+                if (TypeDefinition.IsNullOrEmpty(element.ParameterType))
+                {
+                    continue;
+                }
+
+                var text = ResolveElementChatHistory(element);
+                if (text is null || string.IsNullOrWhiteSpace(text.Text))
+                {
+                    continue;
+                }
+
                 string attr = ResolveElementXmlAttr(element as SubFlowElement);
                 builder.AppendLine($"<{element.Name}{attr}>");
-
-                try
-                {
-                    var text = element.ResolveChatHistory();
-                    builder.AppendLine(text.Text);
-                }
-                catch (Exception)
-                {
-                    builder.AppendLine("---");
-                }
+                builder.AppendLine(text.Text);
                 builder.AppendLine($"</{element.Name}>");
             }
 
@@ -407,24 +411,38 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             }
             else
             {
+                if (TypeDefinition.IsNullOrEmpty(element.ParameterType))
+                {
+                    continue;
+                }
+
+                var text = ResolveElementChatHistory(element);
+                if (text is null || string.IsNullOrWhiteSpace(text.Text))
+                {
+                    continue;
+                }
+
                 string attr = ResolveElementXmlAttr(element as SubFlowElement);
                 builder.AppendLine($"<{element.Name}{attr}>");
-
-                try
-                {
-                    var text = element.ResolveChatHistory();
-                    builder.AppendLine(text.Text);
-                }
-                catch (Exception)
-                {
-                    builder.AppendLine("---");
-                }
+                builder.AppendLine(text.Text);
                 builder.AppendLine($"</{element.Name}>");
                 builder.AppendLine();
             }
         }
 
         return builder.ToString();
+    }
+
+    private HistoryText ResolveElementChatHistory(IPageParameter element)
+    {
+        try
+        {
+            return element.ResolveChatHistory();
+        }
+        catch (Exception)
+        {
+            return "---";
+        }
     }
 
     /// <inheritdoc/>

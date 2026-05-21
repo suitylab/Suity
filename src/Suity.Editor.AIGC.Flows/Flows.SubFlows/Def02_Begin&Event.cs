@@ -94,7 +94,7 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
         }
 
         var node = gui.FlowSingleConnectorFrame(_begin, context, text);
-        if (ToColor(_eventType.Value) is { } color)
+        if (_eventType.Value.ToColor() is { } color)
         {
             node.OverrideColor(color);
         }
@@ -182,29 +182,6 @@ public class PageEventNode : SubFlowTypeNode, IFlowRunnable
     }
 
     #endregion
-
-    /// <summary>
-    /// Converts an event type to its corresponding display color.
-    /// </summary>
-    /// <param name="eventType">The event type.</param>
-    /// <returns>The associated color, or null.</returns>
-    public static Color? ToColor(TaskEventTypes eventType)
-    {
-        switch (eventType)
-        {
-
-            case TaskEventTypes.SubTaskFinished:
-                return DEvent.EventTypeColor;
-
-            case TaskEventTypes.SubTaskFailed:
-                return FlowColors.ErrorColor;
-
-            case TaskEventTypes.TaskBegin:
-            case TaskEventTypes.None:
-            default:
-                return FlowColors.WorkflowColor;
-        }
-    }
 }
 
 /// <summary>

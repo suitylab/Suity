@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Types;
 
@@ -34,6 +35,21 @@ public interface ISubFlowTypeNode
     /// Gets a value indicating whether the parameter is displayed as a link address instead of content.
     /// </summary>
     bool AddressMode { get; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this property is retained as historical conversation during dialogue.
+    /// </summary>
+    bool ChatHistory { get; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this property is used to determine task completion.
+    /// </summary>
+    bool Required { get; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this property should be submitted after completing the task.
+    /// </summary>
+    bool TaskCommit { get; }
 }
 
 /// <summary>

@@ -253,22 +253,26 @@ internal class AigcTaskPageRunner : AIAssistant
                 return new(TaskCommitStatus.None, "Task is not handled.");
             }
 
-            bool? isDone = task.GetPageInstance()?.GetIsDone();
-            if (!isDone.IsTrueOrEmpty())
-            {
-                return new(TaskCommitStatus.None, "Task is not done.");
-            }
-
             var end = task.GetPageInstance()?.GetTaskCommitParameter();
             if (end is null)
             {
                 return new(TaskCommitStatus.None, "Task it not finished.");
             }
-            else
+
+            task.CommitStatus = end.EndType;
+            if (end.EndType != TaskCommitStatus.None)
             {
-                task.CommitStatus = end.EndType;
+                // Explicit commit.
                 return new(end.EndType, end.Value);
             }
+
+            bool? isDone = task.GetPageInstance()?.GetIsDone();
+            if (isDone.IsTrueOrEmpty())
+            {
+                return new(end.EndType, end.Value);
+            }
+
+            return new(TaskCommitStatus.None, "Task is not done.");
         }
         catch (TaskCanceledException)
         {

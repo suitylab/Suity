@@ -2,6 +2,7 @@
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
 using Suity.Editor.Flows.SubFlows;
+using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -66,6 +67,7 @@ public abstract class AigcTaskPage : DesignNode,
             {
                 _commitStatus.Value = value;
                 this.TaskPageDocument?.MarkDirtyAndSaveDelayed(this);
+                this.TaskPageDocument?.View?.DoServiceAction<IViewRefresh>(o => o.QueueRefreshView());
             }
         }
     }

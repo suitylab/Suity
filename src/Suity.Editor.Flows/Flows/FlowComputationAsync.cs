@@ -116,6 +116,9 @@ public class FlowComputationAsync : IFlowComputationAsync, IDisposable
         //    return null;
         //}
 
+        var diagram = connector.ParentNode.DiagramItem.Diagram;
+        var output = diagram.GetLinkedConnector(connector);
+
         if (connector.Direction == FlowDirections.Output)
         {
             return _datas.GetValueSafe(connector);
@@ -123,12 +126,11 @@ public class FlowComputationAsync : IFlowComputationAsync, IDisposable
         else if (_datas.TryGetValue(connector, out var combinedPush))
         {
             // Combined port actively pushes to input
-            return combinedPush;
+
+            return ConvertValue(output, connector, combinedPush);
+            //return combinedPush;
         }
 
-        var diagram = connector.ParentNode.DiagramItem.Diagram;
-
-        var output = diagram.GetLinkedConnector(connector);
         if (output != null)
         {
             var value = _datas.GetValueSafe(output);

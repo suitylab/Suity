@@ -19,7 +19,7 @@ namespace Suity.Editor.Flows.SubFlows;
 /// <summary>
 /// Provides action start support for Sub-flow pages, such as button clicks, etc.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.Workflow, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Sub-flow Action Begin", "*CoreIcon|Begin")]
 [DisplayOrder(4000)]
 [ToolTipsText("Provides action start support for Sub-flow pages, such as button clicks, etc.")]
@@ -200,7 +200,7 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
         }
 
         var node = gui.FlowSingleConnectorFrame(_end, context, text, editorGui: DrawExEditorGui);
-        if (ToColor(EndType) is { } color)
+        if (EndType.ToColor() is { } color)
         {
             node.OverrideColor(color);
         }
@@ -293,30 +293,8 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
             return EndType.ToString();
         }
     }
-
-    /// <summary>
-    /// Converts a page commit type to its corresponding display color.
-    /// </summary>
-    /// <param name="endType">The commit type.</param>
-    /// <returns>The associated color, or null.</returns>
-    public static Color? ToColor(TaskCommitStatus endType)
-    {
-        switch (endType)
-        {
-            case TaskCommitStatus.None:
-                return FlowColors.WorkflowColor;
-
-            case TaskCommitStatus.TaskFinished:
-                return DEvent.EventTypeColor;
-
-            case TaskCommitStatus.TaskFailed:
-                return FlowColors.ErrorColor;
-
-            default:
-                return null;
-        }
-    }
 }
+
 #endregion
 
 #region SubFlowEndNode
@@ -324,7 +302,7 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
 /// <summary>
 /// Provides action end support for Sub-flow pages.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.Workflow, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Sub-flow Action End", "*CoreIcon|End")]
 [DisplayOrder(3900)]
 [ToolTipsText("Provides action end support for Sub-flow.")]

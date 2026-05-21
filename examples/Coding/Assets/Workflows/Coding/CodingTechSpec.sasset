@@ -6,7 +6,7 @@
   </Description>
   <Icon />
   <Nodes>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-410" Y="-110" Width="180" Height="120">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-420" Y="-10" Width="180" Height="120">
       <Name>CodeSpecification</Name>
       <AssetId>8dba2953-d4a3-4fdb-be13-39397b12ae77</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
@@ -39,7 +39,7 @@
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-400" Y="-40" Width="86" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-410" Y="60" Width="86" Height="17">
       <Name>RequirementDocument</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
         <Name>RequirementDocument</Name>
@@ -62,7 +62,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-400" Y="-20" Width="63" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-410" Y="80" Width="63" Height="17">
       <Name>TechSpecStart</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
         <Name>TechSpecStart</Name>
@@ -73,7 +73,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="-160" Width="136" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="-60" Width="136" Height="111">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -84,7 +84,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-130" Y="-50" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-140" Y="50" Width="44" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -112,7 +112,7 @@
         </Attributes>
         <History>True</History>
         <TaskCommit>True</TaskCommit>
-        <LinkedMode>True</LinkedMode>
+        <AddressMode>True</AddressMode>
         <ArticlePath>Techincal Specification</ArticlePath>
         <MultipleSection>True</MultipleSection>
         <PassToSubTasks>True</PassToSubTasks>
@@ -159,7 +159,7 @@
       <Name>###GetXmlTagContentNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-400" Y="-60" Width="59" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-410" Y="40" Width="59" Height="17">
       <Name>ProjectName</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
         <Name>ProjectName</Name>
@@ -180,7 +180,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-50" Y="-150" Width="107" Height="89">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="-50" Width="107" Height="89">
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
@@ -205,11 +205,11 @@
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-150" Y="-70" Width="76" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-160" Y="30" Width="76" Height="17">
       <Name>###ArticleFullContent01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ArticleFullContent" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-400" Y="-80" Width="63" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-410" Y="20" Width="63" Height="17">
       <Name>LanguageRule</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
         <Name>LanguageRule</Name>
