@@ -34,7 +34,7 @@ public abstract class AigcTaskPage : DesignNode,
     /// <summary>
     /// Gets the parent task page, if this task is a sub-task of another task.
     /// </summary>
-    public AigcTaskPage ParentTask => ParentNode as AigcTaskPage;
+    public IAigcTaskPage ParentTask => ParentNode as IAigcTaskPage;
 
     /// <summary>
     /// Gets or sets the commit name used when committing results to the parent task.

@@ -60,6 +60,11 @@ public interface IAigcTaskPage : INamed, ITextDisplay
     IAigcTaskHost TaskHost { get; }
 
     /// <summary>
+    /// Gets the parent task page, or null if this is a top-level task.
+    /// </summary>
+    IAigcTaskPage ParentTask { get; }
+
+    /// <summary>
     /// Gets the task status.
     /// </summary>
     TaskCommitStatus GetCommitStatus();

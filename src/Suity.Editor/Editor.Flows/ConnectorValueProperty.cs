@@ -374,6 +374,8 @@ public class ConnectorTextBlockProperty : TextBlockProperty
         Connector = node.AddDataInputConnector(Property.Name, "string", Property.Description);
     }
 
+    public string GetValue(IFlowComputation compute, FlowNode node) => GetText(compute, node);
+
     public string GetText(IFlowComputation compute, FlowNode node)
     {
         if (node.Diagram is { } diagram && Connector is { } connector && diagram.GetIsLinked(connector))
@@ -622,6 +624,9 @@ public class ConnectorAssetProperty<T> : AssetProperty<T>
     public new T Target { get; }
 
     public T BaseTarget => base.Target;
+
+
+    public T GetValue(IFlowComputation compute, FlowNode node) => GetTarget(compute, node);
 
     public T GetTarget(IFlowComputation compute, FlowNode node)
     {

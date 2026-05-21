@@ -519,6 +519,118 @@ public class GetTaskPrompt : TaskPageNode
 
 #endregion
 
+#region SetTaskPrompt
+
+/// <summary>
+/// A flow node that sets the task prompt for a specified task.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Set Task Prompt", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetTaskPrompt")]
+public class SetTaskPrompt : TaskPageNode
+{
+    readonly FlowNodeConnector _task;
+    readonly ConnectorTextBlockProperty _prompt;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SetTaskPrompt"/> class.
+    /// </summary>
+    public SetTaskPrompt()
+    {
+        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
+
+        _task = this.AddDataInputConnector("Task", taskType, "Task");
+        _prompt = new ConnectorTextBlockProperty("Prompt", "Prompt");
+        _prompt.AddConnector(this);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _prompt.Sync(sync);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _prompt.InspectorField(setup, this);
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var task = compute.GetValue<IAigcWorkflowPage>(_task);
+        string prompt = _prompt.GetText(compute, this);
+
+        if (task != null)
+        {
+            task.SetPrompt(prompt);
+        }
+    }
+}
+
+#endregion
+
+#region SetTaskRule
+
+/// <summary>
+/// A flow node that sets the task rule for a specified task.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Set Task Rule", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetTaskRule")]
+public class SetTaskRule : TaskPageNode
+{
+    readonly FlowNodeConnector _task;
+    readonly ConnectorAssetProperty<PromptAsset> _rule;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SetTaskRule"/> class.
+    /// </summary>
+    public SetTaskRule()
+    {
+        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
+
+        _task = this.AddDataInputConnector("Task", taskType, "Task");
+        _rule = new ConnectorAssetProperty<PromptAsset>("Rule", "Rule", "Optional rule to apply to the task.");
+        _rule.AddConnector(this);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _rule.Sync(sync);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _rule.InspectorField(setup, this);
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var task = compute.GetValue<IAigcWorkflowPage>(_task);
+        var rule = _rule.GetTarget(compute, this);
+
+        if (task != null)
+        {
+            task.Rule = rule;
+        }
+    }
+}
+
+#endregion
+
 #region GetTaskRule
 
 /// <summary>
@@ -881,6 +993,37 @@ public class GetCurrentTask : TaskPageNode
     {
         var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
         compute.SetValue(_out, taskPage);
+    }
+}
+
+#endregion
+
+#region GetParentTask
+
+/// <summary>
+/// A flow node that retrieves the parent task of the current task.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Get Parent Task", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetParentTask")]
+public class GetParentTask : TaskPageNode
+{
+    readonly FlowNodeConnector _out;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetParentTask"/> class.
+    /// </summary>
+    public GetParentTask()
+    {
+        var type = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        _out = AddDataOutputConnector("Out", type, "Parent Task");
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
+        compute.SetValue(_out, taskPage?.ParentTask);
     }
 }
 
