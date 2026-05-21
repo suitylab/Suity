@@ -1,5 +1,6 @@
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows.SubFlows;
@@ -31,11 +32,6 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
     private readonly StringProperty _presetName = new("PresetName", "Preset Name");
 
-    private readonly StringProperty _description = new("Description", "Description");
-
-    private readonly AssetProperty<ImageAsset> _iconSelection = new("Icon", "Icon");
-
-    private readonly ValueProperty<Color> _colorSelection = new("Color", "Color");
 
     private readonly AssetProperty<ISubFlowDefAsset> _baseFlow
         = new("BaseFlow", "Base Execution Flow");
@@ -54,6 +50,16 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
     private readonly TextBlockProperty _promptHint
         = new("PromptHint", "Prompt Hint", string.Empty, "Used to provide guidance on how to use the preset effectively.");
+
+    private readonly AssetProperty<PromptAsset> _rule
+        = new("Rule", "Rule", "Optional rule to apply to the preset.");
+
+
+    private readonly StringProperty _description = new("Description", "Description");
+
+    private readonly AssetProperty<ImageAsset> _iconSelection = new("Icon", "Icon");
+
+    private readonly ValueProperty<Color> _colorSelection = new("Color", "Color");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SubFlowPresetDocument"/> class.
@@ -137,6 +143,11 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     /// Gets the prompt hint text for the preset, which can be used to provide guidance on how to use the preset effectively.
     /// </summary>
     public string PromptHint => _promptHint.Text;
+
+    /// <summary>
+    /// Gets the rule prompt associated with this preset, which can be used to apply specific rules or constraints to the preset's behavior. 
+    /// </summary>
+    public PromptAsset Rule => _rule.Target;
 
     /// <summary>
     /// Gets or sets the root page instance for this preset.
@@ -240,10 +251,6 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         base.OnSync(sync, context);
 
         _presetName.Sync(sync);
-        _description.Sync(sync);
-        _iconSelection.Sync(sync);
-        _colorSelection.Sync(sync);
-
         _baseFlow.Sync(sync);
         _tools.Sync(sync);
         _isStartup.Sync(sync);
@@ -251,6 +258,11 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
         _overview.Sync(sync);
         _promptHint.Sync(sync);
+        _rule.Sync(sync);
+
+        _description.Sync(sync);
+        _iconSelection.Sync(sync);
+        _colorSelection.Sync(sync);
 
         var element = EnsureSubFlowInstance();
         sync.Sync("Page", element, SyncFlag.GetOnly | SyncFlag.AffectsParent);
@@ -282,9 +294,12 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
         setup.LabelWithIcon("Properties", CoreIconCache.Field);
         _presetName.InspectorField(setup);
-        _description.InspectorField(setup);
         _overview.InspectorField(setup);
         _promptHint.InspectorField(setup);
+        _rule.InspectorField(setup);
+
+        setup.LabelWithIcon("Appearance", CoreIconCache.View);
+        _description.InspectorField(setup);
         _iconSelection.InspectorField(setup);
         _colorSelection.InspectorField(setup);
 

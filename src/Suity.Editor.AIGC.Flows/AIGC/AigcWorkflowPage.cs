@@ -5,6 +5,7 @@ using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
+using Suity.Editor.Flows.TaskPages;
 using Suity.Editor.Selecting;
 using Suity.Editor.Types;
 using Suity.Editor.WorkSpaces;
@@ -1201,6 +1202,11 @@ public class AigcWorkflowPage : AigcTaskPage,
         if (!string.IsNullOrWhiteSpace(taskPrompt))
         {
             taskPage.SetPrompt(taskPrompt);
+        }
+
+        if (rule is null && subFlowAsset is SubFlowPresetAsset presetAsset)
+        {
+            rule = (presetAsset.GetPresetDefinition() as SubFlowPresetDocument)?.Rule;
         }
 
         taskPage.Rule = rule;
