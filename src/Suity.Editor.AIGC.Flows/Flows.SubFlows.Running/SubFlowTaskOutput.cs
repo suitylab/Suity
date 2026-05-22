@@ -12,15 +12,17 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 /// Represents a sub-graph element that handles sub-task output for sub-graph.
 /// Implements both parameter output and tool parameter interfaces.
 /// </summary>
-public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageParameterTool
+public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPageParameterTool
 {
-    readonly PageSubTaskOutputItem _outputItem;
+    private readonly PageTaskOutputItem _outputItem;
+
+    private TextBlockProperty _subTaskCommit;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubFlowSubTaskOutput"/> class.
+    /// Initializes a new instance of the <see cref="SubFlowTaskOutput"/> class.
     /// </summary>
     /// <param name="item">The sub-task output item to associate with this element.</param>
-    public SubFlowSubTaskOutput(PageSubTaskOutputItem item)
+    public SubFlowTaskOutput(PageTaskOutputItem item)
         : base(item)
     {
         _outputItem = item ?? throw new System.ArgumentNullException(nameof(item));
@@ -124,6 +126,10 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
         Required = _outputItem.Node?.Required == true;
         TaskCommit = _outputItem.Node?.TaskCommit == true;
         ChatHistory = _outputItem.Node?.ChatHistory == true;
+
+        _subTaskCommit = new(Name);
+        _subTaskCommit.Flag |= SyncFlag.GetOnly;
+        _subTaskCommit.Property.WithReadOnly().WithOptional();
     }
 
     /// <inheritdoc/>
@@ -136,15 +142,29 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
             return;
         }
 
-        if (AllSubTasks)
+        if (_subTaskCommit != null)
         {
-            var tasks = GetAllSubTasks();
-            sync.Sync<bool>(Name, tasks.Length > 0, SyncFlag.GetOnly);
-        }
-        else
-        {
-            var task = GetLastSubTask();
-            sync.Sync<bool>(Name, task != null, SyncFlag.GetOnly);
+            if (AllSubTasks)
+            {
+                var tasks = GetAllSubTasks();
+                if (tasks.Length == 0)
+                {
+                    _subTaskCommit.Text = null;
+                }
+                else
+                {
+                    int numCompleted = tasks.Count(o => o.GetCommitStatus() != TaskCommitStatus.None);
+                    _subTaskCommit.Text = $"{numCompleted}/{tasks.Length} tasks completed";
+                }
+                
+                _subTaskCommit.Sync(sync);
+            }
+            else
+            {
+                var task = GetLastSubTask();
+                _subTaskCommit.Text = task?.GetPageInstance()?.GetTaskCommit();
+                _subTaskCommit.Sync(sync);
+            }
         }
     }
 
@@ -156,11 +176,11 @@ public class SubFlowSubTaskOutput : SubFlowElement, IPageParameterOutput, IPageP
             return;
         }
 
-        var property = new ViewProperty(Name, DisplayText, Icon)
-            .WithReadOnly()
-            .WithStatus(GetStatus());
-
-        setup.InspectorFieldOf<bool>(property);
+        if (_subTaskCommit != null)
+        {
+            _subTaskCommit.Property.WithStatus(GetStatus());
+            _subTaskCommit.InspectorField(setup);
+        }
     }
 
 

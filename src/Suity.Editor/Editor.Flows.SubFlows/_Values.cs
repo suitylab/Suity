@@ -96,7 +96,7 @@ public record HistoryText
     /// </summary>
     public static implicit operator string(HistoryText text)
     {
-        return text.Text;
+        return text?.Text;
     }
 
     /// <summary>

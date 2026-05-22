@@ -306,16 +306,17 @@ public class PagePresetParameterItem : FlowDiagramItem<PagePresetParameterNode>,
 [DisplayOrder(2700)]
 [ToolTipsText("Provides sub-task output support for AIGC page actions.")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubTaskOutputNode")]
-public class PageSubTaskOutputNode : SubFlowTypeNode
+[NativeAlias("Suity.Editor.Flows.SubFlows.PageSubTaskOutputNode")]
+public class PageTaskOutputNode : SubFlowTypeNode
 {
     private FlowNodeConnector _refInput;
     private readonly ValueProperty<bool> _allSubTasks = new("AllSubTasks", "All SubTasks", false, "Reference all first-level sub-tasks, otherwise only reference the last sub-task.");
     private readonly ValueProperty<bool> _refConnector = new("RefConnector", "Reference Port");
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageSubTaskOutputNode"/> class.
+    /// Initializes a new instance of the <see cref="PageTaskOutputNode"/> class.
     /// </summary>
-    public PageSubTaskOutputNode()
+    public PageTaskOutputNode()
     {
         TypeDef = TypeDefinition.FromNative<ISubFlowInstance>();
 
@@ -422,31 +423,32 @@ public class PageSubTaskOutputNode : SubFlowTypeNode
 }
 
 /// <summary>
-/// Diagram item representing a <see cref="PageSubTaskOutputNode"/> in the flow diagram.
+/// Diagram item representing a <see cref="PageTaskOutputNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubTaskOutputItem")]
-public class PageSubTaskOutputItem : FlowDiagramItem<PageSubTaskOutputNode>, ISubFlowElementCreator
+[NativeAlias("Suity.Editor.Flows.SubFlows.PageSubTaskOutputItem")]
+public class PageTaskOutputItem : FlowDiagramItem<PageTaskOutputNode>, ISubFlowElementCreator
 {
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageSubTaskOutputItem"/> class.
+    /// Initializes a new instance of the <see cref="PageTaskOutputItem"/> class.
     /// </summary>
-    public PageSubTaskOutputItem()
+    public PageTaskOutputItem()
         : base()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageSubTaskOutputItem"/> class with the specified node.
+    /// Initializes a new instance of the <see cref="PageTaskOutputItem"/> class with the specified node.
     /// </summary>
     /// <param name="node">The page sub-task output node.</param>
-    public PageSubTaskOutputItem(PageSubTaskOutputNode node)
+    public PageTaskOutputItem(PageTaskOutputNode node)
         : base(node)
     {
     }
 
     /// <inheritdoc/>
-    public SubFlowElement CreatePageElement() => new SubFlowSubTaskOutput(this);
+    public SubFlowElement CreatePageElement() => new SubFlowTaskOutput(this);
 
 
     /// <inheritdoc/>
