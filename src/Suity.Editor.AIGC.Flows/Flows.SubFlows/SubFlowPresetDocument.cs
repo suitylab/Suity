@@ -48,8 +48,8 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     private readonly TextBlockProperty _overview
         = new("Overview", "Overview", string.Empty, "Used to provide a brief summary of the preset.");
 
-    private readonly TextBlockProperty _promptHint
-        = new("PromptHint", "Prompt Hint", string.Empty, "Used to provide guidance on how to use the preset effectively.");
+    private readonly TextBlockProperty _userInputHint
+        = new("UserInputHint", "User Input Hint", string.Empty, "Used to provide guidance on how to use the preset effectively.");
 
     private readonly AssetProperty<PromptAsset> _rule
         = new("Rule", "Rule", "Optional rule to apply to the preset.");
@@ -139,10 +139,8 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     /// </summary>
     public string Overview => _overview.Text;
 
-    /// <summary>
-    /// Gets the prompt hint text for the preset, which can be used to provide guidance on how to use the preset effectively.
-    /// </summary>
-    public string PromptHint => _promptHint.Text;
+    /// <inheritdoc/>
+    public string UserInputHint => _userInputHint.Text;
 
     /// <summary>
     /// Gets the rule prompt associated with this preset, which can be used to apply specific rules or constraints to the preset's behavior. 
@@ -257,7 +255,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         _useParentArticle.Sync(sync);
 
         _overview.Sync(sync);
-        _promptHint.Sync(sync);
+        _userInputHint.Sync(sync);
         _rule.Sync(sync);
 
         _description.Sync(sync);
@@ -295,7 +293,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         setup.LabelWithIcon("Properties", CoreIconCache.Field);
         _presetName.InspectorField(setup);
         _overview.InspectorField(setup);
-        _promptHint.InspectorField(setup);
+        _userInputHint.InspectorField(setup);
         _rule.InspectorField(setup);
 
         setup.LabelWithIcon("Appearance", CoreIconCache.View);

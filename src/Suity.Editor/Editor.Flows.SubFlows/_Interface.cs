@@ -113,7 +113,7 @@ public interface ISubFlowPreset
     /// <summary>
     /// Used to provide guidance on how to use the preset effectively.
     /// </summary>
-    string PromptHint { get; }
+    string UserInputHint { get; }
 
     /// <summary>
     /// Gets all tools provided by this preset.

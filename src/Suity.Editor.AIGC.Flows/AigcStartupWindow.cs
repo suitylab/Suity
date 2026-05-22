@@ -206,7 +206,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
     private void DefaultInputGui(ImGui gui)
     {
-        var hintText = (_startupAssetSel.Target as ISubFlowPresetAsset)?.GetPresetDefinition()?.PromptHint;
+        var hintText = (_startupAssetSel.Target as ISubFlowPresetAsset)?.GetPresetDefinition()?.UserInputHint;
         if (string.IsNullOrWhiteSpace(hintText))
         {
             hintText = L("Prompt input...");
