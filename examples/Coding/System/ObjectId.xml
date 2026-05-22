@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ObjectId>
-  <Object id="3af52506-f3c7-4824-9b7d-c15719e461ef" name="Workflows/_Common/SkillRouter.sprompt" />
-  <Object id="56023507-40c3-4a2d-8724-6e2f912ae583" name="Workflows/_Common/SkillRunner.sprompt" />
-  <Object id="2634ecfb-7bc8-4424-a56d-7102dcf36d00" name="Workflows/_Common/SkillRunnerMinimal.sprompt" />
-  <Object id="12e04077-2041-4081-8d64-55058cf62f7f" name="Workflows/CodeEdit/FileExplore.sprompt" />
-  <Object id="e628aaad-0ed0-46f2-aca2-526f74164567" name="Workflows/CodeGenerate/CodingMultipleCode.sprompt" />
-  <Object id="261539bb-cb5e-47af-bea0-4a2bf0292a67" name="Workflows/CodeGenerate/CodingPlanning.sprompt" />
-  <Object id="f0723b94-a760-4398-a257-19ef1530132b" name="Workflows/CodeGenerate/CodingPlanningAsk.sprompt" />
-  <Object id="7e2caea0-563a-4c48-8a85-c8cb358cf106" name="Workflows/CodeGenerate/CodingSkill.sprompt" />
-  <Object id="6036d29f-bd38-4766-86f7-870b157db303" name="Workflows/CodeGenerate/CodingSummary.sprompt" />
-  <Object id="584bd371-dacc-4416-80d0-a006e9493c28" name="Workflows/CodeGenerate/CodingTechSpec.sprompt" />
-  <Object id="8305c75f-8edd-4629-af1e-10cee50dd0a1" name="Workflows/Overview/SectionOverview.sprompt" />
+  <Object id="cb17b70d-9398-4352-8684-c6d0c0bf7c7d" name="Workflows/_Common/SkillRouter.md" />
+  <Object id="d51ed5f3-d18e-48cf-a5fc-1f375fdc3fca" name="Workflows/_Common/SkillRunner.md" />
+  <Object id="b39b8930-13f1-4476-93b1-be85607c7609" name="Workflows/_Common/SkillRunnerMinimal.md" />
+  <Object id="8f86b90c-6a3a-40e0-b961-19e432c2e577" name="Workflows/CodeEdit/FileExplore.md" />
+  <Object id="c1249bc3-023b-4823-acc1-c952b74ca18b" name="Workflows/CodeGenerate/CodingMultipleCode.md" />
+  <Object id="6860c4b0-5391-42ce-8c1b-0d322b381010" name="Workflows/CodeGenerate/CodingPlanning.md" />
+  <Object id="0f7c3b3b-1974-4d57-b91a-4795050054bc" name="Workflows/CodeGenerate/CodingPlanningAsk.md" />
+  <Object id="49e38741-280c-472a-abb1-514600b656b1" name="Workflows/CodeGenerate/CodingSkill.md" />
+  <Object id="fffe03c8-b2a7-47db-b3b7-ca5b1dfc370e" name="Workflows/CodeGenerate/CodingSummary.md" />
+  <Object id="6252474c-9f5b-48ae-8aea-9d83ea5d4386" name="Workflows/CodeGenerate/CodingTechSpec.md" />
+  <Object id="04b66023-06b1-4be0-af9e-ce214a5cedfd" name="Workflows/Overview/SectionOverview.md" />
   <Object id="cb6c4215-f640-42b9-97bd-af7d714cdb20" name="Workflows/Rules/Html_JavaScript.sprompt" />
   <Object id="97aad715-53a3-4bbf-aea4-187df3fcd97b" name="Workflows/Rules/Html_Simple.sprompt" />
   <Object id="d72d41bc-39bc-4de3-80d7-7d5f17d37ded" name="Workflows/Rules/Html_TypeScript.sprompt" />

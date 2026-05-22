@@ -10,7 +10,7 @@
       <Name>###BuildPrompts02</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>8305c75f-8edd-4629-af1e-10cee50dd0a1</Id>
+          <Id>04b66023-06b1-4be0-af9e-ce214a5cedfd</Id>
         </PromptTemplate>
         <Keywords>
           <Item>DOCUMENT</Item>
@@ -32,7 +32,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="40" Y="-100" Width="38" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="40" Y="-100" Width="44" Height="17">
       <Name>###GetSpeechLanguage02</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>

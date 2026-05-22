@@ -18,7 +18,7 @@ public class TextDocumentFormat : DocumentFormat
     /// </summary>
     public static readonly string[] Exts =
     [
-        "txt", "md",
+        "txt", //"md",
         "asp","aspx","asax","asmx",
         "bat",
         "boo",

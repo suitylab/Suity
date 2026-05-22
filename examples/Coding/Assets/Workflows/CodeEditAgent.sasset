@@ -24,9 +24,7 @@
   <Page>
     <__preset__ />
     <SkillDescription type="SAssetKey" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb">
-      <Value>
-        <Id>7e2caea0-563a-4c48-8a85-c8cb358cf106</Id>
-      </Value>
+      <Value />
     </SkillDescription>
     <Rules type="SArray" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb[]" />
     <PlanningLLmModel type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">

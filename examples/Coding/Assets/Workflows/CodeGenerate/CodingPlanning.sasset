@@ -86,7 +86,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="230" Width="38" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="230" Width="44" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -115,7 +115,7 @@
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>261539bb-cb5e-47af-bea0-4a2bf0292a67</Id>
+          <Id>6860c4b0-5391-42ce-8c1b-0d322b381010</Id>
         </PromptTemplate>
         <Keywords>
           <Item>PROJECT_NAME</Item>
