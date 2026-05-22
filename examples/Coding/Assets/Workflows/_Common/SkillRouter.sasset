@@ -19,7 +19,7 @@
         <UseParentArticle>True</UseParentArticle>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="1000" Y="-110" Width="120" Height="260">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="1000" Y="-110" Width="120" Height="180">
       <Name>SkillRouter_End</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
         <Name>SkillRouter_End</Name>
@@ -30,7 +30,7 @@
         <CompletionCondition>Any</CompletionCondition>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="1010" Y="90" Width="55" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="1010" Y="20" Width="55" Height="17">
       <Name>OnSubTask</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
         <Name>OnSubTask</Name>
@@ -39,7 +39,7 @@
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="1010" Y="10" Width="46" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="1010" Y="-30" Width="46" Height="17">
       <Name>analysis</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
         <Name>analysis</Name>
@@ -138,7 +138,7 @@
     </Item>
     <Item null="true" />
     <Item null="true" />
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="1010" Y="70" Width="45" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="1010" Y="-10" Width="45" Height="17">
       <Name>answer</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
         <Name>answer</Name>
@@ -163,9 +163,9 @@
       <Name>###GetXmlTagContentNode04</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageSubTaskOutputItem" X="1010" Y="110" Width="39" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageTaskOutputItem" X="1010" Y="40" Width="39" Height="17">
       <Name>SubTask</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.PageSubTaskOutputNode">
+      <Node type="Suity.Editor.Flows.SubFlows.PageTaskOutputNode">
         <Name>SubTask</Name>
         <Description>
         </Description>
@@ -271,38 +271,6 @@
             </ToolTips>
           </Item>
         </Attributes>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageMessageParameterItem" X="1010" Y="-10" Width="51" Height="17">
-      <Name>MessageRun</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.PageMessageParameterNode">
-        <Name>MessageRun</Name>
-        <Description>
-        </Description>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <Required>False</Required>
-        <History>True</History>
-        <TaskCommit>True</TaskCommit>
-        <Message>
-          <Text>Previous Task Infomation: {TaskName}</Text>
-        </Message>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageMessageParameterItem" X="1010" Y="50" Width="57" Height="17">
-      <Name>MessageResult</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.PageMessageParameterNode">
-        <Name>MessageResult</Name>
-        <Description>
-        </Description>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <Required>False</Required>
-        <History>True</History>
-        <TaskCommit>True</TaskCommit>
-        <Message>
-          <Text>Task Run Result:</Text>
-        </Message>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="1010" Y="-70" Width="53" Height="17">

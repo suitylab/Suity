@@ -1,82 +1,56 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SuityAsset version="1.0" format="AigcFlow">
+<SuityAsset version="1.0" format="SubFlowPreset">
   <AssetId>decc3bff-f459-4879-979d-2b742515ec67</AssetId>
-  <NameSpace>MySuityProject</NameSpace>
+  <PresetName>
+  </PresetName>
+  <BaseFlow>
+    <Id>37633c8a-a701-4199-bdbd-45b9d033cacd</Id>
+  </BaseFlow>
+  <Tools>
+    <Item>
+      <Id>72bfd38f-adb1-4e2a-9185-08a558e30272</Id>
+    </Item>
+    <Item>
+      <Id>d9bb5548-e340-4bd3-91ec-76d0f35b1449</Id>
+    </Item>
+    <Item>
+      <Id>4fa5a672-755e-4cfe-97af-79eecb75b4ce</Id>
+    </Item>
+    <Item>
+      <Id>1d7c4267-b004-429b-8070-b74e2710dd69</Id>
+    </Item>
+    <Item>
+      <Id>8fe14aad-8164-4636-94f5-8bc755df34b5</Id>
+    </Item>
+    <Item>
+      <Id>c98801ac-2dd8-46e7-8eb6-e1350fb72fa0</Id>
+    </Item>
+    <Item>
+      <Id>922c7589-8c57-43b2-91c2-3873029a817a</Id>
+    </Item>
+  </Tools>
+  <Overview>
+    <Text>This skill orchestrates a strict multi-step workflow enabling the AI agent to systematically navigate, search, and extract precise, budget-aware code context from the workspace's main folder through progressive directory traversal, targeted pattern matching, and controlled single or batch file slicing.</Text>
+  </Overview>
+  <UserInputHint>
+    <Text>
+    </Text>
+  </UserInputHint>
+  <Rule />
   <Description>
   </Description>
-  <Icon />
-  <Nodes>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-290" Y="-70" Width="140" Height="120">
-      <Name>FileExplore</Name>
-      <AssetId>3af54637-07ce-4400-ae31-686eaf9387ef</AssetId>
-      <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
-        <Name>FileExplore</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <Tools />
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="150" Y="-70" Width="140" Height="120">
-      <Name>FileExplore_End</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
-        <Name>FileExplore_End</Name>
-        <Description>Result</Description>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowBeginDiagramItem" X="-280" Y="-40" Width="46" Height="17">
-      <Name>OnStart</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowBeginNode">
-        <Name>OnStart</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-280" Y="-20" Width="40" Height="17">
-      <Name>Input</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
-        <Name>Input</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
-        </ValueType>
-        <Value type="System.String">
-        </Value>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="160" Y="-30" Width="58" Height="17">
-      <Name>OnComplete</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
-        <Name>OnComplete</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="160" Y="-10" Width="44" Height="17">
-      <Name>Output</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
-        <Name>Output</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
-        </ValueType>
-        <Value type="System.String">
-        </Value>
-      </Node>
-    </Item>
-  </Nodes>
-  <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-  <Links>
-    <Item>
-      <FromNode>FileExplore_End</FromNode>
-      <FromConnector>Definition</FromConnector>
-      <ToNode>FileExplore</ToNode>
-      <ToConnector>Result</ToConnector>
-    </Item>
-  </Links>
+  <Icon>
+    <Id>23cd2d34-212f-4c76-998b-6f84528bee69</Id>
+  </Icon>
+  <Page>
+    <__preset__ />
+    <SkillDescription type="SAssetKey" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb">
+      <Value>
+        <Id>12e04077-2041-4081-8d64-55058cf62f7f</Id>
+      </Value>
+    </SkillDescription>
+    <PlanningLLmModel type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">
+      <Id>25053922-d516-447e-a4f4-da8230781503</Id>
+    </PlanningLLmModel>
+  </Page>
 </SuityAsset>

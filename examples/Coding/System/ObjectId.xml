@@ -2,6 +2,8 @@
 <ObjectId>
   <Object id="3af52506-f3c7-4824-9b7d-c15719e461ef" name="Workflows/_Common/SkillRouter.sprompt" />
   <Object id="56023507-40c3-4a2d-8724-6e2f912ae583" name="Workflows/_Common/SkillRunner.sprompt" />
+  <Object id="2634ecfb-7bc8-4424-a56d-7102dcf36d00" name="Workflows/_Common/SkillRunnerMinimal.sprompt" />
+  <Object id="12e04077-2041-4081-8d64-55058cf62f7f" name="Workflows/CodeEdit/FileExplore.sprompt" />
   <Object id="e628aaad-0ed0-46f2-aca2-526f74164567" name="Workflows/CodeGenerate/CodingMultipleCode.sprompt" />
   <Object id="261539bb-cb5e-47af-bea0-4a2bf0292a67" name="Workflows/CodeGenerate/CodingPlanning.sprompt" />
   <Object id="f0723b94-a760-4398-a257-19ef1530132b" name="Workflows/CodeGenerate/CodingPlanningAsk.sprompt" />

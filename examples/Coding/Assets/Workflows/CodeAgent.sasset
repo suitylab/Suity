@@ -10,14 +10,17 @@
     <Item>
       <Id>a4186d07-c508-430a-917c-c08699536700</Id>
     </Item>
+    <Item>
+      <Id>decc3bff-f459-4879-979d-2b742515ec67</Id>
+    </Item>
   </Tools>
   <IsStartup>True</IsStartup>
   <Overview>
     <Text>This skill can write programming documents, technical specification documents, as well as write and interact with complete program versions. When submitting a request, please do not write additional technical details and let this skill determine which technical specifications to adopt.</Text>
   </Overview>
-  <PromptHint>
-    <Text>Web application built with JavaScript/TypeScript.</Text>
-  </PromptHint>
+  <UserInputHint>
+    <Text>Web application built with TypeScript/JavaScript</Text>
+  </UserInputHint>
   <Rule />
   <Description>
   </Description>

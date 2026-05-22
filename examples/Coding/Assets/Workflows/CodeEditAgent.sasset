@@ -11,9 +11,10 @@
   <Overview>
     <Text>This skill can edit, refactor, debug, and optimize existing code, as well as generate and interact with updated program versions. When submitting a request, please refrain from adding extra technical details or rigid implementation constraints, and let this skill determine the most appropriate technical specifications and approaches to adopt.</Text>
   </Overview>
-  <PromptHint>
-    <Text>Web application built with JavaScript/TypeScript.</Text>
-  </PromptHint>
+  <UserInputHint>
+    <Text>
+    </Text>
+  </UserInputHint>
   <Rule />
   <Description>
   </Description>
@@ -28,5 +29,8 @@
       </Value>
     </SkillDescription>
     <Rules type="SArray" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb[]" />
+    <PlanningLLmModel type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">
+      <Id>a085f342-1c33-4b81-a621-94f8be0818c2</Id>
+    </PlanningLLmModel>
   </Page>
 </SuityAsset>

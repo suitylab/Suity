@@ -315,9 +315,9 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageSubTaskOutputItem" X="540" Y="-30" Width="79" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageTaskOutputItem" X="540" Y="-30" Width="79" Height="17">
       <Name>QuestionsAndAnswers</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.PageSubTaskOutputNode">
+      <Node type="Suity.Editor.Flows.SubFlows.PageTaskOutputNode">
         <Name>QuestionsAndAnswers</Name>
         <Description>Questions and answers</Description>
         <Icon />
