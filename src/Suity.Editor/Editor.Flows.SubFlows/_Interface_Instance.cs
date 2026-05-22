@@ -1,5 +1,6 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.Types;
+using Suity.Synchonizing;
 using Suity.Views;
 using Suity.Views.Named;
 using System.Collections.Generic;
@@ -35,14 +36,21 @@ public interface IPageInstance : INamed
     public IConversationHandler Conversation { get; }
 
     /// <summary>
-    /// Converts this page instance to a simple type representation.
+    /// Converts this page instance to a <see cref="SimpleType"/> representation.
     /// </summary>
+    /// <returns>A <see cref="SimpleType"/> describing the page's input parameters.</returns>
     SimpleType ToSimpleType();
 
     /// <summary>
     /// Sets a parameter value by name.
     /// </summary>
     bool SetParameter(string name, object value);
+
+    /// <summary>
+    /// Sets the synchronization parameters to be used by the object.
+    /// </summary>
+    /// <param name="parameters">An object that provides synchronization parameters. Cannot be null.</param>
+    void SetParameters(ISyncObject parameters);
 
     /// <summary>
     /// Gets a value indicating whether this task is done.

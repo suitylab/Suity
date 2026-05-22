@@ -1,6 +1,7 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
+using Suity.NodeQuery;
 using Suity.Synchonizing;
 using Suity.Synchonizing.Core;
 using Suity.Synchonizing.Preset;
@@ -100,6 +101,8 @@ public abstract class ToolInstance : IToolInstance, IViewObject
     public abstract bool? GetIsDoneOutputs();
 
     public abstract bool SetParameter(string name, object value);
+
+    public abstract void SetParameters(ISyncObject parameters);
 
     public abstract HistoryText GetTaskCommit();
     public abstract TaskCommitParameter GetTaskCommitParameter();
@@ -259,56 +262,26 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         return true;
     }
 
+    public override void SetParameters(ISyncObject parameters)
+    {
+        Cloner.CloneProperty(parameters, _input);
+    }
 
     public override HistoryText GetTaskCommit()
     {
-        var builder = new StringBuilder();
-        string tagName = Tool.Name;
-
-        builder.AppendLine($"<ToolCall name={tagName}>");
+        var writer = new XmlNodeWriter("ToolCall", false);
+        writer.SetAttribute("name", Tool.Name);
         if (!string.IsNullOrWhiteSpace(_errorMessage.Text))
         {
-            builder.AppendLine("<Error>");
-            builder.AppendLine(_errorMessage.Text);
-            builder.AppendLine("</Error>");
+            writer.SetElement("Error", w => w.SetValue(_errorMessage.Text));
         }
 
         if (_output is { } output)
         {
-            var sync = new GetAllPropertySync(SyncIntent.Serialize, false);
-            output.Sync(sync, SyncContext.Empty);
-
-            var outputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(output);
-
-            foreach (var field in outputType.Fields)
-            {
-                if (!sync.Values.TryGetValue(field.Name, out var value))
-                {
-                    continue;
-                }
-
-                string attr = ResolveElementXmlAttr(value.Value, field);
-                builder.AppendLine($"<{field.Name}{attr}>");
-
-                try
-                {
-                    var text = SubFlowExtensions.ConvertChatHistoryText(field.Type, value.Value, true);
-                    builder.AppendLine(text.Text);
-                }
-                catch (Exception)
-                {
-                    builder.AppendLine("---");
-                }
-
-                builder.AppendLine($"</{field.Name}>");
-                builder.AppendLine();
-            }
+            Serializer.Serialize(output, writer);
         }
 
-        builder.AppendLine("</ToolCall>");
-        builder.AppendLine();
-
-        return builder.ToString();
+        return writer.ToString();
     }
 
     public override TaskCommitParameter GetTaskCommitParameter()

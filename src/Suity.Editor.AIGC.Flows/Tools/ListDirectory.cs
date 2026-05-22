@@ -28,6 +28,7 @@ public class ListDirectory : ToolCommand<ListDirectory.Output>
         {
             _result.InspectorField(setup);
         }
+        public override string ToString() => $"Directory listing: {Result?.Split('\n').Length ?? 0} entries";
     }
 
     readonly StringProperty _dirPath = new("DirPath", "DirPath", string.Empty, "The relative path to the directory to list. If empty, the workspace directory is used.");
@@ -69,7 +70,7 @@ public class ListDirectory : ToolCommand<ListDirectory.Output>
             .OrderBy(f => f is DirectoryInfo ? 0 : 1)
             .ThenBy(f => f.Name);
 
-        var lines = entries.Select(f => f is DirectoryInfo ? $"{f.Name}/" : f.Name);
+        var lines = entries.Select(f => f is DirectoryInfo dir ? $"{dir.Name}/" : $"{f.Name} ({DisplayFormatter.GetFileSizeDisplay(((FileInfo)f).Length)})");
 
         return Task.FromResult(new Output
         {

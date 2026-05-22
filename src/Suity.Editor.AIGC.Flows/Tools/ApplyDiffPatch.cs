@@ -38,6 +38,7 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
             _message.InspectorField(setup);
             _hunksApplied.InspectorField(setup);
         }
+        public override string ToString() => $"{FilePath}: {HunksApplied} hunks applied - {Message}";
     }
 
     readonly StringProperty _filePath = new("FilePath", "FilePath", string.Empty, "The absolute or relative path to the target file.");

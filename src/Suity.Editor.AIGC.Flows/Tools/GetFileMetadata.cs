@@ -51,6 +51,7 @@ public class GetFileMetadata : ToolCommand<GetFileMetadata.Output>
             _modifiedTime.InspectorField(setup);
             _createdTime.InspectorField(setup);
         }
+        public override string ToString() => $"{FileName} ({Extension}, {SizeBytes} bytes, {TotalLines} lines)";
     }
 
     readonly StringProperty _filePath = new("FilePath", "FilePath", string.Empty, "The absolute or relative path to the target file.");

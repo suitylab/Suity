@@ -38,8 +38,10 @@ public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.O
             _oldExactString.InspectorField(setup);
             _newString.InspectorField(setup);
         }
+        public override string ToString() => $"{FilePath} -{OldExactString?.Length ?? 0} +{NewString?.Length ?? 0}";
     }
 
+    [NativeType("BatchReplaceStringInFiles.FileResult", CodeBase = "*Suity")]
     public class FileResult : IViewObject
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
@@ -51,13 +53,18 @@ public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.O
         public string Status { get => _status.Text; set => _status.Text = value; }
         public string Error { get => _error.Text; set => _error.Text = value; }
         public int ReplacementsMade { get => _replacementsMade.Value; set => _replacementsMade.Value = value; }
-        public bool HasError => !string.IsNullOrEmpty(Error);
+        public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
         public void Sync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
             _status.Sync(sync);
-            _error.Sync(sync);
+
+            if (sync.IsSetter() || !string.IsNullOrWhiteSpace(_error.Text))
+            {
+                _error.Sync(sync);
+            }
+
             _replacementsMade.Sync(sync);
         }
         public void SetupView(IViewObjectSetup setup)
@@ -67,6 +74,7 @@ public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.O
             _error.InspectorField(setup);
             _replacementsMade.InspectorField(setup);
         }
+        public override string ToString() => $"{FilePath} [{Status}] Replacements: {ReplacementsMade}" + (HasError ? $" - Error: {Error}" : "");
     }
 
     public class Output : IViewObject
@@ -91,6 +99,7 @@ public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.O
             _successCount.InspectorField(setup);
             _failCount.InspectorField(setup);
         }
+        public override string ToString() => $"Results: {SuccessCount} modified, {FailCount} failed ({Results.Count} items)";
     }
 
     readonly ListProperty<FileEditItem> _modifications = new("Modifications", "Modifications", "List of string replacements to perform.");

@@ -8,6 +8,7 @@ using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
+using Suity.Synchonizing.Preset;
 using Suity.UndoRedos;
 using Suity.Views;
 using System;
@@ -144,12 +145,10 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <inheritdoc/>
     public object Owner => Option?.Owner;
 
+    /// <inheritdoc/>
     public string FullName => _presetFullName ?? _asset.AssetKey ?? base.Name;
 
-    /// <summary>
-    /// Converts this page instance to a <see cref="SimpleType"/> representation.
-    /// </summary>
-    /// <returns>A <see cref="SimpleType"/> describing the page's input parameters.</returns>
+    /// <inheritdoc/>
     public SimpleType ToSimpleType()
     {
         List<SimpleField> fields = [];
@@ -232,11 +231,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         return type;
     }
 
-    /// <summary>
-    /// Sets the value of a named parameter on this page.
-    /// </summary>
-    /// <param name="name">The name of the parameter.</param>
-    /// <param name="value">The value to set.</param>
+    /// <inheritdoc/>
     public bool SetParameter(string name, object value)
     {
         if (_dic.GetValueSafe(name) is not IPageParameter parameter)
@@ -264,6 +259,17 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         ParameterSet?.Invoke(this, parameter);
 
         return true;
+    }
+
+    public void SetParameters(ISyncObject syncObject)
+    {
+        var getAll = new GetAllPropertySync(false);
+        syncObject.Sync(getAll, SyncContext.Empty);
+
+        foreach (var parameter in getAll.Values)
+        {
+            SetParameter(parameter.Key, parameter.Value.Value);
+        }
     }
 
     #endregion

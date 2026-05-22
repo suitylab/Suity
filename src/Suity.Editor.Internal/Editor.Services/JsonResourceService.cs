@@ -444,10 +444,10 @@ internal class JsonResourceService : IJsonResourceService
         switch (obj)
         {
             case JsonObject jobj:
-                return jobj.FromJson(options);
+                return jobj.FromJsonObject(options);
 
             case JsonArray jary:
-                return jary.FromJson(options);
+                return jary.FromJsonArray(options);
 
             case JsonDataReader reader:
                 return FromJson(reader.ReadObject(), options);

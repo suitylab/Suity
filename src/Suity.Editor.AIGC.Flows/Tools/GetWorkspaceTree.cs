@@ -29,6 +29,7 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
         {
             _tree.InspectorField(setup);
         }
+        public override string ToString() => $"Workspace tree: {Tree?.Split('\n').Length ?? 0} entries";
     }
 
     readonly StringProperty _path = new("Path", "Path", string.Empty, "The relative path to the directory to scan. If empty, the workspace directory is used.");
@@ -125,7 +126,8 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
                 }
                 else
                 {
-                    lines.Add($"{prefix}{entry.Name}");
+                    var fileInfo = (FileInfo)entry;
+                    lines.Add($"{prefix}{entry.Name} ({DisplayFormatter.GetFileSizeDisplay(fileInfo.Length)})");
                 }
             }
         }

@@ -196,7 +196,7 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
 
         var groupNode = gui.PropertyGroup(target, null, (n, inner, column, pipeline) =>
         {
-            bool expanded = n.Parent?.GetIsExpanded() == true;
+            bool expanded = n.Parent?.Parent?.GetIsExpanded() == true;
 
             if (pipeline.HasFlag(GuiPipeline.Main))
             {

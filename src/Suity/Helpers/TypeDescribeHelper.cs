@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -234,4 +235,19 @@ public static class TypeDescribeHelper
         TypeCode.SByte or TypeCode.Int16 or TypeCode.Int32 or TypeCode.Int64 or TypeCode.Single or TypeCode.Double or TypeCode.Decimal => true,
         _ => false,
     };
+
+    public static Type GetListOrArrayElment(this Type type)
+    {
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+        {
+            return type.GetGenericArguments()[0];
+        }
+
+        if (type.IsArray)
+        {
+            return type.GetElementType();
+        }
+
+        return null;
+    }
 }

@@ -32,6 +32,7 @@ public class SearchFile : ToolCommand<SearchFile.Output>
             _results.InspectorField(setup);
             _matchCount.InspectorField(setup);
         }
+        public override string ToString() => $"{Results} ({MatchCount})";
     }
 
     readonly StringProperty _dirPath = new("DirPath", "DirPath", string.Empty, "The relative path within workspace to search. If empty, searches entire workspace.");

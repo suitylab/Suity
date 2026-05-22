@@ -32,6 +32,8 @@ internal class JsonSchemaService : IJsonSchemaService
     /// </summary>
     public static JsonSchemaService Instance { get; } = new();
 
+    readonly Dictionary<Type, SimpleType> _simpleTypes = [];
+
     private JsonSchemaService()
     {
     }
@@ -80,6 +82,14 @@ internal class JsonSchemaService : IJsonSchemaService
 
     public SimpleType GetViewObjectSimpleType(IViewObject viewObject, string name = null, string fullName = null)
     {
+        lock (_simpleTypes)
+        {
+            if (_simpleTypes.TryGetValue(viewObject.GetType(), out var cached))
+            {
+                return cached;
+            }
+        }
+
         var setup = new GetFieldSetup();
         viewObject.SetupView(setup);
 
@@ -117,6 +127,11 @@ internal class JsonSchemaService : IJsonSchemaService
             Tooltips = viewObject.ToToolTipsTextL(),
             Fields = [.. fields],
         };
+
+        lock (_simpleTypes)
+        {
+            _simpleTypes[viewObject.GetType()] = simpleType;
+        }
 
         return simpleType;
     }
@@ -448,6 +463,23 @@ internal class JsonSchemaService : IJsonSchemaService
         {
             // Use string to replace link field
             fieldProp = ObjectSchemaProperty.DefineString(description);
+        }
+        else if (type.Relationship == TypeRelationships.None && type.Target?.NativeType is Type nativeType && typeof(IViewObject).IsAssignableFrom(nativeType))
+        {
+            // For IViewObject that is not marked as struct/abstract struct but we still want to support schema generation for it, we can treat it as struct here.
+            // Need to create an instance of it to get its fields.
+            try
+            {
+                if (Activator.CreateInstance(nativeType) is IViewObject viewObject)
+                {
+                    var simpleType = GetViewObjectSimpleType(viewObject);
+                    fieldProp = _CreateSchemaProperty(simpleType, depth, options);
+                }
+            }
+            catch (Exception err)
+            {
+                err.LogError();
+            }
         }
 
         return fieldProp;

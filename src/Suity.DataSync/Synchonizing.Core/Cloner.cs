@@ -103,10 +103,10 @@ public static class Cloner
             throw new ArgumentNullException(nameof(objTo));
         }
 
-        if (objFrom.GetType() != objTo.GetType())
-        {
-            throw new ArgumentException();
-        }
+        //if (objFrom.GetType() != objTo.GetType())
+        //{
+        //    throw new ArgumentException("Object types must be the same.", nameof(objTo));
+        //}
 
         if (objFrom.GetType().IsValueType || objFrom is string)
         {

@@ -4,6 +4,10 @@ using Suity.Editor.Design;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.Helpers;
+using Suity.Synchonizing;
+using Suity.Synchonizing.Preset;
+using Suity.Views;
 using System;
 using System.Collections.Generic;
 
@@ -210,70 +214,6 @@ public static class SValueJsonHelper
         }
     }
 
-    /// <summary>
-    /// Deserializes a <see cref="JsonObject"/> into an <see cref="SObject"/> instance.
-    /// Resolves the object type from the @type property or a type hint, then recursively deserializes all child properties.
-    /// </summary>
-    /// <param name="jsonObj">The JSON object to deserialize.</param>
-    /// <param name="options">Optional resource options providing type hints and enum auto-add behavior.</param>
-    /// <returns>An <see cref="SObject"/> populated with the deserialized data, or null if the input is null.</returns>
-    public static SObject FromJson(this JsonObject jsonObj, SItemResourceOptions options = null)
-    {
-        if (jsonObj is null)
-        {
-            return null;
-        }
-
-        string typeId = jsonObj["@type"] as string;
-        SObject sobj;
-        TypeDefinition typeDef;
-
-        if (GlobalIdResolver.TryResolve(typeId, out Guid id))
-        {
-            typeDef = TypeDefinition.Resolve(id) ?? TypeDefinition.Empty;
-            sobj = new SObject(typeDef);
-        }
-        else if (!TypeDefinition.IsNullOrEmpty(options?.TypeHint))
-        {
-            typeDef = options.TypeHint;
-            sobj = new SObject(typeDef);
-        }
-        else
-        {
-            typeDef = null;
-            sobj = new SObject();
-        }
-
-        var stype = typeDef?.GetTarget(AssetFilters.Default) as DCompond;
-
-        foreach (var pair in jsonObj)
-        {
-            if (pair.Key.StartsWith("@"))
-            {
-                continue;
-            }
-
-            var field = stype?.GetPublicStructFieldFromBase(pair.Key);
-            var subOptions = new SItemResourceOptions
-            {
-                TypeHint = field?.FieldType,
-                AutoAddNewEnumValue = options?.AutoAddNewEnumValue == true
-            };
-            var item = FromJson(pair.Value, subOptions);
-            sobj.SetProperty(pair.Key, item);
-        }
-
-        // Fix data once
-        foreach (var pair in jsonObj)
-        {
-            if (!pair.Key.StartsWith("@"))
-            {
-                sobj.GetPropertyFormatted(pair.Key);
-            }
-        }
-
-        return sobj;
-    }
 
     /// <summary>
     /// Deserializes a <see cref="JsonObject"/> into a dictionary of property values based on a <see cref="SimpleType"/> definition.
@@ -299,7 +239,7 @@ public static class SValueJsonHelper
             }
         }
 
-        string typeId = jsonObj["@type"] as string;
+        // string typeId = jsonObj["@type"] as string;
         Dictionary<string, object> dic = [];
 
         foreach (var pair in jsonObj)
@@ -310,60 +250,96 @@ public static class SValueJsonHelper
             }
 
             var field = fieldMap.GetValueSafe(pair.Key);
+            if (field is null)
+            {
+                continue;
+            }
+
             var subOptions = new SItemResourceOptions
             {
-                TypeHint = field?.Type,
-                AutoAddNewEnumValue = options?.AutoAddNewEnumValue == true
+                TypeHint = field.Type,
+                AutoAddNewEnumValue = options?.AutoAddNewEnumValue ?? false,
             };
-            var item = FromJson(pair.Value, subOptions);
-            dic[pair.Key] = item;
+            var item = FromJson(pair.Value, field.Type, subOptions);
+            dic[pair.Key] = SItem.ResolveValue(item);
         }
 
         return dic;
     }
 
-    /// <summary>
-    /// Deserializes a <see cref="JsonArray"/> into an <see cref="SArray"/> instance.
-    /// Recursively deserializes each element using the provided type hint for element type resolution.
-    /// </summary>
-    /// <param name="jsonArray">The JSON array to deserialize.</param>
-    /// <param name="options">Optional resource options providing type hints and enum auto-add behavior.</param>
-    /// <returns>An <see cref="SArray"/> populated with the deserialized elements, or null if the input is null.</returns>
-    public static SArray FromJson(this JsonArray jsonArray, SItemResourceOptions options = null)
+    private static object FromJson(object obj, TypeDefinition fieldType, SItemResourceOptions options = null)
     {
-        if (jsonArray is null)
+        if (obj is null)
         {
             return null;
         }
-
-        var sary = new SArray();
-
-        var typeHint = options?.TypeHint;
-        if (typeHint?.IsArray == true)
+        else if (obj is JsonObject jsonObj)
         {
-            typeHint = typeHint.ElementType;
+            return FromJsonObject(jsonObj, fieldType, options);
         }
-
-        var subOptions = new SItemResourceOptions
+        else if (obj is JsonArray jsonArray)
         {
-            TypeHint = typeHint,
-            AutoAddNewEnumValue = options?.AutoAddNewEnumValue == true
-        };
-
-        foreach (var item in jsonArray)
-        {
-            sary.Add(FromJson(item, subOptions));
+            return FromJsonArray(jsonArray, fieldType, options);
         }
-
-        // Fix data once
-        for (int i = 0; i < sary.Count; i++)
+        else
         {
-            sary.GetItemFormatted(i);
+            return FromJson(obj, options);
         }
-
-        return sary;
     }
 
+    private static object FromJsonObject(JsonObject jsonObj, TypeDefinition fieldType, SItemResourceOptions options = null)
+    {
+        Type nativeType = fieldType.Target?.NativeType;
+
+        bool isNativeType =
+            fieldType.Relationship == TypeRelationships.None &&
+            nativeType != null &&
+            typeof(ISyncObject).IsAssignableFrom(nativeType);
+
+        if (isNativeType)
+        {
+            var fieldObj = (IViewObject)Activator.CreateInstance(nativeType);
+            var simpleType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(fieldObj);
+            var dic = FromJson(jsonObj, simpleType, options);
+            var setter = new SetAllPropertySync(dic);
+            fieldObj.Sync(setter, SyncContext.Empty);
+
+            return fieldObj;
+        }
+        else
+        {
+            return FromJsonObject(jsonObj, options);
+        }
+    }
+
+    private static object FromJsonArray(JsonArray jsonArray, TypeDefinition fieldType, SItemResourceOptions options = null)
+    {
+        var elementType = fieldType.ElementType;
+        Type nativeType = elementType?.Target?.NativeType;   
+
+        bool isNativeType = 
+            fieldType.Relationship == TypeRelationships.Array &&
+            elementType?.Relationship == TypeRelationships.None &&
+            nativeType != null && 
+            typeof(ISyncObject).IsAssignableFrom(nativeType);
+
+        if (isNativeType)
+        {
+            List<object> objs = [];
+            foreach (var item in jsonArray)
+            {
+                var obj = FromJson(item, elementType, options);
+                objs.Add(obj);
+            }
+
+            var arrayMaker = GenericArrayMaker.GetMaker(nativeType);
+            return arrayMaker.MakeList(objs);
+        }
+        else
+        {
+            return FromJsonArray(jsonArray, options);
+        }
+    }
 
     private static object FromJson(object obj, SItemResourceOptions options = null)
     {
@@ -373,11 +349,11 @@ public static class SValueJsonHelper
         }
         else if (obj is JsonObject jsonObj)
         {
-            return FromJson(jsonObj, options);
+            return FromJsonObject(jsonObj, options);
         }
         else if (obj is JsonArray jsonArray)
         {
-            return FromJson(jsonArray, options);
+            return FromJsonArray(jsonArray, options);
         }
         else if (options?.TypeHint is { } typeHint)
         {
@@ -448,6 +424,114 @@ public static class SValueJsonHelper
             return obj;
         }
     }
+
+    /// <summary>
+    /// Deserializes a <see cref="JsonObject"/> into an <see cref="SObject"/> instance.
+    /// Resolves the object type from the @type property or a type hint, then recursively deserializes all child properties.
+    /// </summary>
+    /// <param name="jsonObj">The JSON object to deserialize.</param>
+    /// <param name="options">Optional resource options providing type hints and enum auto-add behavior.</param>
+    /// <returns>An <see cref="SObject"/> populated with the deserialized data, or null if the input is null.</returns>
+    public static SObject FromJsonObject(this JsonObject jsonObj, SItemResourceOptions options = null)
+    {
+        if (jsonObj is null)
+        {
+            return null;
+        }
+
+        string typeId = jsonObj["@type"] as string;
+        SObject sobj;
+        TypeDefinition typeDef;
+
+        if (GlobalIdResolver.TryResolve(typeId, out Guid id))
+        {
+            typeDef = TypeDefinition.Resolve(id) ?? TypeDefinition.Empty;
+            sobj = new SObject(typeDef);
+        }
+        else if (!TypeDefinition.IsNullOrEmpty(options?.TypeHint))
+        {
+            typeDef = options.TypeHint;
+            sobj = new SObject(typeDef);
+        }
+        else
+        {
+            typeDef = null;
+            sobj = new SObject();
+        }
+
+        var stype = typeDef?.GetTarget(AssetFilters.Default) as DCompond;
+
+        foreach (var pair in jsonObj)
+        {
+            if (pair.Key.StartsWith("@"))
+            {
+                continue;
+            }
+
+            var field = stype?.GetPublicStructFieldFromBase(pair.Key);
+            var subOptions = new SItemResourceOptions
+            {
+                TypeHint = field?.FieldType,
+                AutoAddNewEnumValue = options?.AutoAddNewEnumValue ?? false
+            };
+            var item = FromJson(pair.Value, subOptions);
+            sobj.SetProperty(pair.Key, item);
+        }
+
+        // Fix data once
+        foreach (var pair in jsonObj)
+        {
+            if (!pair.Key.StartsWith("@"))
+            {
+                sobj.GetPropertyFormatted(pair.Key);
+            }
+        }
+
+        return sobj;
+    }
+
+    /// <summary>
+    /// Deserializes a <see cref="JsonArray"/> into an <see cref="SArray"/> instance.
+    /// Recursively deserializes each element using the provided type hint for element type resolution.
+    /// </summary>
+    /// <param name="jsonArray">The JSON array to deserialize.</param>
+    /// <param name="options">Optional resource options providing type hints and enum auto-add behavior.</param>
+    /// <returns>An <see cref="SArray"/> populated with the deserialized elements, or null if the input is null.</returns>
+    public static SArray FromJsonArray(this JsonArray jsonArray, SItemResourceOptions options = null)
+    {
+        if (jsonArray is null)
+        {
+            return null;
+        }
+
+        var sary = new SArray();
+
+        var typeHint = options?.TypeHint;
+        if (typeHint?.IsArray == true)
+        {
+            typeHint = typeHint.ElementType;
+        }
+
+        var subOptions = new SItemResourceOptions
+        {
+            TypeHint = typeHint,
+            AutoAddNewEnumValue = options?.AutoAddNewEnumValue == true
+        };
+
+        foreach (var item in jsonArray)
+        {
+            sary.Add(FromJson(item, subOptions));
+        }
+
+        // Fix data once
+        for (int i = 0; i < sary.Count; i++)
+        {
+            sary.GetItemFormatted(i);
+        }
+
+        return sary;
+    }
+
 
     private static bool AutoAddNewEnumValue(TypeDefinition type, string name)
     {

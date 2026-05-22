@@ -31,6 +31,7 @@ public class ReplaceStringInFile : ToolCommand<ReplaceStringInFile.Output>
             _filePath.InspectorField(setup);
             _message.InspectorField(setup);
         }
+        public override string ToString() => $"{FilePath}: '{Message}'";
     }
 
     readonly StringProperty _filePath = new("FilePath", "FilePath", string.Empty, "The absolute or relative path to the target file.");

@@ -35,8 +35,10 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
             _filePath.InspectorField(setup);
             _diffContent.InspectorField(setup);
         }
+        public override string ToString() => $"{FilePath} ({DiffContent?.Length ?? 0} chars diff)";
     }
 
+    [NativeType("BatchApplyDiffPatches.FileResult", CodeBase = "*Suity")]
     public class FileResult : IViewObject
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
@@ -48,13 +50,18 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
         public string Status { get => _status.Text; set => _status.Text = value; }
         public string Error { get => _error.Text; set => _error.Text = value; }
         public int HunksApplied { get => _hunksApplied.Value; set => _hunksApplied.Value = value; }
-        public bool HasError => !string.IsNullOrEmpty(Error);
+        public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
         public void Sync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
             _status.Sync(sync);
-            _error.Sync(sync);
+
+            if (sync.IsSetter() || !string.IsNullOrWhiteSpace(_error.Text))
+            {
+                _error.Sync(sync);
+            }
+
             _hunksApplied.Sync(sync);
         }
         public void SetupView(IViewObjectSetup setup)
@@ -64,6 +71,7 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
             _error.InspectorField(setup);
             _hunksApplied.InspectorField(setup);
         }
+        public override string ToString() => $"{FilePath} [{Status}] {(HasError ? $"- Error: {Error}" : $"Hunks: {HunksApplied}")}";
     }
 
     public class Output : IViewObject
@@ -88,6 +96,7 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
             _successCount.InspectorField(setup);
             _failCount.InspectorField(setup);
         }
+        public override string ToString() => $"Results: {SuccessCount} success, {FailCount} failed ({Results.Count} items)";
     }
 
     readonly ListProperty<FilePatchItem> _patches = new("Patches", "Patches", "List of diff patches to apply.");

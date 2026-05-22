@@ -3,12 +3,15 @@ using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Helpers;
+using Suity.Editor.CodeRender.Json;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.NodeQuery;
 using Suity.Synchonizing;
+using Suity.Synchonizing.Core;
 using Suity.Views;
 using Suity.Views.Im;
 using Suity.Views.Im.Flows;
@@ -360,28 +363,58 @@ public class ParsePageInstance : TaskPageNode
 
             var pageInstance = pageDefAsset.CreatePageInstance(option);
             var simpleType = pageInstance.ToSimpleType();
-
-            var dic = EditorServices.JsonResource.FromJson(jobj, simpleType);
+            
+            var dic = jobj.FromJson(simpleType);
             if (dic is null)
             {
                 return null;
             }
 
-            foreach (var pair in dic)
-            {
-                var value = SItem.ResolveValue(pair.Value);
-                pageInstance.SetParameter(pair.Key, value);
-            }
+            var setter = new PageSetter(dic);
+            pageInstance.SetParameters(setter);
 
             return pageInstance;
         }
-        catch (Exception)
+        catch (Exception err)
         {
+            err.LogError();
+
             // Return null on runtime error (original logic threw, but returning null is more convenient for callers)
             return null;
         }
     }
 
+    class PageSetter : ISyncObject
+    {
+        readonly Dictionary<string, object> _dic;
+
+        public PageSetter(Dictionary<string, object> dic)
+        {
+            _dic = dic ?? [];
+        }
+
+        public void Sync(IPropertySync sync, ISyncContext context)
+        {
+            if (sync.Mode == SyncMode.GetAll)
+            {
+                foreach (var pair in _dic)
+                {
+                    var value = SItem.ResolveValue(pair.Value);
+
+                    sync.Sync(pair.Key, value);
+                }
+            }
+            else if (sync.Mode == SyncMode.Get)
+            {
+                if (_dic.TryGetValue(sync.Name, out var value))
+                {
+                    value = SItem.ResolveValue(value);
+
+                    sync.Sync(sync.Name, value);
+                }
+            }
+        }
+    }
 }
 
 #endregion

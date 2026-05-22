@@ -34,8 +34,10 @@ public class BatchCreateNewFiles : ToolCommand<BatchCreateNewFiles.Output>
             _filePath.InspectorField(setup);
             _content.InspectorField(setup);
         }
+        public override string ToString() => $"{FilePath} ({Content?.Length ?? 0} chars)";
     }
 
+    [NativeType("BatchCreateNewFiles.FileResult", CodeBase = "*Suity")]
     public class FileResult : IViewObject
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
@@ -45,13 +47,17 @@ public class BatchCreateNewFiles : ToolCommand<BatchCreateNewFiles.Output>
         public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
         public string Status { get => _status.Text; set => _status.Text = value; }
         public string Error { get => _error.Text; set => _error.Text = value; }
-        public bool HasError => !string.IsNullOrEmpty(Error);
+        public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
         public void Sync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
             _status.Sync(sync);
-            _error.Sync(sync);
+
+            if (sync.IsSetter() || !string.IsNullOrWhiteSpace(_error.Text))
+            {
+                _error.Sync(sync);
+            }
         }
         public void SetupView(IViewObjectSetup setup)
         {
@@ -59,6 +65,7 @@ public class BatchCreateNewFiles : ToolCommand<BatchCreateNewFiles.Output>
             _status.InspectorField(setup);
             _error.InspectorField(setup);
         }
+        public override string ToString() => $"{FilePath} [{Status}]" + (HasError ? $" - Error: {Error}" : "");
     }
 
     public class Output : IViewObject
@@ -83,6 +90,7 @@ public class BatchCreateNewFiles : ToolCommand<BatchCreateNewFiles.Output>
             _successCount.InspectorField(setup);
             _failCount.InspectorField(setup);
         }
+        public override string ToString() => $"Results: {SuccessCount} created, {FailCount} failed ({Results.Count} items)";
     }
 
     readonly ListProperty<FileWriteItem> _files = new("Files", "Files", "List of files to create.");
