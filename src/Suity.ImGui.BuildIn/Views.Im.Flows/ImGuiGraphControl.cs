@@ -7,6 +7,7 @@ using Suity.Views.Graphics;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System;
 
 namespace Suity.Views.Im.Flows;
 
@@ -148,10 +149,11 @@ public class ImGuiGraphControl : GraphControl, IDrawContext
                 // Node filtered sync mode
                 // In some cases, collection modifications may occur, requiring ToArray()
                 _tempNodeList.Clear();
-                _tempNodeList.AddRange(Diagram.NodeCollection.OfType<ImGraphNode>());
 
                 try
                 {
+                    _tempNodeList.AddRange(Diagram.NodeCollection.OfType<ImGraphNode>());
+
                     foreach (var node in _tempNodeList)
                     {
                         // Nodes to sync update || nodes not yet initialized
@@ -171,6 +173,10 @@ public class ImGuiGraphControl : GraphControl, IDrawContext
                             //Debug.WriteLine($"skip:{node.GuiId}");
                         }
                     }
+                }
+                catch (Exception err)
+                {
+                    err.LogError();
                 }
                 finally
                 {

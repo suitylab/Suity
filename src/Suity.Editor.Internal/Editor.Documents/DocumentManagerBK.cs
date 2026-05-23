@@ -649,7 +649,11 @@ internal sealed class DocumentManagerBK : DocumentManager
             o.DoMove(refactor);
         });
 
+        // Force save the new document without dirty check.
         docClone.ForceSave();
+
+        // Close the document to release the file occupation and clean up intermediate status.
+        CloseDocument(docClone);
 
         return docClone;
     }
