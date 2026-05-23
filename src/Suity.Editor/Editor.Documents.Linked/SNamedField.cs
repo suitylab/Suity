@@ -167,7 +167,7 @@ public abstract class SNamedField : NamedField,
             }
         }
 
-        if (sync.Intent == SyncIntent.Clone)
+        if (sync.Intent == SyncIntent.Clone || sync.IsSetter())
         {
             _oldId = sync.Sync("_oldId", _oldId);
         }

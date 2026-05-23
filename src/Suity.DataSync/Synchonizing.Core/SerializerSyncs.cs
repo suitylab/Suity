@@ -8,15 +8,21 @@ internal delegate object DeserializeElementCreate(Type type, INodeReader reader)
 
 internal delegate void DeserializeElementDeserialize(object obj, INodeReader reader);
 
-internal class DeserializePropertySync(INodeReader reader) : MarshalByRefObject, IPropertySync
+internal class DeserializePropertySync : MarshalByRefObject, IPropertySync
 {
-    private readonly INodeReader _reader = reader;
+    private readonly INodeReader _reader;
 
     public DeserializeElementCreate Creater;
     public DeserializeElementDeserialize Deserializer;
 
+    public DeserializePropertySync(INodeReader reader, SyncIntent intent = SyncIntent.Serialize)
+    {
+        _reader = reader;
+        Intent = intent;
+    }
+
     public SyncMode Mode => SyncMode.SetAll;
-    public SyncIntent Intent => SyncIntent.Serialize;
+    public SyncIntent Intent { get; }
 
     public string Name => default;
     public IEnumerable<string> Names => _reader.NodeNames;
@@ -86,15 +92,21 @@ internal class DeserializePropertySync(INodeReader reader) : MarshalByRefObject,
     }
 }
 
-internal class DeserializeIndexSync(INodeReader reader) : MarshalByRefObject, IIndexSync
+internal class DeserializeIndexSync : MarshalByRefObject, IIndexSync
 {
-    private readonly INodeReader _reader = reader;
+    private readonly INodeReader _reader;
 
     public DeserializeElementCreate Creater;
     public DeserializeElementDeserialize Deserializer;
 
+    public DeserializeIndexSync(INodeReader reader, SyncIntent intent = SyncIntent.Serialize)
+    {
+        _reader = reader;
+        Intent = intent;
+    }
+
     public SyncMode Mode => SyncMode.SetAll;
-    public SyncIntent Intent => SyncIntent.Serialize;
+    public SyncIntent Intent { get; }
 
     public int Count => _reader.ChildCount;
     public int Index => -1;

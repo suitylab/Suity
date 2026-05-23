@@ -118,8 +118,10 @@ public abstract class Document : IViewListener, ICommit
     /// </summary>
     /// <param name="op">The storage item.</param>
     /// <param name="loaderObject">The loader object.</param>
+    /// <param name="intent">The loading intent.</param>
+    /// <param name="cloneMode">Indicates whether the load should be performed in clone mode.</param>
     /// <returns>True if load was successful.</returns>
-    protected internal virtual bool LoadDocument(IStorageItem op, object loaderObject, DocumentLoadingIntent intent = DocumentLoadingIntent.Normal) => false;
+    protected internal virtual bool LoadDocument(IStorageItem op, object loaderObject, DocumentLoadingIntent intent = DocumentLoadingIntent.Normal, bool cloneMode = false) => false;
 
     /// <summary>
     /// Saves the document to storage.
@@ -132,8 +134,9 @@ public abstract class Document : IViewListener, ICommit
     /// Exports the document to storage.
     /// </summary>
     /// <param name="op">The storage item.</param>
+    /// <param name="cloneMode">Indicates whether the export should be performed in clone mode.</param>
     /// <returns>True if export was successful.</returns>
-    protected internal virtual bool ExportDocument(IStorageItem op)
+    protected internal virtual bool ExportDocument(IStorageItem op, bool cloneMode = false)
     {
         var fileName = FileName;
 

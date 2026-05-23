@@ -65,7 +65,7 @@ public abstract class SNamedNode : NamedNode,
     {
         base.OnSync(sync, context);
 
-        if (sync.Intent == SyncIntent.Clone)
+        if (sync.Intent == SyncIntent.Clone || sync.IsSetter())
         {
             _oldId = sync.Sync("_oldId", _oldId);
         }

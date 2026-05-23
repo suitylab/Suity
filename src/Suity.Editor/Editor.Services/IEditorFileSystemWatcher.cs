@@ -44,6 +44,16 @@ public interface IEditorFileSystemWatcher : IDisposable
     string Path { get; set; }
 
     /// <summary>
+    /// Gets the owner object.
+    /// </summary>
+    object Owner { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether unwatching is enabled.
+    /// </summary>
+    bool EnableUnwatch { get; }
+
+    /// <summary>
     /// Gets or sets whether events are raised.
     /// </summary>
     bool EnableRaisingEvents { get; set; }
@@ -62,9 +72,4 @@ public interface IEditorFileSystemWatcher : IDisposable
     /// Gets or sets whether to use delayed events.
     /// </summary>
     bool Delayed { get; set; }
-
-    /// <summary>
-    /// Gets the owner object.
-    /// </summary>
-    object Owner { get; }
 }

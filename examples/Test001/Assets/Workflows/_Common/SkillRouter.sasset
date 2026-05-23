@@ -1,0 +1,492 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="AigcFlow">
+  <AssetId>dd1a44f3-6747-4c02-9c15-a48109eeaf2f</AssetId>
+  <NameSpace>TaskWorker</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-170" Y="-150" Width="120" Height="150">
+      <Name>SkillRouter</Name>
+      <AssetId>dac8d099-58e6-48d8-9b3f-b5c7ac7c85f5</AssetId>
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
+        <Name>SkillRouter</Name>
+        <Icon>
+          <Id>346d132b-7cb9-44b8-834e-be0fa6a54fd5</Id>
+        </Icon>
+        <Attributes base="1b83ae2d-cd84-4000-913b-64ccc45487a1[]" />
+        <Tools />
+        <UseParentArticle>True</UseParentArticle>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="1000" Y="-110" Width="120" Height="180">
+      <Name>SkillRouter_End</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
+        <Name>SkillRouter_End</Name>
+        <Description>
+        </Description>
+        <Icon />
+        <Attributes base="1b83ae2d-cd84-4000-913b-64ccc45487a1[]" />
+        <CompletionCondition>Any</CompletionCondition>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="1010" Y="20" Width="55" Height="17">
+      <Name>OnSubTask</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
+        <Name>OnSubTask</Name>
+        <Icon />
+        <Attributes base="1b83ae2d-cd84-4000-913b-64ccc45487a1[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="1010" Y="-30" Width="46" Height="17">
+      <Name>analysis</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>analysis</Name>
+        <Description>
+        </Description>
+        <Icon />
+        <Attributes base="1b83ae2d-cd84-4000-913b-64ccc45487a1[]" />
+        <Required>False</Required>
+        <History>True</History>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>74fb41a3-4eaa-4e6b-a65f-3b1e95d10c1f</Id>
+        </ValueType>
+        <Value type="STextBlock" base="74fb41a3-4eaa-4e6b-a65f-3b1e95d10c1f">
+          <Value type="Suity.Views.TextBlock">
+            <Text>
+            </Text>
+          </Value>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="300" Y="-130" Width="136" Height="111">
+      <Name>###CallLLm01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.CallLLm">
+        <DialogName>
+        </DialogName>
+        <ChatModel />
+        <Functions />
+        <FunctionCall />
+        <CombineMessages>True</CombineMessages>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="0" Width="44" Height="17">
+      <Name>###GetSpeechLanguage01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="730" Y="10" Width="28" Height="17">
+      <Name>###GetXmlTagContentNode01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="20" Y="-130" Width="103" Height="17">
+      <Name>###GetPageToolPagesNode01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="740" Y="90" Width="103" Height="17">
+      <Name>###GetPageToolPagesNode02</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="740" Y="110" Width="191" Height="78">
+      <Name>###ParseTagToolCallingNode01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.ParseTagToPageInstance">
+        <AttributeName>name</AttributeName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="740" Y="250" Width="134" Height="111">
+      <Name>###AddSubTaskPageNode01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
+        <PageTitle>
+        </PageTitle>
+        <TaskPrompt />
+        <TaskRule />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="770" Y="210" Width="70" Height="28">
+      <Name>###DataActionDecompose01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.DataActionDecompose">
+        <DataType>
+          <Id>e5b169be-3151-4991-8728-5cc5722a4fee</Id>
+        </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-20" Width="111" Height="56">
+      <Name>###SetPageTitleNode01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.SetPageTitle">
+        <Title>
+        </Title>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-130" Width="119" Height="67">
+      <Name>###ExtractXmlsTagNode01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagNode">
+        <TagNames>
+          <Item>analysis</Item>
+          <Item>answer</Item>
+        </TagNames>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-50" Width="63" Height="17">
+      <Name>###GetXmlTagAttributesNode01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagAttributesNode">
+        <AttributeNames>
+          <Item>title</Item>
+        </AttributeNames>
+      </Node>
+    </Item>
+    <Item null="true" />
+    <Item null="true" />
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="1010" Y="-10" Width="45" Height="17">
+      <Name>answer</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>answer</Name>
+        <Description>
+        </Description>
+        <Icon />
+        <Attributes base="1b83ae2d-cd84-4000-913b-64ccc45487a1[]" />
+        <History>True</History>
+        <TaskCommit>True</TaskCommit>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>74fb41a3-4eaa-4e6b-a65f-3b1e95d10c1f</Id>
+        </ValueType>
+        <Value type="STextBlock" base="74fb41a3-4eaa-4e6b-a65f-3b1e95d10c1f">
+          <Value type="Suity.Views.TextBlock">
+            <Text>
+            </Text>
+          </Value>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="730" Y="30" Width="28" Height="17">
+      <Name>###GetXmlTagContentNode04</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageTaskOutputItem" X="1010" Y="40" Width="39" Height="17">
+      <Name>SubTask</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageTaskOutputNode">
+        <Name>SubTask</Name>
+        <Description>
+        </Description>
+        <Icon />
+        <Attributes base="1b83ae2d-cd84-4000-913b-64ccc45487a1[]" />
+        <History>True</History>
+        <TaskCommit>True</TaskCommit>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="160" Y="-120" Width="92" Height="17">
+      <Name>###GetTaskChatHistoryNode01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetTaskChatHistory" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-160" Y="-80" Width="52" Height="17">
+      <Name>TaskBegin</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
+        <Name>TaskBegin</Name>
+        <Icon />
+        <Attributes base="1b83ae2d-cd84-4000-913b-64ccc45487a1[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="160" Y="-100" Width="107" Height="89">
+      <Name>###BuildPrompt01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
+        <PromptTemplate>
+          <Id>638ec2a9-bc64-410f-8829-cc794ce9045a</Id>
+        </PromptTemplate>
+        <Keywords>
+          <Item>SKILL</Item>
+          <Item>PROMPT</Item>
+          <Item>TOOLS</Item>
+          <Item>SPEECH_LANGUAGE</Item>
+        </Keywords>
+        <MissingContent>---</MissingContent>
+        <UpdateKeywords>False</UpdateKeywords>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="50" Width="150" Height="67">
+      <Name>###ExtractXmlsTagAction01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagAction">
+        <TagNames>
+          <Item>tool</Item>
+          <Item>answer</Item>
+        </TagNames>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="580" Y="170" Width="70" Height="28">
+      <Name>###DataActionDecompose02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.DataActionDecompose">
+        <DataType>
+          <Id>bf347ebe-f4f1-4ce9-b70f-4bff86c04ebc</Id>
+        </DataType>
+        <IsArray>True</IsArray>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="1010" Y="-50" Width="57" Height="17">
+      <Name>OnNoResult</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
+        <Name>OnNoResult</Name>
+        <Icon />
+        <Attributes base="1b83ae2d-cd84-4000-913b-64ccc45487a1[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitType>TaskFailed</CommitType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="300" Y="-160" Width="84" Height="28">
+      <Name>###GetGlobalLLmModel01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetGlobalLLmModel">
+        <Type>Lightweight</Type>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PagePresetParameterItem" X="-160" Y="-120" Width="68" Height="17">
+      <Name>SkillDescription</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PagePresetParameterNode">
+        <Name>SkillDescription</Name>
+        <Description>Skill Description</Description>
+        <Icon />
+        <Attributes base="1b83ae2d-cd84-4000-913b-64ccc45487a1[]" />
+        <Required>False</Required>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>3645203f-2410-4d0e-84ed-3436249f3732</Id>
+          <Prefix>&amp;</Prefix>
+        </ValueType>
+        <Value type="SAssetKey" base="&amp;3645203f-2410-4d0e-84ed-3436249f3732">
+          <Value />
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputItem" X="-160" Y="-100" Width="45" Height="17">
+      <Name>Prompt</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputNode">
+        <Name>Prompt</Name>
+        <Icon />
+        <Attributes base="1b83ae2d-cd84-4000-913b-64ccc45487a1[]">
+          <Item type="SObject" struct="d072664b-72d3-477e-9026-2a59027adb1d" base="1b83ae2d-cd84-4000-913b-64ccc45487a1">
+            <ToolTips type="STextBlock" base="74fb41a3-4eaa-4e6b-a65f-3b1e95d10c1f">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Fill in the task requirement</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="1010" Y="-70" Width="53" Height="17">
+      <Name>OnAnswer</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
+        <Name>OnAnswer</Name>
+        <Icon />
+        <Attributes base="1b83ae2d-cd84-4000-913b-64ccc45487a1[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitType>TaskFinished</CommitType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="680" Y="330" Width="27" Height="17">
+      <Name>###GetCurrentTaskRule01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
+    </Item>
+  </Nodes>
+  <Attributes base="1b83ae2d-cd84-4000-913b-64ccc45487a1[]" />
+  <Links>
+    <Item>
+      <FromNode>SkillRouter_End</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>SkillRouter</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagContentNode01</FromNode>
+      <FromConnector>ContentOut</FromConnector>
+      <ToNode>analysis</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ParseTagToolCallingNode01</FromNode>
+      <FromConnector>PageInstance</FromConnector>
+      <ToNode>###DataActionDecompose01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose01</FromNode>
+      <FromConnector>ActionOut</FromConnector>
+      <ToNode>###AddSubTaskPageNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose01</FromNode>
+      <FromConnector>DataOut</FromConnector>
+      <ToNode>###AddSubTaskPageNode01</ToNode>
+      <ToConnector>PageInstance</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AddSubTaskPageNode01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnSubTask</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ExtractXmlsTagNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Result</FromConnector>
+      <ToNode>###ExtractXmlsTagNode01</ToNode>
+      <ToConnector>DataIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagAttributesNode01</FromNode>
+      <FromConnector>Attr-title</FromConnector>
+      <ToNode>###SetPageTitleNode01</ToNode>
+      <ToConnector>Title</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagContentNode04</FromNode>
+      <FromConnector>ContentOut</FromConnector>
+      <ToNode>answer</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetPageToolPagesNode02</FromNode>
+      <FromConnector>SelfTools</FromConnector>
+      <ToNode>###ParseTagToolCallingNode01</ToNode>
+      <ToConnector>ToolPages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskChatHistoryNode01</FromNode>
+      <FromConnector>ChatHistory</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>TaskBegin</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetSpeechLanguage01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_SPEECH_LANGUAGE</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###BuildPrompt01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###BuildPrompt01</FromNode>
+      <FromConnector>PromptOut</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagAction01</FromNode>
+      <FromConnector>Tag-tool</FromConnector>
+      <ToNode>###DataActionDecompose02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagNode01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetPageTitleNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SetPageTitleNode01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ExtractXmlsTagAction01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose02</FromNode>
+      <FromConnector>ActionOut</FromConnector>
+      <ToNode>###ParseTagToolCallingNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose02</FromNode>
+      <FromConnector>DataOut</FromConnector>
+      <ToNode>###ParseTagToolCallingNode01</ToNode>
+      <ToConnector>XmlTag</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Result</FromConnector>
+      <ToNode>###ExtractXmlsTagAction01</ToNode>
+      <ToConnector>DataIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagNode01</FromNode>
+      <FromConnector>Tag-answer</FromConnector>
+      <ToNode>###GetXmlTagContentNode04</ToNode>
+      <ToConnector>TagIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagAction01</FromNode>
+      <FromConnector>NoResult</FromConnector>
+      <ToNode>OnNoResult</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ParseTagToolCallingNode01</FromNode>
+      <FromConnector>NoResult</FromConnector>
+      <ToNode>OnNoResult</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetGlobalLLmModel01</FromNode>
+      <FromConnector>LlmModel</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>ChatModel</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetPageToolPagesNode01</FromNode>
+      <FromConnector>SelfTools</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_TOOLS</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>SkillDescription</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_SKILL</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Prompt</FromNode>
+      <FromConnector>Prompt</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_PROMPT</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagNode01</FromNode>
+      <FromConnector>Tag-analysis</FromConnector>
+      <ToNode>###GetXmlTagContentNode01</ToNode>
+      <ToConnector>TagIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagAction01</FromNode>
+      <FromConnector>Tag-answer</FromConnector>
+      <ToNode>OnAnswer</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagNode01</FromNode>
+      <FromConnector>Tag-analysis</FromConnector>
+      <ToNode>###GetXmlTagAttributesNode01</ToNode>
+      <ToConnector>TagIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTaskRule01</FromNode>
+      <FromConnector>Rule</FromConnector>
+      <ToNode>###AddSubTaskPageNode01</ToNode>
+      <ToConnector>TaskRule</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

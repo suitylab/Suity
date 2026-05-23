@@ -2,6 +2,8 @@ using Suity.Collections;
 using Suity.Editor.Services;
 using Suity.Helpers;
 using Suity.Reflecting;
+using Suity.Synchonizing.Core;
+using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -613,8 +615,15 @@ internal sealed class DocumentManagerBK : DocumentManager
             return null;
         }
 
+        // Notify document content to get ready for move, which will record its own id for refactor usage
+        Visitor.Visit<ICrossMove>(doc.Content, (o, p) =>
+        {
+            o.ReadyMove();
+        });
+
         using var memory = new MemoryStorageItem();
-        doc.InternalExport(memory);
+        // Set clone mode to true to export recorded id for refactor usage.
+        doc.InternalExport(memory, true);
 
         var format = doc.Format;
 
@@ -625,9 +634,20 @@ internal sealed class DocumentManagerBK : DocumentManager
 
         memory.Stream.Position = 0;
 
-        docClone.InternalReload(memory);
+        // The recorded id will also be loaded to the new document, which will make refactor work.
+        // Do not set clone mode to true to avoid setting reference object during the sync.
+        docClone.InternalReload(memory, false);
 
+        // Raise loaded event to create id for the new document.
         RaiseDocumentLoaded(docClone);
+
+        var refactor = new LocalRefactor();
+        refactor.AddObject(docClone.Content);
+        // Do the refactor, which will retarget the referenced id from the original document to the new one, and make the cloned document different from the original one.
+        Visitor.Visit<ICrossMove>(docClone.Content, (o, p) =>
+        {
+            o.DoMove(refactor);
+        });
 
         docClone.ForceSave();
 

@@ -1,0 +1,108 @@
+# Technical Specification: TypeScript Web Application
+
+## Project Overview
+This document outlines the technical standards and architecture for a modern web application built using TypeScript. The application prioritizes type safety, modularity, and performance.
+
+## Technology Stack
+- **Core Language:** TypeScript (latest stable version)
+- **Framework:** React (implied by `.tsx` extension)
+- **Build Tool:** Vite (implied by module script and path structure)
+- **Package Manager:** npm / yarn / pnpm
+- **Linting & Formatting:** ESLint + Prettier
+
+## Project Structure Example
+- This project should use **Multiple File Structure**, as follows:
+
+```text
+/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── hooks/
+│   ├── pages/
+│   ├── styles/
+│   ├── types/
+│   ├── main.tsx      # Entry point
+│   └── App.tsx
+├── index.html        # Root HTML
+├── tsconfig.json
+├── vite.config.ts
+├── package.json
+└── .gitignore
+```
+
+## Entry Point Specification (`index.html`)
+The root HTML file must adhere strictly to the following structure. It serves as the single entry point for the application.
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>(App title)</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+```
+
+**Requirements:**
+- **Encoding:** Must be `UTF-8`.
+- **Viewport:** Must include responsive meta tag.
+- **Root Element:** The application must mount to the `div` with `id="root"`.
+- **Script Loading:** The main script must be loaded as an ES module (`type="module"`) pointing to `/src/main.tsx`.
+
+## .gitignore file initialization (`.gitignore`)
+```text
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+```
+
+## TypeScript Configuration
+- **Strict Mode:** `strict: true` must be enabled in `tsconfig.json`.
+- **Target:** `ESNext` or modern browser compatibility.
+- **Module Resolution:** `bundler` or `node` (compatible with Vite).
+- **JSX:** `react-jsx`.
+
+## Coding Standards
+- **Type Safety:** Avoid `any`. Use interfaces or types for all props and state.
+- **Naming Conventions:**
+  - Components: `PascalCase` (e.g., `UserProfile.tsx`)
+  - Utilities/Hooks: `camelCase` (e.g., `useAuth.ts`)
+  - Files: Match the exported component/function name.
+- **Formatting:** Code must be formatted using Prettier before commit.
+- **Linting:** No ESLint errors or warnings allowed in the build pipeline.
+
+## Build & Development Workflow
+- Development: npm run dev (Starts Vite dev server)
+- Production Build: npm run build (Outputs to /dist)
+- Preview: npm run preview (Locally previews production build)
+
+## Build & Development
+- **Development:** `npm run dev` (Starts Vite dev server)
+- **Production Build:** `npm run build` (Outputs to `/dist`)
+- **Preview:** `npm run preview` (Locally previews production build)
+
+## Dependencies
+- All dependencies must be listed in `package.json`.
+- Use specific versions or locked versions (via `package-lock.json` or `pnpm-lock.yaml`) to ensure build consistency.
+- Dev dependencies (types, linting, build tools) must be separated from production dependencies.
+
+## Build & Test
+> 🛑 **Conditional Execution Guard**: Execute the following steps **ONLY** when the user explicitly requests to build, run, or test the project. **DO NOT** run these commands automatically during code generation, file scaffolding, or static analysis.
+1. `npm install` - Install all project dependencies.
+2. `npm run dev` - Execute immediately after `npm install` completes successfully to start the Vite development server.
+3. *(If requested)* `npm run build` / `npm run test` - Perform production compilation or run test suites.
+
+## **Important Notice**
+- 'index.html' file should strickly follow the Entry Point Specification described above, do NOT write any logical or layout code in the index.html.

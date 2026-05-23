@@ -309,13 +309,8 @@ public abstract class SNamedDocument : SAssetDocument,
         _items.Clear();
     }
 
-    /// <summary>
-    /// Loads the document from storage.
-    /// </summary>
-    /// <param name="op">The storage item.</param>
-    /// <param name="loaderObject">The loader object.</param>
-    /// <returns>True if load was successful.</returns>
-    protected internal override bool LoadDocument(IStorageItem op, object loaderObject, DocumentLoadingIntent intent)
+    /// <inheritdoc/>
+    protected internal override bool LoadDocument(IStorageItem op, object loaderObject, DocumentLoadingIntent intent, bool cloneMode)
     {
         if (loaderObject is not INodeReader reader || !reader.Exist)
         {
@@ -327,7 +322,8 @@ public abstract class SNamedDocument : SAssetDocument,
             return false;
         }
 
-        Serializer.Deserialize(this, reader, SyncTypeResolver, this);
+        var syncIntent = cloneMode ? SyncIntent.Clone : SyncIntent.Serialize;
+        Serializer.Deserialize(this, reader, SyncTypeResolver, this, syncIntent);
 
         return true;
     }
@@ -353,13 +349,14 @@ public abstract class SNamedDocument : SAssetDocument,
     /// </summary>
     /// <param name="op">The storage item.</param>
     /// <returns>True if export was successful.</returns>
-    protected internal override bool ExportDocument(IStorageItem op)
+    protected internal override bool ExportDocument(IStorageItem op, bool cloneMode = false)
     {
         var writer = new XmlNodeWriter("SuityAsset");
         writer.SetAttribute("version", "1.0");
         writer.SetAttribute("format", Format.FormatName);
 
-        Serializer.Serialize(this, writer, SyncTypeResolver, this, SyncIntent.DataExport);
+        var intent = cloneMode ? SyncIntent.Clone : SyncIntent.DataExport;
+        Serializer.Serialize(this, writer, SyncTypeResolver, this, intent);
         writer.SaveToStream(op.GetOutputStream());
         return true;
     }

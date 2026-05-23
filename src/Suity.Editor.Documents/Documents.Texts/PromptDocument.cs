@@ -3,7 +3,7 @@ using Suity.Editor.AIGC.Assistants;
 
 namespace Suity.Editor.Documents.Texts;
 
-[DocumentFormat(FormatName = "AigcPrompt", Extension = "sprompt", Extensions = ["sprompt", "md"], DisplayText = "Prompt", Icon = "*CoreIcon|Prompt", Categoty = "AIGC")]
+[DocumentFormat(FormatName = "AigcPrompt", Extension = "md", Extensions = ["sprompt", "md"], DisplayText = "Prompt", Icon = "*CoreIcon|Prompt", Categoty = "AIGC")]
 /// <summary>
 /// Represents a prompt template document used for AIGC workflows.
 /// </summary>

@@ -20,22 +20,34 @@ public class EditorFileSystemWatcher : IEditorFileSystemWatcher, IDisposable
 
     private FileSystemWatcher _watcher;
 
-    /// <inheritdoc/>
-    public event IEditorFileSystemWatcher.PathHandler Created;
-
-    /// <inheritdoc/>
-    public event IEditorFileSystemWatcher.PathHandler Deleted;
-
-    /// <inheritdoc/>
-    public event IEditorFileSystemWatcher.PathHandler Changed;
-
-    /// <inheritdoc/>
-    public event IEditorFileSystemWatcher.PathRenameHandler Renamed;
-
 
     /// <summary>
-    /// Gets or sets the path of the directory to watch.
+    /// Initializes a new instance of the <see cref="EditorFileSystemWatcher"/> class.
     /// </summary>
+    /// <param name="path">The directory path to watch.</param>
+    /// <param name="owner">The owner object associated with this watcher. Optional.</param>
+    /// <param name="enableUnwatch">If true, subscribes to <see cref="FileUnwatchedAction"/> events for automatic pause/resume. Default is true.</param>
+    public EditorFileSystemWatcher(string path, object owner = null, bool enableUnwatch = true)
+    {
+        EditorServices.SystemLog.AddLog($"DalayedDirectoryWatcher creating : {path}...");
+
+        _path = path;
+        _owner = owner;
+        EnableUnwatch = enableUnwatch;
+
+        CreateWatcher();
+
+        if (enableUnwatch)
+        {
+            FileUnwatchedAction.Pause += EnterUnwatched;
+            FileUnwatchedAction.Resume += ExitUnwatched;
+            FileUnwatchedAction.Rename += OnCheckRename;
+        }
+
+        EditorServices.SystemLog.AddLog($"DalayedDirectoryWatcher created.");
+    }
+
+    /// <inheritdoc/>
     public string Path
     {
         get => _watcher?.Path ?? _path;
@@ -49,9 +61,13 @@ public class EditorFileSystemWatcher : IEditorFileSystemWatcher, IDisposable
         }
     }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether the watcher is currently raising events.
-    /// </summary>
+    /// <inheritdoc/>
+    public object Owner => _owner;
+
+    /// <inheritdoc/>
+    public bool EnableUnwatch { get; }
+
+    /// <inheritdoc/>
     public bool EnableRaisingEvents
     {
         get => _watcher?.EnableRaisingEvents ?? _enableRisingEvents;
@@ -67,9 +83,7 @@ public class EditorFileSystemWatcher : IEditorFileSystemWatcher, IDisposable
         }
     }
 
-    /// <summary>
-    /// Gets or sets the filter string used to determine which files to watch.
-    /// </summary>
+    /// <inheritdoc/>
     public string Filter
     {
         get => _watcher?.Filter ?? _filter;
@@ -83,9 +97,7 @@ public class EditorFileSystemWatcher : IEditorFileSystemWatcher, IDisposable
         }
     }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether subdirectories should be watched.
-    /// </summary>
+    /// <inheritdoc/>
     public bool IncludeSubdirectories
     {
         get => _watcher?.IncludeSubdirectories ?? _includeSubDirectories;
@@ -99,41 +111,23 @@ public class EditorFileSystemWatcher : IEditorFileSystemWatcher, IDisposable
         }
     }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether events should be delayed and queued instead of raised immediately.
-    /// </summary>
+    /// <inheritdoc/>
     public bool Delayed { get; set; }
 
-    /// <summary>
-    /// Gets the owner object associated with this watcher.
-    /// </summary>
-    public object Owner => _owner;
+    /// <inheritdoc/>
+    public event IEditorFileSystemWatcher.PathHandler Created;
+
+    /// <inheritdoc/>
+    public event IEditorFileSystemWatcher.PathHandler Deleted;
+
+    /// <inheritdoc/>
+    public event IEditorFileSystemWatcher.PathHandler Changed;
+
+    /// <inheritdoc/>
+    public event IEditorFileSystemWatcher.PathRenameHandler Renamed;
 
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EditorFileSystemWatcher"/> class.
-    /// </summary>
-    /// <param name="path">The directory path to watch.</param>
-    /// <param name="owner">The owner object associated with this watcher. Optional.</param>
-    /// <param name="enableUnwatch">If true, subscribes to <see cref="FileUnwatchedAction"/> events for automatic pause/resume. Default is true.</param>
-    public EditorFileSystemWatcher(string path, object owner = null, bool enableUnwatch = true)
-    {
-        EditorServices.SystemLog.AddLog($"DalayedDirectoryWatcher creating : {path}...");
 
-        _path = path;
-        _owner = owner;
-
-        CreateWatcher();
-
-        if (enableUnwatch)
-        {
-            FileUnwatchedAction.Pause += EnterUnwatched;
-            FileUnwatchedAction.Resume += ExitUnwatched;
-            FileUnwatchedAction.Rename += OnCheckRename;
-        }
-
-        EditorServices.SystemLog.AddLog($"DalayedDirectoryWatcher created.");
-    }
 
     private void CreateWatcher()
     {

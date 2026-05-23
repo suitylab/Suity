@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="SubFlowPreset">
+  <AssetId>76ac3e55-3c67-4f41-86df-22c79427fa0b</AssetId>
+  <PresetName>
+  </PresetName>
+  <BaseFlow>
+    <Id>2a0a4525-5b63-4e17-b349-1cb907a05649</Id>
+  </BaseFlow>
+  <Tools />
+  <UseParentArticle>True</UseParentArticle>
+  <Overview>
+    <Text>This skill can edit, refactor, debug, and optimize existing code, as well as generate and interact with updated program versions. When submitting a request, please refrain from adding extra technical details or rigid implementation constraints, and let this skill determine the most appropriate technical specifications and approaches to adopt.</Text>
+  </Overview>
+  <UserInputHint>
+    <Text>
+    </Text>
+  </UserInputHint>
+  <Rule />
+  <Description>
+  </Description>
+  <Icon>
+    <Id>c9c977dd-8348-497e-9fe2-68368e854fb9</Id>
+  </Icon>
+  <Page>
+    <__preset__ />
+    <SkillDescription type="SAssetKey" base="&amp;3645203f-2410-4d0e-84ed-3436249f3732">
+      <Value />
+    </SkillDescription>
+    <Rules type="SArray" base="&amp;3645203f-2410-4d0e-84ed-3436249f3732[]" />
+    <PlanningLLmModel type="SEnum" base="d961dd95-8592-42ff-9d6b-af4f5f8c1741">
+      <Id>86147c6d-5874-40d2-b349-7b0bb9b7e937</Id>
+    </PlanningLLmModel>
+  </Page>
+</SuityAsset>

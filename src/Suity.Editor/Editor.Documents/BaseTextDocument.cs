@@ -55,13 +55,8 @@ public abstract class BaseTextDocument : AssetDocument
     /// </summary>
     public override ImageDef Icon => CoreIconCache.Text;
 
-    /// <summary>
-    /// Loads the document from storage.
-    /// </summary>
-    /// <param name="op">The storage item.</param>
-    /// <param name="loaderObject">The loader object.</param>
-    /// <returns>True if load was successful.</returns>
-    protected internal override bool LoadDocument(IStorageItem op, object loaderObject, DocumentLoadingIntent intent)
+    /// <inheritdoc/>
+    protected internal override bool LoadDocument(IStorageItem op, object loaderObject, DocumentLoadingIntent intent, bool cloneMode = false)
     {
         EncodingFileInfo fileInfo = TextFileHelper.GetEncodingFileInfo(op.GetInputStream().ToBytes());
         CodePage = fileInfo.CodePage;
@@ -85,7 +80,7 @@ public abstract class BaseTextDocument : AssetDocument
     /// </summary>
     /// <param name="op">The storage item.</param>
     /// <returns>True if export was successful.</returns>
-    protected internal override bool ExportDocument(IStorageItem op)
+    protected internal override bool ExportDocument(IStorageItem op, bool cloneMode = false)
     {
         TextFileHelper.WriteFile(op.GetOutputStream(), TextContent, Encoding.GetEncoding(CodePage), true);
         return true;

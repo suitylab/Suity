@@ -128,11 +128,6 @@ public abstract class SNamedItem : NamedItem,
     {
         base.OnSync(sync, context);
 
-        if (sync.Intent == SyncIntent.Clone)
-        {
-            _oldId = sync.Sync("_oldId", _oldId);
-        }
-
         if (sync.Intent == SyncIntent.Serialize && sync.IsNameOf("AssetId"))
         {
             if (sync.IsGetter())
@@ -161,6 +156,11 @@ public abstract class SNamedItem : NamedItem,
         if (sync.Intent == SyncIntent.View && ShowRenderTargets && Analysis?.RenderTargets.Count > 0 && _renderTargetList != null)
         {
             sync.Sync("RenderTargets", _renderTargetList, SyncFlag.GetOnly | SyncFlag.ByRef | SyncFlag.NoSerialize);
+        }
+
+        if (sync.Intent == SyncIntent.Clone || sync.IsSetter())
+        {
+            _oldId = sync.Sync("_oldId", _oldId);
         }
     }
 

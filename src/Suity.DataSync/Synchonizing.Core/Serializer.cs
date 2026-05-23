@@ -66,6 +66,8 @@ public static class Serializer
         Serialize(obj, intent, writer, SyncContext.Empty);
     }
 
+
+
     private static void Serialize(object obj, SyncIntent intent, INodeWriter writer, SyncContext context)
     {
         if (context is null)
@@ -267,7 +269,9 @@ public static class Serializer
         }
     }
 
-    public static object Deserialize(INodeReader reader, ISyncTypeResolver resolver, IServiceProvider provider = null)
+
+
+    public static object Deserialize(INodeReader reader, ISyncTypeResolver resolver, IServiceProvider provider = null, SyncIntent intent = SyncIntent.Serialize)
     {
         if (reader is null)
         {
@@ -291,12 +295,12 @@ public static class Serializer
         object obj = Activator.CreateInstance(type)
             ?? throw new NullReferenceException("CreateInstance");
 
-        Deserialize(obj, reader, new SyncContext(null, resolver, provider));
+        Deserialize(obj, intent, reader, new SyncContext(null, resolver, provider));
 
         return obj;
     }
 
-    public static T Deserialize<T>(INodeReader reader, ISyncTypeResolver resolver = null, IServiceProvider provider = null)
+    public static T Deserialize<T>(INodeReader reader, ISyncTypeResolver resolver = null, IServiceProvider provider = null, SyncIntent intent = SyncIntent.Serialize)
     {
         if (reader is null)
         {
@@ -308,7 +312,7 @@ public static class Serializer
 
         if (obj is T tObj)
         {
-            Deserialize(obj, reader, context);
+            Deserialize(obj, intent, reader, context);
             return tObj;
         }
         else
@@ -317,7 +321,7 @@ public static class Serializer
         }
     }
 
-    public static object Deserialize(INodeReader reader, Type type, ISyncTypeResolver resolver = null, IServiceProvider provider = null)
+    public static object Deserialize(INodeReader reader, Type type, ISyncTypeResolver resolver = null, IServiceProvider provider = null, SyncIntent intent = SyncIntent.Serialize)
     {
         if (reader is null)
         {
@@ -332,22 +336,24 @@ public static class Serializer
         var context = new SyncContext(null, resolver, provider);
         object obj = CreateObject(type, reader, context, null);
 
-        Deserialize(obj, reader, context);
+        Deserialize(obj, intent, reader, context);
 
         return obj;
     }
 
-    public static void Deserialize(object obj, INodeReader reader)
+    public static void Deserialize(object obj, INodeReader reader, SyncIntent intent = SyncIntent.Serialize)
     {
-        Deserialize(obj, reader, SyncContext.Empty);
+        Deserialize(obj, intent, reader, SyncContext.Empty);
     }
 
-    public static void Deserialize(object obj, INodeReader reader, ISyncTypeResolver resolver, IServiceProvider provider = null)
+    public static void Deserialize(object obj, INodeReader reader, ISyncTypeResolver resolver, IServiceProvider provider = null, SyncIntent intent = SyncIntent.Serialize)
     {
-        Deserialize(obj, reader, new SyncContext(null, resolver, provider));
+        Deserialize(obj, intent, reader, new SyncContext(null, resolver, provider));
     }
 
-    private static void Deserialize(object obj, INodeReader reader, SyncContext context)
+
+
+    private static void Deserialize(object obj, SyncIntent intent, INodeReader reader, SyncContext context)
     {
         if (context is null)
         {
@@ -364,23 +370,23 @@ public static class Serializer
         }
         else if (obj is ISyncObject syncObject)
         {
-            DeserializeSyncObject(syncObject, reader, context);
+            DeserializeSyncObject(syncObject, intent, reader, context);
         }
         else if (obj is ISyncList syncList)
         {
-            DeserializeSyncList(syncList, reader, context);
+            DeserializeSyncList(syncList, intent, reader, context);
         }
         else if (SyncTypes.GetObjectProxyType(obj) != null)
         {
-            DeserializeSyncObject(SyncTypes.CreateObjectProxy(obj), reader, context);
+            DeserializeSyncObject(SyncTypes.CreateObjectProxy(obj), intent, reader, context);
         }
         else if (SyncTypes.GetListProxyType(obj) != null)
         {
-            DeserializeSyncList(SyncTypes.CreateListProxy(obj), reader, context);
+            DeserializeSyncList(SyncTypes.CreateListProxy(obj), intent, reader, context);
         }
         else if (obj is RawNode rawNode)
         {
-            DeserializeRawNode(rawNode, reader, context);
+            DeserializeRawNode(rawNode, intent, reader, context);
         }
         else if (context.Resolver != null)
         {
@@ -388,11 +394,11 @@ public static class Serializer
 
             if (proxy is ISyncObject syncObject2)
             {
-                DeserializeSyncObject(syncObject2, reader, context);
+                DeserializeSyncObject(syncObject2, intent, reader, context);
             }
             else if (proxy is ISyncList syncList2)
             {
-                DeserializeSyncList(syncList2, reader, context);
+                DeserializeSyncList(syncList2, intent, reader, context);
             }
         }
         else
@@ -401,11 +407,11 @@ public static class Serializer
         }
     }
 
-    private static void DeserializeSyncObject(ISyncObject obj, INodeReader reader, SyncContext context)
+    private static void DeserializeSyncObject(ISyncObject obj, SyncIntent intent, INodeReader reader, SyncContext context)
     {
         SyncContext elementContext = context.CreateNew(obj);
 
-        var sync = new DeserializePropertySync(reader)
+        var sync = new DeserializePropertySync(reader, intent)
         {
             Creater = (elementType, elementReader) =>
             {
@@ -423,7 +429,7 @@ public static class Serializer
 
             Deserializer = (elementObj, elementReader) =>
             {
-                Deserialize(elementObj, elementReader, elementContext);
+                Deserialize(elementObj, intent, elementReader, elementContext);
             },
 
             Value = reader.NodeValueObj,
@@ -432,11 +438,11 @@ public static class Serializer
         obj.Sync(sync, context);
     }
 
-    private static void DeserializeSyncList(ISyncList list, INodeReader reader, SyncContext context)
+    private static void DeserializeSyncList(ISyncList list, SyncIntent intent, INodeReader reader, SyncContext context)
     {
         SyncContext elementContext = context.CreateNew(list);
 
-        var sync = new DeserializeIndexSync(reader)
+        var sync = new DeserializeIndexSync(reader, intent)
         {
             Creater = (elementType, elementReader) =>
             {
@@ -453,7 +459,7 @@ public static class Serializer
 
             Deserializer = (elementObj, elementReader) =>
             {
-                Deserialize(elementObj, elementReader, elementContext);
+                Deserialize(elementObj, intent, elementReader, elementContext);
             },
 
             Value = reader.NodeValueObj,
@@ -462,7 +468,7 @@ public static class Serializer
         list.Sync(sync, context);
     }
 
-    private static void DeserializeRawNode(RawNode node, INodeReader reader, SyncContext context)
+    private static void DeserializeRawNode(RawNode node, SyncIntent intent, INodeReader reader, SyncContext context)
     {
         node.Read(reader);
     }

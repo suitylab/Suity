@@ -351,13 +351,13 @@ internal sealed class DocumentEntryBK : DocumentEntry, IViewListener
     /// Load document
     /// </summary>
     /// <returns>Returns whether load succeeded</returns>
-    internal bool InternalLoad(object loaderObject = null, DocumentLoadingIntent intent = DocumentLoadingIntent.Normal)
+    internal bool InternalLoad(object loaderObject = null, DocumentLoadingIntent intent = DocumentLoadingIntent.Normal, bool cloneMode = false)
     {
         using var op = FileName.GetStorageItem();
-        return InternalLoad(op, loaderObject, intent);
+        return InternalLoad(op, loaderObject, intent, cloneMode);
     }
 
-    internal bool InternalLoad(IStorageItem storageItem, object loaderObject = null, DocumentLoadingIntent intent = DocumentLoadingIntent.Normal)
+    internal bool InternalLoad(IStorageItem storageItem, object loaderObject = null, DocumentLoadingIntent intent = DocumentLoadingIntent.Normal, bool cloneMode = false)
     {
         bool loadSuccess = false;
         Exception err = null;
@@ -390,7 +390,7 @@ internal sealed class DocumentEntryBK : DocumentEntry, IViewListener
                 _state = DocumentState.Loading;
                 content.OnReset();
 
-                loadSuccess = content.LoadDocument(storageItem, loaderObject, intent);
+                loadSuccess = content.LoadDocument(storageItem, loaderObject, intent, cloneMode);
             }
             catch (Exception e)
             {
@@ -465,8 +465,9 @@ internal sealed class DocumentEntryBK : DocumentEntry, IViewListener
     /// Reloads the document from the specified storage item.
     /// </summary>
     /// <param name="storageItem">The storage item to load from.</param>
+    /// <param name="cloneMode">Indicates whether the reload should be performed in clone mode.</param>
     /// <returns>True if the document was successfully reloaded; otherwise, false.</returns>
-    internal bool InternalReload(IStorageItem storageItem)
+    internal bool InternalReload(IStorageItem storageItem, bool cloneMode = false)
     {
         lock (_sync)
         {
@@ -478,7 +479,7 @@ internal sealed class DocumentEntryBK : DocumentEntry, IViewListener
             _state = DocumentState.None;
             _content?.OnReset();
 
-            return InternalLoad(storageItem);
+            return InternalLoad(storageItem, cloneMode: cloneMode);
         }
     }
 
@@ -486,8 +487,9 @@ internal sealed class DocumentEntryBK : DocumentEntry, IViewListener
     /// Exports the document to the specified storage item.
     /// </summary>
     /// <param name="storageItem">The target storage item.</param>
+    /// <param name="cloneMode">Indicates whether the export should be performed in clone mode.</param>
     /// <returns>True if the export was successful; otherwise, false.</returns>
-    internal bool InternalExport(IStorageItem storageItem)
+    internal bool InternalExport(IStorageItem storageItem, bool cloneMode = false)
     {
         if (storageItem is null)
         {
@@ -525,7 +527,7 @@ internal sealed class DocumentEntryBK : DocumentEntry, IViewListener
                 {
                     lock (_sync)
                     {
-                        exportSuccess = document.ExportDocument(storageItem);
+                        exportSuccess = document.ExportDocument(storageItem, cloneMode);
                     }
                 }
                 catch (Exception e)
