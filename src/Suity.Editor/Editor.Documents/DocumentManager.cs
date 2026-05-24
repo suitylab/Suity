@@ -176,6 +176,14 @@ public abstract class DocumentManager
     public abstract DocumentEntry CloneDocument(string path, string pathClone);
 
     /// <summary>
+    /// Clones a collection of documents to new locations.
+    /// </summary>
+    /// <param name="paths">Original paths.</param>
+    /// <param name="pathsClone">Clone paths.</param>
+    /// <returns>The cloned document entries, element null if document cloning failed.</returns>
+    public abstract DocumentEntry[] CloneDocuments(string[] paths, string[] pathsClone);
+
+    /// <summary>
     /// Closes a document by path.
     /// </summary>
     /// <param name="path">The file path.</param>

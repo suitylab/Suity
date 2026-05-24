@@ -165,6 +165,18 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
     }
 
+    public PromptAsset GetRule(bool inHierarchy)
+    {
+        if (inHierarchy)
+        {
+            return this.Rule ?? (this.ParentNode as AigcWorkflowPage)?.GetRule(true);
+        }
+        else
+        {
+            return this.Rule;
+        }
+    }
+
     #endregion
 
     #region Virtual / Override 

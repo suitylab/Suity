@@ -1,5 +1,6 @@
 using Suity.Editor.Documents;
 using Suity.Helpers;
+using Suity.Rex;
 using Suity.Views.Menu;
 using Suity.Views.PathTree;
 using System;
@@ -50,17 +51,50 @@ internal class CloneFileCommand : MenuCommand
             return;
         }
 
-        var fileNodes = view.SelectedNodes?.OfType<FileNode>().ToArray() ?? [];
+        string[] filePaths = view.SelectedNodes?.OfType<FileNode>().Select(o => o.NodePath).ToArray() ?? [];
+        string[] clonePaths = new string[filePaths.Length];
 
-        foreach (var fileNode in fileNodes)
+        DoClone(filePaths, clonePaths);
+    }
+
+    private static void DoClone(string[] filePaths, string[] clonePaths)
+    {
+        HashSet<string> existedPaths = [];
+
+        for (int i = 0; i < filePaths.Length; i++)
         {
-            DoClone(fileNode);
+            var path = filePaths[i];
+            var newPath = GetClonePath(path, existedPaths);
+
+            clonePaths[i] = newPath;
+        }
+
+        var docClones = DocumentManager.Instance.CloneDocuments(filePaths, clonePaths);
+
+        for (int i = 0; i < filePaths.Length; i++)
+        {
+            var doc = docClones[i];
+            if (doc is not null)
+            {
+                continue;
+            }
+
+            string path = filePaths[i];
+            string newPath = clonePaths[i];
+
+            try
+            {
+                File.Copy(path, newPath);
+            }
+            catch (Exception err)
+            {
+                err.LogError();
+            }
         }
     }
 
-    private static void DoClone(FileNode fileNode)
+    private static string GetClonePath(string path, HashSet<string> existedPaths)
     {
-        string path = fileNode.NodePath;
         string ext = Path.GetExtension(path);
         string name = path.RemoveFromLast(ext.Length);
 
@@ -71,23 +105,15 @@ internal class CloneFileCommand : MenuCommand
         {
             digiValue++;
             newPath = KeyIncrementHelper.MakeKey(prefix, digiLen, digiValue) + ext;
-            if (!File.Exists(newPath))
+            if (!File.Exists(newPath) && !existedPaths.Contains(newPath))
             {
+                existedPaths.Add(newPath);
                 break;
             }
         }
 
-        try
-        {
-            var docClone = DocumentManager.Instance.CloneDocument(path, newPath);
-            if (docClone is null)
-            {
-                File.Copy(path, newPath);
-            }
-        }
-        catch (Exception err)
-        {
-            err.LogError();
-        }
+        return newPath;
     }
+
+
 }

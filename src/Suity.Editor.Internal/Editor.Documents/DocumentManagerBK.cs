@@ -659,6 +659,94 @@ internal sealed class DocumentManagerBK : DocumentManager
     }
 
     /// <inheritdoc/>
+    public override DocumentEntry[] CloneDocuments(string[] paths, string[] pathsClone)
+    {
+        DocumentEntryBK[] docs = new DocumentEntryBK[paths.Length];
+        DocumentEntryBK[] docClones = new DocumentEntryBK[paths.Length];
+
+        var refactor = new LocalRefactor();
+
+        for (int i = 0; i < paths.Length; i++)
+        {
+            var path = paths[i];
+            var pathClone = pathsClone[i];
+
+            if (path == pathClone)
+            {
+                continue;
+            }
+
+            if (OpenDocument(path) is not DocumentEntryBK doc)
+            {
+                continue;
+            }
+
+            // Notify document content to get ready for move, which will record its own id for refactor usage
+            Visitor.Visit<ICrossMove>(doc.Content, (o, p) =>
+            {
+                o.ReadyMove();
+            });
+
+            docs[i] = doc;
+        }
+
+        for (int i = 0; i < paths.Length; i++)
+        {
+            var doc = docs[i];
+            var pathClone = pathsClone[i];
+
+            if (NewDocument(pathClone, doc.Format) is not DocumentEntryBK docClone)
+            {
+                continue;
+            }
+
+            using var memory = new MemoryStorageItem();
+            // Set clone mode to true to export recorded id for refactor usage.
+            doc.InternalExport(memory, true);
+
+            // The recorded id will also be loaded to the new document, which will make refactor work.
+            // Do not set clone mode to true to avoid setting reference object during the sync.
+            memory.Stream.Position = 0;
+            docClone.InternalReload(memory, false);
+
+            // Raise loaded event to create id for the new document.
+            RaiseDocumentLoaded(docClone);
+
+            refactor.AddObject(docClone.Content);
+            docClones[i] = docClone;
+        }
+
+        for (int i = 0; i < paths.Length; i++)
+        {
+            var docClone = docClones[i];
+
+            // Do the refactor, which will retarget the referenced id from the original document to the new one, and make the cloned document different from the original one.
+            Visitor.Visit<ICrossMove>(docClone.Content, (o, p) =>
+            {
+                o.DoMove(refactor);
+            });
+        }
+
+        for (int i = 0; i < paths.Length; i++)
+        {
+            var docClone = docClones[i];
+
+            // Force save the new document without dirty check.
+            docClone.ForceSave();
+        }
+
+        for (int i = 0; i < paths.Length; i++)
+        {
+            var docClone = docClones[i];
+
+            // Close the document to release the file occupation and clean up intermediate status.
+            CloseDocument(docClone);
+        }
+
+        return docClones;
+    }
+
+    /// <inheritdoc/>
     public override bool CloseDocument(string path)
     {
         if (GetDocument(path) is DocumentEntryBK document)

@@ -626,10 +626,10 @@ internal abstract class AvaGraphicBaseContext :
             dropEvent = _input.SetDragEvent(GuiEventTypes.DragOver, _control, e);
             _graphicObject?.HandleGraphicInput(_input);
 
-            if (!_control.IsFocused)
-            {
-                _control.Focus();
-            }
+            //if (!_control.IsFocused)
+            //{
+            //    _control.Focus();
+            //}
 
             if (!e.Handled)
             {

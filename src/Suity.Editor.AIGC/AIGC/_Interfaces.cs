@@ -129,6 +129,12 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     /// </summary>
     PromptAsset Rule { get; set; }
 
+    /// <summary>
+    /// Gets the rule prompt, optionally including prompts from the parent hierarchy.
+    /// </summary>
+    /// <param name="inHierarchy">If true, collects prompts from all parent tasks in the hierarchy.</param>
+    /// <returns>The rule prompt asset, potentially combined with parent prompts.</returns>
+    PromptAsset GetRule(bool inHierarchy);
 
     /// <summary>
     /// Appends a new task to the parent list using the specified tool asset.

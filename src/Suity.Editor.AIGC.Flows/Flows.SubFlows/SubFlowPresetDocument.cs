@@ -51,8 +51,11 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     private readonly TextBlockProperty _userInputHint
         = new("UserInputHint", "User Input Hint", string.Empty, "Used to provide guidance on how to use the preset effectively.");
 
+    private readonly AssetProperty<PromptAsset> _skill
+        = new("Skill", "Skill", "Skills used by this preset to handle specific tasks.");
+
     private readonly AssetProperty<PromptAsset> _rule
-        = new("Rule", "Rule", "Optional rule to apply to the preset.");
+        = new("Rule", "Rule", "Rules shared across the entire task hierarchy.");
 
 
     private readonly StringProperty _description = new("Description", "Description");
@@ -143,9 +146,14 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     public string UserInputHint => _userInputHint.Text;
 
     /// <summary>
-    /// Gets the rule prompt associated with this preset, which can be used to apply specific rules or constraints to the preset's behavior. 
+    /// Gets the rule prompt associated with this preset, which can be used to apply specific rules or constraints across the entire task hierarchy.. 
     /// </summary>
     public PromptAsset Rule => _rule.Target;
+
+    /// <summary>
+    /// Gets the skill prompt associated with this preset, which can be used to define specific skills or capabilities that this preset provides for handling tasks.
+    /// </summary>
+    public PromptAsset Skill => _skill.Target;
 
     /// <summary>
     /// Gets or sets the root page instance for this preset.
@@ -256,6 +264,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
         _overview.Sync(sync);
         _userInputHint.Sync(sync);
+        _skill.Sync(sync);
         _rule.Sync(sync);
 
         _description.Sync(sync);
@@ -290,19 +299,18 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
             }
         }
 
-        setup.LabelWithIcon("Properties", CoreIconCache.Field);
-        _presetName.InspectorField(setup);
-        _overview.InspectorField(setup);
-        _userInputHint.InspectorField(setup);
-        _rule.InspectorField(setup);
-
         setup.LabelWithIcon("Appearance", CoreIconCache.View);
         _description.InspectorField(setup);
         _iconSelection.InspectorField(setup);
         _colorSelection.InspectorField(setup);
 
         setup.LabelWithIcon("Preset", CoreIconCache.Preset);
+        _presetName.InspectorField(setup);
+        _overview.InspectorField(setup);
+        _userInputHint.InspectorField(setup);
         _baseFlow.InspectorField(setup);
+        _skill.InspectorField(setup);
+        _rule.InspectorField(setup);
         _tools.InspectorField(setup);
         _isStartup.InspectorField(setup);
         _useParentArticle.InspectorField(setup);

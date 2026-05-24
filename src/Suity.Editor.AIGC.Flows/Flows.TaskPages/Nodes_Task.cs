@@ -12,6 +12,7 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Suity.Editor.Flows.TaskPages;
@@ -366,6 +367,7 @@ public class GetCurrentTaskPrompt : TaskPageNode
 public class GetCurrentTaskRule : TaskPageNode
 {
     readonly FlowNodeConnector _rule;
+    readonly ConnectorValueProperty<bool> _inHierarchy = new("InHierarchy", "In Hierarchy", false, "If enabled, retrieves rule from parent tasks.");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GetCurrentTaskRule"/> class.
@@ -374,13 +376,33 @@ public class GetCurrentTaskRule : TaskPageNode
     {
         var ruleType = TypeDefinition.FromAssetLink<PromptAsset>();
         _rule = AddDataOutputConnector("Rule", ruleType, "Rule");
+        _inHierarchy.AddConnector(this);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _inHierarchy.Sync(sync);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _inHierarchy.InspectorField(setup, this);
     }
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
+        bool inHierarchy = _inHierarchy.GetValue(compute, this);
+
         var task = compute.Context.GetArgument<IAigcWorkflowPage>();
-        var ruleKey = new SAssetKey(TypeDefinition.FromAssetLink<PromptAsset>(), task?.Rule?.Id ?? Guid.Empty);
+        var rule = task?.GetRule(inHierarchy);
+        var ruleKey = new SAssetKey(TypeDefinition.FromAssetLink<PromptAsset>(), rule?.Id ?? Guid.Empty);
         compute.SetValue(_rule, ruleKey);
     }
 }
@@ -622,6 +644,7 @@ public class SetTaskPrompt : TaskPageNode
 public class GetTaskRule : TaskPageNode
 {
     readonly FlowNodeConnector _task;
+    readonly ConnectorValueProperty<bool> _inHierarchy = new("InHierarchy", "In Hierarchy", false, "If enabled, retrieves rule from parent tasks if current task has no rule.");
     readonly FlowNodeConnector _rule;
 
     /// <summary>
@@ -633,7 +656,24 @@ public class GetTaskRule : TaskPageNode
         var ruleType = TypeDefinition.FromAssetLink<PromptAsset>();
 
         _task = this.AddDataInputConnector("Task", taskType, "Task");
+        _inHierarchy.AddConnector(this);
         _rule = AddDataOutputConnector("Rule", ruleType, "Rule");
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _inHierarchy.Sync(sync);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _inHierarchy.InspectorField(setup, this);
     }
 
     /// <inheritdoc/>
@@ -641,8 +681,10 @@ public class GetTaskRule : TaskPageNode
     {
         var ruleType = TypeDefinition.FromAssetLink<PromptAsset>();
         var task = compute.GetValue<IAigcWorkflowPage>(_task);
+        bool inHierarchy = _inHierarchy.GetValue(compute, this);
 
-        var ruleKey = new SAssetKey(ruleType, task?.Rule?.Id ?? Guid.Empty);
+        var rule = task?.GetRule(inHierarchy);
+        var ruleKey = new SAssetKey(ruleType, rule?.Id ?? Guid.Empty);
 
         compute.SetValue(_rule, ruleKey);
     }
@@ -765,6 +807,41 @@ public class GetTaskCommit : TaskPageNode
         {
             compute.SetValue(_commitStatus, task.GetCommitStatus());
         }
+    }
+}
+
+#endregion
+
+#region GetCurrentPresetSkill
+
+/// <summary>
+/// A flow node that retrieves the skill from a preset associated with the current task page, if available.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Get Current Preset Skill", "*CoreIcon|Task")]
+public class GetCurrentPresetSkill : TaskPageNode
+{
+    readonly FlowNodeConnector _skill;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetCurrentPresetSkill"/> class.
+    /// </summary>
+    public GetCurrentPresetSkill()
+    {
+        var skillType = TypeDefinition.FromAssetLink<PromptAsset>();
+
+        _skill = AddDataOutputConnector("Skill", skillType, "Skill");
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var pageAsset = task.GetPageAsset() as SubFlowPresetAsset;
+
+        var skill = (pageAsset.GetPresetDefinition() as SubFlowPresetDocument)?.Skill;
+
+        compute.SetValue(_skill, skill);
     }
 }
 
