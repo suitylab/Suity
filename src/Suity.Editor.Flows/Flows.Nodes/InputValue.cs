@@ -7,7 +7,7 @@ using Suity.Views;
 using Suity.Views.Im;
 using Suity.Views.Im.Flows;
 using System;
-using System.Drawing;
+using System.Linq;
 
 namespace Suity.Editor.Flows.Nodes;
 
@@ -657,28 +657,27 @@ public class BooleanSwitchValue : ValueFlowNode
 
 #endregion
 
-#region FirstNotNull
+#region FirstNotEmpty
 
 /// <summary>
 /// A flow node that evaluates multiple input values and outputs the first non-null value found.
 /// </summary>
-[DisplayText("First Not Null", "*CoreIcon|Object")]
-public class FirstNotNullValue : ValueFlowNode
+[SimpleFlowNodeStyle(Width = 100, Height = 20, HasHeader = false)]
+[DisplayText("First Not Empty", "*CoreIcon|Object")]
+[NativeAlias("Suity.Editor.Flows.Nodes.FirstNotNullValue")]
+public class FirstNotEmpty : ValueFlowNode
 {
     private FlowNodeConnector _in;
-
-    private FlowNodeConnector _result;
-    private FlowNodeConnector _out;
+    private FlowNodeConnector _notNull;
 
     private ITypeDesignSelection _valueType;
     private readonly ValueProperty<bool> _isArray = new("IsArray", "Array");
 
-    private readonly ValueProperty<int> _valueCount = new("ValueCount", "Value Count");
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FirstNotNullValue"/> class with a default string value type.
+    /// Initializes a new instance of the <see cref="FirstNotEmpty"/> class with a default string value type.
     /// </summary>
-    public FirstNotNullValue()
+    public FirstNotEmpty()
     {
         _valueType = DTypeManager.Instance.CreateTypeDesignSelection();
         _valueType.Id = NativeTypes.StringType.TargetId;
@@ -693,7 +692,6 @@ public class FirstNotNullValue : ValueFlowNode
 
         _valueType = sync.Sync("ValueType", _valueType, SyncFlag.NotNull | SyncFlag.AffectsOthers);
         _isArray.Sync(sync);
-        _valueCount.Sync(sync);
 
         if (sync.IsSetter())
         {
@@ -708,7 +706,6 @@ public class FirstNotNullValue : ValueFlowNode
 
         setup.InspectorField(_valueType, new ViewProperty("ValueType", "Type"));
         _isArray.InspectorField(setup);
-        _valueCount.InspectorField(setup);
     }
 
     /// <inheritdoc/>
@@ -720,41 +717,42 @@ public class FirstNotNullValue : ValueFlowNode
             type = type.MakeArrayType();
         }
 
-        _in = AddActionInputConnector("In", "Input");
-
-        int count = _valueCount.Value;
-        for (int i = 0; i < count; i++)
-        {
-            AddDataInputConnector("Value" + i, type, $"[{i}]");
-        }
-
-        _result = AddDataOutputConnector("Out", type, " ");
-        _out = AddActionOutputConnector("In", "Output");
+        _in = AddDataInputConnector("In", type, "In");
+        _notNull = AddDataOutputConnector("NotEmpty", type, "Not Empty");
     }
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        int count = _valueCount.Value;
-        for (int i = 0; i < count; i++)
-        {
-            var connector = GetConnector("Value" + i);
-            if (connector is null)
-            {
-                continue;
-            }
+        var values = compute.GetValues(_in, true);
+        var value = values.FirstOrDefault(o => !CheckEmpty(o));
 
-            var value = compute.GetValue(connector);
-            if (value != null)
-            {
-                compute.SetValue(_result, value);
-                compute.SetResult(this, _out);
-                return;
-            }
+        compute.SetValue(_notNull, value);
+    }
+
+    public static bool CheckEmpty(object obj)
+    {
+        if (obj is null)
+        {
+            return true;
         }
 
-        compute.SetValue(_result, null);
-        compute.SetResult(this, _out);
+        if (obj is string str)
+        {
+            return !string.IsNullOrEmpty(str);
+        }
+
+        if (obj is IHasId hasId)
+        {
+            return hasId.Id != Guid.Empty;
+        }
+
+        if (obj is IHasAsset hasAsset)
+        {
+            return hasAsset.TargetAsset != null;
+        }
+
+        return false;
     }
 }
 

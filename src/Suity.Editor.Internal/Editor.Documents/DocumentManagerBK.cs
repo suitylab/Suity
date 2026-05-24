@@ -615,6 +615,11 @@ internal sealed class DocumentManagerBK : DocumentManager
             return null;
         }
 
+        if (NewDocument(pathClone, doc.Format) is not DocumentEntryBK docClone)
+        {
+            return null;
+        }
+
         // Notify document content to get ready for move, which will record its own id for refactor usage
         Visitor.Visit<ICrossMove>(doc.Content, (o, p) =>
         {
@@ -624,18 +629,11 @@ internal sealed class DocumentManagerBK : DocumentManager
         using var memory = new MemoryStorageItem();
         // Set clone mode to true to export recorded id for refactor usage.
         doc.InternalExport(memory, true);
-
         var format = doc.Format;
-
-        if (NewDocument(pathClone, format) is not DocumentEntryBK docClone)
-        {
-            return null;
-        }
-
-        memory.Stream.Position = 0;
 
         // The recorded id will also be loaded to the new document, which will make refactor work.
         // Do not set clone mode to true to avoid setting reference object during the sync.
+        memory.Stream.Position = 0;
         docClone.InternalReload(memory, false);
 
         // Raise loaded event to create id for the new document.

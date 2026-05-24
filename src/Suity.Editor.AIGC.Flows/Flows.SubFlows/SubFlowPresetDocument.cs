@@ -33,8 +33,8 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     private readonly StringProperty _presetName = new("PresetName", "Preset Name");
 
 
-    private readonly AssetProperty<ISubFlowDefAsset> _baseFlow
-        = new("BaseFlow", "Base Execution Flow");
+    private readonly AssetProperty<ISubFlowDefAsset> _baseWorkflow
+        = new("BaseWorkflow", "Base Workflow", "The base execution flow that this preset is built upon.");
 
     private readonly AssetListProperty<IPageAsset> _tools
         = new("Tools", "Tools");
@@ -86,9 +86,10 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         _iconSelection.SelectionChanged += (s, e) => this.AssetBuilder.SetIconId(_iconSelection.Id);
         _colorSelection.ValueChanged += (s, e) => this.AssetBuilder.SetColor(_colorSelection.Value);
 
-        _baseFlow.SelectionChanged += _baseFlow_SelectionChanged;
-        _baseFlow.TargetUpdated += _baseFlow_TargetUpdated;
-        _baseFlow.ListenEnabled = true;
+        _baseWorkflow.AliasName = "BaseFlow";
+        _baseWorkflow.SelectionChanged += _baseFlow_SelectionChanged;
+        _baseWorkflow.TargetUpdated += _baseFlow_TargetUpdated;
+        _baseWorkflow.ListenEnabled = true;
 
         _tools.Property.WithExpand();
     }
@@ -96,14 +97,14 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     /// <inheritdoc/>
     protected internal override void OnDestroy()
     {
-        _baseFlow.ListenEnabled = false;
+        _baseWorkflow.ListenEnabled = false;
 
         _description.ValueChanged -= (s, e) => this.AssetBuilder.SetDescription(_description.Value);
         _iconSelection.SelectionChanged -= (s, e) => this.AssetBuilder.SetIconId(_iconSelection.Id);
         _colorSelection.ValueChanged -= (s, e) => this.AssetBuilder.SetColor(_colorSelection.Value);
 
-        _baseFlow.SelectionChanged -= _baseFlow_SelectionChanged;
-        _baseFlow.TargetUpdated -= _baseFlow_TargetUpdated;
+        _baseWorkflow.SelectionChanged -= _baseFlow_SelectionChanged;
+        _baseWorkflow.TargetUpdated -= _baseFlow_TargetUpdated;
 
         base.OnDestroy();
     }
@@ -185,12 +186,12 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     }
 
     /// <inheritdoc/>
-    public ISubFlowDefAsset BaseFlow => _baseFlow.Target;
+    public ISubFlowDefAsset BaseWorkflow => _baseWorkflow.Target;
 
     /// <summary>
     /// Gets the base execution flow as a diagram item.
     /// </summary>
-    public SubFlowDefinitionDiagramItem BaseFlowPage => (_baseFlow.Target as SubFlowDefinitionAsset)?.GetDiagramItem();
+    public SubFlowDefinitionDiagramItem BaseWorkflowPage => (_baseWorkflow.Target as SubFlowDefinitionAsset)?.GetDiagramItem();
     #endregion
 
     #region ISubFlowPreset
@@ -257,7 +258,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         base.OnSync(sync, context);
 
         _presetName.Sync(sync);
-        _baseFlow.Sync(sync);
+        _baseWorkflow.Sync(sync);
         _tools.Sync(sync);
         _isStartup.Sync(sync);
         _useParentArticle.Sync(sync);
@@ -308,7 +309,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         _presetName.InspectorField(setup);
         _overview.InspectorField(setup);
         _userInputHint.InspectorField(setup);
-        _baseFlow.InspectorField(setup);
+        _baseWorkflow.InspectorField(setup);
         _skill.InspectorField(setup);
         _rule.InspectorField(setup);
         _tools.InspectorField(setup);
@@ -323,7 +324,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     /// Gets the underlying page definition for this preset.
     /// </summary>
     /// <returns>The <see cref="ISubFlow"/> definition, or null if not available.</returns>
-    public ISubFlow GetPageDefinition() => _baseFlow.Target?.GetBaseDefinition();
+    public ISubFlow GetPageDefinition() => _baseWorkflow.Target?.GetBaseDefinition();
 
     /// <summary>
     /// Ensures that a preset instance exists, building one if necessary.
@@ -341,7 +342,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
     private void BuildInstance()
     {
-        if (BaseFlowPage is { } page)
+        if (BaseWorkflowPage is { } page)
         {
             var last = Instance;
 
@@ -376,7 +377,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     {
         QueuedAction.Do(BuildInstance);
 
-        AssetBuilder.SetBaseFlow(_baseFlow.Target);
+        AssetBuilder.SetBaseFlow(_baseWorkflow.Target);
     }
 
     private void _baseFlow_TargetUpdated(object sender, EntryEventArgs e, ref bool handled)
@@ -570,7 +571,7 @@ public class SubFlowPresetAsset : Asset,
             return null;
         }
 
-        if (doc.BaseFlowPage is not { } toolPageItem)
+        if (doc.BaseWorkflowPage is not { } toolPageItem)
         {
             return null;
         }

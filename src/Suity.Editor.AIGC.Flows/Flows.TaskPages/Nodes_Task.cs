@@ -830,7 +830,7 @@ public class GetCurrentPresetSkill : TaskPageNode
     {
         var skillType = TypeDefinition.FromAssetLink<PromptAsset>();
 
-        _skill = AddDataOutputConnector("Skill", skillType, "Skill");
+        _skill = AddDataOutputConnector("Skill", skillType, "Preset Skill");
     }
 
     /// <inheritdoc/>

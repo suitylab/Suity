@@ -96,9 +96,9 @@ public interface ISubFlowDefAsset : ISubFlowAsset
 public interface ISubFlowPreset
 {
     /// <summary>
-    /// Gets the base execution flow page definition asset.
+    /// Gets the base workflow page definition asset.
     /// </summary>
-    ISubFlowDefAsset BaseFlow { get; }
+    ISubFlowDefAsset BaseWorkflow { get; }
 
     /// <summary>
     /// Gets the name of the preset.

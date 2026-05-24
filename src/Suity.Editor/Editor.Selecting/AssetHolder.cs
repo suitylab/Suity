@@ -143,6 +143,10 @@ public class AssetProperty<T> : AssetHolder<T>, IValueProperty
     /// </summary>
     public ViewProperty Property { get; }
 
+    public string Name => Property.Name;
+
+    public string AliasName { get; set; }
+
     /// <summary>
     /// Gets or sets the sync flags.
     /// </summary>
@@ -193,11 +197,25 @@ public class AssetProperty<T> : AssetHolder<T>, IValueProperty
     {
         if (Flag.HasFlag(SyncFlag.GetOnly) || sync.IsGetter())
         {
-            sync.Sync(Property.Name, Selection, Flag);
+            if (!string.IsNullOrWhiteSpace(AliasName))
+            {
+                sync.SyncAlias(Property.Name, AliasName, Selection, Flag);
+            }
+            else
+            {
+                sync.Sync(Property.Name, Selection, Flag);
+            }
         }
         else
         {
-            Selection = sync.Sync(Property.Name, Selection, Flag) ?? new();
+            if (!string.IsNullOrWhiteSpace(AliasName))
+            {
+                Selection = sync.SyncAlias(Property.Name, AliasName, Selection, Flag) ?? new();
+            }
+            else
+            {
+                Selection = sync.Sync(Property.Name, Selection, Flag) ?? new();
+            }
         }
 
         return Target;
