@@ -1,5 +1,6 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.AIGC;
+using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Services;
@@ -792,7 +793,6 @@ public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, ISubFlowE
 }
 #endregion
 
-
 #region PageMessageParameterNode
 
 /// <summary>
@@ -819,8 +819,6 @@ public class PageMessageParameterNode : SubFlowTypeNode
         Required = false;
         TaskCommit = true;
         ChatHistory = true;
-
-        UpdateConnector();
     }
 
     /// <inheritdoc/>

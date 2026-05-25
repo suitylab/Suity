@@ -161,6 +161,7 @@ public class ExtractXmlsTag : AigcXmlNode
 public class ExtractXmlsTagAction : AigcXmlNode
 {
     readonly ListProperty<string> _tagNames = new("TagNames", "Tag Names");
+    readonly ValueProperty<bool> _isArray = new("IsArray", "Output as Array", false);
 
     private FlowNodeConnector _in;
     private FlowNodeConnector _textIn;
@@ -181,6 +182,7 @@ public class ExtractXmlsTagAction : AigcXmlNode
         base.OnSync(sync, context);
 
         _tagNames.Sync(sync);
+        _isArray.Sync(sync);
     }
 
     /// <inheritdoc/>
@@ -189,6 +191,7 @@ public class ExtractXmlsTagAction : AigcXmlNode
         base.OnSetupView(setup);
 
         _tagNames.InspectorField(setup);
+        _isArray.InspectorField(setup);
     }
 
     /// <inheritdoc/>
@@ -202,7 +205,11 @@ public class ExtractXmlsTagAction : AigcXmlNode
             .Distinct()
             .ToArray();
 
-        var tagType = TypeDefinition.FromNative<LooseXmlTag>().MakeArrayType();
+        var tagType = TypeDefinition.FromNative<LooseXmlTag>();
+        if (_isArray.Value)
+        {
+            tagType = tagType.MakeArrayType();
+        }
 
         foreach (var tagName in tagNames)
         {
@@ -220,6 +227,8 @@ public class ExtractXmlsTagAction : AigcXmlNode
             .Distinct()
             .ToArray();
 
+        bool isArray = _isArray.Value;
+
         string text = compute.GetValue<string>(_textIn);
         if (string.IsNullOrWhiteSpace(text))
         {
@@ -228,7 +237,14 @@ public class ExtractXmlsTagAction : AigcXmlNode
                 var c = GetConnector("Tag-" + tagName);
                 if (c is null) continue;
 
-                compute.SetValue(c, Array.Empty<LooseXmlTag>());
+                if (isArray)
+                {
+                    compute.SetValue(c, Array.Empty<LooseXmlTag>());
+                }
+                else
+                {
+                    compute.SetValue(c, null);
+                }
             }
         }
         else
@@ -243,7 +259,14 @@ public class ExtractXmlsTagAction : AigcXmlNode
                     var tags = LooseXml.ExtractNodes(text, tagName);
                     if (tags.Length > 0)
                     {
-                        compute.SetValue(c, tags);
+                        if (isArray)
+                        {
+                            compute.SetValue(c, tags);
+                        }
+                        else
+                        {
+                            compute.SetValue(c, tags.FirstOrDefault());
+                        }
                         compute.SetResult(this, c);
                         return;
                     }

@@ -200,8 +200,8 @@ public class SubFlowParameterOutput : SubFlowElement, IPageParameterOutput
     {
         if (!TypeDefinition.IsNullOrEmpty(type))
         {
-            var repaire = type.CreateOrRepairValue(_value, true);
-            _value = repaire;
+            var repair = type.CreateOrRepairValue(_value, true);
+            _value = repair;
         }
         else
         {

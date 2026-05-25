@@ -7,6 +7,7 @@ using Suity.Synchonizing;
 using Suity.Views;
 using Suity.Views.Im;
 using Suity.Views.Im.Flows;
+using System;
 using System.Drawing;
 
 namespace Suity.Editor.Flows.SubFlows;
@@ -217,12 +218,15 @@ public class SubFlowParameterOutputNode : SubFlowTypeNode
     /// Initializes a new instance of the <see cref="SubFlowParameterOutputNode"/> class.
     /// </summary>
     public SubFlowParameterOutputNode()
-        : base(NativeTypes.StringType.TargetId)
+        : this(NativeTypes.StringType.TargetId)
+    {
+    }
+
+    protected SubFlowParameterOutputNode(Guid typeId)
+        : base(typeId)
     {
         Value = NativeTypes.StringType.CreateOrRepairValue(Value, false);
-
         base.FlowNodeGui = OnGui;
-
         UpdateConnector();
     }
 
