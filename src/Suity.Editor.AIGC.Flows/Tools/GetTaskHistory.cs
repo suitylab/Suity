@@ -64,20 +64,39 @@ public class GetTaskHistory : ToolCommand<GetTaskHistory.Output>
         var host = myTask.TaskHost
             ?? throw new NullReferenceException("The task host is null.");
 
-        var task = host.GetTask(taskId) as IAigcWorkflowPage
+        var task = host.GetTask(taskId) as IAigcTaskPage
             ?? throw new NullReferenceException($"No workflow task found with ID '{taskId}'.");
 
-        string result;
-        var history = task.GetChatHistory(false);
-        if (history is null || history.Length == 0)
+        return GetTaskChatHistoryText(task);
+    }
+
+    public static string GetTaskChatHistoryText(IAigcTaskPage task)
+    {
+        if (task is null)
         {
-            result = string.Empty;
+            throw new ArgumentNullException(nameof(task));
+        }
+
+        if (task is IAigcWorkflowPage workflow)
+        {
+            string result;
+            var history = workflow.GetChatHistory(false);
+            if (history is null || history.Length == 0)
+            {
+                result = string.Empty;
+            }
+            else
+            {
+                result = LLmMessage.CombineText(history);
+            }
+
+            return result ?? string.Empty;
         }
         else
         {
-            result = LLmMessage.CombineText(history);
-        }
+            string result = task.GetPageInstance()?.GetTaskCommit();
 
-        return result;
+            return result ?? string.Empty;
+        }
     }
 }

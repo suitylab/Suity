@@ -1502,20 +1502,22 @@ public class GetArticleTaggedContents : TaskPageNode
 
 #endregion
 
-#region GetTaskHistory
+#region GetTaskById
 
 [SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
-[DisplayText("Get Task History", "*CoreIcon|Task")]
-[NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskHistory")]
-public class GetTaskHistory : TaskPageNode
+[DisplayText("Get Task By Id", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskById")]
+public class GetTaskById : TaskPageNode
 {
     readonly ConnectorStringProperty _taskId = new("TaskId", "Task ID", string.Empty, "The unique identifier of the task to query.");
-    readonly FlowNodeConnector _result;
+    readonly FlowNodeConnector _task;
 
-    public GetTaskHistory()
+    public GetTaskById()
     {
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
+
         _taskId.AddConnector(this);
-        _result = AddDataOutputConnector("Result", "string", "Result");
+        _task = AddDataOutputConnector("Task", taskType, "Task");
     }
 
     protected override void OnSync(IPropertySync sync, ISyncContext context)
@@ -1534,12 +1536,42 @@ public class GetTaskHistory : TaskPageNode
 
     public override void Compute(IFlowComputation compute)
     {
-        var myTask = compute.Context.GetArgument<IAigcTaskPage>()
-            ?? throw new NullReferenceException("Task page is null.");
-
+        var task = compute.Context.GetArgument<IAigcTaskPage>();
         string taskId = _taskId.GetValue(compute, this);
 
-        string result = Suity.Editor.AIGC.Tools.GetTaskHistory.GetTaskChatHistoryText(myTask, taskId);
+        var taskHost = task?.TaskHost;
+        var targetTask = taskHost?.GetTask(taskId);
+
+        compute.SetValue(_task, targetTask);
+    }
+}
+
+#endregion
+
+#region GetTaskHistory
+
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Get Task History", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskHistory")]
+public class GetTaskHistory : TaskPageNode
+{
+    readonly FlowNodeConnector _task;
+    readonly FlowNodeConnector _result;
+
+    public GetTaskHistory()
+    {
+        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
+
+        _task = this.AddDataInputConnector("Task", taskType, "Task");
+        _result = AddDataOutputConnector("Result", "string", "Result");
+    }
+
+    public override void Compute(IFlowComputation compute)
+    {
+        var task = compute.GetValue<IAigcWorkflowPage>(_task)
+            ?? throw new NullReferenceException("Task is null.");
+
+        string result = Suity.Editor.AIGC.Tools.GetTaskHistory.GetTaskChatHistoryText(task);
 
         compute.SetValue(_result, result);
     }
