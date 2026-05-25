@@ -6,11 +6,12 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("ReadFile", CodeBase = "*Suity")]
 [DisplayText("Read File")]
 [ToolTipsText("Read file content, optionally starting from a line and reading a specified number of lines.")]
+[NativeAlias("Suity.Editor.AIGC.ReadFile")]
 public class ReadFile : ToolCommand<ReadFile.Output>
 {
     public class Output : IViewObject

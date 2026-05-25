@@ -6,11 +6,12 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("ReplaceStringInFile", CodeBase = "*Suity")]
 [DisplayText("Replace String In File")]
 [ToolTipsText("Replace an exact string in a file with new content. Suitable for small-scale refactoring.")]
+[NativeAlias("Suity.Editor.AIGC.ReplaceStringInFile")]
 public class ReplaceStringInFile : ToolCommand<ReplaceStringInFile.Output>
 {
     public class Output : IViewObject

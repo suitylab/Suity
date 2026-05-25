@@ -6,11 +6,12 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("CreateNewFile", CodeBase = "*Suity")]
 [DisplayText("Create New File")]
 [ToolTipsText("Create a new file and write content to it. Fails if file already exists to prevent accidental overwriting.")]
+[NativeAlias("Suity.Editor.AIGC.CreateNewFile")]
 public class CreateNewFile : ToolCommand<CreateNewFile.Output>
 {
     public class Output : IViewObject

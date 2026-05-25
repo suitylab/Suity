@@ -6,11 +6,12 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("RewriteEntireFile", CodeBase = "*Suity")]
 [DisplayText("Rewrite Entire File")]
 [ToolTipsText("Completely overwrite an existing file with new content. Use as fallback when Diff or Replace operations fail.")]
+[NativeAlias("Suity.Editor.AIGC.RewriteEntireFile")]
 public class RewriteEntireFile : ToolCommand<RewriteEntireFile.Output>
 {
     public class Output : IViewObject

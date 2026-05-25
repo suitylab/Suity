@@ -936,12 +936,12 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
         if (element is IPageParameterToolCall toolCall)
         {
-            string taskId = toolCall.TaskId;
+            // string taskId = toolCall.TaskId;
             string toolName = toolCall.ToolName;
 
             if (!string.IsNullOrWhiteSpace(toolName))
             {
-                desc += $" taskId='{taskId}' tool='{toolName}'";
+                desc += $" tool='{toolName}'";
             }
         }
 

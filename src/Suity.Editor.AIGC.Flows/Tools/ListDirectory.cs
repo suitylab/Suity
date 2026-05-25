@@ -7,11 +7,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("ListDirectory", CodeBase = "*Suity")]
 [DisplayText("List Directory")]
 [ToolTipsText("List directory contents, showing files and folders in the specified directory.")]
+[NativeAlias("Suity.Editor.AIGC.ListDirectory")]
 public class ListDirectory : ToolCommand<ListDirectory.Output>
 {
     public class Output : IViewObject

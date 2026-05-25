@@ -854,37 +854,39 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         if (input && output)
         {
+            string msg = instance?.GetInputChatHistory()?.Text;
+            if (!string.IsNullOrWhiteSpace(prompt))
+            {
+                msg = prompt + "\r\n\r\n" + msg;
+            }
+
             inputMsg = new()
             {
                 Role = LLmMessageRole.User,
-                Message = instance?.GetInputChatHistory()?.Text,
+                Message = msg,
             };
-
-            if (!string.IsNullOrWhiteSpace(prompt))
-            {
-                inputMsg.Message = prompt + "\r\n\r\n" + inputMsg.Message;
-            }
 
             outputMsg = new()
             {
                 Role = LLmMessageRole.Assistant,
-                Message = instance?.GetOutputChatHistory()?.Text,
+                Message = $"TaskId: '{TaskId}'\r\n\r\n{instance?.GetOutputChatHistory()?.Text}",
             };
 
             return [inputMsg, outputMsg];
         }
         else if (input)
         {
+            string msg = instance?.GetInputChatHistory()?.Text;
+            if (!string.IsNullOrWhiteSpace(prompt))
+            {
+                msg = $"{prompt}\r\n\r\n{msg}";
+            }
+
             inputMsg = new()
             {
                 Role = LLmMessageRole.User,
-                Message = instance?.GetInputChatHistory()?.Text,
+                Message = msg,
             };
-
-            if (!string.IsNullOrWhiteSpace(prompt))
-            {
-                inputMsg.Message = prompt + "\r\n\r\n" + inputMsg.Message;
-            }
 
             return [inputMsg];
         }
@@ -893,7 +895,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             outputMsg = new()
             {
                 Role = LLmMessageRole.Assistant,
-                Message = instance?.GetOutputChatHistory()?.Text,
+                Message = $"TaskId: '{TaskId}'\r\n\r\n{instance?.GetOutputChatHistory()?.Text}",
             };
 
             return [outputMsg];

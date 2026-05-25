@@ -6,11 +6,12 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("GetFileMetadata", CodeBase = "*Suity")]
 [DisplayText("Get File Metadata")]
 [ToolTipsText("Get basic file metadata (size, modified time) to help Agent estimate token consumption before reading.")]
+[NativeAlias("Suity.Editor.AIGC.GetFileMetadata")]
 public class GetFileMetadata : ToolCommand<GetFileMetadata.Output>
 {
     public class Output : IViewObject

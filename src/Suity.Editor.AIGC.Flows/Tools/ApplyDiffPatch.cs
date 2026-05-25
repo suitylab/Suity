@@ -9,11 +9,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("ApplyDiffPatch", CodeBase = "*Suity")]
 [DisplayText("Apply Diff Patch")]
 [ToolTipsText("Apply a Unified Diff format patch to a file. Supports multiple non-contiguous edits in a single file.")]
+[NativeAlias("Suity.Editor.AIGC.ApplyDiffPatch")]
 public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
 {
     public class Output : IViewObject

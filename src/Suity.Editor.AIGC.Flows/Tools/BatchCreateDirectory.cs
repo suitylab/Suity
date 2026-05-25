@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("BatchCreateDirectory", CodeBase = "*Suity")]
 [DisplayText("Batch Create Directory")]
 [ToolTipsText("Create multiple directories at once. Use when initializing new module structures or creating multi-layer architecture folders.")]
+[NativeAlias("Suity.Editor.AIGC.BatchCreateDirectory")]
 public class BatchCreateDirectory : ToolCommand<BatchCreateDirectory.Output>
 {
     [NativeType("BatchCreateDirectory.DirectoryItem", CodeBase = "*Suity")]

@@ -8,11 +8,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("GetWorkspaceTree", CodeBase = "*Suity")]
 [DisplayText("Get Workspace Tree")]
 [ToolTipsText("Get project folder/file structure tree. Helps Agent quickly establish a global perspective of routing.")]
+[NativeAlias("Suity.Editor.AIGC.GetWorkspaceTree")]
 public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
 {
     public class Output : IViewObject

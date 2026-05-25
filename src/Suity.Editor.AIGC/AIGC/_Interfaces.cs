@@ -29,19 +29,29 @@ public interface IAigcTaskHost
     WorkSpace WorkSpace { get; }
 
     /// <summary>
-    /// Creates a new workspace with the specified name.
+    /// Creates a new workspace with the specified name and assigns it to this document.
     /// </summary>
+    /// <param name="workSpaceName">The name of the workspace to create.</param>
+    /// <returns>The newly created <see cref="WorkSpace"/>.</returns>
     WorkSpace CreateWorkSpace(string workSpaceName);
 
     /// <summary>
-    /// Gets all knowledge articles available to the task.
+    /// Gets the collection of knowledge articles used as reference material.
     /// </summary>
     IEnumerable<IArticleAsset> KnowledgeArticles { get; }
 
     /// <summary>
-    /// Adds a knowledge article to the task.
+    /// Adds a knowledge article to the document's knowledge collection if not already present.
     /// </summary>
+    /// <param name="articleAsset">The article asset to add.</param>
     void AddKnowledgeArticle(IArticleAsset articleAsset);
+
+    /// <summary>
+    /// Gets the task page associated with the specified task ID.
+    /// </summary>
+    /// <param name="taskId">The unique identifier of the task.</param>
+    /// <returns>The task page associated with the specified task ID, or null if not found.</returns>
+    IAigcTaskPage GetTask(string taskId);
 }
 
 #endregion

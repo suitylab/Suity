@@ -1100,8 +1100,8 @@ public class GetCurrentTask : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
-        compute.SetValue(_out, taskPage);
+        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
+        compute.SetValue(_out, task);
     }
 }
 
@@ -1499,5 +1499,50 @@ public class GetArticleTaggedContents : TaskPageNode
     }
 }
 
+
+#endregion
+
+#region GetTaskHistory
+
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Get Task History", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskHistory")]
+public class GetTaskHistory : TaskPageNode
+{
+    readonly ConnectorStringProperty _taskId = new("TaskId", "Task ID", string.Empty, "The unique identifier of the task to query.");
+    readonly FlowNodeConnector _result;
+
+    public GetTaskHistory()
+    {
+        _taskId.AddConnector(this);
+        _result = AddDataOutputConnector("Result", "string", "Result");
+    }
+
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _taskId.Sync(sync);
+    }
+
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _taskId.InspectorField(setup, this);
+    }
+
+    public override void Compute(IFlowComputation compute)
+    {
+        var myTask = compute.Context.GetArgument<IAigcTaskPage>()
+            ?? throw new NullReferenceException("Task page is null.");
+
+        string taskId = _taskId.GetValue(compute, this);
+
+        string result = Suity.Editor.AIGC.Tools.GetTaskHistory.GetTaskChatHistoryText(myTask, taskId);
+
+        compute.SetValue(_result, result);
+    }
+}
 
 #endregion

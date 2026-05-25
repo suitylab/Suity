@@ -9,11 +9,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("BatchApplyDiffPatches", CodeBase = "*Suity")]
 [DisplayText("Batch Apply Diff Patches")]
 [ToolTipsText("Apply multiple unified diff patches at once. Use for complex feature development involving multiple file changes with atomicity.")]
+[NativeAlias("Suity.Editor.AIGC.BatchApplyDiffPatches")]
 public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
 {
     [NativeType("BatchApplyDiffPatches.FilePatchItem", CodeBase = "*Suity")]

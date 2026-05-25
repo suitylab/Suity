@@ -367,11 +367,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
         set => _workSpace.Target = value?.GetAsset();
     }
 
-    /// <summary>
-    /// Creates a new workspace with the specified name and assigns it to this document.
-    /// </summary>
-    /// <param name="workSpaceName">The name of the workspace to create.</param>
-    /// <returns>The newly created <see cref="WorkSpace"/>.</returns>
+    /// <inheritdoc/>
     public WorkSpace CreateWorkSpace(string workSpaceName)
     {
         if (!NamingVerifier.VerifyIdentifier(workSpaceName))
@@ -392,15 +388,10 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     }
 
 
-    /// <summary>
-    /// Gets the collection of knowledge articles used as reference material.
-    /// </summary>
+    /// <inheritdoc/>
     public IEnumerable<IArticleAsset> KnowledgeArticles => _knowledgeArticles.List.Select(o => o.Target).SkipNull();
 
-    /// <summary>
-    /// Adds a knowledge article to the document's knowledge collection if not already present.
-    /// </summary>
-    /// <param name="articleAsset">The article asset to add.</param>
+    /// <inheritdoc/>
     public void AddKnowledgeArticle(IArticleAsset articleAsset)
     {
         if (articleAsset is null)
@@ -425,6 +416,10 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
 
         this.MarkDirtyAndSaveDelayed(this);
     }
+
+    /// <inheritdoc/>
+    IAigcTaskPage IAigcTaskHost.GetTask(string taskId) 
+        => ItemCollection.GetItem(taskId) as IAigcTaskPage;
 
     #endregion
 

@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("BatchReadFile", CodeBase = "*Suity")]
 [DisplayText("Batch Read File")]
 [ToolTipsText("Read multiple files at once. More efficient than reading files one by one when Agent needs to compare multiple files or process search results.")]
+[NativeAlias("Suity.Editor.AIGC.BatchReadFiles")]
 public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
 {
     [NativeType("BatchReadFiles.FileReadItem", CodeBase = "*Suity")]

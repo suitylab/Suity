@@ -5,14 +5,14 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("BatchCreateNewFiles", CodeBase = "*Suity")]
 [DisplayText("Batch Create New Files")]
 [ToolTipsText("Create multiple new files at once. Use when initializing new modules, scaffolding, or creating multi-layer architecture code.")]
+[NativeAlias("Suity.Editor.AIGC.BatchCreateNewFiles")]
 public class BatchCreateNewFiles : ToolCommand<BatchCreateNewFiles.Output>
 {
     [NativeType("BatchCreateNewFiles.FileWriteItem", CodeBase = "*Suity")]

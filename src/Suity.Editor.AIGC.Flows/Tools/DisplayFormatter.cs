@@ -1,6 +1,4 @@
-using System;
-
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 public static class DisplayFormatter
 {

@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("SearchFile", CodeBase = "*Suity")]
 [DisplayText("Search File")]
 [ToolTipsText("Search for keywords in the workspace.")]
+[NativeAlias("Suity.Editor.AIGC.SearchFile")]
 public class SearchFile : ToolCommand<SearchFile.Output>
 {
     public class Output : IViewObject
