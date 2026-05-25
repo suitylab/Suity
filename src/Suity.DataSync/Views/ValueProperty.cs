@@ -416,19 +416,29 @@ public class TextBlockProperty : ValueProperty<TextBlock>
 
         if (flag.HasFlag(SyncFlag.GetOnly) || sync.IsGetter())
         {
-            sync.Sync(Property.Name, Value, flag | SyncFlag.NotNull);
+            sync.Sync(Property.Name, Value, flag);
         }
         else
         {
-            // handle auto convertion from string
-            if (sync.IsSingleSetterOf(Property.Name) && sync.Value is string)
+            if (sync.IsGetter())
             {
-                string str = sync.Sync<string>(Property.Name, null, flag | SyncFlag.NotNull);
-                Value.Text = str;
+                sync.Sync(Property.Name, Value, flag);
             }
-            else
+            else if (sync.IsSetter())
             {
-                Value = sync.Sync(Property.Name, Value, flag | SyncFlag.NotNull) ?? new TextBlock();
+                // handle auto convertion from string
+                if (sync.Sync<TextBlock>(Property.Name, null) is TextBlock textBlock)
+                {
+                    Value = textBlock;
+                }
+                else if (sync.Sync<string>(Property.Name, null) is string str)
+                {
+                    (Value ??= new()).Text = str;
+                }
+                else
+                {
+                    Value ??= new();
+                }
             }
 
             if (sync.IsSetter() && string.IsNullOrWhiteSpace(Value.Text) && !string.IsNullOrWhiteSpace(AutoFillText))
