@@ -27,15 +27,14 @@ public abstract class AigcTaskPage : DesignNode,
 
     #region Core Prop
 
-    /// <summary>
-    /// Gets the document associated with this task page as an <see cref="AigcTaskPageDocument"/>.
-    /// </summary>
+    /// <inheritdoc/>
     public AigcTaskPageDocument TaskPageDocument => this.GetDocument() as AigcTaskPageDocument;
 
-    /// <summary>
-    /// Gets the parent task page, if this task is a sub-task of another task.
-    /// </summary>
+    /// <inheritdoc/>
     public IAigcTaskPage ParentTask => ParentNode as IAigcTaskPage;
+
+    /// <inheritdoc/>
+    public string TaskId => Name;
 
     /// <summary>
     /// Gets or sets the commit name used when committing results to the parent task.

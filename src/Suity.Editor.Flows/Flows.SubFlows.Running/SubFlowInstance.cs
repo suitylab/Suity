@@ -934,10 +934,15 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             desc = $" description='{tooltips.ToolTips}'";
         }
 
-        string toolName = (element as IPageParameterTool)?.ToolName;
-        if (!string.IsNullOrWhiteSpace(toolName))
+        if (element is IPageParameterToolCall toolCall)
         {
-            desc += $" tool='{toolName}'";
+            string taskId = toolCall.TaskId;
+            string toolName = toolCall.ToolName;
+
+            if (!string.IsNullOrWhiteSpace(toolName))
+            {
+                desc += $" taskId='{taskId}' tool='{toolName}'";
+            }
         }
 
         return desc;

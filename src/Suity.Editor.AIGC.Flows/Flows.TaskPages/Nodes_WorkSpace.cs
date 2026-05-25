@@ -43,6 +43,39 @@ public class GetTaskWorkSpace : TaskPageNode
 }
 #endregion
 
+#region HasTaskWorkSpace
+/// <summary>
+/// A flow node that checks whether the current AIGC task page has an associated workspace.
+/// Outputs a boolean value indicating whether the workspace exists.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Has Task WorkSpace", "*CoreIcon|WorkSpace")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.HasTaskWorkSpace")]
+public class HasTaskWorkSpace : TaskPageNode
+{
+    readonly FlowNodeConnector _hasWorkSpace;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HasTaskWorkSpace"/> class,
+    /// setting up the boolean data output connector.
+    /// </summary>
+    public HasTaskWorkSpace()
+    {
+        _hasWorkSpace = this.AddDataOutputConnector("HasWorkSpace", "bool", "Has WorkSpace");
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
+
+        var workSpace = taskPage?.TaskHost?.WorkSpace;
+
+        compute.SetValue(_hasWorkSpace, workSpace != null);
+    }
+}
+#endregion
+
 #region CreateTaskWorkSpace
 /// <summary>
 /// A flow node that creates a new workspace for the current AIGC task page,
@@ -90,7 +123,7 @@ public class CreateTaskWorkSpace : TaskPageNode
     /// <inheritdoc/>
     protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.SetupView(setup);
+        base.OnSetupView(setup);
 
         _workSpaceName.InspectorField(setup, this);
         _getIfExist.InspectorField(setup, this);

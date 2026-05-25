@@ -819,3 +819,66 @@ public class StringLength : TextFlowNode
 }
 
 #endregion
+
+#region TrimString
+
+/// <summary>
+/// A flow node that removes leading and/or trailing whitespace from the input string.
+/// </summary>
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
+[DisplayText("Trim String")]
+[ToolTipsText("Remove leading and/or trailing whitespace from text.")]
+public class TrimString : TextFlowNode
+{
+    private readonly FlowNodeConnector _in;
+    private readonly FlowNodeConnector _out;
+
+    private readonly ValueProperty<bool> _trimStart = new("TrimStart", "Trim Start", true);
+    private readonly ValueProperty<bool> _trimEnd = new("TrimEnd", "Trim End", true);
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TrimString"/> class.
+    /// </summary>
+    public TrimString()
+    {
+        _in = AddDataInputConnector("In", "string", "Input");
+        _out = AddDataOutputConnector("Out", "string", "Output");
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _trimStart.Sync(sync);
+        _trimEnd.Sync(sync);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _trimStart.InspectorField(setup);
+        _trimEnd.InspectorField(setup);
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        string s = compute.GetValue<string>(_in) ?? string.Empty;
+
+        if (_trimStart.Value)
+        {
+            s = s.TrimStart();
+        }
+        if (_trimEnd.Value)
+        {
+            s = s.TrimEnd();
+        }
+
+        compute.SetValue(_out, s);
+    }
+}
+
+#endregion

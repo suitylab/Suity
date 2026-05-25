@@ -12,7 +12,7 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 /// Represents a sub-graph element that handles sub-task output for sub-graph.
 /// Implements both parameter output and tool parameter interfaces.
 /// </summary>
-public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPageParameterTool
+public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPageParameterToolCall
 {
     private readonly PageTaskOutputItem _outputItem;
 
@@ -93,6 +93,8 @@ public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPagePara
     #endregion
 
     #region IPageParameterTool
+
+    public string TaskId => (Option.Owner as IAigcTaskPage)?.TaskId;
 
     /// <summary>
     /// Gets the tool name, which corresponds to the last sub-task's page instance name when <see cref="AllSubTasks"/> is <c>false</c>.
@@ -190,8 +192,8 @@ public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPagePara
     /// <returns>The last sub-task, or <c>null</c> if no sub-tasks exist.</returns>
     public IAigcTaskPage GetLastSubTask()
     {
-        var taskService = Option.Owner as IAigcWorkflowPage;
-        return taskService?.GetLastSubTask();
+        var task = Option.Owner as IAigcWorkflowPage;
+        return task?.GetLastSubTask();
     }
 
     /// <summary>
@@ -200,8 +202,8 @@ public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPagePara
     /// <returns>An array of all sub-tasks, or an empty array if none exist.</returns>
     public IAigcTaskPage[] GetAllSubTasks()
     {
-        var taskService = Option.Owner as IAigcWorkflowPage;
-        return taskService?.GetAllSubTasks() ?? [];
+        var task = Option.Owner as IAigcWorkflowPage;
+        return task?.GetAllSubTasks() ?? [];
     }
 
     /// <inheritdoc/>

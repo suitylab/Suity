@@ -118,8 +118,13 @@ public interface IPageParameterOutput : IPageParameter
 /// <summary>
 /// Represents a page parameter associated with a tool.
 /// </summary>
-public interface IPageParameterTool : IPageParameter
+public interface IPageParameterToolCall : IPageParameter
 {
+    /// <summary>
+    /// Gets the ID of the task associated with this tool.
+    /// </summary>
+    string TaskId { get; }
+
     /// <summary>
     /// Gets the name of the tool.
     /// </summary>
