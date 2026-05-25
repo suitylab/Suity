@@ -805,7 +805,7 @@ public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, ISubFlowE
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageMessageParameterNode")]
 public class PageMessageParameterNode : SubFlowTypeNode
 {
-    private readonly ConnectorTextBlockProperty _message = new("Message", "Message", string.Empty, "Supported placeholders: {TaskName} {TaskStatus}");
+    private readonly ConnectorTextBlockProperty _message = new("Message", "Message", string.Empty, "Supported placeholders: {TaskId} {TaskTitle} {TaskStatus} {SubTaskCount}");
     private readonly ValueProperty<bool> _tooltipMode = new("TooltipMode", "Tooltip Mode", false, "When enabled, the message will be shown as a tooltip in task page.");
 
     /// <summary>

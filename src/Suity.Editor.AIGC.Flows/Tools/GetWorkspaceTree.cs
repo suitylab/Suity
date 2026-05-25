@@ -65,7 +65,11 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
 
         string targetPath = string.IsNullOrWhiteSpace(Path) ? workspaceDir : Path;
 
-        if (!System.IO.Path.IsPathRooted(targetPath))
+        if (targetPath == "/" || targetPath == "\\")
+        {
+            targetPath = workspaceDir;
+        }
+        else if (!System.IO.Path.IsPathRooted(targetPath))
         {
             targetPath = System.IO.Path.Combine(workspaceDir, targetPath);
         }

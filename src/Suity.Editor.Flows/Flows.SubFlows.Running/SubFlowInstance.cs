@@ -894,6 +894,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             if (element is IPageMessage)
             {
                 builder.AppendLine(text.Text);
+                builder.AppendLine();
                 continue;
             }
 

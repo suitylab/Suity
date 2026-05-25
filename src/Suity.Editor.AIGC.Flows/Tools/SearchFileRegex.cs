@@ -76,7 +76,11 @@ public class SearchFileRegex : ToolCommand<SearchFileRegex.Output>
         string outputBasePath = workspaceDir;
         bool useRelativeOutput = !string.IsNullOrWhiteSpace(DirPath) && !Path.IsPathRooted(DirPath);
 
-        if (!Path.IsPathRooted(targetPath))
+        if (targetPath == "/" || targetPath == "\\")
+        {
+            targetPath = workspaceDir;
+        }
+        else if (!Path.IsPathRooted(targetPath))
         {
             targetPath = Path.Combine(workspaceDir, targetPath);
         }

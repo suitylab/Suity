@@ -134,10 +134,7 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
     {
         base.Sync(sync, context);
 
-        if (!TooltipMode)
-        {
-            _text = sync.Sync(Name, _text, SyncFlag.NotNull) ?? new();
-        }
+        _text = sync.Sync(Name, _text, SyncFlag.NotNull) ?? new();
     }
 
     /// <inheritdoc/>
@@ -147,7 +144,7 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
 
         if (TooltipMode)
         {
-            setup.Tooltips(Name, TextStatus.Normal, ResolveMessage());
+            setup.Tooltips("#Tooltip_" + Name, TextStatus.Normal, ResolveMessage());
         }
         else
         {
@@ -161,17 +158,24 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
 
     private string ResolveMessage()
     {
-        string text = _tooltipText ?? string.Empty;
-
-        if (Option.Owner is IAigcWorkflowPage task)
+        if (TooltipMode)
         {
-            text = text.Replace("{TaskId}", task.TaskId);
-            text = text.Replace("{TaskTitle}", task.DisplayText);
-            text = text.Replace("{TaskStatus}", task.DisplayStatus.ToString());
-            text = text.Replace("{SubTaskCount}", task.SubTaskCount.ToString());
-        }
+            string text = _tooltipText ?? string.Empty;
 
-        return text;
+            if (Option.Owner is IAigcWorkflowPage task)
+            {
+                text = text.Replace("{TaskId}", task.TaskId);
+                text = text.Replace("{TaskTitle}", task.DisplayText);
+                text = text.Replace("{TaskStatus}", task.DisplayStatus.ToString());
+                text = text.Replace("{SubTaskCount}", task.SubTaskCount.ToString());
+            }
+
+            return text;
+        }
+        else
+        {
+            return _text.Text;
+        }
     }
 
     /// <inheritdoc/>

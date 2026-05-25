@@ -56,7 +56,11 @@ public class ListDirectory : ToolCommand<ListDirectory.Output>
 
         string targetPath = string.IsNullOrWhiteSpace(DirPath) ? workspaceDir : DirPath;
 
-        if (!Path.IsPathRooted(targetPath))
+        if (targetPath == "/" || targetPath == "\\")
+        {
+            targetPath = workspaceDir;
+        }
+        else if (!Path.IsPathRooted(targetPath))
         {
             targetPath = Path.Combine(workspaceDir, targetPath);
         }
