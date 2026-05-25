@@ -76,8 +76,8 @@ public class GraphDiagram
     public GraphLink FindLink(string fromNode, string fromConnector, string toNode, string toConnector)
     {
         return _links.FirstOrDefault(o =>
-            o.From.Parent.Name == fromNode && o.From.Name == fromConnector &&
-            o.To.Parent.Name == toNode && o.To.Name == toConnector);
+            o.From.ParentNode.Name == fromNode && o.From.Name == fromConnector &&
+            o.To.ParentNode.Name == toNode && o.To.Name == toConnector);
     }
 
     /// <summary>

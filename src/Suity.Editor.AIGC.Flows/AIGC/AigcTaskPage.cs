@@ -140,9 +140,19 @@ public abstract class AigcTaskPage : DesignNode,
     public virtual TaskCommitStatus GetCommitStatus()
     {
         var status = CommitStatus;
-        if (status == TaskCommitStatus.None)
+        if (status != TaskCommitStatus.None)
         {
-            var isDone = GetPageInstance()?.GetIsDone();
+            return status;
+        }
+
+        if (GetPageInstance() is { } instance)
+        {
+            if (instance.GetError())
+            {
+                return TaskCommitStatus.TaskFailed;
+            }
+
+            var isDone = instance.GetIsDone();
             if (isDone == true)
             {
                 return TaskCommitStatus.TaskFinished;
@@ -153,7 +163,7 @@ public abstract class AigcTaskPage : DesignNode,
             }
         }
 
-        return status;
+        return TaskCommitStatus.None;
     }
 
     /// <inheritdoc/>

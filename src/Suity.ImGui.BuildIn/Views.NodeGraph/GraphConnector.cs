@@ -10,7 +10,7 @@ public class GraphConnector
 {
     private string _name;
     private GraphNode _parentNode;
-    private GraphDiagram _view;
+    private GraphDiagram _diagram;
     private ConnectorType _connectorType;
     private GraphDirection _direction;
     private int _connectorIndex;
@@ -25,7 +25,7 @@ public class GraphConnector
     /// <summary>
     /// The parent node that contains the connector
     /// </summary>
-    public GraphNode Parent => _parentNode;
+    public GraphNode ParentNode => _parentNode;
 
     /// <summary>
     /// Name of the connector that will be displayed
@@ -99,7 +99,7 @@ public class GraphConnector
     {
         _name = name;
         _parentNode = parent;
-        _view = parent.Diagram;
+        _diagram = parent.Diagram;
         _connectorType = connectorType;
         _direction = direction;
         _connectorIndex = connectorIndex;
@@ -117,7 +117,7 @@ public class GraphConnector
     {
         _name = name;
         _parentNode = parent;
-        _view = parent.Diagram;
+        _diagram = parent.Diagram;
         _direction = direction;
         _connectorType = connectorType;
         _connectorIndex = connectorIndex;

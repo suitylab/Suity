@@ -53,6 +53,12 @@ public interface IPageInstance : INamed
     void SetParameters(ISyncObject parameters);
 
     /// <summary>
+    /// Gets whether this page instance has an error.
+    /// </summary>
+    /// <returns></returns>
+    bool GetError();
+
+    /// <summary>
     /// Gets a value indicating whether this task is done.
     /// </summary>
     /// <returns>True if done, false if not done, or null if undetermined.</returns>
@@ -91,7 +97,7 @@ public interface ISubFlowElement : INamed
     /// <summary>
     /// Gets whether this element is done. Returns null if the state is unknown.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>True if done, false if not done, or null if indeterminate.</returns>
     bool? GetIsDone();
 
     /// <summary>

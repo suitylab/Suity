@@ -141,7 +141,7 @@ public class GetSelfPageDefinition : TaskPageNode
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetCurrentToolList")]
 public class GetCurrentToolList : TaskPageNode
 {
-    readonly ConnectorValueProperty<bool> _documentTools = new("DocumentTools", "Document Tools", false, "Whether to include tools defined in the main document.");
+    readonly ValueProperty<bool> _documentTools = new("DocumentTools", "Document Tools", false, "Whether to include tools defined in the main document.");
     readonly FlowNodeConnector _toolPages;
 
     /// <summary>
@@ -151,8 +151,7 @@ public class GetCurrentToolList : TaskPageNode
     {
         var type = AssetManager.Instance.GetAssetLink<IPageAsset>().Definition.MakeArrayType();
 
-        _documentTools.AddConnector(this);
-        _toolPages = this.AddDataOutputConnector("SelfTools", type, "Self Tool List");
+        _toolPages = this.AddDataOutputConnector("Tools", type, "Tools");
     }
 
     /// <inheritdoc/>
@@ -171,13 +170,13 @@ public class GetCurrentToolList : TaskPageNode
     {
         base.OnSetupView(setup);
 
-        _documentTools.InspectorField(setup, this);
+        _documentTools.InspectorField(setup);
     }
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        bool documentTools = _documentTools.GetValue(compute, this);
+        bool documentTools = _documentTools.Value;
 
         var service = compute.Context.GetArgument<IAigcWorkflowPage>();
         var toolPages = service?.GetToolList(documentTools).ToArray() ?? [];

@@ -289,9 +289,9 @@ public class GraphLinkManager
     public void DeleteLink(string fromNodeName, string fromConnectorName, string toNodeName, string toConnectorName)
     {
         var link = Diagram.Links.FirstOrDefault(
-            o => o.From.Parent.Name == fromNodeName &&
+            o => o.From.ParentNode.Name == fromNodeName &&
             o.From.Name == fromConnectorName &&
-            o.To.Parent.Name == toNodeName &&
+            o.To.ParentNode.Name == toNodeName &&
             o.To.Name == toConnectorName);
 
         if (link != null)

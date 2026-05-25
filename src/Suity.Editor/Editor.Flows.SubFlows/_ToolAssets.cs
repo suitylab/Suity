@@ -96,6 +96,7 @@ public abstract class ToolInstance : IToolInstance, IViewObject
 
     public abstract SimpleType ToSimpleType();
 
+    public abstract bool GetError();
     public abstract bool? GetIsDone();
     public abstract bool? GetIsDoneInputs();
     public abstract bool? GetIsDoneOutputs();
@@ -167,14 +168,14 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset
             else
             {
                 myInstance.SetError(new NullReferenceException("Output is null"));
-                return false;
+                return true;
             }
         }
         catch (Exception error)
         {
             myInstance.SetError(error);
 
-            return false;
+            return true;
         }
     }
 
@@ -227,6 +228,8 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
 
     public override SimpleType ToSimpleType() => _inputType;
+
+    public override bool GetError() => _errorMessage.Value?.Text != null;
 
     public override bool? GetIsDone() => _output != null;
 
@@ -286,9 +289,9 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     public override TaskCommitParameter GetTaskCommitParameter()
     {
-        if (_lastError !=  null)
+        if (GetError())
         {
-            return new(TaskCommitStatus.TaskFailed, _lastError.ToString());
+            return new(TaskCommitStatus.TaskFailed, _errorMessage.Text);
         }
         else if (_output != null)
         {

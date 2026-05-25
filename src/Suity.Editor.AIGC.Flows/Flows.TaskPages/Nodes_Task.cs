@@ -5,14 +5,12 @@ using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows;
-using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace Suity.Editor.Flows.TaskPages;
@@ -316,7 +314,7 @@ public class GetInitialTaskPrompt : TaskPageNode
 public class GetCurrentTaskPrompt : TaskPageNode
 {
     readonly FlowNodeConnector _prompt;
-    readonly ConnectorValueProperty<bool> _inHierarchy = new("InHierarchy", "In Hierarchy", false, "If enabled, includes task prompts from parent tasks.");
+    readonly ValueProperty<bool> _inHierarchy = new("InHierarchy", "In Hierarchy", false, "If enabled, includes task prompts from parent tasks.");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GetCurrentTaskPrompt"/> class.
@@ -324,7 +322,6 @@ public class GetCurrentTaskPrompt : TaskPageNode
     public GetCurrentTaskPrompt()
     {
         _prompt = AddDataOutputConnector("Prompt", "string", "Prompt");
-        _inHierarchy.AddConnector(this);
     }
 
     /// <inheritdoc/>
@@ -340,13 +337,13 @@ public class GetCurrentTaskPrompt : TaskPageNode
     {
         base.OnSetupView(setup);
 
-        _inHierarchy.InspectorField(setup, this);
+        _inHierarchy.InspectorField(setup);
     }
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        bool inHierarchy = _inHierarchy.GetValue(compute, this);
+        bool inHierarchy = _inHierarchy.Value;
 
         var task = compute.Context.GetArgument<IAigcWorkflowPage>();
         string prompt = task?.GetPrompt(inHierarchy) ?? string.Empty;
@@ -367,7 +364,7 @@ public class GetCurrentTaskPrompt : TaskPageNode
 public class GetCurrentTaskRule : TaskPageNode
 {
     readonly FlowNodeConnector _rule;
-    readonly ConnectorValueProperty<bool> _inHierarchy = new("InHierarchy", "In Hierarchy", false, "If enabled, retrieves rule from parent tasks.");
+    readonly ValueProperty<bool> _inHierarchy = new("InHierarchy", "In Hierarchy", true, "If enabled, retrieves rule from parent tasks.");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GetCurrentTaskRule"/> class.
@@ -376,7 +373,6 @@ public class GetCurrentTaskRule : TaskPageNode
     {
         var ruleType = TypeDefinition.FromAssetLink<PromptAsset>();
         _rule = AddDataOutputConnector("Rule", ruleType, "Rule");
-        _inHierarchy.AddConnector(this);
     }
 
     /// <inheritdoc/>
@@ -392,13 +388,13 @@ public class GetCurrentTaskRule : TaskPageNode
     {
         base.OnSetupView(setup);
 
-        _inHierarchy.InspectorField(setup, this);
+        _inHierarchy.InspectorField(setup);
     }
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        bool inHierarchy = _inHierarchy.GetValue(compute, this);
+        bool inHierarchy = _inHierarchy.Value;
 
         var task = compute.Context.GetArgument<IAigcWorkflowPage>();
         var rule = task?.GetRule(inHierarchy);
@@ -807,41 +803,6 @@ public class GetTaskCommit : TaskPageNode
         {
             compute.SetValue(_commitStatus, task.GetCommitStatus());
         }
-    }
-}
-
-#endregion
-
-#region GetCurrentPresetSkill
-
-/// <summary>
-/// A flow node that retrieves the skill from a preset associated with the current task page, if available.
-/// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
-[DisplayText("Get Current Preset Skill", "*CoreIcon|Task")]
-public class GetCurrentPresetSkill : TaskPageNode
-{
-    readonly FlowNodeConnector _skill;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetCurrentPresetSkill"/> class.
-    /// </summary>
-    public GetCurrentPresetSkill()
-    {
-        var skillType = TypeDefinition.FromAssetLink<PromptAsset>();
-
-        _skill = AddDataOutputConnector("Skill", skillType, "Preset Skill");
-    }
-
-    /// <inheritdoc/>
-    public override void Compute(IFlowComputation compute)
-    {
-        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
-        var pageAsset = task.GetPageAsset() as SubFlowPresetAsset;
-
-        var skill = (pageAsset.GetPresetDefinition() as SubFlowPresetDocument)?.Skill;
-
-        compute.SetValue(_skill, skill);
     }
 }
 
@@ -1539,32 +1500,5 @@ public class GetArticleTaggedContents : TaskPageNode
     }
 }
 
-
-#endregion
-
-#region Converters
-/// <summary>
-/// Converts a <see cref="SubFlowDefinitionAsset"/> to an <see cref="ISubFlow"/> by retrieving the diagram item's node.
-/// </summary>
-public class PageAssetToAigcPageConverter : TypeConverter<SubFlowDefinitionAsset, ISubFlow>
-{
-    /// <inheritdoc/>
-    public override ISubFlow Convert(SubFlowDefinitionAsset objFrom)
-    {
-        return objFrom.GetDiagramItem()?.Node;
-    }
-}
-
-/// <summary>
-/// Converts an <see cref="ISubFlow"/> to a <see cref="SubFlowDefinitionAsset"/> by retrieving the page definition node's asset.
-/// </summary>
-public class AigcPageToPageAssetConverter : TypeConverter<ISubFlow, SubFlowDefinitionAsset>
-{
-    /// <inheritdoc/>
-    public override SubFlowDefinitionAsset Convert(ISubFlow objFrom)
-    {
-        return (objFrom as SubflowDefinitionNode)?.GetAsset() as SubFlowDefinitionAsset;
-    }
-}
 
 #endregion

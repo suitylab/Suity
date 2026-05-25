@@ -3,6 +3,7 @@ using Suity.Editor;
 using Suity.Editor.Flows;
 using Suity.Views.NodeGraph;
 using System;
+using System.Drawing;
 using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Views.Im.Flows;
@@ -261,7 +262,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
         {
             connector.Tag = nodeRef = new ImGuiNodeRef();
         }
-
+        
         nodeRef.Node = node;
 
         return node;

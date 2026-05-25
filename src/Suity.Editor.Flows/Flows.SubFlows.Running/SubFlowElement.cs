@@ -224,10 +224,7 @@ public abstract class SubFlowElement : IViewObject, ISubFlowElement
 
     #region ISubFlowElement
 
-    /// <summary>
-    /// Gets whether this element is done/completed.
-    /// </summary>
-    /// <returns>True if done, false if not done, or null if indeterminate.</returns>
+    /// <inheritdoc/>
     public virtual bool? GetIsDone() => false;
 
     /// <summary>

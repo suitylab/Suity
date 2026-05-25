@@ -151,7 +151,7 @@ public class CallLLm : AigcFlowNode
     private FlowNodeConnector _result;
 
     private readonly StringProperty _dialogName = new("DialogName", "Dialog Name");
-    private readonly ConnectorAssetProperty<ILLmModel> _chatModel = new("ChatModel", "Model", "Select a language model, if not selected, use the default model.");
+    private readonly ConnectorAssetProperty<ILLmModel> _llmModel = new("Model", "Model", "Select a language model, if not selected, use the default model.");
     private readonly ConnectorValueProperty<LLmModelParameter> _parameter = new("Parameter", "Parameter Settings", null, "Override the default configuration for language model calls.");
     private readonly ConnectorValueProperty<LLmCallOptionEx> _callOptionEx = new("CallOptionEx", "Extended Call Options", null, "Override the extended configuration for language model calls. These features require language model support.");
 
@@ -170,6 +170,8 @@ public class CallLLm : AigcFlowNode
         _parameter.Property.WithOptional();
         _callOptionEx.Property.WithOptional();
 
+        _llmModel.AliasName = "ChatModel";
+
         UpdateConnector();
     }
 
@@ -178,7 +180,7 @@ public class CallLLm : AigcFlowNode
     {
         get
         {
-            if (!_chatModel.GetIsLinked(this) && _chatModel.BaseTarget is Asset { Icon: { } icon })
+            if (!_llmModel.GetIsLinked(this) && _llmModel.BaseTarget is Asset { Icon: { } icon })
             {
                 return icon;
             }
@@ -211,7 +213,7 @@ public class CallLLm : AigcFlowNode
 
         _dialogName.Sync(sync);
 
-        _chatModel.Sync(sync);
+        _llmModel.Sync(sync);
         _parameter.Sync(sync);
         _callOptionEx.Sync(sync);
 
@@ -235,7 +237,7 @@ public class CallLLm : AigcFlowNode
 
         _dialogName.InspectorField(setup);
 
-        _chatModel.InspectorField(setup, this);
+        _llmModel.InspectorField(setup, this);
         _parameter.InspectorField(setup, this);
         _callOptionEx.InspectorField(setup, this);
 
@@ -257,7 +259,7 @@ public class CallLLm : AigcFlowNode
         var toolParamAryType = TypeDefinition.FromAssetLink<DStruct>().ElementType.MakeArrayType();
 
         _in = AddActionInputConnector("In", "Input");
-        _chatModel.AddConnector(this);
+        _llmModel.AddConnector(this);
         _parameter.AddConnector(this);
         _callOptionEx.AddConnector(this);
 
@@ -288,7 +290,7 @@ public class CallLLm : AigcFlowNode
         var local = compute.LocalContext;
         var workFlow = compute.Context.GetArgument<IWorkflowSetup>();
 
-        var nodeModel = _chatModel.GetTarget(compute, this);
+        var nodeModel = _llmModel.GetTarget(compute, this);
         var model = SelectModel(compute, nodeModel, out string sourceMsg);
         if (model is null)
         {
@@ -470,7 +472,7 @@ public class CallLLm : AigcFlowNode
         {
             return $"{name} Dialog";
         }
-        else if (!_chatModel.GetIsLinked(this) && _chatModel.BaseTarget is { } model)
+        else if (!_llmModel.GetIsLinked(this) && _llmModel.BaseTarget is { } model)
         {
             return "Call: " + model.ModelId ?? string.Empty;
         }

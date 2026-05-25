@@ -1142,6 +1142,11 @@ public class AigcWorkflowPage : AigcTaskPage,
             taskPage.SetPrompt(taskPrompt);
         }
 
+        if (rule is null && subFlowAsset is SubFlowPresetAsset presetAsset)
+        {
+            rule = (presetAsset.GetPresetDefinition() as SubFlowPresetDocument)?.Rule;
+        }
+
         taskPage.Rule = rule;
 
         if (!string.IsNullOrWhiteSpace(commitName))

@@ -39,12 +39,6 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     private readonly AssetListProperty<IPageAsset> _tools
         = new("Tools", "Tools");
 
-    private readonly ValueProperty<bool> _isStartup
-        = new("IsStartup", "Is Startup", false, "When enabled, this preset can be used as the startup page.");
-
-    private readonly ValueProperty<bool> _useParentArticle =
-        new("UseParentArticle", "Use Parent Article", false, "Use parent article as the article record for this page content. This setting will override the value of the base execution flow.");
-
     private readonly TextBlockProperty _overview
         = new("Overview", "Overview", string.Empty, "Used to provide a brief summary of the preset.");
 
@@ -56,6 +50,12 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
     private readonly AssetProperty<PromptAsset> _rule
         = new("Rule", "Rule", "Rules shared across the entire task hierarchy.");
+
+    private readonly ValueProperty<bool> _isStartup
+        = new("IsStartup", "Is Startup", false, "When enabled, this preset can be used as the startup page.");
+
+    private readonly ValueProperty<bool> _useParentArticle =
+        new("UseParentArticle", "Use Parent Article", false, "Use parent article as the article record for this page content. This setting will override the value of the base execution flow.");
 
 
     private readonly StringProperty _description = new("Description", "Description");
@@ -258,11 +258,12 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         base.OnSync(sync, context);
 
         _presetName.Sync(sync);
+
         _baseWorkflow.Sync(sync);
         _tools.Sync(sync);
         _isStartup.Sync(sync);
         _useParentArticle.Sync(sync);
-
+        
         _overview.Sync(sync);
         _userInputHint.Sync(sync);
         _skill.Sync(sync);
@@ -309,6 +310,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         _presetName.InspectorField(setup);
         _overview.InspectorField(setup);
         _userInputHint.InspectorField(setup);
+
         _baseWorkflow.InspectorField(setup);
         _skill.InspectorField(setup);
         _rule.InspectorField(setup);

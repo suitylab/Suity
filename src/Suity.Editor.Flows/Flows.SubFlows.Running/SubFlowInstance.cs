@@ -337,6 +337,8 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         return builder.ToString();
     }
 
+    /// <inheritdoc/>
+    public virtual bool GetError() => false;
 
     /// <inheritdoc/>
     public override bool? GetIsDone()

@@ -7,6 +7,7 @@ using Suity.Views;
 using Suity.Views.Im;
 using Suity.Views.Im.Flows;
 using System;
+using System.Collections;
 using System.Linq;
 
 namespace Suity.Editor.Flows.Nodes;
@@ -665,6 +666,7 @@ public class BooleanSwitchValue : ValueFlowNode
 [SimpleFlowNodeStyle(Width = 100, Height = 20, HasHeader = false)]
 [DisplayText("First Not Empty", "*CoreIcon|Object")]
 [NativeAlias("Suity.Editor.Flows.Nodes.FirstNotNullValue")]
+[NativeAlias("Suity.Editor.Flows.Nodes.FirstNotNull")]
 public class FirstNotEmpty : ValueFlowNode
 {
     private FlowNodeConnector _in;
@@ -750,6 +752,11 @@ public class FirstNotEmpty : ValueFlowNode
         if (obj is IHasAsset hasAsset)
         {
             return hasAsset.TargetAsset != null;
+        }
+
+        if (obj is IList list)
+        {
+            return list.Count > 0;
         }
 
         return false;

@@ -186,7 +186,7 @@ public static class ImGraphExtensions
         {
             color = connector.DataType.ConnectorFillBrush.Color;
 
-            var view = connector.Parent.Diagram;
+            var view = connector.ParentNode.Diagram;
             isLinked = view.Links.IsLinked(connector);
         }
 
@@ -364,6 +364,18 @@ public static class ImGraphExtensions
 
         if (border > 0)
         {
+            if (connector?.ParentNode?.Diagram?.ParentControl is { } ctrl &&
+                ctrl.InputManager.FromConnector is { } fromConnector && 
+                fromConnector != connector)
+            {
+                bool? canConnect = ctrl.LinkManager.GetCanConnect(fromConnector, connector, out _);
+
+                if (canConnect is { } c)
+                {
+                    borderColor = c ? Color.Cyan : Color.Red;
+                }
+            }
+
             var borderRect = rect.Offset(-border * 0.5f);
 
             if (connector?.ConnectorType == ConnectorType.Action)
@@ -649,7 +661,7 @@ public static class ImGraphExtensions
     /// <returns><c>true</c> if the multiple connection icon should be shown; otherwise, <c>false</c>.</returns>
     public static bool ShowMultiple(this GraphConnector connector)
     {
-        var dataProvider = connector.Parent?.Diagram?.DataTypeProvider;
+        var dataProvider = connector.ParentNode?.Diagram?.DataTypeProvider;
 
         if (connector.AllowMultipleConnection == true)
         {

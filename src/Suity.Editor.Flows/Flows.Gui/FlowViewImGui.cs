@@ -1254,7 +1254,7 @@ public abstract class FlowViewImGui :
 
         if (links.Length > 0)
         {
-            var nodeLinks = links.Select(o => new NodeLink(o.From.Parent.Name, o.From.Name, o.To.Parent.Name, o.To.Name)).ToArray();
+            var nodeLinks = links.Select(o => new NodeLink(o.From.ParentNode.Name, o.From.Name, o.To.ParentNode.Name, o.To.Name)).ToArray();
             OnFlowDoAction(new DeleteLinkAction(this, nodeLinks));
         }
 
@@ -1297,7 +1297,7 @@ public abstract class FlowViewImGui :
             List<UndoRedoAction> actions = [];
             foreach (var link in args.Links)
             {
-                actions.Add(new CreateLinkAction(this, link.From.Parent.Name, link.From.Name, link.To.Parent.Name, link.To.Name));
+                actions.Add(new CreateLinkAction(this, link.From.ParentNode.Name, link.From.Name, link.To.ParentNode.Name, link.To.Name));
             }
 
             var macroAction = new UndoRedoMacroAction("Create Links", actions);
@@ -1306,7 +1306,7 @@ public abstract class FlowViewImGui :
         else if (args.Links.Count == 1)
         {
             var link = args.Links[0];
-            OnFlowDoAction(new CreateLinkAction(this, link.From.Parent.Name, link.From.Name, link.To.Parent.Name, link.To.Name));
+            OnFlowDoAction(new CreateLinkAction(this, link.From.ParentNode.Name, link.From.Name, link.To.ParentNode.Name, link.To.Name));
         }
 
         if (args.Links.Count > 0)
@@ -1320,7 +1320,7 @@ public abstract class FlowViewImGui :
     {
         if (args.Links.Count > 0)
         {
-            var nodeLinks = args.Links.Select(o => new NodeLink(o.From.Parent.Name, o.From.Name, o.To.Parent.Name, o.To.Name)).ToArray();
+            var nodeLinks = args.Links.Select(o => new NodeLink(o.From.ParentNode.Name, o.From.Name, o.To.ParentNode.Name, o.To.Name)).ToArray();
             OnFlowDoAction(new DeleteLinkAction(this, nodeLinks));
 
             OnDirty();

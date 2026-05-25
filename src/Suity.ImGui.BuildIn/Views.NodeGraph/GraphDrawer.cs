@@ -340,63 +340,65 @@ public class GraphDrawer
 
     private void DrawLinkEditable(IGraphicOutput output)
     {
-        if (InputManager.EditMode == GraphEditMode.Linking && InputManager.FromConnector != null)
+        if (InputManager.EditMode != GraphEditMode.Linking || InputManager.FromConnector is null)
         {
-            PointF startPos = InputManager.FromConnector.GetPosition();
-            PointF endPos = _control.Viewport.ViewToControl(new PointF(InputManager.ViewSpaceCursorLocation.X, InputManager.ViewSpaceCursorLocation.Y));
-
-            PointF startPosBezier;
-            PointF endPosBezier;
-
-            if (InputManager.FromConnector.ConnectorType.GetIsNormalConnector())
-            {
-                startPosBezier = new(startPos.X + (endPos.X - startPos.X) / LinkHardness, startPos.Y);
-                endPosBezier = new(endPos.X - (endPos.X - startPos.X) / LinkHardness, endPos.Y);
-            }
-            else
-            {
-                startPosBezier = new(startPos.X, startPos.Y + (endPos.Y - startPos.Y) / LinkHardness);
-                endPosBezier = new(endPos.X, endPos.Y - (endPos.Y - startPos.Y) / LinkHardness);
-            }
-
-            var scale = _control.Viewport.ScaledViewZoom;
-            InputManager.FromConnector.DataType.LinkPen.Width = 3f * scale;
-
-            switch (LinkVisualStyle)
-            {
-                case LinkVisualStyle.Curve:
-                    if (InputManager.FromConnector.IsCombined)
-                    {
-                        if (Theme.LinkCombinedPen != null)
-                        {
-                            Theme.LinkCombinedPen.Width = 5f * scale;
-                            output.DrawBezier(Theme.LinkCombinedPen, startPos, startPosBezier, endPosBezier, endPos);
-                        }
-                    }
-                    output.DrawBezier(InputManager.FromConnector.DataType.LinkPen, startPos, startPosBezier, endPosBezier, endPos);
-                    break;
-
-                case LinkVisualStyle.Direct:
-                    output.DrawLine(InputManager.FromConnector.DataType.LinkPen, startPos, endPos);
-                    break;
-
-                case LinkVisualStyle.Rectangle:
-                    output.DrawLine(InputManager.FromConnector.DataType.LinkPen, startPos, startPosBezier);
-                    output.DrawLine(InputManager.FromConnector.DataType.LinkPen, startPosBezier, endPosBezier);
-                    output.DrawLine(InputManager.FromConnector.DataType.LinkPen, endPosBezier, endPos);
-                    break;
-
-                default: break;
-            }
-
-            PointF typeHintPos = new(endPos.X, endPos.Y - 10);
-            PointF typeHintShadowPos = new(typeHintPos.X + 1, typeHintPos.Y + 1);
-
-            string str = $"{InputManager.FromConnector.DisplayName} {InputManager.FromConnector.DataType}";
-
-            output.DrawString(str, Theme.NodePreviewFont, Theme.NodeTextShadow, typeHintShadowPos);
-            output.DrawString(str, Theme.NodePreviewFont, InputManager.FromConnector.DataType.LinkArrowBrush, typeHintPos);
+            return;
         }
+
+        PointF startPos = InputManager.FromConnector.GetPosition();
+        PointF endPos = _control.Viewport.ViewToControl(new PointF(InputManager.ViewSpaceCursorLocation.X, InputManager.ViewSpaceCursorLocation.Y));
+
+        PointF startPosBezier;
+        PointF endPosBezier;
+
+        if (InputManager.FromConnector.ConnectorType.GetIsNormalConnector())
+        {
+            startPosBezier = new(startPos.X + (endPos.X - startPos.X) / LinkHardness, startPos.Y);
+            endPosBezier = new(endPos.X - (endPos.X - startPos.X) / LinkHardness, endPos.Y);
+        }
+        else
+        {
+            startPosBezier = new(startPos.X, startPos.Y + (endPos.Y - startPos.Y) / LinkHardness);
+            endPosBezier = new(endPos.X, endPos.Y - (endPos.Y - startPos.Y) / LinkHardness);
+        }
+
+        var scale = _control.Viewport.ScaledViewZoom;
+        InputManager.FromConnector.DataType.LinkPen.Width = 3f * scale;
+
+        switch (LinkVisualStyle)
+        {
+            case LinkVisualStyle.Curve:
+                if (InputManager.FromConnector.IsCombined)
+                {
+                    if (Theme.LinkCombinedPen != null)
+                    {
+                        Theme.LinkCombinedPen.Width = 5f * scale;
+                        output.DrawBezier(Theme.LinkCombinedPen, startPos, startPosBezier, endPosBezier, endPos);
+                    }
+                }
+                output.DrawBezier(InputManager.FromConnector.DataType.LinkPen, startPos, startPosBezier, endPosBezier, endPos);
+                break;
+
+            case LinkVisualStyle.Direct:
+                output.DrawLine(InputManager.FromConnector.DataType.LinkPen, startPos, endPos);
+                break;
+
+            case LinkVisualStyle.Rectangle:
+                output.DrawLine(InputManager.FromConnector.DataType.LinkPen, startPos, startPosBezier);
+                output.DrawLine(InputManager.FromConnector.DataType.LinkPen, startPosBezier, endPosBezier);
+                output.DrawLine(InputManager.FromConnector.DataType.LinkPen, endPosBezier, endPos);
+                break;
+
+            default: break;
+        }
+
+        PointF typeHintPos = new(endPos.X, endPos.Y - 10);
+        PointF typeHintShadowPos = new(typeHintPos.X + 1, typeHintPos.Y + 1);
+
+        string str = $"{InputManager.FromConnector.DisplayName} {InputManager.FromConnector.DataType}";
+
+        output.DrawString(str, Theme.NodePreviewFont, Theme.NodeTextShadow, typeHintShadowPos);
+        output.DrawString(str, Theme.NodePreviewFont, InputManager.FromConnector.DataType.LinkArrowBrush, typeHintPos);
     }
 
     private void DrawAllAssociateLinks(IGraphicOutput output)
