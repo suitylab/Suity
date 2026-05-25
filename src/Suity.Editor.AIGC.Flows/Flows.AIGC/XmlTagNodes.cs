@@ -19,16 +19,18 @@ public abstract class AigcXmlNode : FlowNode
 
 }
 
-#region ExtractXmlsTagNode
+#region ExtractXmlsTag
 
 /// <summary>
 /// Node that extracts XML tags from text and outputs them as data connectors.
 /// </summary>
 [DisplayText("Extract Xml Tag", "*CoreIcon|Tag")]
 [NativeAlias("Suity.Editor.AIGC.Flows.ExtractXmlsTagNode")]
-public class ExtractXmlsTagNode : AigcXmlNode
+[NativeAlias("Suity.Editor.Flows.AIGC.ExtractXmlsTagNode")]
+public class ExtractXmlsTag : AigcXmlNode
 {
     readonly ListProperty<string> _tagNames = new("TagNames", "Tag Names");
+    readonly ValueProperty<bool> _isArray = new("IsArray", "Output as Array", false);
 
     private FlowNodeConnector _in;
     private FlowNodeConnector _textIn;
@@ -36,9 +38,9 @@ public class ExtractXmlsTagNode : AigcXmlNode
     private FlowNodeConnector _out;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ExtractXmlsTagNode"/> class.
+    /// Initializes a new instance of the <see cref="ExtractXmlsTag"/> class.
     /// </summary>
-    public ExtractXmlsTagNode()
+    public ExtractXmlsTag()
     {
         _tagNames.ValueChanged += (s, e) => UpdateConnectorQueued();
     }
@@ -49,6 +51,7 @@ public class ExtractXmlsTagNode : AigcXmlNode
         base.OnSync(sync, context);
 
         _tagNames.Sync(sync);
+        _isArray.Sync(sync);
     }
 
     /// <inheritdoc/>
@@ -57,6 +60,7 @@ public class ExtractXmlsTagNode : AigcXmlNode
         base.OnSetupView(setup);
 
         _tagNames.InspectorField(setup);
+        _isArray.InspectorField(setup);
     }
 
     /// <inheritdoc/>
@@ -68,11 +72,17 @@ public class ExtractXmlsTagNode : AigcXmlNode
         _out = this.AddActionOutputConnector("Out", "Output");
 
         var tagNames = _tagNames.List
-            .Where(s => NamingVerifier.VerifyXmlTagName(s))
+            .Where(NamingVerifier.VerifyXmlTagName)
             .Distinct()
             .ToArray();
 
-        var tagType = TypeDefinition.FromNative<LooseXmlTag>().MakeArrayType();
+        TypeDefinition tagType;
+
+        tagType = TypeDefinition.FromNative<LooseXmlTag>();
+        if (_isArray.Value)
+        {
+            tagType = tagType.MakeArrayType();
+        }
 
         foreach (var tagName in tagNames)
         {
@@ -88,6 +98,8 @@ public class ExtractXmlsTagNode : AigcXmlNode
             .Distinct()
             .ToArray();
 
+        bool isArray = _isArray.Value;
+
         string text = compute.GetValue<string>(_textIn);
         if (string.IsNullOrWhiteSpace(text))
         {
@@ -96,7 +108,14 @@ public class ExtractXmlsTagNode : AigcXmlNode
                 var c = GetConnector("Tag-" + tagName);
                 if (c is null) continue;
 
-                compute.SetValue(c, Array.Empty<LooseXmlTag>());
+                if (isArray)
+                {
+                    compute.SetValue(c, Array.Empty<LooseXmlTag>());
+                }
+                else
+                {
+                    compute.SetValue(c, null);
+                }
             }
         }
         else
@@ -109,7 +128,15 @@ public class ExtractXmlsTagNode : AigcXmlNode
                 try
                 {
                     var tags = LooseXml.ExtractNodes(text, tagName);
-                    compute.SetValue(c, tags);
+
+                    if (isArray)
+                    {
+                        compute.SetValue(c, tags);
+                    }
+                    else
+                    {
+                        compute.SetValue(c, tags.FirstOrDefault());
+                    }
                 }
                 catch (Exception)
                 {
@@ -123,13 +150,14 @@ public class ExtractXmlsTagNode : AigcXmlNode
 }
 #endregion
 
-#region ExtractXmlsTagNode
+#region ExtractXmlsTagAction
 
 /// <summary>
 /// Node that extracts XML tags from text and routes execution to the matching tag's action connector.
 /// </summary>
 [DisplayText("Extract Xml Tag Action", "*CoreIcon|Tag")]
 [NativeAlias("Suity.Editor.AIGC.Flows.ExtractXmlsTagAction")]
+[NativeAlias("Suity.Editor.Flows.AIGC.ExtractXmlsTagAction")]
 public class ExtractXmlsTagAction : AigcXmlNode
 {
     readonly ListProperty<string> _tagNames = new("TagNames", "Tag Names");
@@ -188,7 +216,7 @@ public class ExtractXmlsTagAction : AigcXmlNode
     public override void Compute(IFlowComputation compute)
     {
         var tagNames = _tagNames.List
-            .Where(s => NamingVerifier.VerifyXmlTagName(s))
+            .Where(NamingVerifier.VerifyXmlTagName)
             .Distinct()
             .ToArray();
 
@@ -232,7 +260,7 @@ public class ExtractXmlsTagAction : AigcXmlNode
 }
 #endregion
 
-#region GetXmlTagAttributesNode
+#region GetXmlTagAttributes
 
 /// <summary>
 /// Node that retrieves specified attributes from an XML tag.
@@ -240,16 +268,17 @@ public class ExtractXmlsTagAction : AigcXmlNode
 [SimpleFlowNodeStyle(HasHeader = false)]
 [DisplayText("Get Xml Attribute", "*CoreIcon|Tag")]
 [NativeAlias("Suity.Editor.AIGC.Flows.GetXmlTagAttributesNode")]
-public class GetXmlTagAttributesNode : AigcXmlNode
+[NativeAlias("Suity.Editor.Flows.AIGC.GetXmlTagAttributesNode")]
+public class GetXmlTagAttributes : AigcXmlNode
 {
     readonly ListProperty<string> _attributeNames = new("AttributeNames", "Attribute Names");
 
     private FlowNodeConnector _tagIn;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="GetXmlTagAttributesNode"/> class.
+    /// Initializes a new instance of the <see cref="GetXmlTagAttributes"/> class.
     /// </summary>
-    public GetXmlTagAttributesNode()
+    public GetXmlTagAttributes()
     {
         _attributeNames.ValueChanged += (s, e) => UpdateConnectorQueued();
     }
@@ -321,14 +350,15 @@ public class GetXmlTagAttributesNode : AigcXmlNode
 }
 #endregion
 
-#region SetXmlTagAttributesNode
+#region SetXmlTagAttributes
 
 /// <summary>
 /// Node that sets specified attributes on an XML tag.
 /// </summary>
 [DisplayText("Set Xml Attribute", "*CoreIcon|Tag")]
 [NativeAlias("Suity.Editor.AIGC.Flows.SetXmlTagAttributesNode")]
-public class SetXmlTagAttributesNode : AigcXmlNode
+[NativeAlias("Suity.Editor.Flows.AIGC.SetXmlTagAttributesNode")]
+public class SetXmlTagAttributes : AigcXmlNode
 {
     readonly ListProperty<string> _attributeNames = new("AttributeNames", "Attribute Names");
 
@@ -339,9 +369,9 @@ public class SetXmlTagAttributesNode : AigcXmlNode
     private FlowNodeConnector _tagOut;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SetXmlTagAttributesNode"/> class.
+    /// Initializes a new instance of the <see cref="SetXmlTagAttributes"/> class.
     /// </summary>
-    public SetXmlTagAttributesNode()
+    public SetXmlTagAttributes()
     {
         _attributeNames.ValueChanged += (s, e) => UpdateConnectorQueued();
     }
@@ -416,7 +446,7 @@ public class SetXmlTagAttributesNode : AigcXmlNode
 }
 #endregion
 
-#region GetXmlTagContentNode
+#region GetXmlTagContent
 
 /// <summary>
 /// Node that retrieves the inner text content from an XML tag.
@@ -424,15 +454,16 @@ public class SetXmlTagAttributesNode : AigcXmlNode
 [SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Get Xml Content", "*CoreIcon|Tag")]
 [NativeAlias("Suity.Editor.AIGC.Flows.GetXmlTagContentNode")]
-public class GetXmlTagContentNode : AigcXmlNode
+[NativeAlias("Suity.Editor.Flows.AIGC.GetXmlTagContentNode")]
+public class GetXmlTagContent : AigcXmlNode
 {
     readonly private FlowNodeConnector _tagIn;
     readonly private FlowNodeConnector _contentOut;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="GetXmlTagContentNode"/> class.
+    /// Initializes a new instance of the <see cref="GetXmlTagContent"/> class.
     /// </summary>
-    public GetXmlTagContentNode()
+    public GetXmlTagContent()
     {
         var tagType = TypeDefinition.FromNative<LooseXmlTag>();
 
@@ -469,14 +500,15 @@ public class GetXmlTagContentNode : AigcXmlNode
 }
 #endregion
 
-#region SetXmlTagContentNode
+#region SetXmlTagContent
 
 /// <summary>
 /// Node that sets the inner text content of an XML tag.
 /// </summary>
 [DisplayText("Set Xml Content", "*CoreIcon|Tag")]
 [NativeAlias("Suity.Editor.AIGC.Flows.SetXmlTagContentNode")]
-public class SetXmlTagContentNode : AigcXmlNode
+[NativeAlias("Suity.Editor.Flows.AIGC.SetXmlTagContentNode")]
+public class SetXmlTagContent : AigcXmlNode
 {
     readonly private FlowNodeConnector _in;
     readonly private FlowNodeConnector _tagIn;
@@ -486,9 +518,9 @@ public class SetXmlTagContentNode : AigcXmlNode
     readonly private FlowNodeConnector _tagOut;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SetXmlTagContentNode"/> class.
+    /// Initializes a new instance of the <see cref="SetXmlTagContent"/> class.
     /// </summary>
-    public SetXmlTagContentNode()
+    public SetXmlTagContent()
     {
         // Action Input/Output
         _in = this.AddActionInputConnector("In", "Input");
@@ -536,21 +568,6 @@ public class SetXmlTagContentNode : AigcXmlNode
 
         // Trigger subsequent action nodes
         compute.SetResult(this, _out);
-    }
-}
-#endregion
-
-#region Converters
-
-/// <summary>
-/// Type converter that converts XML tags to their string representation.
-/// </summary>
-public class XmlTagToTextConverter : TypeToTextConverter<LooseXmlTag>
-{
-    /// <inheritdoc/>
-    public override string Convert(LooseXmlTag objFrom)
-    {
-        return objFrom.ToString();
     }
 }
 #endregion

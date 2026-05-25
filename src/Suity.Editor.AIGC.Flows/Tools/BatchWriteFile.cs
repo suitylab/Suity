@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("BatchCreateNewFiles", CodeBase = "*Suity")]
-[DisplayText("Batch Create New Files")]
-[ToolTipsText("Create multiple new files at once. Use when initializing new modules, scaffolding, or creating multi-layer architecture code.")]
+[NativeType("BatchWriteFile", CodeBase = "*Suity")]
+[DisplayText("Batch Write File")]
+[ToolTipsText("Write multiple files at once. Use when initializing new modules, scaffolding, or creating multi-layer architecture code.")]
 [NativeAlias("Suity.Editor.AIGC.BatchCreateNewFiles")]
-public class BatchCreateNewFiles : ToolCommand<BatchCreateNewFiles.Output>
+[NativeAlias("Suity.Editor.AIGC.Tools.BatchCreateNewFiles")]
+public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
 {
-    [NativeType("BatchCreateNewFiles.FileWriteItem", CodeBase = "*Suity")]
+    [NativeType("BatchWriteFile.FileWriteItem", CodeBase = "*Suity")]
     public class FileWriteItem : IViewObject
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
@@ -37,7 +38,7 @@ public class BatchCreateNewFiles : ToolCommand<BatchCreateNewFiles.Output>
         public override string ToString() => $"{FilePath} ({Content?.Length ?? 0} chars)";
     }
 
-    [NativeType("BatchCreateNewFiles.FileResult", CodeBase = "*Suity")]
+    [NativeType("BatchWriteFile.FileResult", CodeBase = "*Suity")]
     public class FileResult : IViewObject
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
@@ -94,17 +95,21 @@ public class BatchCreateNewFiles : ToolCommand<BatchCreateNewFiles.Output>
     }
 
     readonly ListProperty<FileWriteItem> _files = new("Files", "Files", "List of files to create.");
+    readonly ValueProperty<bool> _overwriteFile = new("OverwriteFile", "Overwrite File", true, "Overwrite files if they already exist, default is true.");
 
     public List<FileWriteItem> Files => _files.List;
+    public bool OverwriteFile { get => _overwriteFile.Value; set => _overwriteFile.Value = value; }
 
     public override void Sync(IPropertySync sync, ISyncContext context)
     {
         _files.Sync(sync);
+        _overwriteFile.Sync(sync);
     }
 
     public override void SetupView(IViewObjectSetup setup)
     {
         _files.InspectorField(setup);
+        _overwriteFile.InspectorField(setup);
     }
 
     public override Task<Output> Run(ToolCallContext context)
@@ -134,9 +139,24 @@ public class BatchCreateNewFiles : ToolCommand<BatchCreateNewFiles.Output>
 
                 if (File.Exists(targetPath))
                 {
-                    result.Status = "Failed";
-                    result.Error = "File already exists";
-                    failCount++;
+                    if (OverwriteFile)
+                    {
+                        string dir = Path.GetDirectoryName(targetPath);
+                        if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                        {
+                            Directory.CreateDirectory(dir);
+                        }
+
+                        File.WriteAllText(targetPath, item.Content);
+                        result.Status = "Overwritten";
+                        successCount++;
+                    }
+                    else
+                    {
+                        result.Status = "Failed";
+                        result.Error = "File already exists";
+                        failCount++;
+                    }
                 }
                 else
                 {

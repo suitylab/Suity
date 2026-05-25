@@ -99,7 +99,7 @@ public class BaseAigcFlowDocument<TAssetBuilder> : FlowDocument<TAssetBuilder>, 
         {
             try
             {
-                return new InputValue(asset);
+                return new SourceValue(asset);
             }
             catch (Exception)
             {

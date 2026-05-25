@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Suity.Editor.Flows.Nodes;
 
-#region InputValue
+#region SourceValue
 
 /// <summary>
 /// A flow node that holds and outputs a configurable value of a user-selected type.
@@ -20,7 +20,8 @@ namespace Suity.Editor.Flows.Nodes;
 [SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Input Value", "*CoreIcon|Value")]
 [NativeAlias("Suity.Editor.Flows.Nodes.ValueNode")]
-public class InputValue : ValueFlowNode, IViewDoubleClickAction
+[NativeAlias("Suity.Editor.Flows.Nodes.InputValue")]
+public class SourceValue : ValueFlowNode, IViewDoubleClickAction
 {
     private FlowNodeConnector _out;
     private object _value;
@@ -34,9 +35,9 @@ public class InputValue : ValueFlowNode, IViewDoubleClickAction
     public ITypeDesignSelection ValueType => _valueType;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="InputValue"/> class with a default string value.
+    /// Initializes a new instance of the <see cref="SourceValue"/> class with a default string value.
     /// </summary>
-    public InputValue()
+    public SourceValue()
     {
         //_out = AddConnector("Out", "string", ConnectionDirections.Output, ConnectionTypes.Data);
 
@@ -50,11 +51,11 @@ public class InputValue : ValueFlowNode, IViewDoubleClickAction
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="InputValue"/> class bound to the specified asset.
+    /// Initializes a new instance of the <see cref="SourceValue"/> class bound to the specified asset.
     /// </summary>
     /// <param name="asset">The asset to reference as the node's value.</param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="asset"/> is null.</exception>
-    public InputValue(Asset asset)
+    public SourceValue(Asset asset)
         : this()
     {
         if (asset is null)
@@ -719,7 +720,7 @@ public class FirstNotEmpty : ValueFlowNode
             type = type.MakeArrayType();
         }
 
-        _in = AddDataInputConnector("In", type, "In");
+        _in = AddConnector("In", type, FlowDirections.Input, FlowConnectorTypes.Data, true, "In");
         _notNull = AddDataOutputConnector("NotEmpty", type, "Not Empty");
     }
 
@@ -727,16 +728,16 @@ public class FirstNotEmpty : ValueFlowNode
     public override void Compute(IFlowComputation compute)
     {
         var values = compute.GetValues(_in, true);
-        var value = values.FirstOrDefault(o => !CheckEmpty(o));
+        var value = values.FirstOrDefault(CheckNotEmpty);
 
         compute.SetValue(_notNull, value);
     }
 
-    public static bool CheckEmpty(object obj)
+    public static bool CheckNotEmpty(object obj)
     {
         if (obj is null)
         {
-            return true;
+            return false;
         }
 
         if (obj is string str)
@@ -759,7 +760,7 @@ public class FirstNotEmpty : ValueFlowNode
             return list.Count > 0;
         }
 
-        return false;
+        return true;
     }
 }
 

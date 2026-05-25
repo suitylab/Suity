@@ -128,6 +128,10 @@ public class AigcToolPage : AigcTaskPage,
 
         var old = _toolInstance;
         _toolInstance = _tool.Target?.CreatePageInstance(option) as IToolInstance;
+        if (_toolInstance is null)
+        {
+            return null;
+        }
 
         if (_toolInstance is ToolInstance toolInstance && toolInstance.GetType() == old?.GetType())
         {
