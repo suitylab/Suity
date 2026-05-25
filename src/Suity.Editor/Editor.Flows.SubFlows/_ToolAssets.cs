@@ -96,6 +96,7 @@ public abstract class ToolInstance : IToolInstance, IViewObject
     public abstract SimpleType ToSimpleType();
 
     public abstract bool GetError();
+    public abstract string GetErrorMessage();
     public abstract bool? GetIsDone();
     public abstract bool? GetIsDoneInputs();
     public abstract bool? GetIsDoneOutputs();
@@ -229,6 +230,8 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
     public override SimpleType ToSimpleType() => _inputType;
 
     public override bool GetError() => _errorMessage.Value?.Text != null;
+
+    public override string GetErrorMessage() => _errorMessage.Text;
 
     public override bool? GetIsDone() => _output != null;
 

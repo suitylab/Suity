@@ -893,7 +893,7 @@ public class GetSubTaskCommit : TaskPageNode
 
         if (allSubTasks)
         {
-            var commits = parentTask.GetAllSubTasks()
+            var commits = parentTask.GetSubTasks()
                 .Select(t => t.GetPageInstance()?.GetTaskCommit())
                 .ToArray();
 

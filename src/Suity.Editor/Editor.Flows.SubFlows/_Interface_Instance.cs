@@ -59,6 +59,12 @@ public interface IPageInstance : INamed
     bool GetError();
 
     /// <summary>
+    /// Gets the error message for this page instance.
+    /// </summary>
+    /// <returns>The error message, or null if there is no error.</returns>
+    string GetErrorMessage();
+
+    /// <summary>
     /// Gets a value indicating whether this task is done.
     /// </summary>
     /// <returns>True if done, false if not done, or null if undetermined.</returns>

@@ -101,6 +101,14 @@ public interface IAigcTaskPage : INamed, ITextDisplay
     IPageInstance GetPageInstance();
 
     /// <summary>
+    /// Gets the chat messages for this task, optionally including input and output messages.
+    /// </summary>
+    /// <param name="input">If true, includes input messages.</param>
+    /// <param name="output">If true, includes output messages.</param>
+    /// <returns>An array of <see cref="LLmMessage"/> objects representing the chat messages.</returns>
+    LLmMessage[] GetChatMessages(bool input, bool output);
+
+    /// <summary>
     /// Handles an AI request event by finding matching begin elements and executing them.
     /// </summary>
     /// <param name="request">The AI request to process.</param>
@@ -202,10 +210,15 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     IAigcTaskPage GetLastSubTask();
 
     /// <summary>
-    /// Gets all sub-tasks as an array.
+    /// Gets sub-tasks as an array.
     /// </summary>
-    /// <returns>An array of all sub-tasks.</returns>
-    IAigcTaskPage[] GetAllSubTasks();
+    /// <returns>An array of sub-tasks.</returns>
+    IAigcTaskPage[] GetSubTasks();
+
+    /// <summary>
+    /// Gets the number of sub-tasks in this task's collection.
+    /// </summary>
+    int SubTaskCount { get; }
 
     /// <summary>
     /// Resolves the article for this task, checking for transferable article parameters first.

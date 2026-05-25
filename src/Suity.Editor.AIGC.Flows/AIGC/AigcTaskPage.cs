@@ -103,6 +103,7 @@ public abstract class AigcTaskPage : DesignNode,
     {
         base.OnSync(sync, context);
 
+        sync.Sync("TaskId", TaskId, SyncFlag.GetOnly);
         _commitName.Sync(sync);
         _commitStatus.Sync(sync);
     }
@@ -110,6 +111,8 @@ public abstract class AigcTaskPage : DesignNode,
     /// <inheritdoc/>
     protected override void OnSetupView(IViewObjectSetup setup)
     {
+        setup.InspectorField(TaskId, new ViewProperty("TaskId", "Task ID").WithReadOnly());
+
         base.OnSetupView(setup);
 
         OnSetupViewTask(setup);
@@ -173,6 +176,9 @@ public abstract class AigcTaskPage : DesignNode,
 
     /// <inheritdoc/>
     public abstract Task<bool> RunTask(AIRequest request, TaskEventTypes eventType, string commitName, object parameter);
+
+    /// <inheritdoc/>
+    public abstract LLmMessage[] GetChatMessages(bool input, bool output);
 
     #endregion
 

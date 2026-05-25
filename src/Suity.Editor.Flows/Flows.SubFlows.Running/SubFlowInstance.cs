@@ -341,6 +341,9 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     public virtual bool GetError() => false;
 
     /// <inheritdoc/>
+    public virtual string GetErrorMessage() => null;
+
+    /// <inheritdoc/>
     public override bool? GetIsDone()
     {
         var mainPageDone = GetMainPageDone();

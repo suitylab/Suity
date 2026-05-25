@@ -722,10 +722,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         return docArticle;
     }
 
-    /// <summary>
-    /// Gets the last sub-task in this task's collection.
-    /// </summary>
-    /// <returns>The last sub-task, or null if no sub-tasks exist.</returns>
+    /// <inheritdoc/>
     public IAigcTaskPage GetLastSubTask()
     {
         if (Count > 0)
@@ -738,22 +735,74 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
     }
 
-    /// <summary>
-    /// Gets all sub-tasks as an array.
-    /// </summary>
-    /// <returns>An array of all sub-tasks.</returns>
-    public IAigcTaskPage[] GetAllSubTasks()
+    /// <inheritdoc/>
+    public IAigcTaskPage[] GetSubTasks()
     {
         return Items.OfType<IAigcTaskPage>()
             .SkipNull()
             .ToArray();
     }
 
-    /// <summary>
-    /// Gets the chat history for this task, optionally including parent hierarchy.
-    /// </summary>
-    /// <param name="inHierarchy">If true, includes chat history from parent tasks.</param>
-    /// <returns>An array of LLM messages representing the chat history.</returns>
+    /// <inheritdoc/>
+    public int SubTaskCount => this.Count;
+
+    /// <inheritdoc/>
+    public override LLmMessage[] GetChatMessages(bool input, bool output)
+    {
+        LLmMessage inputMsg = null;
+        LLmMessage outputMsg = null;
+
+        string prompt = this.TaskPrompt;
+
+        var instance = EnsureInstance();
+        if (instance is null)
+        {
+            return [];
+        }
+
+        if (input)
+        {
+            string msg = instance?.GetInputChatHistory()?.Text;
+            if (!string.IsNullOrWhiteSpace(prompt))
+            {
+                msg = prompt + "\r\n\r\n" + msg;
+            }
+
+            inputMsg = new()
+            {
+                Role = LLmMessageRole.User,
+                Message = msg,
+            };
+        }
+
+        if (output)
+        {
+            outputMsg = new()
+            {
+                Role = LLmMessageRole.Assistant,
+                Message = $"TaskId: '{TaskId}'\r\n\r\n{instance?.GetOutputChatHistory()?.Text}",
+            };
+        }
+
+        if (input && output)
+        {
+            return [inputMsg, outputMsg];
+        }
+        else if (input)
+        {
+            return [inputMsg];
+        }
+        else if (output)
+        {
+            return [outputMsg];
+        }
+        else
+        {
+            return [];
+        }
+    }
+
+    /// <inheritdoc/>
     public LLmMessage[] GetChatHistory(bool inHierarchy)
     {
         if (GetDocument() is not AigcTaskPageDocument doc)
@@ -779,7 +828,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         if (includeSelf)
         {
             // As a parent task, since it is currently executing, its current output information should be invalid
-            var myMsgs = CreateChatHistory(true, true);
+            var myMsgs = GetChatMessages(true, true);
             for (int j = myMsgs.Length - 1; j >= 0; j--)
             {
                 var myMsg = myMsgs[j];
@@ -808,7 +857,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             {
                 if (ParentList.GetItemAt(i) is AigcWorkflowPage task)
                 {
-                    var msgs = task.CreateChatHistory(true, true);
+                    var msgs = task.GetChatMessages(true, true);
                     for (int j = msgs.Length - 1; j >= 0; j--)
                     {
                         var msg = msgs[j];
@@ -839,78 +888,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
     }
 
-    private LLmMessage[] CreateChatHistory(bool input, bool output)
-    {
-        LLmMessage inputMsg;
-        LLmMessage outputMsg;
-
-        string prompt = this.TaskPrompt;
-
-        var instance = EnsureInstance();
-        if (instance is null)
-        {
-            return [];
-        }
-
-        if (input && output)
-        {
-            string msg = instance?.GetInputChatHistory()?.Text;
-            if (!string.IsNullOrWhiteSpace(prompt))
-            {
-                msg = prompt + "\r\n\r\n" + msg;
-            }
-
-            inputMsg = new()
-            {
-                Role = LLmMessageRole.User,
-                Message = msg,
-            };
-
-            outputMsg = new()
-            {
-                Role = LLmMessageRole.Assistant,
-                Message = $"TaskId: '{TaskId}'\r\n\r\n{instance?.GetOutputChatHistory()?.Text}",
-            };
-
-            return [inputMsg, outputMsg];
-        }
-        else if (input)
-        {
-            string msg = instance?.GetInputChatHistory()?.Text;
-            if (!string.IsNullOrWhiteSpace(prompt))
-            {
-                msg = $"{prompt}\r\n\r\n{msg}";
-            }
-
-            inputMsg = new()
-            {
-                Role = LLmMessageRole.User,
-                Message = msg,
-            };
-
-            return [inputMsg];
-        }
-        else if (output)
-        {
-            outputMsg = new()
-            {
-                Role = LLmMessageRole.Assistant,
-                Message = $"TaskId: '{TaskId}'\r\n\r\n{instance?.GetOutputChatHistory()?.Text}",
-            };
-
-            return [outputMsg];
-        }
-        else
-        {
-            return [];
-        }
-    }
-
-    /// <summary>
-    /// Gets the list of available tools for this task page.
-    /// </summary>
-    /// <param name="includeDocumentTools">If true, includes tools from the document.</param>
-    /// <returns>An array of available tool assets.</returns>
+    /// <inheritdoc/>
     public IPageAsset[] GetToolList(bool includeDocumentTools)
     {
         if (EnsureInstance() is not { } instance)

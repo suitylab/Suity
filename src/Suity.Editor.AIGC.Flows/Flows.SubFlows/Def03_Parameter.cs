@@ -1,7 +1,7 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.AIGC;
-using Suity.Editor.AIGC.Helpers;
 using Suity.Editor.Documents;
+using Suity.Editor.Flows.Nodes;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -805,8 +805,8 @@ public class PageFileOutputItem : FlowDiagramItem<PageFileOutputNode>, ISubFlowE
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageMessageParameterNode")]
 public class PageMessageParameterNode : SubFlowTypeNode
 {
-    private readonly TextBlockProperty _message = new("Message", "Message", string.Empty, "Supported placeholders: {TaskName} {TaskStatus}");
-
+    private readonly ConnectorTextBlockProperty _message = new("Message", "Message", string.Empty, "Supported placeholders: {TaskName} {TaskStatus}");
+    private readonly ValueProperty<bool> _tooltipMode = new("TooltipMode", "Tooltip Mode", false, "When enabled, the message will be shown as a tooltip in task page.");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PageMessageParameterNode"/> class.
@@ -819,6 +819,8 @@ public class PageMessageParameterNode : SubFlowTypeNode
         Required = false;
         TaskCommit = true;
         ChatHistory = true;
+
+        _message.AddConnector(this);
     }
 
     /// <inheritdoc/>
@@ -827,14 +829,9 @@ public class PageMessageParameterNode : SubFlowTypeNode
     /// <inheritdoc/>
     public override Color? BackgroundColor => TitleColor;
 
-    /// <summary>
-    /// Gets or sets the message text.
-    /// </summary>
-    public string Value
-    {
-        get => _message.Text;
-        set => _message.Text = value;
-    }
+    public bool TooltipMode => _tooltipMode.Value;
+
+    public string TooltipText => _message.BaseText;
 
     /// <inheritdoc/>
     protected override void OnSync(IPropertySync sync, ISyncContext context)
@@ -842,6 +839,7 @@ public class PageMessageParameterNode : SubFlowTypeNode
         base.OnSync(sync, context);
 
         _message.Sync(sync);
+        _tooltipMode.Sync(sync);
     }
 
     /// <inheritdoc/>
@@ -849,13 +847,16 @@ public class PageMessageParameterNode : SubFlowTypeNode
     {
         base.OnSetupViewContent(setup);
 
-        _message.InspectorField(setup);
+        _message.InspectorField(setup, this);
+        _tooltipMode.InspectorField(setup);
     }
 
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
+        var value = _message.GetValue(compute, this);
+        compute.SetResult(this, value);
     }
 
     private ImGuiNode OnGui(ImGui gui, IDrawNodeContext context)
@@ -867,7 +868,7 @@ public class PageMessageParameterNode : SubFlowTypeNode
             text = " ";
         }
 
-        return gui.FlowSimpleFrame(FlowDirections.Input, context, text);
+        return gui.FlowSingleConnectorFrame(_message.Connector, context, text);
     }
 }
 

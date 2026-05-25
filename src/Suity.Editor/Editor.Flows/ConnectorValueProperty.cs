@@ -401,10 +401,14 @@ public class ConnectorTextBlockProperty : TextBlockProperty
     }
 
     [Obsolete("This property should not be accessed", true)]
-    public new string Value => throw new NotImplementedException();
+    public new TextBlock Value => throw new NotImplementedException();
 
     [Obsolete("This property should not be accessed", true)]
     public new string Text => throw new NotImplementedException();
+
+    public TextBlock BaseValue => base.Value;
+
+    public string BaseText => base.Text;
 
     public bool GetIsLinked(FlowNode node) => node.Diagram?.GetIsLinked(Connector) == true;
 }

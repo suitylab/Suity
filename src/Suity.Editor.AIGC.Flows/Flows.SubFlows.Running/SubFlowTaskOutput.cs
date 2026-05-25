@@ -203,7 +203,7 @@ public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPagePara
     public IAigcTaskPage[] GetAllSubTasks()
     {
         var task = Option.Owner as IAigcWorkflowPage;
-        return task?.GetAllSubTasks() ?? [];
+        return task?.GetSubTasks() ?? [];
     }
 
     /// <inheritdoc/>

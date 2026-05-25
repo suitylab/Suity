@@ -489,27 +489,25 @@ public static class AigcExtensions
             throw new ArgumentNullException(nameof(task));
         }
 
+        var msgs = GetTaskChatHistoryMessages(task) ?? [];
+
+        return LLmMessage.CombineText(msgs);
+    }
+
+    public static LLmMessage[] GetTaskChatHistoryMessages(this IAigcTaskPage task)
+    {
+        if (task is null)
+        {
+            throw new ArgumentNullException(nameof(task));
+        }
+
         if (task is IAigcWorkflowPage workflow)
         {
-            string result;
-            var history = workflow.GetChatHistory(false);
-            if (history is null || history.Length == 0)
-            {
-                result = string.Empty;
-            }
-            else
-            {
-                result = LLmMessage.CombineText(history);
-            }
-
-            return result ?? string.Empty;
+            return workflow.GetSubTasks().SelectMany(o => o.GetChatMessages(true, true)).ToArray();
         }
         else
         {
-            string result = task.GetPageInstance()?.GetTaskCommit();
-
-            return result ?? string.Empty;
+            return task.GetChatMessages(true, true);
         }
     }
-
 }

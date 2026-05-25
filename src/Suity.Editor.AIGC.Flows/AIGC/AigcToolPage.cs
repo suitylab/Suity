@@ -1,10 +1,11 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Flows.SubFlows;
-using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Selecting;
 using Suity.Helpers;
+using Suity.NodeQuery;
 using Suity.Synchonizing;
+using Suity.Synchonizing.Core;
 using Suity.Views;
 using System;
 using System.Threading.Tasks;
@@ -104,6 +105,73 @@ public class AigcToolPage : AigcTaskPage,
         };
 
         return await tool.Run(context);
+    }
+
+    public override LLmMessage[] GetChatMessages(bool input, bool output)
+    {
+        LLmMessage inputMsg = null;
+        LLmMessage outputMsg = null;
+
+        var instance = EnsureInstance();
+        if (instance is null)
+        {
+            return [];
+        }
+
+        if (input)
+        {
+            var writer = new XmlNodeWriter("Input", false);
+
+            if (instance.InputObject is { } inputObj)
+            {
+                Serializer.Serialize(inputObj, writer);
+            }
+
+            inputMsg = new()
+            {
+                Role = LLmMessageRole.Assistant,
+                Message = writer.ToString(),
+            };
+        }
+
+        if (output) 
+        {
+            var writer = new XmlNodeWriter("Output", false);
+
+            string errorMsg = instance.GetErrorMessage();
+            if (!string.IsNullOrWhiteSpace(errorMsg))
+            {
+                writer.SetElement("Error", w => w.SetValue(errorMsg));
+            }
+
+            if (instance.OutputObject is { } outputObj)
+            {
+                Serializer.Serialize(outputObj, writer);
+            }
+
+            outputMsg = new()
+            {
+                Role = LLmMessageRole.Assistant,
+                Message = writer.ToString(),
+            };
+        }
+
+        if (input && output)
+        {
+            return [inputMsg, outputMsg];
+        }
+        else if (input)
+        {
+            return [inputMsg];
+        }
+        else if (output)
+        {
+            return [outputMsg];
+        }
+        else
+        {
+            return [];
+        }
     }
 
     #endregion

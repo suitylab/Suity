@@ -1,5 +1,6 @@
 using Suity.Editor.AIGC;
 using Suity.Editor.Types;
+using Suity.Synchonizing;
 using Suity.Views;
 using System;
 
@@ -11,7 +12,8 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput, IPageParameterOutput
 {
     private readonly PageMessageParameterItem _msg;
-    private string _text;
+    private TextBlock _text = new();
+    private string _tooltipText;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SubFlowMessage"/> class.
@@ -39,6 +41,8 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
     /// Gets a value indicating whether this message contributes to chat history.
     /// </summary>
     public bool ChatHistory { get; private set; }
+
+    public bool TooltipMode { get; private set; }
 
     /// <summary>
     /// Gets the parameter type, which is always string for message elements.
@@ -77,6 +81,7 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
     /// <param name="value">The value to set.</param>
     public void SetValue(object value)
     {
+        _text.Text = value?.ToString();
     }
 
     #endregion
@@ -119,8 +124,20 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
         Required = _msg.Node?.Required == true;
         TaskCommit = _msg.Node?.TaskCommit == true;
         ChatHistory = _msg.Node?.ChatHistory == true;
+        TooltipMode = _msg.Node?.TooltipMode == true;
 
-        _text = _msg.Node?.Value ?? string.Empty;
+        _tooltipText = _msg.Node?.TooltipText;
+    }
+
+    /// <inheritdoc/>
+    public override void Sync(IPropertySync sync, ISyncContext context)
+    {
+        base.Sync(sync, context);
+
+        if (!TooltipMode)
+        {
+            _text = sync.Sync(Name, _text, SyncFlag.NotNull) ?? new();
+        }
     }
 
     /// <inheritdoc/>
@@ -128,7 +145,14 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
     {
         base.SetupView(setup);
 
-        setup.Tooltips(Name, TextStatus.Normal, ResolveMessage());
+        if (TooltipMode)
+        {
+            setup.Tooltips(Name, TextStatus.Normal, ResolveMessage());
+        }
+        else
+        {
+            setup.InspectorFieldOf<TextBlock>(new ViewProperty(Name, DisplayText));
+        }
     }
 
     /// <inheritdoc/>
@@ -137,13 +161,14 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
 
     private string ResolveMessage()
     {
-        string text = _text ?? string.Empty;
+        string text = _tooltipText ?? string.Empty;
 
         if (Option.Owner is IAigcWorkflowPage task)
         {
             text = text.Replace("{TaskId}", task.TaskId);
             text = text.Replace("{TaskTitle}", task.DisplayText);
             text = text.Replace("{TaskStatus}", task.DisplayStatus.ToString());
+            text = text.Replace("{SubTaskCount}", task.SubTaskCount.ToString());
         }
 
         return text;
