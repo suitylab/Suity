@@ -1556,24 +1556,24 @@ public class GetTaskById : TaskPageNode
 public class GetTaskHistory : TaskPageNode
 {
     readonly FlowNodeConnector _task;
-    readonly FlowNodeConnector _result;
+    readonly FlowNodeConnector _history;
 
     public GetTaskHistory()
     {
-        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
 
         _task = this.AddDataInputConnector("Task", taskType, "Task");
-        _result = AddDataOutputConnector("Result", "string", "Result");
+        _history = AddDataOutputConnector("History", "string", "History");
     }
 
     public override void Compute(IFlowComputation compute)
     {
-        var task = compute.GetValue<IAigcWorkflowPage>(_task)
+        var task = compute.GetValue<IAigcTaskPage>(_task)
             ?? throw new NullReferenceException("Task is null.");
 
-        string result = Suity.Editor.AIGC.Tools.GetTaskHistory.GetTaskChatHistoryText(task);
+        string result = task.GetTaskChatHistoryText();
 
-        compute.SetValue(_result, result);
+        compute.SetValue(_history, result);
     }
 }
 

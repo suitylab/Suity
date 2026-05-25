@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("QueryTaskHistory", CodeBase = "*Suity")]
-[DisplayText("Query Task History")]
-[ToolTipsText("Query task history records by task ID and query conditions.")]
-[NativeAlias("Suity.Editor.AIGC.GetTaskHistory")]
+[NativeType("GetTaskHistory", CodeBase = "*Suity")]
+[DisplayText("Get Task History")]
+[ToolTipsText("Get task history records by task ID and query conditions.")]
 public class GetTaskHistory : ToolCommand<GetTaskHistory.Output>
 {
     public class Output : IViewObject
@@ -67,36 +66,6 @@ public class GetTaskHistory : ToolCommand<GetTaskHistory.Output>
         var task = host.GetTask(taskId) as IAigcTaskPage
             ?? throw new NullReferenceException($"No workflow task found with ID '{taskId}'.");
 
-        return GetTaskChatHistoryText(task);
-    }
-
-    public static string GetTaskChatHistoryText(IAigcTaskPage task)
-    {
-        if (task is null)
-        {
-            throw new ArgumentNullException(nameof(task));
-        }
-
-        if (task is IAigcWorkflowPage workflow)
-        {
-            string result;
-            var history = workflow.GetChatHistory(false);
-            if (history is null || history.Length == 0)
-            {
-                result = string.Empty;
-            }
-            else
-            {
-                result = LLmMessage.CombineText(history);
-            }
-
-            return result ?? string.Empty;
-        }
-        else
-        {
-            string result = task.GetPageInstance()?.GetTaskCommit();
-
-            return result ?? string.Empty;
-        }
+        return task.GetTaskChatHistoryText();
     }
 }

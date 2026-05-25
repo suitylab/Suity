@@ -482,36 +482,34 @@ public static class AigcExtensions
         }
     }
 
-    //public static ILLmChat CreateChatConversation(this OpenAIModels model, FunctionContext context = null)
-    //{
-    //    //switch (model)
-    //    //{
-    //    //    case OpenAIModels.ChatGPTTurbo:
-    //    //    case OpenAIModels.ChatGPTTurbo_16k:
-    //    //    case OpenAIModels.ChatGPTTurbo_Preview:
-    //    //    case OpenAIModels.GPT4:
-    //    //    case OpenAIModels.GPT4_32k_Context:
-    //    //    case OpenAIModels.GPT4_Turbo:
-    //    //        return OkGoDoItGPTChat.CreateChat(model, context);
-    //    //}
+    public static string GetTaskChatHistoryText(this IAigcTaskPage task)
+    {
+        if (task is null)
+        {
+            throw new ArgumentNullException(nameof(task));
+        }
 
-    //    return null;
-    //}
+        if (task is IAigcWorkflowPage workflow)
+        {
+            string result;
+            var history = workflow.GetChatHistory(false);
+            if (history is null || history.Length == 0)
+            {
+                result = string.Empty;
+            }
+            else
+            {
+                result = LLmMessage.CombineText(history);
+            }
 
-    //public static ILLmCall CreateChatCall(this OpenAIModels model, FunctionContext context = null)
-    //{
-    //    //switch (model)
-    //    //{
-    //    //    case OpenAIModels.ChatGPTTurbo:
-    //    //    case OpenAIModels.ChatGPTTurbo_16k:
-    //    //    case OpenAIModels.ChatGPTTurbo_Preview:
-    //    //    case OpenAIModels.GPT4:
-    //    //    case OpenAIModels.GPT4_32k_Context:
-    //    //    case OpenAIModels.GPT4_Turbo:
-    //    //        return OkGoDoItGPTCall.CreateCall(model, context);
-    //    //}
+            return result ?? string.Empty;
+        }
+        else
+        {
+            string result = task.GetPageInstance()?.GetTaskCommit();
 
-    //    return null;
-    //}
+            return result ?? string.Empty;
+        }
+    }
 
 }
