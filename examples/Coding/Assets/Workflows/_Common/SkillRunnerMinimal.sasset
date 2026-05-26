@@ -19,7 +19,7 @@
         <UseParentArticle>True</UseParentArticle>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="1050" Y="-90" Width="110" Height="230">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="1050" Y="-100" Width="110" Height="270">
       <Name>SkillRunner_End</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
         <Name>SkillRunner_End</Name>
@@ -30,7 +30,7 @@
         <CompletionCondition>Any</CompletionCondition>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="1060" Y="90" Width="55" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="1060" Y="80" Width="55" Height="17">
       <Name>OnSubTask</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
         <Name>OnSubTask</Name>
@@ -50,7 +50,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-120" Y="-60" Width="38" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-120" Y="-60" Width="44" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -104,7 +104,7 @@
     </Item>
     <Item null="true" />
     <Item null="true" />
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="1060" Y="-30" Width="51" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="1060" Y="-20" Width="51" Height="17">
       <Name>reasoning</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
         <Name>reasoning</Name>
@@ -128,7 +128,7 @@
       <Name>###GetXmlTagContentNode04</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageTaskOutputItem" X="1060" Y="110" Width="46" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageTaskOutputItem" X="1060" Y="120" Width="46" Height="17">
       <Name>tool_result</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageTaskOutputNode">
         <Name>tool_result</Name>
@@ -140,7 +140,7 @@
         <TaskCommit>True</TaskCommit>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-460" Y="-150" Width="52" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-460" Y="-130" Width="52" Height="17">
       <Name>TaskBegin</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
         <Name>TaskBegin</Name>
@@ -248,7 +248,7 @@
       <Name>###GetSelfPageNode02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetSelfPageDefinition" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="1060" Y="10" Width="43" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="1060" Y="20" Width="43" Height="17">
       <Name>OnEnd</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
         <Name>OnEnd</Name>
@@ -262,23 +262,13 @@
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="1060" Y="50" Width="57" Height="17">
-      <Name>OnNoResult</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
-        <Name>OnNoResult</Name>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
-        <CommitType>TaskFailed</CommitType>
-      </Node>
-    </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="100" Y="-220" Width="84" Height="28">
       <Name>###GetGlobalLLmModel01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetGlobalLLmModel">
         <Type>Planning</Type>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputItem" X="-460" Y="-170" Width="45" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputItem" X="-460" Y="-150" Width="45" Height="17">
       <Name>Prompt</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputNode">
         <Name>Prompt</Name>
@@ -356,7 +346,7 @@
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="1060" Y="-10" Width="45" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="1060" Y="0" Width="45" Height="17">
       <Name>OnNext</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
         <Name>OnNext</Name>
@@ -414,7 +404,7 @@
         <Value type="System.Boolean">False</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="1060" Y="30" Width="49" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="1060" Y="40" Width="49" Height="17">
       <Name>OnFailed</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
         <Name>OnFailed</Name>
@@ -545,7 +535,7 @@
       </Node>
     </Item>
     <Item null="true" />
-    <Item type="Suity.Editor.Flows.SubFlows.PageMessageParameterItem" X="1060" Y="70" Width="55" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageMessageParameterItem" X="1060" Y="60" Width="55" Height="17">
       <Name>tool_action</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageMessageParameterNode">
         <Name>tool_action</Name>
@@ -559,7 +549,7 @@
         </Message>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageMessageParameterItem" X="1060" Y="-50" Width="63" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageMessageParameterItem" X="1060" Y="-60" Width="63" Height="17">
       <Name>SubTaskCount</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageMessageParameterNode">
         <Name>SubTaskCount</Name>
@@ -598,6 +588,58 @@
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-370" Y="-40" Width="47" Height="17">
       <Name>###GetTaskLastPrompt01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetTaskLastPrompt" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageMessageParameterItem" X="1060" Y="100" Width="62" Height="17">
+      <Name>tool_message</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageMessageParameterNode">
+        <Name>tool_message</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Required>False</Required>
+        <History>True</History>
+        <Message>
+          <Text>===== Tool Call Response =====</Text>
+        </Message>
+        <TooltipMode>True</TooltipMode>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageMessageParameterItem" X="1060" Y="-40" Width="48" Height="17">
+      <Name>MyInput</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageMessageParameterNode">
+        <Name>MyInput</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Required>False</Required>
+        <History>True</History>
+        <Message>
+          <Text>===== Task Action Step =====</Text>
+        </Message>
+        <TooltipMode>True</TooltipMode>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="980" Y="220" Width="103" Height="45">
+      <Name>###ThrowError02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.ThrowError">
+        <Message type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+          <Value type="Suity.Views.TextBlock">
+            <Text>Parse Tag Failed.</Text>
+          </Value>
+        </Message>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PagePresetParameterItem" X="-460" Y="-170" Width="54" Height="17">
+      <Name>ModelType</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PagePresetParameterNode">
+        <Name>ModelType</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>0ac6f83c-530d-48aa-b62c-6f276360379f</Id>
+        </ValueType>
+        <Value type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">
+          <Id>7d8cfc15-87ea-4994-b2db-e6e165641a0e</Id>
+        </Value>
+      </Node>
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -703,12 +745,6 @@
       <FromConnector>Result</FromConnector>
       <ToNode>###ExtractXmlsTagAction01</ToNode>
       <ToConnector>DataIn</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###ParseTagToolCallingNode01</FromNode>
-      <FromConnector>NoResult</FromConnector>
-      <ToNode>OnNoResult</ToNode>
-      <ToConnector>In</ToConnector>
     </Item>
     <Item>
       <FromNode>###GetCurrentTaskRule02</FromNode>
@@ -991,6 +1027,18 @@
       <FromConnector>Out</FromConnector>
       <ToNode>###FirstNotEmpty01</ToNode>
       <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ParseTagToolCallingNode01</FromNode>
+      <FromConnector>NoResult</FromConnector>
+      <ToNode>###ThrowError02</ToNode>
+      <ToConnector>Input</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>ModelType</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###GetGlobalLLmModel01</ToNode>
+      <ToConnector>Type</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

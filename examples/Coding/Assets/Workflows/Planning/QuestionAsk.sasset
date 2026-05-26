@@ -197,7 +197,7 @@
         <UpdateParameter>False</UpdateParameter>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="120" Y="580" Width="79" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="120" Y="580" Width="35" Height="17">
       <Name>###GetCurrentTaskPrompt01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskPrompt" />
     </Item>
@@ -254,7 +254,7 @@
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-210" Y="180" Width="92" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-210" Y="180" Width="48" Height="17">
       <Name>###GetTaskChatHistoryNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetTaskChatHistory" />
     </Item>
@@ -367,7 +367,7 @@
       <Name>###AddKnowledgeArticle01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AddKnowledgeArticle" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="-230" Width="79" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="-230" Width="35" Height="17">
       <Name>###GetCurrentTaskPrompt02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskPrompt" />
     </Item>

@@ -39,5 +39,8 @@
   </Icon>
   <Page>
     <__preset__ />
+    <ModelType type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">
+      <Id>a085f342-1c33-4b81-a621-94f8be0818c2</Id>
+    </ModelType>
   </Page>
 </SuityAsset>

@@ -281,7 +281,7 @@
         <UpdateParameter>False</UpdateParameter>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="220" Y="-10" Width="79" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="220" Y="-10" Width="35" Height="17">
       <Name>###GetCurrentTaskPrompt01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskPrompt" />
     </Item>

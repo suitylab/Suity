@@ -35,3 +35,4 @@ Operate strictly using the following iterative workflow:
 
 # NOTICE:
 - Never read. Call tool to perform actual works (they will perform read operations automatically).
+- Do NOT analyze workspace directory and file structure when user starts from scratch.

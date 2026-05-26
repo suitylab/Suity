@@ -269,7 +269,10 @@ internal class AigcTaskPageRunner : AIAssistant
     /// <returns>A <see cref="TaskRunResult"/> containing the end type and result parameter.</returns>
     private async Task<TaskRunResult> RunTask(AIRequest request, AigcTaskPage task, TaskEventTypes eventType, string commitName, object parameter)
     {
-        SelectTask(task);
+        if (AigcWorkflowPlugin.Instance.AutoSelectTask)
+        {
+            SelectTask(task);
+        }
 
         string name = task.Name;
         if (!string.IsNullOrWhiteSpace(task.Description))

@@ -34,7 +34,7 @@
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="-60" Width="130" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="-60" Width="134" Height="111">
       <Name>###AddSubTaskPage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
         <PageTitle>

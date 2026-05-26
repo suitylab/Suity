@@ -71,5 +71,8 @@
   </Icon>
   <Page>
     <__preset__ />
+    <ModelType type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">
+      <Id>25053922-d516-447e-a4f4-da8230781503</Id>
+    </ModelType>
   </Page>
 </SuityAsset>
