@@ -164,11 +164,25 @@ public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.O
                         continue;
                     }
 
-                    if (!content.Contains(mod.OldExactString))
+                    int matchCount = 0;
+                    int index = 0;
+                    while ((index = content.IndexOf(mod.OldExactString, index, StringComparison.Ordinal)) != -1)
+                    {
+                        matchCount++;
+                        index += mod.OldExactString.Length;
+                    }
+
+                    if (matchCount == 0)
                     {
                         result.Error = string.IsNullOrEmpty(result.Error)
                             ? $"OldExactString not found: {mod.OldExactString.Substring(0, Math.Min(50, mod.OldExactString.Length))}..."
                             : result.Error;
+                        continue;
+                    }
+
+                    if (matchCount >= 2)
+                    {
+                        result.Error = "Multiple matches found, could not locate precisely.";
                         continue;
                     }
 

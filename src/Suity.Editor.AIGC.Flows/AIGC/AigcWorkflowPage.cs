@@ -372,27 +372,25 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <inheritdoc/>
     public string GetPrompt(bool inHierarchy)
     {
+        var prompt = this.TaskPrompt;
+        if (!string.IsNullOrWhiteSpace(prompt))
+        {
+            return prompt;
+        }
+
         if (inHierarchy)
         {
-            LinkedList<string> prompts = [];
-
-            AigcWorkflowPage task = this;
-            while (task != null)
+            prompt = GetLastPrompt();
+            if (!string.IsNullOrWhiteSpace(prompt))
             {
-                string s = task.GetLatestPrompt();
-                if (!string.IsNullOrWhiteSpace(s))
-                {
-                    prompts.AddFirst(s);
-                }
-
-                task = task.ParentNode as AigcWorkflowPage;
+                return string.Empty;
             }
 
-            return string.Join("\r\n\r\n", prompts);
+            return (ParentTask as IAigcWorkflowPage)?.GetPrompt(inHierarchy);
         }
         else
         {
-            return GetLatestPrompt();
+            return string.Empty;
         }
     }
 
@@ -410,8 +408,14 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
     }
 
-    private string GetLatestPrompt()
+    public string GetLastPrompt()
     {
+        string prompt = this.TaskPrompt;
+        if (!string.IsNullOrWhiteSpace(prompt))
+        {
+            return prompt;
+        }
+
         if (this.ParentList is not { } list)
         {
             return string.Empty;
@@ -423,12 +427,8 @@ public class AigcWorkflowPage : AigcTaskPage,
             return string.Empty;
         }
 
-        int count = list.Count;
-
-        string prompt = string.Empty;
-
         // Start from the most recent task, get the latest prompt, return when encountering itself
-        for (int i = index; i < count; i++)
+        for (int i = index; i >= 0; i--)
         {
             if (list.GetItemAt(i) is not AigcWorkflowPage task)
             {

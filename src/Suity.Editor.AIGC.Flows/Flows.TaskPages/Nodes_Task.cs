@@ -353,6 +353,38 @@ public class GetCurrentTaskPrompt : TaskPageNode
 
 #endregion
 
+#region GetCurrentTaskPrompt
+
+/// <summary>
+/// A flow node that retrieves the current task prompt, optionally including prompts from parent tasks.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Get Task Last Prompt", "*CoreIcon|Task")]
+public class GetTaskLastPrompt : TaskPageNode
+{
+    readonly FlowNodeConnector _prompt;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetTaskLastPrompt"/> class.
+    /// </summary>
+    public GetTaskLastPrompt()
+    {
+        _prompt = AddDataOutputConnector("LastPrompt", "string", "Last Prompt");
+    }
+
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
+        string prompt = task?.GetLastPrompt() ?? string.Empty;
+
+        compute.SetValue(_prompt, prompt);
+    }
+}
+
+#endregion
+
 #region GetCurrentTaskRule
 
 /// <summary>

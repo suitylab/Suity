@@ -148,6 +148,12 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     void SetPrompt(string taskPromt);
 
     /// <summary>
+    /// Gets the last available prompt in the workflow sequence, which may be used for the next task or sub-task. This is typically the most recent prompt that was set or used in the workflow.
+    /// </summary>
+    /// <returns>The last prompt used by the workflow sequence.</returns>
+    string GetLastPrompt();
+
+    /// <summary>
     /// Gets or sets the rule prompt associated with this workflow page.
     /// </summary>
     PromptAsset Rule { get; set; }

@@ -89,9 +89,22 @@ public class ReplaceStringInFile : ToolCommand<ReplaceStringInFile.Output>
 
         string content = File.ReadAllText(targetPath);
 
-        if (!content.Contains(OldExactString))
+        int matchCount = 0;
+        int index = 0;
+        while ((index = content.IndexOf(OldExactString, index, StringComparison.Ordinal)) != -1)
+        {
+            matchCount++;
+            index += OldExactString.Length;
+        }
+
+        if (matchCount == 0)
         {
             throw new InvalidOperationException($"The specified OldExactString was not found in the file: {targetPath}");
+        }
+
+        if (matchCount >= 2)
+        {
+            throw new InvalidOperationException("Multiple matches found, could not locate precisely.");
         }
 
         content = content.Replace(OldExactString, NewString);
