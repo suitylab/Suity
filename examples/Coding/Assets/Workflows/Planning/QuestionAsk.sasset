@@ -1,0 +1,913 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="AigcFlow">
+  <AssetId>d1a2c171-8dc3-4c1a-9172-25f070d325db</AssetId>
+  <NameSpace>TaskTaskPage002</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-590" Y="200" Width="200" Height="120">
+      <Name>AskStep</Name>
+      <AssetId>9d85d09d-5e0a-416e-8bee-a94629d36726</AssetId>
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
+        <Name>AskStep</Name>
+        <Description>
+        </Description>
+        <Icon>
+          <Id>a8007591-9021-4cf9-a7df-69f1a6bc2205</Id>
+        </Icon>
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Creating software development requirement document. Pass the user requirement to this skill directly, do not write additional technical details and let this skill determine which technical specifications to adopt.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <Tools />
+        <UseParentArticle>True</UseParentArticle>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-580" Y="250" Width="71" Height="17">
+      <Name>StepRequirement</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
+        <Name>StepRequirement</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Product and system design requirement, fill in the Full Asset URL.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>6d9a5040-b6d7-4daa-b06f-6f2f27f02012</Id>
+        </ValueType>
+        <Value type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+          <Value type="Suity.Views.TextBlock">
+            <Text>
+            </Text>
+          </Value>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-580" Y="270" Width="50" Height="17">
+      <Name>StepStart</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
+        <Name>StepStart</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="210" Width="136" Height="111">
+      <Name>###CallLLm01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.CallLLm">
+        <DialogName>
+        </DialogName>
+        <Model />
+        <Functions />
+        <FunctionCall />
+        <CombineMessages>True</CombineMessages>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-300" Y="340" Width="44" Height="17">
+      <Name>###GetSpeechLanguage01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-580" Y="230" Width="71" Height="17">
+      <Name>StepProjectName</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
+        <Name>StepProjectName</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>The project name in Pascal-Case</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </ValueType>
+        <Value type="System.String">
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-240" Y="220" Width="107" Height="89">
+      <Name>###BuildPrompts01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
+        <PromptTemplate>
+          <Id>c06335a2-3588-4390-8865-5524557f2237</Id>
+        </PromptTemplate>
+        <Keywords>
+          <Item>PROJECT_NAME</Item>
+          <Item>PROMPT</Item>
+          <Item>DOMAIN_CONTEXT</Item>
+          <Item>SPEECH_LANGUAGE</Item>
+        </Keywords>
+        <MissingContent>---</MissingContent>
+        <UpdateKeywords>False</UpdateKeywords>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="530" Y="310" Width="140" Height="180">
+      <Name>CodePlanningResult</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
+        <Name>CodePlanningResult</Name>
+        <Description>
+        </Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <CompletionCondition>Any</CompletionCondition>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="350" Width="150" Height="67">
+      <Name>###ExtractXmlsTagAction01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagAction">
+        <TagNames>
+          <Item>ask</Item>
+          <Item>finish</Item>
+        </TagNames>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="240" Y="350" Width="130" Height="56">
+      <Name>###ManualTextInput01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.ManualTextInput">
+        <Message />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="110" Y="360" Width="70" Height="28">
+      <Name>###DataActionDecompose01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.DataActionDecompose">
+        <DataType>
+          <Id>3e63d8f9-29dc-4cf2-a10e-ae9cd5acc1a5</Id>
+        </DataType>
+        <IsArray>True</IsArray>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="540" Y="350" Width="61" Height="17">
+      <Name>StepContinue</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
+        <Name>StepContinue</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="150" Y="310" Width="28" Height="17">
+      <Name>###GetXmlTagContentNode03</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="240" Y="290" Width="111" Height="56">
+      <Name>###SetPageTitle01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.SetPageTitle">
+        <Title>
+        </Title>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="240" Y="430" Width="201" Height="67">
+      <Name>###CreateToolCallingWithParameter01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
+        <ToolDefinition>
+          <Id>9d85d09d-5e0a-416e-8bee-a94629d36726</Id>
+        </ToolDefinition>
+        <Parameters>
+          <Item>
+            <Name>ProjectName</Name>
+            <Description>ProjectName</Description>
+            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
+              <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+            </ParameterType>
+          </Item>
+          <Item>
+            <Name>Requirement</Name>
+            <Description>Requirement</Description>
+            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
+              <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+            </ParameterType>
+          </Item>
+        </Parameters>
+        <UpdateParameter>False</UpdateParameter>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="120" Y="580" Width="79" Height="17">
+      <Name>###GetCurrentTaskPrompt01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskPrompt" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="240" Y="520" Width="131" Height="111">
+      <Name>###AppendTaskPageNode01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
+        <PageTitle>
+        </PageTitle>
+        <TaskPrompt />
+        <TaskRule />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="540" Y="390" Width="45" Height="17">
+      <Name>Answer</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>Answer</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Required>False</Required>
+        <History>True</History>
+        <TaskCommit>True</TaskCommit>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </ValueType>
+        <Value type="System.String">
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="540" Y="370" Width="49" Height="17">
+      <Name>Question</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>Question</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Required>False</Required>
+        <History>True</History>
+        <TaskCommit>True</TaskCommit>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </ValueType>
+        <Value type="System.String">
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="540" Y="420" Width="53" Height="17">
+      <Name>SetpFinish</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
+        <Name>SetpFinish</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitType>TaskFinished</CommitType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-210" Y="180" Width="92" Height="17">
+      <Name>###GetTaskChatHistoryNode01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetTaskChatHistory" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="540" Y="440" Width="45" Height="17">
+      <Name>StepOK</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>StepOK</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
+        </ValueType>
+        <Value type="System.Boolean">False</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="440" Width="37" Height="17">
+      <Name>###InputValue01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
+        </ValueType>
+        <Value type="System.Boolean">True</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-310" Y="310" Width="27" Height="17">
+      <Name>###GetCurrentTaskRule01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="170" Y="600" Width="27" Height="17">
+      <Name>###GetCurrentTaskRule02</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="140" Y="620" Width="53" Height="17">
+      <Name>###GetCurrentTaskCommitName01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskCommitName" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-90" Y="-560" Width="269" Height="226">
+      <Name>###GroupFlowNode01</Name>
+      <Node type="Suity.Editor.Flows.GroupFlowNode">
+        <GroupName>Add this article to the global knowledge base</GroupName>
+        <Icon />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="380" Y="-310" Width="140" Height="110">
+      <Name>CreateAskResult</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
+        <Name>CreateAskResult</Name>
+        <Description>
+        </Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-570" Y="-330" Width="200" Height="120">
+      <Name>Ask</Name>
+      <AssetId>ee77d18d-ad6f-42da-8e31-e74e30887b1e</AssetId>
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
+        <Name>Ask</Name>
+        <Description>
+        </Description>
+        <Icon>
+          <Id>a8007591-9021-4cf9-a7df-69f1a6bc2205</Id>
+        </Icon>
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Creating software development requirement document. Pass the user requirement to this skill directly, do not write additional technical details and let this skill determine which technical specifications to adopt.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <Tools />
+        <UseParentArticle>True</UseParentArticle>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubflowBranchDiagramItem" X="-570" Y="-140" Width="200" Height="140">
+      <Name>###PageSubNode01</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowBranchNode">
+        <Name>###PageSubNode01</Name>
+        <Description>Sub Page</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Page>
+          <Id>ee77d18d-ad6f-42da-8e31-e74e30887b1e</Id>
+        </Page>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="-240" Y="-140" Width="150" Height="150">
+      <Name>SubPageResult</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
+        <Name>SubPageResult</Name>
+        <Description>
+        </Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="-530" Width="95" Height="111">
+      <Name>###SetArticle02</Name>
+      <Node type="Suity.Editor.Flows.AIGC.SetArticle" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="-410" Width="75" Height="28">
+      <Name>###GetTaskArticle01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetTaskArticle">
+        <AutoCreate>True</AutoCreate>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="20" Y="-400" Width="149" Height="56">
+      <Name>###AddKnowledgeArticle01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.AddKnowledgeArticle" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="-230" Width="79" Height="17">
+      <Name>###GetCurrentTaskPrompt02</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskPrompt" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="390" Y="-270" Width="45" Height="17">
+      <Name>AskEnd</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
+        <Name>AskEnd</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="200" Y="-300" Width="134" Height="111">
+      <Name>###AddSubTaskPage01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
+        <PageTitle>
+        </PageTitle>
+        <TaskPrompt />
+        <TaskRule />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="120" Y="-210" Width="27" Height="17">
+      <Name>###GetCurrentTaskRule03</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-240" Y="-550" Width="110" Height="67">
+      <Name>###SetTaskRule01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.SetTaskRule">
+        <Rule />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-240" Y="-570" Width="49" Height="17">
+      <Name>###GetCurrentTask02</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTask" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-240" Y="-450" Width="110" Height="67">
+      <Name>###SetTaskRule02</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.SetTaskRule">
+        <Rule />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-240" Y="-470" Width="46" Height="17">
+      <Name>###GetParentTask01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetParentTask" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-310" Width="201" Height="67">
+      <Name>###CreateToolCallingWithParameter02</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
+        <ToolDefinition>
+          <Id>9d85d09d-5e0a-416e-8bee-a94629d36726</Id>
+        </ToolDefinition>
+        <Parameters>
+          <Item>
+            <Name>ProjectName</Name>
+            <Description>ProjectName</Description>
+            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
+              <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+            </ParameterType>
+          </Item>
+          <Item>
+            <Name>Requirement</Name>
+            <Description>Requirement</Description>
+            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
+              <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+            </ParameterType>
+          </Item>
+        </Parameters>
+        <UpdateParameter>False</UpdateParameter>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageTaskOutputItem" X="390" Y="-250" Width="79" Height="17">
+      <Name>QuestionsAndAnswers</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageTaskOutputNode">
+        <Name>QuestionsAndAnswers</Name>
+        <Description>Questions and answers</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <History>True</History>
+        <AllSubTasks>True</AllSubTasks>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="-180" Width="35" Height="17">
+      <Name>###InputValue02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </ValueType>
+        <Value type="System.String">Ask</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-560" Y="-260" Width="59" Height="17">
+      <Name>Requirement</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
+        <Name>Requirement</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Product and system design requirement, fill in the Full Asset URL.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>6d9a5040-b6d7-4daa-b06f-6f2f27f02012</Id>
+        </ValueType>
+        <Value type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+          <Value type="Suity.Views.TextBlock">
+            <Text>
+            </Text>
+          </Value>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-560" Y="-240" Width="60" Height="17">
+      <Name>FileSpecStart</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
+        <Name>FileSpecStart</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-560" Y="-280" Width="59" Height="17">
+      <Name>ProjectName</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
+        <Name>ProjectName</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>The project name in Pascal-Case</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </ValueType>
+        <Value type="System.String">
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-560" Y="-300" Width="63" Height="17">
+      <Name>LanguageRule</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
+        <Name>LanguageRule</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Programing language rule, Fill in full asset key.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>e4f266c7-5634-4d59-81a9-d56bbe2d9fdb</Id>
+          <Prefix>&amp;</Prefix>
+        </ValueType>
+        <Value type="SAssetKey" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb">
+          <Value />
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-560" Y="-110" Width="76" Height="17">
+      <Name>SubTaskCompleted</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
+        <Name>SubTaskCompleted</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <EventType>SubTaskFinished</EventType>
+        <CommitName>Ask</CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="-230" Y="-100" Width="58" Height="17">
+      <Name>PlanningEnd</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
+        <Name>PlanningEnd</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitType>TaskFinished</CommitType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="-230" Y="-80" Width="43" Height="17">
+      <Name>AskOK</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>AskOK</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
+        </ValueType>
+        <Value type="System.Boolean">False</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-310" Y="-80" Width="37" Height="17">
+      <Name>###InputValue03</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
+        </ValueType>
+        <Value type="System.Boolean">True</Value>
+      </Node>
+    </Item>
+  </Nodes>
+  <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+  <Links>
+    <Item>
+      <FromNode>###GetSpeechLanguage01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_SPEECH_LANGUAGE</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###BuildPrompts01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###BuildPrompts01</FromNode>
+      <FromConnector>PromptOut</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>StepRequirement</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_PROMPT</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>StepStart</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>StepProjectName</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_PROJECT_NAME</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagAction01</FromNode>
+      <FromConnector>Tag-ask</FromConnector>
+      <ToNode>###DataActionDecompose01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagAction01</FromNode>
+      <FromConnector>Tag-finish</FromConnector>
+      <ToNode>SetpFinish</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SetPageTitle01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ManualTextInput01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagContentNode03</FromNode>
+      <FromConnector>ContentOut</FromConnector>
+      <ToNode>###ManualTextInput01</ToNode>
+      <ToConnector>Message</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ManualTextInput01</FromNode>
+      <FromConnector>Result</FromConnector>
+      <ToNode>Answer</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ManualTextInput01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreateToolCallingWithParameter01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose01</FromNode>
+      <FromConnector>DataOut</FromConnector>
+      <ToNode>###GetXmlTagContentNode03</ToNode>
+      <ToConnector>TagIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose01</FromNode>
+      <FromConnector>ActionOut</FromConnector>
+      <ToNode>###SetPageTitle01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AppendTaskPageNode01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>StepContinue</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagContentNode03</FromNode>
+      <FromConnector>ContentOut</FromConnector>
+      <ToNode>###SetPageTitle01</ToNode>
+      <ToConnector>Title</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagContentNode03</FromNode>
+      <FromConnector>ContentOut</FromConnector>
+      <ToNode>Question</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CreateToolCallingWithParameter01</FromNode>
+      <FromConnector>PageInstance</FromConnector>
+      <ToNode>###AppendTaskPageNode01</ToNode>
+      <ToConnector>PageInstance</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CreateToolCallingWithParameter01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AppendTaskPageNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTaskPrompt01</FromNode>
+      <FromConnector>Prompt</FromConnector>
+      <ToNode>###AppendTaskPageNode01</ToNode>
+      <ToConnector>TaskPrompt</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ExtractXmlsTagAction01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Result</FromConnector>
+      <ToNode>###ExtractXmlsTagAction01</ToNode>
+      <ToConnector>DataIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>StepProjectName</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreateToolCallingWithParameter01</ToNode>
+      <ToConnector>p_ProjectName</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>StepRequirement</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreateToolCallingWithParameter01</ToNode>
+      <ToConnector>p_Requirement</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskChatHistoryNode01</FromNode>
+      <FromConnector>ChatHistory</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###InputValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>StepOK</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>CodePlanningResult</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>AskStep</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTaskRule01</FromNode>
+      <FromConnector>Rule</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_DOMAIN_CONTEXT</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTaskRule02</FromNode>
+      <FromConnector>Rule</FromConnector>
+      <ToNode>###AppendTaskPageNode01</ToNode>
+      <ToConnector>TaskRule</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTaskCommitName01</FromNode>
+      <FromConnector>CommitName</FromConnector>
+      <ToNode>###AppendTaskPageNode01</ToNode>
+      <ToConnector>CommitName</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###InputValue03</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>AskOK</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>SubTaskCompleted</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>PlanningEnd</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Requirement</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreateToolCallingWithParameter02</ToNode>
+      <ToConnector>p_Requirement</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>ProjectName</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreateToolCallingWithParameter02</ToNode>
+      <ToConnector>p_ProjectName</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>LanguageRule</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetTaskRule02</ToNode>
+      <ToConnector>Rule</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetParentTask01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetTaskRule02</ToNode>
+      <ToConnector>Task</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SetTaskRule01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetTaskRule02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>LanguageRule</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetTaskRule01</ToNode>
+      <ToConnector>Rule</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTask02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetTaskRule01</ToNode>
+      <ToConnector>Task</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>FileSpecStart</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetTaskRule01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###InputValue02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AddSubTaskPage01</ToNode>
+      <ToConnector>CommitName</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTaskRule03</FromNode>
+      <FromConnector>Rule</FromConnector>
+      <ToNode>###AddSubTaskPage01</ToNode>
+      <ToConnector>TaskRule</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CreateToolCallingWithParameter02</FromNode>
+      <FromConnector>PageInstance</FromConnector>
+      <ToNode>###AddSubTaskPage01</ToNode>
+      <ToConnector>PageInstance</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CreateToolCallingWithParameter02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AddSubTaskPage01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AddSubTaskPage01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>AskEnd</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTaskPrompt02</FromNode>
+      <FromConnector>Prompt</FromConnector>
+      <ToNode>###AddSubTaskPage01</ToNode>
+      <ToConnector>TaskPrompt</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AddKnowledgeArticle01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreateToolCallingWithParameter02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskArticle01</FromNode>
+      <FromConnector>Articles</FromConnector>
+      <ToNode>###AddKnowledgeArticle01</ToNode>
+      <ToConnector>Article</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SetArticle02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AddKnowledgeArticle01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>ProjectName</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetArticle02</ToNode>
+      <ToConnector>Title</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskArticle01</FromNode>
+      <FromConnector>Articles</FromConnector>
+      <ToNode>###SetArticle02</ToNode>
+      <ToConnector>ArticleIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SetTaskRule02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetArticle02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>SubPageResult</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>###PageSubNode01</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>CreateAskResult</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>Ask</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

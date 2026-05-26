@@ -10,7 +10,7 @@
       <Name>###BuildPrompts02</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>04b66023-06b1-4be0-af9e-ce214a5cedfd</Id>
+          <Id>2126a46d-a00b-40b8-9bfa-61701ca90ef5</Id>
         </PromptTemplate>
         <Keywords>
           <Item>DOCUMENT</Item>
@@ -26,7 +26,7 @@
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
         </DialogName>
-        <ChatModel />
+        <Model />
         <Functions />
         <FunctionCall />
         <CombineMessages>True</CombineMessages>
@@ -91,7 +91,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="70" Width="119" Height="56">
       <Name>###ExtractXmlsTagNode01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagNode">
+      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
         <TagNames>
           <Item>section</Item>
         </TagNames>
@@ -112,7 +112,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="260" Y="170" Width="63" Height="17">
       <Name>###GetXmlTagAttributesNode01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagAttributesNode">
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagAttributes">
         <AttributeNames>
           <Item>title</Item>
         </AttributeNames>
@@ -120,7 +120,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="260" Y="190" Width="28" Height="17">
       <Name>###GetXmlTagContentNode01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="60" Y="150" Width="143" Height="89">
       <Name>###ForeachArray01</Name>
@@ -498,16 +498,16 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetGlobalLLmModel01</FromNode>
-      <FromConnector>LlmModel</FromConnector>
-      <ToNode>###CallLLm02</ToNode>
-      <ToConnector>ChatModel</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###ForeachArray01</FromNode>
       <FromConnector>Output</FromConnector>
       <ToNode>TaskEnd</ToNode>
       <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetGlobalLLmModel01</FromNode>
+      <FromConnector>LlmModel</FromConnector>
+      <ToNode>###CallLLm02</ToNode>
+      <ToConnector>Model</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

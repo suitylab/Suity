@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="AigcFlow">
-  <AssetId>5276bc3c-1f39-4769-b428-ee010c3f9dae</AssetId>
+  <AssetId>91d6762e-f2c5-40f3-ba09-9ef9fa4d128e</AssetId>
   <NameSpace>TaskTaskPage002</NameSpace>
   <Description>
   </Description>
@@ -8,7 +8,7 @@
   <Nodes>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-410" Y="-110" Width="180" Height="110">
       <Name>CodeSpecification</Name>
-      <AssetId>5685e92a-6704-4d97-982e-519f453e2de5</AssetId>
+      <AssetId>94f79c75-007b-41a5-a503-95e81dc81fdf</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
         <Name>CodeSpecification</Name>
         <Description>
@@ -78,7 +78,7 @@
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
         </DialogName>
-        <ChatModel />
+        <Model />
         <Functions />
         <FunctionCall />
         <CombineMessages>True</CombineMessages>
@@ -90,7 +90,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-240" Width="119" Height="56">
       <Name>###ExtractXmlsTagNode01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagNode">
+      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
         <TagNames>
           <Item>section</Item>
         </TagNames>
@@ -149,7 +149,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="470" Y="-160" Width="63" Height="17">
       <Name>###GetXmlTagAttributesNode01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagAttributesNode">
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagAttributes">
         <AttributeNames>
           <Item>title</Item>
         </AttributeNames>
@@ -157,7 +157,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="470" Y="-130" Width="28" Height="17">
       <Name>###GetXmlTagContentNode01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
     </Item>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-400" Y="-80" Width="59" Height="17">
       <Name>ProjectName</Name>
@@ -184,7 +184,7 @@
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>6252474c-9f5b-48ae-8aea-9d83ea5d4386</Id>
+          <Id>2ad31242-fa68-4729-8d6a-92efc0a2540b</Id>
         </PromptTemplate>
         <Keywords>
           <Item>PROJECT_NAME</Item>

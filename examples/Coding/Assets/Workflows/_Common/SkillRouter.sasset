@@ -6,7 +6,7 @@
   </Description>
   <Icon />
   <Nodes>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-170" Y="-150" Width="120" Height="150">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-170" Y="-150" Width="120" Height="90">
       <Name>SkillRouter</Name>
       <AssetId>f5ebe8d7-d9c2-4a70-8c27-ffb6ef26d32b</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
@@ -65,25 +65,25 @@
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
         </DialogName>
-        <ChatModel />
+        <Model />
         <Functions />
         <FunctionCall />
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="0" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="-20" Width="38" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="730" Y="10" Width="28" Height="17">
       <Name>###GetXmlTagContentNode01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="20" Y="-130" Width="103" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="-40" Width="29" Height="17">
       <Name>###GetPageToolPagesNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="740" Y="90" Width="103" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="740" Y="90" Width="29" Height="17">
       <Name>###GetPageToolPagesNode02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
     </Item>
@@ -121,7 +121,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-130" Width="119" Height="67">
       <Name>###ExtractXmlsTagNode01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagNode">
+      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
         <TagNames>
           <Item>analysis</Item>
           <Item>answer</Item>
@@ -130,7 +130,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-50" Width="63" Height="17">
       <Name>###GetXmlTagAttributesNode01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagAttributesNode">
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagAttributes">
         <AttributeNames>
           <Item>title</Item>
         </AttributeNames>
@@ -161,7 +161,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="730" Y="30" Width="28" Height="17">
       <Name>###GetXmlTagContentNode04</Name>
-      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
     </Item>
     <Item type="Suity.Editor.Flows.SubFlows.PageTaskOutputItem" X="1010" Y="40" Width="39" Height="17">
       <Name>SubTask</Name>
@@ -175,11 +175,11 @@
         <TaskCommit>True</TaskCommit>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="160" Y="-120" Width="92" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="160" Y="-120" Width="48" Height="17">
       <Name>###GetTaskChatHistoryNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetTaskChatHistory" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-160" Y="-80" Width="52" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-160" Y="-100" Width="52" Height="17">
       <Name>TaskBegin</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
         <Name>TaskBegin</Name>
@@ -197,8 +197,8 @@
           <Id>cb17b70d-9398-4352-8684-c6d0c0bf7c7d</Id>
         </PromptTemplate>
         <Keywords>
+          <Item>INPUT</Item>
           <Item>SKILL</Item>
-          <Item>PROMPT</Item>
           <Item>TOOLS</Item>
           <Item>SPEECH_LANGUAGE</Item>
         </Keywords>
@@ -221,7 +221,6 @@
         <DataType>
           <Id>3e63d8f9-29dc-4cf2-a10e-ae9cd5acc1a5</Id>
         </DataType>
-        <IsArray>True</IsArray>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="1010" Y="-50" Width="57" Height="17">
@@ -240,24 +239,7 @@
         <Type>Lightweight</Type>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PagePresetParameterItem" X="-160" Y="-120" Width="68" Height="17">
-      <Name>SkillDescription</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.PagePresetParameterNode">
-        <Name>SkillDescription</Name>
-        <Description>Skill Description</Description>
-        <Icon />
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <Required>False</Required>
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>e4f266c7-5634-4d59-81a9-d56bbe2d9fdb</Id>
-          <Prefix>&amp;</Prefix>
-        </ValueType>
-        <Value type="SAssetKey" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb">
-          <Value />
-        </Value>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputItem" X="-160" Y="-100" Width="45" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputItem" X="-160" Y="-120" Width="45" Height="17">
       <Name>Prompt</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputNode">
         <Name>Prompt</Name>
@@ -286,6 +268,10 @@
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="680" Y="330" Width="27" Height="17">
       <Name>###GetCurrentTaskRule01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="-60" Width="44" Height="17">
+      <Name>###GetCurrentPresetSkill01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentPresetSkill" />
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -349,12 +335,6 @@
       <FromConnector>ContentOut</FromConnector>
       <ToNode>answer</ToNode>
       <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetPageToolPagesNode02</FromNode>
-      <FromConnector>SelfTools</FromConnector>
-      <ToNode>###ParseTagToolCallingNode01</ToNode>
-      <ToConnector>ToolPages</ToConnector>
     </Item>
     <Item>
       <FromNode>###GetTaskChatHistoryNode01</FromNode>
@@ -441,30 +421,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetGlobalLLmModel01</FromNode>
-      <FromConnector>LlmModel</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>ChatModel</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetPageToolPagesNode01</FromNode>
-      <FromConnector>SelfTools</FromConnector>
-      <ToNode>###BuildPrompt01</ToNode>
-      <ToConnector>k_TOOLS</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>SkillDescription</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###BuildPrompt01</ToNode>
-      <ToConnector>k_SKILL</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>Prompt</FromNode>
-      <FromConnector>Prompt</FromConnector>
-      <ToNode>###BuildPrompt01</ToNode>
-      <ToConnector>k_PROMPT</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###ExtractXmlsTagNode01</FromNode>
       <FromConnector>Tag-analysis</FromConnector>
       <ToNode>###GetXmlTagContentNode01</ToNode>
@@ -487,6 +443,36 @@
       <FromConnector>Rule</FromConnector>
       <ToNode>###AddSubTaskPageNode01</ToNode>
       <ToConnector>TaskRule</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetGlobalLLmModel01</FromNode>
+      <FromConnector>LlmModel</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Model</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetPageToolPagesNode01</FromNode>
+      <FromConnector>Tools</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_TOOLS</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentPresetSkill01</FromNode>
+      <FromConnector>Skill</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_SKILL</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Prompt</FromNode>
+      <FromConnector>Prompt</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_INPUT</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetPageToolPagesNode02</FromNode>
+      <FromConnector>Tools</FromConnector>
+      <ToNode>###ParseTagToolCallingNode01</ToNode>
+      <ToConnector>ToolPages</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

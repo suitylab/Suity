@@ -1,17 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ObjectId>
+  <Object id="aedb5425-5102-4bba-ab72-1b4e095b2749" name="Workflows/_Common/CreateWorkSpace.md" />
+  <Object id="b61d28d9-4854-4c38-8afd-938b5e51041d" name="Workflows/_Common/QueryTaskHistory.sprompt" />
   <Object id="cb17b70d-9398-4352-8684-c6d0c0bf7c7d" name="Workflows/_Common/SkillRouter.md" />
   <Object id="d51ed5f3-d18e-48cf-a5fc-1f375fdc3fca" name="Workflows/_Common/SkillRunner.md" />
-  <Object id="b39b8930-13f1-4476-93b1-be85607c7609" name="Workflows/_Common/SkillRunnerMinimal.md" />
-  <Object id="8f86b90c-6a3a-40e0-b961-19e432c2e577" name="Workflows/CodeEdit/FileExplore.md" />
-  <Object id="c1249bc3-023b-4823-acc1-c952b74ca18b" name="Workflows/CodeGenerate/CodingMultipleCode.md" />
-  <Object id="6860c4b0-5391-42ce-8c1b-0d322b381010" name="Workflows/CodeGenerate/CodingPlanning.md" />
-  <Object id="0f7c3b3b-1974-4d57-b91a-4795050054bc" name="Workflows/CodeGenerate/CodingPlanningAsk.md" />
-  <Object id="49e38741-280c-472a-abb1-514600b656b1" name="Workflows/CodeGenerate/CodingSkill.md" />
-  <Object id="fffe03c8-b2a7-47db-b3b7-ca5b1dfc370e" name="Workflows/CodeGenerate/CodingSummary.md" />
-  <Object id="6252474c-9f5b-48ae-8aea-9d83ea5d4386" name="Workflows/CodeGenerate/CodingTechSpec.md" />
-  <Object id="04b66023-06b1-4be0-af9e-ce214a5cedfd" name="Workflows/Overview/SectionOverview.md" />
-  <Object id="cb6c4215-f640-42b9-97bd-af7d714cdb20" name="Workflows/Rules/Html_JavaScript.sprompt" />
-  <Object id="97aad715-53a3-4bbf-aea4-187df3fcd97b" name="Workflows/Rules/Html_Simple.sprompt" />
-  <Object id="d72d41bc-39bc-4de3-80d7-7d5f17d37ded" name="Workflows/Rules/Html_TypeScript.sprompt" />
+  <Object id="3a9ca923-5c3e-469d-a4a1-75de82c3e74c" name="Workflows/Coding/FullCode.md" />
+  <Object id="2ad31242-fa68-4729-8d6a-92efc0a2540b" name="Workflows/Coding/TechSpec.md" />
+  <Object id="2360c27c-3d23-4ae7-bdee-771ab2f9091f" name="Workflows/DevAgent.md" />
+  <Object id="2126a46d-a00b-40b8-9bfa-61701ca90ef5" name="Workflows/Overview/OverviewTask.md" />
+  <Object id="e6f667fc-d29e-4294-b8c2-b4065d74a84f" name="Workflows/Planning/Plan.md" />
+  <Object id="c06335a2-3588-4390-8865-5524557f2237" name="Workflows/Planning/QuestionAsk.md" />
+  <Object id="dfe46840-4a9b-425e-b959-f2dfa8de8999" name="Workflows/Rules/Html_JavaScript.md" />
+  <Object id="38ca77a8-d9d2-44e3-b77d-ad8d6baf80bd" name="Workflows/Rules/Html_Simple.md" />
+  <Object id="b5af5156-628d-43bb-9b7f-13bcb5026008" name="Workflows/Rules/Html_TypeScript.md" />
+  <Object id="84a5a6a1-61cd-4eb7-961f-d2cb4acfc5d1" name="Workflows/Workers/Explorer.md" />
+  <Object id="a0779aff-9664-4842-bde4-5e7f0b7f676b" name="Workflows/Workers/Worker.md" />
 </ObjectId>

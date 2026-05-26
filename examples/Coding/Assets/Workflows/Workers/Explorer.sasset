@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>decc3bff-f459-4879-979d-2b742515ec67</AssetId>
+  <AssetId>764b85b9-3e4f-466d-8c08-11ebb6a6e3b5</AssetId>
   <PresetName>
   </PresetName>
-  <BaseFlow>
-    <Id>37633c8a-a701-4199-bdbd-45b9d033cacd</Id>
-  </BaseFlow>
+  <BaseWorkflow>
+    <Id>80e3bfe9-08ea-4055-b46f-2b189b74768b</Id>
+  </BaseWorkflow>
   <Tools>
     <Item>
       <Id>72bfd38f-adb1-4e2a-9185-08a558e30272</Id>
@@ -30,12 +30,15 @@
     </Item>
   </Tools>
   <Overview>
-    <Text>This skill orchestrates a strict multi-step workflow enabling the AI agent to systematically navigate, search, and extract precise, budget-aware code context from the workspace's main folder through progressive directory traversal, targeted pattern matching, and controlled single or batch file slicing.</Text>
+    <Text>I am an Explorer Agent, a specialized reconnaissance module spawned to map the workspace, navigate directory structures, and extract targeted information while strictly adhering to exclusion rules and ignore patterns.</Text>
   </Overview>
   <UserInputHint>
     <Text>
     </Text>
   </UserInputHint>
+  <Skill>
+    <Id>84a5a6a1-61cd-4eb7-961f-d2cb4acfc5d1</Id>
+  </Skill>
   <Rule />
   <Description>
   </Description>
@@ -44,13 +47,5 @@
   </Icon>
   <Page>
     <__preset__ />
-    <SkillDescription type="SAssetKey" base="&amp;e4f266c7-5634-4d59-81a9-d56bbe2d9fdb">
-      <Value>
-        <Id>8f86b90c-6a3a-40e0-b961-19e432c2e577</Id>
-      </Value>
-    </SkillDescription>
-    <PlanningLLmModel type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">
-      <Id>25053922-d516-447e-a4f4-da8230781503</Id>
-    </PlanningLLmModel>
   </Page>
 </SuityAsset>

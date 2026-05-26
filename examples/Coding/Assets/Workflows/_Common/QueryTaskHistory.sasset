@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="AigcFlow">
+  <AssetId>0d615e7c-e9af-43c9-9d3b-90f959f2998f</AssetId>
+  <NameSpace>Test001</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-440" Y="-60" Width="140" Height="120">
+      <Name>QueryTaskHistory</Name>
+      <AssetId>2ae343de-b225-497c-91ee-b88dab89d01b</AssetId>
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
+        <Name>QueryTaskHistory</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Extracts key information from a given previous task execution history to answer a specific user query accurately and concisely. Used to verify whether previous work is done correctly.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <Tools />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="360" Y="-60" Width="140" Height="120">
+      <Name>QueryTaskHistory_End</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
+        <Name>QueryTaskHistory_End</Name>
+        <Description>Result</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowBeginDiagramItem" X="-430" Y="-30" Width="46" Height="17">
+      <Name>OnStart</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowBeginNode">
+        <Name>OnStart</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-430" Y="-10" Width="43" Height="17">
+      <Name>TaskId</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
+        <Name>TaskId</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>The Task Id (starts with #)</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </ValueType>
+        <Value type="System.String">
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="370" Y="-20" Width="58" Height="17">
+      <Name>OnComplete</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
+        <Name>OnComplete</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="370" Y="0" Width="44" Height="17">
+      <Name>Output</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>Output</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <History>True</History>
+        <TaskCommit>True</TaskCommit>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>6d9a5040-b6d7-4daa-b06f-6f2f27f02012</Id>
+        </ValueType>
+        <Value type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+          <Value type="Suity.Views.TextBlock">
+            <Text>
+            </Text>
+          </Value>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-270" Y="-30" Width="57" Height="17">
+      <Name>###GetTaskHistory01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetTaskHistory" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-430" Y="10" Width="42" Height="17">
+      <Name>Query</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
+        <Name>Query</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>The query string</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>6d9a5040-b6d7-4daa-b06f-6f2f27f02012</Id>
+        </ValueType>
+        <Value type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+          <Value type="Suity.Views.TextBlock">
+            <Text>
+            </Text>
+          </Value>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-270" Y="-50" Width="59" Height="17">
+      <Name>###GetTaskById01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetTaskById">
+        <TaskId>
+        </TaskId>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="-60" Width="136" Height="107">
+      <Name>###CallLLm01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.CallLLm">
+        <DialogName>
+        </DialogName>
+        <Model />
+        <Functions />
+        <FunctionCall />
+        <CombineMessages>True</CombineMessages>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-180" Y="50" Width="38" Height="17">
+      <Name>###GetSpeechLanguage01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-180" Y="-30" Width="103" Height="74">
+      <Name>###BuildPrompt01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
+        <PromptTemplate>
+          <Id>b61d28d9-4854-4c38-8afd-938b5e51041d</Id>
+        </PromptTemplate>
+        <Keywords>
+          <Item>HISTORY</Item>
+          <Item>QUERY</Item>
+          <Item>SPEECH_LANGUAGE</Item>
+        </Keywords>
+        <MissingContent>---</MissingContent>
+        <UpdateKeywords>False</UpdateKeywords>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="-90" Width="84" Height="28">
+      <Name>###GetGlobalLLmModel01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetGlobalLLmModel" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="150" Y="-50" Width="115" Height="52">
+      <Name>###ExtractXmlsTagNode01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
+        <TagNames>
+          <Item>output</Item>
+        </TagNames>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="300" Y="0" Width="28" Height="17">
+      <Name>###PassValue01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>3e63d8f9-29dc-4cf2-a10e-ae9cd5acc1a5</Id>
+        </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="300" Y="20" Width="28" Height="17">
+      <Name>###GetXmlTagContentNode01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
+    </Item>
+  </Nodes>
+  <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+  <Links>
+    <Item>
+      <FromNode>QueryTaskHistory_End</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>QueryTaskHistory</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>TaskId</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###GetTaskById01</ToNode>
+      <ToConnector>TaskId</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskById01</FromNode>
+      <FromConnector>Task</FromConnector>
+      <ToNode>###GetTaskHistory01</ToNode>
+      <ToConnector>Task</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###BuildPrompt01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###BuildPrompt01</FromNode>
+      <FromConnector>PromptOut</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetSpeechLanguage01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_SPEECH_LANGUAGE</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskHistory01</FromNode>
+      <FromConnector>History</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_HISTORY</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Query</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_QUERY</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetGlobalLLmModel01</FromNode>
+      <FromConnector>LlmModel</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Model</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ExtractXmlsTagNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Result</FromConnector>
+      <ToNode>###ExtractXmlsTagNode01</ToNode>
+      <ToConnector>DataIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagNode01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnComplete</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagNode01</FromNode>
+      <FromConnector>Tag-output</FromConnector>
+      <ToNode>###PassValue01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###GetXmlTagContentNode01</ToNode>
+      <ToConnector>TagIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagContentNode01</FromNode>
+      <FromConnector>ContentOut</FromConnector>
+      <ToNode>Output</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>OnStart</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

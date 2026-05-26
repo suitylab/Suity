@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="AigcFlow">
-  <AssetId>dc66d6aa-8f75-4d11-8658-7d7d3032f1cc</AssetId>
+  <AssetId>e72ec5d7-1bea-403f-8d37-af083780daa4</AssetId>
   <NameSpace>TaskTaskPage002</NameSpace>
   <Description>
   </Description>
   <Icon />
   <Nodes>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-420" Y="-110" Width="200" Height="120">
-      <Name>CodePlanning</Name>
-      <AssetId>98a70fcd-c047-4e0d-8799-00f0029e8059</AssetId>
+      <Name>CodePlanningQA</Name>
+      <AssetId>41008e40-7fe9-4e3c-ba58-29e01d0d6125</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
-        <Name>CodePlanning</Name>
+        <Name>CodePlanningQA</Name>
         <Description>
         </Description>
         <Icon>
@@ -64,10 +64,10 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-410" Y="-20" Width="60" Height="17">
-      <Name>FileSpecStart</Name>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-410" Y="-20" Width="61" Height="17">
+      <Name>PlanningStart</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
-        <Name>FileSpecStart</Name>
+        <Name>PlanningStart</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
@@ -80,7 +80,7 @@
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
         </DialogName>
-        <ChatModel />
+        <Model />
         <Functions />
         <FunctionCall />
         <CombineMessages>True</CombineMessages>
@@ -115,7 +115,7 @@
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>6860c4b0-5391-42ce-8c1b-0d322b381010</Id>
+          <Id>e6f667fc-d29e-4294-b8c2-b4065d74a84f</Id>
         </PromptTemplate>
         <Keywords>
           <Item>PROJECT_NAME</Item>
@@ -173,7 +173,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="290" Width="119" Height="78">
       <Name>###ExtractXmlsTagNode01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagNode">
+      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
         <TagNames>
           <Item>thought</Item>
           <Item>requirement</Item>
@@ -183,11 +183,11 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="260" Y="330" Width="28" Height="17">
       <Name>###GetXmlTagContentNode01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="260" Y="350" Width="28" Height="17">
       <Name>###GetXmlTagContentNode02</Name>
-      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentNode" />
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
     </Item>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-410" Y="-80" Width="63" Height="17">
       <Name>LanguageRule</Name>
@@ -233,7 +233,7 @@
         <Icon />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubflowBranchDiagramItem" X="-420" Y="130" Width="200" Height="140">
+    <Item type="Suity.Editor.Flows.SubFlows.SubflowBranchDiagramItem" X="-420" Y="130" Width="130" Height="90">
       <Name>###PageSubNode01</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowBranchNode">
         <Name>###PageSubNode01</Name>
@@ -241,7 +241,7 @@
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
         <Page>
-          <Id>98a70fcd-c047-4e0d-8799-00f0029e8059</Id>
+          <Id>41008e40-7fe9-4e3c-ba58-29e01d0d6125</Id>
         </Page>
       </Node>
     </Item>
@@ -260,7 +260,7 @@
       <Name>###CreateToolCallingWithParameter01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
         <ToolDefinition>
-          <Id>ce7ac4b3-18cd-48e9-b0b8-866af505de01</Id>
+          <Id>9d85d09d-5e0a-416e-8bee-a94629d36726</Id>
         </ToolDefinition>
         <Parameters>
           <Item>
@@ -338,7 +338,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="40" Width="35" Height="17">
       <Name>###InputValue01</Name>
-      <Node type="Suity.Editor.Flows.Nodes.InputValue">
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
         </ValueType>
@@ -519,7 +519,7 @@
     <Item>
       <FromNode>CreateAskResult</FromNode>
       <FromConnector>Definition</FromConnector>
-      <ToNode>CodePlanning</ToNode>
+      <ToNode>CodePlanningQA</ToNode>
       <ToConnector>Result</ToConnector>
     </Item>
     <Item>
@@ -583,7 +583,7 @@
       <ToConnector>Rule</ToConnector>
     </Item>
     <Item>
-      <FromNode>FileSpecStart</FromNode>
+      <FromNode>PlanningStart</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###SetTaskRule01</ToNode>
       <ToConnector>In</ToConnector>
