@@ -211,7 +211,8 @@ internal class AigcTaskPageRunner : AIAssistant
     private async Task<TaskRunResult> RunTaskWithRetry(AIRequest request, AigcTaskPage task, TaskEventTypes eventType, string commitName, object parameter)
     {
         var retryConfig = AigcWorkflowPlugin.Instance?.Retry;
-        int retryCount = retryConfig?.RetryCount ?? 0;
+        int maxRetry = retryConfig?.RetryCount ?? 0;
+        int retry = 0;
         float currentDelay = retryConfig?.Delay ?? 1;
         float multiplier = retryConfig?.DelayMultiplier ?? 1;
         float maxDelay = retryConfig?.MaxDelay ?? 60;
@@ -231,13 +232,23 @@ internal class AigcTaskPageRunner : AIAssistant
             {
                 request.Conversation.AddException(err);
 
-                if (retryCount > 0)
+                if (maxRetry <= 0 || retry < maxRetry)
                 {
-                    retryCount--;
                     var delay = new DelayCountDown(request.Conversation);
                     await delay.Run((int)currentDelay, request.Cancellation);
+                    delay.Dispose();
 
                     currentDelay = Math.Min(currentDelay * multiplier, maxDelay);
+
+                    if (maxRetry > 0)
+                    {
+                        retry++;
+                        request.Conversation.AddSystemMessage($"Retry {retry}/{maxRetry} times.");
+                    }
+                    else
+                    {
+                        request.Conversation.AddSystemMessage($"Retry {retry} times.");
+                    }
                 }
                 else
                 {

@@ -16,7 +16,7 @@ namespace Suity.Editor.AIGC;
 public class RetryConfig : IViewObject
 {
     private readonly ValueProperty<int> _retryCount
-        = new("RetryCount", "Retry Count", 3, "Retry count when failed. <=0 means always retry.");
+        = new("RetryCount", "Retry Count", 5, "Retry count when failed. <=0 means always retry.");
 
     private readonly ValueProperty<float> _delay
         = new("RetryDelay", "Retry Delay", 1.0f, "Retry delay when failed in seconds.");
@@ -208,57 +208,9 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
 
         bool errPausing = true;
 
-        try
-        {
-            //TODO: Although async, it does not support multiple threads calling at the same time, need to add protection
-            var result = await runner.RunStarterNode(starterNode, null, request.UserMessage, cancel);
-
-            //if (cancel.IsCancellationRequested)
-            //{
-            //    conversation.AddSystemMessage("Task canceled.");
-            //}
-            //else
-            //{
-            //    conversation.AddSystemMessage("Task completed.");
-            //}
-
-            return result;
-        }
-        catch (TaskCanceledException)
-        {
-            conversation.AddSystemMessage("Task canceled.");
-
-            return null;
-        }
-        catch (Exception err)
-        {
-            errPausing = true;
-
-            conversation.AddException(err);
-
-            return null;
-        }
-        finally
-        {
-            /*if (errPausing)
-            {
-                // Cancel operation
-                var tcs = new TaskCompletionSource<object>();
-                cancel.Register(() =>
-                {
-                    DropCurrentRun();
-
-                    tcs.SetResult(null);
-                });
-
-                // Suspend
-                await tcs.Task;
-            }
-            else
-            {
-                DropCurrentRun();
-            }*/
-        }
+        //TODO: Although async, it does not support multiple threads calling at the same time, need to add protection
+        var result = await runner.RunStarterNode(starterNode, null, request.UserMessage, cancel);
+        return result;
     }
 
     /// <inheritdoc/>
