@@ -13,6 +13,79 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
 
+public class RetryConfig : IViewObject
+{
+    private readonly ValueProperty<int> _retryCount
+        = new("RetryCount", "Retry Count", 3, "Retry count when failed. <=0 means always retry.");
+
+    private readonly ValueProperty<float> _delay
+        = new("RetryDelay", "Retry Delay", 1.0f, "Retry delay when failed in seconds.");
+
+    private readonly ValueProperty<float> _delayMultiplier
+        = new("DelayMultiplier", "Delay Multiplier", 1.0f, "Delay multiplier for each retry.");
+
+    private readonly ValueProperty<float> _maxDelay
+        = new("MaxDelay", "Max Delay", 60.0f, "Max delay when failed in seconds.");
+
+    public int RetryCount => _retryCount.Value;
+    public float Delay => _delay.Value;
+    public float DelayMultiplier => _delayMultiplier.Value;
+    public float MaxDelay => _maxDelay.Value;
+
+    public RetryConfig()
+    {
+        _delay.Property.WithUnit("s");
+        _delayMultiplier.Property.WithUnit("x");
+        _maxDelay.Property.WithUnit("s");
+    }
+
+    public void Sync(IPropertySync sync, ISyncContext context)
+    {
+        _retryCount.Sync(sync);
+        _delay.Sync(sync);
+        _delayMultiplier.Sync(sync);
+        _maxDelay.Sync(sync);
+
+        if (sync.IsSetter())
+        {
+            if (_delay.Value < 1)
+            {
+                _delay.Value = 1;
+            }
+
+            if (_delayMultiplier.Value < 1)
+            {
+                _delayMultiplier.Value = 1;
+            }
+
+            if (_maxDelay.Value < 1)
+            {
+                _maxDelay.Value = 1;
+            }
+        }
+    }
+
+    public void SetupView(IViewObjectSetup setup)
+    {
+        _retryCount.InspectorField(setup);
+        _delay.InspectorField(setup);
+        _delayMultiplier.InspectorField(setup);
+        _maxDelay.InspectorField(setup);
+    }
+
+    public override string ToString()
+    {
+        if (_retryCount.Value <= 0)
+        {
+            return $"Retry always with delay {_delay.Value}s, multiplier {_delayMultiplier.Value}x, max delay {_maxDelay.Value}s.";
+        }
+        else
+        {
+            return $"Retry {_retryCount.Value} times with delay {_delay.Value}s, multiplier {_delayMultiplier.Value}x, max delay {_maxDelay.Value}s.";
+        }
+    }
+}
+
 /// <summary>
 /// Plugin that provides AIGC workflow execution capability.
 /// Implements <see cref="IAigcWorkflowRunner"/> to enable workflow running functionality.
@@ -29,6 +102,10 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     private readonly ValueProperty<bool> _minimalToolSchema
         = new("MinimalToolSchema", "Minimal Tool Schema", true, "Use minimal tool schema representation.");
 
+    private readonly ValueProperty<RetryConfig> _retry
+        = new("Retry", "Retry", new(), "Retry when failed.");
+
+
     public AigcWorkflowPlugin()
     {
         Instance ??= this;
@@ -42,11 +119,15 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
         {
             IPageAssetToTextConverter.MinimalFormat = _minimalToolSchema.Value;
         };
+
+        _retry.Property.WithOptional().WithExpand();
     }
 
     public override string Description => "AIGC Workflow";
 
     public override ImageDef Icon => CoreIconCache.Workflow;
+
+    public RetryConfig Retry => _retry.Value;
 
     /// <inheritdoc/>
     protected internal override void Awake(PluginContext context)
@@ -69,6 +150,7 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     {
         _useFullName.Sync(sync);
         _minimalToolSchema.Sync(sync);
+        _retry.Sync(sync);
     }
 
     /// <inheritdoc/>
@@ -76,6 +158,7 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     {
         _useFullName.InspectorField(setup);
         _minimalToolSchema.InspectorField(setup);
+        _retry.InspectorField(setup);
     }
 
     /// <inheritdoc/>

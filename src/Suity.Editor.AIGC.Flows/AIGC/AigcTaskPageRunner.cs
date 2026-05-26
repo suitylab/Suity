@@ -180,7 +180,7 @@ internal class AigcTaskPageRunner : AIAssistant
         if (!hasSubTask)
         {
             // Task begin.
-            var runResult = await RunTask(request, task, TaskEventTypes.TaskBegin, null, null);
+            var runResult = await RunTaskWithRetry(request, task, TaskEventTypes.TaskBegin, null, null);
             if (request.Cancellation.IsCancellationRequested)
             {
                 return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
@@ -197,7 +197,7 @@ internal class AigcTaskPageRunner : AIAssistant
                 // Task commit.
                 var eventType = lastTask.GetCommitStatus().ToEventType();
 
-                var commitResult = await RunTask(request, task, eventType, lastTask.CommitName, null);
+                var commitResult = await RunTaskWithRetry(request, task, eventType, lastTask.CommitName, null);
                 if (request.Cancellation.IsCancellationRequested)
                 {
                     return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
@@ -208,6 +208,44 @@ internal class AigcTaskPageRunner : AIAssistant
         return (flowControl: true, value: null);
     }
 
+    private async Task<TaskRunResult> RunTaskWithRetry(AIRequest request, AigcTaskPage task, TaskEventTypes eventType, string commitName, object parameter)
+    {
+        var retryConfig = AigcWorkflowPlugin.Instance?.Retry;
+        int retryCount = retryConfig?.RetryCount ?? 0;
+        float currentDelay = retryConfig?.Delay ?? 1;
+        float multiplier = retryConfig?.DelayMultiplier ?? 1;
+        float maxDelay = retryConfig?.MaxDelay ?? 60;
+
+        while (true)
+        {
+            try
+            {
+                var result = await RunTask(request, task, eventType, commitName, parameter);
+                return result;
+            }
+            catch (TaskCanceledException)
+            {
+                return new(TaskCommitStatus.None, "Task is cancelled.");
+            }
+            catch (Exception err)
+            {
+                request.Conversation.AddException(err);
+
+                if (retryCount > 0)
+                {
+                    retryCount--;
+                    var delay = new DelayCountDown(request.Conversation);
+                    await delay.Run((int)currentDelay, request.Cancellation);
+
+                    currentDelay = Math.Min(currentDelay * multiplier, maxDelay);
+                }
+                else
+                {
+                    return new(TaskCommitStatus.TaskFailed, $"{err.GetType().FullName} ({err.Message})");
+                }
+            }
+        }
+    }
 
     /// <summary>
     /// Executes a task event and returns the result of the execution.
@@ -222,114 +260,55 @@ internal class AigcTaskPageRunner : AIAssistant
     {
         SelectTask(task);
 
-        try
+        string name = task.Name;
+        if (!string.IsNullOrWhiteSpace(task.Description))
         {
-            string name = task.Name;
-            if (!string.IsNullOrWhiteSpace(task.Description))
-            {
-                name = $"{task.Description} ({name})";
-            }
-
-            string message = "Run Task: ";
-            if (eventType != TaskEventTypes.None)
-            {
-                message = $"Handle event: {eventType}";
-            }
-
-            request.Conversation.AddSystemMessage(message, msg =>
-            {
-                msg.AddCode(name);
-                msg.AddButton("Locate", () => SelectTask(task));
-            });
-
-            bool handled = await task.RunTask(request, eventType, commitName, parameter);
-            if (request.Cancellation.IsCancellationRequested)
-            {
-                return new(TaskCommitStatus.None, "Task is cancelled.");
-            }
-
-            if (!handled)
-            {
-                return new(TaskCommitStatus.None, "Task is not handled.");
-            }
-
-            var end = task.GetPageInstance()?.GetTaskCommitParameter();
-            if (end is null)
-            {
-                return new(TaskCommitStatus.None, "Task it not finished.");
-            }
-
-            task.CommitStatus = end.EndType;
-            if (end.EndType != TaskCommitStatus.None)
-            {
-                // Explicit commit.
-                return new(end.EndType, end.Value);
-            }
-
-            bool? isDone = task.GetPageInstance()?.GetIsDone();
-            if (isDone.IsTrueOrEmpty())
-            {
-                return new(end.EndType, end.Value);
-            }
-
-            return new(TaskCommitStatus.None, "Task is not done.");
+            name = $"{task.Description} ({name})";
         }
-        catch (TaskCanceledException)
+
+        string message = "Run Task: ";
+        if (eventType != TaskEventTypes.None)
+        {
+            message = $"Handle event: {eventType}";
+        }
+
+        request.Conversation.AddSystemMessage(message, msg =>
+        {
+            msg.AddCode(name);
+            msg.AddButton("Locate", () => SelectTask(task));
+        });
+
+        bool handled = await task.RunTask(request, eventType, commitName, parameter);
+        if (request.Cancellation.IsCancellationRequested)
         {
             return new(TaskCommitStatus.None, "Task is cancelled.");
         }
-        catch (Exception err)
+
+        if (!handled)
         {
-            request.Conversation.AddException(err);
-            return new(TaskCommitStatus.TaskFailed, $"{err.GetType().FullName} ({err.Message})");
-        }
-    }
-
-    /// <summary>
-    /// Commits the task result up the parent task hierarchy until no further reporting is needed.
-    /// </summary>
-    /// <param name="request">The AI request containing conversation and cancellation context.</param>
-    /// <param name="task">The child task that completed execution.</param>
-    /// <param name="runResult">The result of the child task execution.</param>
-    /// <returns>An <see cref="AICallResult"/> indicating the success or failure of the reporting process.</returns>
-    private async Task<AICallResult> CommitToParent(AIRequest request, AigcTaskPage task, TaskRunResult runResult)
-    {
-        while (task != null)
-        {
-            if (task.ParentNode is not AigcTaskPage parent)
-            {
-                break;
-            }
-
-            if (!task.GetAllDone())
-            {
-                break;
-            }
-
-            if (task.GetNextTask() != null)
-            {
-                break;
-            }
-
-            var eventType = ToEventType(runResult.EndType);
-            if (eventType == TaskEventTypes.None)
-            {
-                return AICallResult.Empty;
-            }
-
-            var parameter = runResult.Parameter;
-            string commitName = task.CommitName;
-
-            runResult = await RunTask(request, parent, eventType, commitName, parameter);
-            task = parent;
-
-            if (request.Cancellation.IsCancellationRequested)
-            {
-                return AICallResult.Empty;
-            }
+            return new(TaskCommitStatus.None, "Task is not handled.");
         }
 
-        return AICallResult.Success;
+        var end = task.GetPageInstance()?.GetTaskCommitParameter();
+        if (end is null)
+        {
+            return new(TaskCommitStatus.None, "Task it not finished.");
+        }
+
+        task.CommitStatus = end.EndType;
+        if (end.EndType != TaskCommitStatus.None)
+        {
+            // Explicit commit.
+            return new(end.EndType, end.Value);
+        }
+
+        bool? isDone = task.GetPageInstance()?.GetIsDone();
+        if (isDone.IsTrueOrEmpty())
+        {
+            return new(end.EndType, end.Value);
+        }
+
+        return new(TaskCommitStatus.None, "Task is not done.");
     }
 
     private void SelectTask(AigcTaskPage task)
