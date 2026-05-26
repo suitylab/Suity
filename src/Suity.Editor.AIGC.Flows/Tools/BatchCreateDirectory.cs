@@ -121,7 +121,7 @@ public class BatchCreateDirectory : ToolCommand<BatchCreateDirectory.Output>
 
             try
             {
-                string targetPath = item.DirectoryPath;
+                string targetPath = item.DirectoryPath.TrimStart('/', '\\');
 
                 if (!Path.IsPathRooted(targetPath))
                 {

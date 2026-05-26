@@ -54,9 +54,9 @@ public class ListDirectory : ToolCommand<ListDirectory.Output>
             throw new NullReferenceException("Workspace directory is not set");
         }
 
-        string targetPath = string.IsNullOrWhiteSpace(DirPath) ? workspaceDir : DirPath;
+        string targetPath = string.IsNullOrWhiteSpace(DirPath) ? workspaceDir : DirPath.TrimStart('/', '\\');
 
-        if (targetPath == "/" || targetPath == "\\")
+        if (targetPath == "/" || targetPath == "\\" || string.IsNullOrEmpty(targetPath))
         {
             targetPath = workspaceDir;
         }

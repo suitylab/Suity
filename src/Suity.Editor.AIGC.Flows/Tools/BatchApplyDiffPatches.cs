@@ -133,7 +133,7 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
 
             try
             {
-                string targetPath = patchItem.FilePath;
+string targetPath = patchItem.FilePath.TrimStart('/', '\\');
 
                 if (!Path.IsPathRooted(targetPath))
                 {

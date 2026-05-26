@@ -82,7 +82,7 @@ public class GetFileMetadata : ToolCommand<GetFileMetadata.Output>
             throw new ArgumentException("FilePath is not set");
         }
 
-        string targetPath = FilePath;
+        string targetPath = FilePath.TrimStart('/', '\\');
 
         if (!Path.IsPathRooted(targetPath))
         {

@@ -75,7 +75,7 @@ public class ReplaceStringInFile : ToolCommand<ReplaceStringInFile.Output>
             throw new ArgumentException("OldExactString is not set");
         }
 
-        string targetPath = FilePath;
+        string targetPath = FilePath.TrimStart('/', '\\');
 
         if (!Path.IsPathRooted(targetPath))
         {

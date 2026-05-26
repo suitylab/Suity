@@ -78,7 +78,7 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
             throw new ArgumentException("DiffContent is not set");
         }
 
-        string targetPath = FilePath;
+        string targetPath = FilePath.TrimStart('/', '\\');
 
         if (!Path.IsPathRooted(targetPath))
         {

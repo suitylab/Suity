@@ -72,11 +72,11 @@ public class SearchFileRegex : ToolCommand<SearchFileRegex.Output>
             throw new ArgumentException("QueryRegex is not set");
         }
 
-        string targetPath = string.IsNullOrWhiteSpace(DirPath) ? workspaceDir : DirPath;
+        string targetPath = string.IsNullOrWhiteSpace(DirPath) ? workspaceDir : DirPath.TrimStart('/', '\\');
         string outputBasePath = workspaceDir;
         bool useRelativeOutput = !string.IsNullOrWhiteSpace(DirPath) && !Path.IsPathRooted(DirPath);
 
-        if (targetPath == "/" || targetPath == "\\")
+        if (targetPath == "/" || targetPath == "\\" || string.IsNullOrEmpty(targetPath))
         {
             targetPath = workspaceDir;
         }

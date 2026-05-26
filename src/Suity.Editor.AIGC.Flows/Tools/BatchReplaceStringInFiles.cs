@@ -139,7 +139,7 @@ public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.O
 
             try
             {
-                string targetPath = filePath;
+string targetPath = filePath.TrimStart('/', '\\');
 
                 if (!Path.IsPathRooted(targetPath))
                 {

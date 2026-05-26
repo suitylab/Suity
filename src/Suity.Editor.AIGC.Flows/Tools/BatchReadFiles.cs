@@ -119,7 +119,7 @@ public void SetupView(IViewObjectSetup setup)
 
             try
             {
-                string targetPath = item.FilePath;
+string targetPath = item.FilePath.TrimStart('/', '\\');
 
                 if (!Path.IsPathRooted(targetPath))
                 {

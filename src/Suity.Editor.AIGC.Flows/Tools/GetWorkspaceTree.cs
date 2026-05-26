@@ -63,9 +63,9 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
             throw new NullReferenceException("Workspace directory is not set");
         }
 
-        string targetPath = string.IsNullOrWhiteSpace(Path) ? workspaceDir : Path;
+        string targetPath = string.IsNullOrWhiteSpace(Path) ? workspaceDir : Path.TrimStart('/', '\\');
 
-        if (targetPath == "/" || targetPath == "\\")
+        if (targetPath == "/" || targetPath == "\\" || string.IsNullOrEmpty(targetPath))
         {
             targetPath = workspaceDir;
         }

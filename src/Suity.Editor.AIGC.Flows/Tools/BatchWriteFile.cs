@@ -130,7 +130,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
 
             try
             {
-                string targetPath = item.FilePath;
+                string targetPath = item.FilePath.TrimStart('/', '\\');
 
                 if (!Path.IsPathRooted(targetPath))
                 {
