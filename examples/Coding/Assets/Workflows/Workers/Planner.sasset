@@ -24,7 +24,8 @@
     <Text>This skill can write programming documents, technical specification documents, as well as write and interact with complete program versions. When submitting a request, please do not write additional technical details and let this skill determine which technical specifications to adopt.</Text>
   </Overview>
   <UserInputHint>
-    <Text>Web application built with TypeScript/JavaScript</Text>
+    <Text>
+    </Text>
   </UserInputHint>
   <Skill>
     <Id>0fc0cced-e3fa-4d06-a8e2-e75891d4c460</Id>
