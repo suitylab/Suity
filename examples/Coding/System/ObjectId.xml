@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ObjectId>
   <Object id="aedb5425-5102-4bba-ab72-1b4e095b2749" name="Workflows/_Common/CreateWorkSpace.md" />
-  <Object id="b61d28d9-4854-4c38-8afd-938b5e51041d" name="Workflows/_Common/QueryTaskHistory.sprompt" />
+  <Object id="60e07ca4-90a6-4826-bb70-9a256e2db395" name="Workflows/_Common/QueryTaskHistory.md" />
   <Object id="cb17b70d-9398-4352-8684-c6d0c0bf7c7d" name="Workflows/_Common/SkillRouter.md" />
   <Object id="b39b8930-13f1-4476-93b1-be85607c7609" name="Workflows/_Common/SkillRunnerMinimal.md" />
   <Object id="3a9ca923-5c3e-469d-a4a1-75de82c3e74c" name="Workflows/Coding/FullCode.md" />
@@ -13,7 +13,7 @@
   <Object id="38ca77a8-d9d2-44e3-b77d-ad8d6baf80bd" name="Workflows/Rules/Html_Simple.md" />
   <Object id="b5af5156-628d-43bb-9b7f-13bcb5026008" name="Workflows/Rules/Html_TypeScript.md" />
   <Object id="dfb27678-d6d0-4ed5-b780-ad7a12f24358" name="Workflows/Workers/Analyzer.md" />
-  <Object id="2f4a33d9-c3b7-41f9-a826-7beceb143249" name="Workflows/Workers/Creator-Karpathy.sprompt" />
+  <Object id="fd149294-e8c2-4f97-b72e-07e797763714" name="Workflows/Workers/Creator-Karpathy.md" />
   <Object id="94ba10b5-997a-405e-8d5f-c7bbe9bb4ae6" name="Workflows/Workers/Creator.md" />
   <Object id="cba19d62-b599-417f-88f4-45291e8cc706" name="Workflows/Workers/Editor.md" />
   <Object id="84a5a6a1-61cd-4eb7-961f-d2cb4acfc5d1" name="Workflows/Workers/Explorer.md" />

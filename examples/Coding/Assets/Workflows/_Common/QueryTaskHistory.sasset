@@ -127,7 +127,7 @@
         </TaskId>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="-60" Width="136" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="-60" Width="136" Height="111">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -138,15 +138,15 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-180" Y="50" Width="38" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-180" Y="50" Width="44" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-180" Y="-30" Width="103" Height="74">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-180" Y="-30" Width="107" Height="78">
       <Name>###BuildPrompt01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>b61d28d9-4854-4c38-8afd-938b5e51041d</Id>
+          <Id>60e07ca4-90a6-4826-bb70-9a256e2db395</Id>
         </PromptTemplate>
         <Keywords>
           <Item>HISTORY</Item>
@@ -161,7 +161,7 @@
       <Name>###GetGlobalLLmModel01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetGlobalLLmModel" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="150" Y="-50" Width="115" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="150" Y="-50" Width="119" Height="56">
       <Name>###ExtractXmlsTagNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
         <TagNames>
