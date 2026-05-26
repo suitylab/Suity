@@ -1,5 +1,6 @@
 ﻿using Suity.Editor.Design;
 using Suity.Editor.Services;
+using Suity.Json;
 using System.Collections.Generic;
 
 namespace Suity.Editor.Types;
@@ -71,6 +72,15 @@ public class SimpleType
     public override string ToString()
     {
         return ToDataWritable()?.ToString();
+    }
+
+    public string ToString(bool niceFormat)
+    {
+        var dataWritable = ToDataWritable();
+
+        var jsonWriter = new JsonDataWriter();
+        dataWritable.WriteData(jsonWriter);
+        return jsonWriter.ToString(niceFormat);
     }
 }
 

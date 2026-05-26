@@ -85,6 +85,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
         var option = new HeaderlessTreeOptions
         {
             ShowDisplayText = true,
+            StatusIconAtTheEnd = true,
         };
         _treeView = EditorUtility.CreateSimpleTreeImGui(option);
 

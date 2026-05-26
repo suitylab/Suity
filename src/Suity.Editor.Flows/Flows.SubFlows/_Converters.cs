@@ -102,6 +102,8 @@ public class SubFlowDefinitionAssetArrayToTextConverter : AssetLinkArrayToTextCo
 /// </summary>
 public class IPageAssetToTextConverter : TypeToTextConverter<IPageAsset>
 {
+    public static bool MinimalFormat { get; set; } = true;
+
     /// <inheritdoc/>
     public override string Convert(IPageAsset objFrom)
     {
@@ -112,7 +114,7 @@ public class IPageAssetToTextConverter : TypeToTextConverter<IPageAsset>
 
         var instance = objFrom.CreatePageInstance(option);
 
-        return instance?.ToSimpleType().ToString();
+        return instance?.ToSimpleType().ToString(!MinimalFormat);
     }
 }
 
@@ -139,7 +141,7 @@ public class IPageAssetArrayToTextConverter : AssetLinkArrayToTextConverter<IPag
                 continue;
             }
 
-            string s = instance.ToSimpleType().ToString();
+            string s = instance.ToSimpleType().ToString(!IPageAssetToTextConverter.MinimalFormat);
 
             if (!string.IsNullOrWhiteSpace(s))
             {

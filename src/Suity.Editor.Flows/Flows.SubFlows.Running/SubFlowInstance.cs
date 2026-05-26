@@ -137,6 +137,8 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// </summary>
     public IConversationHandler Conversation => _conversation;
 
+    public override ImageDef Icon => _preset?.TargetAsset?.Icon ?? base.Icon;
+
     #endregion
 
     #region IPageInstance

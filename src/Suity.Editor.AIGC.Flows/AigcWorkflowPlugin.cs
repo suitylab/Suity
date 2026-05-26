@@ -26,6 +26,8 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     private readonly ValueProperty<bool> _useFullName 
         = new("UseFullName", "Use Full Name", false, "Use full name in tool schema representation.");
 
+    private readonly ValueProperty<bool> _minimalToolSchema
+        = new("MinimalToolSchema", "Minimal Tool Schema", true, "Use minimal tool schema representation.");
 
     public AigcWorkflowPlugin()
     {
@@ -34,6 +36,11 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
         _useFullName.ValueChanged += (s, e) => 
         {
             SubFlowExtensions.UseFullName = _useFullName.Value;
+        };
+
+        _minimalToolSchema.ValueChanged += (s, e) =>
+        {
+            IPageAssetToTextConverter.MinimalFormat = _minimalToolSchema.Value;
         };
     }
 
@@ -61,12 +68,14 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     public void Sync(IPropertySync sync, ISyncContext context)
     {
         _useFullName.Sync(sync);
+        _minimalToolSchema.Sync(sync);
     }
 
     /// <inheritdoc/>
     public void SetupView(IViewObjectSetup setup)
     {
         _useFullName.InspectorField(setup);
+        _minimalToolSchema.InspectorField(setup);
     }
 
     /// <inheritdoc/>
