@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>574ca265-6b2c-4f22-95dc-c7ed7492a024</AssetId>
+  <AssetId>08bcddbb-3cce-4774-bfe4-f35a07632c24</AssetId>
   <PresetName>
   </PresetName>
   <BaseWorkflow>
-    <Id>80e3bfe9-08ea-4055-b46f-2b189b74768b</Id>
+    <Id>37633c8a-a701-4199-bdbd-45b9d033cacd</Id>
   </BaseWorkflow>
   <Tools>
     <Item>
@@ -32,10 +32,10 @@
       <Id>02c01430-74d8-4e59-a7b5-6094cb171ec3</Id>
     </Item>
     <Item>
-      <Id>6240f92e-d9e9-455b-beaa-1b27c4f187d3</Id>
+      <Id>a7728094-c0dc-4189-9ca6-9bb5b37117b4</Id>
     </Item>
     <Item>
-      <Id>a7728094-c0dc-4189-9ca6-9bb5b37117b4</Id>
+      <Id>6240f92e-d9e9-455b-beaa-1b27c4f187d3</Id>
     </Item>
     <Item>
       <Id>dc35e117-c8f5-493b-8bd6-ffb27b18833f</Id>
@@ -54,20 +54,20 @@
     </Item>
   </Tools>
   <Overview>
-    <Text>I am a Sub-Agent, an episodic, single-threaded execution worker spawned with a blank-slate context to perform precise code modifications and verifications directly on the local filesystem.</Text>
+    <Text>I am a Sub-Agent, an episodic creator spawned with a blank-slate context to perform precise code creaction directly on the local filesystem.</Text>
   </Overview>
   <UserInputHint>
     <Text>
     </Text>
   </UserInputHint>
   <Skill>
-    <Id>a0779aff-9664-4842-bde4-5e7f0b7f676b</Id>
+    <Id>2f4a33d9-c3b7-41f9-a826-7beceb143249</Id>
   </Skill>
   <Rule />
   <Description>
   </Description>
   <Icon>
-    <Id>23cd2d34-212f-4c76-998b-6f84528bee69</Id>
+    <Id>742d63f8-1c54-4fe3-a420-526fd210dedd</Id>
   </Icon>
   <Page>
     <__preset__ />

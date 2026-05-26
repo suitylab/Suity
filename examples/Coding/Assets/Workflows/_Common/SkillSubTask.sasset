@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="AigcFlow">
+  <AssetId>dc292e88-b3e4-4d61-91b3-94a15614c82f</AssetId>
+  <NameSpace>Test001</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-290" Y="-70" Width="140" Height="120">
+      <Name>DevAgent</Name>
+      <AssetId>f1400a9d-9d22-4033-a1ce-7c7652b652a8</AssetId>
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
+        <Name>DevAgent</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Tools />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="160" Y="-70" Width="140" Height="120">
+      <Name>DevAgent_End</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
+        <Name>DevAgent_End</Name>
+        <Description>Result</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="170" Y="-30" Width="55" Height="17">
+      <Name>OnSubTask</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
+        <Name>OnSubTask</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="-60" Width="130" Height="107">
+      <Name>###AddSubTaskPage01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
+        <PageTitle>
+        </PageTitle>
+        <TaskPrompt />
+        <TaskRule />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputItem" X="-280" Y="-20" Width="45" Height="17">
+      <Name>Prompt</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputNode">
+        <Name>Prompt</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Fill in the task requirement</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <Required>False</Required>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubflowBranchDiagramItem" X="-280" Y="150" Width="100" Height="100">
+      <Name>###SubflowBranchNode01</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowBranchNode">
+        <Name>###SubflowBranchNode01</Name>
+        <Description>Sub Page</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Page>
+          <Id>f1400a9d-9d22-4033-a1ce-7c7652b652a8</Id>
+        </Page>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="160" Y="140" Width="140" Height="120">
+      <Name>DevAgent_SubTaskEnd</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
+        <Name>DevAgent_SubTaskEnd</Name>
+        <Description>SubPage Result</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="170" Y="200" Width="57" Height="17">
+      <Name>OnNoResult</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
+        <Name>OnNoResult</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitType>TaskFailed</CommitType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="170" Y="180" Width="53" Height="17">
+      <Name>OnAnswer</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
+        <Name>OnAnswer</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitType>TaskFinished</CommitType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-270" Y="200" Width="70" Height="17">
+      <Name>OnSubTaskFailed</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
+        <Name>OnSubTaskFailed</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <EventType>SubTaskFailed</EventType>
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-270" Y="180" Width="77" Height="17">
+      <Name>OnSubTaskFinished</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
+        <Name>OnSubTaskFinished</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <EventType>SubTaskFinished</EventType>
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="170" Y="220" Width="57" Height="17">
+      <Name>SubTaskCall</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>SubTaskCall</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
+        </ValueType>
+        <Value type="System.Boolean">False</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="110" Y="220" Width="37" Height="17">
+      <Name>###InputValue01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
+        </ValueType>
+        <Value type="System.Boolean">True</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="-10" Width="29" Height="17">
+      <Name>###GetCurrentToolList01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-280" Y="-40" Width="46" Height="17">
+      <Name>OnStart</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
+        <Name>OnStart</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageTaskOutputItem" X="170" Y="-10" Width="39" Height="17">
+      <Name>SubTask</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageTaskOutputNode">
+        <Name>SubTask</Name>
+        <Description>
+        </Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <History>True</History>
+        <TaskCommit>True</TaskCommit>
+      </Node>
+    </Item>
+  </Nodes>
+  <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+  <Links>
+    <Item>
+      <FromNode>DevAgent_End</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>DevAgent</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AddSubTaskPage01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnSubTask</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###InputValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>SubTaskCall</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>OnSubTaskFinished</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnAnswer</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>OnSubTaskFailed</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnNoResult</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentToolList01</FromNode>
+      <FromConnector>Tools</FromConnector>
+      <ToNode>###AddSubTaskPage01</ToNode>
+      <ToConnector>Page</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Prompt</FromNode>
+      <FromConnector>Prompt</FromConnector>
+      <ToNode>###AddSubTaskPage01</ToNode>
+      <ToConnector>TaskPrompt</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>OnStart</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AddSubTaskPage01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>DevAgent_SubTaskEnd</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>###SubflowBranchNode01</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

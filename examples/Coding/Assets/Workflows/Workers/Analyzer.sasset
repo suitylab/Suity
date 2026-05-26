@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>764b85b9-3e4f-466d-8c08-11ebb6a6e3b5</AssetId>
+  <AssetId>b00e2853-29c5-49b8-a1f0-82482317672c</AssetId>
   <PresetName>
   </PresetName>
   <BaseWorkflow>
@@ -30,20 +30,20 @@
     </Item>
   </Tools>
   <Overview>
-    <Text>I am an Explorer Agent, a specialized reconnaissance module spawned to map the workspace, navigate directory structures, and extract targeted information while strictly adhering to exclusion rules and ignore patterns.</Text>
+    <Text>I am an Analyzer and Verify Agent, a specialized diagnostic module spawned to systematically examine existing code files, verify architectural and security compliance, and generate comprehensive validation reports while strictly adhering to read-only constraints and evidence-driven assessment standards.</Text>
   </Overview>
   <UserInputHint>
     <Text>
     </Text>
   </UserInputHint>
   <Skill>
-    <Id>84a5a6a1-61cd-4eb7-961f-d2cb4acfc5d1</Id>
+    <Id>dfb27678-d6d0-4ed5-b780-ad7a12f24358</Id>
   </Skill>
   <Rule />
   <Description>
   </Description>
   <Icon>
-    <Id>23cd2d34-212f-4c76-998b-6f84528bee69</Id>
+    <Id>ef128353-59ee-40fd-872e-4dffb19d6d8e</Id>
   </Icon>
   <Page>
     <__preset__ />

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>764b85b9-3e4f-466d-8c08-11ebb6a6e3b5</AssetId>
+  <AssetId>f41b5f0b-24d9-4f60-97d2-242cbdf7357b</AssetId>
   <PresetName>
   </PresetName>
   <BaseWorkflow>
@@ -28,22 +28,46 @@
     <Item>
       <Id>922c7589-8c57-43b2-91c2-3873029a817a</Id>
     </Item>
+    <Item>
+      <Id>02c01430-74d8-4e59-a7b5-6094cb171ec3</Id>
+    </Item>
+    <Item>
+      <Id>a7728094-c0dc-4189-9ca6-9bb5b37117b4</Id>
+    </Item>
+    <Item>
+      <Id>6240f92e-d9e9-455b-beaa-1b27c4f187d3</Id>
+    </Item>
+    <Item>
+      <Id>dc35e117-c8f5-493b-8bd6-ffb27b18833f</Id>
+    </Item>
+    <Item>
+      <Id>bf224512-e826-4d71-a19d-95b47fed695a</Id>
+    </Item>
+    <Item>
+      <Id>00764838-cdc5-40d1-b636-0046358dd38b</Id>
+    </Item>
+    <Item>
+      <Id>f3884b05-3c4e-4b25-9723-7a896e255b8d</Id>
+    </Item>
+    <Item>
+      <Id>2432214a-f2bd-4104-b212-8c2fe435f77d</Id>
+    </Item>
   </Tools>
   <Overview>
-    <Text>I am an Explorer Agent, a specialized reconnaissance module spawned to map the workspace, navigate directory structures, and extract targeted information while strictly adhering to exclusion rules and ignore patterns.</Text>
+    <Text>I am a Sub-Agent, an editor spawned with a blank-slate context to perform precise code modifications and verifications directly on the local filesystem.</Text>
   </Overview>
   <UserInputHint>
     <Text>
     </Text>
   </UserInputHint>
   <Skill>
-    <Id>84a5a6a1-61cd-4eb7-961f-d2cb4acfc5d1</Id>
+    <Id>cba19d62-b599-417f-88f4-45291e8cc706</Id>
   </Skill>
   <Rule />
   <Description>
   </Description>
   <Icon>
-    <Id>23cd2d34-212f-4c76-998b-6f84528bee69</Id>
+    <Id>0a926bbd-7017-402a-9e1a-b55741314298</Id>
   </Icon>
   <Page>
     <__preset__ />

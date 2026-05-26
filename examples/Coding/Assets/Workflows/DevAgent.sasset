@@ -4,30 +4,22 @@
   <PresetName>
   </PresetName>
   <BaseWorkflow>
-    <Id>80e3bfe9-08ea-4055-b46f-2b189b74768b</Id>
+    <Id>f1400a9d-9d22-4033-a1ce-7c7652b652a8</Id>
   </BaseWorkflow>
   <Tools>
     <Item>
-      <Id>764b85b9-3e4f-466d-8c08-11ebb6a6e3b5</Id>
-    </Item>
-    <Item>
-      <Id>574ca265-6b2c-4f22-95dc-c7ed7492a024</Id>
-    </Item>
-    <Item>
-      <Id>2ae343de-b225-497c-91ee-b88dab89d01b</Id>
+      <Id>2afdc6a8-89a3-4353-bbe5-3057b26092ea</Id>
     </Item>
   </Tools>
   <IsStartup>True</IsStartup>
   <Overview>
-    <Text>This skill can write programming documents, technical specification documents, as well as write and interact with complete program versions. When submitting a request, please do not write additional technical details and let this skill determine which technical specifications to adopt.</Text>
-  </Overview>
-  <UserInputHint>
     <Text>
     </Text>
+  </Overview>
+  <UserInputHint>
+    <Text>Web application built with TypeScript/JavaScript</Text>
   </UserInputHint>
-  <Skill>
-    <Id>2360c27c-3d23-4ae7-bdee-771ab2f9091f</Id>
-  </Skill>
+  <Skill />
   <Rule>
     <Id>b5af5156-628d-43bb-9b7f-13bcb5026008</Id>
   </Rule>

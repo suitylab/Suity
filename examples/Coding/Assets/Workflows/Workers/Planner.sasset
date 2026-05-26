@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="SubFlowPreset">
+  <AssetId>2afdc6a8-89a3-4353-bbe5-3057b26092ea</AssetId>
+  <PresetName>
+  </PresetName>
+  <BaseWorkflow>
+    <Id>37633c8a-a701-4199-bdbd-45b9d033cacd</Id>
+  </BaseWorkflow>
+  <Tools>
+    <Item>
+      <Id>b00e2853-29c5-49b8-a1f0-82482317672c</Id>
+    </Item>
+    <Item>
+      <Id>08bcddbb-3cce-4774-bfe4-f35a07632c24</Id>
+    </Item>
+    <Item>
+      <Id>f41b5f0b-24d9-4f60-97d2-242cbdf7357b</Id>
+    </Item>
+    <Item>
+      <Id>2ae343de-b225-497c-91ee-b88dab89d01b</Id>
+    </Item>
+  </Tools>
+  <Overview>
+    <Text>This skill can write programming documents, technical specification documents, as well as write and interact with complete program versions. When submitting a request, please do not write additional technical details and let this skill determine which technical specifications to adopt.</Text>
+  </Overview>
+  <UserInputHint>
+    <Text>Web application built with TypeScript/JavaScript</Text>
+  </UserInputHint>
+  <Skill>
+    <Id>0fc0cced-e3fa-4d06-a8e2-e75891d4c460</Id>
+  </Skill>
+  <Rule>
+    <Id>b5af5156-628d-43bb-9b7f-13bcb5026008</Id>
+  </Rule>
+  <Description>
+  </Description>
+  <Icon>
+    <Id>f2db9555-be16-4bbd-abcd-2b9dfc5988cd</Id>
+  </Icon>
+  <Page>
+    <__preset__ />
+  </Page>
+</SuityAsset>

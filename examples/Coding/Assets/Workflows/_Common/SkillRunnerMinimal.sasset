@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="AigcFlow">
-  <AssetId>2838783a-5e01-49d4-95df-6faa614a82f5</AssetId>
+  <AssetId>f1f0e37b-0858-4326-abd5-2f54a5091fd7</AssetId>
   <NameSpace>TaskWorker</NameSpace>
   <Description>
   </Description>
@@ -8,7 +8,7 @@
   <Nodes>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-470" Y="-200" Width="160" Height="100">
       <Name>SkillRunnerMinimal</Name>
-      <AssetId>80e3bfe9-08ea-4055-b46f-2b189b74768b</AssetId>
+      <AssetId>37633c8a-a701-4199-bdbd-45b9d033cacd</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
         <Name>SkillRunnerMinimal</Name>
         <Icon>
@@ -193,7 +193,7 @@
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
         <Page>
-          <Id>80e3bfe9-08ea-4055-b46f-2b189b74768b</Id>
+          <Id>37633c8a-a701-4199-bdbd-45b9d033cacd</Id>
         </Page>
       </Node>
     </Item>
@@ -201,7 +201,7 @@
       <Name>###BuildPrompt01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>d51ed5f3-d18e-48cf-a5fc-1f375fdc3fca</Id>
+          <Id>b39b8930-13f1-4476-93b1-be85607c7609</Id>
         </PromptTemplate>
         <Keywords>
           <Item>INPUT</Item>
@@ -527,13 +527,13 @@
         </ValueType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-270" Y="-120" Width="110" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-270" Y="-120" Width="108" Height="17">
       <Name>###InputValue02</Name>
       <Node type="Suity.Editor.Flows.Nodes.SourceValue">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
         </ValueType>
-        <Value type="System.String">User requests at the top of the conversation history.</Value>
+        <Value type="System.String">The user's request is in the previous conversation history.</Value>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="700" Y="-30" Width="28" Height="17">
@@ -594,6 +594,10 @@
           </Value>
         </Message>
       </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-370" Y="-40" Width="47" Height="17">
+      <Name>###GetTaskLastPrompt01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetTaskLastPrompt" />
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -857,12 +861,6 @@
       <ToConnector>Value</ToConnector>
     </Item>
     <Item>
-      <FromNode>TaskBegin</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###If01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###If01</FromNode>
       <FromConnector>False</FromConnector>
       <ToNode>###BuildPrompt01</ToNode>
@@ -941,12 +939,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###InputValue02</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###FirstNotEmpty01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
       <FromNode>Prompt</FromNode>
       <FromConnector>Prompt</FromConnector>
       <ToNode>###FirstNotEmpty01</ToNode>
@@ -986,6 +978,18 @@
       <FromNode>###ExtractXmlsTagAction01</FromNode>
       <FromConnector>Tag-tool_action</FromConnector>
       <ToNode>###DataActionDecompose02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>TaskBegin</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###If01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###InputValue02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###FirstNotEmpty01</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
   </Links>
