@@ -353,15 +353,15 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         {
                             Run("-resume");
                         });
-
-                        gui.ToggleButton("btnAutoFocus", CoreIconCache.Lock, _document?.AutoFocusRunningTask, _document?.AutoFocusRunningTask == true)
-                        .InitClass("simpleBtn")
-                        .SetToolTipsL("Automatically focus the running task when it starts.")
-                        .OnChecked((n, v) => 
-                        {
-                            _document?.AutoFocusRunningTask = v;
-                        });
                     }
+
+                    gui.ToggleButton("btnAutoFocus", CoreIconCache.Lock, _document?.AutoFocusRunningTask, _document?.AutoFocusRunningTask == true)
+                    .InitClass("simpleBtn")
+                    .SetToolTipsL("Automatically focus the running task when it starts.")
+                    .OnChecked((n, v) =>
+                    {
+                        _document?.AutoFocusRunningTask = v;
+                    });
                 });
 
                 _treeView.OnNodeGui(gui)
