@@ -512,14 +512,17 @@ public class SubDocumentView : IHasSubDocumentView, IViewSave, IDropTarget
         string dirtyStr = item.Document.IsDirty ? "*" : "";
 
         gui.Button("#tag-" + i, dirtyStr + item.Name, item.Document?.Icon)
-        .InitClass("simpleFrame")
-        .InitCenterVertical()
+        .OnInitialize(n =>
+        {
+            n.InitClass("simpleFrame");
+            n.InitCenterVertical();
+        })
         .OnClick(() =>
         {
             GuiPopSubDocumentView(item);
             CurrentStackItem?.StartView();
             _guiRef.QueueRefresh();
-        });
+        }).Fit();
     }
 
     private void DocumentEntry_Saved(object sender, EventArgs e)
