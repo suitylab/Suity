@@ -115,37 +115,42 @@ public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
 
             try
             {
-                string sourcePath = item.SourcePath.TrimStart('/', '\\');
+                string relativeSourcePath = item.SourcePath.TrimStart('/', '\\');
+                string relativeTargetPath = item.TargetPath.TrimStart('/', '\\');
 
-                if (!Path.IsPathRooted(sourcePath))
+                string fullSourcePath = relativeSourcePath;
+                string fullTargetPath = relativeTargetPath;
+
+                if (!Path.IsPathRooted(relativeSourcePath))
                 {
-                    sourcePath = Path.Combine(workspaceDir, sourcePath);
+                    fullSourcePath = Path.Combine(workspaceDir, relativeSourcePath);
                 }
 
-                string targetPath = item.TargetPath.TrimStart('/', '\\');
-
-                if (!Path.IsPathRooted(targetPath))
+                if (!Path.IsPathRooted(relativeTargetPath))
                 {
-                    targetPath = Path.Combine(workspaceDir, targetPath);
+                    fullTargetPath = Path.Combine(workspaceDir, relativeTargetPath);
                 }
 
-                if (!File.Exists(sourcePath))
+                result.SourcePath = relativeSourcePath;
+                result.TargetPath = relativeTargetPath;
+
+                if (!File.Exists(fullSourcePath))
                 {
                     result.Error = "Source file not found";
                 }
-                else if (File.Exists(targetPath))
+                else if (File.Exists(fullTargetPath))
                 {
                     result.Error = "Target file already exists";
                 }
                 else
                 {
-                    string targetDir = Path.GetDirectoryName(targetPath);
+                    string targetDir = Path.GetDirectoryName(fullTargetPath);
                     if (!string.IsNullOrEmpty(targetDir) && !Directory.Exists(targetDir))
                     {
                         Directory.CreateDirectory(targetDir);
                     }
 
-                    File.Move(sourcePath, targetPath);
+                    File.Move(fullSourcePath, fullTargetPath);
                 }
             }
             catch (Exception ex)

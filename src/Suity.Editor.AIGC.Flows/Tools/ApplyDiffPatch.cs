@@ -78,19 +78,20 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
             throw new ArgumentException("DiffContent is not set");
         }
 
-        string targetPath = FilePath.TrimStart('/', '\\');
+        string relativePath = FilePath.TrimStart('/', '\\');
+        string fullPath = relativePath;
 
-        if (!Path.IsPathRooted(targetPath))
+        if (!Path.IsPathRooted(relativePath))
         {
-            targetPath = Path.Combine(workspaceDir, targetPath);
+            fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
-        if (!File.Exists(targetPath))
+        if (!File.Exists(fullPath))
         {
-            throw new FileNotFoundException($"File not found: {targetPath}");
+            throw new FileNotFoundException($"File not found: {relativePath}");
         }
 
-        var lines = File.ReadAllLines(targetPath).ToList();
+        var lines = File.ReadAllLines(fullPath).ToList();
         var diffLines = DiffContent.Split('\n').Select(l => l.TrimEnd('\r')).ToList();
 
         var patches = ParseUnifiedDiff(diffLines);
@@ -111,17 +112,26 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
                 throw new InvalidOperationException($"Invalid patch: patch tries to remove {removeCount} lines starting at {patch.StartLine}, but file only has {lines.Count} lines");
             }
 
+            List<string> actualContent = lines.GetRange(patch.StartLine - 1, removeCount);
+            if (!actualContent.SequenceEqual(patch.OldContent))
+            {
+                throw new InvalidOperationException(
+                    $"Patch content mismatch at line {patch.StartLine}: " +
+                    $"expected lines do not match file content. " +
+                    $"Patch may be outdated or incorrectly generated.");
+            }
+
             lines.RemoveRange(patch.StartLine - 1, removeCount);
             lines.InsertRange(patch.StartLine - 1, patch.NewContent);
             hunksApplied++;
         }
 
-        File.WriteAllLines(targetPath, lines);
+        File.WriteAllLines(fullPath, lines);
 
         return Task.FromResult(new Output
         {
-            FilePath = targetPath,
-            Message = $"Successfully applied {hunksApplied} hunk(s) to file: {targetPath}",
+            FilePath = relativePath,
+            Message = $"Successfully applied {hunksApplied} hunk(s) to file: {relativePath}",
             HunksApplied = hunksApplied,
         });
     }
@@ -165,6 +175,7 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
                             switch (prefix)
                             {
                                 case ' ':
+                                    patch.OldContent.Add(content);
                                     patch.NewContent.Add(content);
                                     break;
                                 case '+':

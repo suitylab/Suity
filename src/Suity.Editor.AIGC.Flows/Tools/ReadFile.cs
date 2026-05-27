@@ -66,19 +66,20 @@ public class ReadFile : ToolCommand<ReadFile.Output>
             throw new ArgumentException("FilePath is not set");
         }
 
-        string targetPath = FilePath.TrimStart('/', '\\');
+        string relativePath = FilePath.TrimStart('/', '\\');
+        string fullPath = relativePath;
 
-        if (!Path.IsPathRooted(targetPath))
+        if (!Path.IsPathRooted(relativePath))
         {
-            targetPath = Path.Combine(workspaceDir, targetPath);
+            fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
-        if (!File.Exists(targetPath))
+        if (!File.Exists(fullPath))
         {
-            throw new FileNotFoundException($"File not found: {targetPath}");
+            throw new FileNotFoundException($"File not found: {relativePath}");
         }
 
-        var lines = File.ReadAllLines(targetPath);
+        var lines = File.ReadAllLines(fullPath);
         int totalLines = lines.Length;
 
         string content;

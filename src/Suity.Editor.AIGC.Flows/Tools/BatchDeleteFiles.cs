@@ -111,20 +111,23 @@ public class BatchDeleteFiles : ToolCommand<BatchDeleteFiles.Output>
 
             try
             {
-                string targetPath = item.FilePath.TrimStart('/', '\\');
+                string relativePath = item.FilePath.TrimStart('/', '\\');
+                string fullPath = relativePath;
 
-                if (!Path.IsPathRooted(targetPath))
+                if (!Path.IsPathRooted(relativePath))
                 {
-                    targetPath = Path.Combine(workspaceDir, targetPath);
+                    fullPath = Path.Combine(workspaceDir, relativePath);
                 }
 
-                if (item.VerifyExists && !File.Exists(targetPath))
+                result.FilePath = relativePath;
+
+                if (item.VerifyExists && !File.Exists(fullPath))
                 {
                     result.Error = "File not found";
                 }
                 else
                 {
-                    File.Delete(targetPath);
+                    File.Delete(fullPath);
                 }
             }
             catch (Exception ex)

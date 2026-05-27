@@ -82,24 +82,25 @@ public class GetFileMetadata : ToolCommand<GetFileMetadata.Output>
             throw new ArgumentException("FilePath is not set");
         }
 
-        string targetPath = FilePath.TrimStart('/', '\\');
+        string relativePath = FilePath.TrimStart('/', '\\');
+        string fullPath = relativePath;
 
-        if (!Path.IsPathRooted(targetPath))
+        if (!Path.IsPathRooted(relativePath))
         {
-            targetPath = Path.Combine(workspaceDir, targetPath);
+            fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
-        if (!File.Exists(targetPath))
+        if (!File.Exists(fullPath))
         {
-            throw new FileNotFoundException($"File not found: {targetPath}");
+            throw new FileNotFoundException($"File not found: {relativePath}");
         }
 
-        var fileInfo = new FileInfo(targetPath);
-        var lines = File.ReadAllLines(targetPath);
+        var fileInfo = new FileInfo(fullPath);
+        var lines = File.ReadAllLines(fullPath);
 
         return Task.FromResult(new Output
         {
-            FilePath = targetPath,
+            FilePath = relativePath,
             FileName = fileInfo.Name,
             Extension = fileInfo.Extension,
             SizeBytes = (int)fileInfo.Length,

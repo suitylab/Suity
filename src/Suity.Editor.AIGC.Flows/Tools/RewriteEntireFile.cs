@@ -66,24 +66,25 @@ public class RewriteEntireFile : ToolCommand<RewriteEntireFile.Output>
             throw new ArgumentException("FilePath is not set");
         }
 
-        string targetPath = FilePath.TrimStart('/', '\\');
+        string relativePath = FilePath.TrimStart('/', '\\');
+        string fullPath = relativePath;
 
-        if (!Path.IsPathRooted(targetPath))
+        if (!Path.IsPathRooted(relativePath))
         {
-            targetPath = Path.Combine(workspaceDir, targetPath);
+            fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
-        if (!File.Exists(targetPath))
+        if (!File.Exists(fullPath))
         {
-            throw new FileNotFoundException($"File not found: {targetPath}");
+            throw new FileNotFoundException($"File not found: {relativePath}");
         }
 
-        File.WriteAllText(targetPath, NewFullContent);
+        File.WriteAllText(fullPath, NewFullContent);
 
         return Task.FromResult(new Output
         {
-            FilePath = targetPath,
-            Message = $"Successfully rewrote file: {targetPath}",
+            FilePath = relativePath,
+            Message = $"Successfully rewrote file: {relativePath}",
         });
     }
 }

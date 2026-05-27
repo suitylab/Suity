@@ -75,31 +75,37 @@ public class ReplaceStringInFile : ToolCommand<ReplaceStringInFile.Output>
             throw new ArgumentException("OldExactString is not set");
         }
 
-        string targetPath = FilePath.TrimStart('/', '\\');
+        string relativePath = FilePath.TrimStart('/', '\\');
+        string fullPath = relativePath;
 
-        if (!Path.IsPathRooted(targetPath))
+        if (!Path.IsPathRooted(relativePath))
         {
-            targetPath = Path.Combine(workspaceDir, targetPath);
+            fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
-        if (!File.Exists(targetPath))
+        if (!File.Exists(fullPath))
         {
-            throw new FileNotFoundException($"File not found: {targetPath}");
+            throw new FileNotFoundException($"File not found: {relativePath}");
         }
 
-        string content = File.ReadAllText(targetPath);
+        string content = File.ReadAllText(fullPath);
 
         int matchCount = 0;
         int index = 0;
-        while ((index = content.IndexOf(OldExactString, index, StringComparison.Ordinal)) != -1)
+        StringUtility.MatchResult matchFinal = StringUtility.MatchResult.NotFound;
+        StringUtility.MatchResult match = StringUtility.FuzzyMatch(content, OldExactString, index);
+        while (match.Found)
         {
             matchCount++;
-            index += OldExactString.Length;
+            if (matchCount == 1)
+                matchFinal = match;
+            index = match.Index + match.Length;
+            match = StringUtility.FuzzyMatch(content, OldExactString, index);
         }
 
         if (matchCount == 0)
         {
-            throw new InvalidOperationException($"The specified OldExactString was not found in the file: {targetPath}");
+            throw new InvalidOperationException($"The specified OldExactString was not found in the file: {relativePath}");
         }
 
         if (matchCount >= 2)
@@ -107,13 +113,13 @@ public class ReplaceStringInFile : ToolCommand<ReplaceStringInFile.Output>
             throw new InvalidOperationException("Multiple matches found, could not locate precisely.");
         }
 
-        content = content.Replace(OldExactString, NewString);
-        File.WriteAllText(targetPath, content);
+        content = StringUtility.ReplaceContent(content, matchFinal.Index, matchFinal.Length, NewString);
+        File.WriteAllText(fullPath, content);
 
         return Task.FromResult(new Output
         {
-            FilePath = targetPath,
-            Message = $"Successfully replaced string in file: {targetPath}",
+            FilePath = relativePath,
+            Message = $"Successfully replaced string in file: {relativePath}",
         });
     }
 }

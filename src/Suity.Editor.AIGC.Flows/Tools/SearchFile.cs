@@ -79,22 +79,19 @@ public class SearchFile : ToolCommand<SearchFile.Output>
             throw new ArgumentException("Query is not set");
         }
 
-        string targetPath = string.IsNullOrWhiteSpace(DirPath) ? workspaceDir : DirPath.TrimStart('/', '\\');
+        string relativePath = string.IsNullOrWhiteSpace(DirPath) ? "" : DirPath.TrimStart('/', '\\');
+        string fullPath = string.IsNullOrWhiteSpace(relativePath) ? workspaceDir : relativePath;
         string outputBasePath = workspaceDir;
         bool useRelativeOutput = !string.IsNullOrWhiteSpace(DirPath) && !Path.IsPathRooted(DirPath);
 
-        if (targetPath == "/" || targetPath == "\\" || string.IsNullOrEmpty(targetPath))
+        if (!string.IsNullOrWhiteSpace(relativePath) && !Path.IsPathRooted(relativePath))
         {
-            targetPath = workspaceDir;
-        }
-        else if (!Path.IsPathRooted(targetPath))
-        {
-            targetPath = Path.Combine(workspaceDir, targetPath);
+            fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
-        if (!Directory.Exists(targetPath))
+        if (!Directory.Exists(fullPath))
         {
-            throw new DirectoryNotFoundException($"Directory not found: {targetPath}");
+            throw new DirectoryNotFoundException($"Directory not found: {relativePath}");
         }
 
         HashSet<string> extensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -115,7 +112,7 @@ public class SearchFile : ToolCommand<SearchFile.Output>
         var results = new List<string>();
         int totalMatches = 0;
 
-        SearchDirectory(targetPath, outputBasePath, useRelativeOutput, searchQuery, extensions, results, ref totalMatches);
+        SearchDirectory(fullPath, outputBasePath, useRelativeOutput, searchQuery, extensions, results, ref totalMatches);
 
         return Task.FromResult(new Output
         {

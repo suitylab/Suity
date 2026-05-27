@@ -63,20 +63,17 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
             throw new NullReferenceException("Workspace directory is not set");
         }
 
-        string targetPath = string.IsNullOrWhiteSpace(Path) ? workspaceDir : Path.TrimStart('/', '\\');
+        string relativePath = string.IsNullOrWhiteSpace(Path) ? "" : Path.TrimStart('/', '\\');
+        string fullPath = string.IsNullOrWhiteSpace(relativePath) ? workspaceDir : relativePath;
 
-        if (targetPath == "/" || targetPath == "\\" || string.IsNullOrEmpty(targetPath))
+        if (!string.IsNullOrWhiteSpace(relativePath) && !System.IO.Path.IsPathRooted(relativePath))
         {
-            targetPath = workspaceDir;
-        }
-        else if (!System.IO.Path.IsPathRooted(targetPath))
-        {
-            targetPath = System.IO.Path.Combine(workspaceDir, targetPath);
+            fullPath = System.IO.Path.Combine(workspaceDir, relativePath);
         }
 
-        if (!Directory.Exists(targetPath))
+        if (!Directory.Exists(fullPath))
         {
-            throw new DirectoryNotFoundException($"Directory not found: {targetPath}");
+            throw new DirectoryNotFoundException($"Directory not found: {relativePath}");
         }
 
         int depthLimit = MaxDepth;
@@ -91,7 +88,7 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
             }
         }
 
-        string tree = BuildDirectoryTree(targetPath, depthLimit, ignoreSet, 0);
+        string tree = BuildDirectoryTree(fullPath, depthLimit, ignoreSet, 0);
 
         return Task.FromResult(new Output
         {

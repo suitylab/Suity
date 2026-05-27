@@ -230,6 +230,7 @@ public class GetTaskChatHistory : TaskPageNode
     readonly FlowNodeConnector _chatHistory;
 
     readonly ValueProperty<bool> _inHierarchy = new("InHierarchy", "In Hierarchy", false, "If enabled, includes chat history from parent tasks.");
+    readonly ValueProperty<int> _hierarchyLimit = new("HierarchyLimit", "Hierarchy Limit", 1, "Maximum number of parent levels to include in the hierarchy.");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GetTaskChatHistory"/> class.
@@ -246,6 +247,7 @@ public class GetTaskChatHistory : TaskPageNode
         base.OnSync(sync, context);
 
         _inHierarchy.Sync(sync);
+        _hierarchyLimit.Sync(sync);
     }
 
     /// <inheritdoc/>
@@ -254,15 +256,20 @@ public class GetTaskChatHistory : TaskPageNode
         base.OnSetupView(setup);
 
         _inHierarchy.InspectorField(setup);
+        if (_inHierarchy)
+        {
+            _hierarchyLimit.InspectorField(setup);
+        }
     }
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
         bool inHierarchy = _inHierarchy.Value;
+        int level = inHierarchy ? _hierarchyLimit.Value : 0;
 
         var taskService = compute.Context.GetArgument<IAigcWorkflowPage>();
-        var history = taskService?.GetChatHistory(inHierarchy) ?? [];
+        var history = taskService?.GetChatHistory(level) ?? [];
 
         compute.SetValue(_chatHistory, history);
     }

@@ -119,20 +119,23 @@ public void SetupView(IViewObjectSetup setup)
 
             try
             {
-string targetPath = item.FilePath.TrimStart('/', '\\');
+                string relativePath = item.FilePath.TrimStart('/', '\\');
+                string fullPath = relativePath;
 
-                if (!Path.IsPathRooted(targetPath))
+                if (!Path.IsPathRooted(relativePath))
                 {
-                    targetPath = Path.Combine(workspaceDir, targetPath);
+                    fullPath = Path.Combine(workspaceDir, relativePath);
                 }
 
-                if (!File.Exists(targetPath))
+                result.FilePath = relativePath;
+
+                if (!File.Exists(fullPath))
                 {
                     result.Error = "File not found";
                 }
                 else
                 {
-                    var lines = File.ReadAllLines(targetPath);
+                    var lines = File.ReadAllLines(fullPath);
                     int totalLines = lines.Length;
 
                     string content;

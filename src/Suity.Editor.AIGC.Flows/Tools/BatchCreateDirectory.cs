@@ -121,22 +121,24 @@ public class BatchCreateDirectory : ToolCommand<BatchCreateDirectory.Output>
 
             try
             {
-                string targetPath = item.DirectoryPath.TrimStart('/', '\\');
+                string relativePath = item.DirectoryPath.TrimStart('/', '\\');
+                string fullPath = relativePath;
 
-                if (!Path.IsPathRooted(targetPath))
+                if (!Path.IsPathRooted(relativePath))
                 {
-                    targetPath = Path.Combine(workspaceDir, targetPath);
+                    fullPath = Path.Combine(workspaceDir, relativePath);
                 }
 
-                if (Directory.Exists(targetPath))
+                result.DirectoryPath = relativePath;
+
+                if (Directory.Exists(fullPath))
                 {
                     result.Status = "Failed";
                     result.Error = "Directory already exists";
-                    failCount++;
                 }
                 else
                 {
-                    Directory.CreateDirectory(targetPath);
+                    Directory.CreateDirectory(fullPath);
                     result.Status = "Created";
                     successCount++;
                 }

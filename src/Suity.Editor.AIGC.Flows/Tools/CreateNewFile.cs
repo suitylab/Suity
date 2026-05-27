@@ -66,30 +66,31 @@ public class CreateNewFile : ToolCommand<CreateNewFile.Output>
             throw new ArgumentException("FilePath is not set");
         }
 
-        string targetPath = FilePath.TrimStart('/', '\\');
+        string relativePath = FilePath.TrimStart('/', '\\');
+        string fullPath = relativePath;
 
-        if (!Path.IsPathRooted(targetPath))
+        if (!Path.IsPathRooted(relativePath))
         {
-            targetPath = Path.Combine(workspaceDir, targetPath);
+            fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
-        if (File.Exists(targetPath))
+        if (File.Exists(fullPath))
         {
-            throw new InvalidOperationException($"File already exists: {targetPath}. Use a modify tool instead to update existing files.");
+            throw new InvalidOperationException($"File already exists: {relativePath}. Use a modify tool instead to update existing files.");
         }
 
-        string dir = Path.GetDirectoryName(targetPath);
+        string dir = Path.GetDirectoryName(fullPath);
         if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
         {
             Directory.CreateDirectory(dir);
         }
 
-        File.WriteAllText(targetPath, Content);
+        File.WriteAllText(fullPath, Content);
 
         return Task.FromResult(new Output
         {
-            FilePath = targetPath,
-            Message = $"Successfully created file: {targetPath}",
+            FilePath = relativePath,
+            Message = $"Successfully created file: {relativePath}",
         });
     }
 }

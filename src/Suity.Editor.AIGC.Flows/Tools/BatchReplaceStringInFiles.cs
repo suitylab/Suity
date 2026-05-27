@@ -139,14 +139,17 @@ public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.O
 
             try
             {
-string targetPath = filePath.TrimStart('/', '\\');
+                string relativePath = filePath.TrimStart('/', '\\');
+                string fullPath = relativePath;
 
-                if (!Path.IsPathRooted(targetPath))
+                if (!Path.IsPathRooted(relativePath))
                 {
-                    targetPath = Path.Combine(workspaceDir, targetPath);
+                    fullPath = Path.Combine(workspaceDir, relativePath);
                 }
 
-                if (!File.Exists(targetPath))
+                result.FilePath = relativePath;
+
+                if (!File.Exists(fullPath))
                 {
                     result.Status = "Failed";
                     result.Error = "File not found";
@@ -155,7 +158,7 @@ string targetPath = filePath.TrimStart('/', '\\');
                     continue;
                 }
 
-                string content = File.ReadAllText(targetPath);
+                string content = File.ReadAllText(fullPath);
 
                 foreach (var mod in group)
                 {
@@ -166,10 +169,15 @@ string targetPath = filePath.TrimStart('/', '\\');
 
                     int matchCount = 0;
                     int index = 0;
-                    while ((index = content.IndexOf(mod.OldExactString, index, StringComparison.Ordinal)) != -1)
+                    StringUtility.MatchResult matchFinal = StringUtility.MatchResult.NotFound;
+                    StringUtility.MatchResult match = StringUtility.FuzzyMatch(content, mod.OldExactString, index);
+                    while (match.Found)
                     {
                         matchCount++;
-                        index += mod.OldExactString.Length;
+                        if (matchCount == 1)
+                            matchFinal = match;
+                        index = match.Index + match.Length;
+                        match = StringUtility.FuzzyMatch(content, mod.OldExactString, index);
                     }
 
                     if (matchCount == 0)
@@ -186,11 +194,11 @@ string targetPath = filePath.TrimStart('/', '\\');
                         continue;
                     }
 
-                    content = content.Replace(mod.OldExactString, mod.NewString);
+                    content = StringUtility.ReplaceContent(content, matchFinal.Index, matchFinal.Length, mod.NewString);
                     replacementsInFile++;
                 }
 
-                File.WriteAllText(targetPath, content);
+                File.WriteAllText(fullPath, content);
                 result.Status = replacementsInFile > 0 ? "Modified" : "No Changes";
                 result.ReplacementsMade = replacementsInFile;
 

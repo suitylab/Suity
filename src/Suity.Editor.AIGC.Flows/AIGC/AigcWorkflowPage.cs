@@ -803,7 +803,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     }
 
     /// <inheritdoc/>
-    public LLmMessage[] GetChatHistory(bool inHierarchy)
+    public LLmMessage[] GetChatHistory(int hierarchyLevels)
     {
         if (GetDocument() is not AigcTaskPageDocument doc)
         {
@@ -812,12 +812,12 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         LinkedList<LLmMessage> list = [];
 
-        CollectChatHistory(list, inHierarchy, doc.MaxChatHistory, false);
+        CollectChatHistory(list, doc.MaxChatHistory, false, hierarchyLevels);
 
         return [.. list];
     }
 
-    private void CollectChatHistory(LinkedList<LLmMessage> list, bool inHierarchy, int maxHistory, bool includeSelf)
+    private void CollectChatHistory(LinkedList<LLmMessage> list, int maxHistory, bool includeSelf, int hierarchyLevel = 0)
     {
         int index = this.GetIndex();
         if (index < 0 || index >= ParentList.Count)
@@ -882,9 +882,9 @@ public class AigcWorkflowPage : AigcTaskPage,
             return;
         }
 
-        if (inHierarchy && ParentNode is AigcWorkflowPage parent)
+        if (hierarchyLevel > 0 && ParentNode is AigcWorkflowPage parent)
         {
-            parent.CollectChatHistory(list, true, maxHistory, true);
+            parent.CollectChatHistory(list, maxHistory, true, hierarchyLevel - 1);
         }
     }
 

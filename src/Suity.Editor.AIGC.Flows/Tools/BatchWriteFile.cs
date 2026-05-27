@@ -130,24 +130,27 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
 
             try
             {
-                string targetPath = item.FilePath.TrimStart('/', '\\');
+                string relativePath = item.FilePath.TrimStart('/', '\\');
+                string fullPath = relativePath;
 
-                if (!Path.IsPathRooted(targetPath))
+                if (!Path.IsPathRooted(relativePath))
                 {
-                    targetPath = Path.Combine(workspaceDir, targetPath);
+                    fullPath = Path.Combine(workspaceDir, relativePath);
                 }
 
-                if (File.Exists(targetPath))
+                result.FilePath = relativePath;
+
+                if (File.Exists(fullPath))
                 {
                     if (OverwriteFile)
                     {
-                        string dir = Path.GetDirectoryName(targetPath);
+                        string dir = Path.GetDirectoryName(fullPath);
                         if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                         {
                             Directory.CreateDirectory(dir);
                         }
 
-                        File.WriteAllText(targetPath, item.Content);
+                        File.WriteAllText(fullPath, item.Content);
                         result.Status = "Overwritten";
                         successCount++;
                     }
@@ -160,13 +163,13 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
                 }
                 else
                 {
-                    string dir = Path.GetDirectoryName(targetPath);
+                    string dir = Path.GetDirectoryName(fullPath);
                     if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                     {
                         Directory.CreateDirectory(dir);
                     }
 
-                    File.WriteAllText(targetPath, item.Content);
+                    File.WriteAllText(fullPath, item.Content);
                     result.Status = "Created";
                     successCount++;
                 }

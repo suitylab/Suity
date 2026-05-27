@@ -133,14 +133,17 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
 
             try
             {
-string targetPath = patchItem.FilePath.TrimStart('/', '\\');
+                string relativePath = patchItem.FilePath.TrimStart('/', '\\');
+                string fullPath = relativePath;
 
-                if (!Path.IsPathRooted(targetPath))
+                if (!Path.IsPathRooted(relativePath))
                 {
-                    targetPath = Path.Combine(workspaceDir, targetPath);
+                    fullPath = Path.Combine(workspaceDir, relativePath);
                 }
 
-                if (!File.Exists(targetPath))
+                result.FilePath = relativePath;
+
+                if (!File.Exists(fullPath))
                 {
                     result.Status = "Failed";
                     result.Error = "File not found";
@@ -158,13 +161,13 @@ string targetPath = patchItem.FilePath.TrimStart('/', '\\');
                     continue;
                 }
 
-                var lines = File.ReadAllLines(targetPath).ToList();
+                var lines = File.ReadAllLines(fullPath).ToList();
                 var diffLines = patchItem.DiffContent.Split('\n').Select(l => l.TrimEnd('\r')).ToList();
 
                 var patches = ParseUnifiedDiff(diffLines);
                 hunksApplied = ApplyPatchesToLines(lines, patches);
 
-                File.WriteAllLines(targetPath, lines);
+                File.WriteAllLines(fullPath, lines);
                 result.Status = "Applied";
                 result.HunksApplied = hunksApplied;
                 successCount++;
@@ -218,9 +221,12 @@ string targetPath = patchItem.FilePath.TrimStart('/', '\\');
                             char prefix = diffLine[0];
                             string content = diffLine.Length > 1 ? diffLine.Substring(1) : "";
 
-                            switch (prefix)
+switch (prefix)
                             {
                                 case ' ':
+                                    patch.OldContent.Add(content);
+                                    patch.NewContent.Add(content);
+                                    break;
                                 case '+':
                                     patch.NewContent.Add(content);
                                     break;
@@ -242,7 +248,7 @@ string targetPath = patchItem.FilePath.TrimStart('/', '\\');
         return patches;
     }
 
-    private int ApplyPatchesToLines(List<string> lines, List<DiffPatch> patches)
+private int ApplyPatchesToLines(List<string> lines, List<DiffPatch> patches)
     {
         int hunksApplied = 0;
         int offset = 0;
@@ -253,11 +259,25 @@ string targetPath = patchItem.FilePath.TrimStart('/', '\\');
 
             if (adjustedStart < 0 || adjustedStart >= lines.Count)
             {
-                continue;
+                throw new InvalidOperationException($"Invalid patch: start line {patch.StartLine} is out of range (file has {lines.Count} lines)");
             }
 
             int removeCount = patch.OldLines;
             int insertCount = patch.NewContent.Count;
+
+            if (adjustedStart + removeCount > lines.Count)
+            {
+                throw new InvalidOperationException($"Patch tries to remove {removeCount} lines at {adjustedStart + 1}, but file only has {lines.Count} lines");
+            }
+
+            List<string> actualContent = lines.GetRange(adjustedStart, removeCount);
+            if (!actualContent.SequenceEqual(patch.OldContent))
+            {
+                throw new InvalidOperationException(
+                    $"Patch content mismatch at line {patch.StartLine}: " +
+                    $"expected lines do not match file content. " +
+                    $"Patch may be outdated or incorrectly generated.");
+            }
 
             lines.RemoveRange(adjustedStart, removeCount);
             lines.InsertRange(adjustedStart, patch.NewContent);

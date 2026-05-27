@@ -18,7 +18,7 @@ namespace Suity.Editor.Flows.Nodes;
 /// A flow node that holds and outputs a configurable value of a user-selected type.
 /// </summary>
 [SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
-[DisplayText("Input Value", "*CoreIcon|Value")]
+[DisplayText("Source Value", "*CoreIcon|Value")]
 [NativeAlias("Suity.Editor.Flows.Nodes.ValueNode")]
 [NativeAlias("Suity.Editor.Flows.Nodes.InputValue")]
 public class SourceValue : ValueFlowNode, IViewDoubleClickAction

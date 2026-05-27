@@ -243,9 +243,9 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     /// <summary>
     /// Gets the chat history for this task, optionally including parent hierarchy.
     /// </summary>
-    /// <param name="inHierarchy">If true, includes chat history from parent tasks.</param>
+    /// <param name="hierarchyLevels">The number of parent levels to include in the chat history. If 0, disables hierarchy inclusion.</param>
     /// <returns>An array of LLM messages representing the chat history.</returns>
-    LLmMessage[] GetChatHistory(bool inHierarchy);
+    LLmMessage[] GetChatHistory(int hierarchyLevels = 0);
 
     /// <summary>
     /// Gets the list of available tools for this task page.

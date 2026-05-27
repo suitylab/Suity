@@ -120,21 +120,22 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
             throw new ArgumentException("ReplaceItems is empty");
         }
 
-        string targetPath = FilePath.TrimStart('/', '\\');
+        string relativePath = FilePath.TrimStart('/', '\\');
+        string fullPath = relativePath;
 
-        if (!Path.IsPathRooted(targetPath))
+        if (!Path.IsPathRooted(relativePath))
         {
-            targetPath = Path.Combine(workspaceDir, targetPath);
+            fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
-        if (!File.Exists(targetPath))
+        if (!File.Exists(fullPath))
         {
-            throw new FileNotFoundException($"File not found: {targetPath}");
+            throw new FileNotFoundException($"File not found: {relativePath}");
         }
 
-        string content = File.ReadAllText(targetPath);
+        string content = File.ReadAllText(fullPath);
 
-        var output = new Output { FilePath = targetPath };
+        var output = new Output { FilePath = relativePath };
 
         foreach (var item in ReplaceItems)
         {
@@ -166,7 +167,7 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
             output.Results.Add(result);
         }
 
-        File.WriteAllText(targetPath, content);
+        File.WriteAllText(fullPath, content);
 
         return Task.FromResult(output);
     }

@@ -54,23 +54,20 @@ public class ListDirectory : ToolCommand<ListDirectory.Output>
             throw new NullReferenceException("Workspace directory is not set");
         }
 
-        string targetPath = string.IsNullOrWhiteSpace(DirPath) ? workspaceDir : DirPath.TrimStart('/', '\\');
+        string relativePath = string.IsNullOrWhiteSpace(DirPath) ? "" : DirPath.TrimStart('/', '\\');
+        string fullPath = string.IsNullOrWhiteSpace(relativePath) ? workspaceDir : relativePath;
 
-        if (targetPath == "/" || targetPath == "\\" || string.IsNullOrEmpty(targetPath))
+        if (!string.IsNullOrWhiteSpace(relativePath) && !Path.IsPathRooted(relativePath))
         {
-            targetPath = workspaceDir;
-        }
-        else if (!Path.IsPathRooted(targetPath))
-        {
-            targetPath = Path.Combine(workspaceDir, targetPath);
+            fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
-        if (!Directory.Exists(targetPath))
+        if (!Directory.Exists(fullPath))
         {
-            throw new DirectoryNotFoundException($"Directory not found: {targetPath}");
+            throw new DirectoryNotFoundException($"Directory not found: {relativePath}");
         }
 
-        var dirInfo = new DirectoryInfo(targetPath);
+        var dirInfo = new DirectoryInfo(fullPath);
         var entries = dirInfo.GetFileSystemInfos()
             .OrderBy(f => f is DirectoryInfo ? 0 : 1)
             .ThenBy(f => f.Name);
