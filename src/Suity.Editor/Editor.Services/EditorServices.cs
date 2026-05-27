@@ -177,7 +177,7 @@ public static class EditorServices
 
     #endregion
 
-    #region IDocumentDialogService
+    #region IEditorSystemService
 
     private static readonly ServiceStore<IEditorSystemService> _editorSystem = new();
 

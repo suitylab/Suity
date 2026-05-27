@@ -1,12 +1,13 @@
 ﻿using Suity.Editor.AIGC.StreamUpdaters;
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.Flows.Nodes;
+namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("RunShellCommand", CodeBase = "*Suity", Icon = "*CoreIcon|System")]
 [DisplayText("Run shell command")]
@@ -72,7 +73,7 @@ public class RunShellCommand : ToolCommand<RunShellCommand.Output>
                 msg.AddCode(command);
             });
 
-            string output = await RunShellCommandNode.ExecuteCommandAsync(command, directory, onOutput, context.Cancellation);
+            string output = await EditorServices.EditorSystem.ExecuteCommandAsync(command, directory, onOutput, context.Cancellation);
             return new Output
             {
                 Result = output,
