@@ -7,10 +7,10 @@
   <Icon />
   <Nodes>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-290" Y="-70" Width="140" Height="120">
-      <Name>DevAgent</Name>
-      <AssetId>f1400a9d-9d22-4033-a1ce-7c7652b652a8</AssetId>
+      <Name>DevSubTask</Name>
+      <AssetId>7a02931d-8f9d-47a5-bd2b-b4b51e1c4852</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
-        <Name>DevAgent</Name>
+        <Name>DevSubTask</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
         <Tools />
@@ -70,7 +70,7 @@
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
         <Page>
-          <Id>f1400a9d-9d22-4033-a1ce-7c7652b652a8</Id>
+          <Id>7a02931d-8f9d-47a5-bd2b-b4b51e1c4852</Id>
         </Page>
       </Node>
     </Item>
@@ -181,7 +181,7 @@
     <Item>
       <FromNode>DevAgent_End</FromNode>
       <FromConnector>Definition</FromConnector>
-      <ToNode>DevAgent</ToNode>
+      <ToNode>DevSubTask</ToNode>
       <ToConnector>Result</ToConnector>
     </Item>
     <Item>

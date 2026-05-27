@@ -61,4 +61,5 @@ Failed reason
 - When call tool, only call <tool_action> once per turn.
 - Tool usage MUST be justified by Skill Description.
 - If request out-of-scope: clarify in <failed>, do not proceed.
+- **ONLY Output <reasoning> tag and execution tag and nothing ELSE.**
 - Output speech language: {{SPEECH_LANGUAGE}}.

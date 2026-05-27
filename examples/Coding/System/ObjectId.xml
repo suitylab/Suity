@@ -13,6 +13,7 @@
   <Object id="38ca77a8-d9d2-44e3-b77d-ad8d6baf80bd" name="Workflows/Rules/Html_Simple.md" />
   <Object id="b5af5156-628d-43bb-9b7f-13bcb5026008" name="Workflows/Rules/Html_TypeScript.md" />
   <Object id="dfb27678-d6d0-4ed5-b780-ad7a12f24358" name="Workflows/Workers/Analyzer.md" />
+  <Object id="bc29d645-a31e-45f1-9837-44a439f29f1e" name="Workflows/Workers/Builder.md" />
   <Object id="fd149294-e8c2-4f97-b72e-07e797763714" name="Workflows/Workers/Creator-Karpathy.md" />
   <Object id="94ba10b5-997a-405e-8d5f-c7bbe9bb4ae6" name="Workflows/Workers/Creator.md" />
   <Object id="cba19d62-b599-417f-88f4-45291e8cc706" name="Workflows/Workers/Editor.md" />

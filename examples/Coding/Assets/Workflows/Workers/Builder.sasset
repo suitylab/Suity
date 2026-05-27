@@ -1,12 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>2afdc6a8-89a3-4353-bbe5-3057b26092ea</AssetId>
+  <AssetId>bbed54a7-a445-4ff1-8ca8-ab1f4f4789d3</AssetId>
   <PresetName>
   </PresetName>
   <BaseWorkflow>
     <Id>37633c8a-a701-4199-bdbd-45b9d033cacd</Id>
   </BaseWorkflow>
   <Tools>
+    <Item>
+      <Id>f854c935-76c6-41a2-a851-1fa584103218</Id>
+    </Item>
+    <Item>
+      <Id>94f79c75-007b-41a5-a503-95e81dc81fdf</Id>
+    </Item>
+    <Item>
+      <Id>7faac8aa-cc50-44f3-9b4d-6e6f4a35d2ed</Id>
+    </Item>
     <Item>
       <Id>b00e2853-29c5-49b8-a1f0-82482317672c</Id>
     </Item>
@@ -16,27 +25,22 @@
     <Item>
       <Id>f41b5f0b-24d9-4f60-97d2-242cbdf7357b</Id>
     </Item>
-    <Item>
-      <Id>2ae343de-b225-497c-91ee-b88dab89d01b</Id>
-    </Item>
   </Tools>
   <Overview>
-    <Text>This skill can analyze, edit an existing app.</Text>
+    <Text>This skill can create an app from scratch</Text>
   </Overview>
   <UserInputHint>
     <Text>
     </Text>
   </UserInputHint>
   <Skill>
-    <Id>0fc0cced-e3fa-4d06-a8e2-e75891d4c460</Id>
+    <Id>bc29d645-a31e-45f1-9837-44a439f29f1e</Id>
   </Skill>
-  <Rule>
-    <Id>b5af5156-628d-43bb-9b7f-13bcb5026008</Id>
-  </Rule>
+  <Rule />
   <Description>
   </Description>
   <Icon>
-    <Id>f2db9555-be16-4bbd-abcd-2b9dfc5988cd</Id>
+    <Id>af9883b9-fa66-42d9-92db-f62d80789d85</Id>
   </Icon>
   <Page>
     <__preset__ />

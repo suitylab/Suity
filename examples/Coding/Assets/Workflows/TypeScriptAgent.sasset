@@ -4,9 +4,12 @@
   <PresetName>
   </PresetName>
   <BaseWorkflow>
-    <Id>f1400a9d-9d22-4033-a1ce-7c7652b652a8</Id>
+    <Id>f5ebe8d7-d9c2-4a70-8c27-ffb6ef26d32b</Id>
   </BaseWorkflow>
   <Tools>
+    <Item>
+      <Id>bbed54a7-a445-4ff1-8ca8-ab1f4f4789d3</Id>
+    </Item>
     <Item>
       <Id>2afdc6a8-89a3-4353-bbe5-3057b26092ea</Id>
     </Item>

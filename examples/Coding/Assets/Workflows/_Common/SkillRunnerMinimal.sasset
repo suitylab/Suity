@@ -6,7 +6,7 @@
   </Description>
   <Icon />
   <Nodes>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-470" Y="-200" Width="160" Height="100">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-470" Y="-200" Width="160" Height="140">
       <Name>SkillRunnerMinimal</Name>
       <AssetId>37633c8a-a701-4199-bdbd-45b9d033cacd</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
@@ -50,7 +50,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-120" Y="-60" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-120" Y="-60" Width="38" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -140,7 +140,7 @@
         <TaskCommit>True</TaskCommit>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-460" Y="-130" Width="52" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-460" Y="-110" Width="52" Height="17">
       <Name>TaskBegin</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
         <Name>TaskBegin</Name>
@@ -268,7 +268,7 @@
         <Type>Planning</Type>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputItem" X="-460" Y="-150" Width="45" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputItem" X="-460" Y="-130" Width="45" Height="17">
       <Name>Prompt</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputNode">
         <Name>Prompt</Name>
@@ -585,7 +585,7 @@
         </Message>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-370" Y="-40" Width="47" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-220" Y="-80" Width="47" Height="17">
       <Name>###GetTaskLastPrompt01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetTaskLastPrompt" />
     </Item>
@@ -633,12 +633,34 @@
         <Name>ModelType</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Required>False</Required>
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>0ac6f83c-530d-48aa-b62c-6f276360379f</Id>
         </ValueType>
         <Value type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">
           <Id>7d8cfc15-87ea-4994-b2db-e6e165641a0e</Id>
         </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PagePresetParameterItem" X="-460" Y="-150" Width="64" Height="17">
+      <Name>LLmCallOption</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PagePresetParameterNode">
+        <Name>LLmCallOption</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Required>False</Required>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>2e1c0e46-cba9-40a3-8ef9-aef1549eb0d1</Id>
+        </ValueType>
+        <Value type="Suity.Editor.Flows.AIGC.LLmCallOptionEx" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-280" Width="28" Height="17">
+      <Name>###PassValue02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>2e1c0e46-cba9-40a3-8ef9-aef1549eb0d1</Id>
+        </DataType>
       </Node>
     </Item>
   </Nodes>
@@ -1039,6 +1061,18 @@
       <FromConnector>Out</FromConnector>
       <ToNode>###GetGlobalLLmModel01</ToNode>
       <ToConnector>Type</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>LLmCallOption</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###PassValue02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>CallOptionEx</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

@@ -60,7 +60,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="300" Y="-130" Width="136" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="300" Y="-130" Width="136" Height="107">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -71,7 +71,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="-20" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="-20" Width="38" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -87,13 +87,13 @@
       <Name>###GetPageToolPagesNode02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="740" Y="110" Width="191" Height="78">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="740" Y="110" Width="187" Height="74">
       <Name>###ParseTagToolCallingNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.ParseTagToPageInstance">
         <AttributeName>name</AttributeName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="740" Y="250" Width="134" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="740" Y="250" Width="130" Height="107">
       <Name>###AddSubTaskPageNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
         <PageTitle>
@@ -112,14 +112,14 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-20" Width="111" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-20" Width="107" Height="52">
       <Name>###SetPageTitleNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.SetPageTitle">
         <Title>
         </Title>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-130" Width="119" Height="67">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-130" Width="115" Height="63">
       <Name>###ExtractXmlsTagNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
         <TagNames>
@@ -190,7 +190,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="160" Y="-100" Width="107" Height="89">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="160" Y="-100" Width="103" Height="85">
       <Name>###BuildPrompt01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
@@ -206,7 +206,7 @@
         <UpdateKeywords>False</UpdateKeywords>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="50" Width="150" Height="67">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="50" Width="146" Height="63">
       <Name>###ExtractXmlsTagAction01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagAction">
         <TagNames>
@@ -451,12 +451,6 @@
       <ToConnector>Model</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetPageToolPagesNode01</FromNode>
-      <FromConnector>Tools</FromConnector>
-      <ToNode>###BuildPrompt01</ToNode>
-      <ToConnector>k_TOOLS</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetCurrentPresetSkill01</FromNode>
       <FromConnector>Skill</FromConnector>
       <ToNode>###BuildPrompt01</ToNode>
@@ -473,6 +467,12 @@
       <FromConnector>Tools</FromConnector>
       <ToNode>###ParseTagToolCallingNode01</ToNode>
       <ToConnector>ToolPages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetPageToolPagesNode01</FromNode>
+      <FromConnector>Tools</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_TOOLS</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

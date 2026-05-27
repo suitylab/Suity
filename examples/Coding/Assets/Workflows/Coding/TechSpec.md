@@ -16,9 +16,16 @@ Focus on software architecture, logic flow, data model design, API design, UI de
 
 # OUTPUT FORMAT RULES
 - You MUST output the generated outline using multiple `<section>` tags as follows:
-<section title='section title'>
+<section title='section title 1'>
 ...
 </section>
+
+<section title='section title 2'>
+...
+</section>
+
+...
+
 
 - Each major section of the Technical Specification MUST be wrapped in its own `<section>` tag. 
 - Create title for each outline section and set the `title` attribute.
