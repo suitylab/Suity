@@ -36,6 +36,8 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     readonly ValueProperty<int> _maxChatHistory = new("MaxChatHistory", "Max Chat History", 30, "Maximum number of chat history entries to keep, <=0 means unlimited");
     readonly ValueProperty<int> _maxTaskCount = new("MaxTaskCount", "Max Task Count", 0, "Maximum number of tasks supported, <=0 means unlimited");
 
+    readonly ValueProperty<bool> _autoFocusRunningTask = new("AutoFocusRunningTask", "Auto Focus Running Task", true, "Automatically focus the running task when it starts.");
+
     /// <summary>
     /// Initializes a new instance of the <see cref="AigcTaskPageDocument"/> class.
     /// </summary>
@@ -100,6 +102,19 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     /// Gets the list of configured tool pages, excluding null entries.
     /// </summary>
     public IPageAsset[] GetToolList() => ToolPages.SkipNull().ToArray() ?? [];
+
+    public bool AutoFocusRunningTask
+    {
+        get => _autoFocusRunningTask.Value;
+        set
+        {
+            if (value != _autoFocusRunningTask.Value)
+            {
+                _autoFocusRunningTask.Value = value;
+                // MarkDirtyAndSaveDelayed(this);
+            }
+        }
+    }
 
     #endregion
 
@@ -259,6 +274,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
         _knowledgeArticles.Sync(sync);
         _maxChatHistory.Sync(sync);
         _maxTaskCount.Sync(sync);
+        _autoFocusRunningTask.Sync(sync);
     }
 
     /// <inheritdoc/>

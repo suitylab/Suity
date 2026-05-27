@@ -133,6 +133,7 @@ public class PagePresetParameterNode : SubFlowTypeNode
     {
         Value = NativeTypes.StringType.CreateOrRepairValue(Value, false);
 
+        base.Optional = true;
         base.FlowNodeGui = OnGui;
 
         UpdateConnector();

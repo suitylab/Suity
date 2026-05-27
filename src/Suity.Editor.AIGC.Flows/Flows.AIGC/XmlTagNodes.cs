@@ -52,6 +52,11 @@ public class ExtractXmlsTag : AigcXmlNode
 
         _tagNames.Sync(sync);
         _isArray.Sync(sync);
+
+        if (sync.IsSetterOf(_isArray.Property.Name))
+        {
+            UpdateConnectorQueued();
+        }
     }
 
     /// <inheritdoc/>
@@ -183,6 +188,11 @@ public class ExtractXmlsTagAction : AigcXmlNode
 
         _tagNames.Sync(sync);
         _isArray.Sync(sync);
+
+        if (sync.IsSetterOf(_isArray.Property.Name))
+        {
+            UpdateConnectorQueued();
+        }
     }
 
     /// <inheritdoc/>

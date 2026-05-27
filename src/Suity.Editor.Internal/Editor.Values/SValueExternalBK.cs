@@ -158,10 +158,10 @@ internal sealed class SValueExternalBK : SValueExternal
                 return editedType ?? typeof(SObject);
 
             case TypeRelationships.None:
-                return typeof(void);
+                return typeInfo.Target?.NativeType;
 
             default:
-                return null;
+                return typeInfo.Target?.NativeType;
         }
     }
 
@@ -1128,6 +1128,11 @@ internal sealed class SValueExternalBK : SValueExternal
         if (TryConvertValue(typeInfo, value, nullable, out object result))
         {
             return result;
+        }
+
+        if (nullable && value is null && (typeInfo.IsAnyStruct || typeInfo.Relationship == TypeRelationships.None))
+        {
+            return null;
         }
 
         return CreateDefaultValue(typeInfo);

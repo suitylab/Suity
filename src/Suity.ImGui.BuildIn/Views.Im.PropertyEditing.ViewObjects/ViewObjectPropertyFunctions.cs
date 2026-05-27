@@ -1,6 +1,5 @@
 using Suity.Collections;
 using Suity.Editor;
-using Suity.Editor.Values;
 using Suity.Selecting;
 using Suity.Synchonizing;
 using Suity.Synchonizing.Core;

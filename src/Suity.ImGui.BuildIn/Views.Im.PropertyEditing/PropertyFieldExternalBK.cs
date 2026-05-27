@@ -85,8 +85,9 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
                 }
 
                 target.RowFunction ??=
-                        provider?.GetRowFunction(commonType, target.PresetType)
-                        ?? PropertyEditorProviderBK.Instance.GetRowFunction(commonType, target.PresetType);
+                    provider?.GetRowFunction(commonType, target.PresetType)
+                    ?? PropertyEditorProviderBK.Instance.GetRowFunction(commonType, target.PresetType);
+
             } while (false);
 
             target.RowFunction ??= UnknownPropertyField;

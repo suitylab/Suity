@@ -384,7 +384,7 @@ public static class CoreIconCache
 
     public static BitmapDef LocalVariable { get; } = CoreIcon.LocalVariable.ToBitmap();
 
-    public static BitmapDef Verify { get; } = CoreIcon.Verify.ToBitmap();
+    public static BitmapDef Lock { get; } = CoreIcon.Lock.ToBitmap();
 
     public static BitmapDef Log { get; } = CoreIcon.Log.ToBitmap();
 
@@ -703,6 +703,8 @@ public static class CoreIconCache
     public static BitmapDef Value { get; } = CoreIcon.Value.ToBitmap();
 
     public static BitmapDef Variable { get; } = CoreIcon.Variable.ToBitmap();
+
+    public static BitmapDef Verify { get; } = CoreIcon.Verify.ToBitmap();
 
     public static BitmapDef View { get; } = CoreIcon.View.ToBitmap();
 

@@ -102,9 +102,6 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     private readonly ValueProperty<bool> _minimalToolSchema
         = new("MinimalToolSchema", "Minimal Tool Schema", true, "Use minimal tool schema representation.");
 
-    private readonly ValueProperty<bool> _autoSelectTask
-         = new("AutoSelectTask", "Auto Select Task", true, "Auto select task when workflow is running.");
-
     private readonly ValueProperty<RetryConfig> _retry
         = new("Retry", "Retry", new(), "Retry when failed.");
 
@@ -134,8 +131,6 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     public override ImageDef Icon => CoreIconCache.Workflow;
 
 
-    public bool AutoSelectTask => _autoSelectTask.Value;
-
     public RetryConfig Retry => _retry.Value;
 
     /// <inheritdoc/>
@@ -159,7 +154,6 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     {
         _useFullName.Sync(sync);
         _minimalToolSchema.Sync(sync);
-        _autoSelectTask.Sync(sync);
         _retry.Sync(sync);
     }
 
@@ -168,7 +162,6 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     {
         _useFullName.InspectorField(setup);
         _minimalToolSchema.InspectorField(setup);
-        _autoSelectTask.InspectorField(setup);
         _retry.InspectorField(setup);
     }
 

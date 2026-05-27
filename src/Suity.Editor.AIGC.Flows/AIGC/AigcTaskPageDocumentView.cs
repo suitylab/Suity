@@ -324,7 +324,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
             .InitWidthPercentage(30)
             .OnContent(() => 
             {
-                gui.Frame("toolBar")
+                gui.HorizontalFrame("toolBar")
                 .InitClass("toolBar")
                 .InitOverridePadding(3)
                 .InitFullWidth()
@@ -352,6 +352,14 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         .OnClick(() =>
                         {
                             Run("-resume");
+                        });
+
+                        gui.ToggleButton("btnAutoFocus", CoreIconCache.Lock, _document?.AutoFocusRunningTask, _document?.AutoFocusRunningTask == true)
+                        .InitClass("simpleBtn")
+                        .SetToolTipsL("Automatically focus the running task when it starts.")
+                        .OnChecked((n, v) => 
+                        {
+                            _document?.AutoFocusRunningTask = v;
                         });
                     }
                 });

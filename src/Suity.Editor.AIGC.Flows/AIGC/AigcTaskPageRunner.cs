@@ -269,7 +269,8 @@ internal class AigcTaskPageRunner : AIAssistant
     /// <returns>A <see cref="TaskRunResult"/> containing the end type and result parameter.</returns>
     private async Task<TaskRunResult> RunTask(AIRequest request, AigcTaskPage task, TaskEventTypes eventType, string commitName, object parameter)
     {
-        if (AigcWorkflowPlugin.Instance.AutoSelectTask)
+        bool autoSelect = task.TaskPageDocument?.AutoFocusRunningTask == true;
+        if (autoSelect)
         {
             SelectTask(task);
         }

@@ -171,9 +171,9 @@ public abstract class BaseOpenAICall : BaseLLmCall
     /// <param name="option">Call options.</param>
     /// <param name="title">Optional title for the call.</param>
     /// <returns>The response text from the API.</returns>
-    public override async Task<string> Call(CancellationToken cancel, LLmModelParameter config, LLmCallOption option = null, string title = null)
+    public override async Task<string?> Call(CancellationToken cancel, LLmModelParameter config, LLmCallOption? option = null, string? title = null)
     {
-        string modelId = base.Model?.ModelId ?? _model ?? throw new AigcException(L("Model Id not set"));
+        string modelId = base.Model.ModelId ?? _model ?? throw new AigcException(L("Model Id not set"));
 
         cancel.ThrowIfCancellationRequested();
 
@@ -192,6 +192,14 @@ public abstract class BaseOpenAICall : BaseLLmCall
         param.MaxTokens = GetValidParamValue(config?.MaxTokens ?? base.MaxTokens);
         param.PresencePenalty = GetValidParamValue(config?.PresencePenalty ?? base.PresencePenalty);
         param.FrequencyPenalty = GetValidParamValue(config?.FrequencyPenalty ?? base.FrequencyPenalty);
+        param.Thinking = new ThinkingConfig
+        {
+            Type = (option?.EnableThinking ?? false) ? "enabled" : "disabled",
+        };
+        if (option?.EnableThinking == true)
+        {
+            param.ReasoningEffort = "high";
+        }
 
         // Handle cases where tool calling is not supported
         if (HasFunction && !Model.SupportToolCalling)

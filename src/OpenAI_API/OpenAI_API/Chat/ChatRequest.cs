@@ -7,6 +7,19 @@ using System.Linq;
 namespace OpenAI_API.Chat
 {
     /// <summary>
+    /// Represents the thinking mode configuration for models like DeepSeek.
+    /// When enabled, the model outputs its reasoning chain before the final answer.
+    /// </summary>
+    public class ThinkingConfig
+    {
+        /// <summary>
+        /// The type of thinking mode. Set to "enabled" or "disabled".
+        /// </summary>
+        [JsonProperty("type")]
+        public string Type { get; set; }
+    }
+
+    /// <summary>
     /// A request to the Chat API. This is similar, but not exactly the same as the <see cref="Completions.CompletionRequest"/>
     /// Based on the <see href="https://platform.openai.com/docs/api-reference/chat">OpenAI API docs</see>
     /// </summary>
@@ -182,6 +195,17 @@ namespace OpenAI_API.Chat
         [JsonProperty("tools")]
         public List<Tool> Tools { get; set; }
 
+
+
+        [JsonProperty("thinking")]
+        public ThinkingConfig Thinking { get; set; }
+
+        /// <summary>
+        /// The effort level for reasoning. For DeepSeek models, use "high" or "max".
+        /// </summary>
+        [JsonProperty("reasoning_effort")]
+        public string ReasoningEffort { get; set; }
+
         /// <summary>
         /// Creates a new, empty <see cref="ChatRequest"/>
         /// </summary>
@@ -209,6 +233,8 @@ namespace OpenAI_API.Chat
             this.LogitBias = basedOn.LogitBias;
             this.Functions = basedOn.Functions;
             this.FunctionCall = basedOn.FunctionCall;
+            this.Thinking = basedOn.Thinking;
+            this.ReasoningEffort = basedOn.ReasoningEffort;
         }
 
         /// <summary>
