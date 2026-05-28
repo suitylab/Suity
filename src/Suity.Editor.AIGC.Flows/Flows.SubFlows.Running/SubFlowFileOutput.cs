@@ -87,8 +87,14 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     public bool IsArray { get; private set; }
 
     /// <inheritdoc/>
-    public HistoryTag ResolveChatHistory()
+    public HistoryTag ResolveChatHistory(ResolveChatIntents intent)
     {
+        var addrMode = AddressMode;
+        if (intent == ResolveChatIntents.Preview)
+        {
+            addrMode = true;
+        }
+
         if (IsArray)
         {
             if (_paths is null)
@@ -98,7 +104,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
 
             var builder = new StringBuilder();
 
-            if (AddressMode)
+            if (addrMode)
             {
                 foreach (var item in _paths)
                 {
@@ -108,7 +114,14 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
                         continue;
                     }
 
-                    builder.AppendLine(path);
+                    if (addrMode != AddressMode)
+                    {
+                        builder.AppendLine($"{path} (NO Preview)");
+                    }
+                    else
+                    {
+                        builder.AppendLine(path);
+                    }
                 }
             }
             else
@@ -132,9 +145,16 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
         }
         else
         {
-            if (AddressMode)
+            if (addrMode)
             {
-                return _path;
+                if (addrMode != AddressMode)
+                {
+                    return $"{_path} (NO Preview)";
+                }
+                else
+                {
+                    return _path;
+                }
             }
             else
             {
@@ -188,12 +208,6 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
             return;
         }
 
-        bool fileExist = GetFileExist(_path);
-        if (!fileExist)
-        {
-            setup.Warning("File not exist.");
-        }
-
         var property = new ViewProperty(Name, DisplayText, Icon)
             .WithStatus(GetStatus());
 
@@ -203,6 +217,11 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
         }
         else
         {
+            bool fileExist = GetFileExist(_path);
+            if (!fileExist)
+            {
+                setup.Warning("File not exist.");
+            }
             setup.InspectorFieldOf<string>(property);
         }
     }

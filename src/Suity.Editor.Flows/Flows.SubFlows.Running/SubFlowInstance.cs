@@ -298,7 +298,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     public IEnumerable<ISubFlowElement> Elements => _allElements;
 
     /// <inheritdoc/>
-    public HistoryText GetInputChatHistory()
+    public HistoryText GetInputChatHistory(ResolveChatIntents intent)
     {
         var builder = new StringBuilder();
 
@@ -306,13 +306,13 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             .Where(o => o.ChatHistory && o.GetCanOutputHistory(FlowDirections.Input))
             .ToArray();
 
-        BuildParameter(builder, inputs);
+        BuildParameter(builder, inputs, intent);
 
         return builder.ToString();
     }
 
     /// <inheritdoc/>
-    public HistoryText GetOutputChatHistory()
+    public HistoryText GetOutputChatHistory(ResolveChatIntents intent)
     {
         var builder = new StringBuilder();
 
@@ -320,13 +320,13 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             .Where(o => o.ChatHistory && o.GetCanOutputHistory(FlowDirections.Output))
             .ToArray();
 
-        BuildParameter(builder, outputs);
+        BuildParameter(builder, outputs, intent);
 
         return builder.ToString();
     }
 
     /// <inheritdoc/>
-    public HistoryText GetTaskCommit()
+    public HistoryText GetTaskCommit(ResolveChatIntents intent)
     {
         var builder = new StringBuilder();
 
@@ -334,7 +334,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             .Where(o => o.TaskCommit)
             .ToArray();
 
-        BuildParameter(builder, commits);
+        BuildParameter(builder, commits, intent);
 
         return builder.ToString();
     }
@@ -883,14 +883,14 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         return type.ToDataWritable();
     }
 
-    private void BuildParameter(StringBuilder builder, IPageParameter[] outputs)
+    private void BuildParameter(StringBuilder builder, IPageParameter[] outputs, ResolveChatIntents intent)
     {
         foreach (var element in outputs.SkipNull())
         {
             HistoryTag tag;
             try
             {
-                tag = element.ResolveChatHistory();
+                tag = element.ResolveChatHistory(intent);
             }
             catch (Exception)
             {

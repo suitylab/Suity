@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Xml;
 
 namespace Suity.NodeQuery;
@@ -134,6 +135,47 @@ public class XmlNodeWriter : MarshalByRefObject, INodeWriter
         _doc.Save(writer);
 
         return writer.ToString();
+    }
+
+    /// <summary>
+    /// Traverses the XmlDocument and converts text nodes containing special XML characters 
+    /// (<, >, &) into CDATA sections.
+    /// </summary>
+    /// <param name="doc">The XmlDocument to process.</param>
+    public static void ConvertEscapedTextToCData(XmlDocument doc)
+    {
+        // Safety check: Ensure the document and root element exist
+        if (doc?.DocumentElement == null) return;
+
+        // Select all text nodes in the document using XPath
+        // Note: This includes both actual content and whitespace/formatting nodes
+        XmlNodeList textNodes = doc.SelectNodes("//text()");
+        if (textNodes == null) return;
+
+        // Convert to a List to avoid modification exceptions during iteration
+        // Filter out nodes that are null, empty, or purely whitespace (indentation/newlines)
+        var nodesToProcess = textNodes.Cast<XmlText>()
+            .Where(n => !string.IsNullOrWhiteSpace(n.Value))
+            .ToList();
+
+        foreach (XmlText textNode in nodesToProcess)
+        {
+            string content = textNode.Value;
+
+            // Check if the content contains characters that require escaping in standard XML text:
+            // '<', '>', and '&' are the primary triggers for entity encoding (&lt;, &gt;, &amp;)
+            if (content.IndexOfAny(new[] { '<', '>', '&' }) >= 0)
+            {
+                // Create a new CDATA section with the original unescaped content
+                XmlCDataSection cdata = doc.CreateCDataSection(content);
+
+                // Replace the original Text node with the new CDATA node in the parent element
+                if (textNode.ParentNode != null)
+                {
+                    textNode.ParentNode.ReplaceChild(cdata, textNode);
+                }
+            }
+        }
     }
 
 }

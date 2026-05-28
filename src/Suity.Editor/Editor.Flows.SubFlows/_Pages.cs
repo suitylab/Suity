@@ -77,8 +77,9 @@ public interface IPageParameter : IPageValueElement
     /// <summary>
     /// Resolves the chat history text representation of the file path value.
     /// </summary>
+    /// <param name="intent">The intent of the chat history.</param>
     /// <returns>The file path as chat history text.</returns>
-    HistoryTag ResolveChatHistory();
+    HistoryTag ResolveChatHistory(ResolveChatIntents intent);
 }
 
 /// <summary>

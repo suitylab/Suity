@@ -762,7 +762,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         if (input)
         {
-            string msg = instance?.GetInputChatHistory()?.Text;
+            string msg = instance?.GetInputChatHistory(ResolveChatIntents.Normal)?.Text;
             if (!string.IsNullOrWhiteSpace(prompt))
             {
                 msg = prompt + "\r\n\r\n" + msg;
@@ -780,7 +780,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             outputMsg = new()
             {
                 Role = LLmMessageRole.Assistant,
-                Message = $"TaskId: '{TaskId}'\r\n\r\n{instance?.GetOutputChatHistory()?.Text}",
+                Message = $"TaskId: '{TaskId}'\r\n\r\n{instance?.GetOutputChatHistory(ResolveChatIntents.Normal)?.Text}",
             };
         }
 

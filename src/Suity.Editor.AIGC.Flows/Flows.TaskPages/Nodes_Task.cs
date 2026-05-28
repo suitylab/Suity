@@ -828,7 +828,7 @@ public class GetTaskCommit : TaskPageNode
 
         if (diagram.GetIsLinked(_commit))
         {
-            string commit = task?.GetPageInstance()?.GetTaskCommit() ?? string.Empty;
+            string commit = task?.GetPageInstance()?.GetTaskCommit(ResolveChatIntents.Normal) ?? string.Empty;
             compute.SetValue(_commit, commit);
         }
 
@@ -933,14 +933,14 @@ public class GetSubTaskCommit : TaskPageNode
         if (allSubTasks)
         {
             var commits = parentTask.GetSubTasks()
-                .Select(t => t.GetPageInstance()?.GetTaskCommit())
+                .Select(t => t.GetPageInstance()?.GetTaskCommit(ResolveChatIntents.Normal))
                 .ToArray();
 
             commit = string.Join(Environment.NewLine, commits.Where(c => !string.IsNullOrEmpty(c)));
         }
         else
         {
-            commit = parentTask.GetLastSubTask()?.GetPageInstance()?.GetTaskCommit() ?? string.Empty;
+            commit = parentTask.GetLastSubTask()?.GetPageInstance()?.GetTaskCommit(ResolveChatIntents.Normal) ?? string.Empty;
         }
 
         compute.SetValue(_commit, commit);
@@ -992,9 +992,9 @@ public class GetTaskContextText : TaskPageNode
             throw new FlowComputaionException(this, "Task page instance is null.");
         }
 
-        string inputChat = subFlowInstance.GetInputChatHistory() ?? string.Empty;
-        string outputChat = subFlowInstance.GetOutputChatHistory() ?? string.Empty;
-        string commit = subFlowInstance.GetTaskCommit() ?? string.Empty;
+        string inputChat = subFlowInstance.GetInputChatHistory(ResolveChatIntents.Normal) ?? string.Empty;
+        string outputChat = subFlowInstance.GetOutputChatHistory(ResolveChatIntents.Normal) ?? string.Empty;
+        string commit = subFlowInstance.GetTaskCommit(ResolveChatIntents.Normal) ?? string.Empty;
         
         compute.SetValue(_inputChat, inputChat);
         compute.SetValue(_outputChat, outputChat);

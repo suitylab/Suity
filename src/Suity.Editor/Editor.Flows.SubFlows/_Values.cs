@@ -177,3 +177,9 @@ public record HistoryTag
         }
     }
 }
+
+public enum ResolveChatIntents
+{
+    Normal,
+    Preview,
+}

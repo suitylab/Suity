@@ -73,7 +73,7 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
     /// Resolves the chat history text representation of the message.
     /// </summary>
     /// <returns>The resolved message text.</returns>
-    public HistoryTag ResolveChatHistory() => ResolveMessage();
+    public HistoryTag ResolveChatHistory(ResolveChatIntents intent) => ResolveMessage();
 
     /// <summary>
     /// Sets the value for this element. This operation is not supported for message elements.

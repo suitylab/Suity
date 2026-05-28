@@ -473,7 +473,7 @@ public class SetXmlTagAttributes : AigcXmlNode
             tag.SetAttribute(tagName, attr);
         }
 
-        // Trigger subsequent action nodes
+// Trigger subsequent action nodes
         compute.SetResult(this, _out);
     }
 }
@@ -492,6 +492,7 @@ public class GetXmlTagContent : AigcXmlNode
 {
     readonly private FlowNodeConnector _tagIn;
     readonly private FlowNodeConnector _contentOut;
+    readonly private ValueProperty<bool> _trim = new("Trim", "Trim Content", false, "Whether to trim the content text.");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GetXmlTagContent"/> class.
@@ -508,12 +509,16 @@ public class GetXmlTagContent : AigcXmlNode
     protected override void OnSync(IPropertySync sync, ISyncContext context)
     {
         base.OnSync(sync, context);
+
+        _trim.Sync(sync);
     }
 
     /// <inheritdoc/>
     protected override void OnSetupView(IViewObjectSetup setup)
     {
         base.OnSetupView(setup);
+
+        _trim.InspectorField(setup);
     }
 
     /// <inheritdoc/>
@@ -528,6 +533,11 @@ public class GetXmlTagContent : AigcXmlNode
         }
 
         string content = tag.InnerText ?? string.Empty;
+        if (_trim.Value)
+        {
+            content = content.Trim();
+        }
+
         compute.SetValue(_contentOut, content);
     }
 }
@@ -601,6 +611,74 @@ public class SetXmlTagContent : AigcXmlNode
 
         // Trigger subsequent action nodes
         compute.SetResult(this, _out);
+    }
+}
+#endregion
+
+#region GetXmlTagContents
+
+/// <summary>
+/// Node that retrieves the inner text content from multiple XML tags.
+/// </summary>
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
+[DisplayText("Get Xml Contents", "*CoreIcon|Tag")]
+public class GetXmlTagContents : AigcXmlNode
+{
+    readonly private FlowNodeConnector _tagsIn;
+    readonly private FlowNodeConnector _contentsOut;
+    readonly private ValueProperty<bool> _trim = new("Trim", "Trim Content", false, "Whether to trim the content text.");
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetXmlTagContents"/> class.
+    /// </summary>
+    public GetXmlTagContents()
+    {
+        var tagType = TypeDefinition.FromNative<LooseXmlTag>().MakeArrayType();
+
+        _tagsIn = this.AddDataInputConnector("TagsIn", tagType, " ");
+        _contentsOut = this.AddDataOutputConnector("ContentsOut", "string[]", " ");
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _trim.Sync(sync);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _trim.InspectorField(setup);
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var tags = compute.GetValue<LooseXmlTag[]>(_tagsIn);
+
+        if (tags is null || tags.Length == 0)
+        {
+            compute.SetValue(_contentsOut, Array.Empty<string>());
+            return;
+        }
+
+        string GetContent(LooseXmlTag t)
+        {
+            string content = t.InnerText ?? string.Empty;
+            if (_trim.Value)
+            {
+                content = content.Trim();
+            }
+            return content;
+        }
+
+        string[] contents = tags.Select(GetContent).ToArray();
+
+        compute.SetValue(_contentsOut, contents);
     }
 }
 #endregion

@@ -105,7 +105,7 @@ public abstract class ToolInstance : IToolInstance, IViewObject
 
     public abstract void SetParameters(ISyncObject parameters);
 
-    public abstract HistoryText GetTaskCommit();
+    public abstract HistoryText GetTaskCommit(ResolveChatIntents intent);
     public abstract TaskCommitParameter GetTaskCommitParameter();
 
     #endregion
@@ -272,7 +272,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         Cloner.CloneProperty(parameters, _input);
     }
 
-    public override HistoryText GetTaskCommit()
+    public override HistoryText GetTaskCommit(ResolveChatIntents intent)
     {
         var writer = new XmlNodeWriter("ToolCall", false);
         writer.SetAttribute("name", Tool.Name);
@@ -285,6 +285,8 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         {
             Serializer.Serialize(output, writer);
         }
+
+        XmlNodeWriter.ConvertEscapedTextToCData(writer.GetDocument());
 
         return writer.ToString();
     }

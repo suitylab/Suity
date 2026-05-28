@@ -85,8 +85,9 @@ public interface IPageInstance : INamed
     /// <summary>
     /// Gets the task commit data formatted as a <see cref="HistoryText"/>.
     /// </summary>
+    /// <param name="intent">The intent to resolve the task commit data.</param>
     /// <returns>The formatted task commit data.</returns>
-    HistoryText GetTaskCommit();
+    HistoryText GetTaskCommit(ResolveChatIntents intent);
 
     TaskCommitParameter GetTaskCommitParameter();
 }
@@ -144,14 +145,16 @@ public interface ISubFlowInstance : ISubFlowElement, IPageInstance
     /// <summary>
     /// Gets the input chat history formatted as a <see cref="HistoryText"/>.
     /// </summary>
+    /// <param name="intent">The intent for resolving the chat history.</param>
     /// <returns>The formatted input chat history.</returns>
-    HistoryText GetInputChatHistory();
+    HistoryText GetInputChatHistory(ResolveChatIntents intent);
 
     /// <summary>
     /// Gets the output chat history formatted as a <see cref="HistoryText"/>.
     /// </summary>
+    /// <param name="intent">The intent for resolving the chat history.</param>
     /// <returns>The formatted output chat history.</returns>
-    HistoryText GetOutputChatHistory();
+    HistoryText GetOutputChatHistory(ResolveChatIntents intent);
 
 }
 #endregion

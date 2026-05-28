@@ -779,8 +779,23 @@ public class AigcTaskPageDocumentView : IDocumentView,
         });
     }
 
+    HistoryText _cachedInput;
+    HistoryText _cachedOutput;
+    HistoryText _cachedCommit;
+
+    private void ClearCache()
+    {
+        _cachedInput = null;
+        _cachedOutput = null;
+        _cachedCommit = null;
+    }
+
     private void ContextGui(ImGui gui, AigcWorkflowPage page)
     {
+        _cachedInput ??= page.Instance?.GetInputChatHistory(ResolveChatIntents.Preview);
+        _cachedOutput ??= page.Instance?.GetOutputChatHistory(ResolveChatIntents.Preview);
+        _cachedCommit ??= page.Instance?.GetTaskCommit(ResolveChatIntents.Preview);
+
         gui.ScrollableFrame("#chat-history-" + page.Name, GuiOrientation.Vertical)
         .InitFullSize()
         .OnContent(() =>
@@ -796,8 +811,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                 .InitCenter();
             });
 
-
-            gui.TextAreaInput("#input", null, page.Instance?.GetInputChatHistory())
+            gui.TextAreaInput("#input", null, _cachedInput)
             .InitFullWidth()
             .InitFitVertical()
             .InitReadonly(true);
@@ -813,7 +827,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                 .InitCenter();
             });
 
-            gui.TextAreaInput("#output", null, page.Instance?.GetOutputChatHistory())
+            gui.TextAreaInput("#output", null, _cachedOutput)
             .InitFullWidth()
             .InitFitVertical()
             .InitReadonly(true);
@@ -829,7 +843,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                 .InitCenter();
             });
 
-            gui.TextAreaInput("#commit", null, page.Instance?.GetTaskCommit())
+            gui.TextAreaInput("#commit", null, _cachedCommit)
             .InitFullWidth()
             .InitFitVertical()
             .InitReadonly(true);
@@ -853,7 +867,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                 .InitCenter();
             });
 
-            gui.TextAreaInput("#commit", null, page.GetPageInstance()?.GetTaskCommit())
+            gui.TextAreaInput("#commit", null, page.GetPageInstance()?.GetTaskCommit(ResolveChatIntents.Preview))
             .InitFullWidth()
             .InitFitVertical()
             .InitReadonly(true);
@@ -897,6 +911,8 @@ public class AigcTaskPageDocumentView : IDocumentView,
         .OnClick(() =>
         {
             _pageCategory = category;
+
+            ClearCache();
             gui.QueueRefresh();
         });
 
@@ -1073,6 +1089,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
     private void _treeView_SelectionChanged(object sender, EventArgs e)
     {
         UpdateInspector();
+        ClearCache();
 
         _treeView.QueueRefresh();
         _guiRef.QueueRefresh();

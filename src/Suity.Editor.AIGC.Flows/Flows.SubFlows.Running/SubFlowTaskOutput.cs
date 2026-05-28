@@ -72,17 +72,17 @@ public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPagePara
     public bool ChatHistory { get; private set; }
 
     /// <inheritdoc/>
-    public HistoryTag ResolveChatHistory()
+    public HistoryTag ResolveChatHistory(ResolveChatIntents intent)
     {
         if (AllSubTasks)
         {
-            var contents = GetAllSubTasks().Select(o => o?.GetPageInstance()?.GetTaskCommit()).SkipNull();
+            var contents = GetAllSubTasks().Select(o => o?.GetPageInstance()?.GetTaskCommit(intent)).SkipNull();
             return string.Join("\r\n\r\n", contents);
         }
         else
         {
             var subTask = GetLastSubTask();
-            string content = subTask?.GetPageInstance()?.GetTaskCommit() ?? HistoryText.Empty;
+            string content = subTask?.GetPageInstance()?.GetTaskCommit(intent) ?? HistoryText.Empty;
             return new HistoryTag(content, [new("tool", ToolName)]);
         }
     }
@@ -165,7 +165,7 @@ public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPagePara
             else
             {
                 var task = GetLastSubTask();
-                _subTaskCommit.Text = task?.GetPageInstance()?.GetTaskCommit();
+                _subTaskCommit.Text = task?.GetPageInstance()?.GetTaskCommit(ResolveChatIntents.Preview);
                 _subTaskCommit.Sync(sync);
             }
         }
