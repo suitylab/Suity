@@ -152,12 +152,12 @@ public static class ArticleExtensions
     /// Gets the full text content of an article including child articles.
     /// </summary>
     /// <param name="article">The article.</param>
-    /// <param name="depth">The depth for Markdown heading levels.</param>
+    /// <param name="headingLevel">The depth for Markdown heading levels.</param>
     /// <returns>The full text content.</returns>
-    public static string GetFullText(this IArticle article, int depth = 1)
+    public static string GetFullText(this IArticle article, int headingLevel = 1)
     {
         var builder = new StringBuilder();
-        article.BuildText(builder, depth);
+        article.BuildText(builder, headingLevel);
 
         return builder.ToString();
     }
@@ -167,17 +167,17 @@ public static class ArticleExtensions
     /// </summary>
     /// <param name="article">The article.</param>
     /// <param name="builder">The StringBuilder to append to.</param>
-    /// <param name="depth">The depth for Markdown heading levels.</param>
-    public static void BuildText(this IArticle article, StringBuilder builder, int depth = 1)
+    /// <param name="headingLevel">The depth for Markdown heading levels.</param>
+    public static void BuildText(this IArticle article, StringBuilder builder, int headingLevel = 1)
     {
-        if (depth > 6)
+        if (headingLevel > 6)
         {
-            depth = 6;
+            headingLevel = 6;
         }
 
         if (!string.IsNullOrWhiteSpace(article.Title))
         {
-            string h = new string('#', depth);
+            string h = new string('#', headingLevel);
             builder.Append(h);
             builder.Append(' ');
             builder.Append(article.Title);
@@ -187,10 +187,10 @@ public static class ArticleExtensions
         builder.AppendLine(article.Content);
         builder.AppendLine();
 
-        depth++;
+        headingLevel++;
         foreach (var childNode in article.Articles)
         {
-            BuildText(childNode, builder, depth);
+            BuildText(childNode, builder, headingLevel);
         }
     }
 

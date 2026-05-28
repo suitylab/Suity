@@ -1,4 +1,5 @@
 using Suity.Editor.Types;
+using System.Collections.Generic;
 
 namespace Suity.Editor.Flows.SubFlows;
 
@@ -115,3 +116,4 @@ public record HistoryText
     }
 }
 
+public record HistoryTag(HistoryText Text, List<KeyValuePair<string, string>> Attributes = null);

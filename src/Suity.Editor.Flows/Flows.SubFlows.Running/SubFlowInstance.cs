@@ -937,7 +937,20 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         string desc = string.Empty;
         if (tooltips != null)
         {
-            desc = $" description='{tooltips.ToolTips}'";
+            desc = $" tooltip='{tooltips.ToolTips}'";
+        }
+
+        if (element is IPageParameterAttrbute elementAttr)
+        { 
+            var names = elementAttr.GetAttributeNames() ?? [];
+            foreach (var name in names)
+            {
+                string value = elementAttr.GetAttribute(name);
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    desc += $" {name}='{value}'";
+                }
+            }
         }
 
         if (element is IPageParameterToolCall toolCall)

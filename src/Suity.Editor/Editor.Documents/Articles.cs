@@ -314,9 +314,9 @@ public class ArticleAsset : Asset, IArticleAsset
 
     public string GetContentText() => GetArticle(true)?.Content ?? string.Empty;
 
-    public string GetFullText(int depth = 1)
+    public string GetFullText(int headingLevel = 1)
     {
-        return GetArticle(true)?.GetFullText(depth) ?? string.Empty;
+        return GetArticle(true)?.GetFullText(headingLevel) ?? string.Empty;
     }
 }
 #endregion

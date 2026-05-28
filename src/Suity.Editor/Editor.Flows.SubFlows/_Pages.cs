@@ -65,18 +65,19 @@ public interface IPageParameter : IPageValueElement
     bool Required { get; }
 
     /// <summary>
-    /// Gets whether this parameter represents a task commit.
+    /// Gets a value indicating whether this element signals task commit.
     /// </summary>
     bool TaskCommit { get; }
 
     /// <summary>
-    /// Gets whether this parameter contains chat history.
+    /// Gets a value indicating whether this element contributes to chat history.
     /// </summary>
     bool ChatHistory { get; }
 
     /// <summary>
-    /// Resolves and returns the chat history content.
+    /// Resolves the chat history text representation of the file path value.
     /// </summary>
+    /// <returns>The file path as chat history text.</returns>
     HistoryText ResolveChatHistory();
 }
 
@@ -129,4 +130,10 @@ public interface IPageParameterToolCall : IPageParameter
     /// Gets the name of the tool.
     /// </summary>
     string ToolName { get; }
+}
+
+public interface IPageParameterAttrbute : IPageParameter
+{
+    string[] GetAttributeNames();
+    string GetAttribute(string name);
 }

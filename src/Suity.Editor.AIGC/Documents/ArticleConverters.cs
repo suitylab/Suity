@@ -115,7 +115,9 @@ public class IArticleAssetToChatHistoryTextConverter : ITypeDefinitionConverter
         }
 
         string title = articleAsset.GetTitle(true);
-        string text = articleAsset.GetContentText();
+
+        // string text = articleAsset.GetContentText();
+        string text = articleAsset.GetFullText();
 
         return $"<article title='{title}'>\r\n{text}\r\n</article>";
     }

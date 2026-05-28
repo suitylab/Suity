@@ -66,9 +66,6 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
         _addressMode.AliasName = "LinkedMode";
     }
 
-    /// <inheritdoc/>
-    public bool AddressMode { get => _addressMode.Value; protected set => _addressMode.Value = value; }
-
     /// <summary>
     /// Gets or sets a value indicating whether this property is retained as historical conversation during dialogue.
     /// </summary>
@@ -84,6 +81,8 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
     /// </summary>
     public bool TaskCommit { get => _taskCommit.Value; protected set => _taskCommit.Value = value; }
 
+    /// <inheritdoc/>
+    public bool AddressMode { get => _addressMode.Value; protected set => _addressMode.Value = value; }
 
     /// <summary>
     /// Gets the type design selection used for configuring the value type.

@@ -1,5 +1,6 @@
 using Suity.Editor.AIGC;
 using Suity.Editor.Types;
+using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -65,30 +66,24 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     /// <returns>The current file path value.</returns>
     public object EnsureValue() => _value;
 
-    /// <summary>
-    /// Gets a value indicating whether this element signals task completion.
-    /// </summary>
+    /// <inheritdoc/>
     public bool Required { get; private set; }
 
-    /// <summary>
-    /// Gets a value indicating whether this element signals task commit.
-    /// </summary>
+    /// <inheritdoc/>
     public bool TaskCommit { get; private set; }
 
-    /// <summary>
-    /// Gets a value indicating whether this element contributes to chat history.
-    /// </summary>
+    /// <inheritdoc/>
     public bool ChatHistory { get; private set; }
 
-    /// <summary>
-    /// Resolves the chat history text representation of the file path value.
-    /// </summary>
-    /// <returns>The file path as chat history text.</returns>
+    public bool AddressMode { get; private set; }
+
+    /// <inheritdoc/>
     public HistoryText ResolveChatHistory()
     {
-        return _value?.ToString();
+        return _value;
     }
     #endregion
+
 
     /// <inheritdoc/>
     protected override void OnBuild()
@@ -98,6 +93,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
         Required = _outputItem.Node?.Required == true;
         TaskCommit = _outputItem.Node?.TaskCommit == true;
         ChatHistory = _outputItem.Node?.ChatHistory == true;
+        AddressMode = _outputItem.Node?.AddressMode == true;
     }
 
     /// <inheritdoc/>
@@ -197,8 +193,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
             return false;
         }
 
-        var taskPage = Option.Owner as IAigcWorkflowPage;
-        var workSpace = taskPage.TaskHost?.WorkSpace;
+        var workSpace = GetWorkSpace();
         if (workSpace is null)
         {
             return false;
@@ -207,5 +202,13 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
         string fullPath = PathUtility.MakeFullPath(_value, workSpace.MasterDirectory);
 
         return File.Exists(fullPath);
+    }
+
+    public WorkSpace GetWorkSpace()
+    {
+        var taskPage = Option.Owner as IAigcWorkflowPage;
+        var workSpace = taskPage.TaskHost?.WorkSpace;
+
+        return workSpace;
     }
 }
