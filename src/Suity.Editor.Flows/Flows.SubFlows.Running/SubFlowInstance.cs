@@ -894,7 +894,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             }
             catch (Exception)
             {
-                tag = null;
+                tag = "---";
             }
 
             if (tag is null || string.IsNullOrWhiteSpace(tag.Text))

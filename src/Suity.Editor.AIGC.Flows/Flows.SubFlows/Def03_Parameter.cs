@@ -647,6 +647,7 @@ public class PageFileOutputNode : SubFlowTypeNode
     private FlowNodeConnector _in;
     private FlowNodeConnector _refInput;
     private readonly ValueProperty<bool> _refConnector = new("RefConnector", "Reference Port");
+    private readonly ValueProperty<bool> _array = new("IsArray", "Is Array", false, "Whether the output is an array of file paths.");
 
     private string _value;
 
@@ -654,7 +655,7 @@ public class PageFileOutputNode : SubFlowTypeNode
     /// Initializes a new instance of the <see cref="PageFileOutputNode"/> class.
     /// </summary>
     public PageFileOutputNode()
-        : base(NativeTypes.StringType.TargetId)
+        : base(NativeTypes.StringType)
     {
         base.EditTypeEnabled = false;
 
@@ -680,16 +681,48 @@ public class PageFileOutputNode : SubFlowTypeNode
         set => _value = value as string ?? string.Empty;
     }
 
-    /// <inheritdoc/>
-    protected override void OnSyncValue(IPropertySync sync, ISyncContext context)
+    public bool IsArray => _array.Value;
+
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
     {
+        base.OnSync(sync, context);
+
         Value = sync.Sync("Value", Value);
 
         _refConnector.Sync(sync);
-        if (sync.IsSetterOf("RefConnector"))
+        _array.Sync(sync);
+
+        if (sync.IsSetterOf(_refConnector.Property.Name))
         {
             UpdateConnectorQueued();
         }
+
+        if (sync.IsSetterOf(_array.Property.Name))
+        {
+            if (_array.Value)
+            {
+                base.TypeDef = NativeTypes.StringType.MakeArrayType();
+            }
+            else
+            {
+                base.TypeDef = NativeTypes.StringType;
+            }
+
+            UpdateConnectorQueued();
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSyncValue(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSyncValue(sync, context);
+    }
+
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _array.InspectorField(setup);
     }
 
     /// <inheritdoc/>

@@ -1,11 +1,14 @@
 using Suity.Editor.AIGC;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Suity.Editor.Flows.SubFlows.Running;
 
@@ -15,7 +18,10 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
 {
     private readonly PageFileOutputItem _outputItem;
-    private string _value = string.Empty;
+
+    private string _path = string.Empty;
+    private SArray _paths = null;
+
     private FlowNodeConnector _connector;
 
 
@@ -42,7 +48,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     /// <summary>
     /// Gets the current file path value.
     /// </summary>
-    public object Value => _value;
+    public object Value => _path;
 
     /// <summary>
     /// Gets or sets a value indicating whether a value has been set.
@@ -56,7 +62,8 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     /// <param name="value">The file path value to set.</param>
     public void SetValue(object value)
     {
-        _value = value as string ?? string.Empty;
+        _path = value as string;
+        _paths = value as SArray;
         IsValueSet = true;
     }
 
@@ -64,7 +71,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     /// Ensures and returns the current file path value.
     /// </summary>
     /// <returns>The current file path value.</returns>
-    public object EnsureValue() => _value;
+    public object EnsureValue() => _path;
 
     /// <inheritdoc/>
     public bool Required { get; private set; }
@@ -77,10 +84,64 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
 
     public bool AddressMode { get; private set; }
 
+    public bool IsArray { get; private set; }
+
     /// <inheritdoc/>
     public HistoryTag ResolveChatHistory()
     {
-        return _value;
+        if (IsArray)
+        {
+            if (_paths is null)
+            {
+                return null;
+            }
+
+            var builder = new StringBuilder();
+
+            if (AddressMode)
+            {
+                foreach (var item in _paths)
+                {
+                    string path = SItem.ResolveValue(item)?.ToString();
+                    if (string.IsNullOrWhiteSpace(path))
+                    {
+                        continue;
+                    }
+
+                    builder.AppendLine(path);
+                }
+            }
+            else
+            {
+                foreach (var item in _paths)
+                {
+                    string path = SItem.ResolveValue(item)?.ToString();
+                    if (string.IsNullOrWhiteSpace(path))
+                    {
+                        continue;
+                    }
+
+                    string text = ReadAllText(path);
+                    builder.AppendLine($"<File path='{path}'>");
+                    builder.AppendLine(text);
+                    builder.AppendLine("</File>");
+                }
+            }
+
+            return builder.ToString();
+        }
+        else
+        {
+            if (AddressMode)
+            {
+                return _path;
+            }
+            else
+            {
+                string text = ReadAllText(_path);
+                return new HistoryTag(text, [new("path", _path)]);
+            }
+        }
     }
     #endregion
 
@@ -94,6 +155,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
         TaskCommit = _outputItem.Node?.TaskCommit == true;
         ChatHistory = _outputItem.Node?.ChatHistory == true;
         AddressMode = _outputItem.Node?.AddressMode == true;
+        IsArray = _outputItem.Node?.IsArray == true;
     }
 
     /// <inheritdoc/>
@@ -106,7 +168,16 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
             return;
         }
 
-        _value = sync.Sync(Name, _value);
+        if (IsArray)
+        {
+            _paths = sync.Sync(Name, _paths);
+            _path = null;
+        }
+        else
+        {
+            _path = sync.Sync(Name, _path);
+            _paths = null;
+        }
     }
 
     /// <inheritdoc/>
@@ -117,17 +188,23 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
             return;
         }
 
-        bool fileExist = GetFileExist();
+        bool fileExist = GetFileExist(_path);
         if (!fileExist)
         {
             setup.Warning("File not exist.");
         }
 
         var property = new ViewProperty(Name, DisplayText, Icon)
-            .WithHintText(_value)
             .WithStatus(GetStatus());
 
-        setup.InspectorFieldOf<string>(property);
+        if (IsArray)
+        {
+            setup.InspectorFieldOf<SArray>(property);
+        }
+        else
+        {
+            setup.InspectorFieldOf<string>(property);
+        }
     }
 
     /// <inheritdoc/>
@@ -152,7 +229,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     /// <param name="otherParameter">The other file output element to copy values from.</param>
     public void UpdateFromOther(SubFlowFileOutput otherParameter)
     {
-        _value = otherParameter._value;
+        _path = otherParameter._path;
     }
 
     /// <summary>
@@ -171,13 +248,22 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     /// <inheritdoc/>
     public override bool? GetIsDone()
     {
-        if (Required)
+        if (IsArray)
         {
-            return GetFileExist();
+            return _paths?.Count > 0;
         }
         else
         {
-            return null;
+            //if (Required)
+            //{
+            //    return GetFileExist(_path);
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+
+            return !string.IsNullOrWhiteSpace(_path);
         }
     }
 
@@ -186,9 +272,9 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     /// Checks whether the file at the current path exists in the task workspace.
     /// </summary>
     /// <returns>True if the file exists; otherwise, false.</returns>
-    public bool GetFileExist()
+    public bool GetFileExist(string path)
     {
-        if (string.IsNullOrWhiteSpace(_value))
+        if (string.IsNullOrWhiteSpace(path))
         {
             return false;
         }
@@ -199,9 +285,34 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
             return false;
         }
 
-        string fullPath = PathUtility.MakeFullPath(_value, workSpace.MasterDirectory);
+        string fullPath = PathUtility.MakeFullPath(_path, workSpace.MasterDirectory);
 
         return File.Exists(fullPath);
+    }
+
+    public string ReadAllText(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return null;
+        }
+
+        var workSpace = GetWorkSpace();
+        if (workSpace is null)
+        {
+            return null;
+        }
+
+        string fullPath = PathUtility.MakeFullPath(path, workSpace.MasterDirectory);
+
+        try
+        {
+            return File.ReadAllText(fullPath);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
     }
 
     public WorkSpace GetWorkSpace()

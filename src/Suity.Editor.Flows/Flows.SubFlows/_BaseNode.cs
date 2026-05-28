@@ -106,10 +106,7 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
         }
         set
         {
-            if (_valueType is null)
-            {
-                return;
-            }
+            _valueType ??= DTypeManager.Instance.CreateTypeDesignSelection();
 
             if (TypeDefinition.IsNullOrEmpty(value))
             {
@@ -153,6 +150,11 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
         _valueType.Id = typeId;
     }
 
+    protected SubFlowTypeNode(TypeDefinition typeDef)
+    {
+        TypeDef = typeDef;
+    }
+
     /// <summary>
     /// Gets or sets a value indicating whether the type value is optional.
     /// </summary>
@@ -178,7 +180,9 @@ public abstract class SubFlowTypeNode : SubFlowNode, ISubFlowTypeNode
 
         if (_editTypeEnabled)
         {
-            _valueType = sync.Sync("ValueType", _valueType, SyncFlag.NotNull | SyncFlag.AffectsOthers);
+            _valueType = sync.Sync("ValueType", _valueType, SyncFlag.NotNull | SyncFlag.AffectsOthers) ??
+                DTypeManager.Instance.CreateTypeDesignSelection();
+
             _valueType?.Optional = _optional;
             _isArray = sync.Sync("IsArray", _isArray);
 

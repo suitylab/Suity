@@ -126,10 +126,13 @@ public record HistoryTag
 
     public HistoryTag(HistoryText text)
     {
+        Text = text;
     }
 
-    public HistoryTag(HistoryText text, IEnumerable<KeyValuePair<string, string>> attributes)
+    public HistoryTag(HistoryText text, List<KeyValuePair<string, string>> attributes)
     {
+        Text = text;
+        Attributes = attributes;
     }
 
 
