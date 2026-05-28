@@ -885,17 +885,26 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
     private void BuildParameter(StringBuilder builder, IPageParameter[] outputs)
     {
-        foreach (var element in outputs)
+        foreach (var element in outputs.SkipNull())
         {
-            var text = ResolveParameterChatHistory(element);
-            if (text is null || string.IsNullOrWhiteSpace(text.Text))
+            HistoryTag tag;
+            try
+            {
+                tag = element.ResolveChatHistory();
+            }
+            catch (Exception)
+            {
+                tag = null;
+            }
+
+            if (tag is null || string.IsNullOrWhiteSpace(tag.Text))
             {
                 continue;
             }
 
             if (element is IPageMessage)
             {
-                builder.AppendLine(text.Text);
+                builder.AppendLine(tag.Text);
                 builder.AppendLine();
                 continue;
             }
@@ -905,27 +914,15 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
                 continue;
             }
 
-            string attr = ResolveElementXmlAttr(element as SubFlowElement);
+            string attr = ResolveElementXmlAttr(element as SubFlowElement, tag);
             builder.AppendLine($"<{element.Name}{attr}>");
-            builder.AppendLine(text.Text);
+            builder.AppendLine(tag.Text);
             builder.AppendLine($"</{element.Name}>");
             builder.AppendLine();
         }
     }
 
-    private HistoryText ResolveParameterChatHistory(IPageParameter element)
-    {
-        try
-        {
-            return element.ResolveChatHistory();
-        }
-        catch (Exception)
-        {
-            return "---";
-        }
-    }
-
-    private string ResolveElementXmlAttr(SubFlowElement element)
+    private string ResolveElementXmlAttr(SubFlowElement element, HistoryTag tag)
     {
         if (element is null)
         {
@@ -934,37 +931,26 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
         var attr = element?.Node as IAttributeGetter;
         var tooltips = attr?.GetAttribute<ToolTipsAttribute>();
-        string desc = string.Empty;
+        string str = string.Empty;
         if (tooltips != null)
         {
-            desc = $" tooltip='{tooltips.ToolTips}'";
+            str = $" tooltip='{tooltips.ToolTips}'";
         }
 
-        if (element is IPageParameterAttrbute elementAttr)
-        { 
-            var names = elementAttr.GetAttributeNames() ?? [];
-            foreach (var name in names)
-            {
-                string value = elementAttr.GetAttribute(name);
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    desc += $" {name}='{value}'";
-                }
-            }
-        }
-
-        if (element is IPageParameterToolCall toolCall)
+        if (tag.Attributes is { } elementAttr)
         {
-            // string taskId = toolCall.TaskId;
-            string toolName = toolCall.ToolName;
-
-            if (!string.IsNullOrWhiteSpace(toolName))
+            foreach (var pair in elementAttr)
             {
-                desc += $" tool='{toolName}'";
+                if (string.IsNullOrWhiteSpace(pair.Key) || string.IsNullOrWhiteSpace(pair.Value))
+                {
+                    continue;
+                }
+                
+                str += $" {pair.Key}='{pair.Value}'";
             }
         }
 
-        return desc;
+        return str;
     }
 
 

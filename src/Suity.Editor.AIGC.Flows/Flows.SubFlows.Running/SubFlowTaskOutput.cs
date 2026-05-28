@@ -72,7 +72,7 @@ public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPagePara
     public bool ChatHistory { get; private set; }
 
     /// <inheritdoc/>
-    public HistoryText ResolveChatHistory()
+    public HistoryTag ResolveChatHistory()
     {
         if (AllSubTasks)
         {
@@ -82,7 +82,8 @@ public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPagePara
         else
         {
             var subTask = GetLastSubTask();
-            return subTask?.GetPageInstance()?.GetTaskCommit() ?? HistoryText.Empty;
+            string content = subTask?.GetPageInstance()?.GetTaskCommit() ?? HistoryText.Empty;
+            return new HistoryTag(content, [new("tool", ToolName)]);
         }
     }
 

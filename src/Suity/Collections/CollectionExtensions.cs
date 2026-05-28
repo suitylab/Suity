@@ -1427,7 +1427,7 @@ public static class CollectionExtensions
     /// <typeparam name="T">The type of the elements of the sequence.</typeparam>
     /// <param name="collection">The source sequence.</param>
     /// <returns>A sequence that contains only the non-null elements of the source sequence.</returns>
-    public static IEnumerable<T> SkipNull<T>(this IEnumerable<T?> source)
+    public static IEnumerable<T> SkipNull<T>(this IEnumerable<T> source)
         where T : class
     {
         return source.Where(x => x != null)!;

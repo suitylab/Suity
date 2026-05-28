@@ -116,4 +116,61 @@ public record HistoryText
     }
 }
 
-public record HistoryTag(HistoryText Text, List<KeyValuePair<string, string>> Attributes = null);
+public record HistoryTag
+{
+    public static HistoryTag Empty { get; } = new(string.Empty, null);
+
+    public HistoryTag()
+    {
+    }
+
+    public HistoryTag(HistoryText text)
+    {
+    }
+
+    public HistoryTag(HistoryText text, IEnumerable<KeyValuePair<string, string>> attributes)
+    {
+    }
+
+
+    public HistoryText Text { get; }
+
+    public List<KeyValuePair<string, string>> Attributes { get; }
+
+
+    public override string ToString() => Text;
+
+    public static implicit operator string(HistoryTag text)
+    {
+        return text?.Text;
+    }
+
+    public static implicit operator HistoryText(HistoryTag text)
+    {
+        return text?.Text;
+    }
+
+    public static implicit operator HistoryTag(string text)
+    {
+        if (!string.IsNullOrWhiteSpace(text))
+        {
+            return new HistoryTag(new HistoryText(text));
+        }
+        else
+        {
+            return Empty;
+        }
+    }
+
+    public static implicit operator HistoryTag(HistoryText text)
+    {
+        if (!string.IsNullOrWhiteSpace(text.Text))
+        {
+            return new HistoryTag(text);
+        }
+        else
+        {
+            return Empty;
+        }
+    }
+}

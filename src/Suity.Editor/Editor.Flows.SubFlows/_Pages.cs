@@ -78,7 +78,7 @@ public interface IPageParameter : IPageValueElement
     /// Resolves the chat history text representation of the file path value.
     /// </summary>
     /// <returns>The file path as chat history text.</returns>
-    HistoryText ResolveChatHistory();
+    HistoryTag ResolveChatHistory();
 }
 
 /// <summary>
@@ -130,10 +130,4 @@ public interface IPageParameterToolCall : IPageParameter
     /// Gets the name of the tool.
     /// </summary>
     string ToolName { get; }
-}
-
-public interface IPageParameterAttrbute : IPageParameter
-{
-    string[] GetAttributeNames();
-    string GetAttribute(string name);
 }

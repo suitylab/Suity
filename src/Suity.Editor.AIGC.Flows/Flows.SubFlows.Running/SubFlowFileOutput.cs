@@ -78,7 +78,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     public bool AddressMode { get; private set; }
 
     /// <inheritdoc/>
-    public HistoryText ResolveChatHistory()
+    public HistoryTag ResolveChatHistory()
     {
         return _value;
     }
