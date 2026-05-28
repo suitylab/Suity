@@ -71,7 +71,7 @@
         <CombineMessages>True</CombineMessages>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="-20" Width="38" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="60" Y="0" Width="38" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -79,7 +79,7 @@
       <Name>###GetXmlTagContentNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="-40" Width="29" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="-20" Width="29" Height="17">
       <Name>###GetPageToolPagesNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
     </Item>
@@ -190,7 +190,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="160" Y="-100" Width="103" Height="85">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="160" Y="-100" Width="103" Height="96">
       <Name>###BuildPrompt01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
@@ -199,6 +199,7 @@
         <Keywords>
           <Item>INPUT</Item>
           <Item>SKILL</Item>
+          <Item>ROLE</Item>
           <Item>TOOLS</Item>
           <Item>SPEECH_LANGUAGE</Item>
         </Keywords>
@@ -269,9 +270,21 @@
       <Name>###GetCurrentTaskRule01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="-60" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="60" Y="-60" Width="44" Height="17">
       <Name>###GetCurrentPresetSkill01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentPresetSkill" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="10" Y="-40" Width="27" Height="17">
+      <Name>###GetCurrentTaskRule02</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="-40" Width="28" Height="17">
+      <Name>###PassValue01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>0c3d4f2d-0cbb-4831-8e21-82bbf3a7476d</Id>
+        </DataType>
+      </Node>
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -451,12 +464,6 @@
       <ToConnector>Model</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetCurrentPresetSkill01</FromNode>
-      <FromConnector>Skill</FromConnector>
-      <ToNode>###BuildPrompt01</ToNode>
-      <ToConnector>k_SKILL</ToConnector>
-    </Item>
-    <Item>
       <FromNode>Prompt</FromNode>
       <FromConnector>Prompt</FromConnector>
       <ToNode>###BuildPrompt01</ToNode>
@@ -473,6 +480,24 @@
       <FromConnector>Tools</FromConnector>
       <ToNode>###BuildPrompt01</ToNode>
       <ToConnector>k_TOOLS</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentPresetSkill01</FromNode>
+      <FromConnector>Skill</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_SKILL</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTaskRule02</FromNode>
+      <FromConnector>Rule</FromConnector>
+      <ToNode>###PassValue01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_ROLE</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

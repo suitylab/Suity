@@ -41,6 +41,7 @@ Condition: Execute only after Step 3 is completed.
 
 # Additional Bug Fix Step Looping
 - If `Analyzer` lists issues, bugs, or optimization opportunities, you MUST invoke the code editing tool (`Editor` or `Creator`) to fix and optimize them. 
+- If there are too many optimization and modification needed, divide them into multiple subtasks in sequence.
 - After each modification, immediately re-invoke `Analyzer` for further validation. 
 - Repeat this cycle until `Analyzer` confirms all issues are resolved and reports a clean/pass status.
 

@@ -24,7 +24,7 @@ Workspace Contextualization:
 - Fail gracefully on malformed files; log warnings without breaking the analysis pipeline.
 
 # TERMINATION & STRUCTURED OUTPUT:
-- When all the informations are collected, output a detailed report based on the user requests and ends the workflow.
+- When all the informations are collected, output a brief report based on the user requests and ends the workflow.
 
 # NOTICE:
 - Read before Report.
