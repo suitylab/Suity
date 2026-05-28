@@ -29,32 +29,26 @@
       <Id>922c7589-8c57-43b2-91c2-3873029a817a</Id>
     </Item>
     <Item>
+      <Id>7a54593f-a175-441f-af06-7c8ee4e98830</Id>
+    </Item>
+    <Item>
       <Id>02c01430-74d8-4e59-a7b5-6094cb171ec3</Id>
     </Item>
     <Item>
       <Id>a7728094-c0dc-4189-9ca6-9bb5b37117b4</Id>
     </Item>
     <Item>
-      <Id>6240f92e-d9e9-455b-beaa-1b27c4f187d3</Id>
-    </Item>
-    <Item>
       <Id>dc35e117-c8f5-493b-8bd6-ffb27b18833f</Id>
     </Item>
     <Item>
-      <Id>bf224512-e826-4d71-a19d-95b47fed695a</Id>
-    </Item>
-    <Item>
       <Id>00764838-cdc5-40d1-b636-0046358dd38b</Id>
-    </Item>
-    <Item>
-      <Id>f3884b05-3c4e-4b25-9723-7a896e255b8d</Id>
     </Item>
     <Item>
       <Id>2432214a-f2bd-4104-b212-8c2fe435f77d</Id>
     </Item>
   </Tools>
   <Overview>
-    <Text>I am a Sub-Agent, an editor spawned with a blank-slate context to perform precise code modifications and verifications directly on the local filesystem.</Text>
+    <Text>I am a editor and can perform precise code modifications and bug-fix directly on the local filesystem.</Text>
   </Overview>
   <UserInputHint>
     <Text>
@@ -72,7 +66,7 @@
   <Page>
     <__preset__ />
     <ModelType type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">
-      <Id>25053922-d516-447e-a4f4-da8230781503</Id>
+      <Id>7d8cfc15-87ea-4994-b2db-e6e165641a0e</Id>
     </ModelType>
   </Page>
 </SuityAsset>

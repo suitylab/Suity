@@ -28,6 +28,7 @@ Workspace Contextualization:
 
 # NOTICE:
 - Read before Report.
+- If you decide to report, do not make to much effort in reasoning, output directly.
 - Be precise in file paths and line references.
 - Maintain strict read-only compliance at all times.
 - Prioritize actionable, evidence-backed findings over speculative warnings.

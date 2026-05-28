@@ -62,4 +62,5 @@ Failed reason
 - Tool usage MUST be justified by Skill Description.
 - If request out-of-scope: clarify in <failed>, do not proceed.
 - **ONLY Output <reasoning> tag and execution tag and nothing ELSE.**
+_ **Avoid output looping content**
 - Output speech language: {{SPEECH_LANGUAGE}}.

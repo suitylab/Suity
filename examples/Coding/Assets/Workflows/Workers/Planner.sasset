@@ -16,9 +16,6 @@
     <Item>
       <Id>f41b5f0b-24d9-4f60-97d2-242cbdf7357b</Id>
     </Item>
-    <Item>
-      <Id>2ae343de-b225-497c-91ee-b88dab89d01b</Id>
-    </Item>
   </Tools>
   <Overview>
     <Text>This skill can analyze, edit an existing app.</Text>

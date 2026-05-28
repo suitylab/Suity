@@ -549,7 +549,7 @@
         </Message>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageMessageParameterItem" X="1060" Y="-60" Width="63" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageMessageParameterItem" X="1220" Y="-60" Width="63" Height="17">
       <Name>SubTaskCount</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageMessageParameterNode">
         <Name>SubTaskCount</Name>
@@ -598,7 +598,7 @@
         <Required>False</Required>
         <History>True</History>
         <Message>
-          <Text>===== Tool Call Response =====</Text>
+          <Text>------------------ Tool Response ------------------</Text>
         </Message>
         <TooltipMode>True</TooltipMode>
       </Node>
@@ -612,7 +612,7 @@
         <Required>False</Required>
         <History>True</History>
         <Message>
-          <Text>===== Task Action Step =====</Text>
+          <Text>------------------ Action ------------------</Text>
         </Message>
         <TooltipMode>True</TooltipMode>
       </Node>

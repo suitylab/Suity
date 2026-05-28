@@ -26,15 +26,21 @@ Focus on:
 
 # CODING
 Output multiple code file based on the File Specification, and within `<code>` tags, as follows:
-<code path='file path'>
+<code path='file path 1'>
 ...
 <code>
+
+<code path='file path 2'>
+...
+<code>
+...
 
 - Output file path inside the `path` attribute.
 
 # OUTPUT FORMAT RULES
 - Output **pure source code only** with proper syntax highlighting markers if needed.
 - Include necessary inline comments for complex logic, but avoid over-commenting obvious code.
+- Output basic project files based on the tech-spec.
 - Do NOT output any introductory text, explanations, or conversational content outside the `<code>` tag.
 - Do NOT output any explanations, code-block indicator inside the `<code>` tag.
 - Do NOT output emoji, markdown formatting outside code, or special decorative characters.
