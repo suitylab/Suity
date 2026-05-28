@@ -1292,7 +1292,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <param name="computation">The flow computation to configure.</param>
     protected virtual void OnConfigComputation(IFlowComputation computation)
     {
-        _conversation.RemoveMessages(o => true);
+        // _conversation.RemoveMessages(o => true);
 
         var context = computation.Context;
 

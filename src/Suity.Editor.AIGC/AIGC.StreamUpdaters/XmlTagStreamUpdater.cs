@@ -83,11 +83,12 @@ public class XmlTagStreamUpdater : LLmStreamUpdater
     /// <param name="paragraph">The paragraph object containing tag and text information.</param>
     private void UpdateMessageBox(IConversationHandler conversation, Paragraph paragraph)
     {
-        _msg?.Dispose();
         if (paragraph is null || string.IsNullOrWhiteSpace(paragraph.Text))
         {
             return;
         }
+
+        _msg?.Dispose();
 
         if (!string.IsNullOrWhiteSpace(paragraph.TagText))
         {
