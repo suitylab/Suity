@@ -1,3 +1,4 @@
+using Suity.Collections;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
@@ -33,7 +34,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
             _startLine.Sync(sync);
             _lineCount.Sync(sync);
         }
-public void SetupView(IViewObjectSetup setup)
+        public void SetupView(IViewObjectSetup setup)
         {
             _filePath.InspectorField(setup);
             _startLine.InspectorField(setup);
@@ -46,18 +47,18 @@ public void SetupView(IViewObjectSetup setup)
     public class FileResult : IViewObject
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
-        readonly TextBlockProperty _content = new("Content");
+        readonly StringProperty _message = new("Message");
         readonly StringProperty _error = new("Error", "Error");
 
         public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
-        public string Content { get => _content.Text; set => _content.Text = value; }
+        public string Message { get => _message.Text; set => _message.Text = value; }
         public string Error { get => _error.Text; set => _error.Text = value; }
         public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
         public void Sync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
-            _content.Sync(sync);
+            _message.Sync(sync);
 
             if (sync.IsSetter() || !string.IsNullOrWhiteSpace(_error.Text))
             {
@@ -67,10 +68,10 @@ public void SetupView(IViewObjectSetup setup)
         public void SetupView(IViewObjectSetup setup)
         {
             _filePath.InspectorField(setup);
-            _content.InspectorField(setup);
+            _message.InspectorField(setup);
             _error.InspectorField(setup);
         }
-        public override string ToString() => $"{FilePath} ({(HasError ? $"Error: {Error}" : $"{Content?.Length ?? 0} chars")})";
+        public override string ToString() => $"{FilePath} ({(HasError ? $"Error: {Error}" : Message)})";
     }
 
     public class Output : IViewObject
@@ -106,7 +107,7 @@ public void SetupView(IViewObjectSetup setup)
 
     public override Task<Output> Run(ToolCallContext context)
     {
-        var parentPage = context.ToolInstance.GetParentWorkflow() as IAigcWorkflowPage;
+        var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
 
         string workspaceDir = context.WorkSpaceDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
@@ -116,13 +117,14 @@ public void SetupView(IViewObjectSetup setup)
 
         var output = new Output();
 
-        foreach (var item in FileItems)
+        foreach (var item in FileItems.SkipNull())
         {
             var result = new FileResult { FilePath = item.FilePath };
 
+            string relativePath = item.FilePath?.TrimStart('/', '\\');
+
             try
             {
-                string relativePath = item.FilePath.TrimStart('/', '\\');
                 string fullPath = relativePath;
 
                 if (!Path.IsPathRooted(relativePath))
@@ -135,6 +137,7 @@ public void SetupView(IViewObjectSetup setup)
                 if (!File.Exists(fullPath))
                 {
                     result.Error = "File not found";
+                    parentPage?.RemoveScratchPad(relativePath);
                 }
                 else
                 {
@@ -148,19 +151,22 @@ public void SetupView(IViewObjectSetup setup)
                     if (startLine <= 0 && lineCount <= 0)
                     {
                         content = string.Join(Environment.NewLine, lines);
+                        result.Message = "full content";
                     }
                     else
                     {
                         int start = startLine <= 0 ? 0 : Math.Min(startLine - 1, totalLines - 1);
                         int count = lineCount <= 0 ? totalLines - start : Math.Min(lineCount, totalLines - start);
                         content = string.Join(Environment.NewLine, lines, start, count);
+                        result.Message = $"start line: {startLine}, line count: {lineCount}";
                     }
 
-                    result.Content = content;
+                    parentPage?.SetScratchPad("file", relativePath, content, result.Message);
                 }
             }
             catch (Exception ex)
             {
+                parentPage?.RemoveScratchPad(relativePath);
                 result.Error = ex.Message;
             }
 

@@ -13,7 +13,7 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 /// </summary>
 public static class SubFlowUtility
 {
-    public static IAigcTaskPage GetParentWorkflow(this IPageInstance instance)
+    public static IAigcTaskPage GetParentTask(this IPageInstance instance)
     {
         var page = instance?.Owner as IAigcTaskPage;
 
@@ -143,10 +143,10 @@ public static class SubFlowUtility
         }
 
         string content = ReadAllText(page, path);
-        WriteFileToScratchPad(article, "file", path, content, "full content");
+        SetScratchPad(article, "file", path, content, "full content");
     }
 
-    public static void WriteFileToScratchPad(this IAigcWorkflowPage page, string type, string path, string content, string note)
+    public static void SetScratchPad(this IAigcWorkflowPage page, string type, string path, string content, string note)
     {
         var article = GetScratchPadContainer(page);
         if (article is null)
@@ -154,10 +154,10 @@ public static class SubFlowUtility
             return;
         }
 
-        WriteFileToScratchPad(article, type, path, content, note);
+        SetScratchPad(article, type, path, content, note);
     }
 
-    public static void WriteFileToScratchPad(this IArticle article, string type, string path, string content, string note)
+    public static void SetScratchPad(this IArticle article, string type, string path, string content, string note)
     {
         if (article is null)
         {
