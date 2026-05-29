@@ -101,6 +101,8 @@ public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
 
     public override Task<Output> Run(ToolCallContext context)
     {
+        var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+
         string workspaceDir = context.WorkSpaceDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
@@ -151,6 +153,7 @@ public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
                     }
 
                     File.Move(fullSourcePath, fullTargetPath);
+                    parentPage?.RemoveScratchPad(relativeSourcePath);
                 }
             }
             catch (Exception ex)

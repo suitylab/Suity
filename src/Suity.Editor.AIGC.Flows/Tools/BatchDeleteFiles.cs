@@ -97,6 +97,8 @@ public class BatchDeleteFiles : ToolCommand<BatchDeleteFiles.Output>
 
     public override Task<Output> Run(ToolCallContext context)
     {
+        var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+
         string workspaceDir = context.WorkSpaceDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
@@ -128,6 +130,7 @@ public class BatchDeleteFiles : ToolCommand<BatchDeleteFiles.Output>
                 else
                 {
                     File.Delete(fullPath);
+                    parentPage?.RemoveScratchPad(relativePath);
                 }
             }
             catch (Exception ex)
