@@ -719,7 +719,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     }
 
     /// <inheritdoc/>
-    public IArticle[] GetScratchPadItems()
+    public IArticle[] GetScratchPadItems(int hierarchyLevels)
     {
         int index = this.GetIndex();
         if (index < 0)

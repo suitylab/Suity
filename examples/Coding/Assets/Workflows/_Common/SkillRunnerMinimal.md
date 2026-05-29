@@ -61,19 +61,6 @@ Direct response and report to parent.
 Failed reason
 </failed>
 
-## Example:
-```
-<review>
-something done
-</review>
-<reasoning title='hi'>
-do something
-</reasoning>
-<tool_action tool='n'>
-{"param": "value"}
-</tool>
-```
-
 # Constraints
 - Always output <reasoning>.
 - Output exactly ONE of <tool_action>, <next>, <end> or <failed> per turn.

@@ -198,12 +198,9 @@ public static class SubFlowUtility
             return false;
         }
 
-        var remove = article.GetArticle(path);
-        if (remove != null)
-        {
-            article.RemoveArticle(remove);
-            return true;
-        }
+        var remove = article.GetOrAddArticle(path);
+        remove.Content = string.Empty;
+        remove.Note = "removed";
 
         return false;
     }

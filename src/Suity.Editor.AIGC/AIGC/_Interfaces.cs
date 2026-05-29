@@ -249,8 +249,9 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     /// <summary>
     /// Resolves the scratch pad items for this task, checking for transferable article parameters first.
     /// </summary>
+    /// <param name="hierarchyLevels">The number of parent levels to include in the scratch pad items.</param>
     /// <returns>The resolved scratch pad items, or null if not available.</returns>
-    IArticle[] GetScratchPadItems();
+    IArticle[] GetScratchPadItems(int hierarchyLevels = 0);
 
     /// <summary>
     /// Gets the chat history for this task, optionally including parent hierarchy.

@@ -647,6 +647,7 @@
   <Object id="da61c28b-a351-4788-a611-31d8facb18f1" name="*SubFlow|ISubFlowPreset" />
   <Object id="8ad332ed-c138-4142-820c-a281cccaa0e4" name="*SubFlow|ISubFlowPresetAsset" />
   <Object id="3ab97a0a-6a21-4497-839d-afd9f7b95876" name="*SubFlow|IToolAsset" />
+  <Object id="3eb62b3a-369d-4db3-9492-15b1691af1a0" name="*SubFlow|ScratchPadItem" />
   <Object id="2aef8f59-7a8f-402e-909a-dff40eb623ea" name="*SubFlow|SubFlowDefinitionAsset" />
   <Object id="70a1566a-7ea4-4b65-a3e0-fbf445d14d6e" name="*SubFlow|SubFlowInstance" />
   <Object id="70a1566a-7ea4-4b65-a3e0-fbf445d14d6e" name="*SubFlow|SubFlowInstance" />

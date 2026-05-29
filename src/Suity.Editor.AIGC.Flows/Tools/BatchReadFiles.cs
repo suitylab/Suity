@@ -142,17 +142,18 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                     if (startLine <= 0 && lineCount <= 0)
                     {
                         content = string.Join(Environment.NewLine, lines);
-                        result.Message = "read full content";
+                        result.Message = "read full content, see ScratchPadItem for detail.";
+                        parentPage?.SetScratchPad("file", relativePath, content, "full content");
                     }
                     else
                     {
                         int start = startLine <= 0 ? 0 : Math.Min(startLine - 1, totalLines - 1);
                         int count = lineCount <= 0 ? totalLines - start : Math.Min(lineCount, totalLines - start);
                         content = string.Join(Environment.NewLine, lines, start, count);
-                        result.Message = $"start line: {startLine}, line count: {lineCount}";
+                        string msg = $"start line: {startLine}, line count: {lineCount}";
+                        result.Message = $"read {msg}, see ScratchPadItem for detail.";
+                        parentPage?.SetScratchPad("file", relativePath, content, msg);
                     }
-
-                    parentPage?.SetScratchPad("file", relativePath, content, result.Message);
                 }
             }
             catch (Exception ex)
