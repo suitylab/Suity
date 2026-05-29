@@ -639,11 +639,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
     }
 
-    /// <summary>
-    /// Resolves the base article for this task, optionally using the parent's article.
-    /// </summary>
-    /// <param name="autoCreate">If true, automatically creates the article if it doesn't exist.</param>
-    /// <returns>The resolved article, or null if not available.</returns>
+    /// <inheritdoc/>
     public IArticle ResolveArticleBase(bool autoCreate)
     {
         if (_instance?.UseParentArticle == true && this.ParentNode is AigcWorkflowPage parent)
@@ -720,6 +716,41 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
 
         return docArticle;
+    }
+
+    /// <inheritdoc/>
+    public IArticle[] GetScratchPadItems()
+    {
+        int index = this.GetIndex();
+        if (index < 0)
+        {
+            return null;
+        }
+
+        Dictionary<string, IArticle> articles = [];
+        for (int i = 0; i <= index; i++)
+        {
+            if (ParentList.GetItemAt(i) is AigcWorkflowPage task)
+            {
+                var scratchPad = task.GetScratchPadContainer(autoCreate:false);
+                if (scratchPad is null)
+                {
+                    continue;
+                }
+
+                foreach (var article in scratchPad.Articles)
+                {
+                    if (string.IsNullOrWhiteSpace(article.Title))
+                    {
+                        continue;
+                    }
+
+                    articles[article.Title] = article;
+                }
+            }
+        }
+
+        return articles.Values.ToArray();
     }
 
     /// <inheritdoc/>

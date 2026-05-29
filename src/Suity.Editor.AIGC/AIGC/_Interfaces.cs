@@ -52,6 +52,12 @@ public interface IAigcTaskHost
     /// <param name="taskId">The unique identifier of the task.</param>
     /// <returns>The task page associated with the specified task ID, or null if not found.</returns>
     IAigcTaskPage GetTask(string taskId);
+
+        /// <summary>
+    /// Gets sub-tasks as an array.
+    /// </summary>
+    /// <returns>An array of sub-tasks.</returns>
+    IAigcTaskPage[] GetSubTasks();
 }
 
 #endregion
@@ -239,6 +245,12 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     /// <param name="autoCreate">If true, automatically creates the article if it doesn't exist.</param>
     /// <returns>The resolved article, or null if not available.</returns>
     IArticle ResolveArticleBase(bool autoCreate);
+
+    /// <summary>
+    /// Resolves the scratch pad items for this task, checking for transferable article parameters first.
+    /// </summary>
+    /// <returns>The resolved scratch pad items, or null if not available.</returns>
+    IArticle[] GetScratchPadItems();
 
     /// <summary>
     /// Gets the chat history for this task, optionally including parent hierarchy.

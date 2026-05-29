@@ -437,6 +437,10 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     IAigcTaskPage IAigcTaskHost.GetTask(string taskId) 
         => ItemCollection.GetItem(taskId) as IAigcTaskPage;
 
+    IAigcTaskPage[] IAigcTaskHost.GetSubTasks()
+        => ItemCollection.Items.OfType<IAigcTaskPage>().ToArray();
+
+
     #endregion
 
     /// <summary>

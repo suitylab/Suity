@@ -268,10 +268,37 @@ public class GetTaskChatHistory : TaskPageNode
         bool inHierarchy = _inHierarchy.Value;
         int level = inHierarchy ? _hierarchyLimit.Value : 0;
 
-        var taskService = compute.Context.GetArgument<IAigcWorkflowPage>();
-        var history = taskService?.GetChatHistory(level) ?? [];
+        var page = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var history = page?.GetChatHistory(level) ?? [];
 
         compute.SetValue(_chatHistory, history);
+    }
+}
+
+#endregion
+
+#region GetScratchBoard
+
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Get Task Scratch Pad", "*CoreIcon|Task")]
+public class GetTaskScratchPad : TaskPageNode
+{
+    readonly FlowNodeConnector _scratchPad;
+
+    public GetTaskScratchPad()
+    {
+        var articleType = ArticleAsset.ArticleType.MakeArrayType();
+        _scratchPad = AddDataOutputConnector("ScratchPad", articleType, "Scratch Pad");
+    }
+
+    public override void Compute(IFlowComputation compute)
+    {
+        base.Compute(compute);
+
+        var page = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var scratchPad = page?.GetScratchPadItems() ?? [];
+
+        compute.SetValue(_scratchPad, scratchPad);
     }
 }
 

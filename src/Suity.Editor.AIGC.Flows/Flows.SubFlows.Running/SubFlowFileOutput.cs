@@ -1,13 +1,9 @@
 using Suity.Editor.AIGC;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
-using Suity.Editor.WorkSpaces;
-using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
-using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace Suity.Editor.Flows.SubFlows.Running;
@@ -65,6 +61,29 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
         _path = value as string;
         _paths = value as SArray;
         IsValueSet = true;
+
+        var page = Option.Owner as IAigcWorkflowPage;
+
+        if (SaveToScratchPad && page?.GetScratchPadContainer() is { } scratchPad)
+        {
+            if (IsArray && _paths is { } paths)
+            {
+                foreach (var item in paths)
+                {
+                    string path = SItem.ResolveValue(item)?.ToString();
+                    if (string.IsNullOrWhiteSpace(path))
+                    {
+                        continue;
+                    }
+
+                    page?.WriteFileToScratchPad(scratchPad, path);
+                }
+            }
+            else if (!IsArray && !string.IsNullOrWhiteSpace(_path))
+            {
+                page?.WriteFileToScratchPad(scratchPad, _path);
+            }
+        }
     }
 
     /// <summary>
@@ -86,6 +105,8 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
 
     public bool IsArray { get; private set; }
 
+    public bool SaveToScratchPad { get; private set; }
+
     /// <inheritdoc/>
     public HistoryTag ResolveChatHistory(ResolveChatIntents intent)
     {
@@ -103,64 +124,22 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
             }
 
             var builder = new StringBuilder();
-
-            if (addrMode)
+            foreach (var item in _paths)
             {
-                foreach (var item in _paths)
+                string path = SItem.ResolveValue(item)?.ToString();
+                if (string.IsNullOrWhiteSpace(path))
                 {
-                    string path = SItem.ResolveValue(item)?.ToString();
-                    if (string.IsNullOrWhiteSpace(path))
-                    {
-                        continue;
-                    }
-
-                    if (addrMode != AddressMode)
-                    {
-                        builder.AppendLine($"{path} (NO Preview)");
-                    }
-                    else
-                    {
-                        builder.AppendLine(path);
-                    }
+                    continue;
                 }
-            }
-            else
-            {
-                foreach (var item in _paths)
-                {
-                    string path = SItem.ResolveValue(item)?.ToString();
-                    if (string.IsNullOrWhiteSpace(path))
-                    {
-                        continue;
-                    }
 
-                    string text = ReadAllText(path);
-                    builder.AppendLine($"<File path='{path}'>");
-                    builder.AppendLine(text);
-                    builder.AppendLine("</File>");
-                }
+                builder.AppendLine(path);
             }
 
             return builder.ToString();
         }
         else
         {
-            if (addrMode)
-            {
-                if (addrMode != AddressMode)
-                {
-                    return $"{_path} (NO Preview)";
-                }
-                else
-                {
-                    return _path;
-                }
-            }
-            else
-            {
-                string text = ReadAllText(_path);
-                return new HistoryTag(text, [new("path", _path)]);
-            }
+            return _path;
         }
     }
     #endregion
@@ -176,6 +155,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
         ChatHistory = _outputItem.Node?.ChatHistory == true;
         AddressMode = _outputItem.Node?.AddressMode == true;
         IsArray = _outputItem.Node?.IsArray == true;
+        SaveToScratchPad = _outputItem.Node?.SaveToScratchPad == true;
     }
 
     /// <inheritdoc/>
@@ -217,7 +197,8 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
         }
         else
         {
-            bool fileExist = GetFileExist(_path);
+            var page = Option.Owner as IAigcWorkflowPage;
+            bool fileExist = page?.GetFileExist(_path) == true;
             if (!fileExist)
             {
                 setup.Warning("File not exist.");
@@ -287,58 +268,4 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     }
 
 
-    /// <summary>
-    /// Checks whether the file at the current path exists in the task workspace.
-    /// </summary>
-    /// <returns>True if the file exists; otherwise, false.</returns>
-    public bool GetFileExist(string path)
-    {
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            return false;
-        }
-
-        var workSpace = GetWorkSpace();
-        if (workSpace is null)
-        {
-            return false;
-        }
-
-        string fullPath = PathUtility.MakeFullPath(_path, workSpace.MasterDirectory);
-
-        return File.Exists(fullPath);
-    }
-
-    public string ReadAllText(string path)
-    {
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            return null;
-        }
-
-        var workSpace = GetWorkSpace();
-        if (workSpace is null)
-        {
-            return null;
-        }
-
-        string fullPath = PathUtility.MakeFullPath(path, workSpace.MasterDirectory);
-
-        try
-        {
-            return File.ReadAllText(fullPath);
-        }
-        catch (Exception)
-        {
-            return null;
-        }
-    }
-
-    public WorkSpace GetWorkSpace()
-    {
-        var taskPage = Option.Owner as IAigcWorkflowPage;
-        var workSpace = taskPage.TaskHost?.WorkSpace;
-
-        return workSpace;
-    }
 }

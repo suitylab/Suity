@@ -648,7 +648,7 @@ public class PageFileOutputNode : SubFlowTypeNode
     private FlowNodeConnector _refInput;
     private readonly ValueProperty<bool> _refConnector = new("RefConnector", "Reference Port");
     private readonly ValueProperty<bool> _array = new("IsArray", "Is Array", false, "Whether the output is an array of file paths.");
-
+    private readonly ValueProperty<bool> _saveToScratchPad = new("SaveToScratchPad", "Save To ScratchPad", true, "When enabled, the output file path(s) will be saved to the scratch pad for later reference.");
     private string _value;
 
     /// <summary>
@@ -683,6 +683,8 @@ public class PageFileOutputNode : SubFlowTypeNode
 
     public bool IsArray => _array.Value;
 
+    public bool SaveToScratchPad => _saveToScratchPad.Value;
+
     protected override void OnSync(IPropertySync sync, ISyncContext context)
     {
         base.OnSync(sync, context);
@@ -691,6 +693,7 @@ public class PageFileOutputNode : SubFlowTypeNode
 
         _refConnector.Sync(sync);
         _array.Sync(sync);
+        _saveToScratchPad.Sync(sync);
 
         if (sync.IsSetterOf(_refConnector.Property.Name))
         {
@@ -723,6 +726,7 @@ public class PageFileOutputNode : SubFlowTypeNode
         base.OnSetupView(setup);
 
         _array.InspectorField(setup);
+        _saveToScratchPad.InspectorField(setup);
     }
 
     /// <inheritdoc/>
