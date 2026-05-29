@@ -202,11 +202,7 @@ public abstract class BaseOpenAICall : BaseLLmCall
             param.ReasoningEffort = "high";
         }
 
-        HashSet<string>? interruption = null;
-        if (option?.InterruptionWords is { } interruptionArray)
-        {
-            interruption = [.. interruptionArray];
-        }
+        string[]? interruption = option?.InterruptionWords;
 
         // Handle cases where tool calling is not supported
         if (HasFunction && !Model.SupportToolCalling)
