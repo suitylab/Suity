@@ -48,30 +48,21 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
         readonly StringProperty _message = new("Message");
-        readonly StringProperty _error = new("Error", "Error");
 
         public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
         public string Message { get => _message.Text; set => _message.Text = value; }
-        public string Error { get => _error.Text; set => _error.Text = value; }
-        public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
         public void Sync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
             _message.Sync(sync);
-
-            if (sync.IsSetter() || !string.IsNullOrWhiteSpace(_error.Text))
-            {
-                _error.Sync(sync);
-            }
         }
         public void SetupView(IViewObjectSetup setup)
         {
             _filePath.InspectorField(setup);
             _message.InspectorField(setup);
-            _error.InspectorField(setup);
         }
-        public override string ToString() => $"{FilePath} ({(HasError ? $"Error: {Error}" : Message)})";
+        public override string ToString() => $"{FilePath} ({Message})";
     }
 
     public class Output : IViewObject
@@ -136,7 +127,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
 
                 if (!File.Exists(fullPath))
                 {
-                    result.Error = "File not found";
+                    result.Message = "File not found";
                     parentPage?.RemoveScratchPad(relativePath);
                 }
                 else
@@ -167,7 +158,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
             catch (Exception ex)
             {
                 parentPage?.RemoveScratchPad(relativePath);
-                result.Error = ex.Message;
+                result.Message = ex.Message;
             }
 
             output.Results.Add(result);

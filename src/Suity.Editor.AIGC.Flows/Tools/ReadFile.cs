@@ -1,4 +1,5 @@
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -16,19 +17,19 @@ public class ReadFile : ToolCommand<ReadFile.Output>
 {
     public class Output : IViewObject
     {
-        readonly TextBlockProperty _content = new("Content");
+        readonly StringProperty _message = new("Message");
 
-        public string Content { get => _content.Text; set => _content.Text = value; }
+        public string Message { get => _message.Text; set => _message.Text = value; }
 
         public void Sync(IPropertySync sync, ISyncContext context)
         {
-            _content.Sync(sync);
+            _message.Sync(sync);
         }
         public void SetupView(IViewObjectSetup setup)
         {
-            _content.InspectorField(setup);
+            _message.InspectorField(setup);
         }
-        public override string ToString() => $"{Content?.Length ?? 0} chars";
+        public override string ToString() => Message;
     }
 
     readonly StringProperty _filePath = new("FilePath", "FilePath", string.Empty, "The absolute or relative path to the file to read.");
@@ -55,6 +56,8 @@ public class ReadFile : ToolCommand<ReadFile.Output>
 
     public override Task<Output> Run(ToolCallContext context)
     {
+        var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+
         string workspaceDir = context.WorkSpaceDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
@@ -74,29 +77,35 @@ public class ReadFile : ToolCommand<ReadFile.Output>
             fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
+        var output = new Output();
+
         if (!File.Exists(fullPath))
         {
-            throw new FileNotFoundException($"File not found: {relativePath}");
-        }
-
-        var lines = File.ReadAllLines(fullPath);
-        int totalLines = lines.Length;
-
-        string content;
-        if (StartLine <= 0 && LineCount <= 0)
-        {
-            content = string.Join(Environment.NewLine, lines);
+            parentPage?.RemoveScratchPad(relativePath);
+            output.Message = "File not found";
         }
         else
         {
-            int start = StartLine <= 0 ? 0 : Math.Min(StartLine - 1, totalLines - 1);
-            int count = LineCount <= 0 ? totalLines - start : Math.Min(LineCount, totalLines - start);
-            content = string.Join(Environment.NewLine, lines, start, count);
+            var lines = File.ReadAllLines(fullPath);
+            int totalLines = lines.Length;
+
+            string content;
+            if (StartLine <= 0 && LineCount <= 0)
+            {
+                content = string.Join(Environment.NewLine, lines);
+                output.Message = "full content";
+            }
+            else
+            {
+                int start = StartLine <= 0 ? 0 : Math.Min(StartLine - 1, totalLines - 1);
+                int count = LineCount <= 0 ? totalLines - start : Math.Min(LineCount, totalLines - start);
+                content = string.Join(Environment.NewLine, lines, start, count);
+                output.Message = $"start line: {StartLine}, line count: {LineCount}";
+            }
+
+            parentPage?.SetScratchPad("file", relativePath, content, output.Message);
         }
 
-        return Task.FromResult(new Output
-        {
-            Content = content,
-        });
+        return Task.FromResult(output);
     }
 }
