@@ -93,7 +93,7 @@ public abstract class TypeDesignItem : DesignItem,
 
         if (setup.SupportInspector())
         {
-            setup.InspectorField(_isImported, new ViewProperty("IsImported", "Import").WithToolTips("Imported types are implemented externally and do not generate source code."));
+            setup.InspectorField(_isImported, new ViewProperty("IsImported", "Import").WithTooltip("Imported types are implemented externally and do not generate source code."));
             if (_isImported)
             {
                 setup.InspectorField(_importName, new ViewProperty("ImportName", "Import Name"));

@@ -50,7 +50,7 @@ public class ValueProperty<T> : IValueProperty
 
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
 
         Flag = flag;
@@ -136,7 +136,7 @@ public class ReadonlyValueProperty<T> : IValueProperty
 
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
     }
 
@@ -191,7 +191,7 @@ public class ListProperty<T> : IValueProperty
 
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
     }
 
@@ -257,7 +257,7 @@ public class SyncListProperty<T> : IValueProperty
 
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
     }
 
@@ -476,7 +476,7 @@ public class LabelProperty : IValueProperty
 
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
 
         if (icon != null)
@@ -516,7 +516,7 @@ public class ButtonProperty : IValueProperty
 
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
 
         if (icon != null)

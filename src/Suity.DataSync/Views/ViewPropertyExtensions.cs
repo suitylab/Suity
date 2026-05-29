@@ -160,7 +160,7 @@ public static class ViewPropertyExtensions
         return WithHeaderStyle(viewProperty, "Emboss");
     }
 
-    public static ViewProperty WithToolTips(this ViewProperty viewProperty, string toolTips)
+    public static ViewProperty WithTooltip(this ViewProperty viewProperty, string toolTips)
     {
         viewProperty.EnsureStyles().SetAttribute("ToolTips", toolTips);
         return viewProperty;

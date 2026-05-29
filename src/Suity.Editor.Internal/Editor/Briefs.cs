@@ -65,7 +65,7 @@ public class FieldBriefAttribute : DesignAttribute, IBrief
         base.OnSetupView(setup);
 
         setup.InspectorField(_field, new ViewProperty("Field", "Field"));
-        setup.InspectorField(_pattern, new ViewProperty("Pattern", "Pattern ").WithToolTips(ToolTip));
+        setup.InspectorField(_pattern, new ViewProperty("Pattern", "Pattern ").WithTooltip(ToolTip));
     }
 
     /// <inheritdoc/>

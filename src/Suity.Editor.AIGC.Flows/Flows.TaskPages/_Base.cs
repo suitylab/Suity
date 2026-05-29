@@ -1,6 +1,4 @@
-﻿using Suity.Editor.Flows;
-
-namespace Suity.Editor.Flows.TaskPages;
+﻿namespace Suity.Editor.Flows.TaskPages;
 
 /// <summary>
 /// Base class for AIGC page operation flow nodes.

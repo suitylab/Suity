@@ -1,4 +1,6 @@
 using Suity.Editor.Types;
+using Suity.Synchonizing;
+using Suity.Views;
 using System.Collections.Generic;
 
 namespace Suity.Editor.Flows.SubFlows;
@@ -182,4 +184,27 @@ public enum ResolveChatIntents
 {
     Normal,
     Preview,
+}
+
+[NativeType(CodeBase = "SubFlow")]
+public class ScratchPadItem : IViewObject
+{
+    public string Path { get; set; }
+    public string Type { get; set; }
+    public string Content { get; set; }
+
+    public void Sync(IPropertySync sync, ISyncContext context)
+    {
+        Path = sync.Sync(nameof(Path), Path);
+        Type = sync.Sync(nameof(Type), Type);
+        Content = sync.Sync(nameof(Content), Content);
+    }
+
+    public void SetupView(IViewObjectSetup setup)
+    {
+        setup.InspectorField(Path, new ViewProperty(nameof(Path), "Path").WithTooltip("Path of the scratch pad item"));
+        setup.InspectorField(Type, new ViewProperty(nameof(Type), "Type").WithTooltip("Type of the scratch pad item"));
+        setup.InspectorField(Content, new ViewProperty(nameof(Content), "Content").WithTooltip("Content of the scratch pad item"));
+    }
+
 }

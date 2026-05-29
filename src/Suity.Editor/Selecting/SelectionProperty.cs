@@ -67,7 +67,7 @@ public class SelectionProperty : IValueProperty
 
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
     }
 
@@ -163,7 +163,7 @@ public class SelectionListProperty : IValueProperty
 
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
     }
 

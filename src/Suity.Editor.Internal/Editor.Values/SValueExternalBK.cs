@@ -1776,7 +1776,7 @@ internal sealed class SValueExternalBK : SValueExternal
         string toolTips = field.GetAttribute<ToolTipsAttribute>()?.ToolTips ?? field.ToolTips;
         if (!string.IsNullOrWhiteSpace(toolTips))
         {
-            viewProperty.WithToolTips(toolTips);
+            viewProperty.WithTooltip(toolTips);
         }
 
         if (field.Unit is string unit && !string.IsNullOrWhiteSpace(unit))

@@ -91,7 +91,7 @@ public class StructType : StructTypeBase<DStructBuilder>,
 
         base.OnSetupView(setup);
 
-        setup.InspectorField(_brief, new ViewProperty("Brief", "Summary").WithToolTips("Can use {} to include field names"));
+        setup.InspectorField(_brief, new ViewProperty("Brief", "Summary").WithTooltip("Can use {} to include field names"));
     }
 
     /// <inheritdoc/>

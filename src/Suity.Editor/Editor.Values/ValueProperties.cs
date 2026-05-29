@@ -58,7 +58,7 @@ public class SKeyProperty<T> : IValueProperty
         Property.WithWriteBack();
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
 
         Type = TypeDefinition.FromNative<T>();
@@ -180,7 +180,7 @@ public class SKeyArrayProperty<T> : IValueProperty
         Property.WithWriteBack();
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
 
         DataType = TypeDefinition.FromNative<T>().MakeDataLinkType();
@@ -282,7 +282,7 @@ public class SAssetKeyArrayProperty<T> : IValueProperty
         Property.WithWriteBack();
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
 
         var assetLink = AssetManager.Instance.GetAssetLink<T>();

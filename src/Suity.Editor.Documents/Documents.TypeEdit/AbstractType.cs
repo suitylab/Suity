@@ -106,7 +106,7 @@ public class AbstractType : StructTypeBase<DAbstractBuilder>
             setup.InspectorField(Type, new ViewProperty("Type", "Type") { Expand = true });
         }
 
-        setup.InspectorField(_brief, new ViewProperty("Brief", "Summary").WithToolTips("Can use {} to include field names"));
+        setup.InspectorField(_brief, new ViewProperty("Brief", "Summary").WithTooltip("Can use {} to include field names"));
     }
 
     /// <inheritdoc/>

@@ -883,12 +883,12 @@ public abstract class Asset : EditorObject,
 
         setup.LabelWithIcon("Asset", CoreIcon.Asset);
         setup.InspectorField(Id, new ViewProperty(nameof(Id)) { ReadOnly = true });
-        setup.InspectorField(AssetKey, new ViewProperty(nameof(AssetKey), "Asset key") { ReadOnly = true }.WithToolTips("Temporary name composed of file path, used for asset package import/export."));
+        setup.InspectorField(AssetKey, new ViewProperty(nameof(AssetKey), "Asset key") { ReadOnly = true }.WithTooltip("Temporary name composed of file path, used for asset package import/export."));
         setup.InspectorField(NativeTypeName, new ViewProperty(nameof(NativeTypeName), "Asset type") { ReadOnly = true });
         setup.InspectorField(Description, new ViewProperty(nameof(Description), "Description") { ReadOnly = true });
 
         setup.LabelWithIcon("Naming", CoreIcon.Label);
-        setup.InspectorField(FullTypeName, new ViewProperty(nameof(FullTypeName), "Full asset type name") { ReadOnly = true }.WithToolTips("Final resource name when this asset is exported for external use."));
+        setup.InspectorField(FullTypeName, new ViewProperty(nameof(FullTypeName), "Full asset type name") { ReadOnly = true }.WithTooltip("Final resource name when this asset is exported for external use."));
         setup.InspectorField(NameSpace, new ViewProperty(nameof(NameSpace), "Name space") { ReadOnly = true });
         setup.InspectorField(ImportedId, new ViewProperty(nameof(ImportedId), "Imported Id") { ReadOnly = true });
 

@@ -292,7 +292,7 @@ public abstract class StructTypeBase : TypeDesignItem,
                     setup.InspectorField(IsValueType, new ViewProperty("IsValueType", "Value Type"));
                 }
 
-                setup.InspectorField(BaseType, new ViewProperty("BaseType", "Base Type").WithToolTips("Set to an implementation struct of an abstract struct"));
+                setup.InspectorField(BaseType, new ViewProperty("BaseType", "Base Type").WithTooltip("Set to an implementation struct of an abstract struct"));
             }
         }
     }

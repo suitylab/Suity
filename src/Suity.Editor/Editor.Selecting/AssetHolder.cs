@@ -172,7 +172,7 @@ public class AssetProperty<T> : AssetHolder<T>, IValueProperty
 
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
 
         Filter = filter;
@@ -291,7 +291,7 @@ public class AssetListProperty<T> : IValueProperty
 
         if (toolTips != null)
         {
-            Property.WithToolTips(toolTips);
+            Property.WithTooltip(toolTips);
         }
 
         Filter = filter;
