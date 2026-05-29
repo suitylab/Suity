@@ -42,16 +42,22 @@ public class GetScratchPadText : TaskPageNode
 
     public GetScratchPadText()
     {
-        _items = AddDataInputConnector("Items", TypeDefinition.FromNative<ScratchPadItem>().MakeArrayType());
-        _text = AddDataOutputConnector("Text", "string");
+        var padType = TypeDefinition.FromNative<ScratchPadItem>();
+        var msgType = TypeDefinition.FromNative<LLmMessage>().MakeArrayType();
+
+        _items = AddConnector("ScratchPad", padType, FlowDirections.Input, FlowConnectorTypes.Data, true, "Scratch Pad");
+        _text = AddDataOutputConnector("Text", msgType, "Chat History");
     }
 
     public override void Compute(IFlowComputation compute)
     {
-        var items = compute.GetValue(_items) as ScratchPadItem[] ?? [];
-        var textAry = items.Select(i => i.ToString()).ToArray();
-        var text = string.Join("\r\n\r\n", textAry);
-        compute.SetValue(_text, text);
+        var items = compute.GetValues<ScratchPadItem>(_items, true);
+        var msgs = items
+            .Select(i => i.ToString())
+            .Select(s => new LLmMessage { Role = LLmMessageRole.User, Message = s})
+            .ToArray();
+        
+        compute.SetValue(_text, msgs);
     }
 }
 

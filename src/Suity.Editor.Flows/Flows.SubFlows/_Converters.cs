@@ -1,4 +1,5 @@
 ﻿using Suity.Collections;
+using Suity.Editor.AIGC;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Services;
@@ -217,5 +218,20 @@ public class ScratchPadItemArrayToTextConverter : TypeToTextConverter<ScratchPad
             list.Add(s);
         }
         return string.Join("\r\n\r\n", list);
+    }
+}
+
+public class ScratchPadItemToLLmMessageConverter : TypeConverter<ScratchPadItem, LLmMessage>
+{
+    /// <inheritdoc/>
+    public override LLmMessage Convert(ScratchPadItem objFrom)
+    {
+        if (objFrom is null)
+        {
+            return null;
+        }
+
+        string s = objFrom.ToString();
+        return new LLmMessage { Role = LLmMessageRole.User, Message = s };
     }
 }

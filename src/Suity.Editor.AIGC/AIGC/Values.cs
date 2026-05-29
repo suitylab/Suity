@@ -42,7 +42,7 @@ public enum LLmMessageRole
 /// <summary>
 /// Represents a single message in a language model conversation with a role and content.
 /// </summary>
-[NativeType(CodeBase = "AIGC", Description = "Language Model Info", Color = FlowColors.Task)]
+[NativeType(CodeBase = "AIGC", Description = "LLm Message", Color = FlowColors.Task)]
 public class LLmMessage : IViewObject
 {
     /// <summary>
