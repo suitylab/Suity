@@ -163,7 +163,7 @@ public class CallLLm : AigcFlowNode
     private readonly ValueProperty<bool> _combineMessages = new("CombineMessages", "Combine Messages", false, "Combine all chat history messages into a single message.");
 
     private readonly ListProperty<string> _interruptionWords = new("InterruptionWords", "Interruption Words", "If the model's response contains any of these words, it will be considered an interruption and trigger retry logic.");
-
+    private readonly ValueProperty<LLmCallInterruptionModes> _interruptionMode = new("InterruptionMode", "Interruption Handling Mode", LLmCallInterruptionModes.None, "Defines how to handle interruptions when interruption words are detected in the model's response.");
     /// <summary>
     /// Initializes a new instance of the <see cref="CallLLm"/> class.
     /// </summary>
@@ -227,6 +227,7 @@ public class CallLLm : AigcFlowNode
         _combineMessages.Sync(sync);
 
         _interruptionWords.Sync(sync);
+        _interruptionMode.Sync(sync);
 
         if (sync.IsSetterOf("Functions"))
         {
@@ -255,6 +256,7 @@ public class CallLLm : AigcFlowNode
 
         setup.Label("Interruption Handling");
         _interruptionWords.InspectorField(setup);
+        _interruptionMode.InspectorField(setup);
 
         setup.Label("Others");
         _combineMessages.InspectorField(setup);
@@ -362,7 +364,8 @@ public class CallLLm : AigcFlowNode
         {
             EnableSearch = callOptionEx?.EnableSearch,
             EnableThinking = callOptionEx?.EnableThinking,
-            InterruptionWords = _interruptionWords.List.Where(o => !string.IsNullOrWhiteSpace(o)).ToArray()
+            InterruptionWords = _interruptionWords.List.Where(o => !string.IsNullOrWhiteSpace(o)).ToArray(),
+            InterruptionMode = _interruptionMode.Value,
         };
 
         string title = $"Calling {model.ToDisplayText()}{sourceMsg}...";

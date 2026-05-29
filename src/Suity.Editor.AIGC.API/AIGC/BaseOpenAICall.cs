@@ -5,6 +5,7 @@ using OpenAI_API.Models;
 using Suity.Editor.AIGC.API;
 using Suity.Views;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -202,7 +203,8 @@ public abstract class BaseOpenAICall : BaseLLmCall
             param.ReasoningEffort = "high";
         }
 
-        string[]? interruption = option?.InterruptionWords;
+        string[]? interruptions = option?.InterruptionWords;
+        LLmCallInterruptionModes interruptionMode = option?.InterruptionMode ?? LLmCallInterruptionModes.None;
 
         // Handle cases where tool calling is not supported
         if (HasFunction && !Model.SupportToolCalling)
@@ -227,10 +229,40 @@ public abstract class BaseOpenAICall : BaseLLmCall
 
                 await Task.Run(async () =>
                 {
-                    var responseStream = request.StreamResponseEnumerableFromChatbotAsync(cancel);
+                    using var streamCancelSource = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+                    var streamCancel = streamCancelSource.Token;
+
+                    SmallStringSequence? smallSequence = null;
+                    if (interruptions != null)
+                    {
+                        smallSequence = new SmallStringSequence(10);
+                    }
+
+                    var responseStream = request.StreamResponseEnumerableFromChatbotAsync(streamCancel);
                     await foreach (var t in responseStream)
                     {
+                        smallSequence?.Append(t);
                         appender.Append(t);
+                        Debug.WriteLine(t);
+
+                        if (interruptions != null && smallSequence != null && interruptions.Any(i => smallSequence.ToString().Contains(i)))
+                        {
+                            switch (interruptionMode)
+                            {
+                                case LLmCallInterruptionModes.ReturnPrevious:
+                                    streamCancelSource.Cancel();
+                                    break;
+
+                                case LLmCallInterruptionModes.ThrowError:
+                                    throw new AigcException(L("Interruption word detected"));
+
+                                case LLmCallInterruptionModes.None:
+                                default:
+                                    break;
+                            }
+
+                            break;
+                        }
                     }
                 }, cancel);
 
