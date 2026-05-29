@@ -142,7 +142,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                     if (startLine <= 0 && lineCount <= 0)
                     {
                         content = string.Join(Environment.NewLine, lines);
-                        result.Message = "read full content, see ScratchPadItem for detail.";
+                        result.Message = "read successful, see ScratchPadItem for detail.";
                         parentPage?.SetScratchPad("file", relativePath, content, "full content");
                     }
                     else

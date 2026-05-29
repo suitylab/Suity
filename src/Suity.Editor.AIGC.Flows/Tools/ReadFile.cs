@@ -93,14 +93,17 @@ public class ReadFile : ToolCommand<ReadFile.Output>
             if (StartLine <= 0 && LineCount <= 0)
             {
                 content = string.Join(Environment.NewLine, lines);
-                output.Message = "read full content";
+                output.Message = "read successful, see ScratchPadItem for detail.";
+                parentPage?.SetScratchPad("file", relativePath, content, "full content");
             }
             else
             {
                 int start = StartLine <= 0 ? 0 : Math.Min(StartLine - 1, totalLines - 1);
                 int count = LineCount <= 0 ? totalLines - start : Math.Min(LineCount, totalLines - start);
                 content = string.Join(Environment.NewLine, lines, start, count);
-                output.Message = $"start line: {StartLine}, line count: {LineCount}";
+                string msg = $"start line: {StartLine}, line count: {LineCount}";
+                output.Message = $"read successful. {msg}, see ScratchPadItem for detail.";
+                parentPage?.SetScratchPad("file", relativePath, content, msg);
             }
 
             parentPage?.SetScratchPad("file", relativePath, content, output.Message);

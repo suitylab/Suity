@@ -721,18 +721,29 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <inheritdoc/>
     public IArticle[] GetScratchPadItems(int hierarchyLevels)
     {
+        Dictionary<string, IArticle> articles = [];
+        CollectScratchPadItems(articles, hierarchyLevels);
+        return articles.Values.ToArray();
+    }
+
+    private void CollectScratchPadItems(Dictionary<string, IArticle> articles, int hierarchyLevel)
+    {
+        if (hierarchyLevel > 0 && ParentNode is AigcWorkflowPage parent)
+        {
+            parent.CollectScratchPadItems(articles, hierarchyLevel - 1);
+        }
+
         int index = this.GetIndex();
         if (index < 0)
         {
-            return null;
+            return;
         }
 
-        Dictionary<string, IArticle> articles = [];
         for (int i = 0; i <= index; i++)
         {
             if (ParentList.GetItemAt(i) is AigcWorkflowPage task)
             {
-                var scratchPad = task.GetScratchPadContainer(autoCreate:false);
+                var scratchPad = task.GetScratchPadContainer(autoCreate: false);
                 if (scratchPad is null)
                 {
                     continue;
@@ -749,8 +760,6 @@ public class AigcWorkflowPage : AigcTaskPage,
                 }
             }
         }
-
-        return articles.Values.ToArray();
     }
 
     /// <inheritdoc/>
