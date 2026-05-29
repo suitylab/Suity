@@ -1,4 +1,5 @@
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -55,6 +56,8 @@ public class CreateNewFile : ToolCommand<CreateNewFile.Output>
 
     public override Task<Output> Run(ToolCallContext context)
     {
+        var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+
         string workspaceDir = context.WorkSpaceDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
@@ -86,6 +89,7 @@ public class CreateNewFile : ToolCommand<CreateNewFile.Output>
         }
 
         File.WriteAllText(fullPath, Content);
+        parentPage?.SetScratchPad("file", relativePath, Content, "created");
 
         return Task.FromResult(new Output
         {

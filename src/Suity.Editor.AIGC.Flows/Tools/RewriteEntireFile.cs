@@ -1,4 +1,5 @@
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -55,6 +56,8 @@ public class RewriteEntireFile : ToolCommand<RewriteEntireFile.Output>
 
     public override Task<Output> Run(ToolCallContext context)
     {
+        var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+
         string workspaceDir = context.WorkSpaceDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
@@ -80,6 +83,7 @@ public class RewriteEntireFile : ToolCommand<RewriteEntireFile.Output>
         }
 
         File.WriteAllText(fullPath, NewFullContent);
+        parentPage?.SetScratchPad("file", relativePath, NewFullContent, "rewritten");
 
         return Task.FromResult(new Output
         {

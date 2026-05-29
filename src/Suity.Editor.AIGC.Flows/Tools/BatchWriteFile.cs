@@ -1,4 +1,5 @@
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -114,6 +115,8 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
 
     public override Task<Output> Run(ToolCallContext context)
     {
+        var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+
         string workspaceDir = context.WorkSpaceDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
@@ -151,6 +154,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
                         }
 
                         File.WriteAllText(fullPath, item.Content);
+                        parentPage?.SetScratchPad("file", relativePath, item.Content, "overwritten");
                         result.Status = "Overwritten";
                         successCount++;
                     }
@@ -170,6 +174,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
                     }
 
                     File.WriteAllText(fullPath, item.Content);
+                    parentPage?.SetScratchPad("file", relativePath, item.Content, "created");
                     result.Status = "Created";
                     successCount++;
                 }

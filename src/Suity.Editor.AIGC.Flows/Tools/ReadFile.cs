@@ -93,7 +93,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
             if (StartLine <= 0 && LineCount <= 0)
             {
                 content = string.Join(Environment.NewLine, lines);
-                output.Message = "full content";
+                output.Message = "read full content";
             }
             else
             {

@@ -142,7 +142,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                     if (startLine <= 0 && lineCount <= 0)
                     {
                         content = string.Join(Environment.NewLine, lines);
-                        result.Message = "full content";
+                        result.Message = "read full content";
                     }
                     else
                     {
