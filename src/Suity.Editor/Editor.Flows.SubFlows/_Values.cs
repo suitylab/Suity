@@ -187,6 +187,7 @@ public enum ResolveChatIntents
 }
 
 [NativeType(CodeBase = "SubFlow")]
+[DisplayText("Scratch Pad Item")]
 public class ScratchPadItem : IViewObject
 {
     public string Path { get; set; }
