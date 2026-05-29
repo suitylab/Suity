@@ -194,6 +194,7 @@ public class ScratchPadItem : IViewObject
 {
     public string Path { get; set; }
     public string Type { get; set; }
+    public string Note { get; set; }
     public string Content { get; set; }
 
     public void Sync(IPropertySync sync, ISyncContext context)
@@ -212,7 +213,7 @@ public class ScratchPadItem : IViewObject
 
     public override string ToString()
     {
-        return $"<ScratchPadItem type='{Type}' path='{Path}'>\r\n{Content}\r\n</ScratchPadItem>";
+        return $"<ScratchPadItem type='{Type}' path='{Path}' note='{Note}'>\r\n{Content}\r\n</ScratchPadItem>";
     }
 
     public static ScratchPadItem FromArticle(IArticle article)
@@ -226,6 +227,7 @@ public class ScratchPadItem : IViewObject
         {
             Path = article.Title,
             Type = article.Type,
+            Note = article.Note,
             Content = article.Content,
         };
     }

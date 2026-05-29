@@ -1,4 +1,5 @@
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -105,6 +106,8 @@ public void SetupView(IViewObjectSetup setup)
 
     public override Task<Output> Run(ToolCallContext context)
     {
+        var parentPage = context.ToolInstance.GetParentWorkflow() as IAigcWorkflowPage;
+
         string workspaceDir = context.WorkSpaceDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {

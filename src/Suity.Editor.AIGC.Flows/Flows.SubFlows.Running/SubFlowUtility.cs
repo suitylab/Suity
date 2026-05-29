@@ -13,6 +13,13 @@ namespace Suity.Editor.Flows.SubFlows.Running;
 /// </summary>
 public static class SubFlowUtility
 {
+    public static IAigcTaskPage GetParentWorkflow(this IPageInstance instance)
+    {
+        var page = instance?.Owner as IAigcTaskPage;
+
+        return page?.ParentTask;
+    }
+
     /// <summary>
     /// Determines whether the specified file exists at the given path within the page's workspace.
     /// </summary>
@@ -92,6 +99,17 @@ public static class SubFlowUtility
         return page?.ResolveArticleBase(autoCreate)?.GetOrAddArticle(name);
     }
 
+    public static void WriteFileToScratchPad(this IAigcWorkflowPage page, string path)
+    {
+        var article = GetScratchPadContainer(page);
+        if (article is null)
+        {
+            return;
+        }
+
+        WriteFileToScratchPad(page, article, path);
+    }
+
     /// <summary>
     /// Writes a file from the page's workspace to an article within the scratch pad.
     /// If the file does not exist, any existing article with that path is removed.
@@ -125,11 +143,68 @@ public static class SubFlowUtility
         }
 
         string content = ReadAllText(page, path);
+        WriteFileToScratchPad(article, "file", path, content, "full content");
+    }
+
+    public static void WriteFileToScratchPad(this IAigcWorkflowPage page, string type, string path, string content, string note)
+    {
+        var article = GetScratchPadContainer(page);
+        if (article is null)
+        {
+            return;
+        }
+
+        WriteFileToScratchPad(article, type, path, content, note);
+    }
+
+    public static void WriteFileToScratchPad(this IArticle article, string type, string path, string content, string note)
+    {
+        if (article is null)
+        {
+            return;
+        }
+
+        path = path?.Trim();
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return;
+        }
+
         var fileArticle = article.GetOrAddArticle(path);
         fileArticle.Content = content ?? string.Empty;
         fileArticle.Title = path;
-        fileArticle.Type = "File";
+        fileArticle.Type = type;
+        fileArticle.Note = note;
 
         article.Commit();
+    }
+
+    public static bool RemoveScratchPad(this IAigcWorkflowPage page, string path)
+    {
+        var article = page.GetScratchPadContainer(autoCreate: false);
+        return RemoveScratchPad(article, path);
+    }
+
+    public static bool RemoveScratchPad(this IArticle article, string path)
+    {
+        if (article is null)
+        {
+            return false;
+        }
+
+        path = path?.Trim();
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return false;
+        }
+
+        var remove = article.GetArticle(path);
+        if (remove != null)
+        {
+            article.RemoveArticle(remove);
+            return true;
+        }
+
+        return false;
     }
 }
