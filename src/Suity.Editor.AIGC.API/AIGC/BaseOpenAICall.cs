@@ -4,6 +4,7 @@ using OpenAI_API.ChatFunctions;
 using OpenAI_API.Models;
 using Suity.Editor.AIGC.API;
 using Suity.Views;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -199,6 +200,12 @@ public abstract class BaseOpenAICall : BaseLLmCall
         if (option?.EnableThinking == true)
         {
             param.ReasoningEffort = "high";
+        }
+
+        HashSet<string>? interruption = null;
+        if (option?.InterruptionWords is { } interruptionArray)
+        {
+            interruption = [.. interruptionArray];
         }
 
         // Handle cases where tool calling is not supported

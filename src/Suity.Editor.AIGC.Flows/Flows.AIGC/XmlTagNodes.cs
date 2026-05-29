@@ -682,3 +682,69 @@ public class GetXmlTagContents : AigcXmlNode
     }
 }
 #endregion
+
+#region GetXmlTagContent
+
+/// <summary>
+/// Action Node that retrieves the inner text content from an XML tag.
+/// </summary>
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
+[DisplayText("Get Xml Content Action", "*CoreIcon|Tag")]
+public class GetXmlTagContentAction : AigcXmlNode
+{
+    readonly private FlowNodeConnector _tagIn;
+    readonly private FlowNodeConnector _contentOut;
+    readonly private ValueProperty<bool> _trim = new("Trim", "Trim Content", false, "Whether to trim the content text.");
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetXmlTagContentAction"/> class.
+    /// </summary>
+    public GetXmlTagContentAction()
+    {
+        var tagType = TypeDefinition.FromNative<LooseXmlTag>();
+
+        _tagIn = this.AddConnector("TagIn", tagType, FlowDirections.Input, FlowConnectorTypes.Action);
+            //this.AddDataInputConnector("TagIn", tagType, " ");
+        _contentOut = this.AddConnector("ContentOut", "string", FlowDirections.Output, FlowConnectorTypes.Action);
+            //this.AddDataOutputConnector("ContentOut", "string", " ");
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _trim.Sync(sync);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _trim.InspectorField(setup);
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var tag = compute.GetValue<LooseXmlTag>(_tagIn);
+
+        if (tag is null)
+        {
+            compute.SetValue(_contentOut, string.Empty);
+            compute.SetResult(this, _contentOut);
+            return;
+        }
+
+        string content = tag.InnerText ?? string.Empty;
+        if (_trim.Value)
+        {
+            content = content.Trim();
+        }
+
+        compute.SetValue(_contentOut, content);
+        compute.SetResult(this, _contentOut);
+    }
+}
+#endregion

@@ -162,6 +162,8 @@ public class CallLLm : AigcFlowNode
     private readonly ValueProperty<int> _retry = new("Retry", "Retry Count", DEFAULT_RETRY, "Number of retry attempts, retry execution after call failure or verification failure. If set to <=0, defaults to 3 attempts.");
     private readonly ValueProperty<bool> _combineMessages = new("CombineMessages", "Combine Messages", false, "Combine all chat history messages into a single message.");
 
+    private readonly ListProperty<string> _interruptionWords = new("InterruptionWords", "Interruption Words", "If the model's response contains any of these words, it will be considered an interruption and trigger retry logic.");
+
     /// <summary>
     /// Initializes a new instance of the <see cref="CallLLm"/> class.
     /// </summary>
@@ -224,6 +226,8 @@ public class CallLLm : AigcFlowNode
         _retry.Sync(sync);
         _combineMessages.Sync(sync);
 
+        _interruptionWords.Sync(sync);
+
         if (sync.IsSetterOf("Functions"))
         {
             UpdateConnectorQueued();
@@ -248,6 +252,9 @@ public class CallLLm : AigcFlowNode
         setup.Label("Verification");
         setup.InspectorFieldOf<LLmOutputVerify>(new ViewProperty(nameof(OutputVerify), "Output Result Verification"));
         _retry.InspectorField(setup);
+
+        setup.Label("Interruption Handling");
+        _interruptionWords.InspectorField(setup);
 
         setup.Label("Others");
         _combineMessages.InspectorField(setup);
@@ -355,6 +362,7 @@ public class CallLLm : AigcFlowNode
         {
             EnableSearch = callOptionEx?.EnableSearch,
             EnableThinking = callOptionEx?.EnableThinking,
+            InterruptionWords = _interruptionWords.List.Where(o => !string.IsNullOrWhiteSpace(o)).ToArray()
         };
 
         string title = $"Calling {model.ToDisplayText()}{sourceMsg}...";
