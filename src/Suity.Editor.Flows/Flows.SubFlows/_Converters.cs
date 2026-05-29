@@ -159,19 +159,7 @@ public class IArticleToScratchPadItemConverter : TypeConverter<IArticle, Scratch
     /// <inheritdoc/>
     public override ScratchPadItem Convert(IArticle objFrom)
     {
-        if (objFrom is null)
-        {
-            return null;
-        }
-        
-        var item = new ScratchPadItem
-        {
-            Path = objFrom.Title,
-            Type = objFrom.Type,
-            Content = objFrom.Content,
-        };
-
-        return item;
+        return ScratchPadItem.FromArticle(objFrom);
     }
 }
 
@@ -188,14 +176,11 @@ public class IArticleArrayToScratchPadItemArrayConverter : TypeConverter<IArticl
         var list = new List<ScratchPadItem>();
         foreach (var article in objFrom)
         {
-            var item = new ScratchPadItem
+            var item = ScratchPadItem.FromArticle(article);
+            if (item != null)
             {
-                Path = article.Title,
-                Type = article.Type,
-                Content = article.Content,
-            };
-
-            list.Add(item);
+                list.Add(item);
+            }
         }
 
         return list.ToArray();
@@ -212,7 +197,7 @@ public class ScratchPadItemToTextConverter : TypeToTextConverter<ScratchPadItem>
             return null;
         }
 
-        return $"<ScratchPadItem type='{objFrom.Type}' path='{objFrom.Path}'>\r\n{objFrom.Content}\r\n</ScratchPadItem>";
+        return objFrom.ToString();
     }
 }
 
@@ -228,7 +213,7 @@ public class ScratchPadItemArrayToTextConverter : TypeToTextConverter<ScratchPad
         List<string> list = [];
         foreach (var item in objFrom)
         {
-            string s = $"<ScratchPadItem type='{item.Type}' path='{item.Path}'>\r\n{item.Content}\r\n</ScratchPadItem>";
+            string s = item.ToString();
             list.Add(s);
         }
         return string.Join("\r\n\r\n", list);

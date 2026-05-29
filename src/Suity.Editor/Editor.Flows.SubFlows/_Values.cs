@@ -1,4 +1,6 @@
+using Suity.Editor.Documents;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System.Collections.Generic;
@@ -208,4 +210,23 @@ public class ScratchPadItem : IViewObject
         setup.InspectorField(Content, new ViewProperty(nameof(Content), "Content").WithTooltip("Content of the scratch pad item"));
     }
 
+    public override string ToString()
+    {
+        return $"<ScratchPadItem type='{Type}' path='{Path}'>\r\n{Content}\r\n</ScratchPadItem>";
+    }
+
+    public static ScratchPadItem FromArticle(IArticle article)
+    {
+        if (article is null)
+        {
+            return null;
+        }
+
+        return new ScratchPadItem
+        {
+            Path = article.Title,
+            Type = article.Type,
+            Content = article.Content,
+        };
+    }
 }
