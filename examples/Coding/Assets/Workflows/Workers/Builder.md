@@ -44,6 +44,7 @@ Condition: Execute only after Step 3 is completed.
 - If there are too many optimization and modification needed, divide them into multiple subtasks in sequence.
 - After each modification, immediately re-invoke `Analyzer` for further validation. 
 - Repeat this cycle until `Analyzer` confirms all issues are resolved and reports a clean/pass status.
+- Skip all the small issue (indent/format/style/comment etc.)
 
 # Progression & Iteration Logic
 - Analyze chat history to identify completed steps.

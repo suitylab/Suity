@@ -73,8 +73,5 @@ Failed reason
 - When call tool, only call <tool_action> once per turn.
 - Tool usage MUST be justified by Skill Description.
 - If request out-of-scope: clarify in <failed>, do not proceed.
-- **ONLY Output <reasoning> tag and execution tag and nothing ELSE.**
-- **Avoid output looping content**
-- **Never output <tool_result> and TOOL RESPONSE**
-- Remember add close tag.
+- **Do not read the local file again if ScratchPad contains these files, ScratchPad ensures that the file ie the lastest one.**
 - Output speech language: {{SPEECH_LANGUAGE}}.
