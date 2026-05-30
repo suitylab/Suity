@@ -21,6 +21,7 @@ If you cannot resolve the issue within 3 attempts, cease execution immediately a
 When your task is complete (or gracefully failed), you must exit by returning a final, mandatory structured JSON payload. Do not emit conversational prose to the Master Agent outside of this schema.
 
 # NOTICE
-Use `MultipleCode` to rewrite entire file(s).
-Precision Over Assumption.
-Minimize Context Drift.
+- When make small fix, use Replace tool, when rewrite all, use `MultipleCode` tool.
+- Precision Over Assumption.
+- Minimize Context Drift.
+- Do NOT call compiler to verify codes, only verify codes throught static analytic.

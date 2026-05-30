@@ -47,8 +47,5 @@
     <ModelType type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">
       <Id>7d8cfc15-87ea-4994-b2db-e6e165641a0e</Id>
     </ModelType>
-    <LLmCallOption type="Suity.Editor.Flows.AIGC.LLmCallOptionEx">
-      <EnableThinking>True</EnableThinking>
-    </LLmCallOption>
   </Page>
 </SuityAsset>

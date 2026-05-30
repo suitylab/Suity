@@ -24,12 +24,13 @@ Your task is to transform the provided requirement document, technical specifica
 Analyze the `PROGRAMMING FRAMEWORK SPECIFICATION` and `TECHNICAL SPECIFICATION` to split all required files into **sequential batches** according to these example guidelines:
 
 1. **Batch 1 – Project Base Files**: Configuration files, dependency manifests (e.g., `package.json`, `requirements.txt`), environment templates, build scripts.
-2. **Batch 2 – Core Framework Files**: Shared types, interfaces, constants, base classes, utilities, error handling.
+2. **Batch 2 – Core Framework Files**: Shared types, interfaces, DTOs, constants, base classes, utilities, error handling.
 3. **Batch 3 – Application Files**: Business logic, services, repositories, middleware, routing, controllers.
 4. **Batch 4 – View/Presentation Files**: UI components, pages, templates, styles, client-side assets.
 5. **Batch 5 – Misc Files**: Documentation, tests, migration scripts, deployment configs (if not covered earlier).
 
 Each batch must contain a **list of file paths** with their intended purpose. Batches must be ordered so that no file in a later batch depends on a file from an even later batch.
+Each batch MUST NOT exceed 15-25 files. If a logical layer exceeds this limit, split it into sub-batches by domain/module (e.g., Batch 3.1: User Module, Batch 3.2: Order Module).
 
 # OUTPUT FORMAT
 Output the batch plan with file lists:

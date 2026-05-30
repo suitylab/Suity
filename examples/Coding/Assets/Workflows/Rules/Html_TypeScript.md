@@ -33,7 +33,7 @@ This document outlines the technical standards and architecture for a modern web
 ```
 
 ## Entry Point Specification (`index.html`)
-The root HTML file must adhere strictly to the following structure. It serves as the single entry point for the application.
+The root HTML file must adhere strictly to the following structure. It serves as the entry point for the application.
 
 ```html
 <!doctype html>
@@ -83,26 +83,14 @@ coverage/
 - **Formatting:** Code must be formatted using Prettier before commit.
 - **Linting:** No ESLint errors or warnings allowed in the build pipeline.
 
-## Build & Development Workflow
-- Development: npm run dev (Starts Vite dev server)
-- Production Build: npm run build (Outputs to /dist)
-- Preview: npm run preview (Locally previews production build)
-
-## Build & Development
-- **Development:** `npm run dev` (Starts Vite dev server)
-- **Production Build:** `npm run build` (Outputs to `/dist`)
-- **Preview:** `npm run preview` (Locally previews production build)
-
 ## Dependencies
 - All dependencies must be listed in `package.json`.
 - Use specific versions or locked versions (via `package-lock.json` or `pnpm-lock.yaml`) to ensure build consistency.
 - Dev dependencies (types, linting, build tools) must be separated from production dependencies.
 
 ## Build & Test
-> 🛑 **Conditional Execution Guard**: Execute the following steps **ONLY** when the user explicitly requests to build, run, or test the project. **DO NOT** run these commands automatically during code generation, file scaffolding, or static analysis.
 1. `npm install` - Install all project dependencies.
 2. `npm run dev` - Execute immediately after `npm install` completes successfully to start the Vite development server.
-3. *(If requested)* `npm run build` / `npm run test` - Perform production compilation or run test suites.
 
 ## **Important Notice**
 - 'index.html' file should strickly follow the Entry Point Specification described above, do NOT write any logical or layout code in the index.html.

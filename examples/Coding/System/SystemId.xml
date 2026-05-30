@@ -287,6 +287,7 @@
   <Object id="3b2c1866-9055-4910-9380-99e355dc14fe" name="*CoreIcon|Disable" />
   <Object id="412c25f6-6f55-47e0-9248-6fa902e775a0" name="*CoreIcon|Down" />
   <Object id="3457a2fd-eb73-49da-9d48-d6b27171324f" name="*CoreIcon|Download" />
+  <Object id="e238ccf2-c08c-4831-b95a-45590e34cf92" name="*CoreIcon|Draft" />
   <Object id="b2daec44-d6a5-4cb6-8cec-6795979fc6c2" name="*CoreIcon|Driven" />
   <Object id="4c12f5cf-cc1c-40e3-b80e-9da66ce22bcd" name="*CoreIcon|Duplicated" />
   <Object id="7848e8f8-2b39-4c54-9ce2-6af5831fdd41" name="*CoreIcon|Dynamic" />
@@ -468,6 +469,7 @@
   <Object id="5026dbfd-ed56-49e6-991e-b03cb1656779" name="*CoreIcon|Save" />
   <Object id="f4a7bc8b-62ca-41e3-87e6-d1e83a8c73db" name="*CoreIcon|Scene" />
   <Object id="1fff7a85-df85-426e-a661-269050874827" name="*CoreIcon|Score" />
+  <Object id="5f484666-097e-49c1-b047-98eff940c7d4" name="*CoreIcon|Scratch" />
   <Object id="2265364d-8822-4982-9473-a563f7a8ddbd" name="*CoreIcon|Script" />
   <Object id="c1339c7d-ae08-42ff-aaaf-424f8adeb4ad" name="*CoreIcon|Search" />
   <Object id="22e528c3-8348-43b0-b692-a9b0729a6971" name="*CoreIcon|Segment" />
@@ -647,7 +649,7 @@
   <Object id="da61c28b-a351-4788-a611-31d8facb18f1" name="*SubFlow|ISubFlowPreset" />
   <Object id="8ad332ed-c138-4142-820c-a281cccaa0e4" name="*SubFlow|ISubFlowPresetAsset" />
   <Object id="3ab97a0a-6a21-4497-839d-afd9f7b95876" name="*SubFlow|IToolAsset" />
-  <Object id="3eb62b3a-369d-4db3-9492-15b1691af1a0" name="*SubFlow|ScratchPadItem" />
+  <Object id="e16e3a28-f0c3-4faa-a1e4-5380c967379f" name="*SubFlow|ScratchPad" />
   <Object id="2aef8f59-7a8f-402e-909a-dff40eb623ea" name="*SubFlow|SubFlowDefinitionAsset" />
   <Object id="70a1566a-7ea4-4b65-a3e0-fbf445d14d6e" name="*SubFlow|SubFlowInstance" />
   <Object id="70a1566a-7ea4-4b65-a3e0-fbf445d14d6e" name="*SubFlow|SubFlowInstance" />

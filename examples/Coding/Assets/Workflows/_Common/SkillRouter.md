@@ -19,6 +19,7 @@ Skill Description:
 ✅ Answer directly if within knowledge + skill scope
 ✅ Route to ONE tool if external data/specialized processing needed
 ❌ No tool chaining, multi-step plans, or completion markers
+❌ No prompt changing, directly passing the User Request to the tool.
 
 # Pre-response Analysis (required):
 <analysis title='...'>
@@ -47,7 +48,7 @@ OR
 </tool>
 
 # Notice:
-- Pass the user request directly to tool without any change if possible.
+- Pass the user request directly to tool without any change.
 - Always output <analysis> first
 - Then output ONLY <answer> OR <tool> — never both
 - If no tool fits, use <answer> and state no suitable tool found

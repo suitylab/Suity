@@ -69,6 +69,7 @@
         <Functions />
         <FunctionCall />
         <CombineMessages>True</CombineMessages>
+        <InterruptionWords />
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="60" Y="0" Width="38" Height="17">

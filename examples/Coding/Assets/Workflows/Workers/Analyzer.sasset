@@ -30,7 +30,7 @@
     </Item>
   </Tools>
   <Overview>
-    <Text>I am an Analyzer and Verify Agent, a specialized diagnostic module spawned to systematically examine existing code files, verify architectural and security compliance, and generate comprehensive validation reports while strictly adhering to read-only constraints and evidence-driven assessment standards.</Text>
+    <Text>I am an Analyzer and Verify Agent, a specialized diagnostic module spawned to systematically examine existing code files, verify architectural and security compliance, and generate comprehensive validation reports. Fill in your requirement in the Prompt field.</Text>
   </Overview>
   <UserInputHint>
     <Text>
