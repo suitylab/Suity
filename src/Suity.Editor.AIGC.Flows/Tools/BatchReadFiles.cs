@@ -139,7 +139,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                     {
                         //content = string.Join(Environment.NewLine, lines);
                         result.Message = "read successful, see ScratchPad for detail.";
-                        parentPage?.SetScratchPad(ScratchPadTypes.FileReference, relativePath);
+                        parentPage?.SetScratchPad(ScratchPadTypes.FileFullContent, relativePath);
                     }
                     else
                     {

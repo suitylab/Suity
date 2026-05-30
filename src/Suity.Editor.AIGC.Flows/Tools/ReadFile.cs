@@ -90,7 +90,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
             {
                 //content = string.Join(Environment.NewLine, lines);
                 output.Message = "read successful, see ScratchPad for detail.";
-                parentPage?.SetScratchPad(ScratchPadTypes.FileReference, relativePath);
+                parentPage?.SetScratchPad(ScratchPadTypes.FileFullContent, relativePath);
             }
             else
             {

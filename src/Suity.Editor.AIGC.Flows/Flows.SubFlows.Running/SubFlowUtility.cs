@@ -105,7 +105,7 @@ public static class SubFlowUtility
         if (fileExist)
         {
             //string content = ReadAllText(page, path);
-            SetScratchPad(page, ScratchPadTypes.FileReference, path);
+            SetScratchPad(page, ScratchPadTypes.FileFullContent, path);
         }
         else
         {

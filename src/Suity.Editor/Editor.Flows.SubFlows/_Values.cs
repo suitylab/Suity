@@ -1,7 +1,5 @@
 using Suity.Editor.Design;
-using Suity.Editor.Documents;
 using Suity.Editor.Types;
-using Suity.Editor.Values;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -198,8 +196,8 @@ public enum ScratchPadTypes
     [DisplayText("Memory")]
     Memory,
 
-    [DisplayText("File Reference")]
-    FileReference,
+    [DisplayText("File Full Content")]
+    FileFullContent,
 
     [DisplayText("File Segment")]
     FileSegment,
@@ -268,7 +266,7 @@ public class ScratchPad : DesignAttribute
             case ScratchPadTypes.Memory:
                 break;
 
-            case ScratchPadTypes.FileReference:
+            case ScratchPadTypes.FileFullContent:
                 if (string.IsNullOrWhiteSpace(basePath))
                 {
                     note = "Get file content failed due to Workspace missing.";
