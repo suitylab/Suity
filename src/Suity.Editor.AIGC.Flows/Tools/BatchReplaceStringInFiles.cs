@@ -1,4 +1,5 @@
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -119,6 +120,8 @@ public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.O
 
     public override Task<Output> Run(ToolCallContext context)
     {
+        var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+
         string workspaceDir = context.WorkSpaceDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
@@ -159,6 +162,7 @@ public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.O
                 }
 
                 string content = File.ReadAllText(fullPath);
+                string originalContent = content;
 
                 foreach (var mod in group)
                 {
@@ -204,6 +208,9 @@ public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.O
 
                 if (replacementsInFile > 0)
                 {
+                    var replacementSummary = string.Join("\n", group.Select(m =>
+                        $"---------------- Before ----------------\n{m.OldExactString}\n---------------- After ----------------\n{m.NewString}"));
+                    parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, relativePath, replacementSummary, $"replaced {replacementsInFile} place(s), use ReadFile to get full content");
                     successCount++;
                 }
                 else if (!string.IsNullOrEmpty(result.Error))

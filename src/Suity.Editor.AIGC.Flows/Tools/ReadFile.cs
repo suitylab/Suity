@@ -86,27 +86,25 @@ public class ReadFile : ToolCommand<ReadFile.Output>
         }
         else
         {
-            var lines = File.ReadAllLines(fullPath);
-            int totalLines = lines.Length;
-
-            string content;
             if (StartLine <= 0 && LineCount <= 0)
             {
-                content = string.Join(Environment.NewLine, lines);
-                output.Message = "read successful, see ScratchPadItem for detail.";
-                parentPage?.SetScratchPad("file", relativePath, content, "full content");
+                //content = string.Join(Environment.NewLine, lines);
+                output.Message = "read successful, see ScratchPad for detail.";
+                parentPage?.SetScratchPad(ScratchPadTypes.FileReference, relativePath);
             }
             else
             {
+                var lines = File.ReadAllLines(fullPath);
+                int totalLines = lines.Length;
+                string content;
+
                 int start = StartLine <= 0 ? 0 : Math.Min(StartLine - 1, totalLines - 1);
                 int count = LineCount <= 0 ? totalLines - start : Math.Min(LineCount, totalLines - start);
                 content = string.Join(Environment.NewLine, lines, start, count);
                 string msg = $"start line: {StartLine}, line count: {LineCount}";
-                output.Message = $"read successful. {msg}, see ScratchPadItem for detail.";
-                parentPage?.SetScratchPad("file", relativePath, content, msg);
+                output.Message = $"read successful. {msg}, see ScratchPad for detail.";
+                parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, msg);
             }
-
-            parentPage?.SetScratchPad("file", relativePath, content, output.Message);
         }
 
         return Task.FromResult(output);

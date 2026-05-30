@@ -64,7 +64,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
 
         var page = Option.Owner as IAigcWorkflowPage;
 
-        if (SaveToScratchPad && page?.GetScratchPadContainer() is { } scratchPad)
+        if (SaveToScratchPad)
         {
             if (IsArray && _paths is { } paths)
             {
@@ -76,12 +76,12 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
                         continue;
                     }
 
-                    page?.WriteFileToScratchPad(scratchPad, path);
+                    page?.SetFileScratchPad(path);
                 }
             }
             else if (!IsArray && !string.IsNullOrWhiteSpace(_path))
             {
-                page?.WriteFileToScratchPad(scratchPad, _path);
+                page?.SetFileScratchPad(_path);
             }
         }
     }

@@ -12,6 +12,8 @@ namespace Suity.Editor.Types;
 /// </summary>
 public class DNativeStruct : DStruct, INativeType
 {
+    readonly string _displayName;
+
     /// <summary>
     /// Initializes a new instance of the DNativeStruct class.
     /// </summary>
@@ -27,6 +29,7 @@ public class DNativeStruct : DStruct, INativeType
         : this()
     {
         NativeType = nativeType;
+        _displayName = nativeType.ToDisplayText();
     }
 
     /// <summary>
@@ -50,6 +53,8 @@ public class DNativeStruct : DStruct, INativeType
     /// <inheritdoc />
     public override Guid GetFieldId(string name)
         => TypesExternal._external.ResolveNativeFieldId(this, name);
+
+    public override string DisplayText => _displayName ?? base.DisplayText;
 }
 
 #endregion

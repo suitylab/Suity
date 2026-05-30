@@ -1,4 +1,5 @@
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -59,6 +60,8 @@ public class ReplaceStringInFile : ToolCommand<ReplaceStringInFile.Output>
 
     public override Task<Output> Run(ToolCallContext context)
     {
+        var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+
         string workspaceDir = context.WorkSpaceDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
@@ -89,6 +92,7 @@ public class ReplaceStringInFile : ToolCommand<ReplaceStringInFile.Output>
         }
 
         string content = File.ReadAllText(fullPath);
+        string originalContent = content;
 
         int matchCount = 0;
         int index = 0;
@@ -116,10 +120,13 @@ public class ReplaceStringInFile : ToolCommand<ReplaceStringInFile.Output>
         content = StringUtility.ReplaceContent(content, matchFinal.Index, matchFinal.Length, NewString);
         File.WriteAllText(fullPath, content);
 
+        string replacementSummary = $"---------------- Before ----------------\n{OldExactString}\n---------------- After ----------------\n{NewString}";
+        parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, relativePath, replacementSummary, "replaced, use ReadFile to get full content");
+
         return Task.FromResult(new Output
         {
             FilePath = relativePath,
-            Message = $"Successfully replaced string in file: {relativePath}",
+            Message = $"Successfully replaced string in file: {relativePath}. Use ReadFile to get full content.",
         });
     }
 }

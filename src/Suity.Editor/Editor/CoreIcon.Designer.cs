@@ -1083,6 +1083,16 @@ namespace Suity.Editor {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
+        internal static byte[] Draft {
+            get {
+                object obj = ResourceManager.GetObject("Draft", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
         internal static byte[] Driven {
             get {
                 object obj = ResourceManager.GetObject("Driven", resourceCulture);
@@ -2886,6 +2896,16 @@ namespace Suity.Editor {
         internal static byte[] Score {
             get {
                 object obj = ResourceManager.GetObject("Score", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
+        internal static byte[] Scratch {
+            get {
+                object obj = ResourceManager.GetObject("Scratch", resourceCulture);
                 return ((byte[])(obj));
             }
         }

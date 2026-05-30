@@ -1,8 +1,10 @@
 ﻿using Suity.Editor.AIGC;
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
+using System;
 using System.Linq;
 
 namespace Suity.Editor.Flows.TaskPages;
@@ -20,7 +22,7 @@ public class GetTaskScratchPad : TaskPageNode
 
     public GetTaskScratchPad()
     {
-        var articleType = TypeDefinition.FromNative<ScratchPadItem>().MakeArrayType();
+        var articleType = TypeDefinition.FromNative<ScratchPad>().MakeArrayType();
         _scratchPad = AddDataOutputConnector("ScratchPad", articleType, "Scratch Pad");
     }
 
@@ -45,14 +47,14 @@ public class GetTaskScratchPad : TaskPageNode
 
     public override void Compute(IFlowComputation compute)
     {
+        var page = compute.Context.GetArgument<IAigcWorkflowPage>();
+
         bool inHierarchy = _inHierarchy.Value;
         int level = inHierarchy ? _hierarchyLimit.Value : 0;
 
-        var page = compute.Context.GetArgument<IAigcWorkflowPage>();
-        var articles = page?.GetScratchPadItems(level) ?? [];
-        var items = articles.Select(ScratchPadItem.FromArticle).ToArray();
+        var scratchPads = page?.GetScratchPads(level) ?? [];
 
-        compute.SetValue(_scratchPad, items);
+        compute.SetValue(_scratchPad, scratchPads);
     }
 }
 
@@ -61,26 +63,30 @@ public class GetTaskScratchPad : TaskPageNode
 #region GetScratchPadText
 
 [SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
-[DisplayText("Get Scratch Pad Text", "*CoreIcon|Task")]
-public class GetScratchPadText : TaskPageNode
+[DisplayText("Get Scratch Pad Message", "*CoreIcon|Task")]
+public class GetScratchPadMessage : TaskPageNode
 {
     readonly FlowNodeConnector _items;
     readonly FlowNodeConnector _text;
 
-    public GetScratchPadText()
+    public GetScratchPadMessage()
     {
-        var padType = TypeDefinition.FromNative<ScratchPadItem>();
+        var padType = TypeDefinition.FromNative<ScratchPad>();
         var msgType = TypeDefinition.FromNative<LLmMessage>().MakeArrayType();
 
         _items = AddConnector("ScratchPad", padType, FlowDirections.Input, FlowConnectorTypes.Data, true, "Scratch Pad");
-        _text = AddDataOutputConnector("Text", msgType, "Chat History");
+        _text = AddDataOutputConnector("Message", msgType, "Message");
     }
 
     public override void Compute(IFlowComputation compute)
     {
-        var items = compute.GetValues<ScratchPadItem>(_items, true);
+        var page = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var workSpace = page?.GetWorkSpace();
+        string workSpaceDir = workSpace?.MasterDirectory;
+
+        var items = compute.GetValues<ScratchPad>(_items, true);
         var msgs = items
-            .Select(i => i.ToString())
+            .Select(i => i.ToXmlTag(workSpaceDir))
             .Select(s => new LLmMessage { Role = LLmMessageRole.User, Message = s})
             .ToArray();
         

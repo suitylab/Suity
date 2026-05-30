@@ -210,6 +210,8 @@ public static class CoreIconCache
 
     public static BitmapDef Download { get; } = CoreIcon.Download.ToBitmap();
 
+    public static BitmapDef Draft { get; } = CoreIcon.Draft.ToBitmap();
+
     public static BitmapDef Driven { get; } = CoreIcon.Driven.ToBitmap();
 
     public static BitmapDef Duplicated { get; } = CoreIcon.Duplicated.ToBitmap();
@@ -571,6 +573,8 @@ public static class CoreIconCache
     public static BitmapDef Scene { get; } = CoreIcon.Scene.ToBitmap();
 
     public static BitmapDef Score { get; } = CoreIcon.Score.ToBitmap();
+
+    public static BitmapDef Scratch { get; } = CoreIcon.Scratch.ToBitmap();
 
     public static BitmapDef Script { get; } = CoreIcon.Script.ToBitmap();
 

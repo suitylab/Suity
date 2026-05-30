@@ -83,7 +83,7 @@ public class RewriteEntireFile : ToolCommand<RewriteEntireFile.Output>
         }
 
         File.WriteAllText(fullPath, NewFullContent);
-        parentPage?.SetScratchPad("file", relativePath, NewFullContent, "rewritten");
+        parentPage?.SetScratchPad(ScratchPadTypes.FileReference, relativePath, null, "rewritten");
 
         return Task.FromResult(new Output
         {

@@ -363,7 +363,7 @@ public static class DesignObjectSetups
                         gui.Text("#brief", brief!)
                         .InitClass(PropertyGridThemes.GetBriefClass(target.ValueMultiple))
                         .InitFullWidth()
-                        .InitCenterVertical();
+                        .InitCenter();
                     }
                 }
                 else if (c == PropertyGridColumn.Option && !n.IsReadOnly)
@@ -377,31 +377,31 @@ public static class DesignObjectSetups
                             elementOp = ArrayElementOp.Delete;
                         });
 
-                        if (countOne)
-                        {
-                            gui.Button("clone", ImGuiIcons.Clone)
-                            .InitClass("configBtn")
-                            .OnClick(n =>
-                            {
-                                elementOp = ArrayElementOp.Clone;
-                            });
+                        //if (countOne)
+                        //{
+                        //    gui.Button("clone", ImGuiIcons.Clone)
+                        //    .InitClass("configBtn")
+                        //    .OnClick(n =>
+                        //    {
+                        //        elementOp = ArrayElementOp.Clone;
+                        //    });
 
-                            gui.Button("sortUp", ImGuiIcons.SortUp)
-                            .InitClass("configBtn")
-                            .InitEnabled(elementIndex > 0)
-                            .OnClick(n =>
-                            {
-                                elementOp = ArrayElementOp.MoveUp;
-                            });
+                        //    gui.Button("sortUp", ImGuiIcons.SortUp)
+                        //    .InitClass("configBtn")
+                        //    .InitEnabled(elementIndex > 0)
+                        //    .OnClick(n =>
+                        //    {
+                        //        elementOp = ArrayElementOp.MoveUp;
+                        //    });
 
-                            gui.Button("sortDown", ImGuiIcons.SortDown)
-                            .InitClass("configBtn")
-                            .InitEnabled(elementIndex < elementLen - 1)
-                            .OnClick(n =>
-                            {
-                                elementOp = ArrayElementOp.MoveDown;
-                            });
-                        }
+                        //    gui.Button("sortDown", ImGuiIcons.SortDown)
+                        //    .InitClass("configBtn")
+                        //    .InitEnabled(elementIndex < elementLen - 1)
+                        //    .OnClick(n =>
+                        //    {
+                        //        elementOp = ArrayElementOp.MoveDown;
+                        //    });
+                        //}
                     }
                 }
 

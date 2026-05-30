@@ -1,4 +1,5 @@
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -62,6 +63,8 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
 
     public override Task<Output> Run(ToolCallContext context)
     {
+        var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+
         string workspaceDir = context.WorkSpaceDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
@@ -92,6 +95,7 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
         }
 
         var lines = File.ReadAllLines(fullPath).ToList();
+        var originalContent = string.Join(Environment.NewLine, lines);
         var diffLines = DiffContent.Split('\n').Select(l => l.TrimEnd('\r')).ToList();
 
         var patches = ParseUnifiedDiff(diffLines);
@@ -128,10 +132,13 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
 
         File.WriteAllLines(fullPath, lines);
 
+        string diffSummary = $"---------------- Before ----------------\n{DiffContent}\n---------------- After ----------------\n(Applied {hunksApplied} hunk(s))";
+        parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, relativePath, diffSummary, $"applied {hunksApplied} hunk(s), use ReadFile to get full content");
+
         return Task.FromResult(new Output
         {
             FilePath = relativePath,
-            Message = $"Successfully applied {hunksApplied} hunk(s) to file: {relativePath}",
+            Message = $"Successfully applied {hunksApplied} hunk(s) to file: {relativePath}. Use ReadFile to get full content.",
             HunksApplied = hunksApplied,
         });
     }

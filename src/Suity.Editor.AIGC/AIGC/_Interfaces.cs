@@ -133,7 +133,7 @@ public interface IAigcTaskPage : INamed, ITextDisplay
 /// Represents an AIGC workflow page that manages workflow execution, subtasks, prompts, and chat history.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "AIGC Workflow Page", Color = FlowColors.Task, Icon = "*CoreIcon|Workflow")]
-public interface IAigcWorkflowPage : IAigcTaskPage
+public interface IAigcWorkflowPage : IAigcTaskPage, IScratchPadOwner
 {
     /// <summary>
     /// Gets the sub-flow instance associated with this workflow page.
@@ -247,13 +247,6 @@ public interface IAigcWorkflowPage : IAigcTaskPage
     IArticle ResolveArticleBase(bool autoCreate);
 
     /// <summary>
-    /// Resolves the scratch pad items for this task, checking for transferable article parameters first.
-    /// </summary>
-    /// <param name="hierarchyLevels">The number of parent levels to include in the scratch pad items.</param>
-    /// <returns>The resolved scratch pad items, or null if not available.</returns>
-    IArticle[] GetScratchPadItems(int hierarchyLevels = 0);
-
-    /// <summary>
     /// Gets the chat history for this task, optionally including parent hierarchy.
     /// </summary>
     /// <param name="hierarchyLevels">The number of parent levels to include in the chat history. If 0, disables hierarchy inclusion.</param>
@@ -274,6 +267,24 @@ public interface IAigcWorkflowPage : IAigcTaskPage
 
 public interface IAigcToolPage : IAigcTaskPage
 {
+}
+
+#endregion
+
+#region IScratchPadOwner
+
+public interface IScratchPadOwner
+{
+    void ClearScratchPad();
+
+    ScratchPad SetScratchPad(ScratchPadTypes type, string path, string content, string note);
+
+    /// <summary>
+    /// Resolves the scratch pad items for this task, checking for transferable article parameters first.
+    /// </summary>
+    /// <param name="hierarchyLevels">The number of parent levels to include in the scratch pad items.</param>
+    /// <returns>The resolved scratch pad items, or null if not available.</returns>
+    ScratchPad[] GetScratchPads(int hierarchyLevels = 0);
 }
 
 #endregion

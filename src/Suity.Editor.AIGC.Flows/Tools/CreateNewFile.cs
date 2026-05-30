@@ -89,7 +89,7 @@ public class CreateNewFile : ToolCommand<CreateNewFile.Output>
         }
 
         File.WriteAllText(fullPath, Content);
-        parentPage?.SetScratchPad("file", relativePath, Content, "created");
+        parentPage?.SetScratchPad(ScratchPadTypes.FileReference, relativePath, null, "created");
 
         return Task.FromResult(new Output
         {

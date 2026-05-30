@@ -154,7 +154,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
                         }
 
                         File.WriteAllText(fullPath, item.Content);
-                        parentPage?.SetScratchPad("file", relativePath, item.Content, "overwritten");
+                        parentPage?.SetScratchPad(ScratchPadTypes.FileReference, relativePath, null, "overwritten");
                         result.Status = "Overwritten";
                         successCount++;
                     }
@@ -174,7 +174,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
                     }
 
                     File.WriteAllText(fullPath, item.Content);
-                    parentPage?.SetScratchPad("file", relativePath, item.Content, "created");
+                    parentPage?.SetScratchPad(ScratchPadTypes.FileReference, relativePath, null, "created");
                     result.Status = "Created";
                     successCount++;
                 }

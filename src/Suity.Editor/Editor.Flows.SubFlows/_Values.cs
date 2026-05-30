@@ -1,9 +1,13 @@
+using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Suity.Editor.Flows.SubFlows;
 
@@ -188,47 +192,125 @@ public enum ResolveChatIntents
     Preview,
 }
 
-[NativeType(CodeBase = "SubFlow")]
-[DisplayText("Scratch Pad Item")]
-public class ScratchPadItem : IViewObject
-{
-    public string Path { get; set; }
-    public string Type { get; set; }
-    public string Note { get; set; }
-    public string Content { get; set; }
 
-    public void Sync(IPropertySync sync, ISyncContext context)
+public enum ScratchPadTypes
+{
+    [DisplayText("Memory")]
+    Memory,
+
+    [DisplayText("File Reference")]
+    FileReference,
+
+    [DisplayText("File Segment")]
+    FileSegment,
+
+    [DisplayText("File Edit")]
+    FileEdit,
+
+    [DisplayText("Article")]
+    Article,
+
+    [DisplayText("Removed")]
+    Removed,
+}
+
+[NativeType(CodeBase = "SubFlow", Icon = "*CoreIcon|Scratch")]
+[DisplayText("Scratch Pad")]
+public class ScratchPad : DesignAttribute
+{
+    private readonly StringProperty _path = new(nameof(Path), "Path", null, "Path of the scratch pad item");
+    private readonly ValueProperty<ScratchPadTypes> _type = new(nameof(Type), "Type", ScratchPadTypes.Memory, "Type of the scratch pad item");
+    private readonly StringProperty _note = new(nameof(Note), "Note", null, "Note of the scratch pad item");
+    private readonly TextBlockProperty _content = new(nameof(Content), "Content", null, "Content of the scratch pad item");
+
+    public string Path { get => _path.Text; set => _path.Text = value; }
+    public ScratchPadTypes Type { get => _type.Value; set => _type.Value = value; }
+    public string Note { get => _note.Text; set => _note.Text = value; }
+    public string Content { get => _content.Text; set => _content.Text = value; }
+
+
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
     {
-        Path = sync.Sync(nameof(Path), Path);
-        Type = sync.Sync(nameof(Type), Type);
-        Content = sync.Sync(nameof(Content), Content);
+        base.OnSync(sync, context);
+
+        _path.Sync(sync);
+        _type.Sync(sync);
+        _note.Sync(sync);
+        _content.Sync(sync);
     }
 
-    public void SetupView(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        setup.InspectorField(Path, new ViewProperty(nameof(Path), "Path").WithTooltip("Path of the scratch pad item"));
-        setup.InspectorField(Type, new ViewProperty(nameof(Type), "Type").WithTooltip("Type of the scratch pad item"));
-        setup.InspectorField(Content, new ViewProperty(nameof(Content), "Content").WithTooltip("Content of the scratch pad item"));
+        base.OnSetupView(setup);
+
+        _path.InspectorField(setup);
+        _type.InspectorField(setup);
+        _note.InspectorField(setup);
+        _content.InspectorField(setup);
     }
 
     public override string ToString()
     {
-        return $"<ScratchPadItem type='{Type}' path='{Path}' note='{Note}'>\r\n{Content}\r\n</ScratchPadItem>";
+        return $"[{Type.ToDisplayTextL()}] {Path}";
     }
 
-    public static ScratchPadItem FromArticle(IArticle article)
+    public string ToXmlTag(string basePath)
     {
-        if (article is null)
+        string path = Path?.Trim();
+
+        string content = null;
+        ScratchPadTypes type = Type;
+
+        string note = Note;
+
+        switch (type)
         {
-            return null;
+            case ScratchPadTypes.Memory:
+                break;
+
+            case ScratchPadTypes.FileReference:
+                if (string.IsNullOrWhiteSpace(basePath))
+                {
+                    note = "Get file content failed due to Workspace missing.";
+                    break;
+                }
+
+                try
+                {
+                    var fullPath = basePath.PathAppend(path);
+                    if (File.Exists(fullPath))
+                    {
+                        content = File.ReadAllText(fullPath);
+                    }
+                    else
+                    {
+                        type = ScratchPadTypes.Removed;
+                    }
+                }
+                catch (Exception)
+                {
+                    content = null;
+                    type = ScratchPadTypes.Removed;
+                }
+                break;
+
+            case ScratchPadTypes.FileSegment:
+                break;
+
+            case ScratchPadTypes.FileEdit:
+                break;
+
+            case ScratchPadTypes.Article:
+                break;
+
+            case ScratchPadTypes.Removed:
+            default:
+                content = null;
+                break;
         }
 
-        return new ScratchPadItem
-        {
-            Path = article.Title,
-            Type = article.Type,
-            Note = article.Note,
-            Content = article.Content,
-        };
+
+        return $"<ScratchPad type='{type}' path='{path}' note='{note}'>\r\n{content}\r\n</ScratchPad>";
     }
+
 }

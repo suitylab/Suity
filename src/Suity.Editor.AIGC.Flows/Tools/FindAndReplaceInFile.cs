@@ -1,10 +1,12 @@
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
@@ -104,6 +106,8 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
 
     public override Task<Output> Run(ToolCallContext context)
     {
+        var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+
         string workspaceDir = context.WorkSpaceDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
@@ -134,6 +138,7 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
         }
 
         string content = File.ReadAllText(fullPath);
+        string originalContent = content;
 
         var output = new Output { FilePath = relativePath };
 
@@ -168,6 +173,11 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
         }
 
         File.WriteAllText(fullPath, content);
+
+        var replacementSummary = string.Join("\n", ReplaceItems
+            .Where(r => !string.IsNullOrWhiteSpace(r.OldString))
+            .Select(r => $"---------------- Before ----------------\n{r.OldString}\n---------------- After ----------------\n{r.NewString}"));
+        parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, relativePath, replacementSummary, $"replaced {output.Results.Sum(r => r.MatchCount)} place(s), use ReadFile to get full content");
 
         return Task.FromResult(output);
     }

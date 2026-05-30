@@ -31,7 +31,8 @@ namespace Suity.Editor.AIGC;
 [NativeAlias("Suity.Editor.AIGC.TaskPages.AigcTaskPage")]
 [NativeAlias("Suity.Editor.AIGC.AigcWorkflowPage")]
 public class AigcWorkflowPage : AigcTaskPage,
-    IAigcWorkflowPage, 
+    IAigcWorkflowPage,
+    IScratchPadOwner,
     IViewDoubleClickAction,
     INavigable,
     IDrawEditorImGui
@@ -40,7 +41,6 @@ public class AigcWorkflowPage : AigcTaskPage,
     readonly AssetProperty<ArticleContainerAsset> _article = new("Article", "Article");
     readonly TextBlockProperty _taskPrompt = new("TaskPrompt", "Task Prompt", string.Empty);
     readonly AssetProperty<PromptAsset> _rule = new("Rule", "Rule", "Prompt asset that defines the rules or instructions for this task.");
-
     private SubFlowInstance _instance;
     private readonly QueueOnceAction _buildAction;
 
@@ -718,49 +718,6 @@ public class AigcWorkflowPage : AigcTaskPage,
         return docArticle;
     }
 
-    /// <inheritdoc/>
-    public IArticle[] GetScratchPadItems(int hierarchyLevels)
-    {
-        Dictionary<string, IArticle> articles = [];
-        CollectScratchPadItems(articles, hierarchyLevels);
-        return articles.Values.ToArray();
-    }
-
-    private void CollectScratchPadItems(Dictionary<string, IArticle> articles, int hierarchyLevel)
-    {
-        if (hierarchyLevel > 0 && ParentNode is AigcWorkflowPage parent)
-        {
-            parent.CollectScratchPadItems(articles, hierarchyLevel - 1);
-        }
-
-        int index = this.GetIndex();
-        if (index < 0)
-        {
-            return;
-        }
-
-        for (int i = 0; i <= index; i++)
-        {
-            if (ParentList.GetItemAt(i) is AigcWorkflowPage task)
-            {
-                var scratchPad = task.GetScratchPadContainer(autoCreate: false);
-                if (scratchPad is null)
-                {
-                    continue;
-                }
-
-                foreach (var article in scratchPad.Articles)
-                {
-                    if (string.IsNullOrWhiteSpace(article.Title))
-                    {
-                        continue;
-                    }
-
-                    articles[article.Title] = article;
-                }
-            }
-        }
-    }
 
     /// <inheritdoc/>
     public IAigcTaskPage GetLastSubTask()
@@ -944,6 +901,90 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         return tools.Distinct().ToArray();
     }
+
+    #endregion
+
+    #region IScratchPadOwner
+
+    public void ClearScratchPad()
+    {
+        var scratchPads = this.Attributes.GetAttributes<ScratchPad>().ToArray();
+        foreach (var scratchPad in scratchPads)
+        {
+            this.Attributes.RemoveAttribute(scratchPad);
+        }
+
+        this.TaskPageDocument?.MarkDirtyAndSaveDelayed(this);
+    }
+
+    public ScratchPad SetScratchPad(ScratchPadTypes type, string path, string content, string note)
+    {
+        path = path?.Trim();
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return null;
+        }
+
+        var scratchPad = this.Attributes.GetAttributes<ScratchPad>().FirstOrDefault(o => o.Path == path);
+        scratchPad ??= this.Attributes.AddAttribute<ScratchPad>(o => o.Path = path);
+
+        if (scratchPad != null)
+        {
+            scratchPad.Type = type;
+            scratchPad.Content = content;
+            scratchPad.Note = note;
+        }
+
+        scratchPad.Commit();
+
+        this.TaskPageDocument?.MarkDirtyAndSaveDelayed(this);
+
+        return scratchPad;
+    }
+
+    /// <inheritdoc/>
+    public ScratchPad[] GetScratchPads(int hierarchyLevels)
+    {
+        Dictionary<string, ScratchPad> dic = [];
+        CollectScratchPads(dic, hierarchyLevels);
+
+        return dic.Values.Where(o => o.Type != ScratchPadTypes.Removed).ToArray();
+    }
+
+    private void CollectScratchPads(Dictionary<string, ScratchPad> dic, int hierarchyLevel)
+    {
+        if (hierarchyLevel > 0 && ParentNode is AigcWorkflowPage parent)
+        {
+            parent.CollectScratchPads(dic, hierarchyLevel - 1);
+        }
+
+        int index = this.GetIndex();
+        if (index < 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i <= index; i++)
+        {
+            if (ParentList.GetItemAt(i) is AigcWorkflowPage task)
+            {
+                var scratchPads = task.Attributes.GetAttributes<ScratchPad>();
+
+                foreach (var scratchPad in scratchPads)
+                {
+                    string path = scratchPad.Path.Trim();
+
+                    if (string.IsNullOrWhiteSpace(path))
+                    {
+                        continue;
+                    }
+
+                    dic[path] = scratchPad;
+                }
+            }
+        }
+    }
+
 
     #endregion
 
@@ -1255,4 +1296,6 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         return taskPage;
     }
+
+
 }

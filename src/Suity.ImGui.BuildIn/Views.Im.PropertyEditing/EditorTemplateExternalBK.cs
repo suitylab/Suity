@@ -250,8 +250,7 @@ internal class EditorTemplateExternalBK : EditorTemplateExternal
     {
         Type? enumType = target.GetValues()
             .Select(o => o?.GetType())
-            .Where(o => o?.IsEnum == true)
-            .FirstOrDefault();
+            .FirstOrDefault(o => o?.IsEnum == true);
 
         if (enumType is null)
         {

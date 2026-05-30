@@ -132,27 +132,27 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                 }
                 else
                 {
-                    var lines = File.ReadAllLines(fullPath);
-                    int totalLines = lines.Length;
-
-                    string content;
                     int startLine = item.StartLine;
                     int lineCount = item.LineCount;
 
                     if (startLine <= 0 && lineCount <= 0)
                     {
-                        content = string.Join(Environment.NewLine, lines);
-                        result.Message = "read successful, see ScratchPadItem for detail.";
-                        parentPage?.SetScratchPad("file", relativePath, content, "full content");
+                        //content = string.Join(Environment.NewLine, lines);
+                        result.Message = "read successful, see ScratchPad for detail.";
+                        parentPage?.SetScratchPad(ScratchPadTypes.FileReference, relativePath);
                     }
                     else
                     {
+                        var lines = File.ReadAllLines(fullPath);
+                        int totalLines = lines.Length;
+                        string content;
+
                         int start = startLine <= 0 ? 0 : Math.Min(startLine - 1, totalLines - 1);
                         int count = lineCount <= 0 ? totalLines - start : Math.Min(lineCount, totalLines - start);
                         content = string.Join(Environment.NewLine, lines, start, count);
                         string msg = $"start line: {startLine}, line count: {lineCount}";
-                        result.Message = $"read {msg}, see ScratchPadItem for detail.";
-                        parentPage?.SetScratchPad("file", relativePath, content, msg);
+                        result.Message = $"read successful. {msg}, see ScratchPad for detail.";
+                        parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, msg);
                     }
                 }
             }
