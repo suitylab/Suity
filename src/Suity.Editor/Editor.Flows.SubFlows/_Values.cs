@@ -1,4 +1,5 @@
 using Suity.Editor.Design;
+using Suity.Editor.Documents;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing;
@@ -6,6 +7,7 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace Suity.Editor.Flows.SubFlows;
 
@@ -210,11 +212,17 @@ public enum ScratchPadTypes
 
     [DisplayText("Removed")]
     Removed,
+
+    [DisplayText("Not Found")]
+    NotFound,
+
+    [DisplayText("Encounter Error")]
+    Error,
 }
 
 [NativeType(CodeBase = "SubFlow", Icon = "*CoreIcon|Scratch")]
 [DisplayText("Scratch Pad")]
-public class ScratchPad : DesignAttribute
+public class ScratchPad : DesignAttribute, ITextDisplay
 {
     private readonly StringProperty _path = new(nameof(Path), "Path", null, "Path of the scratch pad item");
     private readonly ValueProperty<ScratchPadTypes> _type = new(nameof(Type), "Type", ScratchPadTypes.Memory, "Type of the scratch pad item");
@@ -226,7 +234,47 @@ public class ScratchPad : DesignAttribute
     public string Note { get => _note.Text; set => _note.Text = value; }
     public string Content { get => _content.Text; set => _content.Text = value; }
 
+    #region ITextDisplay
 
+    public string DisplayText => "Scratch Pad";
+
+    public object DisplayIcon
+    {
+        get
+        {
+            switch (_type.Value)
+            {
+                case ScratchPadTypes.Memory:
+                    return CoreIconCache.Memory;
+
+                case ScratchPadTypes.FileFullContent:
+                    return CoreIconCache.File;
+
+                case ScratchPadTypes.FileSegment:
+                    return CoreIconCache.Search;
+
+                case ScratchPadTypes.FileEdit:
+                    return CoreIconCache.Edit;
+
+                case ScratchPadTypes.Article:
+                    return CoreIconCache.Article;
+
+                case ScratchPadTypes.Removed:
+                    return CoreIconCache.Remove;
+
+                case ScratchPadTypes.NotFound:
+                    return CoreIconCache.Disable;
+
+                case ScratchPadTypes.Error:
+                default:
+                    return CoreIconCache.Error;
+            }
+        }
+    }
+
+    public TextStatus DisplayStatus => TextStatus.Normal;
+
+    #endregion
     protected override void OnSync(IPropertySync sync, ISyncContext context)
     {
         base.OnSync(sync, context);
@@ -264,6 +312,7 @@ public class ScratchPad : DesignAttribute
         switch (type)
         {
             case ScratchPadTypes.Memory:
+                content = Content;
                 break;
 
             case ScratchPadTypes.FileFullContent:
@@ -282,23 +331,37 @@ public class ScratchPad : DesignAttribute
                     }
                     else
                     {
-                        type = ScratchPadTypes.Removed;
+                        type = ScratchPadTypes.NotFound;
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    content = null;
-                    type = ScratchPadTypes.Removed;
+                    content = e.Message;
+                    type = ScratchPadTypes.Error;
                 }
                 break;
 
             case ScratchPadTypes.FileSegment:
+                content = Content;
                 break;
 
             case ScratchPadTypes.FileEdit:
+                content = Content;
                 break;
 
             case ScratchPadTypes.Article:
+                {
+                    var article = AssetManager.Instance.GetAssetByResourceName<IArticleAsset>(path);
+                    if (article != null)
+                    {
+                        content = article?.GetFullText();
+                    }
+                    else
+                    {
+                        type = ScratchPadTypes.NotFound;
+                        content = null;
+                    }
+                }
                 break;
 
             case ScratchPadTypes.Removed:

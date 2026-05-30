@@ -109,7 +109,7 @@ public static class SubFlowUtility
         }
         else
         {
-            RemoveScratchPad(page, path);
+            SetScratchPad(page, ScratchPadTypes.NotFound, path);
         }
     }
 
