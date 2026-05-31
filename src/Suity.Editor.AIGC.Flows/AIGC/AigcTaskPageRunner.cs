@@ -261,7 +261,7 @@ internal class AigcTaskPageRunner : AIAssistant
             {
                 request.Conversation.AddException(err);
 
-                if (maxRetry <= 0 || retry < maxRetry)
+                if (retryConfig != null && (maxRetry <= 0 || retry < maxRetry))
                 {
                     var delay = new DelayCountDown(request.Conversation);
                     await delay.Run((int)currentDelay, request.Cancellation);

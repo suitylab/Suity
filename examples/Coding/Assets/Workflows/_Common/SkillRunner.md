@@ -53,7 +53,8 @@ action planning of current task
 <tool_action tool='ToolName'>
 {"param": "value"}
 </tool_action>
-(Ensure JSON format in <tool_action> tag)
+- Ensure JSON format in <tool_action> tag.
+- Output single quote(') instead of double quote(") in json string content.
 
 2. Continuation:
 <next></next>

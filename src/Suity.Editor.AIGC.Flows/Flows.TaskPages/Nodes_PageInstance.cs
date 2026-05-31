@@ -343,6 +343,7 @@ public class ParsePageInstance : TaskPageNode
         }
         catch (Exception)
         {
+            throw;
             // Return null on parse failure
             return null;
         }
