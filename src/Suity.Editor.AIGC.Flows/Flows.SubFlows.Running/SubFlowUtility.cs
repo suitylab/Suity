@@ -93,7 +93,7 @@ public static class SubFlowUtility
     /// </summary>
     /// <param name="page">The AIGC workflow page.</param>
     /// <param name="path">The file path within the workspace to write.</param>
-    public static void SetFileScratchPad(this IAigcWorkflowPage page,string path)
+    public static void SetFileScratchPad(this IAigcWorkflowPage page, string path)
     {
         path = path?.Trim();
         if (string.IsNullOrWhiteSpace(path))
