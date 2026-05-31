@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="AigcFlow">
-  <AssetId>8049f077-08a1-4483-8f3a-e120a57f72b1</AssetId>
+  <AssetId>8dd449c3-7044-4619-8d4d-de0df8d31a96</AssetId>
   <NameSpace>TaskTaskPage002</NameSpace>
   <Description>
   </Description>
   <Icon />
   <Nodes>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-430" Y="-110" Width="160" Height="130">
-      <Name>MultipleCode</Name>
-      <AssetId>7a54593f-a175-441f-af06-7c8ee4e98830</AssetId>
+      <Name>CodeWriter</Name>
+      <AssetId>cba2cec1-4bfe-462c-b3d0-324178e57303</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
-        <Name>MultipleCode</Name>
+        <Name>CodeWriter</Name>
         <Description>
         </Description>
         <Icon>
@@ -20,10 +20,11 @@
           <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
             <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
               <Value type="Suity.Views.TextBlock">
-                <Text>Generate or rewrite one or multiple source codes base on the user request and the task history.</Text>
+                <Text>Generate or rewrite source codes base on the user request and the task history.</Text>
               </Value>
             </ToolTips>
           </Item>
+          <Item type="SObject" struct="32e8e801-1176-4ee9-a765-84f5ab782d97" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62" />
         </Attributes>
         <Tools />
         <UseParentArticle>True</UseParentArticle>
@@ -92,7 +93,7 @@
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>2ba3f08c-4c53-4c4a-8224-3ae5ecc3b98f</Id>
+          <Id>e741e0d8-e4f4-4d9d-bbbf-6f5dc5360273</Id>
         </PromptTemplate>
         <Keywords>
           <Item>INPUT</Item>
@@ -204,7 +205,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-120" Width="48" Height="17">
       <Name>###GetTaskChatHistory01</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.GetTaskChatHistory">
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentChatHistory">
         <InHierarchy>True</InHierarchy>
       </Node>
     </Item>
@@ -277,7 +278,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-140" Width="47" Height="17">
       <Name>###GetTaskScratchPad01</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.GetTaskScratchPad">
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentScratchPads">
         <InHierarchy>True</InHierarchy>
       </Node>
     </Item>
@@ -297,13 +298,21 @@
       <Name>###GetScratchPadMessage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetScratchPadMessage" />
     </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="430" Y="190" Width="73" Height="17">
+      <Name>###ComposeArray01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.ComposeArray">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </ValueType>
+      </Node>
+    </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
   <Links>
     <Item>
       <FromNode>MultipleCodeResult</FromNode>
       <FromConnector>Definition</FromConnector>
-      <ToNode>MultipleCode</ToNode>
+      <ToNode>CodeWriter</ToNode>
       <ToConnector>Result</ToConnector>
     </Item>
     <Item>
@@ -487,12 +496,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###PassValue01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>OutputFiles</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetTaskScratchPad01</FromNode>
       <FromConnector>ScratchPad</FromConnector>
       <ToNode>###GetScratchPadMessage01</ToNode>
@@ -503,6 +506,18 @@
       <FromConnector>Message</FromConnector>
       <ToNode>###CallLLm01</ToNode>
       <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ComposeArray01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ComposeArray01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OutputFiles</ToNode>
+      <ToConnector>In</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

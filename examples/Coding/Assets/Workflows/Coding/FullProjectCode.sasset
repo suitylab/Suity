@@ -297,7 +297,7 @@
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-120" Width="48" Height="17">
       <Name>###GetTaskChatHistory01</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.GetTaskChatHistory" />
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentChatHistory" />
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="650" Y="-170" Width="201" Height="100">
       <Name>###CreatePageInstanceWithParameter02</Name>

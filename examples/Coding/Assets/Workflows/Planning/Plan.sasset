@@ -65,7 +65,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="-60" Width="136" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="-60" Width="136" Height="111">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -77,7 +77,7 @@
         <InterruptionWords />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-220" Y="30" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-220" Y="30" Width="38" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -102,7 +102,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-130" Y="-50" Width="103" Height="85">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-130" Y="-50" Width="107" Height="89">
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
@@ -158,11 +158,11 @@
         </ValueType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="310" Y="50" Width="91" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="310" Y="50" Width="95" Height="111">
       <Name>###SetArticle01</Name>
       <Node type="Suity.Editor.Flows.AIGC.SetArticle" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="40" Y="90" Width="115" Height="74">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="40" Y="90" Width="119" Height="78">
       <Name>###ExtractXmlsTagNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
         <TagNames>

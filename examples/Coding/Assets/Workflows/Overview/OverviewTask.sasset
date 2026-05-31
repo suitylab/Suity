@@ -33,7 +33,7 @@
         <InterruptionWords />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="40" Y="-100" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="40" Y="-100" Width="38" Height="17">
       <Name>###GetSpeechLanguage02</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -256,7 +256,7 @@
         <MultipleSection>True</MultipleSection>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-410" Y="50" Width="42" Height="25">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-400" Y="50" Width="42" Height="25">
       <Name>###PageParameterRefNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.PageParameterReference">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">

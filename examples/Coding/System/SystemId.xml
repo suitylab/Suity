@@ -628,6 +628,7 @@
   <Object id="7f713bf6-15ac-4bfa-94fe-d3029c57ee00" name="*SiliconFlowImage" />
   <Object id="4f7ed151-b5b6-4ce0-9f3c-ec2a4ea67c8c" name="*SiliconFlowLLm" />
   <Object id="0d7fe790-7370-4374-9178-6870246c699f" name="*SubFlow" />
+  <Object id="32e8e801-1176-4ee9-a765-84f5ab782d97" name="*SubFlow|CommitScratchPad" />
   <Object id="fc26ad23-d56e-4557-8b2e-99d20bba6b95" name="*SubFlow|HistoryText" />
   <Object id="fc26ad23-d56e-4557-8b2e-99d20bba6b95" name="*SubFlow|HistoryText" />
   <Object id="3ac40d65-d15b-4021-b18e-d0408fcb29c7" name="*SubFlow|IBranchConnection" />
@@ -650,6 +651,16 @@
   <Object id="8ad332ed-c138-4142-820c-a281cccaa0e4" name="*SubFlow|ISubFlowPresetAsset" />
   <Object id="3ab97a0a-6a21-4497-839d-afd9f7b95876" name="*SubFlow|IToolAsset" />
   <Object id="e16e3a28-f0c3-4faa-a1e4-5380c967379f" name="*SubFlow|ScratchPad" />
+  <Object id="aee79ff9-d800-41a6-8a46-2ddd4e877d6d" name="*SubFlow|ScratchPadTypes" />
+  <Object id="e3f5c52b-86f4-4a26-8ea2-46fa2ee596e9" name="*SubFlow|ScratchPadTypes.Article" />
+  <Object id="5daae6e7-3d0c-45b0-bf2e-7ca894df9792" name="*SubFlow|ScratchPadTypes.Clear" />
+  <Object id="daede23b-0749-4165-98a8-ff76021fae0f" name="*SubFlow|ScratchPadTypes.Error" />
+  <Object id="3fae2448-ebc9-4806-b0d7-29500ab78e59" name="*SubFlow|ScratchPadTypes.FileEdit" />
+  <Object id="cfc904a8-c1f9-4292-ab4c-e0819f361bf3" name="*SubFlow|ScratchPadTypes.FileFullContent" />
+  <Object id="c0371115-e279-4857-b091-60169dd41026" name="*SubFlow|ScratchPadTypes.FileSegment" />
+  <Object id="6f99c550-a6c2-4c2f-8a62-97f639d9af6e" name="*SubFlow|ScratchPadTypes.Memory" />
+  <Object id="365055a8-dd64-4365-959a-98bfccb4be79" name="*SubFlow|ScratchPadTypes.NotFound" />
+  <Object id="92973868-f074-43fa-bca1-0bac1e3ba913" name="*SubFlow|ScratchPadTypes.Removed" />
   <Object id="2aef8f59-7a8f-402e-909a-dff40eb623ea" name="*SubFlow|SubFlowDefinitionAsset" />
   <Object id="70a1566a-7ea4-4b65-a3e0-fbf445d14d6e" name="*SubFlow|SubFlowInstance" />
   <Object id="70a1566a-7ea4-4b65-a3e0-fbf445d14d6e" name="*SubFlow|SubFlowInstance" />

@@ -1,12 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>f41b5f0b-24d9-4f60-97d2-242cbdf7357b</AssetId>
+  <AssetId>158c5b72-adea-4fb6-bbc5-a6b966871b60</AssetId>
   <PresetName>
   </PresetName>
   <BaseWorkflow>
     <Id>80e3bfe9-08ea-4055-b46f-2b189b74768b</Id>
   </BaseWorkflow>
   <Tools>
+    <Item>
+      <Id>3deed8ae-9a3b-4b0e-a771-5408cb14c7e2</Id>
+    </Item>
     <Item>
       <Id>72bfd38f-adb1-4e2a-9185-08a558e30272</Id>
     </Item>
@@ -32,10 +35,10 @@
       <Id>cba2cec1-4bfe-462c-b3d0-324178e57303</Id>
     </Item>
     <Item>
-      <Id>a7728094-c0dc-4189-9ca6-9bb5b37117b4</Id>
+      <Id>86a7a172-00ca-4f3d-95e0-95f3244067d8</Id>
     </Item>
     <Item>
-      <Id>dc35e117-c8f5-493b-8bd6-ffb27b18833f</Id>
+      <Id>a7728094-c0dc-4189-9ca6-9bb5b37117b4</Id>
     </Item>
     <Item>
       <Id>00764838-cdc5-40d1-b636-0046358dd38b</Id>
@@ -44,27 +47,27 @@
       <Id>2432214a-f2bd-4104-b212-8c2fe435f77d</Id>
     </Item>
     <Item>
-      <Id>07d8f308-0fe6-4e09-bfc0-2510b8297135</Id>
-    </Item>
-    <Item>
-      <Id>d6d8c762-a2ca-4386-826d-cd05801a3636</Id>
+      <Id>0c0e6e87-c484-44be-8d2b-1e00a40300e0</Id>
     </Item>
   </Tools>
+  <IsStartup>True</IsStartup>
   <Overview>
-    <Text>I am a editor and can perform precise code modifications and bug-fix directly on the local filesystem.</Text>
+    <Text>I am a Coding Agent, an episodic creator spawned with a blank-slate context to perform precise code creaction directly on the local filesystem.</Text>
   </Overview>
   <UserInputHint>
     <Text>
     </Text>
   </UserInputHint>
   <Skill>
-    <Id>cba19d62-b599-417f-88f4-45291e8cc706</Id>
+    <Id>c9d07914-4cf5-4828-8f98-4885848d8d09</Id>
   </Skill>
-  <Rule />
+  <Rule>
+    <Id>b5af5156-628d-43bb-9b7f-13bcb5026008</Id>
+  </Rule>
   <Description>
   </Description>
   <Icon>
-    <Id>0a926bbd-7017-402a-9e1a-b55741314298</Id>
+    <Id>742d63f8-1c54-4fe3-a420-526fd210dedd</Id>
   </Icon>
   <Page>
     <__preset__ />
