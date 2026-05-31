@@ -107,7 +107,8 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
             var entries = dirInfo.GetFileSystemInfos()
                 .Where(f => !ignoreSet.Contains(f.Name))
                 .OrderBy(f => f is DirectoryInfo ? 0 : 1)
-                .ThenBy(f => f.Name);
+                .ThenBy(f => f.Name)
+                .ToList();
 
             foreach (var entry in entries)
             {
@@ -124,6 +125,10 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
                         {
                             lines.Add(subTree);
                         }
+                    }
+                    else
+                    {
+                        lines.Add($"{new string(' ', (currentDepth + 1) * 4)}(... more)");
                     }
                 }
                 else

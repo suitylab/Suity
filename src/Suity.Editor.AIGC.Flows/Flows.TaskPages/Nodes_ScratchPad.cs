@@ -9,6 +9,70 @@ using System.Linq;
 
 namespace Suity.Editor.Flows.TaskPages;
 
+#region CreateScratchPad
+
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Create Scratch Pad", "*CoreIcon|Scratch")]
+public class CreateScratchPad : TaskPageNode
+{
+    readonly ConnectorStringProperty _path;
+    readonly ConnectorValueProperty<ScratchPadTypes> _type;
+    readonly ConnectorStringProperty _note;
+    readonly ConnectorTextBlockProperty _content;
+    readonly FlowNodeConnector _scratchPad;
+
+    public CreateScratchPad()
+    {
+        _path = new ConnectorStringProperty("Path", "Path");
+        _type = new ConnectorValueProperty<ScratchPadTypes>("Type", "Type", ScratchPadTypes.Memory, "Type of the scratch pad item");
+        _note = new ConnectorStringProperty("Note", "Note");
+        _content = new ConnectorTextBlockProperty("Content", "Content");
+
+        _path.AddConnector(this);
+        _type.AddConnector(this);
+        _note.AddConnector(this);
+        _content.AddConnector(this);
+
+        var scratchPadType = TypeDefinition.FromNative<ScratchPad>();
+        _scratchPad = this.AddDataOutputConnector("ScratchPad", scratchPadType, "Scratch Pad");
+    }
+
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _path.Sync(sync);
+        _type.Sync(sync);
+        _note.Sync(sync);
+        _content.Sync(sync);
+    }
+
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _path.InspectorField(setup, this);
+        _type.InspectorField(setup, this);
+        _note.InspectorField(setup, this);
+        _content.InspectorField(setup, this);
+    }
+
+    public override void Compute(IFlowComputation compute)
+    {
+        var scratchPad = new ScratchPad
+        {
+            Path = _path.GetValue(compute, this),
+            Type = _type.GetValue(compute, this),
+            Note = _note.GetValue(compute, this),
+            Content = _content.GetValue(compute, this),
+        };
+
+        compute.SetValue(_scratchPad, scratchPad);
+    }
+}
+
+#endregion
+
 #region GetTaskScratchPads
 
 [SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
