@@ -273,18 +273,37 @@ public interface IAigcToolPage : IAigcTaskPage
 
 #region IScratchPadOwner
 
+/// <summary>
+/// Represents an object that can own scratch pad items.
+/// </summary>
 public interface IScratchPadOwner
 {
+    /// <summary>
+    /// Clears all scratch pad items.
+    /// </summary>
     void ClearScratchPad();
 
+    /// <summary>
+    /// Sets a scratch pad item.
+    /// </summary>
+    /// <param name="type">The type of scratch pad item.</param>
+    /// <param name="path">The path for the scratch pad item.</param>
+    /// <param name="content">The content for the scratch pad item.</param>
+    /// <param name="note">The note for the scratch pad item.</param>
     ScratchPad SetScratchPad(ScratchPadTypes type, string path, string content, string note);
 
     /// <summary>
-    /// Resolves the scratch pad items for this task, checking for transferable article parameters first.
+    /// Gets the scratch pad items for this task.
+    /// </summary>
+    /// <returns>The scratch pad items, or null if not available.</returns>
+    ScratchPad[] GetScratchPads();
+
+    /// <summary>
+    /// Resolves the history scratch pad items for this task, checking for transferable article parameters first.
     /// </summary>
     /// <param name="hierarchyLevels">The number of parent levels to include in the scratch pad items.</param>
     /// <returns>The resolved scratch pad items, or null if not available.</returns>
-    ScratchPad[] GetScratchPads(int hierarchyLevels = 0);
+    ScratchPad[] GetHistoryScratchPads(int hierarchyLevels = 0);
 }
 
 #endregion

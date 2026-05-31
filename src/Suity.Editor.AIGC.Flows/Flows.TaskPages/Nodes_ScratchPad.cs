@@ -25,8 +25,8 @@ public class CreateScratchPad : TaskPageNode
     {
         _path = new ConnectorStringProperty("Path", "Path");
         _type = new ConnectorValueProperty<ScratchPadTypes>("Type", "Type", ScratchPadTypes.Memory, "Type of the scratch pad item");
-        _note = new ConnectorStringProperty("Note", "Note");
-        _content = new ConnectorTextBlockProperty("Content", "Content");
+        _note = new ConnectorStringProperty("Note", "Note", null, "Note of the scratch pad item");
+        _content = new ConnectorTextBlockProperty("Content", "Content", null, "Content of the scratch pad item");
 
         _path.AddConnector(this);
         _type.AddConnector(this);
@@ -121,7 +121,7 @@ public class GetTaskScratchPads : TaskPageNode
         bool inHierarchy = _inHierarchy.Value;
         int level = inHierarchy ? _hierarchyLimit.Value : 0;
 
-        var scratchPads = page?.GetScratchPads(level) ?? [];
+        var scratchPads = page?.GetHistoryScratchPads(level) ?? [];
 
         compute.SetValue(_scratchPad, scratchPads);
     }
@@ -174,8 +174,6 @@ public class SetTaskScratchPads : TaskPageNode
 
 [SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
 [DisplayText("Get Current Scratch Pads", "*CoreIcon|Scratch")]
-[NativeAlias("Suity.Editor.Flows.TaskPages.GetTaskScratchPad")]
-[NativeAlias("Suity.Editor.Flows.TaskPages.GetTaskScratchPads")]
 public class GetCurrentScratchPads : TaskPageNode
 {
     readonly FlowNodeConnector _scratchPad;
@@ -215,7 +213,7 @@ public class GetCurrentScratchPads : TaskPageNode
         bool inHierarchy = _inHierarchy.Value;
         int level = inHierarchy ? _hierarchyLimit.Value : 0;
 
-        var scratchPads = page?.GetScratchPads(level) ?? [];
+        var scratchPads = page?.GetHistoryScratchPads(level) ?? [];
 
         compute.SetValue(_scratchPad, scratchPads);
     }
@@ -227,7 +225,6 @@ public class GetCurrentScratchPads : TaskPageNode
 
 [SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = true)]
 [DisplayText("Set Current Scratch Pads", "*CoreIcon|Scratch")]
-[NativeAlias("Suity.Editor.Flows.TaskPages.SetTaskScratchPads")]
 public class SetCurrentScratchPads : TaskPageNode
 {
     private readonly FlowNodeConnector _in;

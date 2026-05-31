@@ -191,7 +191,8 @@ public enum ResolveChatIntents
     Preview,
 }
 
-
+[NativeType(CodeBase = "SubFlow", Icon = "*CoreIcon|Scratch")]
+[DisplayText("Scratch Pad Type")]
 public enum ScratchPadTypes
 {
     [DisplayText("Memory")]
@@ -379,4 +380,10 @@ public class ScratchPad : DesignAttribute, ITextDisplay
         return $"<ScratchPad type='{type}' path='{path}' note='{note}'>\r\n{content}\r\n</ScratchPad>";
     }
 
+}
+
+[NativeType(CodeBase = "SubFlow", Icon = "*CoreIcon|Scratch")]
+[DisplayText("Commit Scratch Pad")]
+public class CommitScratchPad : DesignAttribute
+{
 }

@@ -1,6 +1,8 @@
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Documents;
+using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Helpers;
 using Suity.Views;
 using System;
@@ -194,6 +196,8 @@ internal class AigcTaskPageRunner : AIAssistant
         {
             if (task.GetTaskAt(task.Count - 1) is { } lastTask)
             {
+                CheckCommitScratchPad(task, lastTask);
+
                 // Task commit.
                 var eventType = lastTask.GetCommitStatus().ToEventType();
 
@@ -206,6 +210,30 @@ internal class AigcTaskPageRunner : AIAssistant
         }
 
         return (flowControl: true, value: null);
+    }
+
+    private bool CheckCommitScratchPad(AigcTaskPage task, AigcTaskPage subTask)
+    {
+        if (task is not AigcWorkflowPage workflow || subTask is not AigcWorkflowPage subWorkflow)
+        {
+            return false;
+        }
+
+        var def = subWorkflow.Workflow?.GetBaseDefinition() as DesignFlowNode;
+        var commit = subWorkflow?.GetAttribute<CommitScratchPad>() ?? def?.GetAttribute<CommitScratchPad>();
+        if (commit is null)
+        {
+            return false;
+        }
+
+
+        var scratchPads = subWorkflow.GetScratchPads();
+        foreach (var scratchPad in scratchPads)
+        {
+            workflow.SetScratchPad(scratchPad.Type, scratchPad.Path, scratchPad.Content, scratchPad.Note);
+        }
+
+        return true;
     }
 
     private async Task<TaskRunResult> RunTaskWithRetry(AIRequest request, AigcTaskPage task, TaskEventTypes eventType, string commitName, object parameter)

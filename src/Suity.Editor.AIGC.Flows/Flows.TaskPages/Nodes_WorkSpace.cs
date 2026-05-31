@@ -76,6 +76,40 @@ public class HasTaskWorkSpace : TaskPageNode
 }
 #endregion
 
+#region GetWorkSpaceOS
+/// <summary>
+/// A flow node that retrieves the operating system type of the current workspace.
+/// Outputs the OS type as a string (Windows, macOS, Linux).
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[DisplayText("Get WorkSpace OS", "*CoreIcon|WorkSpace")]
+[NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetWorkSpaceOS")]
+public class GetWorkSpaceOS : TaskPageNode
+{
+    readonly FlowNodeConnector _workSpaceOS;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetWorkSpaceOS"/> class,
+    /// setting up the data output connector for the OS type.
+    /// </summary>
+    public GetWorkSpaceOS()
+    {
+        _workSpaceOS = this.AddDataOutputConnector("WorkSpaceOS", "string", "WorkSpace OS");
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
+
+        var workSpace = taskPage?.TaskHost?.WorkSpace;
+
+        string osType = Environment.OSVersion.Platform.ToString();
+        compute.SetValue(_workSpaceOS, osType);
+    }
+}
+#endregion
+
 #region CreateTaskWorkSpace
 /// <summary>
 /// A flow node that creates a new workspace for the current AIGC task page,

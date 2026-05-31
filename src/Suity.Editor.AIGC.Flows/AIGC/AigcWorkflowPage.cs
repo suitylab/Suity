@@ -907,6 +907,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
     #region IScratchPadOwner
 
+    /// <inheritdoc/>
     public void ClearScratchPad()
     {
         var scratchPads = this.Attributes.GetAttributes<ScratchPad>().ToArray();
@@ -918,6 +919,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         this.TaskPageDocument?.MarkDirtyAndSaveDelayed(this);
     }
 
+    /// <inheritdoc/>
     public ScratchPad SetScratchPad(ScratchPadTypes type, string path, string content, string note)
     {
         path = path?.Trim();
@@ -945,7 +947,13 @@ public class AigcWorkflowPage : AigcTaskPage,
     }
 
     /// <inheritdoc/>
-    public ScratchPad[] GetScratchPads(int hierarchyLevels)
+    public ScratchPad[] GetScratchPads()
+    {
+        return Attributes.GetAttributes<ScratchPad>().ToArray();
+    }
+
+    /// <inheritdoc/>
+    public ScratchPad[] GetHistoryScratchPads(int hierarchyLevels)
     {
         Dictionary<string, ScratchPad> dic = [];
         CollectScratchPads(dic, hierarchyLevels);

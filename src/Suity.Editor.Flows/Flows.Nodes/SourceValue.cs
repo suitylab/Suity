@@ -425,7 +425,7 @@ public class CloneObject : ValueFlowNode
     {
         if (_isArray.Value)
         {
-            var values = compute.GetValues(_in, true) ?? [];
+            var values = compute.GetValues(_in, true)?.ToArray() ?? [];
             for (int i = 0; i < values.Length; i++)
             {
                 var value = Cloner.Clone(values[i]);
@@ -518,6 +518,7 @@ public class ComposeArray : ValueFlowNode
 {
     private FlowNodeConnector _in;
     private FlowNodeConnector _out;
+    private readonly ValueProperty<bool> _cloneElements = new("CloneElements", "Clone Elements", false);
 
     /// <summary>
     /// Gets the type design selection that determines the element type of the output array.
@@ -547,6 +548,7 @@ public class ComposeArray : ValueFlowNode
 
         ValueType = sync.Sync(nameof(ValueType), ValueType, SyncFlag.NotNull);
         MultipleConnector = sync.Sync(nameof(MultipleConnector), MultipleConnector, SyncFlag.NotNull);
+        _cloneElements.Sync(sync);
 
         if (sync.IsSetter())
         {
@@ -561,6 +563,7 @@ public class ComposeArray : ValueFlowNode
 
         setup.InspectorField(ValueType, new ViewProperty(nameof(ValueType), "Type"));
         setup.InspectorField(MultipleConnector, new ViewProperty(nameof(MultipleConnector), "Multi Value Port"));
+        _cloneElements.InspectorField(setup);
     }
 
     /// <inheritdoc/>
@@ -589,10 +592,13 @@ public class ComposeArray : ValueFlowNode
         var type = ValueType?.GetTypeDefinition() ?? TypeDefinition.Empty;
         var aryType = type.MakeArrayType();
 
+        bool clone = _cloneElements.Value;
+
         var ary = new SArray(aryType);
         foreach (var value in values)
         {
-            ary.Add(value);
+            var v = clone ? Cloner.Clone(value) : value;
+            ary.Add(v);
         }
 
         compute.SetValue(_out, ary);

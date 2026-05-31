@@ -17,7 +17,7 @@ public static class WorkSpaceFileExtensions
     public static void WriteWorkSpaceFile(this WorkSpace workSpace, string filePath, string content)
     {
         filePath ??= string.Empty;
-        filePath = filePath.Trim().Replace('\\', '/').TrimStart('.', '/');
+        filePath = filePath.Trim().Replace('\\', '/'); //.TrimStart('.', '/');
         if (string.IsNullOrWhiteSpace(filePath))
         {
             throw new NullReferenceException($"File path is empty.");
