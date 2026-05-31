@@ -215,7 +215,7 @@ public class AddSubTaskPage : TaskPageNode
 }
 #endregion
 
-#region GetTaskChatHistory
+#region GetCurrentChatHistory
 
 /// <summary>
 /// A flow node that retrieves the chat history from the current task.
@@ -225,7 +225,8 @@ public class AddSubTaskPage : TaskPageNode
 [DisplayText("Get Task Chat History", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskChatHistoryNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskChatHistory")]
-public class GetTaskChatHistory : TaskPageNode
+[NativeAlias("Suity.Editor.Flows.TaskPages.GetTaskChatHistory")]
+public class GetCurrentChatHistory : TaskPageNode
 {
     readonly FlowNodeConnector _chatHistory;
 
@@ -233,9 +234,9 @@ public class GetTaskChatHistory : TaskPageNode
     readonly ValueProperty<int> _hierarchyLimit = new("HierarchyLimit", "Hierarchy Limit", 1, "Maximum number of parent levels to include in the hierarchy.");
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="GetTaskChatHistory"/> class.
+    /// Initializes a new instance of the <see cref="GetCurrentChatHistory"/> class.
     /// </summary>
-    public GetTaskChatHistory()
+    public GetCurrentChatHistory()
     {
         var msgType = TypeDefinition.FromNative<LLmMessage>().MakeArrayType();
         _chatHistory = AddDataOutputConnector("ChatHistory", msgType, "Chat History");

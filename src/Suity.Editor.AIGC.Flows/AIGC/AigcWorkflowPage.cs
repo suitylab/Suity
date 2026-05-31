@@ -761,10 +761,10 @@ public class AigcWorkflowPage : AigcTaskPage,
         if (input)
         {
             string msg = instance?.GetInputChatHistory(ResolveChatIntents.Normal)?.Text;
-            if (!string.IsNullOrWhiteSpace(prompt))
-            {
-                msg = prompt + "\r\n\r\n" + msg;
-            }
+            //if (!string.IsNullOrWhiteSpace(prompt))
+            //{
+            //    msg = prompt + "\r\n\r\n" + msg;
+            //}
 
             inputMsg = new()
             {
