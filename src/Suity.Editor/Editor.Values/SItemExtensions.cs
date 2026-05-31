@@ -6,8 +6,8 @@ using Suity.Selecting;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.Values;
@@ -966,6 +966,51 @@ public static class SItemExtensions
     /// <param name="sharedType">The shared DCompond type.</param>
     public static void SetupObjects(this SObject[] objs, IViewObjectSetup setup, bool preview, out DCompond sharedType)
        => SValueExternal._external.SetupObjects(objs, setup, preview, out sharedType);
+
+    #endregion
+
+    #region Order
+
+    public static void SetIndex(this SItem item, int index)
+    {
+        if (item.Parent is SArray array)
+        {
+            array.RemoveItem(item);
+            array.Insert(index, item);
+        }
+    }
+
+    public static void BringToFront(this SItem item)
+    {
+        if (item.Parent is not SArray array)
+        {
+            return;
+        }
+
+        if (item.Index == 0)
+        {
+            return;
+        }
+
+        array.RemoveItem(item);
+        array.Insert(0, item);
+    }
+
+    public static void SendToBack(this SItem item)
+    {
+        if (item.Parent is not SArray array)
+        {
+            return;
+        }
+
+        if (item.Index == array.Count - 1)
+        {
+            return;
+        }
+
+        array.RemoveItem(item);
+        array.Add(item);
+    }
 
     #endregion
 

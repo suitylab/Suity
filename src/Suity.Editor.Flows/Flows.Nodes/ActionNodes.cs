@@ -1053,9 +1053,12 @@ public class PassDataAction : ActionFlowNode, INavigable
 {
     private FlowNodeConnector _in;
     private FlowNodeConnector _out;
+    private FlowNodeConnector _subAction;
 
     private readonly TypeDesignSelection _type = new();
     private bool _isArray;
+
+    private readonly ValueProperty<bool> _subActionEnabled = new("SubActionEnabled", "Sub-Action Enabled");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PassDataAction"/> class.
@@ -1067,6 +1070,7 @@ public class PassDataAction : ActionFlowNode, INavigable
         _type.ListenEnabled = true;
 
         UpdateConnector();
+        _subActionEnabled.ValueChanged += (s, e) => UpdateConnectorQueued();
     }
 
     private void _type_TargetUpdated(object sender, EntryEventArgs e, ref bool handled)
@@ -1081,6 +1085,8 @@ public class PassDataAction : ActionFlowNode, INavigable
 
         sync.Sync("DataType", _type, SyncFlag.GetOnly);
         _isArray = sync.Sync("IsArray", _isArray);
+        _subActionEnabled.Sync(sync);
+
         if (sync.IsSetter())
         {
             UpdateConnectorQueued();
@@ -1094,6 +1100,7 @@ public class PassDataAction : ActionFlowNode, INavigable
 
         setup.InspectorField(_type, new ViewProperty("DataType", "Data Type"));
         setup.InspectorField(_isArray, new ViewProperty("IsArray", "Array"));
+        _subActionEnabled.InspectorField(setup);
     }
 
     /// <inheritdoc/>
@@ -1105,21 +1112,32 @@ public class PassDataAction : ActionFlowNode, INavigable
             type = type.MakeArrayType();
         }
 
-        // string typeName = type.ToTypeName();
-
-        // string displayName = _type.GetDType()?.DisplayText ?? "Data";
+        if (_subActionEnabled.Value)
+        {
+            _subAction = AddConnector("SubAction", type, FlowDirections.Output, FlowConnectorTypes.Action, false, "Sub Action");
+        }
+        else
+        {
+            _subAction = null;
+        }
 
         _in = AddConnector("In", type, FlowDirections.Input, FlowConnectorTypes.Action, false, " ");
         _out = AddConnector("Out", type, FlowDirections.Output, FlowConnectorTypes.Action, false, " ");
     }
 
     /// <inheritdoc/>
-    public override Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)
+    public override async Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)
     {
         var data = compute.GetValue(_in);
-        compute.SetValue(_out, data);
 
-        return Task.FromResult<object>(_out);
+        if (_subActionEnabled.Value)
+        {
+            compute.SetValue(_subAction, data);
+            await compute.RunAction(_subAction, cancel);
+        }
+
+        compute.SetValue(_out, data);
+        return _out;
     }
 
     /// <inheritdoc/>

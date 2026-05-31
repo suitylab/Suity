@@ -8,6 +8,7 @@ using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Flows.TaskPages;
 using Suity.Editor.Selecting;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Synchonizing;
@@ -936,6 +937,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
 
         scratchPad.Commit();
+        scratchPad.Target.SendToBack();
 
         this.TaskPageDocument?.MarkDirtyAndSaveDelayed(this);
 
@@ -948,7 +950,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         Dictionary<string, ScratchPad> dic = [];
         CollectScratchPads(dic, hierarchyLevels);
 
-        return dic.Values.Where(o => o.Type != ScratchPadTypes.Removed).ToArray();
+        return dic.Values.Where(o => o.Type.CanDisplay()).ToArray();
     }
 
     private void CollectScratchPads(Dictionary<string, ScratchPad> dic, int hierarchyLevel)
@@ -972,10 +974,23 @@ public class AigcWorkflowPage : AigcTaskPage,
 
                 foreach (var scratchPad in scratchPads)
                 {
-                    string path = scratchPad.Path.Trim();
+                    // Clear operation
+                    if (scratchPad.Type == ScratchPadTypes.Clear)
+                    {
+                        dic.Clear();
+                        continue;
+                    }
 
+                    string path = scratchPad.Path.Trim();
                     if (string.IsNullOrWhiteSpace(path))
                     {
+                        continue;
+                    }
+
+                    // Remove operation
+                    if (scratchPad.Type == ScratchPadTypes.Removed)
+                    {
+                        dic.Remove(path);
                         continue;
                     }
 

@@ -141,4 +141,17 @@ public static class SubFlowExtensions
                 return TaskEventTypes.None;
         }
     }
+
+    public static bool CanDisplay(this ScratchPadTypes type)
+    {
+        switch (type)
+        {
+            case ScratchPadTypes.Removed:
+            case ScratchPadTypes.Clear:
+                return false;
+
+            default:
+                return true;
+        }
+    }
 }

@@ -7,7 +7,6 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 
 namespace Suity.Editor.Flows.SubFlows;
 
@@ -216,6 +215,9 @@ public enum ScratchPadTypes
     [DisplayText("Not Found")]
     NotFound,
 
+    [DisplayText("Clear")]
+    Clear,
+
     [DisplayText("Encounter Error")]
     Error,
 }
@@ -263,7 +265,10 @@ public class ScratchPad : DesignAttribute, ITextDisplay
                     return CoreIconCache.Remove;
 
                 case ScratchPadTypes.NotFound:
-                    return CoreIconCache.Disable;
+                    return CoreIconCache.Question;
+
+                case ScratchPadTypes.Clear:
+                    return CoreIconCache.Cleanup;
 
                 case ScratchPadTypes.Error:
                 default:

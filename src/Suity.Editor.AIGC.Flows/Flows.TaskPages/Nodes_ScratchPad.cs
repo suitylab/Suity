@@ -9,21 +9,22 @@ using System.Linq;
 
 namespace Suity.Editor.Flows.TaskPages;
 
-#region GetTaskScratchPad
+#region GetTaskScratchPads
 
 [SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
-[DisplayText("Get Task Scratch Pad Items", "*CoreIcon|Task")]
-public class GetTaskScratchPad : TaskPageNode
+[DisplayText("Get Task Scratch Pads", "*CoreIcon|Scratch")]
+[NativeAlias("Suity.Editor.Flows.TaskPages.GetTaskScratchPad")]
+public class GetTaskScratchPads : TaskPageNode
 {
     readonly FlowNodeConnector _scratchPad;
 
     readonly ValueProperty<bool> _inHierarchy = new("InHierarchy", "In Hierarchy", false, "If enabled, includes scratch pad items from parent tasks.");
     readonly ValueProperty<int> _hierarchyLimit = new("HierarchyLimit", "Hierarchy Limit", 1, "Maximum number of parent levels to include in the hierarchy.");
 
-    public GetTaskScratchPad()
+    public GetTaskScratchPads()
     {
-        var articleType = TypeDefinition.FromNative<ScratchPad>().MakeArrayType();
-        _scratchPad = AddDataOutputConnector("ScratchPad", articleType, "Scratch Pad");
+        var type = TypeDefinition.FromNative<ScratchPad>().MakeArrayType();
+        _scratchPad = AddDataOutputConnector("ScratchPad", type, "Scratch Pad");
     }
 
     protected override void OnSync(IPropertySync sync, ISyncContext context)
@@ -55,6 +56,43 @@ public class GetTaskScratchPad : TaskPageNode
         var scratchPads = page?.GetScratchPads(level) ?? [];
 
         compute.SetValue(_scratchPad, scratchPads);
+    }
+}
+
+#endregion
+
+#region SetTaskScratchPads
+
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = true)]
+[DisplayText("Set Task Scratch Pads", "*CoreIcon|Scratch")]
+public class SetTaskScratchPads : TaskPageNode
+{
+    private readonly FlowNodeConnector _in;
+    private readonly FlowNodeConnector _out;
+    private readonly FlowNodeConnector _scratchPad;
+
+    public SetTaskScratchPads()
+    {
+        var type = TypeDefinition.FromNative<ScratchPad>();
+
+        _in = AddActionInputConnector("In", " ");
+        _scratchPad = this.AddConnector("ScratchPad", type, FlowDirections.Input, FlowConnectorTypes.Data, true, "Scratch Pad");
+        _out = AddActionOutputConnector("Out", " ");
+    }
+
+    public override void Compute(IFlowComputation compute)
+    {
+        var page = compute.Context.GetArgument<IAigcWorkflowPage>()
+            ?? throw new NullReferenceException("Current task not found.");
+
+        var items = compute.GetValues<ScratchPad>(_scratchPad, true) ?? [];
+
+        foreach (var item in items)
+        {
+            page.SetScratchPad(item.Type, item.Path, item.Content, item.Note);
+        }
+
+        compute.SetResult(this, _out);
     }
 }
 
