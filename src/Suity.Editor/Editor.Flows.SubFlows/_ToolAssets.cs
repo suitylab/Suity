@@ -171,6 +171,10 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset
                 return true;
             }
         }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
         catch (Exception error)
         {
             myInstance.SetError(error);
