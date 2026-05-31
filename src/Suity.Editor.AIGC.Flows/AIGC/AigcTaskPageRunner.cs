@@ -105,6 +105,7 @@ internal class AigcTaskPageRunner : AIAssistant
         }
 
         startupTask.SetPrompt(request.UserMessage);
+        startupTask.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
 
         _document.AddTask(startupTask);
         _document.Entry.MarkUsage(_usageToken);

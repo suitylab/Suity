@@ -922,6 +922,13 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <inheritdoc/>
     public ScratchPad SetScratchPad(ScratchPadTypes type, string path, string content, string note)
     {
+        if (type == ScratchPadTypes.Clear)
+        {
+            path = "-";
+            content = string.Empty;
+            note = string.Empty;
+        }
+
         path = path?.Trim();
         if (string.IsNullOrWhiteSpace(path))
         {
