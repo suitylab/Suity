@@ -237,9 +237,9 @@ public class AIAssistantPlugin : BackendPlugin, IAIAssistantConfig, IViewObject
         IdentifierModel.Value.ModelType.Value = LLmModelType.Default;
         QueryKeywordModel.Value.ModelType.Value = LLmModelType.Default;
         ClassifyModel.Value.ModelType.Value = LLmModelType.Lightweight;
-        ToolCallingModel.Value.ModelType.Value = LLmModelType.ToolCalls;
-        CreativeToolCallingModel.Value.ModelType.Value = LLmModelType.ToolCalls;
-        ExactToolCallingModel.Value.ModelType.Value = LLmModelType.ToolCalls;
+        ToolCallingModel.Value.ModelType.Value = LLmModelType.Summary;
+        CreativeToolCallingModel.Value.ModelType.Value = LLmModelType.Summary;
+        ExactToolCallingModel.Value.ModelType.Value = LLmModelType.Summary;
         CreativeWritingModel.Value.ModelType.Value = LLmModelType.Default;
         DesignWritingModel.Value.ModelType.Value = LLmModelType.Default;
         TechnicalWritingModel.Value.ModelType.Value = LLmModelType.Default;

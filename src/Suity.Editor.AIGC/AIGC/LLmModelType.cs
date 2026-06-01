@@ -11,17 +11,20 @@ public enum LLmModelType
     [DisplayText("Default")]
     Default,
 
-    [DisplayText("Planning")]
-    Planning,
-
-    [DisplayText("Tool Calls")]
-    ToolCalls,
+    [DisplayText("Thinking")]
+    Thinking,
 
     [DisplayText("Web Search")]
     WebSearch,
 
-    [DisplayText("Code-specific")]
+    [DisplayText("Coding")]
     Coding,
+
+    [DisplayText("Creative")]
+    Creative,
+
+    [DisplayText("Summary")]
+    Summary,
 
     [DisplayText("Lightweight")]
     Lightweight,

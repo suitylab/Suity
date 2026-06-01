@@ -402,8 +402,8 @@ public class LLmModelPresetConfig : IViewObject
     /// <returns>The configured language model for the specified type, or the default model.</returns>
     public ILLmModel GetModel(LLmModelType type) => type switch
     {
-        LLmModelType.Planning => Planning.Target ?? Default.Target,
-        LLmModelType.ToolCalls => ToolCalling.Target ?? Default.Target,
+        LLmModelType.Thinking => Planning.Target ?? Default.Target,
+        LLmModelType.Summary => ToolCalling.Target ?? Default.Target,
         LLmModelType.WebSearch => WebSearch.Target ?? Default.Target,
         LLmModelType.Coding => Coding.Target ?? Default.Target,
         LLmModelType.Lightweight => Lightweight.Target ?? Default.Target,
