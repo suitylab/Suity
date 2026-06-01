@@ -310,7 +310,7 @@ internal class AigcTaskPageRunner : AIAssistant
             name = $"{task.Description} ({name})";
         }
 
-        string message = "Run Task: ";
+/*        string message = "Run Task: ";
         if (eventType != TaskEventTypes.None)
         {
             message = $"Handle event: {eventType}";
@@ -320,7 +320,7 @@ internal class AigcTaskPageRunner : AIAssistant
         {
             msg.AddCode(name);
             msg.AddButton("Locate", () => SelectTask(task));
-        });
+        });*/
 
         bool handled = await task.RunTask(request, eventType, commitName, parameter);
         if (request.Cancellation.IsCancellationRequested)

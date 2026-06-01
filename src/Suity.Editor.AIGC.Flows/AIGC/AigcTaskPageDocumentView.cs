@@ -345,6 +345,15 @@ public class AigcTaskPageDocumentView : IDocumentView,
                     }
                     else
                     {
+                        gui.Button("btnPrompt", "Prompt", CoreIconCache.Prompt)
+                        .InitClass("simpleBtn")
+                        .SetToolTipsL("Start task")
+                        .SetEnabled(_document?.GetUnfinishedChildTaskDeep() != null)
+                        .OnClick(() =>
+                        {
+                            _treeView.DoServiceAction<IViewSelectable>(o => o.SetSelection(new ViewSelection(_document)));
+                        });
+
                         gui.Button("btnResume", "Resume", CoreIconCache.Play)
                         .InitClass("simpleBtn")
                         .SetToolTipsL("Start task")
@@ -406,7 +415,15 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
     private void OnDocumentGui(ImGui gui, AigcTaskPageDocument doc)
     {
-        if (doc.IsTaskEmpty)
+        if (IsRunning)
+        {
+            return;
+        }
+
+        OnStartupGui(gui, doc);
+
+
+/*        if (doc.IsTaskEmpty)
         {
             OnStartupGui(gui, doc);
         }
@@ -418,7 +435,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
         else
         {
             // OnResumeGui(gui, doc);
-        }
+        }*/
     }
 
     private void OnStartupGui(ImGui gui, AigcTaskPageDocument doc)
@@ -500,6 +517,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         {
                             if (doc.InitialTaskPrompt is { } prompt && !string.IsNullOrWhiteSpace(prompt))
                             {
+                                doc.InitialTaskPrompt = string.Empty;
                                 Run(prompt);
                             }
                         });
