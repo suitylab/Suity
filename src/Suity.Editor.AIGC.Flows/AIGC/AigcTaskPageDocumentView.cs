@@ -348,7 +348,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         gui.Button("btnPrompt", "Prompt", CoreIconCache.Prompt)
                         .InitClass("simpleBtn")
                         .SetToolTipsL("Start task")
-                        .SetEnabled(_document?.GetUnfinishedChildTaskDeep() != null)
+                        //.SetEnabled(_document?.GetUnfinishedChildTaskDeep() != null)
                         .OnClick(() =>
                         {
                             _treeView.DoServiceAction<IViewSelectable>(o => o.SetSelection(new ViewSelection(_document)));
