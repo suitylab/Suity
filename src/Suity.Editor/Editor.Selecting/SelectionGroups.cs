@@ -49,32 +49,32 @@ class ParentAssetSelectionGroup : BaseSelectionNode
     public override ISelectionItem GetItem(string key) => _group.FirstOrDefault(o => o.AssetKey == key);
 }
 
-class CategoryAssetSelectionGroup : BaseSelectionNode
+class CategorySelectionGroup : BaseSelectionNode
 {
-    private readonly string _categoryName;
+    private readonly string _category;
 
-    private readonly IGrouping<string, Asset> _group;
+    private readonly ISelectionItem[] _items;
     private readonly string _displayText;
 
     /// <summary>
     /// Initializes a new instance of the GroupNode class.
     /// </summary>
     /// <param name="group">The asset grouping.</param>
-    public CategoryAssetSelectionGroup(IGrouping<string, Asset> group, string categoryName = null, string displayText = null)
+    public CategorySelectionGroup(string category, IEnumerable<ISelectionItem> items, string displayText = null)
     {
-        _categoryName = categoryName;
-        _group = group ?? throw new ArgumentNullException(nameof(group));
+        _category = category ?? throw new ArgumentNullException(nameof(category));
+        _items = items?.OrderBy(o => o.SelectionKey).ToArray() ?? throw new ArgumentNullException(nameof(items));
         _displayText = displayText;
     }
 
     /// <inheritdoc />
-    public override string SelectionKey => _group.Key;
+    public override string SelectionKey => _category;
 
     /// <inheritdoc />
-    public override string Name => _categoryName;
+    public override string Name => null;
 
     /// <inheritdoc />
-    public override string DisplayText => _displayText ?? _categoryName;
+    public override string DisplayText => _displayText;
 
     /// <inheritdoc />
     public override object DisplayIcon => null;
@@ -86,8 +86,8 @@ class CategoryAssetSelectionGroup : BaseSelectionNode
     public override bool Selectable => false;
 
     /// <inheritdoc />
-    public override IEnumerable<ISelectionItem> GetItems() => _group.OrderBy(o => o.AssetKey);
+    public override IEnumerable<ISelectionItem> GetItems() => _items;
 
     /// <inheritdoc />
-    public override ISelectionItem GetItem(string key) => _group.FirstOrDefault(o => o.AssetKey == key);
+    public override ISelectionItem GetItem(string key) => _items.FirstOrDefault(o => o.SelectionKey == key);
 }

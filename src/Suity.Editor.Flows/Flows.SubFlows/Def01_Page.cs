@@ -1,9 +1,7 @@
-using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Selecting;
-using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -19,7 +17,7 @@ namespace Suity.Editor.Flows.SubFlows;
 /// <summary>
 /// Sub-flow interactive page definition node that can act as a group and page.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageGroup)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageGroup, Category = "Page")]
 [DisplayText("Sub-flow Page", "*CoreIcon|Workflow")]
 [DisplayOrder(5000)]
 [ToolTipsText("Sub-flow interactive page definition")]
@@ -296,7 +294,7 @@ public class SubFlowDefinitionAssetBuilder : AssetBuilder<SubFlowDefinitionAsset
 /// <summary>
 /// Sub-flow interactive page's detached extension sub-page node.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageGroup)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageGroup, Category = "Page")]
 [DisplayText("Sub-flow Branch Page", "*CoreIcon|Page")]
 [DisplayOrder(4999)]
 [ToolTipsText("Sub-flow interactive page's detached branch page")]
@@ -446,7 +444,7 @@ public class SubflowBranchDiagramItem : FlowDiagramItem<SubflowBranchNode>
 /// <summary>
 /// Sub-flow interactive page's detached result page node.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageGroup)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageGroup, Category = "Page")]
 [DisplayText("Sub-flow Result Page", "*CoreIcon|CheckList")]
 [DisplayOrder(4998)]
 [ToolTipsText("Sub-flow interactive page's detached result page")]

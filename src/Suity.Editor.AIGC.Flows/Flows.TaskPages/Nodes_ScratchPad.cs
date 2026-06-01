@@ -11,7 +11,7 @@ namespace Suity.Editor.Flows.TaskPages;
 
 #region CreateScratchPad
 
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "Scratch Pad")]
 [DisplayText("Create Scratch Pad", "*CoreIcon|Scratch")]
 public class CreateScratchPad : TaskPageNode
 {
@@ -75,7 +75,7 @@ public class CreateScratchPad : TaskPageNode
 
 #region GetTaskScratchPads
 
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "Scratch Pad")]
 [DisplayText("Get Task Scratch Pads", "*CoreIcon|Scratch")]
 public class GetTaskScratchPads : TaskPageNode
 {
@@ -131,7 +131,7 @@ public class GetTaskScratchPads : TaskPageNode
 
 #region SetTaskScratchPads
 
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = true)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = true, Category = "Scratch Pad")]
 [DisplayText("Set Task Scratch Pads", "*CoreIcon|Scratch")]
 public class SetTaskScratchPads : TaskPageNode
 {
@@ -172,7 +172,7 @@ public class SetTaskScratchPads : TaskPageNode
 
 #region GetCurrentScratchPads
 
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "Scratch Pad")]
 [DisplayText("Get Current Scratch Pads", "*CoreIcon|Scratch")]
 public class GetCurrentScratchPads : TaskPageNode
 {
@@ -223,7 +223,7 @@ public class GetCurrentScratchPads : TaskPageNode
 
 #region SetCurrentScratchPads
 
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = true)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = true, Category = "Scratch Pad")]
 [DisplayText("Set Current Scratch Pads", "*CoreIcon|Scratch")]
 public class SetCurrentScratchPads : TaskPageNode
 {
@@ -260,8 +260,8 @@ public class SetCurrentScratchPads : TaskPageNode
 
 #region GetScratchPadText
 
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
-[DisplayText("Get Scratch Pad Message", "*CoreIcon|Task")]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "Scratch Pad")]
+[DisplayText("Get Scratch Pad Message", "*CoreIcon|Scratch")]
 public class GetScratchPadMessage : TaskPageNode
 {
     readonly FlowNodeConnector _items;

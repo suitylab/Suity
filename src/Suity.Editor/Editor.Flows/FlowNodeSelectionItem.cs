@@ -1,10 +1,10 @@
 ﻿using Suity.Drawing;
+using Suity.Editor.Selecting;
+using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Selecting;
 using Suity.Views;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace Suity.Editor.Flows;
@@ -46,15 +46,24 @@ public class FlowNodeSelectionNode : SelectionNode
 
     public void AddDerivedType(Type baseType, Predicate<Type> condition = null)
     {
-        var type1 = baseType.GetAvailableClassTypes();
-
+        var derivedtypes = baseType.GetAvailableClassTypes();
         if (condition != null)
         {
-            type1 = type1.Where(o => condition(o));
+            derivedtypes = derivedtypes.Where(o => condition(o));
         }
 
-        var types = type1.ToList();
+        var categoryGroups = derivedtypes.GroupBy(t => t.GetAttributeCached<SimpleFlowNodeStyleAttribute>()?.Category)
+            .OrderBy(g => g.Key);
 
+        foreach (var group in categoryGroups.Where(g => g.Key != null))
+        {
+            string category = $"[{group.Key}]";
+
+            var selGroup = new CategorySelectionGroup(category, group.Select(o => new FlowNodeSelectionItem(o)));
+            Add(selGroup);
+        }
+
+        var types = categoryGroups.FirstOrDefault(g => g.Key is null)?.ToList() ?? [];
         types.Sort((a, b) => 
         {
             int c = DisplayOrderAttribute.Compare(a, b);

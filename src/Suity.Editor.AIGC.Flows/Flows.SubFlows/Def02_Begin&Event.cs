@@ -16,7 +16,7 @@ namespace Suity.Editor.Flows.SubFlows;
 /// <summary>
 /// Provides event trigger support for task pages, such as event startup, etc.
 /// </summary>
-[SimpleFlowNodeStyle(Color = DEvent.EventColorCode, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = DEvent.EventColorCode, HasHeader = false, Width = 100, Height = 20, Category = "Action")]
 [DisplayText("Task Page Event", "*CoreIcon|Event")]
 [DisplayOrder(3800)]
 [ToolTipsText("Provides event trigger support for task pages, such as event startup, etc.")]
@@ -227,7 +227,7 @@ public class PageEventDiagramItem : FlowDiagramItem<PageEventNode>, ISubFlowElem
 /// <summary>
 /// Ends the flow and submits the result upward.
 /// </summary>
-[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20, Category = "Action")]
 [DisplayText("Sub-flow Action End - Commit", "*CoreIcon|Task")]
 [DisplayOrder(3899)]
 [ToolTipsText("End the flow and submit the result upward.")]

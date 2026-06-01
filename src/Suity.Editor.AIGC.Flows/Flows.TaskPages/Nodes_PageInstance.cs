@@ -9,9 +9,7 @@ using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
-using Suity.NodeQuery;
 using Suity.Synchonizing;
-using Suity.Synchonizing.Core;
 using Suity.Views;
 using Suity.Views.Im;
 using Suity.Views.Im.Flows;
@@ -28,7 +26,7 @@ namespace Suity.Editor.Flows.TaskPages;
 /// <summary>
 /// Provides a reference to a page definition asset and outputs it as data.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, HasHeader = false, Width = 100, Height = 20, Category = "Page")]
 [DisplayText("Page Resource Reference", "*CoreIcon|Page")]
 [DisplayOrder(4950)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageDefinitionRefNode")]
@@ -92,7 +90,7 @@ public class PageDefinitionReference : TaskPageNode
 /// <summary>
 /// Retrieves the definition of the current (self) page in the flow context.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, HasHeader = false, Width = 100, Height = 20, Category = "Page")]
 [DisplayText("Get Self Page Definition", "*CoreIcon|Page")]
 [DisplayOrder(4960)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetSelfPageNode")]
@@ -132,7 +130,7 @@ public class GetSelfPageDefinition : TaskPageNode
 /// <summary>
 /// Retrieves the list of available tool pages in the current context.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, HasHeader = false, Width = 100, Height = 20, Category = "Page")]
 [DisplayText("Get Current Tool List", "*CoreIcon|Tool")]
 [DisplayOrder(4940)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetPageToolPagesNode")]
@@ -192,7 +190,7 @@ public class GetCurrentToolList : TaskPageNode
 /// <summary>
 /// Sets the title of the current page in the flow context.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, Category = "Page")]
 [DisplayText("Set Page Title", "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetPageTitleNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetPageTitle")]
@@ -253,7 +251,7 @@ public class SetPageTitle : TaskPageNode
 /// <summary>
 /// Parses a page instance from incoming JSON text and a list of available tool pages.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, Category = "Page")]
 [DisplayText("Parse Page Instance", "*CoreIcon|Page")]
 [DisplayOrder(3000)]
 [ToolTipsText("Parse the page instance from the incoming JSON text and tool page list.")]
@@ -424,7 +422,7 @@ public class ParsePageInstance : TaskPageNode
 /// <summary>
 /// Parses a page instance from an XML tag and a list of available tool pages.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, Category = "Page")]
 [DisplayText("Parse Xml Tag To Page Instance", "*CoreIcon|Page")]
 [DisplayOrder(2950)]
 [ToolTipsText("Parse the page instance from the incoming JSON text and tool page list.")]
@@ -514,7 +512,7 @@ public class ParseTagToPageInstance : TaskPageNode
 /// <summary>
 /// Creates an empty page instance based on a page definition.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, Category = "Page")]
 [DisplayText("Create Page Instance", "*CoreIcon|Page")]
 [DisplayOrder(2960)]
 [ToolTipsText("Create an empty page instance based on the page definition.")]
@@ -723,7 +721,7 @@ public class CreatePageParameter : INamed, IViewObject, ITextDisplay
 /// <summary>
 /// Creates a page instance with configurable parameters based on a page definition.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.ToolBG)]
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, Category = "Page")]
 [DisplayText("Create Page Instance With Parameter", "*CoreIcon|Page")]
 [DisplayOrder(2960)]
 [ToolTipsText("Create a page instance with parameters based on the page definition.")]
@@ -933,7 +931,7 @@ public class CreatePageInstanceWithParameter : TaskPageNode
 /// <summary>
 /// Retrieves a specific parameter value from a page instance by name.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Category = "Page")]
 [DisplayText("Get Page Instance Parameter", "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetPageInstanceParameter")]
 public class GetPageInstanceParameter : TaskPageNode
@@ -1038,7 +1036,7 @@ public class GetPageInstanceParameter : TaskPageNode
 /// <summary>
 /// Sets a specific parameter value on a page instance by name.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageParameter)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, Category = "Page")]
 [DisplayText("Set Page Instance Parameter", "*CoreIcon|Page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetPageInstanceParameter")]
 public class SetPageInstanceParameter : TaskPageNode
@@ -1162,7 +1160,7 @@ public class SetPageInstanceParameter : TaskPageNode
 /// <summary>
 /// Sets a page parameter value by connecting to a parameter reference node.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageParameter)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, Category = "Page")]
 [DisplayText("Set Page Parameter", "*CoreIcon|Parameter")]
 [DisplayOrder(2799)]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.SetPageParameterNode")]
@@ -1278,7 +1276,7 @@ public class SetPageParameter : TaskPageNode
 /// <summary>
 /// Provides a reference to a page parameter node, outputting its current value.
 /// </summary>
-[SimpleFlowNodeStyle(HasHeader = false)]
+[SimpleFlowNodeStyle(HasHeader = false, Category = "Page")]
 [DisplayText("AIGC Page Parameter Reference", "*CoreIcon|Parameter")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterRefNode")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageParameterRef")]

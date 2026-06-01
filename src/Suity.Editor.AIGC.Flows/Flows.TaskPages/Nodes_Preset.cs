@@ -9,7 +9,7 @@ namespace Suity.Editor.Flows.TaskPages;
 /// <summary>
 /// A flow node that retrieves the skill from a preset associated with the current task page, if available.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "Preset")]
 [DisplayText("Get Current Preset Skill", "*CoreIcon|Task")]
 public class GetCurrentPresetSkill : TaskPageNode
 {

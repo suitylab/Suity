@@ -16,7 +16,7 @@ namespace Suity.Editor.Flows.SubFlows;
 /// <summary>
 /// Provides input parameter support for Sub-flow actions.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20, Category = "Parameter")]
 [DisplayText("Sub-flow Input Parameter", "*CoreIcon|Parameter")]
 [DisplayOrder(3000)]
 [ToolTipsText("Provides input parameter support for Sub-flow actions.")]
@@ -201,7 +201,7 @@ public class SubFlowParameterInputItem : FlowDiagramItem<SubFlowParameterInputNo
 /// <summary>
 /// Provides output value support for Sub-flow actions.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20, Category = "Parameter")]
 [DisplayText("Sub-flow Output Parameter", "*CoreIcon|Parameter")]
 [DisplayOrder(2900)]
 [ToolTipsText("Provides output parameter support for Sub-flow actions.")]

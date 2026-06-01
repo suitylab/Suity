@@ -19,7 +19,7 @@ namespace Suity.Editor.Flows.SubFlows;
 /// <summary>
 /// Provides action start support for Sub-flow pages, such as button clicks, etc.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20, Category = "Action")]
 [DisplayText("Sub-flow Action Begin", "*CoreIcon|Begin")]
 [DisplayOrder(4000)]
 [ToolTipsText("Provides action start support for Sub-flow pages, such as button clicks, etc.")]
@@ -302,7 +302,7 @@ public abstract class BaseSubFlowEndNode : SubFlowTypeNode, IFlowNodeComputeAsyn
 /// <summary>
 /// Provides action end support for Sub-flow pages.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.PageParameter, HasHeader = false, Width = 100, Height = 20, Category = "Action")]
 [DisplayText("Sub-flow Action End", "*CoreIcon|End")]
 [DisplayOrder(3900)]
 [ToolTipsText("Provides action end support for Sub-flow.")]

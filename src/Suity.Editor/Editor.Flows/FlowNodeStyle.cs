@@ -203,6 +203,7 @@ public sealed class SimpleFlowNodeStyleAttribute : Attribute
     public string Color { get; set; }
     public bool RenderInputMultiple { get; set; }
     public bool RenderOutputMultiple { get; set; }
+    public string Category { get; set; }
 } 
 
 class AttributedFlowNodeStyle : FlowNodeStyle

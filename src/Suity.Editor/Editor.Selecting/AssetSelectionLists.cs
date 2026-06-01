@@ -182,7 +182,7 @@ public class GroupedAssetSelectionList<TAsset> : ISelectionList
                     continue;
                 }
 
-                var selGroup = new CategoryAssetSelectionGroup(categoryGroup, categoryName);
+                var selGroup = new CategorySelectionGroup(categoryName, categoryGroup);
                 _items.Add(selGroup);
             }
 
