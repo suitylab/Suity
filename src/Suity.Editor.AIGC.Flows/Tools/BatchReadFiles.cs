@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("BatchReadFile", CodeBase = "*Suity")]
+[NativeType("BatchReadFile", CodeBase = "*Suity", Category = "WorkSpace")]
 [DisplayText("Batch Read File")]
 [ToolTipsText("Read multiple files at once. More efficient than reading files one by one when Agent needs to compare multiple files or process search results.")]
 [NativeAlias("Suity.Editor.AIGC.BatchReadFiles")]

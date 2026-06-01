@@ -510,7 +510,7 @@ internal class SObjectExternalBK : SObjectExternal
             return false;
         }
 
-        if (_objType.Target is INativeType)
+        if (_objType.Target is IHasNativeType)
         {
             return false;
         }

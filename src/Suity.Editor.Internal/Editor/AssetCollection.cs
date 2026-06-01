@@ -8,7 +8,7 @@ namespace Suity.Editor;
 /// Asset collection that manages primary asset tracking and selection list support.
 /// </summary>
 /// <typeparam name="TAsset">The type of asset, which must derive from <see cref="Asset"/>.</typeparam>
-public class AssetCollection<TAsset> : IAssetCollection<TAsset>, ISelectionList
+public class AssetCollection<TAsset> : IAssetCollection<TAsset>, ISelectionNode
     where TAsset : Asset
 {
     private readonly HashSet<TAsset> _primaryAssets = [];
@@ -129,6 +129,12 @@ public class AssetCollection<TAsset> : IAssetCollection<TAsset>, ISelectionList
     /// </summary>
     public virtual int Count => _collection.Count;
 
+    #region ISelectionNode
+    public bool Selectable => false;
+
+    public string SelectionKey { get; internal set; } 
+    #endregion
+
     #region ISelectionList
 
     /// <summary>
@@ -136,9 +142,9 @@ public class AssetCollection<TAsset> : IAssetCollection<TAsset>, ISelectionList
     /// </summary>
     public virtual IEnumerable<ISelectionItem> GetItems()
     {
+        // lock is ineffective for IEnumerable<INavigationItem>
         lock (_collection)
         {
-            // lock is ineffective for IEnumerable<INavigationItem>
             return _collection._assets.Values.Select(o => o.Value);
         }
     }

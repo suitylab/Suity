@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("BatchCreateDirectory", CodeBase = "*Suity")]
+[NativeType("BatchCreateDirectory", CodeBase = "*Suity", Category = "WorkSpace")]
 [DisplayText("Batch Create Directory")]
 [ToolTipsText("Create multiple directories at once. Use when initializing new module structures or creating multi-layer architecture folders.")]
 [NativeAlias("Suity.Editor.AIGC.BatchCreateDirectory")]

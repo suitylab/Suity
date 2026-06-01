@@ -366,7 +366,7 @@ internal sealed class SValueExternalBK : SValueExternal
 
         SObject obj;
 
-        if (objectType is INativeType nType)
+        if (objectType is IHasNativeType nType)
         {
             Type nativeType = nType.NativeType;
             //if (nativeType == typeof(TextBlock))

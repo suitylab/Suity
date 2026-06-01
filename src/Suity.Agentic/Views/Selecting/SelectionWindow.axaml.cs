@@ -28,7 +28,7 @@ public partial class SelectionWindow : Window, IDrawImGui
 
     private readonly ISelectionList _list;
 
-    private readonly SelectionOption _option;
+    private readonly SelectionOption? _option;
     private readonly string _initKey;
     private readonly bool _allowSelectList;
 

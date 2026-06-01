@@ -149,37 +149,54 @@ public class GroupedAssetSelectionList<TAsset> : ISelectionList
         string assetTypeName = contentTypeName ?? typeof(TAsset).ResolveAssetTypeName();
 
         // Handle groups
-        var groups = _collection.Assets
+        var parentGroups = _collection.Assets
             .Where(o => o.FileName is null && _filter.FilterAsset(o))
             .GroupBy(o => o.GetRootAsset());
 
         // Has Key
-        foreach (var group in groups.Where(o => o.Key != null))
+        foreach (var parentGroup in parentGroups.Where(o => o.Key != null))
         {
-            if (!added.Add(group.Key?.AssetKey))
+            if (!added.Add(parentGroup.Key?.AssetKey))
             {
                 continue;
             }
 
             // If the parent resource of this resource is also this type, set the parent resource as also selectable.
-            bool selectable = group.Key.AssetTypeNames.Contains(assetTypeName);
+            bool selectable = parentGroup.Key.AssetTypeNames.Contains(assetTypeName);
 
-            var node = new GroupNode(group, selectable);
-            _items.Add(node);
+            var selGroup = new ParentAssetSelectionGroup(parentGroup, selectable);
+            _items.Add(selGroup);
         }
 
-
-        // No Key exists, cannot Group, otherwise it will be filtered out.
-        foreach (var group in groups.Where(o => o.Key is null))
+        // No parent exists, cannot Group, otherwise it will be filtered out.
+        if (parentGroups.FirstOrDefault(o => o.Key is null) is { } independentGroup)
         {
-            foreach (var item in group)
+            var categoryGroups = independentGroup.GroupBy(o => (o as IHasCategory)?.Category);
+
+            foreach (var categoryGroup in categoryGroups.Where(o => o.Key != null))
             {
-                if (!added.Add(item.AssetKey))
+                string categoryName = $"[{categoryGroup.Key}]";
+
+                if (!added.Add(categoryName))
                 {
                     continue;
                 }
 
-                _items.Add(item);
+                var selGroup = new CategoryAssetSelectionGroup(categoryGroup, categoryName);
+                _items.Add(selGroup);
+            }
+
+            if (categoryGroups.FirstOrDefault(o => o.Key is null) is { } noCategoryGroup)
+            {
+                foreach (var item in noCategoryGroup)
+                {
+                    if (!added.Add(item.AssetKey))
+                    {
+                        continue;
+                    }
+
+                    _items.Add(item);
+                }
             }
         }
 
@@ -208,56 +225,5 @@ public class GroupedAssetSelectionList<TAsset> : ISelectionList
     public ISelectionItem GetItem(string key)
     {
         return _items.FirstOrDefault(o => o.SelectionKey == key);
-    }
-
-    /// <summary>
-    /// Represents a group node in the grouped asset selection list.
-    /// </summary>
-    private class GroupNode : BaseSelectionNode
-    {
-        private readonly IGrouping<Asset, Asset> _group;
-        private readonly bool _selectable;
-
-        /// <summary>
-        /// Initializes a new instance of the GroupNode class.
-        /// </summary>
-        /// <param name="group">The asset grouping.</param>
-        /// <param name="selectable">Whether the group is selectable.</param>
-        public GroupNode(IGrouping<Asset, Asset> group, bool selectable = false)
-        {
-            _group = group ?? throw new ArgumentNullException(nameof(group));
-            _selectable = selectable;
-        }
-
-        /// <inheritdoc />
-        public override string SelectionKey => _group.Key?.AssetKey;
-
-        /// <inheritdoc />
-        public override string Name => _group.Key?.Name;
-
-        /// <inheritdoc />
-        public override string DisplayText => _group.Key?.ToDisplayText() ?? "(Other)";
-
-        /// <inheritdoc />
-        public override object DisplayIcon => _group.Key?.Icon;
-
-        /// <inheritdoc />
-        public override TextStatus DisplayStatus => _group.Key?.DisplayStatus ?? TextStatus.Normal;
-
-        /// <inheritdoc />
-        public override bool Selectable => _selectable;
-
-        /// <inheritdoc />
-        public override IEnumerable<ISelectionItem> GetItems()
-        {
-            return _group
-                .OrderBy(o => o.AssetKey);
-        }
-
-        /// <inheritdoc />
-        public override ISelectionItem GetItem(string key)
-        {
-            return _group.FirstOrDefault(o => o.AssetKey == key);
-        }
     }
 }

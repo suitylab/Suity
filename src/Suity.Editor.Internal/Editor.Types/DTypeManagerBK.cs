@@ -217,7 +217,7 @@ internal class DTypeManagerBK : DTypeManager
             current = current.BaseType;
         }
 
-        if (dType is INativeType nativeType && nativeType.NativeType is Type nt)
+        if (dType is IHasNativeType nativeType && nativeType.NativeType is Type nt)
         {
             var nativeEntry = _nativeTypes.AddValue(nt, dType);
             if (nativeEntry != null)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("GetTaskHistory", CodeBase = "*Suity")]
+[NativeType("GetTaskHistory", CodeBase = "*Suity", Category = "WorkSpace")]
 [DisplayText("Get Task History")]
 [ToolTipsText("Get task history records by task ID and query conditions.")]
 public class GetTaskHistory : ToolCommand<GetTaskHistory.Output>

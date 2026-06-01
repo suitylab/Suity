@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("CreateNewFile", CodeBase = "*Suity")]
+[NativeType("CreateNewFile", CodeBase = "*Suity", Category = "WorkSpace")]
 [DisplayText("Create New File")]
 [ToolTipsText("Create a new file and write content to it. Fails if file already exists to prevent accidental overwriting.")]
 [NativeAlias("Suity.Editor.AIGC.CreateNewFile")]

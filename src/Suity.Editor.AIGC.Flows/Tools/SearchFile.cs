@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("SearchFile", CodeBase = "*Suity")]
+[NativeType("SearchFile", CodeBase = "*Suity", Category = "WorkSpace")]
 [DisplayText("Search File")]
 [ToolTipsText("Search for keywords in the workspace.")]
 [NativeAlias("Suity.Editor.AIGC.SearchFile")]

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("ReplaceStringInFile", CodeBase = "*Suity")]
+[NativeType("ReplaceStringInFile", CodeBase = "*Suity", Category = "WorkSpace")]
 [DisplayText("Replace String In File")]
 [ToolTipsText("Replace an exact string in a file with new content. Suitable for small-scale refactoring.")]
 [NativeAlias("Suity.Editor.AIGC.ReplaceStringInFile")]

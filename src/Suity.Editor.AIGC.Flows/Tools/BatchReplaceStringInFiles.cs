@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("BatchReplaceStringInFiles", CodeBase = "*Suity")]
+[NativeType("BatchReplaceStringInFiles", CodeBase = "*Suity", Category = "WorkSpace")]
 [DisplayText("Batch Replace String In Files")]
 [ToolTipsText("Replace exact strings in multiple files at once. Use for cross-file refactoring like updating global constants or base class method calls.")]
 [NativeAlias("Suity.Editor.AIGC.BatchReplaceStringInFiles")]

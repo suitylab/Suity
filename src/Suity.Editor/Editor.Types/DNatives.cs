@@ -10,7 +10,7 @@ namespace Suity.Editor.Types;
 /// <summary>
 /// Represents a native struct type.
 /// </summary>
-public class DNativeStruct : DStruct, INativeType
+public class DNativeStruct : DStruct, IHasNativeType
 {
     readonly string _displayName;
 
@@ -19,7 +19,7 @@ public class DNativeStruct : DStruct, INativeType
     /// </summary>
     public DNativeStruct()
     {
-        UpdateAssetTypes(typeof(INativeType));
+        UpdateAssetTypes(typeof(IHasNativeType));
     }
 
     /// <summary>
@@ -64,14 +64,14 @@ public class DNativeStruct : DStruct, INativeType
 /// <summary>
 /// Represents a native function type.
 /// </summary>
-public class DNativeFunction : DFunction, INativeType
+public class DNativeFunction : DFunction, IHasNativeType
 {
     /// <summary>
     /// Initializes a new instance of the DNativeFunction class.
     /// </summary>
     public DNativeFunction()
     {
-        UpdateAssetTypes(typeof(INativeType));
+        UpdateAssetTypes(typeof(IHasNativeType));
     }
 
     /// <summary>
@@ -110,14 +110,14 @@ public class DNativeFunction : DFunction, INativeType
 /// <summary>
 /// Represents a native enum type.
 /// </summary>
-public class DNativeEnum : DEnum, INativeType
+public class DNativeEnum : DEnum, IHasNativeType
 {
     /// <summary>
     /// Initializes a new instance of the DNativeEnum class.
     /// </summary>
     public DNativeEnum()
     {
-        UpdateAssetTypes(typeof(INativeType));
+        UpdateAssetTypes(typeof(IHasNativeType));
     }
 
     /// <summary>
@@ -157,7 +157,7 @@ public class DNativeEnum : DEnum, INativeType
 /// Represents a primitive (value) type in the editor.
 /// </summary>
 [AssetTypeBinding(AssetDefNames.NativeValueType, "Native Value")]
-public sealed class DPrimative : DType, INativeType
+public sealed class DPrimative : DType, IHasNativeType
 {
     /// <inheritdoc />
     public override Type NativeType { get; }
@@ -301,14 +301,14 @@ public sealed class DPrimative : DType, INativeType
 /// <summary>
 /// Represents a native type in the editor.
 /// </summary>
-public class DNativeType : DType, INativeType
+public class DNativeType : DType, IHasNativeType, IHasCategory
 {
     private readonly Type _type;
 
     /// <summary>
     /// Initializes a new instance of the DNativeType class.
     /// </summary>
-    internal DNativeType(string name, Type type, string icon = null, string description = null)
+    internal DNativeType(string name, Type type, string icon = null, string description = null, string category = null)
         : base(name)
     {
         _type = type ?? throw new ArgumentNullException(nameof(type));
@@ -316,6 +316,7 @@ public class DNativeType : DType, INativeType
         LocalName = name;
         IconKey = icon;
         Description = description;
+        Category = category;
     }
 
     /// <summary>
@@ -329,6 +330,7 @@ public class DNativeType : DType, INativeType
         LocalName = attr.Name ?? type.Name;
         IconKey = attr.Icon;
         Description = attr.Description;
+        Category = attr.Category;
 
         if (!string.IsNullOrWhiteSpace(attr.Color))
         {
@@ -348,6 +350,8 @@ public class DNativeType : DType, INativeType
 
     /// <inheritdoc />
     public override bool IsNative => true;
+
+    public string Category { get; }
 
     /// <inheritdoc />
     public override bool IsAssignableFrom(TypeDefinition implementType)

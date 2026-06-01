@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("ReadFile", CodeBase = "*Suity")]
+[NativeType("ReadFile", CodeBase = "*Suity", Category = "WorkSpace")]
 [DisplayText("Read File")]
 [ToolTipsText("Read file content, optionally starting from a line and reading a specified number of lines.")]
 [NativeAlias("Suity.Editor.AIGC.ReadFile")]

@@ -1,6 +1,7 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
+using Suity.Helpers;
 using Suity.NodeQuery;
 using Suity.Synchonizing;
 using Suity.Synchonizing.Core;
@@ -130,15 +131,19 @@ public abstract class ToolInstance : IToolInstance, IViewObject
 
 #region ToolAsset<TInput, TOutput>
 
-public abstract class ToolAsset<TInput, TOutput> : ToolAsset
+public abstract class ToolAsset<TInput, TOutput> : ToolAsset, IHasCategory
     where TInput : class, IViewObject
     where TOutput : class, IViewObject
 {
+    private readonly string _category;
+
     protected ToolAsset(bool resolveId = true)
         : base(resolveId)
     {
-        
+        _category = typeof(TInput).GetAttributeCached<NativeTypeAttribute>()?.Category;
     }
+
+    public string Category => _category;
 
     public sealed override IPageInstance CreatePageInstance(PageCreateOption option)
     {

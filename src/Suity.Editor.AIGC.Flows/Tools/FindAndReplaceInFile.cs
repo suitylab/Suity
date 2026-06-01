@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("FindAndReplaceInFile", CodeBase = "*Suity")]
+[NativeType("FindAndReplaceInFile", CodeBase = "*Suity", Category = "WorkSpace")]
 [DisplayText("Find And Replace In File")]
 [ToolTipsText("Find and replace multiple string pairs in a single file. Can match multiple occurrences of the same string. Suitable for batch text replacement across the file.")]
 [NativeAlias("Suity.Editor.AIGC.FindAndReplaceInFile")]

@@ -156,12 +156,17 @@ public interface IIdCluster
 /// <summary>
 /// Native type interface
 /// </summary>
-public interface INativeType
+public interface IHasNativeType
 {
     /// <summary>
     /// Gets the native System.Type associated with this object.
     /// </summary>
     Type NativeType { get; }
+}
+
+public interface IHasCategory
+{
+    string Category { get; }
 }
 
 /// <summary>

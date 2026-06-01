@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("ListDirectory", CodeBase = "*Suity")]
+[NativeType("ListDirectory", CodeBase = "*Suity", Category = "WorkSpace")]
 [DisplayText("List Directory")]
 [ToolTipsText("List directory contents, showing files and folders in the specified directory.")]
 [NativeAlias("Suity.Editor.AIGC.ListDirectory")]
