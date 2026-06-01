@@ -4,8 +4,8 @@
 /// Base class for AIGC page operation flow nodes.
 /// Provides common functionality for nodes that interact with AIGC pages.
 /// </summary>
-[DisplayText("AIGC Page Operations", "*CoreIcon|Page")]
-[ToolTipsText("AIGC page operation related nodes")]
+[DisplayText("Task Page", "*CoreIcon|Page")]
+[ToolTipsText("AIGC task page operation related nodes")]
 public abstract class TaskPageNode : FlowNode
 {
     /// <summary>

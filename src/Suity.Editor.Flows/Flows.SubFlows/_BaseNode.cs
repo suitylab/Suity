@@ -10,7 +10,7 @@ namespace Suity.Editor.Flows.SubFlows;
 /// Base class for sub-flow design-time flow nodes.
 /// Provides common functionality for nodes that define sub-flow structures.
 /// </summary>
-[DisplayText("Sub-flow node", "*CoreIcon|Page")]
+[DisplayText("Sub-Flow", "*CoreIcon|Page")]
 [ToolTipsText("Sub-flow related nodes")]
 public abstract class SubFlowNode : DesignFlowNode
 {

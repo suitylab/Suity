@@ -131,7 +131,7 @@ public abstract class ToolInstance : IToolInstance, IViewObject
 
 #region ToolAsset<TInput, TOutput>
 
-public abstract class ToolAsset<TInput, TOutput> : ToolAsset, IHasCategory
+public abstract class ToolAsset<TInput, TOutput> : ToolAsset, IHasCategory, IPreviewDisplay
     where TInput : class, IViewObject
     where TOutput : class, IViewObject
 {
@@ -141,9 +141,13 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset, IHasCategory
         : base(resolveId)
     {
         _category = typeof(TInput).GetAttributeCached<NativeTypeAttribute>()?.Category;
+
+        this.PreviewText = typeof(TInput).ToToolTipsText() ?? string.Empty;
     }
 
     public string Category => _category;
+
+    public object PreviewIcon => null;
 
     public sealed override IPageInstance CreatePageInstance(PageCreateOption option)
     {

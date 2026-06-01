@@ -76,7 +76,7 @@ public class SelectionTreeView : ImGuiTreeView<ISelectionItem>
     {
         var gui = node.Gui;
 
-        string previewText = item.ToPreviewText() ?? item.ToToolTipsText() ?? item.SelectionKey;
+        string previewText = item.ToPreviewText() ?? item.ToToolTipsText() ?? $"Key={item.SelectionKey}";
 
         gui.Text("##preview_text", previewText)
         .InitVerticalAlignment(GuiAlignment.Center)

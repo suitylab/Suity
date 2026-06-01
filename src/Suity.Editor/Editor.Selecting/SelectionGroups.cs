@@ -1,4 +1,5 @@
 ﻿using Suity.Selecting;
+using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +50,7 @@ class ParentAssetSelectionGroup : BaseSelectionNode
     public override ISelectionItem GetItem(string key) => _group.FirstOrDefault(o => o.AssetKey == key);
 }
 
-class CategorySelectionGroup : BaseSelectionNode
+class CategorySelectionGroup : BaseSelectionNode, IPreviewDisplay
 {
     private readonly string _category;
 
@@ -84,6 +85,12 @@ class CategorySelectionGroup : BaseSelectionNode
 
     /// <inheritdoc />
     public override bool Selectable => false;
+
+    #region IPreviewDisplay
+    public string PreviewText => string.Empty;
+
+    public object PreviewIcon => null; 
+    #endregion
 
     /// <inheritdoc />
     public override IEnumerable<ISelectionItem> GetItems() => _items;
