@@ -88,7 +88,7 @@ public class AppendTaskPage : TaskPageNode
             throw new NullReferenceException("At least one of the required inputs (PageInstance or Page) is null.");
         }
 
-        var service = compute.Context.GetArgument<IAigcWorkflowPage>()
+        var workflow = compute.Context.GetArgument<IAigcWorkflowPage>()
             ?? throw new NullReferenceException("IAigcTaskService is null.");
 
         string title = _pageTitle.GetValue(compute, this);
@@ -98,11 +98,11 @@ public class AppendTaskPage : TaskPageNode
 
         if (pageInstance != null)
         {
-            service.AppendTask(pageInstance, title, taskPrompt, taskRule, commitName);
+            workflow.AppendTask(pageInstance, title, taskPrompt, taskRule, commitName);
         }
         else if (page != null)
         {
-            service.AppendTask(page, title, taskPrompt, taskRule, commitName);
+            workflow.AppendTask(page, title, taskPrompt, taskRule, commitName);
         }
         
 
@@ -189,7 +189,7 @@ public class AddSubTaskPage : TaskPageNode
             throw new NullReferenceException("At least one of the required inputs (PageInstance or Page) is null.");
         }
 
-        var service = compute.Context.GetArgument<IAigcWorkflowPage>()
+        var workflow = compute.Context.GetArgument<IAigcWorkflowPage>()
             ?? throw new NullReferenceException("IAigcTaskService is null.");
 
         string title = _pageTitle.GetValue(compute, this);
@@ -199,11 +199,11 @@ public class AddSubTaskPage : TaskPageNode
 
         if (pageInstance != null)
         {
-            service.AddSubTask(pageInstance, title, taskPrompt, taskRule, commitName);
+            workflow.AddSubTask(pageInstance, title, taskPrompt, taskRule, commitName);
         }
         else if (page != null)
         {
-            service.AddSubTask(page, title, taskPrompt, taskRule, commitName);
+            workflow.AddSubTask(page, title, taskPrompt, taskRule, commitName);
         }
 
         compute.SetResult(this, _out);
@@ -265,8 +265,8 @@ public class GetCurrentChatHistory : TaskPageNode
         bool inHierarchy = _inHierarchy.Value;
         int level = inHierarchy ? _hierarchyLimit.Value : 0;
 
-        var page = compute.Context.GetArgument<IAigcWorkflowPage>();
-        var history = page?.GetChatHistory(level) ?? [];
+        var workflow = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var history = workflow?.GetChatHistory(level) ?? [];
 
         compute.SetValue(_chatHistory, history);
     }
@@ -297,7 +297,7 @@ public class GetInitialTaskPrompt : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var taskPage = compute.Context.GetArgument<IAigcTaskPage>();
         string prompt = taskPage?.TaskHost?.InitialTaskPrompt ?? string.Empty;
 
         compute.SetValue(_prompt, prompt);
@@ -348,8 +348,8 @@ public class GetCurrentTaskPrompt : TaskPageNode
     {
         bool inHierarchy = _inHierarchy.Value;
 
-        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
-        string prompt = task?.GetPrompt(inHierarchy) ?? string.Empty;
+        var workflow = compute.Context.GetArgument<IAigcWorkflowPage>();
+        string prompt = workflow?.GetPrompt(inHierarchy) ?? string.Empty;
 
         compute.SetValue(_prompt, prompt);
     }
@@ -380,8 +380,8 @@ public class GetTaskLastPrompt : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
-        string prompt = task?.GetLastPrompt() ?? string.Empty;
+        var workflow = compute.Context.GetArgument<IAigcWorkflowPage>();
+        string prompt = workflow?.GetLastPrompt() ?? string.Empty;
 
         compute.SetValue(_prompt, prompt);
     }
@@ -431,8 +431,8 @@ public class GetCurrentTaskRule : TaskPageNode
     {
         bool inHierarchy = _inHierarchy.Value;
 
-        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
-        var rule = task?.GetRule(inHierarchy);
+        var workflow = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var rule = workflow?.GetRule(inHierarchy);
         var ruleKey = new SAssetKey(TypeDefinition.FromAssetLink<PromptAsset>(), rule?.Id ?? Guid.Empty);
         compute.SetValue(_rule, ruleKey);
     }
@@ -470,7 +470,7 @@ public class GetTaskInformation : TaskPageNode
     /// </summary>
     public GetTaskInformation()
     {
-        var type = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var type = TypeDefinition.FromNative<IAigcTaskPage>();
         var aryType = type.MakeArrayType();
 
         _task = AddDataInputConnector("Task", type, "Task");
@@ -492,7 +492,7 @@ public class GetTaskInformation : TaskPageNode
     {
         base.Compute(compute);
 
-        var task = compute.GetValue<IAigcWorkflowPage>(_task) as AigcWorkflowPage
+        var task = compute.GetValue<IAigcTaskPage>(_task) as AigcWorkflowPage
             ?? throw new NullReferenceException("Task is null.");
 
         var diagram = this.Diagram
@@ -566,7 +566,7 @@ public class GetTaskPrompt : TaskPageNode
     /// </summary>
     public GetTaskPrompt()
     {
-        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
 
         _task = this.AddDataInputConnector("Task", taskType, "Task");
         _prompt = AddDataOutputConnector("Prompt", "string", "Prompt");
@@ -594,8 +594,8 @@ public class GetTaskPrompt : TaskPageNode
     {
         bool inHierarchy = _inHierarchy.GetValue(compute, this);
 
-        var task = compute.GetValue<IAigcWorkflowPage>(_task);
-        string prompt = task?.GetPrompt(inHierarchy) ?? string.Empty;
+        var workflow = compute.GetValue<IAigcWorkflowPage>(_task);
+        string prompt = workflow?.GetPrompt(inHierarchy) ?? string.Empty;
 
         compute.SetValue(_prompt, prompt);
     }
@@ -623,7 +623,7 @@ public class SetTaskPrompt : TaskPageNode
     /// </summary>
     public SetTaskPrompt()
     {
-        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
 
         _in = this.AddActionInputConnector("In", "Input");
         _task = this.AddDataInputConnector("Task", taskType, "Task");
@@ -651,12 +651,12 @@ public class SetTaskPrompt : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var task = compute.GetValue<IAigcWorkflowPage>(_task);
+        var workflow = compute.GetValue<IAigcWorkflowPage>(_task);
         string prompt = _prompt.GetText(compute, this);
 
-        if (task != null)
+        if (workflow != null)
         {
-            task.SetPrompt(prompt);
+            workflow.SetPrompt(prompt);
         }
 
         compute.SetResult(this, _out);
@@ -683,7 +683,7 @@ public class GetTaskRule : TaskPageNode
     /// </summary>
     public GetTaskRule()
     {
-        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
         var ruleType = TypeDefinition.FromAssetLink<PromptAsset>();
 
         _task = this.AddDataInputConnector("Task", taskType, "Task");
@@ -711,10 +711,10 @@ public class GetTaskRule : TaskPageNode
     public override void Compute(IFlowComputation compute)
     {
         var ruleType = TypeDefinition.FromAssetLink<PromptAsset>();
-        var task = compute.GetValue<IAigcWorkflowPage>(_task);
+        var workflow = compute.GetValue<IAigcWorkflowPage>(_task);
         bool inHierarchy = _inHierarchy.GetValue(compute, this);
 
-        var rule = task?.GetRule(inHierarchy);
+        var rule = workflow?.GetRule(inHierarchy);
         var ruleKey = new SAssetKey(ruleType, rule?.Id ?? Guid.Empty);
 
         compute.SetValue(_rule, ruleKey);
@@ -742,7 +742,7 @@ public class SetTaskRule : TaskPageNode
     /// </summary>
     public SetTaskRule()
     {
-        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
 
         _in = this.AddActionInputConnector("In", "Input");
         _task = this.AddDataInputConnector("Task", taskType, "Task");
@@ -770,12 +770,12 @@ public class SetTaskRule : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var task = compute.GetValue<IAigcWorkflowPage>(_task);
+        var workflow = compute.GetValue<IAigcWorkflowPage>(_task);
         var rule = _rule.GetTarget(compute, this);
 
-        if (task != null)
+        if (workflow != null)
         {
-            task.Rule = rule;
+            workflow.Rule = rule;
         }
 
         compute.SetResult(this, _out);
@@ -805,7 +805,7 @@ public class GetTaskCommit : TaskPageNode
     /// </summary>
     public GetTaskCommit()
     {
-        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
 
         _task = this.AddDataInputConnector("Task", taskType, "Task");
 
@@ -817,7 +817,7 @@ public class GetTaskCommit : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var task = compute.GetValue<IAigcWorkflowPage>(_task) as AigcWorkflowPage
+        var task = compute.GetValue<IAigcTaskPage>(_task) as AigcWorkflowPage
             ?? throw new NullReferenceException("Task is null.");
 
         var diagram = this.Diagram
@@ -866,7 +866,7 @@ public class GetCurrentTaskCommitName : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var task = compute.Context.GetArgument<IAigcTaskPage>();
         compute.SetValue(_commitName, task?.CommitName ?? string.Empty);
     }
 }
@@ -1019,7 +1019,7 @@ public class GetSelfTask : TaskPageNode
     /// </summary>
     public GetSelfTask()
     {
-        var type = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var type = TypeDefinition.FromNative<IAigcTaskPage>();
 
         _out = this.AddDataOutputConnector("SelfTask", type, "Self Task");
     }
@@ -1030,7 +1030,7 @@ public class GetSelfTask : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var task = compute.Context.GetArgument<IAigcTaskPage>();
 
         compute.SetValue(_out, task);
     }
@@ -1060,7 +1060,7 @@ public class GetLastSubTask : TaskPageNode
     /// </summary>
     public GetLastSubTask()
     {
-        var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
 
         _task = this.AddDataInputConnector("Task", taskType, "Task");
         _needDone.AddConnector(this);
@@ -1090,9 +1090,9 @@ public class GetLastSubTask : TaskPageNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var caller = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var workflow = compute.Context.GetArgument<IAigcWorkflowPage>();
 
-        var subTask = caller?.GetLastSubTask();
+        var subTask = workflow?.GetLastSubTask();
         bool needDone = _needDone.GetValue(compute, this);
 
         if (needDone && subTask != null)
@@ -1129,14 +1129,14 @@ public class GetCurrentTask : TaskPageNode
     /// </summary>
     public GetCurrentTask()
     {
-        var type = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var type = TypeDefinition.FromNative<IAigcTaskPage>();
         _out = AddDataOutputConnector("Out", type, "Current Task");
     }
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var task = compute.Context.GetArgument<IAigcTaskPage>();
         compute.SetValue(_out, task);
     }
 }
@@ -1160,14 +1160,14 @@ public class GetParentTask : TaskPageNode
     /// </summary>
     public GetParentTask()
     {
-        var type = TypeDefinition.FromNative<IAigcWorkflowPage>();
+        var type = TypeDefinition.FromNative<IAigcTaskPage>();
         _out = AddDataOutputConnector("Out", type, "Parent Task");
     }
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var taskPage = compute.Context.GetArgument<IAigcTaskPage>();
         compute.SetValue(_out, taskPage?.ParentTask);
     }
 }
