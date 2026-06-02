@@ -373,6 +373,11 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
         get => _initialTaskPrompt.Text ?? string.Empty;
         set
         {
+            if (_initialTaskPrompt.Text == value)
+            {
+                return;
+            }
+
             _initialTaskPrompt.Text = value ?? string.Empty;
             this.MarkDirtyAndSaveDelayed(this);
         }
@@ -386,7 +391,14 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
         get => _workSpace.Target?.WorkSpace;
         set
         {
-            _workSpace.Target = value?.GetAsset();
+            var workSpace = value?.GetAsset();
+
+            if (_workSpace.Target == workSpace)
+            {
+                return;
+            }
+
+            _workSpace.Target = workSpace;
             this.MarkDirtyAndSaveDelayed(this);
         }
     }

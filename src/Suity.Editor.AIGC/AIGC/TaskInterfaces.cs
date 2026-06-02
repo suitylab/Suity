@@ -11,6 +11,20 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
 
+#region TaskDirectoryTargets
+
+/// <summary>
+/// Defines the target locations for task directories, such as workspaces or assets.
+/// </summary>
+public enum TaskDirectoryTargets
+{
+    None,
+    WorkSpace,
+    Assets,
+}
+
+#endregion
+
 #region IAigcTaskHost
 
 /// <summary>
