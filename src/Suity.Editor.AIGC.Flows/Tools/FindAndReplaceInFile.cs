@@ -13,7 +13,7 @@ namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("FindAndReplaceInFile", CodeBase = "*Suity", Category = "WorkSpace")]
 [DisplayText("Find And Replace In File")]
-[ToolTipsText("Find and replace multiple string pairs in a single file. Can match multiple occurrences of the same string. Suitable for batch text replacement across the file.")]
+[ToolTipsText("Find and replace multiple string pairs in a single file. Can match multiple occurrences of the same string. **Replace common string only, Never use this to edit code(use EditInFile/BatchEditInFiles instead)**.")]
 [NativeAlias("Suity.Editor.AIGC.FindAndReplaceInFile")]
 public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
 {
@@ -45,24 +45,28 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
         readonly StringProperty _oldString = new("OldString", "Old String");
         readonly StringProperty _newString = new("NewString", "New String");
         readonly ValueProperty<int> _matchCount = new("MatchCount", "Match Count");
+        readonly StringProperty _message = new("Message", "Message");
 
         public string OldString { get => _oldString.Text; set => _oldString.Text = value; }
         public string NewString { get => _newString.Text; set => _newString.Text = value; }
         public int MatchCount { get => _matchCount.Value; set => _matchCount.Value = value; }
+        public string Message { get => _message.Text; set => _message.Text = value; }
 
         public void Sync(IPropertySync sync, ISyncContext context)
         {
             _oldString.Sync(sync);
             _newString.Sync(sync);
             _matchCount.Sync(sync);
+            _message.Sync(sync);
         }
         public void SetupView(IViewObjectSetup setup)
         {
             _oldString.InspectorField(setup);
             _newString.InspectorField(setup);
             _matchCount.InspectorField(setup);
+            _message.InspectorField(setup);
         }
-        public override string ToString() => $"'{OldString}' -> '{NewString}' ({MatchCount} matches)";
+        public override string ToString() => MatchCount > 0 ? $"'{OldString}' -> '{NewString}' ({MatchCount} matches)" : $"Failed: '{OldString}' not found";
     }
 
     public class Output : IViewObject
@@ -161,7 +165,8 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
             {
                 OldString = item.OldString,
                 NewString = item.NewString,
-                MatchCount = matchCount
+                MatchCount = matchCount,
+                Message = matchCount == 0 ? $"Failed: Old string not found in file" : string.Empty
             };
 
             if (matchCount > 0)

@@ -11,13 +11,14 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("BatchReplaceStringInFiles", CodeBase = "*Suity", Category = "WorkSpace")]
-[DisplayText("Batch Replace String In Files")]
-[ToolTipsText("Replace exact strings in multiple files at once. Use for cross-file refactoring like updating global constants or base class method calls.")]
+[NativeType("BatchEditInFiles", CodeBase = "*Suity", Category = "WorkSpace")]
+[DisplayText("Batch Edit In Files")]
+[ToolTipsText("Perform an exact string edit in multiple files at once. Use for cross-file refactoring, or edit multiple places in one file")]
 [NativeAlias("Suity.Editor.AIGC.BatchReplaceStringInFiles")]
-public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.Output>
+[NativeAlias("Suity.Editor.AIGC.Tools.BatchReplaceStringInFiles")]
+public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 {
-    [NativeType("BatchReplaceStringInFiles.FileEditItem", CodeBase = "*Suity")]
+    [NativeType("BatchEditInFiles.FileEditItem", CodeBase = "*Suity")]
     public class FileEditItem : IViewObject
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
@@ -43,7 +44,7 @@ public class BatchReplaceStringInFiles : ToolCommand<BatchReplaceStringInFiles.O
         public override string ToString() => $"{FilePath} -{OldExactString?.Length ?? 0} +{NewString?.Length ?? 0}";
     }
 
-    [NativeType("BatchReplaceStringInFiles.FileResult", CodeBase = "*Suity")]
+    [NativeType("BatchEditInFiles.FileResult", CodeBase = "*Suity")]
     public class FileResult : IViewObject
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");

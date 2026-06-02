@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("ReplaceStringInFile", CodeBase = "*Suity", Category = "WorkSpace")]
-[DisplayText("Replace String In File")]
-[ToolTipsText("Replace an exact string in a file with new content. Suitable for small-scale refactoring.")]
+[NativeType("EditInFile", CodeBase = "*Suity", Category = "WorkSpace")]
+[NativeAlias("Suity.Editor.AIGC.Tools.EditInFile")]
+[DisplayText("Edit In File")]
+[ToolTipsText("Perform an exact string edit in a file with new content. Suitable for Surgical Changes.")]
 [NativeAlias("Suity.Editor.AIGC.ReplaceStringInFile")]
-public class ReplaceStringInFile : ToolCommand<ReplaceStringInFile.Output>
+[NativeAlias("Suity.Editor.AIGC.Tools.ReplaceStringInFile")]
+public class EditInFile : ToolCommand<EditInFile.Output>
 {
     public class Output : IViewObject
     {

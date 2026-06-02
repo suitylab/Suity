@@ -110,9 +110,21 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
 
         foreach (var item in FileItems.SkipNull())
         {
-            var result = new FileResult { FilePath = item.FilePath };
-
             string relativePath = item.FilePath?.TrimStart('/', '\\');
+            var result = new FileResult { FilePath = relativePath };
+
+            var lastScratchPad = parentPage?.GetHistoryScratchPad(relativePath);
+            if (lastScratchPad != null)
+            {
+                // The lastest full content of the file is already in the scratch pad,
+                // we can skip reading the file again, and just return the result with a message to indicate that the content is in the scratch pad.
+                if (lastScratchPad.Type == ScratchPadTypes.FileFullContent)
+                {
+                    result.Message = $"read successful. See ScratchPad for full content.";
+                    output.Results.Add(result);
+                    continue;
+                }
+            }
 
             try
             {
@@ -122,8 +134,6 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                 {
                     fullPath = Path.Combine(workspaceDir, relativePath);
                 }
-
-                result.FilePath = relativePath;
 
                 if (!File.Exists(fullPath))
                 {
@@ -152,6 +162,20 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                         content = string.Join(Environment.NewLine, lines, start, count);
                         string msg = $"start line: {startLine}, line count: {lineCount}";
                         result.Message = $"read successful. {msg}, see ScratchPad for detail.";
+
+                        // If there is a previous FileSegment scratch pad,
+                        // it means the user has read a segment of the file before,
+                        // we will append the new content to the previous content,
+                        // so that user can read the file in segments and keep all the content in the scratch pad.
+                        if (lastScratchPad?.Type == ScratchPadTypes.FileSegment)
+                        {
+                            string previousContent = lastScratchPad.Content;
+                            if (!string.IsNullOrEmpty(previousContent))
+                            {
+                                content = previousContent + Environment.NewLine + content;
+                            }
+                        }
+
                         parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, msg);
                     }
                 }

@@ -319,38 +319,45 @@ public class LLmModelPresetConfig : IViewObject
     /// Gets the default language model used when no specific model type is specified.
     /// </summary>
     public AssetProperty<ILLmModel> Default { get; }
-        = new(nameof(Default), "Default language model", toolTips: "TOOLTIPS_DEFAULT_MODEL");
+        = new(nameof(Default), "Default", toolTips: "TOOLTIPS_DEFAULT_MODEL");
 
     /// <summary>
-    /// Gets the language model configured for planning tasks.
+    /// Gets the language model configured for deep thinking or reasoning tasks.
     /// </summary>
-    public AssetProperty<ILLmModel> Planning { get; }
-        = new(nameof(Planning), "Planning language model", toolTips: "TOOLTIPS_PLANNING_MODEL");
-
-    /// <summary>
-    /// Gets the language model configured for tool calling capabilities.
-    /// </summary>
-    public AssetProperty<ILLmModel> ToolCalling { get; }
-        = new(nameof(ToolCalling), "Tool calls language model", toolTips: "TOOLTIPS_TOOL_CALLS_MODEL");
+    public AssetProperty<ILLmModel> Thinking { get; }
+        = new(nameof(Thinking), "Thinking", toolTips: "TOOLTIPS_THINKING_MODEL");
 
     /// <summary>
     /// Gets the language model configured for web search operations.
     /// </summary>
     public AssetProperty<ILLmModel> WebSearch { get; }
-        = new(nameof(WebSearch), "Web search language model", toolTips: "TOOLTIPS_WEB_SEARCH_MODEL");
-
-
-    /// <summary>
-    /// Gets the lightweight language model for simple or fast operations.
-    /// </summary>
-    public AssetProperty<ILLmModel> Lightweight { get; }
-        = new(nameof(Lightweight), "Lightweight language model", toolTips: "TOOLTIPS_LIGHTWEIGHT_MODEL");
+        = new(nameof(WebSearch), "Web search", toolTips: "TOOLTIPS_WEB_SEARCH_MODEL");
 
     /// <summary>
     /// Gets the language model configured for code-specific tasks.
     /// </summary>
     public AssetProperty<ILLmModel> Coding { get; }
-        = new(nameof(Coding), "Code-specific language model", toolTips: "TOOLTS_CODE_SPECIFIC_MODEL");
+        = new(nameof(Coding), "Coding", toolTips: "TOOLTS_CODE_SPECIFIC_MODEL");
+
+    /// <summary>
+    /// Gets the language model configured for creative tasks.
+    /// </summary>
+    public AssetProperty<ILLmModel> Creative { get; }
+        = new(nameof(Creative), "Creative", toolTips: "TOOLTS_CREATIVE_MODEL");
+
+    /// <summary>
+    /// Gets the language model configured for summary tasks.
+    /// </summary>
+    public AssetProperty<ILLmModel> Summary { get; }
+        = new(nameof(Summary), "Summary", toolTips: "TOOLTS_SUMMARY_MODEL");
+
+    /// <summary>
+    /// Gets the lightweight language model for simple or fast operations.
+    /// </summary>
+    public AssetProperty<ILLmModel> Lightweight { get; }
+        = new(nameof(Lightweight), "Lightweight", toolTips: "TOOLTIPS_LIGHTWEIGHT_MODEL");
+
+
 
     /// <summary>
     /// Gets the default parameter configuration applied to language model calls.
@@ -372,11 +379,13 @@ public class LLmModelPresetConfig : IViewObject
     public void Sync(IPropertySync sync, ISyncContext context)
     {
         Default.Sync(sync);
-        Planning.Sync(sync);
-        ToolCalling.Sync(sync);
+        Thinking.Sync(sync);
         WebSearch.Sync(sync);
         Coding.Sync(sync);
+        Creative.Sync(sync);
+        Summary.Sync(sync);
         Lightweight.Sync(sync);
+
         DefaultParameters.Sync(sync);
     }
 
@@ -387,8 +396,9 @@ public class LLmModelPresetConfig : IViewObject
     public void SetupView(IViewObjectSetup setup)
     {
         Default.InspectorField(setup);
-        Planning.InspectorField(setup);
-        ToolCalling.InspectorField(setup);
+        Thinking.InspectorField(setup);
+        Creative.InspectorField(setup);
+        Summary.InspectorField(setup);
         WebSearch.InspectorField(setup);
         Coding.InspectorField(setup);
         Lightweight.InspectorField(setup);
@@ -402,10 +412,11 @@ public class LLmModelPresetConfig : IViewObject
     /// <returns>The configured language model for the specified type, or the default model.</returns>
     public ILLmModel GetModel(LLmModelType type) => type switch
     {
-        LLmModelType.Thinking => Planning.Target ?? Default.Target,
-        LLmModelType.Summary => ToolCalling.Target ?? Default.Target,
+        LLmModelType.Thinking => Thinking.Target ?? Default.Target,
         LLmModelType.WebSearch => WebSearch.Target ?? Default.Target,
         LLmModelType.Coding => Coding.Target ?? Default.Target,
+        LLmModelType.Creative => Creative.Target ?? Default.Target,
+        LLmModelType.Summary => Summary.Target ?? Default.Target,
         LLmModelType.Lightweight => Lightweight.Target ?? Default.Target,
         _ => Default.Target,
     };
@@ -422,7 +433,7 @@ public class LLmModelPresetConfig : IViewObject
             return false;
         }
 
-        if (!string.IsNullOrWhiteSpace(Planning.Selection.SelectedKey) && !GetLLmModelIsValud(Planning, ref message))
+        if (!string.IsNullOrWhiteSpace(Thinking.Selection.SelectedKey) && !GetLLmModelIsValud(Thinking, ref message))
         {
             return false;
         }

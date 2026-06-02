@@ -968,6 +968,21 @@ public class AigcWorkflowPage : AigcTaskPage,
         return dic.Values.Where(o => o.Type.CanDisplay()).ToArray();
     }
 
+    public ScratchPad GetHistoryScratchPad(string path, int hierarchyLevels = 0)
+    {
+        Dictionary<string, ScratchPad> dic = [];
+        CollectScratchPads(dic, hierarchyLevels);
+
+        if (dic.TryGetValue(path, out var scratchPad) && scratchPad.Type.CanDisplay())
+        {
+            return scratchPad;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     private void CollectScratchPads(Dictionary<string, ScratchPad> dic, int hierarchyLevel)
     {
         if (hierarchyLevel > 0 && ParentNode is AigcWorkflowPage parent)

@@ -318,6 +318,8 @@ public interface IScratchPadOwner
     /// <param name="hierarchyLevels">The number of parent levels to include in the scratch pad items.</param>
     /// <returns>The resolved scratch pad items, or null if not available.</returns>
     ScratchPad[] GetHistoryScratchPads(int hierarchyLevels = 0);
+
+    ScratchPad GetHistoryScratchPad(string path, int hierarchyLevels = 0);
 }
 
 #endregion
