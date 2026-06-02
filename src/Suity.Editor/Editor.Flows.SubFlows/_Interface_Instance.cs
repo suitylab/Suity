@@ -38,8 +38,9 @@ public interface IPageInstance : INamed
     /// <summary>
     /// Converts this page instance to a <see cref="SimpleType"/> representation.
     /// </summary>
+    /// <param name="direction">The flow direction.</param>
     /// <returns>A <see cref="SimpleType"/> describing the page's input parameters.</returns>
-    SimpleType ToSimpleType();
+    SimpleType ToSimpleType(FlowDirections direction);
 
     /// <summary>
     /// Sets a parameter value by name.

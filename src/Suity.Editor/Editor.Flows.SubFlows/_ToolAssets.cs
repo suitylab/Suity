@@ -94,7 +94,7 @@ public abstract class ToolInstance : IToolInstance, IViewObject
     public abstract Exception ErrorInfo { get; }
     public abstract IConversationHandler Conversation { get; }
 
-    public abstract SimpleType ToSimpleType();
+    public abstract SimpleType ToSimpleType(FlowDirections direction);
 
     public abstract bool GetError();
     public abstract string GetErrorMessage();
@@ -240,7 +240,25 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
     public override IConversationHandler Conversation => _conversation;
 
 
-    public override SimpleType ToSimpleType() => _inputType;
+    public override SimpleType ToSimpleType(FlowDirections direction)
+    {
+        if (direction == FlowDirections.Input)
+        {
+            return _inputType;
+        }
+        else
+        {
+            if(_output != null)
+            {
+                var outputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(_output, _output.GetType().Name, _output.GetType().FullName);
+                return outputType;
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
 
     public override bool GetError() => _errorMessage.Value?.Text != null;
 

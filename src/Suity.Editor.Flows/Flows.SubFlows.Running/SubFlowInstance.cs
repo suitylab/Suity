@@ -1,3 +1,4 @@
+using Org.BouncyCastle.Crypto.Parameters;
 using Suity;
 using Suity.Collections;
 using Suity.Drawing;
@@ -17,6 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static Org.BouncyCastle.Crypto.Digests.SkeinEngine;
 using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.Flows.SubFlows.Running;
@@ -151,71 +153,37 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     public string FullName => _presetFullName ?? _asset.AssetKey ?? base.Name;
 
     /// <inheritdoc/>
-    public SimpleType ToSimpleType()
+    public SimpleType ToSimpleType(FlowDirections direction)
     {
         List<SimpleField> fields = [];
 
-        if (_dic.Values.OfType<SubFlowBeginElement>().FirstOrDefault() is { } begin)
+        if (direction == FlowDirections.Input)
         {
-            if (begin.ParameterType is { } fieldType && !TypeDefinition.IsNullOrEmpty(fieldType))
+            var begins = _dic.Values.OfType<SubFlowBeginElement>();
+            foreach (var begin in begins)
             {
-                if (fieldType == NativeTypes.TextBlockType)
-                {
-                    fieldType = NativeTypes.StringType;
-                }
+                CollectField(fields, begin);
+            }
 
-                var attr = begin.Node as IAttributeGetter;
-                var range = attr?.GetAttribute<NumericRangeAttribute>();
-                var selection = attr?.GetAttribute<SelectionDesignAttribute>();
-                var tooltips = attr?.GetAttribute<ToolTipsAttribute>();
-
-                var field = new SimpleField
-                {
-                    Name = begin.Name,
-                    Tooltips = tooltips?.ToolTips,
-                    Type = fieldType,
-                    Range = range,
-                    Selection = selection,
-                };
-
-                fields.Add(field);
+            var inputs = _dic.Values.OfType<IPageParameterInput>().Where(o => !o.IsPresetInput);
+            foreach (var parameter in inputs)
+            {
+                CollectField(fields, parameter);
             }
         }
-
-        foreach (var parameter in _dic.Values.OfType<IPageParameterInput>())
+        else
         {
-            if (parameter.IsPresetInput)
+            var ends = _dic.Values.OfType<SubFlowEndElement>();
+            foreach (var end in ends)
             {
-                continue;
+                CollectField(fields, end);
             }
 
-            if (parameter is IPageMessage)
+            var outputs = _dic.Values.OfType<IPageParameterOutput>();
+            foreach (var parameter in outputs)
             {
-                continue;
+                CollectField(fields, parameter);
             }
-
-            var fieldType = parameter.ParameterType;
-            if (fieldType == NativeTypes.TextBlockType)
-            {
-                fieldType = NativeTypes.StringType;
-            }
-
-            var node = (parameter as SubFlowElement)?.DiagramItem?.Node as DesignFlowNode;
-            var range = node?.GetAttribute<NumericRangeAttribute>();
-            var selection = node?.GetAttribute<SelectionDesignAttribute>();
-            var tooltips = node?.GetAttribute<ToolTipsAttribute>();
-
-            var field = new SimpleField
-            {
-                Name = parameter.Name,
-                Description = parameter.ToDisplayTextL(),
-                Tooltips = tooltips?.ToolTips,
-                Type = fieldType,
-                Range = range,
-                Selection = selection,
-            };
-
-            fields.Add(field);
         }
 
         var name = SubFlowExtensions.UseFullName ? this.FullName : this.Name;
@@ -231,6 +199,43 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         };
 
         return type;
+    }
+
+    private static bool CollectField(List<SimpleField> fields, IPageValueElement parameter)
+    {
+        var fieldType = parameter.ParameterType;
+        if (TypeDefinition.IsNullOrEmpty(fieldType))
+        {
+            return false;
+        }
+
+        if (parameter is IPageMessage)
+        {
+            return false;
+        }
+
+        if (fieldType == NativeTypes.TextBlockType)
+        {
+            fieldType = NativeTypes.StringType;
+        }
+
+        var node = (parameter as SubFlowElement)?.DiagramItem?.Node as DesignFlowNode;
+        var range = node?.GetAttribute<NumericRangeAttribute>();
+        var selection = node?.GetAttribute<SelectionDesignAttribute>();
+        var tooltips = node?.GetAttribute<ToolTipsAttribute>();
+
+        var field = new SimpleField
+        {
+            Name = parameter.Name,
+            Description = parameter.ToDisplayTextL(),
+            Tooltips = tooltips?.ToolTips,
+            Type = fieldType,
+            Range = range,
+            Selection = selection,
+        };
+
+        fields.Add(field);
+        return true;
     }
 
     /// <inheritdoc/>
@@ -870,18 +875,6 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// </summary>
     public SubFlowEndElement CurrentEndElement => _currentEndElement;
 
-
-
-    /// <summary>
-    /// Converts this page instance to an <see cref="IDataWritable"/> representation.
-    /// </summary>
-    /// <returns>An <see cref="IDataWritable"/> for serializing the page's data.</returns>
-    public IDataWritable ToDataWritable()
-    {
-        var type = ToSimpleType();
-
-        return type.ToDataWritable();
-    }
 
     private void BuildParameter(StringBuilder builder, IPageParameter[] outputs, ResolveChatIntents intent)
     {

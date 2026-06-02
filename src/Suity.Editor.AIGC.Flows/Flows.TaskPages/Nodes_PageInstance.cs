@@ -360,7 +360,7 @@ public class ParsePageInstance : TaskPageNode
             };
 
             var pageInstance = pageDefAsset.CreatePageInstance(option);
-            var simpleType = pageInstance.ToSimpleType();
+            var simpleType = pageInstance.ToSimpleType(FlowDirections.Input);
             
             var dic = jobj.FromJson(simpleType);
             if (dic is null)
@@ -779,7 +779,7 @@ public class CreatePageInstanceWithParameter : TaskPageNode
 
                 _parameters.List.Clear();
 
-                var simpleType = pageInstance.ToSimpleType();
+                var simpleType = pageInstance.ToSimpleType(FlowDirections.Input);
                 foreach (var input in simpleType.Fields)
                 {
                     if (string.IsNullOrWhiteSpace(input.Name))
