@@ -239,6 +239,17 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     }
 
     /// <inheritdoc/>
+    public object GetParameter(string name)
+    {
+        if (_dic.GetValueSafe(name) is IPageParameter parameter)
+        {
+            return parameter.Value;
+        }
+
+        return null;
+    }
+
+    /// <inheritdoc/>
     public bool SetParameter(string name, object value)
     {
         if (_dic.GetValueSafe(name) is not IPageParameter parameter)

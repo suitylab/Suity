@@ -102,6 +102,7 @@ public abstract class ToolInstance : IToolInstance, IViewObject
     public abstract bool? GetIsDoneInputs();
     public abstract bool? GetIsDoneOutputs();
 
+    public abstract object GetParameter(string name);
     public abstract bool SetParameter(string name, object value);
 
     public abstract void SetParameters(ISyncObject parameters);
@@ -248,9 +249,12 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         }
         else
         {
-            if(_output != null)
+            var output = _output;
+            output ??= Activator.CreateInstance<TOutput>();
+
+            if (output != null)
             {
-                var outputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(_output, _output.GetType().Name, _output.GetType().FullName);
+                var outputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(output, output.GetType().Name, output.GetType().FullName);
                 return outputType;
             }
             else
@@ -269,6 +273,11 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
     public override bool? GetIsDoneInputs() => _input != null;
 
     public override bool? GetIsDoneOutputs() => _output != null;
+
+    public override object GetParameter(string name)
+    {
+        return _input.GetProperty(name) ?? _output?.GetProperty(name);
+    }
 
     public override bool SetParameter(string name, object value)
     {

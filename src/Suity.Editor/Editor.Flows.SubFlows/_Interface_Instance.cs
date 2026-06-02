@@ -42,9 +42,20 @@ public interface IPageInstance : INamed
     /// <returns>A <see cref="SimpleType"/> describing the page's input parameters.</returns>
     SimpleType ToSimpleType(FlowDirections direction);
 
+
+    /// <summary>
+    /// Gets a parameter value by name.
+    /// </summary>
+    /// <param name="name">The name of the parameter.</param>
+    /// <returns>The value of the parameter.</returns>
+    object GetParameter(string name);
+
     /// <summary>
     /// Sets a parameter value by name.
     /// </summary>
+    /// <param name="name">The name of the parameter.</param>
+    /// <param name="value">The value to set.</param>
+    /// <returns>True if the parameter was successfully set; otherwise, false.</returns>
     bool SetParameter(string name, object value);
 
     /// <summary>
@@ -56,7 +67,7 @@ public interface IPageInstance : INamed
     /// <summary>
     /// Gets whether this page instance has an error.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>True if there is an error, false otherwise.</returns>
     bool GetError();
 
     /// <summary>

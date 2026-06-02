@@ -1435,3 +1435,177 @@ public class PageParameterReference : TaskPageNode
 }
 
 #endregion
+
+#region GetPageOutputWithParameter
+
+/// <summary>
+/// Gets the output of a page instance with configurable parameters based on a page definition.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, HasHeader = false, Category = "Page")]
+[DisplayText("Get Page Output With Parameter", "*CoreIcon|Page")]
+[DisplayOrder(2960)]
+[ToolTipsText("Get the output of a page instance with parameters based on the page definition.")]
+public class GetPageOutputWithParameter : TaskPageNode
+{
+    FlowNodeConnector _pageInstance;
+
+    readonly AssetProperty<IPageAsset> _toolDef = new("ToolDefinition", "Tool Definition");
+    readonly ListProperty<CreatePageParameter> _parameters = new("Parameters", "Parameters");
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetPageOutputWithParameter"/> class.
+    /// </summary>
+    public GetPageOutputWithParameter()
+    {
+        UpdateConnector();
+
+        _parameters.ValueChanged += (s, e) => UpdateConnectorQueued();
+    }
+
+    /// <inheritdoc/>
+    public override ImageDef Icon => CoreIconCache.Tool;
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _toolDef.Sync(sync);
+        _parameters.Sync(sync);
+
+        if (sync.Sync("UpdateParameter", ButtonValue.Empty) == ButtonValue.Clicked)
+        {
+            ParseFromToolDef();
+        }
+    }
+
+    private void ParseFromToolDef()
+    {
+        if (_toolDef.Target is { } pageAsset)
+        {
+            try
+            {
+                var option = new PageCreateOption
+                {
+                    Mode = PageElementMode.Function,
+                };
+
+                var pageInstance = pageAsset.CreatePageInstance(option);
+
+                _parameters.List.Clear();
+
+                var simpleType = pageInstance.ToSimpleType(FlowDirections.Output);
+                foreach (var input in simpleType.Fields)
+                {
+                    if (string.IsNullOrWhiteSpace(input.Name))
+                    {
+                        continue;
+                    }
+
+                    var type = input.Type;
+                    if (TypeDefinition.IsNullOrEmpty(type))
+                    {
+                        continue;
+                    }
+
+                    var parameter = new CreatePageParameter
+                    {
+                        Name = input.Name,
+                        Description = input.Description,
+                        ParameterType = type,
+                    };
+
+                    _parameters.List.Add(parameter);
+                }
+
+                UpdateConnectorQueued();
+                this.GetFlowDocument()?.MarkDirty(this);
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _toolDef.InspectorField(setup);
+        _parameters.InspectorField(setup);
+
+        setup.Button("UpdateParameter", "Update Parameters");
+    }
+
+    /// <inheritdoc/>
+    protected override void OnUpdateConnector()
+    {
+        base.OnUpdateConnector();
+
+        var pageType = AssetManager.Instance.GetAssetLink<SubFlowDefinitionAsset>().Definition;
+
+        var instanceType = TypeDefinition.FromNative<IPageInstance>();
+
+        _pageInstance = this.AddDataInputConnector("PageInstance", instanceType, "Page Instance");
+
+        var parameters = GetParameters();
+        foreach (var parameter in parameters)
+        {
+            AddDataOutputConnector("p_" + parameter.Name, parameter.ParameterType, parameter.DisplayText);
+        }
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var diagram = this.Diagram;
+
+        var pageInstance = compute.GetValue<IPageInstance>(_pageInstance)
+            ?? throw new NullReferenceException("PageInstance is null");
+
+        var parameters = GetParameters();
+        foreach (var parameter in parameters)
+        {
+            if (this.GetConnector("p_" + parameter.Name) is { } connector && diagram.GetIsLinked(connector))
+            {
+                object value = pageInstance.GetParameter(parameter.Name);
+                compute.SetValue(connector, value);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets the validated list of tool call parameters, filtering out duplicates and invalid entries.
+    /// </summary>
+    /// <returns>An array of valid tool call parameters.</returns>
+    public CreatePageParameter[] GetParameters()
+    {
+        List<CreatePageParameter> list = [];
+        HashSet<string> visited = [];
+
+        foreach (var item in _parameters.List.SkipNull())
+        {
+            string name = item.Name?.Trim() ?? string.Empty;
+            if (!visited.Add(name))
+            {
+                continue;
+            }
+
+            var type = item.ParameterType;
+            if (TypeDefinition.IsNullOrEmpty(type))
+            {
+                continue;
+            }
+
+            list.Add(item);
+        }
+
+        return list.ToArray();
+    }
+
+}
+
+
+#endregion
