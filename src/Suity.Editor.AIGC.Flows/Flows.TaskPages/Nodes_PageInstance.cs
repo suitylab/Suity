@@ -1609,3 +1609,45 @@ public class GetPageOutputWithParameter : TaskPageNode
 
 
 #endregion
+
+#region GetPageOutputWithParameter
+
+/// <summary>
+/// Gets the error message of a page instance with configurable parameters based on a page definition.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.ToolBG, HasHeader = false, Category = "Page")]
+[DisplayText("Get Page Error Message", "*CoreIcon|Page")]
+[DisplayOrder(2960)]
+[ToolTipsText("Get the error message of a page instance with parameters based on the page definition.")]
+public class GetPageErrorMessage : TaskPageNode
+{
+    FlowNodeConnector _pageInstance;
+    FlowNodeConnector _errorMessage;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetPageErrorMessage"/> class.
+    /// </summary>
+    public GetPageErrorMessage()
+    {
+        var pageType = AssetManager.Instance.GetAssetLink<SubFlowDefinitionAsset>().Definition;
+        var instanceType = TypeDefinition.FromNative<IPageInstance>();
+        _pageInstance = this.AddDataInputConnector("PageInstance", instanceType, "Page Instance");
+        _errorMessage = this.AddDataOutputConnector("ErrorMessage", TypeDefinition.FromNative<string>(), "Error");
+    }
+
+    /// <inheritdoc/>
+    public override ImageDef Icon => CoreIconCache.Tool;
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var pageInstance = compute.GetValue<IPageInstance>(_pageInstance)
+            ?? throw new NullReferenceException("PageInstance is null");
+
+        var errorMessage = pageInstance.GetErrorMessage();
+        compute.SetValue(_errorMessage, errorMessage);
+    }
+}
+
+
+#endregion
