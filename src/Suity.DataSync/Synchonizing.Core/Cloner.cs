@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using Suity.NodeQuery;
 using Suity.Synchonizing.Preset;
 using System;
@@ -91,6 +92,19 @@ public static class Cloner
         CloneProperty(objFrom, objTo, context, context);
     }
 
+    public static void CloneOneProperty(string propertyName, object value, object objTo)
+    {
+        var objFrom = new CloneOneSycnObject(propertyName, value);
+        CloneProperty(objFrom, objTo, SyncContext.Empty, SyncContext.Empty);
+    }
+
+    public static void CloneOneProperty(string propertyName, object value, object objTo, ISyncTypeResolver resolver, IServiceProvider provider)
+    {
+        var objFrom = new CloneOneSycnObject(propertyName, value);
+        var context = new SyncContext(null, resolver, provider);
+        CloneProperty(objFrom, objTo, context, context);
+    }
+
     private static void CloneProperty(object objFrom, object objTo, SyncContext contextFrom, SyncContext contextTo)
     {
         if (objFrom is null)
@@ -118,7 +132,17 @@ public static class Cloner
         }
         else if (objFrom is ISyncList syncList)
         {
-            ClonePropertySyncList(syncList, (ISyncList)objTo, contextFrom, contextTo);
+            if (objTo is ISyncList listTo)
+            {
+                ClonePropertySyncList(syncList, listTo, contextFrom, contextTo);
+            }
+            else
+            {
+                var listToProxy = TryCreateCloneListProxy(objTo)
+                    ?? throw new ArgumentException($"Object to clone must be ISyncList or IList when source is ISyncList.", nameof(objTo));
+
+                ClonePropertySyncList(syncList, listToProxy, contextFrom, contextTo);
+            }
         }
         else if (SyncTypes.GetObjectProxyType(objFrom) != null)
         {
@@ -146,6 +170,30 @@ public static class Cloner
                 ClonePropertySyncList(sListFrom, sListTo, contextFrom, contextTo);
             }
         }
+    }
+
+    private static ISyncList TryCreateCloneListProxy(object objTo)
+    {
+        Type elementType = null;
+        Type genericListProxyType = null;
+
+        foreach (var iface in objTo.GetType().GetInterfaces())
+        {
+            if (iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(IList<>))
+            {
+                elementType = iface.GetGenericArguments()[0];
+                genericListProxyType = typeof(CloneSyncList<>).MakeGenericType(elementType);
+                break;
+            }
+        }
+
+        if (genericListProxyType != null)
+        {
+            var listToProxy = Activator.CreateInstance(genericListProxyType, objTo) as ISyncList;
+            return listToProxy;
+        }
+
+        return null;
     }
 
     private static void ClonePropertySyncObject(ISyncObject objFrom, ISyncObject objTo, SyncContext contextFrom, SyncContext contextTo)
@@ -200,7 +248,7 @@ public static class Cloner
     {
         if (type.IsValueType || type == typeof(string))
         {
-            return parameter;
+            return parameter?.ToString();
         }
         else
         {
@@ -235,6 +283,40 @@ public static class Cloner
     }
 }
 
+
+class CloneOneSycnObject : ISyncObject
+{
+    public string PropertyName { get; }
+    public object Value { get; }
+
+    public CloneOneSycnObject(string propertyName, object value)
+    {
+        PropertyName = propertyName;
+        Value = value;
+    }
+
+    public void Sync(IPropertySync sync, ISyncContext context)
+    {
+        sync.Sync(PropertyName, Value, SyncFlag.GetOnly);
+    }
+}
+
+class CloneSyncList<T> : ISyncList
+{
+    public IList<T> List { get; }
+
+    public CloneSyncList(IList<T> list)
+    {
+        List = list ?? throw new ArgumentNullException(nameof(list));
+    }
+
+    public int Count => List.Count;
+
+    public void Sync(IIndexSync sync, ISyncContext context)
+    {
+        sync.SyncGenericIList(List);
+    }
+}
 
 [Serializable]
 public class CloneFailedException : Exception

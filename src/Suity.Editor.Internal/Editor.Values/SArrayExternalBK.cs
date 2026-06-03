@@ -581,6 +581,10 @@ internal class SArrayExternalBK : SArrayExternal
                 sync.Sync(0, _ary.InputType?.ElementType?.CreateValue());
                 break;
 
+            case SyncMode.RequestElementType:
+                sync.Sync(0, _ary.InputType?.ElementType?.NativeType);
+                break;
+
             default:
                 break;
         }

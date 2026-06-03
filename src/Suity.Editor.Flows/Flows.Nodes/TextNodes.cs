@@ -617,8 +617,8 @@ public class JoinString : TextFlowNode
     /// </summary>
     public JoinString()
     {
-        _in = AddConnector("In", "object", FlowDirections.Input, FlowConnectorTypes.Data, true, "Element");
-        _out = AddDataOutputConnector("Out", "string", "Joined String");
+        _in = AddConnector("In", "object", FlowDirections.Input, FlowConnectorTypes.Data, true, " ");
+        _out = AddDataOutputConnector("Out", "string", " ");
     }
 
     /// <inheritdoc/>

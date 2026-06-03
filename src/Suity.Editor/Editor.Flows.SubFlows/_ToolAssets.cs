@@ -1,6 +1,7 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Helpers;
 using Suity.NodeQuery;
 using Suity.Synchonizing;
@@ -8,6 +9,7 @@ using Suity.Synchonizing.Core;
 using Suity.Synchonizing.Preset;
 using Suity.Views;
 using System;
+using System.Collections;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -302,7 +304,13 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
             }
         }
 
-        _input.SetProperty(name, value);
+        value = SItem.ResolveValue(value);
+        if (value is Array ary)
+        {
+            value = SyncList.CreateReadonly(ary);
+        }
+
+        Cloner.CloneOneProperty(name, value, _input);
 
         return true;
     }

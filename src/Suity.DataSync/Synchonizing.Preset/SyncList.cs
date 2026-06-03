@@ -4,26 +4,52 @@ using System.Collections.Generic;
 
 namespace Suity.Synchonizing.Preset;
 
+public abstract class SyncList : ISyncList, IDropInCheck
+{
+    public abstract int Count { get; }
+
+    public abstract bool DropInCheck(object value);
+    public abstract object DropInConvert(object value);
+    public abstract void Sync(IIndexSync sync, ISyncContext context);
+
+    public static ISyncList CreateReadonly(Array array)
+    {
+        Type elementType = array.GetType().GetElementType();
+        Type syncListType = typeof(ReadonlySyncList<>).MakeGenericType(elementType);
+
+        var list = (ISyncList)Activator.CreateInstance(syncListType, array);
+        var sync = new SetAllIndexSync(array);
+        list.Sync(sync, SyncContext.Empty);
+
+        return list;
+    }
+}
+
 /// <summary>
 /// Base class for sync lists
 /// </summary>
-public abstract class SyncList<T> : ISyncList, IDropInCheck
+public abstract class SyncList<T> : SyncList
 {
     private readonly List<T> _list = [];
 
     public List<T> List => _list;
 
-    int ISyncList.Count => _list.Count;
+    public override int Count => _list.Count;
 
     public event EventHandler<IndexEventArgs<T, int>> Added;
 
     public event EventHandler<EventArgs<T>> Removed;
 
-    public SyncList()
+    protected SyncList()
     {
     }
 
-    public virtual void Sync(IIndexSync sync, ISyncContext context)
+    protected SyncList(IEnumerable<T> values)
+    {
+        _list.AddRange(values);
+    }
+
+    public override void Sync(IIndexSync sync, ISyncContext context)
     {
         sync.SyncGenericIList(_list, typeof(T), OnCheckValue, () => OnCreateItem(), OnAdded, OnRemoved);
     }
@@ -42,12 +68,12 @@ public abstract class SyncList<T> : ISyncList, IDropInCheck
 
     protected virtual bool OnCheckValue(T obj) => true;
 
-    public virtual bool DropInCheck(object value)
+    public override bool DropInCheck(object value)
     {
         return value is T;
     }
 
-    public virtual object DropInConvert(object value)
+    public override object DropInConvert(object value)
     {
         if (value is T)
         {
@@ -88,4 +114,28 @@ public class AutoNewSyncList<T> : FactorySyncList<T> where T : new()
         : base(() => new T(), checkFunc)
     {
     }
+}
+
+public class ReadonlySyncList<T> : SyncList<T>
+{
+    public ReadonlySyncList()
+    {
+    }
+
+    public ReadonlySyncList(IEnumerable<T> values) : base(values)
+    {
+    }
+
+    protected override T OnCreateItem()
+    {
+        return default;
+    }
+    protected override bool OnCheckValue(T obj) => false;
+
+    public override void Sync(IIndexSync sync, ISyncContext context)
+    {
+        sync.SyncGenericIListReadOnly(List);
+    }
+    public override bool DropInCheck(object value) => false;
+    public override object DropInConvert(object value) => false;
 }

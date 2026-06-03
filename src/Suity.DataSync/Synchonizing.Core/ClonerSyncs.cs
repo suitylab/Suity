@@ -58,7 +58,8 @@ internal class ClonePropertySync(Dictionary<string, SyncValueInfo> values) : Mar
             }
             else
             {
-                resultObj = info.Value != null ? Creater(info.Value.GetType(), info.Value) : null;
+                // resultObj = info.Value != null ? Creater(info.Value.GetType(), info.Value) : null;
+                resultObj = info.Value != null ? Creater(typeof(T), info.Value) : null;
             }
         }
 
@@ -132,7 +133,8 @@ internal class CloneIndexSync : MarshalByRefObject, IIndexSync
             }
             else
             {
-                result = info.Value != null ? Creater(info.Value.GetType(), info.Value) : null;
+                // result = info.Value != null ? Creater(info.Value.GetType(), info.Value) : null;
+                result = info.Value != null ? Creater(typeof(T), info.Value) : null;
             }
         }
 

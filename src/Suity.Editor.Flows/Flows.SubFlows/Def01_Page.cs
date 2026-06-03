@@ -294,23 +294,24 @@ public class SubFlowDefinitionAssetBuilder : AssetBuilder<SubFlowDefinitionAsset
 /// <summary>
 /// Sub-flow interactive page's detached extension sub-page node.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageGroup, Category = "Page")]
-[DisplayText("Sub-flow Branch Page", "*CoreIcon|Page")]
+[SimpleFlowNodeStyle(Color = FlowColors.PageGroup, HasHeader = false, Category = "Page")]
+[DisplayText("Sub-flow Extended Page", "*CoreIcon|Page")]
 [DisplayOrder(4999)]
-[ToolTipsText("Sub-flow interactive page's detached branch page")]
+[ToolTipsText("Sub-flow interactive page's detached extended page")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubNode")]
-public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, ISubFlow
+[NativeAlias("Suity.Editor.Flows.SubFlows.SubflowBranchNode")]
+public class SubflowExtendedNode : SubflowDefNode, IGroupFlowNode, ISubFlow
 {
     readonly AssetProperty<SubFlowDefinitionAsset> _page = new("Page", "Page");
 
     FlowNodeConnector _resultConnector;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubflowBranchNode"/> class.
+    /// Initializes a new instance of the <see cref="SubflowExtendedNode"/> class.
     /// </summary>
-    public SubflowBranchNode()
+    public SubflowExtendedNode()
     {
-        Description = "Sub Page";
+        Description = "Extended Page";
 
         _page.Filter = new SameDocFilter(this);
 
@@ -414,24 +415,25 @@ public class SubflowBranchNode : SubflowDefNode, IGroupFlowNode, ISubFlow
 }
 
 /// <summary>
-/// Diagram item representing a <see cref="SubflowBranchNode"/> in the flow diagram.
+/// Diagram item representing a <see cref="SubflowExtendedNode"/> in the flow diagram.
 /// </summary>
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.PageSubDiagramItem")]
-public class SubflowBranchDiagramItem : FlowDiagramItem<SubflowBranchNode>
+[NativeAlias("Suity.Editor.Flows.SubFlows.SubflowBranchDiagramItem")]
+public class SubflowExtendedDiagramItem : FlowDiagramItem<SubflowExtendedNode>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubflowBranchDiagramItem"/> class.
+    /// Initializes a new instance of the <see cref="SubflowExtendedDiagramItem"/> class.
     /// </summary>
-    public SubflowBranchDiagramItem()
+    public SubflowExtendedDiagramItem()
     : base()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubflowBranchDiagramItem"/> class with the specified node.
+    /// Initializes a new instance of the <see cref="SubflowExtendedDiagramItem"/> class with the specified node.
     /// </summary>
     /// <param name="node">The page sub node.</param>
-    public SubflowBranchDiagramItem(SubflowBranchNode node)
+    public SubflowExtendedDiagramItem(SubflowExtendedNode node)
         : base(node)
     {
     }
@@ -545,7 +547,7 @@ public class SubFlowResultDiagramItem : FlowDiagramItem<SubFlowResultNode>
     /// Initializes a new instance of the <see cref="SubFlowResultDiagramItem"/> class with the specified node.
     /// </summary>
     /// <param name="node">The page sub node.</param>
-    public SubFlowResultDiagramItem(SubflowBranchNode node)
+    public SubFlowResultDiagramItem(SubflowExtendedNode node)
         : base(node)
     {
     }

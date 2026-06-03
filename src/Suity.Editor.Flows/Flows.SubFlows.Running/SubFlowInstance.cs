@@ -370,7 +370,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             return false;
         }
 
-        var pages = _groups.OfType<SubFlowBranchElement>().OfType<SubFlowElement>();
+        var pages = _groups.OfType<SubFlowExtendedElement>().OfType<SubFlowElement>();
 
         bool? v = mainPageDone;
         foreach (var page in pages)
@@ -478,26 +478,26 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             CollectResultPages([mainResultPage], ref pageList);
         }
 
-        // Build sub pages
-        var subPages = doc.ItemCollection.AllItems
-            .OfType<SubflowBranchDiagramItem>()
+        // Build extended pages
+        var exPages = doc.ItemCollection.AllItems
+            .OfType<SubflowExtendedDiagramItem>()
             .Where(o => o.Node?.GetTargetPageItem() == page)
             .ToList();
 
-        subPages.Sort(FlowDiagramItemSort);
+        exPages.Sort(FlowDiagramItemSort);
 
-        if (subPages.Count > 0)
+        if (exPages.Count > 0)
         {
-            CollectSubPages(subPages, ref pageList);
+            CollectExtendedPages(exPages, ref pageList);
         }
 
-        // Build result pages of sub pages
-        var subResultPages = subPages.Select(o => (o.Node?.GetResultPage() as FlowNode)?.DiagramItem)
+        // Build result pages of extended pages
+        var exResultPages = exPages.Select(o => (o.Node?.GetResultPage() as FlowNode)?.DiagramItem)
             .OfType<FlowDiagramItem>()
             .ToArray();
-        if (subResultPages.Length > 0)
+        if (exResultPages.Length > 0)
         {
-            CollectResultPages(subResultPages, ref pageList);
+            CollectResultPages(exResultPages, ref pageList);
         }
 
 
@@ -589,18 +589,18 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         }
     }
 
-    private void CollectSubPages(IEnumerable<FlowDiagramItem> subPages, ref List<SubFlowElement> pages)
+    private void CollectExtendedPages(IEnumerable<FlowDiagramItem> exPages, ref List<SubFlowElement> pages)
     {
         int order = -10;
 
-        RectNode<FlowDiagramItem> groupRootNode = RectTreeBuilder.BuildTree(subPages, o => o.Bound);
+        RectNode<FlowDiagramItem> groupRootNode = RectTreeBuilder.BuildTree(exPages, o => o.Bound);
         
         // Sorting is required here because Order will be set
         groupRootNode.Children.Sort(RectNode<FlowDiagramItem>.RectNodeSort);
 
         foreach (var subPageNode in groupRootNode.Children)
         {
-            var page = new SubFlowBranchElement(subPageNode.Data, 1, order)
+            var page = new SubFlowExtendedElement(subPageNode.Data, 1, order)
             {
                 Parent = this,
                 Option = this.Option

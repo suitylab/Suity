@@ -572,7 +572,7 @@ public class ComposeArray : ValueFlowNode
         var type = ValueType?.GetTypeDefinition() ?? TypeDefinition.Empty;
         string typeName = type.ToTypeName();
 
-        _in = AddConnector("In", typeName, FlowDirections.Input, FlowConnectorTypes.Data, true, "Element");
+        _in = AddConnector("In", typeName, FlowDirections.Input, FlowConnectorTypes.Data, true, " ");
         if (MultipleConnector)
         {
             _out = AddDataOutputConnector("Out", typeName, "Multi Value");
@@ -580,7 +580,7 @@ public class ComposeArray : ValueFlowNode
         else
         {
             var aryType = type.MakeArrayType();
-            _out = AddDataOutputConnector("Out", aryType.ToTypeName(), "Array");
+            _out = AddDataOutputConnector("Out", aryType.ToTypeName(), " ");
         }
     }
 
