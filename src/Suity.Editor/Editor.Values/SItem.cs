@@ -380,6 +380,12 @@ public abstract class SItem :
     public static object ResolveOriginValue(object value, ICondition context = null)
         => SItemExternal._external.ResolveOriginValue(value, context);
 
+    /// <summary>
+    /// Resolves inner object/array/value from an object value.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="context"></param>
+    /// <returns></returns>
     public static object ResolveObject(object obj, ICondition context = null)
         => SItemExternal._external.ResolveObject(obj, context);
 

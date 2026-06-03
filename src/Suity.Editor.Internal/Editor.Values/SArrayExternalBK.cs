@@ -395,8 +395,7 @@ internal class SArrayExternalBK : SArrayExternal
         for (int i = 0; i < _ary.Count; i++)
         {
             var value = this[i];
-            value = SItemExternalBK.Instance.ResolveObject(value);
-            var v = ResolveValue(value, type);
+            var v = ResolveObject(value, type);
             ary.SetValue(v, i);
         }
 
@@ -416,7 +415,7 @@ internal class SArrayExternalBK : SArrayExternal
         for (int i = 0; i < Count; i++)
         {
             var value = this[i];
-            var v = ResolveValue(value, type);
+            var v = ResolveObject(value, type);
             ary.SetValue(v, i);
         }
 
@@ -431,7 +430,7 @@ internal class SArrayExternalBK : SArrayExternal
         for (int i = 0; i < Count; i++)
         {
             var value = this[i];
-            var v = ResolveValue(value, typeof(T));
+            var v = ResolveObject(value, typeof(T));
             if (v is T t)
             {
                 ary[i] = t;
@@ -446,15 +445,17 @@ internal class SArrayExternalBK : SArrayExternal
     }
 
     /// <summary>
-    /// Resolves a value to the specified target type.
+    /// Resolves an object to the specified target type.
     /// </summary>
     /// <param name="value">The source value.</param>
     /// <param name="type">The target type.</param>
     /// <returns>The resolved value, or the type's default if conversion fails.</returns>
-    private object ResolveValue(object value, Type type)
+    private object ResolveObject(object value, Type type)
     {
         if (value != null)
         {
+            value = SItemExternalBK.Instance.ResolveObject(value);
+
             if (type.IsAssignableFrom(value.GetType()))
             {
                 return value;
