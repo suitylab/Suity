@@ -55,8 +55,18 @@ public static class SValueJsonHelper
             jsonObj["@type"] = obj.ObjectType.GetFullTypeName();
         }
 
-        var s = obj.GetStruct(AssetFilters.All);
-        if (s != null)
+        if (obj.Controller is ISyncObject ctrl)
+        {
+            var sync = new GetAllPropertySync(false);
+            ctrl.Sync(sync, SyncContext.Empty);
+            foreach (var item in sync.Values)
+            {
+                var value = item.Value.Value;
+
+                WriteJsonField(jsonObj, item.Key, item.Value.Value, userDataId, writeTypeName, condition, propGetter);
+            }
+        }
+        if (obj.GetStruct(AssetFilters.All) is { } s)
         {
             foreach (DStructField field in s.AllStructFields)
             {
@@ -207,8 +217,27 @@ public static class SValueJsonHelper
                     jsonObj.Add(name, sValue.GetValue(condition));
                     break;
 
+                case string s:
+                    jsonObj.Add(name, s);
+                    break;
+
+                case TextBlock tb:
+                    jsonObj.Add(name, tb.Text);
+                    break;
+
+                case bool b:
+                    jsonObj.Add(name, b);
+                    break;
+
                 default:
-                    jsonObj.Add(name, null);
+                    if (item?.GetType().GetIsNumeric() == true)
+                    {
+                        jsonObj.Add(name, item);
+                    }
+                    else
+                    {
+                        jsonObj.Add(name, null);
+                    }
                     break;
             }
         }

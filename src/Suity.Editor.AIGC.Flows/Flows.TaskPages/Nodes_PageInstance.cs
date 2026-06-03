@@ -1610,7 +1610,7 @@ public class GetPageOutputWithParameter : TaskPageNode
 
 #endregion
 
-#region GetPageOutputWithParameter
+#region GetPageErrorMessage
 
 /// <summary>
 /// Gets the error message of a page instance with configurable parameters based on a page definition.
@@ -1649,5 +1649,64 @@ public class GetPageErrorMessage : TaskPageNode
     }
 }
 
+
+#endregion
+
+#region TaskToPageInstance
+
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "Page")]
+[DisplayText("Get Task Page Instance", "*CoreIcon|Task")]
+[NativeAlias("Suity.Editor.Flows.TaskPages.GetTaskPageInstance")]
+public class TaskToPageInstance : TaskPageNode
+{
+    readonly FlowNodeConnector _task;
+    readonly FlowNodeConnector _pageInstance;
+
+    public TaskToPageInstance()
+    {
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
+        var instanceType = TypeDefinition.FromNative<IPageInstance>();
+
+        _task = this.AddDataInputConnector("Task", taskType, " ");
+        _pageInstance = AddDataOutputConnector("PageInstance", instanceType, " ");
+    }
+
+    public override void Compute(IFlowComputation compute)
+    {
+        var task = compute.GetValue<IAigcTaskPage>(_task);
+        var pageInstance = task?.GetPageInstance();
+
+        compute.SetValue(_pageInstance, pageInstance);
+    }
+}
+
+#endregion
+
+#region PageInstanceToTask
+
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "Page")]
+[DisplayText("Get Page Instance Task", "*CoreIcon|Task")]
+public class PageInstanceToTask : TaskPageNode
+{
+    readonly FlowNodeConnector _pageInstance;
+    readonly FlowNodeConnector _task;
+
+    public PageInstanceToTask()
+    {
+        var instanceType = TypeDefinition.FromNative<IPageInstance>();
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
+
+        _pageInstance = AddDataInputConnector("PageInstance", instanceType, " ");
+        _task = this.AddDataOutputConnector("Task", taskType, " ");
+    }
+
+    public override void Compute(IFlowComputation compute)
+    {
+        var pageInstance = compute.GetValue<IPageInstance>(_pageInstance);
+        var task = pageInstance?.Owner as IAigcTaskPage;
+
+        compute.SetValue(_task, task);
+    }
+}
 
 #endregion
