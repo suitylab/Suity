@@ -38,6 +38,8 @@ internal abstract class SItemExternal
 
     public abstract object ResolveOriginValue(object value, ICondition context = null);
 
+    public abstract object ResolveObject(object obj, ICondition context = null);
+
     public abstract bool IsMeOrParent(SItem item, SItem parent);
 }
 

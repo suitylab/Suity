@@ -304,13 +304,13 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
             }
         }
 
-        value = SItem.ResolveValue(value);
-        if (value is Array ary)
+        var v = SItem.ResolveObject(value);
+        if (v is Array ary)
         {
-            value = SyncList.CreateReadonly(ary);
+            v = SyncList.CreateReadonly(ary);
         }
 
-        Cloner.CloneOneProperty(name, value, _input);
+        Cloner.CloneOneProperty(name, v, _input);
 
         return true;
     }

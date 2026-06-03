@@ -395,6 +395,7 @@ internal class SArrayExternalBK : SArrayExternal
         for (int i = 0; i < _ary.Count; i++)
         {
             var value = this[i];
+            value = SItemExternalBK.Instance.ResolveObject(value);
             var v = ResolveValue(value, type);
             ary.SetValue(v, i);
         }

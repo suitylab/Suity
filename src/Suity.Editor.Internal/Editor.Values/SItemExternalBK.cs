@@ -184,14 +184,6 @@ internal class SItemExternalBK : SItemExternal
         {
             return sValue.GetValue(context);
         }
-        else if (item is SObject sobj && sobj.Controller is SObjectController ctrl)
-        {
-            return ctrl;
-        }
-        else if (item is SArray sary)
-        {
-            return sary.ToArray();
-        }
         else
         {
             return item;
@@ -204,14 +196,6 @@ internal class SItemExternalBK : SItemExternal
         if (value is SValue sValue)
         {
             return sValue.GetValue(context);
-        }
-        else if (value is SObject sobj && sobj.Controller is SObjectController ctrl)
-        {
-            return ctrl;
-        }
-        else if (value is SArray sary)
-        {
-            return sary.ToArray();
         }
         else
         {
@@ -226,17 +210,29 @@ internal class SItemExternalBK : SItemExternal
         {
             return sValue.Value;
         }
-        else if (value is SObject sobj && sobj.Controller is SObjectController ctrl)
+        else
+        {
+            return value;
+        }
+    }
+
+    public override object ResolveObject(object obj, ICondition context = null)
+    {
+        if (obj is SValue sValue)
+        {
+            return sValue.GetValue(context);
+        }
+        else if (obj is SObject sobj && sobj.Controller is SObjectController ctrl)
         {
             return ctrl;
         }
-        else if (value is SArray sary)
+        else if (obj is SArray sary)
         {
             return sary.ToArray();
         }
         else
         {
-            return value;
+            return obj;
         }
     }
 

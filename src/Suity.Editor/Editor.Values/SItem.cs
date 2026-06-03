@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using Suity.Editor.Types;
 using Suity.Synchonizing.Core;
 using System;
@@ -354,6 +355,7 @@ public abstract class SItem :
     public static SItem ResolveSItem(object value)
         => SItemExternal._external.ResolveSItem(value);
 
+
     /// <summary>
     /// Resolves the value from an SItem.
     /// </summary>
@@ -377,6 +379,9 @@ public abstract class SItem :
     /// <param name="context">The condition context.</param>
     public static object ResolveOriginValue(object value, ICondition context = null)
         => SItemExternal._external.ResolveOriginValue(value, context);
+
+    public static object ResolveObject(object obj, ICondition context = null)
+        => SItemExternal._external.ResolveObject(obj, context);
 
     /// <summary>
     /// Determines if the item is the same as or a parent of the specified parent.

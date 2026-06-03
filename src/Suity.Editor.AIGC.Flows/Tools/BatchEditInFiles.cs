@@ -179,7 +179,7 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 
                 if (matchCount == 0)
                 {
-                    errors.Add($"[{relativePath}] OldExactString not found: {mod.OldExactString.Substring(0, Math.Min(50, mod.OldExactString.Length))}...");
+                    errors.Add($"[{relativePath}] Old Exact String not found: {mod.OldExactString.Substring(0, Math.Min(50, mod.OldExactString.Length))}...");
                     newContent = null;
                     break;
                 }
