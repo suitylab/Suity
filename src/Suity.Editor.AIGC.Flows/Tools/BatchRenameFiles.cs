@@ -1,6 +1,7 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -17,7 +18,7 @@ namespace Suity.Editor.AIGC.Tools;
 public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
 {
     [NativeType("BatchRenameFiles.RenameItem", CodeBase = "*Suity")]
-    public class RenameItem : IViewObject
+    public class RenameItem : SObjectController
     {
         readonly StringProperty _sourcePath = new("SourcePath", "Source Path", string.Empty, "The current file path.");
         readonly StringProperty _targetPath = new("TargetPath", "Target Path", string.Empty, "The new file path.");
@@ -25,12 +26,12 @@ public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
         public string SourcePath { get => _sourcePath.Text; set => _sourcePath.Text = value; }
         public string TargetPath { get => _targetPath.Text; set => _targetPath.Text = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _sourcePath.Sync(sync);
             _targetPath.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _sourcePath.InspectorField(setup);
             _targetPath.InspectorField(setup);
@@ -39,7 +40,7 @@ public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
     }
 
     [NativeType("BatchRenameFiles.RenameResult", CodeBase = "*Suity")]
-    public class RenameResult : IViewObject
+    public class RenameResult : SObjectController
     {
         readonly StringProperty _sourcePath = new("SourcePath", "Source Path");
         readonly StringProperty _targetPath = new("TargetPath", "Target Path");
@@ -50,7 +51,7 @@ public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
         public string Error { get => _error.Text; set => _error.Text = value; }
         public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _sourcePath.Sync(sync);
             _targetPath.Sync(sync);
@@ -60,7 +61,7 @@ public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
                 _error.Sync(sync);
             }
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _sourcePath.InspectorField(setup);
             _targetPath.InspectorField(setup);

@@ -1,6 +1,7 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -17,7 +18,7 @@ namespace Suity.Editor.AIGC.Tools;
 public class BatchDeleteFiles : ToolCommand<BatchDeleteFiles.Output>
 {
     [NativeType("BatchDeleteFiles.DeleteItem", CodeBase = "*Suity")]
-    public class DeleteItem : IViewObject
+    public class DeleteItem : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path", string.Empty, "The file path to delete.");
         readonly ValueProperty<bool> _verifyExists = new("VerifyExists", "Verify Exists", true, "Check if file exists before deleting.");
@@ -25,12 +26,12 @@ public class BatchDeleteFiles : ToolCommand<BatchDeleteFiles.Output>
         public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
         public bool VerifyExists { get => _verifyExists.Value; set => _verifyExists.Value = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
             _verifyExists.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _filePath.InspectorField(setup);
             _verifyExists.InspectorField(setup);
@@ -39,7 +40,7 @@ public class BatchDeleteFiles : ToolCommand<BatchDeleteFiles.Output>
     }
 
     [NativeType("BatchDeleteFiles.DeleteResult", CodeBase = "*Suity")]
-    public class DeleteResult : IViewObject
+    public class DeleteResult : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
         readonly StringProperty _error = new("Error", "Error");
@@ -48,7 +49,7 @@ public class BatchDeleteFiles : ToolCommand<BatchDeleteFiles.Output>
         public string Error { get => _error.Text; set => _error.Text = value; }
         public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
 
@@ -57,7 +58,7 @@ public class BatchDeleteFiles : ToolCommand<BatchDeleteFiles.Output>
                 _error.Sync(sync);
             }
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _filePath.InspectorField(setup);
             _error.InspectorField(setup);

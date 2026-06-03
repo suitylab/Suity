@@ -1,6 +1,7 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -18,7 +19,7 @@ namespace Suity.Editor.AIGC.Tools;
 public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
 {
     [NativeType("BatchWriteFile.FileWriteItem", CodeBase = "*Suity")]
-    public class FileWriteItem : IViewObject
+    public class FileWriteItem : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
         readonly TextBlockProperty _content = new("Content", "Content");
@@ -26,12 +27,12 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
         public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
         public string Content { get => _content.Text; set => _content.Text = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
             _content.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _filePath.InspectorField(setup);
             _content.InspectorField(setup);
@@ -40,7 +41,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
     }
 
     [NativeType("BatchWriteFile.FileResult", CodeBase = "*Suity")]
-    public class FileResult : IViewObject
+    public class FileResult : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
         readonly StringProperty _status = new("Status", "Status");
@@ -51,7 +52,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
         public string Error { get => _error.Text; set => _error.Text = value; }
         public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
             _status.Sync(sync);
@@ -61,7 +62,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
                 _error.Sync(sync);
             }
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _filePath.InspectorField(setup);
             _status.InspectorField(setup);

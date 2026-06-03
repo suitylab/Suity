@@ -1,6 +1,7 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -18,8 +19,8 @@ namespace Suity.Editor.AIGC.Tools;
 [NativeAlias("Suity.Editor.AIGC.BatchApplyDiffPatches")]
 public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
 {
-    [NativeType("BatchApplyDiffPatches.FilePatchItem", CodeBase = "*Suity")]
-    public class FilePatchItem : IViewObject
+[NativeType("BatchApplyDiffPatches.FilePatchItem", CodeBase = "*Suity")]
+    public class FilePatchItem : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
         readonly TextBlockProperty _diffContent = new("DiffContent", "Diff Content");
@@ -27,12 +28,12 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
         public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
         public string DiffContent { get => _diffContent.Text; set => _diffContent.Text = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
             _diffContent.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _filePath.InspectorField(setup);
             _diffContent.InspectorField(setup);
@@ -40,8 +41,8 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
         public override string ToString() => $"{FilePath} ({DiffContent?.Length ?? 0} chars diff)";
     }
 
-    [NativeType("BatchApplyDiffPatches.FileResult", CodeBase = "*Suity")]
-    public class FileResult : IViewObject
+[NativeType("BatchApplyDiffPatches.FileResult", CodeBase = "*Suity")]
+    public class FileResult : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
         readonly StringProperty _status = new("Status", "Status");
@@ -54,7 +55,7 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
         public int HunksApplied { get => _hunksApplied.Value; set => _hunksApplied.Value = value; }
         public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
             _status.Sync(sync);
@@ -66,7 +67,7 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
 
             _hunksApplied.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _filePath.InspectorField(setup);
             _status.InspectorField(setup);

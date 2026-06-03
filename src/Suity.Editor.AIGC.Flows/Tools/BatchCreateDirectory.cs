@@ -1,5 +1,6 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -16,17 +17,17 @@ namespace Suity.Editor.AIGC.Tools;
 public class BatchCreateDirectory : ToolCommand<BatchCreateDirectory.Output>
 {
     [NativeType("BatchCreateDirectory.DirectoryItem", CodeBase = "*Suity")]
-    public class DirectoryItem : IViewObject
+    public class DirectoryItem : SObjectController
     {
         readonly StringProperty _directoryPath = new("DirectoryPath", "Directory Path");
 
         public string DirectoryPath { get => _directoryPath.Text; set => _directoryPath.Text = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _directoryPath.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _directoryPath.InspectorField(setup);
         }
@@ -34,7 +35,7 @@ public class BatchCreateDirectory : ToolCommand<BatchCreateDirectory.Output>
     }
 
     [NativeType("BatchCreateDirectory.DirectoryResult", CodeBase = "*Suity")]
-    public class DirectoryResult : IViewObject
+    public class DirectoryResult : SObjectController
     {
         readonly StringProperty _directoryPath = new("DirectoryPath", "Directory Path");
         readonly StringProperty _status = new("Status", "Status");
@@ -45,7 +46,7 @@ public class BatchCreateDirectory : ToolCommand<BatchCreateDirectory.Output>
         public string Error { get => _error.Text; set => _error.Text = value; }
         public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _directoryPath.Sync(sync);
             _status.Sync(sync);
@@ -55,7 +56,7 @@ public class BatchCreateDirectory : ToolCommand<BatchCreateDirectory.Output>
                 _error.Sync(sync);
             }
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _directoryPath.InspectorField(setup);
             _status.InspectorField(setup);

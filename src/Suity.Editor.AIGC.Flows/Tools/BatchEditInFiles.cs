@@ -19,6 +19,8 @@ namespace Suity.Editor.AIGC.Tools;
 [NativeAlias("Suity.Editor.AIGC.Tools.BatchReplaceStringInFiles")]
 public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 {
+    record FileMod(string FullPath, string RelativePath, string NewContent, int Replacements, IEnumerable<FileEditItem> Mods);
+
     [NativeType("BatchEditInFiles.FileEditItem", CodeBase = "*Suity")]
     public class FileEditItem : SObjectController
     {
@@ -129,112 +131,107 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
         var output = new Output();
         int successCount = 0;
         var errors = new List<string>();
+        var fileResults = new List<FileMod>();
 
         var fileGroups = Modifications.GroupBy(m => m.FilePath);
 
         foreach (var group in fileGroups)
         {
             string filePath = group.Key;
-            var result = new FileResult { FilePath = filePath };
+            string relativePath = filePath.TrimStart('/', '\\');
+            string fullPath = relativePath;
+
+            if (!Path.IsPathRooted(relativePath))
+            {
+                fullPath = Path.Combine(workspaceDir, relativePath);
+            }
+
+            if (!File.Exists(fullPath))
+            {
+                errors.Add($"[{relativePath}] File not found");
+                continue;
+            }
+
+            string content = File.ReadAllText(fullPath);
+            string newContent = content;
             int replacementsInFile = 0;
-            string fileError = null;
+            var fileMods = group.ToList();
 
-            try
+            foreach (var mod in fileMods)
             {
-                string relativePath = filePath.TrimStart('/', '\\');
-                string fullPath = relativePath;
-
-                if (!Path.IsPathRooted(relativePath))
+                if (string.IsNullOrWhiteSpace(mod.OldExactString))
                 {
-                    fullPath = Path.Combine(workspaceDir, relativePath);
-                }
-
-                result.FilePath = relativePath;
-
-                if (!File.Exists(fullPath))
-                {
-                    fileError = "File not found";
-                    result.Status = "Failed";
-                    errors.Add($"[{relativePath}] {fileError}");
-                    output.Results.Add(result);
                     continue;
                 }
 
-                string content = File.ReadAllText(fullPath);
-
-                foreach (var mod in group)
+                int matchCount = 0;
+                int index = 0;
+                StringUtility.MatchResult matchFinal = StringUtility.MatchResult.NotFound;
+                StringUtility.MatchResult match = StringUtility.FuzzyMatch(newContent, mod.OldExactString, index);
+                while (match.Found)
                 {
-                    if (string.IsNullOrWhiteSpace(mod.OldExactString))
-                    {
-                        continue;
-                    }
-
-                    int matchCount = 0;
-                    int index = 0;
-                    StringUtility.MatchResult matchFinal = StringUtility.MatchResult.NotFound;
-                    StringUtility.MatchResult match = StringUtility.FuzzyMatch(content, mod.OldExactString, index);
-                    while (match.Found)
-                    {
-                        matchCount++;
-                        if (matchCount == 1)
-                            matchFinal = match;
-                        index = match.Index + match.Length;
-                        match = StringUtility.FuzzyMatch(content, mod.OldExactString, index);
-                    }
-
-                    if (matchCount == 0)
-                    {
-                        fileError = $"OldExactString not found: {mod.OldExactString.Substring(0, Math.Min(50, mod.OldExactString.Length))}...";
-                        errors.Add($"[{relativePath}] {fileError}");
-                        break;
-                    }
-
-                    if (matchCount >= 2)
-                    {
-                        fileError = "Multiple matches found, could not locate precisely.";
-                        errors.Add($"[{relativePath}] {fileError}");
-                        break;
-                    }
-
-                    content = StringUtility.ReplaceContent(content, matchFinal.Index, matchFinal.Length, mod.NewString);
-                    replacementsInFile++;
+                    matchCount++;
+                    if (matchCount == 1)
+                        matchFinal = match;
+                    index = match.Index + match.Length;
+                    match = StringUtility.FuzzyMatch(newContent, mod.OldExactString, index);
                 }
 
-                if (fileError != null)
+                if (matchCount == 0)
                 {
-                    result.Status = "Failed";
-                    output.Results.Add(result);
-                    continue;
+                    errors.Add($"[{relativePath}] OldExactString not found: {mod.OldExactString.Substring(0, Math.Min(50, mod.OldExactString.Length))}...");
+                    newContent = null;
+                    break;
                 }
 
-                File.WriteAllText(fullPath, content);
-                result.Status = replacementsInFile > 0 ? "Modified" : "No Changes";
-                result.ReplacementsMade = replacementsInFile;
+                if (matchCount >= 2)
+                {
+                    errors.Add($"[{relativePath}] Multiple matches found, could not locate precisely.");
+                    newContent = null;
+                    break;
+                }
 
-                if (replacementsInFile > 0)
-                {
-                    var replacementSummary = string.Join("\n", group.Select(m =>
-                        $"---------------- Before ----------------\n{m.OldExactString}\n---------------- After ----------------\n{m.NewString}"));
-                    parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, relativePath, replacementSummary, $"replaced {replacementsInFile} place(s), use ReadFile to get full content");
-                    successCount++;
-                }
-                else
-                {
-                    successCount++;
-                }
+                newContent = StringUtility.ReplaceContent(newContent, matchFinal.Index, matchFinal.Length, mod.NewString);
+                replacementsInFile++;
             }
-            catch (Exception ex)
+
+            if (newContent == null)
             {
-                result.Status = "Failed";
-                errors.Add($"[{filePath}] {ex.Message}");
+                continue;
             }
 
-            output.Results.Add(result);
+            fileResults.Add(new(fullPath, relativePath, newContent, replacementsInFile, fileMods));
         }
 
         if (errors.Count > 0)
         {
             throw new AggregateException($"BatchEditInFiles failed with {errors.Count} error(s):\n" + string.Join("\n", errors));
+        }
+
+        foreach (var file in fileResults)
+        {
+            File.WriteAllText(file.FullPath, file.NewContent);
+
+            var result = new FileResult
+            {
+                FilePath = file.RelativePath,
+                Status = file.Replacements > 0 ? "Modified" : "No Changes",
+                ReplacementsMade = file.Replacements
+            };
+
+            if (file.Replacements > 0)
+            {
+                var replacementSummary = string.Join("\n", file.Mods.Select(m =>
+                    $"---------------- Before ----------------\n{m.OldExactString}\n---------------- After ----------------\n{m.NewString}"));
+                parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, file.RelativePath, replacementSummary, $"replaced {file.Replacements} place(s), use ReadFile to get full content");
+                successCount++;
+            }
+            else
+            {
+                successCount++;
+            }
+
+            output.Results.Add(result);
         }
 
         output.SuccessCount = successCount;

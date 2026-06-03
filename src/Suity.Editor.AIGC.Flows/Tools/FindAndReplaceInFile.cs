@@ -1,6 +1,7 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -18,7 +19,7 @@ namespace Suity.Editor.AIGC.Tools;
 public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
 {
     [NativeType("FindAndReplaceInFile.ReplaceItem", CodeBase = "*Suity")]
-    public class ReplaceItem : IViewObject
+    public class ReplaceItem : SObjectController
     {
         readonly TextBlockProperty _oldString = new("OldString", "Old String", "The string to find.");
         readonly TextBlockProperty _newString = new("NewString", "New String", "The string to replace with.");
@@ -26,12 +27,12 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
         public string OldString { get => _oldString.Text; set => _oldString.Text = value; }
         public string NewString { get => _newString.Text; set => _newString.Text = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _oldString.Sync(sync);
             _newString.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _oldString.InspectorField(setup);
             _newString.InspectorField(setup);
@@ -40,7 +41,7 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
     }
 
     [NativeType("FindAndReplaceInFile.ReplaceResult", CodeBase = "*Suity")]
-    public class ReplaceResult : IViewObject
+    public class ReplaceResult : SObjectController
     {
         readonly StringProperty _oldString = new("OldString", "Old String");
         readonly StringProperty _newString = new("NewString", "New String");
@@ -52,14 +53,14 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
         public int MatchCount { get => _matchCount.Value; set => _matchCount.Value = value; }
         public string Message { get => _message.Text; set => _message.Text = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _oldString.Sync(sync);
             _newString.Sync(sync);
             _matchCount.Sync(sync);
             _message.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _oldString.InspectorField(setup);
             _newString.InspectorField(setup);

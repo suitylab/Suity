@@ -2,6 +2,7 @@ using Suity.Collections;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -17,8 +18,8 @@ namespace Suity.Editor.AIGC.Tools;
 [NativeAlias("Suity.Editor.AIGC.BatchReadFiles")]
 public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
 {
-    [NativeType("BatchReadFiles.FileReadItem", CodeBase = "*Suity")]
-    public class FileReadItem : IViewObject
+[NativeType("BatchReadFiles.FileReadItem", CodeBase = "*Suity")]
+    public class FileReadItem : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path", string.Empty, "The absolute or relative path to the file to read.");
         readonly ValueProperty<int> _startLine = new("StartLine", "Start Line", 0, "The starting line number (1-based). 0 means read from the beginning.");
@@ -28,13 +29,13 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
         public int StartLine { get => _startLine.Value; set => _startLine.Value = value; }
         public int LineCount { get => _lineCount.Value; set => _lineCount.Value = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
             _startLine.Sync(sync);
             _lineCount.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _filePath.InspectorField(setup);
             _startLine.InspectorField(setup);
@@ -44,7 +45,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
     }
 
     [NativeType("BatchReadFiles.FileResult", CodeBase = "*Suity")]
-    public class FileResult : IViewObject
+    public class FileResult : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
         readonly StringProperty _message = new("Message");
@@ -52,12 +53,12 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
         public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
         public string Message { get => _message.Text; set => _message.Text = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             _filePath.Sync(sync);
             _message.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
             _filePath.InspectorField(setup);
             _message.InspectorField(setup);
