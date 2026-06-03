@@ -1042,6 +1042,73 @@ public class MultipleDataActionDecompose : ActionFlowNode, INavigable
 
 #endregion
 
+#region PassAction
+
+/// <summary>
+/// A flow node that passes an execution action from its input connector directly to its output connector.
+/// </summary>
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
+[DisplayText("Pass Action", "*CoreIcon|Action")]
+public class PassAction : ValueFlowNode, IFlowNodeComputeAsync
+{
+    private FlowNodeConnector _in;
+    private FlowNodeConnector _out;
+    private FlowNodeConnector _subAction;
+
+    private readonly ValueProperty<bool> _subActionEnabled = new("SubActionEnabled", "Sub-Action Enabled");
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PassAction"/> class.
+    /// </summary>
+    public PassAction()
+    {
+        UpdateConnector();
+        _subActionEnabled.ValueChanged += (s, e) => UpdateConnectorQueued();
+    }
+
+    protected override void OnUpdateConnector()
+    {
+        base.OnUpdateConnector();
+
+        _in = AddActionInputConnector("In", " ");
+        _out = AddActionOutputConnector("Out", " ");
+        if (_subActionEnabled.Value)
+        {
+            _subAction = AddActionOutputConnector("Sub");
+        }
+        else
+        {
+            _subAction = null;
+        }
+    }
+
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _subActionEnabled.Sync(sync);
+    }
+
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _subActionEnabled.InspectorField(setup);
+    }
+
+    public async Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)
+    {
+        if (_subActionEnabled.Value)
+        {
+            await compute.RunAction(_subAction, cancel);
+        }
+
+        return _out;
+    }
+}
+
+#endregion
+
 #region PassDataAction
 
 /// <summary>
@@ -1112,17 +1179,16 @@ public class PassDataAction : ActionFlowNode, INavigable
             type = type.MakeArrayType();
         }
 
+        _in = AddConnector("In", type, FlowDirections.Input, FlowConnectorTypes.Action, false, " ");
+        _out = AddConnector("Out", type, FlowDirections.Output, FlowConnectorTypes.Action, false, " ");
         if (_subActionEnabled.Value)
         {
-            _subAction = AddConnector("SubAction", type, FlowDirections.Output, FlowConnectorTypes.Action, false, "Sub Action");
+            _subAction = AddConnector("Sub", type, FlowDirections.Output, FlowConnectorTypes.Action, false, "Sub");
         }
         else
         {
             _subAction = null;
         }
-
-        _in = AddConnector("In", type, FlowDirections.Input, FlowConnectorTypes.Action, false, " ");
-        _out = AddConnector("Out", type, FlowDirections.Output, FlowConnectorTypes.Action, false, " ");
     }
 
     /// <inheritdoc/>
