@@ -6,7 +6,6 @@ using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -87,6 +86,7 @@ public class InputTextBlock : TextFlowNode
 /// <summary>
 /// A flow node that references a text asset from the asset library and outputs its content.
 /// </summary>
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Text Reference")]
 [ToolTipsText("Reference text asset from asset library.")]
 [NativeAlias("Suity.Editor.Flows.Nodes.TextBlockRef", UseForSaving = true)]
@@ -285,6 +285,7 @@ public class PagedTextAssetRef : TextFlowNode, INavigable
 /// <summary>
 /// A flow node that finds a specified substring in the input text and replaces all occurrences with another string.
 /// </summary>
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Replace Text")]
 [ToolTipsText("Find keywords in text and replace with another text.")]
 public class TextReplace : TextFlowNode
@@ -368,6 +369,7 @@ public class TextReplace : TextFlowNode
 /// A flow node that performs multiple find-and-replace operations on the input text,
 /// with dynamically generated input connectors based on a list of keywords to find.
 /// </summary>
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Replace Multiple Texts")]
 [ToolTipsText("Find multiple keywords in text and replace with other texts respectively.")]
 public class MultiTextReplace : TextFlowNode
@@ -465,6 +467,7 @@ public class MultiTextReplace : TextFlowNode
 /// <summary>
 /// A flow node that converts special characters in the input string to their escaped representations using backslashes.
 /// </summary>
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Escape String")]
 [ToolTipsText("Convert special characters in text to escape sequences with \\.")]
 public class EscapeString : TextFlowNode
@@ -499,6 +502,7 @@ public class EscapeString : TextFlowNode
 /// <summary>
 /// A flow node that converts escape sequences (prefixed with backslash) in the input string back to their original special characters.
 /// </summary>
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Unescape String")]
 [ToolTipsText("Convert escape sequences with \\ in text back to original special characters.")]
 public class UnescapeString : TextFlowNode

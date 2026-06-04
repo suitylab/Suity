@@ -437,6 +437,23 @@ internal class JsonSchemaService : IJsonSchemaService
         {
             fieldProp = ObjectSchemaProperty.DefineEnum(e.EnumFields.Select(o => o.Name).ToList(), description);
         }
+        else if (type.GetIsNativeStruct() && type.Target?.NativeType is Type nativeType && typeof(IViewObject).IsAssignableFrom(nativeType))
+        {
+            // For IViewObject that is not marked as struct/abstract struct but we still want to support schema generation for it, we can treat it as struct here.
+            // Need to create an instance of it to get its fields.
+            try
+            {
+                if (Activator.CreateInstance(nativeType) is IViewObject viewObject)
+                {
+                    var simpleType = GetViewObjectSimpleType(viewObject);
+                    fieldProp = _CreateSchemaProperty(simpleType, depth, options);
+                }
+            }
+            catch (Exception err)
+            {
+                err.LogError();
+            }
+        }
         else if (type.IsStruct && type.Target is DCompond s)
         {
             fieldProp = _CreateSchemaProperty(s, depth, options);
@@ -463,23 +480,6 @@ internal class JsonSchemaService : IJsonSchemaService
         {
             // Use string to replace link field
             fieldProp = ObjectSchemaProperty.DefineString(description);
-        }
-        else if (type.Relationship == TypeRelationships.None && type.Target?.NativeType is Type nativeType && typeof(IViewObject).IsAssignableFrom(nativeType))
-        {
-            // For IViewObject that is not marked as struct/abstract struct but we still want to support schema generation for it, we can treat it as struct here.
-            // Need to create an instance of it to get its fields.
-            try
-            {
-                if (Activator.CreateInstance(nativeType) is IViewObject viewObject)
-                {
-                    var simpleType = GetViewObjectSimpleType(viewObject);
-                    fieldProp = _CreateSchemaProperty(simpleType, depth, options);
-                }
-            }
-            catch (Exception err)
-            {
-                err.LogError();
-            }
         }
 
         return fieldProp;

@@ -208,6 +208,19 @@ public static class TypeExtensions
         }
     }
 
+    public static bool GetIsNativeStruct(this TypeDefinition type)
+    {
+        switch (type.Relationship)
+        {
+            case TypeRelationships.Struct: // SObject with Controller
+            case TypeRelationships.AbstractStruct: // SObject with Controller
+            case TypeRelationships.None: // ISyncObject only
+                return type.IsNative && type.NativeType != null;
+        }
+
+        return false;
+    }
+
     /// <summary>
     /// Determines whether the type is string-like.
     /// </summary>

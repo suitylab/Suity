@@ -318,10 +318,10 @@ public static class SValueJsonHelper
 
     private static object FromJsonObject(JsonObject jsonObj, TypeDefinition fieldType, SItemResourceOptions options = null)
     {
-        Type nativeType = fieldType.Target?.NativeType;
+        Type nativeType = fieldType.NativeType;
 
         bool isNativeType =
-            fieldType.Relationship == TypeRelationships.None &&
+            fieldType.GetIsNativeStruct() &&
             nativeType != null &&
             typeof(ISyncObject).IsAssignableFrom(nativeType);
 
@@ -344,11 +344,11 @@ public static class SValueJsonHelper
     private static object FromJsonArray(JsonArray jsonArray, TypeDefinition fieldType, SItemResourceOptions options = null)
     {
         var elementType = fieldType.ElementType;
-        Type nativeType = elementType?.Target?.NativeType;   
+        Type nativeType = elementType?.NativeType;   
 
         bool isNativeType = 
             fieldType.Relationship == TypeRelationships.Array &&
-            elementType?.Relationship == TypeRelationships.None &&
+            elementType?.GetIsNativeStruct() == true &&
             nativeType != null && 
             typeof(ISyncObject).IsAssignableFrom(nativeType);
 

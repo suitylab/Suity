@@ -243,7 +243,7 @@ public abstract class BaseOpenAICall : BaseLLmCall
                     {
                         smallSequence?.Append(t);
                         appender.Append(t);
-                        Debug.WriteLine(t);
+                        //Debug.WriteLine(t);
 
                         if (interruptions != null && smallSequence != null && interruptions.Any(i => smallSequence.ToString().Contains(i)))
                         {

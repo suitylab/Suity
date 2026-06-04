@@ -410,6 +410,7 @@ public class ParseTagToPageInstance : TaskPageNode
     readonly ConnectorStringProperty _attributeName = new("AttributeName", "Attribute Name", "name", "The attribute name on the Xml tag that represents the tool name.");
 
     readonly FlowNodeConnector _outPageInstance;
+    readonly FlowNodeConnector _outPageName;
     readonly FlowNodeConnector _outNoResult;
 
     /// <summary>
@@ -428,6 +429,7 @@ public class ParseTagToPageInstance : TaskPageNode
         var instanceType = TypeDefinition.FromNative<IPageInstance>();
 
         _outPageInstance = this.AddConnector("PageInstance", instanceType, FlowDirections.Output, FlowConnectorTypes.Action, false, "Page Instance");
+        _outPageName = this.AddDataOutputConnector("PageName", "string", "Page Name");
         _outNoResult = this.AddActionOutputConnector("NoResult", "No Result");
     }
 
@@ -468,6 +470,7 @@ public class ParseTagToPageInstance : TaskPageNode
         if (pageInstance != null)
         {
             compute.SetValue(_outPageInstance, pageInstance);
+            compute.SetValue(_outPageName, pageName);
             compute.SetResult(this, _outPageInstance);
         }
         else

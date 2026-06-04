@@ -69,12 +69,9 @@ public class SimpleType
     }
 
     /// <inheritdoc/>
-    public override string ToString()
-    {
-        return ToDataWritable()?.ToString();
-    }
+    public override string ToString() => Name;
 
-    public string ToString(bool niceFormat)
+    public string GetJsonSchema(bool niceFormat = true)
     {
         var dataWritable = ToDataWritable();
 
@@ -134,8 +131,14 @@ public class SimpleField
     }
 
     /// <inheritdoc/>
-    public override string ToString()
+    public override string ToString() => Name;
+
+    public string GetJsonSchema(bool niceFormat = true)
     {
-        return ToDataWritable()?.ToString();
+        var dataWritable = ToDataWritable();
+
+        var jsonWriter = new JsonDataWriter();
+        dataWritable.WriteData(jsonWriter);
+        return jsonWriter.ToString(niceFormat);
     }
 }

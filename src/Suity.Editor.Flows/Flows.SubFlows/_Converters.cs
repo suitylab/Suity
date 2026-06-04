@@ -59,7 +59,7 @@ public class SubFlowDefinitionAssetToTextConverter : TypeToTextConverter<SubFlow
 
         var element = new SubFlowInstance(item, option);
 
-        return element.ToSimpleType(FlowDirections.Input).ToString();
+        return element.ToSimpleType(FlowDirections.Input).GetJsonSchema();
     }
 }
 
@@ -87,7 +87,7 @@ public class SubFlowDefinitionAssetArrayToTextConverter : AssetLinkArrayToTextCo
 
             var element = new SubFlowInstance(item, option);
 
-            string s = element.ToSimpleType(FlowDirections.Input).ToString();
+            string s = element.ToSimpleType(FlowDirections.Input).GetJsonSchema();
 
             if (!string.IsNullOrWhiteSpace(s))
             {
@@ -116,7 +116,7 @@ public class IPageAssetToTextConverter : TypeToTextConverter<IPageAsset>
 
         var instance = objFrom.CreatePageInstance(option);
 
-        return instance?.ToSimpleType(FlowDirections.Input).ToString(!MinimalFormat);
+        return instance?.ToSimpleType(FlowDirections.Input).GetJsonSchema(!MinimalFormat);
     }
 }
 
@@ -143,7 +143,9 @@ public class IPageAssetArrayToTextConverter : AssetLinkArrayToTextConverter<IPag
                 continue;
             }
 
-            string s = instance.ToSimpleType(FlowDirections.Input).ToString(!IPageAssetToTextConverter.MinimalFormat);
+            var simpleType = instance.ToSimpleType(FlowDirections.Input);
+
+            string s = simpleType.GetJsonSchema(!IPageAssetToTextConverter.MinimalFormat);
 
             if (!string.IsNullOrWhiteSpace(s))
             {

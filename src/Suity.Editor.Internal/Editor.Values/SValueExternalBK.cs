@@ -6,6 +6,7 @@ using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Reflecting;
 using Suity.Selecting;
+using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
@@ -118,17 +119,17 @@ internal sealed class SValueExternalBK : SValueExternal
     #region Resolve
 
     /// <inheritdoc/>
-    public override Type GetNativeType(TypeDefinition typeInfo)
+    public override Type GetNativeType(TypeDefinition typeDef)
     {
-        if (typeInfo is null)
+        if (typeDef is null)
         {
             return null;
         }
 
-        switch (typeInfo.Relationship)
+        switch (typeDef.Relationship)
         {
             case TypeRelationships.Value:
-                return typeInfo.Target?.NativeType;
+                return typeDef.Target?.NativeType;
 
             case TypeRelationships.Array:
                 return typeof(SArray);
@@ -154,14 +155,14 @@ internal sealed class SValueExternalBK : SValueExternal
 
             case TypeRelationships.Struct:
                 // Native modifier
-                Type editedType = NativeTypes.GetNativeTypeByLocalName(typeInfo);
+                Type editedType = NativeTypes.GetNativeTypeByLocalName(typeDef);
                 return editedType ?? typeof(SObject);
 
             case TypeRelationships.None:
-                return typeInfo.Target?.NativeType;
+                return typeDef.NativeType;
 
             default:
-                return typeInfo.Target?.NativeType;
+                return typeDef.NativeType;
         }
     }
 
@@ -873,7 +874,7 @@ internal sealed class SValueExternalBK : SValueExternal
 
             case TypeRelationships.None:
                 {
-                    if (typeDef.Target?.NativeType is { } type)
+                    if (typeDef.IsNative && typeDef.NativeType is { } type)
                     {
                         if (typeof(IViewObject).IsAssignableFrom(type))
                         {
@@ -1099,7 +1100,7 @@ internal sealed class SValueExternalBK : SValueExternal
 
             case TypeRelationships.None:
                 {
-                    if (typeDef.IsNative && typeDef.Target?.NativeType is { } type)
+                    if (typeDef.IsNative && typeDef.NativeType is { } type)
                     {
                         if (typeof(IViewObject).IsAssignableFrom(type))
                         {
