@@ -58,11 +58,17 @@ public static class SubFlowExtensions
             }
         }
 
-        var historyText = TypeDefinition.FromNative<HistoryText>();
-        var state = EditorServices.TypeConvertService.TryConvert(type, historyText, false, value, out var converted);
-        var result = state == TypeConvertState.Unconvertible ? value : converted;
+        var v = SItem.ResolveObject(value);
 
-        return result?.ToString();
+        var historyText = TypeDefinition.FromNative<HistoryText>();
+        var state = EditorServices.TypeConvertService.TryConvert(type, historyText, false, v, out var converted);
+        if (state != TypeConvertState.Unconvertible)
+        {
+            return converted?.ToString() ?? HistoryText.Empty;
+        }
+
+        // TODO: Serialize object to string if no direct conversion is available, consider using JSON or a custom serializer for better readability.
+        return v?.ToString() ?? HistoryText.Empty;
     }
 
     /// <summary>
