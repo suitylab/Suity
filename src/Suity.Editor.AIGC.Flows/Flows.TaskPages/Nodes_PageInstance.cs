@@ -370,8 +370,7 @@ public class ParsePageInstance : TaskPageNode
                 return null;
             }
 
-            var setter = new PageSetter(dic);
-            pageInstance.SetParameters(setter);
+            pageInstance.SetParameters(dic);
 
             return pageInstance;
         }
@@ -384,45 +383,6 @@ public class ParsePageInstance : TaskPageNode
         }
     }
 
-    class PageSetter : ISyncObject
-    {
-        readonly Dictionary<string, object> _dic;
-
-        public PageSetter(Dictionary<string, object> dic)
-        {
-            _dic = dic ?? [];
-        }
-
-        public void Sync(IPropertySync sync, ISyncContext context)
-        {
-            if (sync.Mode == SyncMode.GetAll)
-            {
-                foreach (var pair in _dic)
-                {
-                    var v = SItem.ResolveObject(pair.Value);
-                    if (v is Array ary)
-                    {
-                        v = SyncList.CreateReadonly(ary);
-                    }
-
-                    sync.Sync(pair.Key, v);
-                }
-            }
-            else if (sync.Mode == SyncMode.Get)
-            {
-                if (_dic.TryGetValue(sync.Name, out var value))
-                {
-                    var v = SItem.ResolveObject(value);
-                    if (v is Array ary)
-                    {
-                        v = SyncList.CreateReadonly(ary);
-                    }
-
-                    sync.Sync(sync.Name, v);
-                }
-            }
-        }
-    }
 }
 
 #endregion

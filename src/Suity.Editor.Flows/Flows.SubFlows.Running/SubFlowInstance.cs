@@ -279,14 +279,11 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         return true;
     }
 
-    public void SetParameters(ISyncObject syncObject)
+    public void SetParameters(Dictionary<string, object> parameters)
     {
-        var getAll = new GetAllPropertySync(false);
-        syncObject.Sync(getAll, SyncContext.Empty);
-
-        foreach (var parameter in getAll.Values)
+        foreach (var parameter in parameters)
         {
-            SetParameter(parameter.Key, parameter.Value.Value);
+            SetParameter(parameter.Key, parameter.Value);
         }
     }
 

@@ -10,6 +10,7 @@ using Suity.Synchonizing.Preset;
 using Suity.Views;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -107,7 +108,7 @@ public abstract class ToolInstance : IToolInstance, IViewObject
     public abstract object GetParameter(string name);
     public abstract bool SetParameter(string name, object value);
 
-    public abstract void SetParameters(ISyncObject parameters);
+    public abstract void SetParameters(Dictionary<string, object> parameters);
 
     public abstract HistoryText GetTaskCommit(ResolveChatIntents intent);
     public abstract TaskCommitParameter GetTaskCommitParameter();
@@ -315,9 +316,12 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         return true;
     }
 
-    public override void SetParameters(ISyncObject parameters)
+    public override void SetParameters(Dictionary<string, object> parameters)
     {
-        Cloner.CloneProperty(parameters, _input);
+        foreach (var parameter in parameters)
+        {
+            SetParameter(parameter.Key, parameter.Value);
+        }
     }
 
     public override HistoryText GetTaskCommit(ResolveChatIntents intent)
@@ -419,6 +423,46 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         }
 
         return desc;
+    }
+
+    class PageSetter : ISyncObject
+    {
+        readonly Dictionary<string, object> _dic;
+
+        public PageSetter(Dictionary<string, object> dic)
+        {
+            _dic = dic ?? [];
+        }
+
+        public void Sync(IPropertySync sync, ISyncContext context)
+        {
+            if (sync.Mode == SyncMode.GetAll)
+            {
+                foreach (var pair in _dic)
+                {
+                    var v = SItem.ResolveObject(pair.Value);
+                    if (v is Array ary)
+                    {
+                        v = SyncList.CreateReadonly(ary);
+                    }
+
+                    sync.Sync(pair.Key, v);
+                }
+            }
+            else if (sync.Mode == SyncMode.Get)
+            {
+                if (_dic.TryGetValue(sync.Name, out var value))
+                {
+                    var v = SItem.ResolveObject(value);
+                    if (v is Array ary)
+                    {
+                        v = SyncList.CreateReadonly(ary);
+                    }
+
+                    sync.Sync(sync.Name, v);
+                }
+            }
+        }
     }
 }
 

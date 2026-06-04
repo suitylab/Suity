@@ -62,7 +62,7 @@ public interface IPageInstance : INamed
     /// Sets the synchronization parameters to be used by the object.
     /// </summary>
     /// <param name="parameters">An object that provides synchronization parameters. Cannot be null.</param>
-    void SetParameters(ISyncObject parameters);
+    void SetParameters(Dictionary<string, object> parameters);
 
     /// <summary>
     /// Gets whether this page instance has an error.

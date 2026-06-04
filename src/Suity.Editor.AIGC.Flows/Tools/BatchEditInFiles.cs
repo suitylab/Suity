@@ -20,6 +20,7 @@ namespace Suity.Editor.AIGC.Tools;
 public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 {
     record FileMod(string FullPath, string RelativePath, string NewContent, int Replacements, IEnumerable<FileEditItem> Mods);
+    record ErrorInfo(int Index, string FilePath, string Message);
 
     [NativeType("BatchEditInFiles.FileEditItem", CodeBase = "*Suity")]
     public class FileEditItem : SObjectController
@@ -101,7 +102,7 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
             _successCount.InspectorField(setup);
             _failCount.InspectorField(setup);
         }
-        public override string ToString() => $"Results: {SuccessCount} modified, {FailCount} failed ({Results.Count} items)";
+public override string ToString() => $"Results: {SuccessCount} modified, {FailCount} failed ({Results.Count} items)";
     }
 
     readonly ListProperty<FileEditItem> _modifications = new("Modifications", "Modifications", "List of string replacements to perform.");
@@ -130,10 +131,10 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 
         var output = new Output();
         int successCount = 0;
-        var errors = new List<string>();
+        var errors = new List<ErrorInfo>();
         var fileResults = new List<FileMod>();
 
-        var fileGroups = Modifications.GroupBy(m => m.FilePath);
+        var fileGroups = Modifications.GroupBy(m => m.FilePath).ToList();
 
         foreach (var group in fileGroups)
         {
@@ -148,7 +149,7 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 
             if (!File.Exists(fullPath))
             {
-                errors.Add($"[{relativePath}] File not found");
+                errors.Add(new(Modifications.IndexOf(group.First()), relativePath, "File not found"));
                 continue;
             }
 
@@ -159,36 +160,38 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 
             foreach (var mod in fileMods)
             {
+                int modIndex = Modifications.IndexOf(mod);
+
                 if (string.IsNullOrWhiteSpace(mod.OldExactString))
                 {
                     continue;
                 }
 
                 int matchCount = 0;
-                int index = 0;
+                int searchIndex = 0;
                 StringUtility.MatchResult matchFinal = StringUtility.MatchResult.NotFound;
-                StringUtility.MatchResult match = StringUtility.FuzzyMatch(newContent, mod.OldExactString, index);
+                StringUtility.MatchResult match = StringUtility.FuzzyMatch(newContent, mod.OldExactString, searchIndex);
                 while (match.Found)
                 {
                     matchCount++;
                     if (matchCount == 1)
                         matchFinal = match;
-                    index = match.Index + match.Length;
-                    match = StringUtility.FuzzyMatch(newContent, mod.OldExactString, index);
+                    searchIndex = match.Index + match.Length;
+                    match = StringUtility.FuzzyMatch(newContent, mod.OldExactString, searchIndex);
                 }
 
                 if (matchCount == 0)
                 {
-                    errors.Add($"[{relativePath}] Old Exact String not found: {mod.OldExactString.Substring(0, Math.Min(50, mod.OldExactString.Length))}...");
+                    errors.Add(new(modIndex, relativePath, $"Old Exact String not found: {mod.OldExactString.Substring(0, Math.Min(50, mod.OldExactString.Length))}..."));
                     newContent = null;
-                    break;
+                    continue;
                 }
 
                 if (matchCount >= 2)
                 {
-                    errors.Add($"[{relativePath}] Multiple matches found, could not locate precisely.");
+                    errors.Add(new(modIndex, relativePath, $"Multiple matches found, could not locate precisely: {mod.OldExactString.Substring(0, Math.Min(50, mod.OldExactString.Length))}..."));
                     newContent = null;
-                    break;
+                    continue;
                 }
 
                 newContent = StringUtility.ReplaceContent(newContent, matchFinal.Index, matchFinal.Length, mod.NewString);
@@ -200,12 +203,13 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
                 continue;
             }
 
-            fileResults.Add(new(fullPath, relativePath, newContent, replacementsInFile, fileMods));
+            fileResults.Add(new FileMod(fullPath, relativePath, newContent, replacementsInFile, fileMods));
         }
 
         if (errors.Count > 0)
         {
-            throw new AggregateException($"BatchEditInFiles failed with {errors.Count} error(s):\n" + string.Join("\n", errors));
+            var errorMessages = errors.Select(e => $"[Modification index:{e.Index}] {e.FilePath}: {e.Message}");
+            throw new AggregateException($"BatchEditInFiles failed with {errors.Count} error(s):\n" + string.Join("\n", errorMessages));
         }
 
         foreach (var file in fileResults)
