@@ -88,9 +88,11 @@ coverage/
 - Use specific versions or locked versions (via `package-lock.json` or `pnpm-lock.yaml`) to ensure build consistency.
 - Dev dependencies (types, linting, build tools) must be separated from production dependencies.
 
-## Build & Test
+## Install & Build
 1. `npm install` - Install all project dependencies.
-2. `npm run dev` - Execute immediately after `npm install` completes successfully to start the Vite development server.
+2. `npm run build` - Compile the source code into production-ready assets. Returns error details if compilation fails.
+3. `npm run dev` - Start a development server with hot reloading. Displays compilation errors in both terminal and browser overlay without stopping the server.
+* Notice: No need to change directory, the current directory is root working directory.
 
 ## **Important Notice**
 - 'index.html' file should strickly follow the Entry Point Specification described above, do NOT write any logical or layout code in the index.html.

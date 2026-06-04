@@ -1,0 +1,831 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="AigcFlow">
+  <AssetId>5e1655c5-b67b-46c4-a6b4-541018b6956a</AssetId>
+  <NameSpace>TestRelease005</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-320" Y="-80" Width="140" Height="120">
+      <Name>EditCodeExpand</Name>
+      <AssetId>489f157f-ff0a-4b15-bc7f-44a89bde14a1</AssetId>
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
+        <Name>EditCodeExpand</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Tools>
+          <Item>
+            <Id>0ef171eb-766a-4aaf-966a-0cbfc6052687</Id>
+          </Item>
+          <Item>
+            <Id>1d7c4267-b004-429b-8070-b74e2710dd69</Id>
+          </Item>
+        </Tools>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="800" Y="-90" Width="140" Height="120">
+      <Name>EditCode_End</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
+        <Name>EditCode_End</Name>
+        <Description>Result</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowBeginDiagramItem" X="-310" Y="-40" Width="46" Height="17">
+      <Name>OnStart</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowBeginNode">
+        <Name>OnStart</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-310" Y="-20" Width="60" Height="17">
+      <Name>Modifications</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
+        <Name>Modifications</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>451a1bd9-46aa-40b8-8d80-81c921fb3fbf</Id>
+        </ValueType>
+        <IsArray>True</IsArray>
+        <Value type="SArray" base="451a1bd9-46aa-40b8-8d80-81c921fb3fbf[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="810" Y="-50" Width="58" Height="17">
+      <Name>OnComplete</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
+        <Name>OnComplete</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="810" Y="-30" Width="44" Height="17">
+      <Name>Output</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>Output</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
+        </ValueType>
+        <Value type="System.Boolean">False</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubflowExtendedDiagramItem" X="-320" Y="280" Width="140" Height="110">
+      <Name>###SubflowBranchNode01</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowExtendedNode">
+        <Name>###SubflowBranchNode01</Name>
+        <Description>Sub Page</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Page>
+          <Id>489f157f-ff0a-4b15-bc7f-44a89bde14a1</Id>
+        </Page>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="380" Y="260" Width="140" Height="150">
+      <Name>EditCode_End1</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
+        <Name>EditCode_End1</Name>
+        <Description>Result</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-310" Y="310" Width="61" Height="17">
+      <Name>ToolComplete</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
+        <Name>ToolComplete</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <EventType>SubTaskFinished</EventType>
+        <CommitName>EditCode</CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="350" Width="80" Height="28">
+      <Name>###GetLastSubTask01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetLastSubTask" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="380" Width="103" Height="39">
+      <Name>###GetPageOutputWithParameter01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetPageOutputWithParameter">
+        <ToolDefinition>
+          <Id>0ef171eb-766a-4aaf-966a-0cbfc6052687</Id>
+        </ToolDefinition>
+        <Parameters>
+          <Item>
+            <Name>Results</Name>
+            <Description>Results</Description>
+            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
+              <Id>1a12310c-ed53-4ef4-b669-16ebf141c6fb</Id>
+            </ParameterType>
+            <IsArray>True</IsArray>
+          </Item>
+          <Item>
+            <Name>SuccessCount</Name>
+            <Description>Success Count</Description>
+            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
+              <Id>fd0938ac-b62e-47a6-adab-dc856cacfb40</Id>
+            </ParameterType>
+          </Item>
+          <Item>
+            <Name>FailCount</Name>
+            <Description>Fail Count</Description>
+            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
+              <Id>fd0938ac-b62e-47a6-adab-dc856cacfb40</Id>
+            </ParameterType>
+          </Item>
+        </Parameters>
+        <UpdateParameter>False</UpdateParameter>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="390" Y="320" Width="45" Height="17">
+      <Name>Results</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>Results</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <History>True</History>
+        <TaskCommit>True</TaskCommit>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>1a12310c-ed53-4ef4-b669-16ebf141c6fb</Id>
+        </ValueType>
+        <IsArray>True</IsArray>
+        <Value type="SArray" base="1a12310c-ed53-4ef4-b669-16ebf141c6fb[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="390" Y="340" Width="64" Height="17">
+      <Name>SuccessCount</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>SuccessCount</Name>
+        <Description>Success Count</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <History>True</History>
+        <TaskCommit>True</TaskCommit>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>fd0938ac-b62e-47a6-adab-dc856cacfb40</Id>
+        </ValueType>
+        <Value type="System.Int32">0</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="390" Y="360" Width="52" Height="17">
+      <Name>FailCount</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>FailCount</Name>
+        <Description>Fail Count</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <History>True</History>
+        <TaskCommit>True</TaskCommit>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>fd0938ac-b62e-47a6-adab-dc856cacfb40</Id>
+        </ValueType>
+        <Value type="System.Int32">0</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="330" Width="49" Height="17">
+      <Name>###GetCurrentTask01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTask" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-310" Y="330" Width="52" Height="17">
+      <Name>ToolFailed</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
+        <Name>ToolFailed</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <EventType>SubTaskFailed</EventType>
+        <CommitName>EditCode</CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="660" Y="-30" Width="37" Height="17">
+      <Name>###SourceValue01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
+        </ValueType>
+        <Value type="System.Boolean">True</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-70" Width="103" Height="85">
+      <Name>###BuildPrompt01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
+        <PromptTemplate>
+          <Id>8f563d5d-d0c4-45ec-9dda-75bcf34dda50</Id>
+        </PromptTemplate>
+        <Keywords>
+          <Item>MESSAGE_INPUT</Item>
+          <Item>MESSAGE_ERROR</Item>
+          <Item>TOOLS</Item>
+          <Item>SPEECH_LANGUAGE</Item>
+        </Keywords>
+        <MissingContent>---</MissingContent>
+        <UpdateKeywords>False</UpdateKeywords>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="-100" Width="136" Height="107">
+      <Name>###CallLLm01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.CallLLm">
+        <DialogName>
+        </DialogName>
+        <Model />
+        <Functions />
+        <FunctionCall />
+        <InterruptionWords>
+          <Item>- Tool Response -</Item>
+          <Item>tool_result</Item>
+        </InterruptionWords>
+        <InterruptionMode>ReturnPrevious</InterruptionMode>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="330" Y="-100" Width="307" Height="307">
+      <Name>###GroupFlowNode03</Name>
+      <Node type="Suity.Editor.Flows.GroupFlowNode">
+        <GroupName>Add Sub Task</GroupName>
+        <Icon />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="440" Y="-70" Width="29" Height="17">
+      <Name>###GetPageToolPagesNode02</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="440" Y="-50" Width="187" Height="74">
+      <Name>###ParseTagToolCallingNode01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.ParseTagToPageInstance">
+        <AttributeName>tool</AttributeName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="440" Y="70" Width="130" Height="107">
+      <Name>###AddSubTaskPageNode01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
+        <PageTitle>
+        </PageTitle>
+        <TaskPrompt />
+        <TaskRule />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="470" Y="30" Width="70" Height="28">
+      <Name>###DataActionDecompose01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.DataActionDecompose">
+        <DataType>
+          <Id>fc913777-4de9-4d72-91f5-8ac5bc07eb63</Id>
+        </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="350" Y="-60" Width="70" Height="28">
+      <Name>###DataActionDecompose02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.DataActionDecompose">
+        <DataType>
+          <Id>3e63d8f9-29dc-4cf2-a10e-ae9cd5acc1a5</Id>
+        </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="530" Y="-150" Width="99" Height="41">
+      <Name>###ThrowError02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.ThrowError">
+        <Message type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+          <Value type="Suity.Views.TextBlock">
+            <Text>Create page instance failed.</Text>
+          </Value>
+        </Message>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="40" Width="146" Height="74">
+      <Name>###ExtractXmlsTagAction01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagAction">
+        <TagNames>
+          <Item>tool_action</Item>
+          <Item>failed</Item>
+          <Item>tool_result</Item>
+        </TagNames>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="150" Y="140" Width="99" Height="41">
+      <Name>###ThrowError01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.ThrowError">
+        <Message type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+          <Value type="Suity.Views.TextBlock">
+            <Text>Parse Tag Failed.</Text>
+          </Value>
+        </Message>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="390" Y="300" Width="69" Height="17">
+      <Name>OnToolComplete</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
+        <Name>OnToolComplete</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitType>TaskFinished</CommitType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="440" Width="197" Height="63">
+      <Name>###CreatePageInstanceWithParameter01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
+        <ToolDefinition>
+          <Id>489f157f-ff0a-4b15-bc7f-44a89bde14a1</Id>
+        </ToolDefinition>
+        <Parameters>
+          <Item>
+            <Name>Modifications</Name>
+            <Description>Modifications</Description>
+            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
+              <Id>451a1bd9-46aa-40b8-8d80-81c921fb3fbf</Id>
+            </ParameterType>
+            <IsArray>True</IsArray>
+          </Item>
+          <Item>
+            <Name>ErrorMessage</Name>
+            <Description>ErrorMessage</Description>
+            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
+              <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+            </ParameterType>
+          </Item>
+        </Parameters>
+        <UpdateParameter>False</UpdateParameter>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="390" Y="380" Width="53" Height="17">
+      <Name>OnExpand</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
+        <Name>OnExpand</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitType>TaskFinished</CommitType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="510" Width="127" Height="107">
+      <Name>###AppendTaskPage01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
+        <PageTitle>
+        </PageTitle>
+        <TaskPrompt />
+        <TaskRule />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-310" Y="0" Width="62" Height="17">
+      <Name>ErrorMessage</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
+        <Name>ErrorMessage</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>6d9a5040-b6d7-4daa-b06f-6f2f27f02012</Id>
+        </ValueType>
+        <Value type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+          <Value type="Suity.Views.TextBlock">
+            <Text>
+            </Text>
+          </Value>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="330" Y="320" Width="38" Height="17">
+      <Name>###ComposeArray02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.ComposeArray">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>1a12310c-ed53-4ef4-b669-16ebf141c6fb</Id>
+        </ValueType>
+        <CloneElements>True</CloneElements>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="-30" Width="28" Height="17">
+      <Name>###PassValue01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </DataType>
+        <IsArray>True</IsArray>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="-30" Width="38" Height="17">
+      <Name>###JoinString01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.JoinString">
+        <Separator>\r\n</Separator>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="-10" Width="28" Height="17">
+      <Name>###PassValue02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="0" Width="29" Height="17">
+      <Name>###GetCurrentToolList01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="420" Width="78" Height="17">
+      <Name>###GetPageErrorMessage01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetPageErrorMessage" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="60" Y="-110" Width="48" Height="17">
+      <Name>###GetTaskChatHistoryNode01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentChatHistory">
+        <InHierarchy>True</InHierarchy>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-50" Y="-90" Width="47" Height="17">
+      <Name>###GetTaskScratchPad01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentScratchPads">
+        <InHierarchy>True</InHierarchy>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="10" Y="-90" Width="91" Height="17">
+      <Name>###GetScratchPadMessage01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetScratchPadMessage" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="380" Width="28" Height="17">
+      <Name>###GetTaskPageInstance01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.TaskToPageInstance" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-120" Y="-140" Width="406" Height="270">
+      <Name>###GroupFlowNode01</Name>
+      <Node type="Suity.Editor.Flows.GroupFlowNode">
+        <GroupName>LLm</GroupName>
+        <Icon />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="20" Width="38" Height="17">
+      <Name>###GetSpeechLanguage01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-310" Y="350" Width="75" Height="17">
+      <Name>ToolReadComplete</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
+        <Name>ToolReadComplete</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <EventType>SubTaskFinished</EventType>
+        <CommitName>BatchReadFiles</CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-20" Y="490" Width="71" Height="17">
+      <Name>###FirstNotEmpty01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.FirstNotEmpty">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </ValueType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-90" Y="520" Width="28" Height="17">
+      <Name>###PassValue03</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageMessageParameterItem" X="810" Y="-10" Width="55" Height="17">
+      <Name>tool_action</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageMessageParameterNode">
+        <Name>tool_action</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Required>False</Required>
+        <History>True</History>
+        <Message>
+          <Text>
+          </Text>
+        </Message>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="670" Y="-10" Width="28" Height="17">
+      <Name>###PassValue04</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </DataType>
+      </Node>
+    </Item>
+  </Nodes>
+  <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+  <Links>
+    <Item>
+      <FromNode>EditCode_End</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>EditCodeExpand</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>EditCode_End1</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>###SubflowBranchNode01</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetPageOutputWithParameter01</FromNode>
+      <FromConnector>p_SuccessCount</FromConnector>
+      <ToNode>SuccessCount</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetPageOutputWithParameter01</FromNode>
+      <FromConnector>p_FailCount</FromConnector>
+      <ToNode>FailCount</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTask01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###GetLastSubTask01</ToNode>
+      <ToConnector>Task</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SourceValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>Output</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###BuildPrompt01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###BuildPrompt01</FromNode>
+      <FromConnector>PromptOut</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetPageToolPagesNode02</FromNode>
+      <FromConnector>Tools</FromConnector>
+      <ToNode>###ParseTagToolCallingNode01</ToNode>
+      <ToConnector>ToolPages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ParseTagToolCallingNode01</FromNode>
+      <FromConnector>PageInstance</FromConnector>
+      <ToNode>###DataActionDecompose01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose02</FromNode>
+      <FromConnector>ActionOut</FromConnector>
+      <ToNode>###ParseTagToolCallingNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose02</FromNode>
+      <FromConnector>DataOut</FromConnector>
+      <ToNode>###ParseTagToolCallingNode01</ToNode>
+      <ToConnector>XmlTag</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ParseTagToolCallingNode01</FromNode>
+      <FromConnector>NoResult</FromConnector>
+      <ToNode>###ThrowError02</ToNode>
+      <ToConnector>Input</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose01</FromNode>
+      <FromConnector>ActionOut</FromConnector>
+      <ToNode>###AddSubTaskPageNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose01</FromNode>
+      <FromConnector>DataOut</FromConnector>
+      <ToNode>###AddSubTaskPageNode01</ToNode>
+      <ToConnector>PageInstance</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagAction01</FromNode>
+      <FromConnector>Tag-tool_action</FromConnector>
+      <ToNode>###DataActionDecompose02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ExtractXmlsTagAction01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Result</FromConnector>
+      <ToNode>###ExtractXmlsTagAction01</ToNode>
+      <ToConnector>DataIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagAction01</FromNode>
+      <FromConnector>Tag-failed</FromConnector>
+      <ToNode>###ThrowError01</ToNode>
+      <ToConnector>Input</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagAction01</FromNode>
+      <FromConnector>Tag-tool_result</FromConnector>
+      <ToNode>###ThrowError01</ToNode>
+      <ToConnector>Input</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagAction01</FromNode>
+      <FromConnector>NoResult</FromConnector>
+      <ToNode>###ThrowError01</ToNode>
+      <ToConnector>Input</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AddSubTaskPageNode01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnComplete</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>ToolComplete</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnToolComplete</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>ToolFailed</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreatePageInstanceWithParameter01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CreatePageInstanceWithParameter01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AppendTaskPage01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CreatePageInstanceWithParameter01</FromNode>
+      <FromConnector>PageInstance</FromConnector>
+      <ToNode>###AppendTaskPage01</ToNode>
+      <ToConnector>PageInstance</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AppendTaskPage01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnExpand</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetPageOutputWithParameter01</FromNode>
+      <FromConnector>p_Results</FromConnector>
+      <ToNode>###ComposeArray02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ComposeArray02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>Results</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Modifications</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###PassValue01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###JoinString01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###JoinString01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_MESSAGE_INPUT</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>ErrorMessage</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###PassValue02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentToolList01</FromNode>
+      <FromConnector>Tools</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_TOOLS</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>OnStart</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_MESSAGE_ERROR</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskChatHistoryNode01</FromNode>
+      <FromConnector>ChatHistory</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskScratchPad01</FromNode>
+      <FromConnector>ScratchPad</FromConnector>
+      <ToNode>###GetScratchPadMessage01</ToNode>
+      <ToConnector>ScratchPad</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetScratchPadMessage01</FromNode>
+      <FromConnector>Message</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetLastSubTask01</FromNode>
+      <FromConnector>SubTask</FromConnector>
+      <ToNode>###GetTaskPageInstance01</ToNode>
+      <ToConnector>Task</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskPageInstance01</FromNode>
+      <FromConnector>PageInstance</FromConnector>
+      <ToNode>###GetPageOutputWithParameter01</ToNode>
+      <ToConnector>PageInstance</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskPageInstance01</FromNode>
+      <FromConnector>PageInstance</FromConnector>
+      <ToNode>###GetPageErrorMessage01</ToNode>
+      <ToConnector>PageInstance</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Modifications</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreatePageInstanceWithParameter01</ToNode>
+      <ToConnector>p_Modifications</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetSpeechLanguage01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_SPEECH_LANGUAGE</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ParseTagToolCallingNode01</FromNode>
+      <FromConnector>PageName</FromConnector>
+      <ToNode>###AddSubTaskPageNode01</ToNode>
+      <ToConnector>CommitName</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>ToolReadComplete</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreatePageInstanceWithParameter01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>ErrorMessage</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###PassValue03</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetPageErrorMessage01</FromNode>
+      <FromConnector>ErrorMessage</FromConnector>
+      <ToNode>###FirstNotEmpty01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue03</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###FirstNotEmpty01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###FirstNotEmpty01</FromNode>
+      <FromConnector>NotEmpty</FromConnector>
+      <ToNode>###CreatePageInstanceWithParameter01</ToNode>
+      <ToConnector>p_ErrorMessage</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue04</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>tool_action</ToNode>
+      <ToConnector>Message</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose02</FromNode>
+      <FromConnector>DataOut</FromConnector>
+      <ToNode>###PassValue04</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

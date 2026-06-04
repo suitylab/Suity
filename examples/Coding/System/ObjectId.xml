@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ObjectId>
+  <Object id="8f563d5d-d0c4-45ec-9dda-75bcf34dda50" name="Workflows/_Common/CodeEditExpand.md" />
   <Object id="aedb5425-5102-4bba-ab72-1b4e095b2749" name="Workflows/_Common/CreateWorkSpace.md" />
   <Object id="60e07ca4-90a6-4826-bb70-9a256e2db395" name="Workflows/_Common/QueryTaskHistory.md" />
   <Object id="cb17b70d-9398-4352-8684-c6d0c0bf7c7d" name="Workflows/_Common/SkillRouter.md" />
@@ -7,6 +8,7 @@
   <Object id="e741e0d8-e4f4-4d9d-bbbf-6f5dc5360273" name="Workflows/Coding/CodeWriter.md" />
   <Object id="7ecdb907-dfd4-4d21-b74e-05d994154a69" name="Workflows/Coding/FullProjectCode.md" />
   <Object id="0fef4b38-fc48-4381-ad56-baa6158d40b1" name="Workflows/Coding/FullProjectCodeBatch.md" />
+  <Object id="cc9da65c-10c8-4363-a653-7af74a21ceac" name="Workflows/Coding/KarpaphyPlus.sprompt" />
   <Object id="2ad31242-fa68-4729-8d6a-92efc0a2540b" name="Workflows/Coding/TechSpec.md" />
   <Object id="55a2d6a9-c57d-4639-a70a-b59a96d1c673" name="Workflows/Coding/VerifyCode.md" />
   <Object id="2126a46d-a00b-40b8-9bfa-61701ca90ef5" name="Workflows/Overview/OverviewTask.md" />

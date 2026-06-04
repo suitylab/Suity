@@ -66,7 +66,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="-60" Width="136" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="-60" Width="136" Height="111">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -82,7 +82,7 @@
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-130" Y="-50" Width="103" Height="74">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-130" Y="-50" Width="107" Height="78">
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
@@ -107,7 +107,7 @@
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="40" Y="80" Width="115" Height="63">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="40" Y="80" Width="119" Height="67">
       <Name>###ExtractXmlsTagNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
         <TagNames>
@@ -163,7 +163,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="40" Y="180" Width="146" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="40" Y="180" Width="150" Height="56">
       <Name>###ExtractXmlsTagAction01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagAction">
         <TagNames>
@@ -171,7 +171,7 @@
         </TagNames>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="380" Y="-20" Width="140" Height="74">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="380" Y="-20" Width="144" Height="78">
       <Name>###WriteWorkSpaceFile01</Name>
       <Node type="Suity.Editor.Flows.WorkSpaces.WriteWorkSpaceFile">
         <WorkSpace />
@@ -201,7 +201,7 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="250" Width="99" Height="41">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="250" Width="103" Height="45">
       <Name>###ThrowError01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
         <Message type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">

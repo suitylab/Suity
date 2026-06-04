@@ -20,6 +20,7 @@ You are working in a workspace, The current directory is workspace root director
 This is the user original request which indicates the goal of whole workflow.
 ## User Original Request: 
 {{INPUT}}
+**Notice: This is not the latest request from the user, it is the initial request for the entire workflow.**
 
 ## Skill (primary constraint): 
 <skill>
@@ -61,6 +62,7 @@ action planning of current task
 (Use this if no tool is called but the task execution continues)
 
 3. Task Completion:
+If the task history indicates that previous task has met the `User Original Request`, please output:
 <end>
 Direct response and report to parent.
 [Summary the chat history aligned with skill & user request]
@@ -69,7 +71,7 @@ Direct response and report to parent.
 
 4. Task Failure:
 <failed>
-Failed reason
+Failed message...
 </failed>
 
 # Constraints

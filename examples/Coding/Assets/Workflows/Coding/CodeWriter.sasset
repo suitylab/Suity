@@ -306,6 +306,16 @@
         </ValueType>
       </Node>
     </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-140" Width="99" Height="41">
+      <Name>###ThrowError01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.ThrowError">
+        <Message type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+          <Value type="Suity.Views.TextBlock">
+            <Text>Code generation failed.</Text>
+          </Value>
+        </Message>
+      </Node>
+    </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
   <Links>
@@ -448,12 +458,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###ExtractXmlsTagAction01</FromNode>
-      <FromConnector>NoResult</FromConnector>
-      <ToNode>###DataActionCompose01</ToNode>
-      <ToConnector>ActionIn</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###SourceValue01</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###DataActionCompose01</ToNode>
@@ -518,6 +522,12 @@
       <FromConnector>Out</FromConnector>
       <ToNode>OutputFiles</ToNode>
       <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagAction01</FromNode>
+      <FromConnector>NoResult</FromConnector>
+      <ToNode>###ThrowError01</ToNode>
+      <ToConnector>Input</ToConnector>
     </Item>
   </Links>
 </SuityAsset>
