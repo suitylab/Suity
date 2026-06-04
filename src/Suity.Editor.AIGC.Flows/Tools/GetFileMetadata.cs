@@ -1,5 +1,6 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -14,7 +15,7 @@ namespace Suity.Editor.AIGC.Tools;
 [NativeAlias("Suity.Editor.AIGC.GetFileMetadata")]
 public class GetFileMetadata : ToolCommand<GetFileMetadata.Output>
 {
-    public class Output : IViewObject
+    public class Output : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
         readonly StringProperty _fileName = new("FileName", "File Name");
@@ -31,9 +32,11 @@ public class GetFileMetadata : ToolCommand<GetFileMetadata.Output>
         public int TotalLines { get => _totalLines.Value; set => _totalLines.Value = value; }
         public string ModifiedTime { get => _modifiedTime.Text; set => _modifiedTime.Text = value; }
         public string CreatedTime { get => _createdTime.Text; set => _createdTime.Text = value; }
-        
-        public void Sync(IPropertySync sync, ISyncContext context)
+
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
+            base.OnSync(sync, context);
+
             _filePath.Sync(sync);
             _fileName.Sync(sync);
             _extension.Sync(sync);
@@ -42,8 +45,11 @@ public class GetFileMetadata : ToolCommand<GetFileMetadata.Output>
             _modifiedTime.Sync(sync);
             _createdTime.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
+            base.OnSetupView(setup);
+
             _filePath.InspectorField(setup);
             _fileName.InspectorField(setup);
             _extension.InspectorField(setup);
@@ -52,6 +58,7 @@ public class GetFileMetadata : ToolCommand<GetFileMetadata.Output>
             _modifiedTime.InspectorField(setup);
             _createdTime.InspectorField(setup);
         }
+
         public override string ToString() => $"{FileName} ({Extension}, {SizeBytes} bytes, {TotalLines} lines)";
     }
 

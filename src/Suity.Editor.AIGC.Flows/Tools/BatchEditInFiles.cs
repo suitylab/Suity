@@ -55,7 +55,7 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
     }
 
     [NativeType("BatchEditInFiles.FileResult", CodeBase = "*Suity")]
-    public class FileResult : IViewObject
+    public class FileResult : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
         readonly StringProperty _status = new("Status", "Status");
@@ -65,22 +65,28 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
         public string Status { get => _status.Text; set => _status.Text = value; }
         public int ReplacementsMade { get => _replacementsMade.Value; set => _replacementsMade.Value = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
+            base.OnSync(sync, context);
+
             _filePath.Sync(sync);
             _status.Sync(sync);
             _replacementsMade.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
+            base.OnSetupView(setup);
+
             _filePath.InspectorField(setup);
             _status.InspectorField(setup);
             _replacementsMade.InspectorField(setup);
         }
+
         public override string ToString() => $"{FilePath} [{Status}] Replacements: {ReplacementsMade}";
     }
 
-    public class Output : IViewObject
+    public class Output : SObjectController
     {
         readonly ListProperty<FileResult> _results = new("Results", "Results");
         readonly ValueProperty<int> _successCount = new("SuccessCount", "Success Count");
@@ -90,19 +96,25 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
         public int SuccessCount { get => _successCount.Value; set => _successCount.Value = value; }
         public int FailCount { get => _failCount.Value; set => _failCount.Value = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
+            base.OnSync(sync, context);
+
             _results.Sync(sync);
             _successCount.Sync(sync);
             _failCount.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
+            base.OnSetupView(setup);
+
             _results.InspectorField(setup);
             _successCount.InspectorField(setup);
             _failCount.InspectorField(setup);
         }
-public override string ToString() => $"Results: {SuccessCount} modified, {FailCount} failed ({Results.Count} items)";
+
+        public override string ToString() => $"Results: {SuccessCount} modified, {FailCount} failed ({Results.Count} items)";
     }
 
     readonly ListProperty<FileEditItem> _modifications = new("Modifications", "Modifications", "List of string replacements to perform.");

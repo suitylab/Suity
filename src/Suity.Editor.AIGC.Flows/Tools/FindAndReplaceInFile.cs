@@ -70,7 +70,7 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
         public override string ToString() => MatchCount > 0 ? $"'{OldString}' -> '{NewString}' ({MatchCount} matches)" : $"Failed: '{OldString}' not found";
     }
 
-    public class Output : IViewObject
+    public class Output : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
         readonly ListProperty<ReplaceResult> _results = new("Results", "Results");
@@ -78,16 +78,22 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
         public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
         public List<ReplaceResult> Results => _results.List;
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
+            base.OnSync(sync, context);
+
             _filePath.Sync(sync);
             _results.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
+            base.OnSetupView(setup);
+
             _filePath.InspectorField(setup);
             _results.InspectorField(setup);
         }
+
         public override string ToString() => $"Find And Replace in {FilePath}: {Results.Count} replacements";
     }
 

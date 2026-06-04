@@ -1,3 +1,4 @@
+using Suity.Editor.CodeRender.Json;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
@@ -52,6 +53,20 @@ public static class SubFlowExtensions
 
                 case SKey sKey:
                     return sKey.SelectedKey;
+
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            switch (value)
+            {
+                case SObject sObj:
+                    return sObj.ToJson(true)?.ToString(true) ?? HistoryText.Empty;
+
+                case SArray sAry:
+                    return sAry.ToJson(true)?.ToString(true) ?? HistoryText.Empty;
 
                 default:
                     break;

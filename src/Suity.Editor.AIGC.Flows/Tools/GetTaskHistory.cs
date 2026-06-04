@@ -1,5 +1,6 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -12,20 +13,26 @@ namespace Suity.Editor.AIGC.Tools;
 [ToolTipsText("Get task history records by task ID and query conditions.")]
 public class GetTaskHistory : ToolCommand<GetTaskHistory.Output>
 {
-    public class Output : IViewObject
+    public class Output : SObjectController
     {
         readonly TextBlockProperty _result = new("Result");
 
         public string Result { get => _result.Text; set => _result.Text = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
+            base.OnSync(sync, context);
+
             _result.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
+            base.OnSetupView(setup);
+
             _result.InspectorField(setup);
         }
+
         public override string ToString() => Result ?? string.Empty;
     }
 

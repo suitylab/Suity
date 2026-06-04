@@ -66,20 +66,26 @@ public class BatchDeleteFiles : ToolCommand<BatchDeleteFiles.Output>
         public override string ToString() => $"{FilePath} ({(HasError ? $"Error: {Error}" : "Deleted")})";
     }
 
-    public class Output : IViewObject
+    public class Output : SObjectController
     {
         readonly ListProperty<DeleteResult> _results = new("Results", "Results");
 
         public List<DeleteResult> Results => _results.List;
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
+            base.OnSync(sync, context);
+
             _results.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
+            base.OnSetupView(setup);
+
             _results.InspectorField(setup);
         }
+
         public override string ToString() => $"Batch Delete {Results.Count} files";
     }
 

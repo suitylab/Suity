@@ -1,5 +1,6 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -16,20 +17,26 @@ namespace Suity.Editor.AIGC.Tools;
 [NativeAlias("Suity.Editor.AIGC.GetWorkspaceTree")]
 public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
 {
-    public class Output : IViewObject
+    public class Output : SObjectController
     {
         readonly TextBlockProperty _tree = new("Tree");
 
         public string Tree { get => _tree.Text; set => _tree.Text = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
+            base.OnSync(sync, context);
+
             _tree.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
+            base.OnSetupView(setup);
+
             _tree.InspectorField(setup);
         }
+
         public override string ToString() => $"Workspace tree: {Tree?.Split('\n').Length ?? 0} entries";
     }
 

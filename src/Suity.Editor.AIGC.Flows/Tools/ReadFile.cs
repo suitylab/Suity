@@ -1,6 +1,7 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -15,20 +16,26 @@ namespace Suity.Editor.AIGC.Tools;
 [NativeAlias("Suity.Editor.AIGC.ReadFile")]
 public class ReadFile : ToolCommand<ReadFile.Output>
 {
-    public class Output : IViewObject
+    public class Output : SObjectController
     {
         readonly StringProperty _message = new("Message");
 
         public string Message { get => _message.Text; set => _message.Text = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
+            base.OnSync(sync, context);
+
             _message.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
+            base.OnSetupView(setup);
+
             _message.InspectorField(setup);
         }
+
         public override string ToString() => Message;
     }
 

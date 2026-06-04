@@ -1,5 +1,6 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
+using Suity.Editor.Values;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -15,7 +16,7 @@ namespace Suity.Editor.AIGC.Tools;
 [NativeAlias("Suity.Editor.AIGC.SearchFile")]
 public class SearchFile : ToolCommand<SearchFile.Output>
 {
-    public class Output : IViewObject
+    public class Output : SObjectController
     {
         readonly TextBlockProperty _results = new("Results");
         readonly ValueProperty<int> _matchCount = new("MatchCount", 0);
@@ -23,16 +24,22 @@ public class SearchFile : ToolCommand<SearchFile.Output>
         public string Results { get => _results.Text; set => _results.Text = value; }
         public int MatchCount { get => _matchCount.Value; set => _matchCount.Value = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
+            base.OnSync(sync, context);
+
             _results.Sync(sync);
             _matchCount.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
+            base.OnSetupView(setup);
+
             _results.InspectorField(setup);
             _matchCount.InspectorField(setup);
         }
+
         public override string ToString() => $"{Results} ({MatchCount})";
     }
 

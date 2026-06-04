@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Suity.Editor.Values;
 
 namespace Suity.Editor.AIGC.Tools;
 
@@ -18,7 +19,7 @@ namespace Suity.Editor.AIGC.Tools;
 [NativeAlias("Suity.Editor.AIGC.ApplyDiffPatch")]
 public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
 {
-    public class Output : IViewObject
+    public class Output : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
         readonly StringProperty _message = new("Message", "Message");
@@ -28,18 +29,24 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
         public string Message { get => _message.Text; set => _message.Text = value; }
         public int HunksApplied { get => _hunksApplied.Value; set => _hunksApplied.Value = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
+            base.OnSync(sync, context);
+
             _filePath.Sync(sync);
             _message.Sync(sync);
             _hunksApplied.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
+            base.OnSetupView(setup);
+
             _filePath.InspectorField(setup);
             _message.InspectorField(setup);
             _hunksApplied.InspectorField(setup);
         }
+
         public override string ToString() => $"{FilePath}: {HunksApplied} hunks applied - {Message}";
     }
 

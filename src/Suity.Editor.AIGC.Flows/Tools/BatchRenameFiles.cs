@@ -70,20 +70,26 @@ public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
         public override string ToString() => $"{SourcePath} -> {TargetPath} ({(HasError ? $"Error: {Error}" : "Success")})";
     }
 
-    public class Output : IViewObject
+    public class Output : SObjectController
     {
         readonly ListProperty<RenameResult> _results = new("Results", "Results");
 
         public List<RenameResult> Results => _results.List;
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
+            base.OnSync(sync, context);
+
             _results.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
+            base.OnSetupView(setup);
+
             _results.InspectorField(setup);
         }
+
         public override string ToString() => $"Batch Rename {Results.Count} files";
     }
 

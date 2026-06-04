@@ -77,7 +77,7 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
         public override string ToString() => $"{FilePath} [{Status}] {(HasError ? $"- Error: {Error}" : $"Hunks: {HunksApplied}")}";
     }
 
-    public class Output : IViewObject
+    public class Output : SObjectController
     {
         readonly ListProperty<FileResult> _results = new("Results", "Results");
         readonly ValueProperty<int> _successCount = new("SuccessCount", "Success Count");
@@ -87,18 +87,24 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
         public int SuccessCount { get => _successCount.Value; set => _successCount.Value = value; }
         public int FailCount { get => _failCount.Value; set => _failCount.Value = value; }
 
-        public void Sync(IPropertySync sync, ISyncContext context)
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
+            base.OnSync(sync, context);
+
             _results.Sync(sync);
             _successCount.Sync(sync);
             _failCount.Sync(sync);
         }
-        public void SetupView(IViewObjectSetup setup)
+
+        protected override void OnSetupView(IViewObjectSetup setup)
         {
+            base.OnSetupView(setup);
+
             _results.InspectorField(setup);
             _successCount.InspectorField(setup);
             _failCount.InspectorField(setup);
         }
+
         public override string ToString() => $"Results: {SuccessCount} success, {FailCount} failed ({Results.Count} items)";
     }
 
