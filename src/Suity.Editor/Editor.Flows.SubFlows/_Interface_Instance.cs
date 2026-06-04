@@ -1,6 +1,5 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.Types;
-using Suity.Synchonizing;
 using Suity.Views;
 using Suity.Views.Named;
 using System.Collections.Generic;
@@ -57,12 +56,6 @@ public interface IPageInstance : INamed
     /// <param name="value">The value to set.</param>
     /// <returns>True if the parameter was successfully set; otherwise, false.</returns>
     bool SetParameter(string name, object value);
-
-    /// <summary>
-    /// Sets the synchronization parameters to be used by the object.
-    /// </summary>
-    /// <param name="parameters">An object that provides synchronization parameters. Cannot be null.</param>
-    void SetParameters(Dictionary<string, object> parameters);
 
     /// <summary>
     /// Gets whether this page instance has an error.

@@ -279,14 +279,6 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         return true;
     }
 
-    public void SetParameters(Dictionary<string, object> parameters)
-    {
-        foreach (var parameter in parameters)
-        {
-            SetParameter(parameter.Key, parameter.Value);
-        }
-    }
-
     #endregion
 
     #region ISubFlowInstance

@@ -1,3 +1,4 @@
+using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Views;
@@ -94,6 +95,9 @@ public static class SubFlowHelper
 
             case TaskCommitStatus.TaskFailed:
                 return FlowColors.ErrorColor;
+
+            case TaskCommitStatus.TaskDisabled:
+                return DefaultEditorColorConfig.Default.GetStatusColor(TextStatus.Disabled);
 
             default:
                 return null;

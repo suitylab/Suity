@@ -62,6 +62,12 @@ public enum TaskCommitStatus
     /// </summary>
     [DisplayText("Task Failed")]
     TaskFailed,
+
+    /// <summary>
+    /// Indicates the task has been disabled and will not execute.
+    /// </summary>
+    [DisplayText("Task Disabled")]
+    TaskDisabled,
 }
 
 public record TaskCommitParameter(TaskCommitStatus EndType, object Value);

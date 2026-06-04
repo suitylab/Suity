@@ -108,8 +108,6 @@ public abstract class ToolInstance : IToolInstance, IViewObject
     public abstract object GetParameter(string name);
     public abstract bool SetParameter(string name, object value);
 
-    public abstract void SetParameters(Dictionary<string, object> parameters);
-
     public abstract HistoryText GetTaskCommit(ResolveChatIntents intent);
     public abstract TaskCommitParameter GetTaskCommitParameter();
 
@@ -316,14 +314,6 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         return true;
     }
 
-    public override void SetParameters(Dictionary<string, object> parameters)
-    {
-        foreach (var parameter in parameters)
-        {
-            SetParameter(parameter.Key, parameter.Value);
-        }
-    }
-
     public override HistoryText GetTaskCommit(ResolveChatIntents intent)
     {
         var writer = new XmlNodeWriter("ToolCall", false);
@@ -423,46 +413,6 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         }
 
         return desc;
-    }
-
-    class PageSetter : ISyncObject
-    {
-        readonly Dictionary<string, object> _dic;
-
-        public PageSetter(Dictionary<string, object> dic)
-        {
-            _dic = dic ?? [];
-        }
-
-        public void Sync(IPropertySync sync, ISyncContext context)
-        {
-            if (sync.Mode == SyncMode.GetAll)
-            {
-                foreach (var pair in _dic)
-                {
-                    var v = SItem.ResolveObject(pair.Value);
-                    if (v is Array ary)
-                    {
-                        v = SyncList.CreateReadonly(ary);
-                    }
-
-                    sync.Sync(pair.Key, v);
-                }
-            }
-            else if (sync.Mode == SyncMode.Get)
-            {
-                if (_dic.TryGetValue(sync.Name, out var value))
-                {
-                    var v = SItem.ResolveObject(value);
-                    if (v is Array ary)
-                    {
-                        v = SyncList.CreateReadonly(ary);
-                    }
-
-                    sync.Sync(sync.Name, v);
-                }
-            }
-        }
     }
 }
 

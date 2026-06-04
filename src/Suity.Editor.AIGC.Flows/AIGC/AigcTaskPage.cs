@@ -263,7 +263,7 @@ public abstract class AigcTaskPage : DesignNode,
         for (int i = c - 1; i >= 0; i--)
         {
             var task = GetTaskAt(i);
-            if (task is null)
+            if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
             {
                 continue;
             }
@@ -295,7 +295,7 @@ public abstract class AigcTaskPage : DesignNode,
         }
 
         var task = GetUnfinishedChildTask();
-        if (task != null)
+        if (task != null && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
         {
             return task.GetUnfinishedChildTaskDeep() ?? task;
         }
@@ -367,6 +367,11 @@ public abstract class AigcTaskPage : DesignNode,
         if (status == TaskCommitStatus.None)
         {
             return false;
+        }
+
+        if (status == TaskCommitStatus.TaskDisabled)
+        {
+            return true;
         }
 
         if (Count == 0)

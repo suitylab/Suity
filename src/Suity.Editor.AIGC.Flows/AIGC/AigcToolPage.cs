@@ -84,6 +84,11 @@ public class AigcToolPage : AigcTaskPage,
 
     public override async Task<bool> RunTask(AIRequest request, TaskEventTypes eventType, string commitName, object parameter)
     {
+        if (GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+        {
+            return false;
+        }
+
         var tool = _tool.Target;
         if (tool is null)
         {

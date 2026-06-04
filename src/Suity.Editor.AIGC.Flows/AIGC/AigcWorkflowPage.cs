@@ -241,6 +241,11 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <inheritdoc/>
     public override async Task<bool> RunTask(AIRequest request, TaskEventTypes eventType, string commitName, object parameter)
     {
+        if (GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+        {
+            return false;
+        }
+
         if (EnsureInstance() is not { } instance)
         {
             return false;
@@ -725,12 +730,18 @@ public class AigcWorkflowPage : AigcTaskPage,
     {
         if (Count > 0)
         {
-            return GetItemAt(Count - 1) as IAigcTaskPage;
+            int index = Count - 1;
+            while (index >= 0)
+            {
+                var page = GetItemAt(Count - 1) as IAigcTaskPage;
+                if (page != null && page.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
+                {
+                    return page;
+                }
+            }
         }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
     /// <inheritdoc/>
@@ -738,6 +749,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     {
         return Items.OfType<IAigcTaskPage>()
             .SkipNull()
+            .Where(o => o.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
             .ToArray();
     }
 
@@ -853,7 +865,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         {
             for (int i = index; i >= 0; i--)
             {
-                if (ParentList.GetItemAt(i) is AigcWorkflowPage task)
+                if (ParentList.GetItemAt(i) is AigcWorkflowPage task && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
                 {
                     var msgs = task.GetChatMessages(true, true);
                     for (int j = msgs.Length - 1; j >= 0; j--)
@@ -998,7 +1010,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         for (int i = 0; i <= index; i++)
         {
-            if (ParentList.GetItemAt(i) is AigcWorkflowPage task)
+            if (ParentList.GetItemAt(i) is AigcWorkflowPage task && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
             {
                 var scratchPads = task.Attributes.GetAttributes<ScratchPad>();
 

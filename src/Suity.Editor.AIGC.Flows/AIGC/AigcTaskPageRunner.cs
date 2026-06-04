@@ -106,6 +106,20 @@ internal class AigcTaskPageRunner : AIAssistant
         startupTask.SetPrompt(request.UserMessage);
         startupTask.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
 
+        // Disalbe last un-calculated tasks to avoid unexpected task running when the task tree is being built.
+        int count = _document.Count;
+        for (int i = count - 1; i >= 0; i--)
+        {
+            if (_document.GetTaskAt(i) is { } task && !task.GetAllDone())
+            {
+                task.CommitStatus = TaskCommitStatus.TaskDisabled;
+            }
+            else
+            {
+                break;
+            }
+        }
+
         _document.AddTask(startupTask);
         _document.Entry.MarkUsage(_usageToken);
 
@@ -141,7 +155,7 @@ internal class AigcTaskPageRunner : AIAssistant
 
             // Get task for running, if the last task is not completed, continue to run it; otherwise get the next task to run.
             var task = _document.GetUnfinishedChildTaskDeep();
-            if (task is null)
+            if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
             {
                 return AICallResult.FromMessage("All tasks have been completed.");
             }
@@ -161,12 +175,15 @@ internal class AigcTaskPageRunner : AIAssistant
             return (flowControl: false, value: AICallResult.FromFailed("Task input is missing, it may be stuck. Task canceled."));
         }
 
-        TaskCommitStatus status;
+        TaskCommitStatus status = task.GetCommitStatus();
 
         if (task == _lastTask)
         {
-            status = task.GetCommitStatus();
-            if (status != TaskCommitStatus.None)
+            if (status == TaskCommitStatus.TaskDisabled)
+            {
+                return (flowControl: false, value: AICallResult.FromFailed("Task is disabled. Task canceled."));
+            }
+            else if (status != TaskCommitStatus.None)
             {
                 return (flowControl: false, value: AICallResult.Success);
             }
@@ -191,7 +208,6 @@ internal class AigcTaskPageRunner : AIAssistant
 
         // When a task is completed but no end event is triggered,
         // try to trigger the sub-task completion event to ensure the parent task can correctly perceive the completion status of the sub-task.
-        status = task.GetCommitStatus();
         if (status == TaskCommitStatus.None && task.GetAllSubTaskDone() == true)
         {
             if (task.GetTaskAt(task.Count - 1) is { } lastTask)
@@ -238,6 +254,11 @@ internal class AigcTaskPageRunner : AIAssistant
 
     private async Task<TaskRunResult> RunTaskWithRetry(AIRequest request, AigcTaskPage task, TaskEventTypes eventType, string commitName, object parameter)
     {
+        if (task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+        {
+            return new(TaskCommitStatus.TaskDisabled, "Task is disabled.");
+        }
+
         var retryConfig = AigcWorkflowPlugin.Instance?.Retry;
         int maxRetry = retryConfig?.RetryCount ?? 0;
         int retry = 0;
@@ -297,6 +318,11 @@ internal class AigcTaskPageRunner : AIAssistant
     /// <returns>A <see cref="TaskRunResult"/> containing the end type and result parameter.</returns>
     private async Task<TaskRunResult> RunTask(AIRequest request, AigcTaskPage task, TaskEventTypes eventType, string commitName, object parameter)
     {
+        if (task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+        {
+            return new(TaskCommitStatus.TaskDisabled, "Task is disabled.");
+        }
+
         bool autoSelect = task.TaskPageDocument?.AutoFocusRunningTask == true;
         if (autoSelect)
         {
@@ -391,6 +417,7 @@ internal class AigcTaskPageRunner : AIAssistant
                 return TaskEventTypes.SubTaskFailed;
 
             case TaskCommitStatus.None:
+            case TaskCommitStatus.TaskDisabled:
             default:
                 return TaskEventTypes.None;
         }

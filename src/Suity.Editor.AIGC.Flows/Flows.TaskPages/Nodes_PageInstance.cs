@@ -370,7 +370,10 @@ public class ParsePageInstance : TaskPageNode
                 return null;
             }
 
-            pageInstance.SetParameters(dic);
+            foreach (var pair in dic)
+            {
+                pageInstance.SetParameter(pair.Key, pair.Value);
+            }
 
             return pageInstance;
         }

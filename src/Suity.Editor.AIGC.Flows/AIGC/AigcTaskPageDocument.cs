@@ -181,7 +181,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
         for (int i = c - 1; i >= 0; i--)
         {
             var task = GetTaskAt(i);
-            if (task is null)
+            if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
             {
                 continue;
             }
@@ -213,7 +213,7 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
         }
 
         var task = GetUnfinishedChildTask();
-        if (task != null)
+        if (task != null && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
         {
             return task.GetUnfinishedChildTaskDeep() ?? task;
         }
