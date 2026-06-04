@@ -386,7 +386,7 @@ internal class SArrayExternalBK : SArrayExternal
         Type type = _ary.InputType.Target?.NativeType;
         if (type is null)
         {
-            return null;
+            type = typeof(object);
         }
 
         int len = _ary.Count;

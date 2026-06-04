@@ -245,7 +245,11 @@ public static class Cloner
 
     private static object CreateObject(Type type, object parameter, ISyncTypeResolver callerResolver, ISyncTypeResolver localResolver)
     {
-        if (type.IsValueType || type == typeof(string))
+        if (type.IsValueType)
+        {
+            return parameter;
+        }
+        else if (type == typeof(string))
         {
             return parameter?.ToString();
         }

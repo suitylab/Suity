@@ -1,4 +1,5 @@
 using ComputerBeacon.Json;
+using Newtonsoft.Json.Linq;
 using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.AIGC;
@@ -10,6 +11,7 @@ using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
+using Suity.Synchonizing.Preset;
 using Suity.Views;
 using Suity.Views.Im;
 using Suity.Views.Im.Flows;
@@ -397,18 +399,26 @@ public class ParsePageInstance : TaskPageNode
             {
                 foreach (var pair in _dic)
                 {
-                    var value = SItem.ResolveValue(pair.Value);
+                    var v = SItem.ResolveObject(pair.Value);
+                    if (v is Array ary)
+                    {
+                        v = SyncList.CreateReadonly(ary);
+                    }
 
-                    sync.Sync(pair.Key, value);
+                    sync.Sync(pair.Key, v);
                 }
             }
             else if (sync.Mode == SyncMode.Get)
             {
                 if (_dic.TryGetValue(sync.Name, out var value))
                 {
-                    value = SItem.ResolveValue(value);
+                    var v = SItem.ResolveObject(value);
+                    if (v is Array ary)
+                    {
+                        v = SyncList.CreateReadonly(ary);
+                    }
 
-                    sync.Sync(sync.Name, value);
+                    sync.Sync(sync.Name, v);
                 }
             }
         }

@@ -6,28 +6,31 @@
   <Plugin name="LLmModelPlugin">
     <LowLLmPreset>
       <Default />
-      <Planning />
-      <ToolCalling />
+      <Thinking />
       <WebSearch />
       <Coding />
+      <Creative />
+      <Summary />
       <Lightweight />
       <DefaultParameters />
     </LowLLmPreset>
     <MediumLLmPreset>
       <Default />
-      <Planning />
-      <ToolCalling />
+      <Thinking />
       <WebSearch />
       <Coding />
+      <Creative />
+      <Summary />
       <Lightweight />
       <DefaultParameters />
     </MediumLLmPreset>
     <HighLLmPreset>
       <Default />
-      <Planning />
-      <ToolCalling />
+      <Thinking />
       <WebSearch />
       <Coding />
+      <Creative />
+      <Summary />
       <Lightweight />
       <DefaultParameters />
     </HighLLmPreset>
@@ -48,15 +51,9 @@
     <ClassifyModel>
       <ModelType>Lightweight</ModelType>
     </ClassifyModel>
-    <ToolCallingModel>
-      <ModelType>ToolCalls</ModelType>
-    </ToolCallingModel>
-    <CreativeToolCallingModel>
-      <ModelType>ToolCalls</ModelType>
-    </CreativeToolCallingModel>
-    <ExactToolCallingModel>
-      <ModelType>ToolCalls</ModelType>
-    </ExactToolCallingModel>
+    <ToolCallingModel />
+    <CreativeToolCallingModel />
+    <ExactToolCallingModel />
     <CreativeWritingModel />
     <DesignWritingModel />
     <TechnicalWritingModel />

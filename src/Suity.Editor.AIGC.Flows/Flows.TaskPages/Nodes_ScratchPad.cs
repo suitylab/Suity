@@ -1,4 +1,5 @@
-﻿using Suity.Editor.AIGC;
+﻿using Suity.Drawing;
+using Suity.Editor.AIGC;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
@@ -172,7 +173,7 @@ public class SetTaskScratchPads : TaskPageNode
 
 #region GetCurrentScratchPads
 
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "Scratch Pad")]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Icon = "*CoreIcon|Scratch", Category = "Scratch Pad")]
 [DisplayText("Get Current Scratch Pads", "*CoreIcon|Scratch")]
 public class GetCurrentScratchPads : TaskPageNode
 {
@@ -186,6 +187,8 @@ public class GetCurrentScratchPads : TaskPageNode
         var type = TypeDefinition.FromNative<ScratchPad>().MakeArrayType();
         _scratchPad = AddDataOutputConnector("ScratchPad", type, "Scratch Pad");
     }
+
+    public override ImageDef Icon => CoreIconCache.Scratch;
 
     protected override void OnSync(IPropertySync sync, ISyncContext context)
     {
