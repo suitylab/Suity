@@ -1129,14 +1129,14 @@ public class GetCurrentTask : TaskPageNode
     /// </summary>
     public GetCurrentTask()
     {
-        var type = TypeDefinition.FromNative<IAigcTaskPage>();
+        var type = TypeDefinition.FromNative<IAigcWorkflowPage>();
         _out = AddDataOutputConnector("Out", type, "Current Task");
     }
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var task = compute.Context.GetArgument<IAigcTaskPage>();
+        var task = compute.Context.GetArgument<IAigcWorkflowPage>();
         compute.SetValue(_out, task);
     }
 }
