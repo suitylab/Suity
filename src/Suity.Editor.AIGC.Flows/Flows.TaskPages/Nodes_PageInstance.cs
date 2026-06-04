@@ -268,6 +268,7 @@ public class ParsePageInstance : TaskPageNode
     readonly FlowNodeConnector _toolJson;
 
     readonly FlowNodeConnector _outPageInstance;
+    readonly FlowNodeConnector _outFormatError;
     readonly FlowNodeConnector _outNoResult;
 
     /// <summary>
@@ -285,6 +286,7 @@ public class ParsePageInstance : TaskPageNode
         var instanceType = TypeDefinition.FromNative<IPageInstance>();
 
         _outPageInstance = this.AddConnector("PageInstance", instanceType, FlowDirections.Output, FlowConnectorTypes.Action, false, "Page Instance");
+        _outFormatError = this.AddConnector("FormatError", "string", FlowDirections.Output, FlowConnectorTypes.Action, false, "Format Error");
         _outNoResult = this.AddActionOutputConnector("NoResult", "No Result");
     }
 
@@ -299,17 +301,25 @@ public class ParsePageInstance : TaskPageNode
         string toolJson = compute.GetValue<string>(_toolJson);
 
         // 2. Call the extraction function
-        var pageInstance = ParsePageInstance.CreatePageInstance(toolPages, toolName, toolJson);
+        try
+        {
+            var pageInstance = ParsePageInstance.CreatePageInstance(toolPages, toolName, toolJson);
 
-        // 3. Set output based on result
-        if (pageInstance != null)
-        {
-            compute.SetValue(_outPageInstance, pageInstance);
-            compute.SetResult(this, _outPageInstance);
+            // 3. Set output based on result
+            if (pageInstance != null)
+            {
+                compute.SetValue(_outPageInstance, pageInstance);
+                compute.SetResult(this, _outPageInstance);
+            }
+            else
+            {
+                compute.SetResult(this, _outNoResult);
+            }
         }
-        else
+        catch (FormatException err)
         {
-            compute.SetResult(this, _outNoResult);
+            compute.SetValue(_outFormatError, err.Message);
+            compute.SetResult(this, _outFormatError);
         }
     }
 
@@ -341,9 +351,9 @@ public class ParsePageInstance : TaskPageNode
         {
             jobj = ComputerBeacon.Json.Parser.Parse(jsonStr) as JsonObject;
         }
-        catch (Exception)
+        catch (Exception err)
         {
-            throw;
+            throw; 
             // Return null on parse failure
             return null;
         }
@@ -411,6 +421,7 @@ public class ParseTagToPageInstance : TaskPageNode
 
     readonly FlowNodeConnector _outPageInstance;
     readonly FlowNodeConnector _outPageName;
+    readonly FlowNodeConnector _outFormatError;
     readonly FlowNodeConnector _outNoResult;
 
     /// <summary>
@@ -430,6 +441,7 @@ public class ParseTagToPageInstance : TaskPageNode
 
         _outPageInstance = this.AddConnector("PageInstance", instanceType, FlowDirections.Output, FlowConnectorTypes.Action, false, "Page Instance");
         _outPageName = this.AddDataOutputConnector("PageName", "string", "Page Name");
+        _outFormatError = this.AddConnector("FormatError", "string", FlowDirections.Output, FlowConnectorTypes.Action, false, "Format Error");
         _outNoResult = this.AddActionOutputConnector("NoResult", "No Result");
     }
 
@@ -463,19 +475,27 @@ public class ParseTagToPageInstance : TaskPageNode
         string pageJson = tag?.InnerText;
         string pageName = tag?.GetAttribute(attributeName);
 
-        // 2. Call the extraction function
-        var pageInstance = ParsePageInstance.CreatePageInstance(pages, pageName, pageJson);
+        try
+        {
+            // 2. Call the extraction function
+            var pageInstance = ParsePageInstance.CreatePageInstance(pages, pageName, pageJson);
 
-        // 3. Set output based on result
-        if (pageInstance != null)
-        {
-            compute.SetValue(_outPageInstance, pageInstance);
-            compute.SetValue(_outPageName, pageName);
-            compute.SetResult(this, _outPageInstance);
+            // 3. Set output based on result
+            if (pageInstance != null)
+            {
+                compute.SetValue(_outPageInstance, pageInstance);
+                compute.SetValue(_outPageName, pageName);
+                compute.SetResult(this, _outPageInstance);
+            }
+            else
+            {
+                compute.SetResult(this, _outNoResult);
+            }
         }
-        else
+        catch (FormatException err)
         {
-            compute.SetResult(this, _outNoResult);
+            compute.SetValue(_outFormatError, err.Message);
+            compute.SetResult(this, _outFormatError);
         }
     }
 

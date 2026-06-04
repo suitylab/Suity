@@ -627,7 +627,7 @@ public class ThrowError : ActionFlowNode
 {
     private readonly FlowNodeConnector _input;
 
-    private SValue _message = new STextBlock();
+    readonly ConnectorTextBlockProperty _message = new("ErrorMessage", "Error Message", toolTips: "The error message to throw");
 
     /// <summary>
     /// Gets or sets the delay duration in seconds before throwing the error.
@@ -640,6 +640,7 @@ public class ThrowError : ActionFlowNode
     public ThrowError()
     {
         _input = AddActionInputConnector("Input", "Input");
+        _message.AddConnector(this);
     }
 
     /// <inheritdoc/>
@@ -647,7 +648,7 @@ public class ThrowError : ActionFlowNode
     {
         base.OnSync(sync, context);
 
-        _message = sync.Sync("Message", _message, SyncFlag.NotNull) ?? new STextBlock();
+        _message.Sync(sync);
         DelaySecond = sync.Sync(nameof(DelaySecond), DelaySecond);
     }
 
@@ -656,7 +657,7 @@ public class ThrowError : ActionFlowNode
     {
         base.OnSetupView(setup);
 
-        setup.InspectorField(_message, new ViewProperty("Message", "Error Message"));
+        _message.InspectorField(setup, this);
         setup.InspectorField(DelaySecond, new ViewProperty(nameof(DelaySecond), "Delay").WithUnit("seconds"));
     }
 
@@ -670,7 +671,9 @@ public class ThrowError : ActionFlowNode
 
         cancel.ThrowIfCancellationRequested();
 
-        throw new FlowNodeRunException(_message?.ToString() ?? string.Empty);
+        string mssage = _message.GetValue(compute, this) ?? string.Empty;
+
+        throw new FlowNodeRunException(mssage);
     }
 }
 
