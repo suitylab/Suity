@@ -7,10 +7,20 @@ using System.Collections.Generic;
 
 namespace Suity.Editor.Services;
 
+#region IBaseConverter
+
+public interface IBaseConverter
+{
+
+}
+
+#endregion
+
+#region ITypeConverter
 /// <summary>
 /// Interface for type converters.
 /// </summary>
-public interface ITypeConverter
+public interface ITypeConverter : IBaseConverter
 {
     /// <summary>
     /// Gets the source types for conversion.
@@ -30,11 +40,13 @@ public interface ITypeConverter
     /// <returns>The converted object.</returns>
     object ConvertType(object objFrom, Type typeTo);
 }
+#endregion
 
+#region ITypeDefinitionConverter
 /// <summary>
 /// Interface for type definition converters.
 /// </summary>
-public interface ITypeDefinitionConverter
+public interface ITypeDefinitionConverter : IBaseConverter
 {
     /// <summary>
     /// Gets the source type definitions for conversion.
@@ -54,11 +66,13 @@ public interface ITypeDefinitionConverter
     /// <returns>The converted object.</returns>
     object ConvertType(object objFrom, TypeDefinition typeTo);
 }
+#endregion
 
+#region IDStructObjectConverter
 /// <summary>
 /// Interface for converting between SObject and structured data types.
 /// </summary>
-public interface IDStructObjectConverter
+public interface IDStructObjectConverter : IBaseConverter
 {
     /// <summary>
     /// Gets the types this converter can handle.
@@ -81,15 +95,14 @@ public interface IDStructObjectConverter
     /// <returns>The converted object.</returns>
     object ConvertFromSObject(SObject objFrom, Type typeTo);
 }
+#endregion
 
+#region TypeConvertState
 /// <summary>
 /// Represents the state of a type conversion attempt.
 /// </summary>
 public enum TypeConvertState
 {
-    /// <summary>
-    /// The value is null.
-    /// </summary>
     Null,
 
     /// <summary>
@@ -112,7 +125,22 @@ public enum TypeConvertState
     /// </summary>
     Unconvertible,
 }
+#endregion
 
+#region TypeConvertModes
+public enum TypeConvertModes
+{
+    None,
+}
+#endregion
+
+#region TypeConvertResult
+
+public record struct TypeConvertResult(object From, object To, TypeConvertState State, TypeConvertModes Mode, IBaseConverter Converter); 
+
+#endregion
+
+#region TypeConverter<TFrom, TTo>
 /// <summary>
 /// Abstract generic type converter.
 /// </summary>
@@ -142,7 +170,9 @@ public abstract class TypeConverter<TFrom, TTo> : ITypeConverter
     /// <returns>The converted value.</returns>
     public abstract TTo Convert(TFrom objFrom);
 }
+#endregion
 
+#region TypeToTextConverter<TFrom>
 /// <summary>
 /// Abstract generic type to text converter.
 /// </summary>
@@ -173,7 +203,9 @@ public abstract class TypeToTextConverter<TFrom> : ITypeConverter
     /// <returns>The string representation.</returns>
     public abstract string Convert(TFrom objFrom);
 }
+#endregion
 
+#region TextToTypeConverter<TTo>
 /// <summary>
 /// Abstract generic text to type converter.
 /// </summary>
@@ -198,7 +230,9 @@ public abstract class TextToTypeConverter<TTo> : ITypeConverter
     /// <returns>The converted value.</returns>
     public abstract TTo Convert(string text);
 }
+#endregion
 
+#region AssetLinkToTypeConverter<TFrom, TTo>
 /// <summary>
 /// Abstract converter from asset link to a typed object.
 /// </summary>
@@ -240,7 +274,9 @@ public abstract class AssetLinkToTypeConverter<TFrom, TTo> : ITypeDefinitionConv
     /// <returns>The converted value.</returns>
     public abstract TTo Convert(TFrom objFroms);
 }
+#endregion
 
+#region TypeToAssetLinkConverter<TFrom, TTo>
 /// <summary>
 /// Abstract converter from typed object to asset link.
 /// </summary>
@@ -274,7 +310,9 @@ public abstract class TypeToAssetLinkConverter<TFrom, TTo> : ITypeDefinitionConv
     /// <returns>The converted value.</returns>
     public abstract TTo Convert(TFrom objFroms);
 }
+#endregion
 
+#region AssetLinkToTextConverter<TFrom>
 /// <summary>
 /// Abstract converter from asset link to text.
 /// </summary>
@@ -332,7 +370,9 @@ public abstract class AssetLinkToTextConverter<TFrom> : ITypeDefinitionConverter
     /// <returns>The string representation.</returns>
     public abstract string Convert(TFrom objFroms);
 }
+#endregion
 
+#region AssetLinkArrayToTextConverter<TFrom>
 /// <summary>
 /// Abstract converter from asset link array to text.
 /// </summary>
@@ -388,8 +428,9 @@ public abstract class AssetLinkArrayToTextConverter<TFrom> : ITypeDefinitionConv
     /// <returns>The string representation.</returns>
     public abstract string Convert(TFrom[] objFroms);
 }
+#endregion
 
-
+#region ITypeConvertService
 /// <summary>
 /// Service interface for type conversion operations.
 /// </summary>
@@ -470,7 +511,9 @@ public interface ITypeConvertService
     /// <returns>The conversion state.</returns>
     TypeConvertState TryConvert(TypeDefinition typeDefTo, bool toMultiple, object objFrom, out object result);
 }
+#endregion
 
+#region TypeConvertExtensions
 /// <summary>
 /// Extension methods for type conversion.
 /// </summary>
@@ -532,3 +575,5 @@ public static class TypeConvertExtensions
         return null;
     }
 }
+
+#endregion
