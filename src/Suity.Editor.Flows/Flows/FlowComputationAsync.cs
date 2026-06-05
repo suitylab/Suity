@@ -212,9 +212,9 @@ public class FlowComputationAsync : IFlowComputationAsync, IDisposable
 
     private object ConvertValue(FlowNodeConnector connFrom, FlowNodeConnector connTo, object value)
     {
-        var state = EditorServices.TypeConvertService.TryConvert(connFrom, connTo, value, out var result);
+        var result = EditorServices.TypeConvertService.TryConvert(connFrom, connTo, value);
 
-        return result;
+        return result.To;
     }
 
     /// <inheritdoc/>

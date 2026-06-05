@@ -131,12 +131,86 @@ public enum TypeConvertState
 public enum TypeConvertModes
 {
     None,
+
+    Converter,
+
+    ToString,
+
+    ToObject,
+
+    Array,
+
+    AssetLink,
+
+    DStruct,
+
+    LinkToKey,
+
+    KeyToLink,
 }
 #endregion
 
 #region TypeConvertResult
 
-public record struct TypeConvertResult(object From, object To, TypeConvertState State, TypeConvertModes Mode, IBaseConverter Converter); 
+public record struct TypeConvertResult
+{
+    public static TypeConvertResult Unconvertible { get; } = FromState(TypeConvertState.Unconvertible);
+
+    public static TypeConvertResult Same { get; } = FromState(TypeConvertState.Same);
+
+    public static TypeConvertResult Assignable { get; } = FromState(TypeConvertState.Assignable);
+
+    public static TypeConvertResult Null { get; } = FromState(TypeConvertState.Null);
+
+
+    public TypeConvertState State { get; init; }
+
+    public TypeConvertModes Mode { get; init; }
+    public IBaseConverter Converter { get; init; }
+
+    public object From { get; init; }
+    public object To { get; init; }
+
+    public static TypeConvertResult FromState(TypeConvertState state)
+    {
+        return new TypeConvertResult
+        {
+            State = state,
+        };
+    }
+
+    public static TypeConvertResult FromSame(object from, object to = null)
+    {
+        return new TypeConvertResult
+        {
+            State = TypeConvertState.Same,
+            From = from,
+            To = to ?? from,
+        };
+    }
+
+    public static TypeConvertResult FromAssignable(object from, object to = null)
+    {
+        return new TypeConvertResult
+        {
+            State = TypeConvertState.Assignable,
+            From = from,
+            To = to ?? from,
+        };
+    }
+
+    public static TypeConvertResult FromConvert(TypeConvertModes mode, IBaseConverter converter = null, object from = null, object to = null)
+    {
+        return new TypeConvertResult
+        {
+            State = TypeConvertState.Convertible,
+            Mode = mode,
+            Converter = converter,
+            From = from,
+            To = to,
+        };
+    }
+}
 
 #endregion
 
@@ -442,7 +516,7 @@ public interface ITypeConvertService
     /// <param name="typeFrom">The source type.</param>
     /// <param name="typeTo">The target type.</param>
     /// <returns>The conversion state.</returns>
-    TypeConvertState CanConvert(Type typeFrom, Type typeTo);
+    TypeConvertResult CanConvert(Type typeFrom, Type typeTo);
 
     /// <summary>
     /// Checks if conversion is possible between two type definitions.
@@ -451,7 +525,7 @@ public interface ITypeConvertService
     /// <param name="typeDefTo">The target type definition.</param>
     /// <param name="toMultiple">Whether conversion to multiple values is allowed.</param>
     /// <returns>The conversion state.</returns>
-    TypeConvertState CanConvert(TypeDefinition typeDefFrom, TypeDefinition typeDefTo, bool toMultiple);
+    TypeConvertResult CanConvert(TypeDefinition typeDefFrom, TypeDefinition typeDefTo, bool toMultiple);
 
     /// <summary>
     /// Checks if conversion is possible between two flow node connectors.
@@ -459,7 +533,7 @@ public interface ITypeConvertService
     /// <param name="connectorFrom">The source connector.</param>
     /// <param name="connectorTo">The target connector.</param>
     /// <returns>The conversion state.</returns>
-    TypeConvertState CanConvert(FlowNodeConnector connectorFrom, FlowNodeConnector connectorTo);
+    TypeConvertResult CanConvert(FlowNodeConnector connectorFrom, FlowNodeConnector connectorTo);
 
     /// <summary>
     /// Attempts to convert an object from one type to another.
@@ -469,7 +543,7 @@ public interface ITypeConvertService
     /// <param name="objFrom">The object to convert.</param>
     /// <param name="result">The converted result if successful.</param>
     /// <returns>The conversion state.</returns>
-    TypeConvertState TryConvert(Type typeFrom, Type typeTo, object objFrom, out object result);
+    TypeConvertResult TryConvert(Type typeFrom, Type typeTo, object objFrom);
 
     /// <summary>
     /// Attempts to convert an object from one type definition to another.
@@ -480,7 +554,7 @@ public interface ITypeConvertService
     /// <param name="objFrom">The object to convert.</param>
     /// <param name="result">The converted result if successful.</param>
     /// <returns>The conversion state.</returns>
-    TypeConvertState TryConvert(TypeDefinition typeDefFrom, TypeDefinition typeDefTo, bool toMultiple, object objFrom, out object result);
+    TypeConvertResult TryConvert(TypeDefinition typeDefFrom, TypeDefinition typeDefTo, bool toMultiple, object objFrom);
 
     /// <summary>
     /// Attempts to convert an object between flow node connectors.
@@ -490,7 +564,7 @@ public interface ITypeConvertService
     /// <param name="objFrom">The object to convert.</param>
     /// <param name="result">The converted result if successful.</param>
     /// <returns>The conversion state.</returns>
-    TypeConvertState TryConvert(FlowNodeConnector connectorFrom, FlowNodeConnector connectorTo, object objFrom, out object result);
+    TypeConvertResult TryConvert(FlowNodeConnector connectorFrom, FlowNodeConnector connectorTo, object objFrom);
 
     /// <summary>
     /// Attempts to convert an object to a flow node connector type.
@@ -499,7 +573,7 @@ public interface ITypeConvertService
     /// <param name="objFrom">The object to convert.</param>
     /// <param name="result">The converted result if successful.</param>
     /// <returns>The conversion state.</returns>
-    TypeConvertState TryConvert(FlowNodeConnector connectorTo, object objFrom, out object result);
+    TypeConvertResult TryConvert(FlowNodeConnector connectorTo, object objFrom);
 
     /// <summary>
     /// Attempts to convert an object to a type definition.
@@ -509,7 +583,7 @@ public interface ITypeConvertService
     /// <param name="objFrom">The object to convert.</param>
     /// <param name="result">The converted result if successful.</param>
     /// <returns>The conversion state.</returns>
-    TypeConvertState TryConvert(TypeDefinition typeDefTo, bool toMultiple, object objFrom, out object result);
+    TypeConvertResult TryConvert(TypeDefinition typeDefTo, bool toMultiple, object objFrom);
 }
 #endregion
 
@@ -529,9 +603,9 @@ public static class TypeConvertExtensions
     /// <exception cref="Exception">Thrown when conversion is not possible.</exception>
     public static TTo Convert<TFrom, TTo>(TFrom objFrom)
     {
-        var state = EditorServices.TypeConvertService.TryConvert(typeof(TFrom), typeof(TTo), objFrom, out var result);
+        var result = EditorServices.TypeConvertService.TryConvert(typeof(TFrom), typeof(TTo), objFrom);
 
-        if (state != TypeConvertState.Unconvertible && result is TTo to)
+        if (result.State != TypeConvertState.Unconvertible && result.To is TTo to)
         {
             return to;
         }

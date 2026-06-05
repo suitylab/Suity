@@ -115,58 +115,58 @@ internal class TypeConvertService : ITypeConvertService
     }
 
     /// <inheritdoc/>
-    public TypeConvertState CanConvert(Type typeFrom, Type typeTo)
+    public TypeConvertResult CanConvert(Type typeFrom, Type typeTo)
     {
         if (typeFrom is null || typeTo is null)
         {
-            return TypeConvertState.Unconvertible;
+            return TypeConvertResult.Unconvertible;
         }
 
         if (typeFrom == typeTo)
         {
-            return TypeConvertState.Same;
+            return TypeConvertResult.Same;
         }
 
         if (typeTo.IsAssignableFrom(typeFrom))
         {
-            return TypeConvertState.Assignable;
+            return TypeConvertResult.Assignable;
         }
 
-        if (_typeConverters.ContainsKey(new TwoType(typeFrom, typeTo)))
+        if (_typeConverters.GetValueSafe(new TwoType(typeFrom, typeTo)) is { } converter)
         {
-            return TypeConvertState.Convertible;
+            return TypeConvertResult.FromConvert(TypeConvertModes.Converter, converter);
         }
 
         if (typeTo == typeof(string))
         {
-            return TypeConvertState.Convertible;
+            return TypeConvertResult.FromConvert(TypeConvertModes.ToString);
         }
 
         if (typeTo == typeof(object))
         {
-            return TypeConvertState.Convertible;
+            return TypeConvertResult.FromConvert(TypeConvertModes.ToObject);
         }
 
-        return TypeConvertState.Unconvertible;
+        return TypeConvertResult.Unconvertible;
     }
 
     /// <inheritdoc/>
-    public TypeConvertState CanConvert(TypeDefinition typeDefFrom, TypeDefinition typeDefTo, bool toMultiple)
+    public TypeConvertResult CanConvert(TypeDefinition typeDefFrom, TypeDefinition typeDefTo, bool toMultiple)
     {
         if (TypeDefinition.IsNullOrEmpty(typeDefFrom) || TypeDefinition.IsNullOrEmpty(typeDefTo))
         {
-            return TypeConvertState.Unconvertible;
+            return TypeConvertResult.Unconvertible;
         }
 
         if (typeDefFrom == typeDefTo)
         {
-            return TypeConvertState.Same;
+            return TypeConvertResult.Same;
         }
 
         // Array to multi-connection port conversion
         if (typeDefFrom.IsArray && typeDefFrom.ElementType == typeDefTo && toMultiple)
         {
-            return TypeConvertState.Same;
+            return TypeConvertResult.Same;
         }
 
         // AssetLink array to multi-connection port conversion
@@ -181,29 +181,29 @@ internal class TypeConvertService : ITypeConvertService
 
         if (typeDefTo.IsAssignableFrom(typeDefFrom))
         {
-            return TypeConvertState.Assignable;
+            return TypeConvertResult.Assignable;
         }
 
-        if (_typeDefConverters.ContainsKey(new TwoTypeDef(typeDefFrom, typeDefTo)))
+        if (_typeDefConverters.GetValueSafe(new TwoTypeDef(typeDefFrom, typeDefTo)) is { } converter)
         {
             // var converter = _typeDefConverters[new TwoTypeDef(typeDefFrom, typeDefTo)];
 
-            return TypeConvertState.Convertible;
+            return TypeConvertResult.FromConvert(TypeConvertModes.Converter, converter);
         }
 
         if (GetIsArrayConvertible(typeDefFrom, typeDefTo))
         {
-            return TypeConvertState.Convertible;
+            return TypeConvertResult.FromConvert(TypeConvertModes.Array);
         }
 
         if (GetIsAssetLinkConvertible(typeDefFrom, typeDefTo))
         {
-            return TypeConvertState.Convertible;
+            return TypeConvertResult.FromConvert(TypeConvertModes.AssetLink);
         }
 
         if (GetIsDStructConvertible(typeDefFrom, typeDefTo))
         {
-            return TypeConvertState.Convertible;
+            return TypeConvertResult.FromConvert(TypeConvertModes.DStruct);
         }
 
         if (typeDefFrom.IsArray && typeDefTo.IsArray)
@@ -213,16 +213,16 @@ internal class TypeConvertService : ITypeConvertService
 
         if (typeDefTo == NativeTypes.ObjectType)
         {
-            return TypeConvertState.Convertible;
+            return TypeConvertResult.FromConvert(TypeConvertModes.ToObject);
         }
 
         if (typeDefFrom.IsAssetLink && typeDefTo == SAssetKeyType)
         {
-            return TypeConvertState.Convertible;
+            return TypeConvertResult.FromConvert(TypeConvertModes.LinkToKey);
         }
         else if (typeDefFrom == SAssetKeyType && typeDefTo.IsAssetLink)
         {
-            return TypeConvertState.Convertible;
+            return TypeConvertResult.FromConvert(TypeConvertModes.KeyToLink);
         }
 
         if (typeDefFrom.ElementType is null && typeDefTo.ElementType is null)
@@ -230,21 +230,21 @@ internal class TypeConvertService : ITypeConvertService
             return CanConvert(typeDefFrom.NativeType, typeDefTo.NativeType);
         }
 
-        return TypeConvertState.Unconvertible;
+        return TypeConvertResult.Unconvertible;
     }
 
     /// <inheritdoc/>
-    public TypeConvertState CanConvert(FlowNodeConnector connectorFrom, FlowNodeConnector connectorTo)
+    public TypeConvertResult CanConvert(FlowNodeConnector connectorFrom, FlowNodeConnector connectorTo)
     {
         if (connectorFrom is null || connectorTo is null)
         {
-            return TypeConvertState.Unconvertible;
+            return TypeConvertResult.Unconvertible;
         }
 
         if (!string.IsNullOrWhiteSpace(connectorFrom.DataTypeName) 
             && connectorFrom.DataTypeName == connectorTo.DataTypeName)
         {
-            return TypeConvertState.Same;
+            return TypeConvertResult.Same;
         }
 
         var typeDefFrom = TypeDefinition.Resolve(connectorFrom.DataTypeName);
@@ -254,17 +254,16 @@ internal class TypeConvertService : ITypeConvertService
     }
 
     /// <inheritdoc/>
-    public TypeConvertState TryConvert(Type typeFrom, Type typeTo, object objFrom, out object result)
+    public TypeConvertResult TryConvert(Type typeFrom, Type typeTo, object objFrom)
     {
-        result = null;
         if (objFrom is null)
         {
-            return TypeConvertState.Null;
+            return TypeConvertResult.Null;
         }
 
         if (typeFrom is null || typeTo is null)
         {
-            return TypeConvertState.Unconvertible;
+            return TypeConvertResult.Unconvertible;
         }
 
         //if (!typeFrom.IsAssignableFrom(objFrom.GetType()))
@@ -274,14 +273,12 @@ internal class TypeConvertService : ITypeConvertService
 
         if (typeFrom == typeTo)
         {
-            result = objFrom;
-            return TypeConvertState.Same;
+            return TypeConvertResult.FromSame(objFrom);
         }
 
         if (typeTo.IsAssignableFrom(typeFrom))
         {
-            result = objFrom;
-            return TypeConvertState.Assignable;
+            return TypeConvertResult.FromAssignable(objFrom);
         }
 
         var twoType = new TwoType(typeFrom, typeTo);
@@ -289,12 +286,12 @@ internal class TypeConvertService : ITypeConvertService
         {
             try
             {
-                result = converter.ConvertType(objFrom, typeTo);
-                return TypeConvertState.Convertible;
+                var result = converter.ConvertType(objFrom, typeTo);
+                return TypeConvertResult.FromConvert(TypeConvertModes.Converter, converter, objFrom, result);
             }
             catch (Exception)
             {
-                return TypeConvertState.Unconvertible;
+                return TypeConvertResult.Unconvertible;
             }
         }
 
@@ -302,49 +299,45 @@ internal class TypeConvertService : ITypeConvertService
         {
             try
             {
-                result = objFrom.ToString() ?? string.Empty;
-                return TypeConvertState.Convertible;
+                string result = objFrom.ToString() ?? string.Empty;
+                return TypeConvertResult.FromConvert(TypeConvertModes.ToString, null, objFrom, result);
             }
             catch (Exception)
             {
-                return TypeConvertState.Unconvertible;
+                return TypeConvertResult.Unconvertible;
             }
         }
 
         if (typeTo == typeof(object))
         {
-            result = objFrom;
-            return TypeConvertState.Convertible;
+            return TypeConvertResult.FromConvert(TypeConvertModes.ToObject, null, objFrom, objFrom);
         }
 
-        return TypeConvertState.Unconvertible;
+        return TypeConvertResult.Unconvertible;
     }
 
     /// <inheritdoc/>
-    public TypeConvertState TryConvert(TypeDefinition typeDefFrom, TypeDefinition typeDefTo, bool toMultiple, object objFrom, out object result)
+    public TypeConvertResult TryConvert(TypeDefinition typeDefFrom, TypeDefinition typeDefTo, bool toMultiple, object objFrom)
     {
-        result = null;
         if (objFrom is null)
         {
-            return TypeConvertState.Null;
+            return TypeConvertResult.Null;
         }
 
         if (TypeDefinition.IsNullOrEmpty(typeDefFrom) || TypeDefinition.IsNullOrEmpty(typeDefTo))
         {
-            return TypeConvertState.Unconvertible;
+            return TypeConvertResult.Unconvertible;
         }
 
         if (typeDefTo == typeDefFrom)
         {
-            result = objFrom;
-            return TypeConvertState.Same;
+            return TypeConvertResult.FromSame(objFrom);
         }
 
         // Array to multi-connection port conversion
         if (typeDefFrom.IsArray && typeDefFrom.ElementType == typeDefTo && toMultiple)
         {
-            result = objFrom;
-            return TypeConvertState.Same;
+            return TypeConvertResult.FromSame(objFrom);
         }
 
         // AssetLink array to multi-connection port
@@ -360,8 +353,7 @@ internal class TypeConvertService : ITypeConvertService
 
         if (typeDefTo.IsAssignableFrom(typeDefFrom))
         {
-            result = objFrom;
-            return TypeConvertState.Assignable;
+            return TypeConvertResult.FromAssignable(objFrom);
         }
 
         var twoType = new TwoTypeDef(typeDefFrom, typeDefTo);
@@ -369,12 +361,12 @@ internal class TypeConvertService : ITypeConvertService
         {
             try
             {
-                result = converter.ConvertType(objFrom, typeDefTo);
-                return TypeConvertState.Convertible;
+                var result = converter.ConvertType(objFrom, typeDefTo);
+                return TypeConvertResult.FromConvert(TypeConvertModes.Converter, converter, objFrom, result);
             }
             catch (Exception)
             {
-                return TypeConvertState.Unconvertible;
+                return TypeConvertResult.Unconvertible;
             }
         }
 
@@ -382,12 +374,18 @@ internal class TypeConvertService : ITypeConvertService
         {
             try
             {
-                return ConvertArray(typeDefFrom, typeDefTo, objFrom, out result)
-                    ? TypeConvertState.Convertible : TypeConvertState.Unconvertible;
+                if (ConvertArray(typeDefFrom, typeDefTo, objFrom, out var result))
+                {
+                    return TypeConvertResult.FromConvert(TypeConvertModes.Array, null, objFrom, result);
+                }
+                else
+                {
+                    return TypeConvertResult.Unconvertible;
+                }
             }
             catch (Exception)
             {
-                return TypeConvertState.Unconvertible;
+                return TypeConvertResult.Unconvertible;
             }
         }
 
@@ -395,12 +393,18 @@ internal class TypeConvertService : ITypeConvertService
         {
             try
             {
-                return ConvertAssetLink(typeDefFrom, typeDefTo, objFrom, out result)
-                    ? TypeConvertState.Convertible : TypeConvertState.Unconvertible;
+                if (ConvertAssetLink(typeDefFrom, typeDefTo, objFrom, out var result))
+                {
+                    return TypeConvertResult.FromConvert(TypeConvertModes.AssetLink, null, objFrom, result);
+                }
+                else
+                {
+                    return TypeConvertResult.Unconvertible;
+                }
             }
             catch (Exception)
             {
-                return TypeConvertState.Unconvertible;
+                return TypeConvertResult.Unconvertible;
             }
         }
 
@@ -408,12 +412,18 @@ internal class TypeConvertService : ITypeConvertService
         {
             try
             {
-                return ConvertDStruct(typeDefFrom, typeDefTo, objFrom, out result)
-                    ? TypeConvertState.Convertible : TypeConvertState.Unconvertible;
+                if ( ConvertDStruct(typeDefFrom, typeDefTo, objFrom, out var result)) 
+                {
+                    return TypeConvertResult.FromConvert(TypeConvertModes.DStruct, null, objFrom, result);
+                }
+                else
+                {
+                    return TypeConvertResult.Unconvertible;
+                }
             }
             catch (Exception)
             {
-                return TypeConvertState.Unconvertible;
+                return TypeConvertResult.Unconvertible;
             }
         }
 
@@ -423,117 +433,109 @@ internal class TypeConvertService : ITypeConvertService
             if (objFrom is not string && objFrom is System.Collections.IEnumerable ary)
             {
                 var newSary = new SArray(typeDefTo);
+                TypeConvertResult elementResult = default;
                 foreach (var item in ary)
                 {
-                    TryConvert(typeDefFrom.ElementType, typeDefTo.ElementType, false, item, out result);
-                    newSary.Add(result);
+                    elementResult = TryConvert(typeDefFrom.ElementType, typeDefTo.ElementType, false, item);
+                    newSary.Add(elementResult.To);
                 }
 
-                result = newSary;
-                return TypeConvertState.Convertible;
+                // Use last element's conversion result as overall result (could be improved by accumulating states)
+                return TypeConvertResult.FromConvert(elementResult.Mode, elementResult.Converter, objFrom, newSary);
             }
             else
             {
-                return TypeConvertState.Unconvertible;
+                return TypeConvertResult.Unconvertible;
             }
         }
 
         if (typeDefTo == NativeTypes.ObjectType)
         {
-            result = objFrom;
-            return TypeConvertState.Convertible;
+            return TypeConvertResult.FromConvert(TypeConvertModes.ToObject, null, objFrom, objFrom);
         }
 
         if (typeDefFrom.IsAssetLink && typeDefTo == SAssetKeyType)
         {
-            result = Cloner.Clone(objFrom as SAssetKey);
-            return TypeConvertState.Convertible;
+            var result = Cloner.Clone(objFrom as SAssetKey);
+            return TypeConvertResult.FromConvert(TypeConvertModes.LinkToKey, null, objFrom, result);
         }
         else if (typeDefFrom == SAssetKeyType && typeDefTo.IsAssetLink)
         {
-            result = new SAssetKey(typeDefTo, (result as SAssetKey)?.Id ?? Guid.Empty);
-            return TypeConvertState.Convertible;
+            var result = new SAssetKey(typeDefTo, (objFrom as SAssetKey)?.Id ?? Guid.Empty);
+            return TypeConvertResult.FromConvert(TypeConvertModes.KeyToLink, null, objFrom, result);
         }
 
         if (typeDefFrom.ElementType is null && typeDefTo.ElementType is null)
         {
-            return TryConvert(typeDefFrom.NativeType, typeDefTo.NativeType, objFrom, out result);
+            return TryConvert(typeDefFrom.NativeType, typeDefTo.NativeType, objFrom);
         }
 
-        result = null;
-        return TypeConvertState.Unconvertible;
+        return TypeConvertResult.Unconvertible;
     }
 
     /// <inheritdoc/>
-    public TypeConvertState TryConvert(FlowNodeConnector connectorFrom, FlowNodeConnector connectorTo, object objFrom, out object result)
+    public TypeConvertResult TryConvert(FlowNodeConnector connectorFrom, FlowNodeConnector connectorTo, object objFrom)
     {
-        result = null;
         if (objFrom is null)
         {
-            return TypeConvertState.Null;
+            return TypeConvertResult.Null;
         }
 
         if (connectorFrom is null || connectorTo is null)
         {
-            return TypeConvertState.Unconvertible;
+            return TypeConvertResult.Unconvertible;
         }
 
         if (!string.IsNullOrWhiteSpace(connectorFrom.DataTypeName)
             && connectorFrom.DataTypeName == connectorTo.DataTypeName)
         {
-            result = objFrom;
-            return TypeConvertState.Same;
+            return TypeConvertResult.FromSame(objFrom);
         }
 
         var typeDefFrom = TypeDefinition.Resolve(connectorFrom?.DataTypeName);
         var typeDefTo = TypeDefinition.Resolve(connectorTo?.DataTypeName);
 
-        return TryConvert(typeDefFrom, typeDefTo, connectorTo.AllowMultipleConnection == true, objFrom, out result);
+        return TryConvert(typeDefFrom, typeDefTo, connectorTo.AllowMultipleConnection == true, objFrom);
     }
 
 
     /// <inheritdoc/>
-    public TypeConvertState TryConvert(FlowNodeConnector connectorTo, object objFrom, out object result)
+    public TypeConvertResult TryConvert(FlowNodeConnector connectorTo, object objFrom)
     {
         if (connectorTo is null || objFrom is null)
         {
-            result = null;
-            return TypeConvertState.Null;
+            return TypeConvertResult.Null;
         }
 
         var typeDefTo = TypeDefinition.Resolve(connectorTo.DataTypeName);
         if (TypeDefinition.IsNullOrEmpty(typeDefTo))
         {
-            result = null;
-            return TypeConvertState.Null;
+            return TypeConvertResult.Null;
         }
 
-        return TryConvert(typeDefTo, connectorTo.AllowMultipleConnection == true, objFrom, out result);
+        return TryConvert(typeDefTo, connectorTo.AllowMultipleConnection == true, objFrom);
     }
 
     /// <inheritdoc/>
-    public TypeConvertState TryConvert(TypeDefinition typeDefTo, bool toMultiple, object objFrom, out object result)
+    public TypeConvertResult TryConvert(TypeDefinition typeDefTo, bool toMultiple, object objFrom)
     {
         if (TypeDefinition.IsNullOrEmpty(typeDefTo) || objFrom is null)
         {
-            result = null;
-            return TypeConvertState.Null;
+            return TypeConvertResult.Null;
         }
 
         if (typeDefTo.ElementType is null && typeDefTo.NativeType is { } typeTo && typeTo.IsAssignableFrom(objFrom.GetType()))
         {
-            result = objFrom;
-            return TypeConvertState.Assignable;
+            return TypeConvertResult.FromAssignable(objFrom);
         }
 
         var typeDefFrom = TypeDefinition.ResolveNative(objFrom);
         if (TypeDefinition.IsNullOrEmpty(typeDefFrom))
         {
-            result = null;
-            return TypeConvertState.Null;
+            return TypeConvertResult.Null;
         }
 
-        return TryConvert(typeDefFrom, typeDefTo, toMultiple, objFrom, out result);
+        return TryConvert(typeDefFrom, typeDefTo, toMultiple, objFrom);
     }
 
     #region Array -> Single / Single -> Array Conversion

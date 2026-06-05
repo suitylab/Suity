@@ -293,13 +293,13 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
             var valueType = TypeDefinition.ResolveNative(value);
             if (!TypeDefinition.IsNullOrEmpty(valueType))
             {
-                var c = EditorServices.TypeConvertService.TryConvert(valueType, field.Type, false, value, out var result);
-                if (c == TypeConvertState.Unconvertible)
+                var result = EditorServices.TypeConvertService.TryConvert(valueType, field.Type, false, value);
+                if (result.State == TypeConvertState.Unconvertible)
                 {
                     return false;
                 }
 
-                value = result;
+                value = result.To;
             }
         }
 

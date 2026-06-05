@@ -221,9 +221,9 @@ public class PagePresetParameterNode : SubFlowTypeNode
             return;
         }
 
-        EditorServices.TypeConvertService.TryConvert(_out, value, out var converted);
+        var result = EditorServices.TypeConvertService.TryConvert(_out, value);
 
-        compute.SetValue(_out, converted);
+        compute.SetValue(_out, result.To);
     }
 
     private ImGuiNode OnGui(ImGui gui, IDrawNodeContext context)

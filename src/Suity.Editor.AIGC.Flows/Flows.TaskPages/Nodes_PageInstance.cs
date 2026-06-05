@@ -1262,9 +1262,9 @@ public class SetPageParameter : TaskPageNode
 
         var value = compute.GetValue(_inValue);
 
-        EditorServices.TypeConvertService.TryConvert(_refOutput, refConnector, value, out var converted);
+        var result = EditorServices.TypeConvertService.TryConvert(_refOutput, refConnector, value);
 
-        caller.SetParameter(compute, refName, converted);
+        caller.SetParameter(compute, refName, result.To);
 
         compute.SetResult(this, _out);
     }
@@ -1395,9 +1395,9 @@ public class PageParameterReference : TaskPageNode
             return;
         }
 
-        EditorServices.TypeConvertService.TryConvert(refConnector, _out, value, out var converted);
+        var result = EditorServices.TypeConvertService.TryConvert(refConnector, _out, value);
 
-        compute.SetValue(_out, converted);
+        compute.SetValue(_out, result.To);
 
     }
 

@@ -262,13 +262,13 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             var valueType = TypeDefinition.ResolveNative(value);
             if (!TypeDefinition.IsNullOrEmpty(valueType))
             {
-                var c = EditorServices.TypeConvertService.TryConvert(valueType, parameter.ParameterType, false, value, out var result);
-                if (c == TypeConvertState.Unconvertible)
+                var result = EditorServices.TypeConvertService.TryConvert(valueType, parameter.ParameterType, false, value);
+                if (result.State == TypeConvertState.Unconvertible)
                 {
                     return false;
                 }
 
-                value = result;
+                value = result.To;
             }
         }
 

@@ -87,8 +87,8 @@ public class SubFlowBeginNode : SubFlowTypeNode, IFlowRunnable
             if (caller.TryGetParameter(compute, this.Name, out var param) && param != null)
             {
                 var sourceType = TypeDefinition.ResolveNative(param);
-                EditorServices.TypeConvertService.TryConvert(sourceType, type, false, param, out var converted);
-                compute.SetValue(_begin, converted);
+                var result = EditorServices.TypeConvertService.TryConvert(sourceType, type, false, param);
+                compute.SetValue(_begin, result.To);
             }
         }
 

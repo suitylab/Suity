@@ -76,10 +76,10 @@ public static class SubFlowExtensions
         var v = SItem.ResolveObject(value);
 
         var historyText = TypeDefinition.FromNative<HistoryText>();
-        var state = EditorServices.TypeConvertService.TryConvert(type, historyText, false, v, out var converted);
-        if (state != TypeConvertState.Unconvertible)
+        var result = EditorServices.TypeConvertService.TryConvert(type, historyText, false, v);
+        if (result.State != TypeConvertState.Unconvertible)
         {
-            return converted?.ToString() ?? HistoryText.Empty;
+            return result.To?.ToString() ?? HistoryText.Empty;
         }
 
         // TODO: Serialize object to string if no direct conversion is available, consider using JSON or a custom serializer for better readability.

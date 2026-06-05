@@ -951,10 +951,10 @@ public abstract class FlowViewImGui :
                     return true;
                 }
 
-                var state = EditorServices.TypeConvertService.CanConvert(toDef.TypeDef, fromDef.TypeDef, toMultiple);
-                if (state != TypeConvertState.Unconvertible)
+                var result = EditorServices.TypeConvertService.CanConvert(toDef.TypeDef, fromDef.TypeDef, toMultiple);
+                if (result.State != TypeConvertState.Unconvertible)
                 {
-                    converted = state == TypeConvertState.Convertible;
+                    converted = result.State == TypeConvertState.Convertible;
                     return true;
                 }
             }
@@ -965,10 +965,10 @@ public abstract class FlowViewImGui :
                     return true;
                 }
 
-                var state = EditorServices.TypeConvertService.CanConvert(fromDef.TypeDef, toDef.TypeDef, toMultiple);
-                if (state != TypeConvertState.Unconvertible)
+                var result = EditorServices.TypeConvertService.CanConvert(fromDef.TypeDef, toDef.TypeDef, toMultiple);
+                if (result.State != TypeConvertState.Unconvertible)
                 {
-                    converted = state == TypeConvertState.Convertible;
+                    converted = result.State == TypeConvertState.Convertible;
                     return true;
                 }
             }
