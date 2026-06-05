@@ -1793,17 +1793,28 @@ public struct GraphLinkDescriptor : IViewObject
     {
         sync.Sync("FromNode", FromConnector?.ParentNode?.Name ?? string.Empty, SyncFlag.GetOnly);
         sync.Sync("FromConnector", FromConnector?.Name ?? string.Empty, SyncFlag.GetOnly);
+        sync.Sync("FromType", FromConnector?.DataTypeName ?? string.Empty, SyncFlag.GetOnly);
+
         sync.Sync("ToNode", ToConnector?.ParentNode?.Name ?? string.Empty, SyncFlag.GetOnly);
         sync.Sync("ToConnector", ToConnector?.Name ?? string.Empty, SyncFlag.GetOnly);
+        sync.Sync("ToType", ToConnector?.DataTypeName ?? string.Empty, SyncFlag.GetOnly);
+
         sync.Sync("Conversion", Conversion, SyncFlag.GetOnly);
     }
 
     public void SetupView(IViewObjectSetup setup)
     {
+        setup.LabelWithIcon("From", CoreIconCache.Input);
         setup.InspectorFieldOf<string>(new ViewProperty("FromNode", "From Node").WithReadOnly());
         setup.InspectorFieldOf<string>(new ViewProperty("FromConnector", "From Connector").WithReadOnly());
+        setup.InspectorFieldOf<string>(new ViewProperty("FromType", "From Type").WithReadOnly());
+
+        setup.LabelWithIcon("To", CoreIconCache.Output);
         setup.InspectorFieldOf<string>(new ViewProperty("ToNode", "To Node").WithReadOnly());
         setup.InspectorFieldOf<string>(new ViewProperty("ToConnector", "To Connector").WithReadOnly());
+        setup.InspectorFieldOf<string>(new ViewProperty("ToType", "To Type").WithReadOnly());
+
+        setup.LabelWithIcon("Conversion", CoreIconCache.Conversation);
         setup.InspectorField(Conversion, new ViewProperty("Conversion", "Conversion").WithReadOnly().WithExpand());
     }
 
