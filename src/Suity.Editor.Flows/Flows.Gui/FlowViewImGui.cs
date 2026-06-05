@@ -1804,17 +1804,17 @@ public struct GraphLinkDescriptor : IViewObject
 
     public void SetupView(IViewObjectSetup setup)
     {
-        setup.LabelWithIcon("From", CoreIconCache.Input);
+        setup.LabelWithIcon("From", CoreIconCache.Output);
         setup.InspectorFieldOf<string>(new ViewProperty("FromNode", "From Node").WithReadOnly());
         setup.InspectorFieldOf<string>(new ViewProperty("FromConnector", "From Connector").WithReadOnly());
         setup.InspectorFieldOf<string>(new ViewProperty("FromType", "From Type").WithReadOnly());
 
-        setup.LabelWithIcon("To", CoreIconCache.Output);
+        setup.LabelWithIcon("To", CoreIconCache.Input);
         setup.InspectorFieldOf<string>(new ViewProperty("ToNode", "To Node").WithReadOnly());
         setup.InspectorFieldOf<string>(new ViewProperty("ToConnector", "To Connector").WithReadOnly());
         setup.InspectorFieldOf<string>(new ViewProperty("ToType", "To Type").WithReadOnly());
 
-        setup.LabelWithIcon("Convert", CoreIconCache.Conversation);
+        setup.LabelWithIcon("Convert", CoreIconCache.Transfer);
         setup.InspectorField(Conversion, new ViewProperty("Conversion", "Conversion").WithReadOnly().WithExpand());
     }
 

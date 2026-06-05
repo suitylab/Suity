@@ -181,7 +181,7 @@ public record struct TypeConvertResult : IViewObject
 
     public void SetupView(IViewObjectSetup setup)
     {
-        setup.InspectorField(State, new ViewProperty(nameof(State)).WithReadOnly());
+        setup.InspectorField(State, new ViewProperty(nameof(State)).WithReadOnly().WithStatus(State.ToTextStatus()));
         setup.InspectorField(Mode, new ViewProperty(nameof(Mode)).WithReadOnly());
         setup.InspectorFieldOf<string>(new ViewProperty(nameof(Converter)).WithReadOnly());
     }
@@ -666,6 +666,30 @@ public static class TypeConvertExtensions
         }
 
         return null;
+    }
+
+    public static TextStatus ToTextStatus(this TypeConvertState state)
+    {
+        switch (state)
+        {
+            case TypeConvertState.Null:
+                return TextStatus.Disabled;
+
+            case TypeConvertState.Same:
+                return TextStatus.Normal;
+
+            case TypeConvertState.Assignable:
+                return TextStatus.Normal;
+
+            case TypeConvertState.Convertible:
+                return TextStatus.Checked;
+
+            case TypeConvertState.Unconvertible:
+                return TextStatus.Error;
+
+            default:
+                return TextStatus.Normal;
+        }
     }
 }
 
