@@ -277,6 +277,7 @@ public class ParsePageInstance : TaskPageNode
     public ParsePageInstance()
     {
         var pageType = AssetManager.Instance.GetAssetLink<IPageAsset>().Definition.MakeArrayType();
+        var fixType = TypeDefinition.FromNative<FixJsonRequest>();
 
         _in = this.AddActionInputConnector("In", "Input");
         _toolPages = this.AddDataInputConnector("ToolPages", pageType, "Tool Page List");
@@ -286,7 +287,7 @@ public class ParsePageInstance : TaskPageNode
         var instanceType = TypeDefinition.FromNative<IPageInstance>();
 
         _outPageInstance = this.AddConnector("PageInstance", instanceType, FlowDirections.Output, FlowConnectorTypes.Action, false, "Page Instance");
-        _outFormatError = this.AddConnector("FormatError", "string", FlowDirections.Output, FlowConnectorTypes.Action, false, "Format Error");
+        _outFormatError = this.AddConnector("FormatError", fixType, FlowDirections.Output, FlowConnectorTypes.Action, false, "Format Error");
         _outNoResult = this.AddActionOutputConnector("NoResult", "No Result");
     }
 
@@ -297,13 +298,13 @@ public class ParsePageInstance : TaskPageNode
     public override void Compute(IFlowComputation compute)
     {
         var toolPages = compute.GetValues<IPageAsset>(_toolPages, true) ?? [];
-        string toolName = compute.GetValue<string>(_toolName);
-        string toolJson = compute.GetValue<string>(_toolJson);
+        string pageName = compute.GetValue<string>(_toolName);
+        string pageJson = compute.GetValue<string>(_toolJson);
 
         // 2. Call the extraction function
         try
         {
-            var pageInstance = ParsePageInstance.CreatePageInstance(toolPages, toolName, toolJson);
+            var pageInstance = ParsePageInstance.CreatePageInstance(toolPages, pageName, pageJson);
 
             // 3. Set output based on result
             if (pageInstance != null)
@@ -318,6 +319,7 @@ public class ParsePageInstance : TaskPageNode
         }
         catch (FormatException err)
         {
+            var fix = new FixJsonRequest(pageName, pageJson, err.Message);
             compute.SetValue(_outFormatError, err.Message);
             compute.SetResult(this, _outFormatError);
         }
@@ -431,6 +433,7 @@ public class ParseTagToPageInstance : TaskPageNode
     {
         var pageType = AssetManager.Instance.GetAssetLink<IPageAsset>().Definition.MakeArrayType();
         var tagType = TypeDefinition.FromNative<LooseXmlTag>();
+        var fixType = TypeDefinition.FromNative<FixJsonRequest>();
 
         _in = this.AddActionInputConnector("In", "Input");
         _toolPages = this.AddDataInputConnector("ToolPages", pageType, "Tool Page List");
@@ -441,7 +444,7 @@ public class ParseTagToPageInstance : TaskPageNode
 
         _outPageInstance = this.AddConnector("PageInstance", instanceType, FlowDirections.Output, FlowConnectorTypes.Action, false, "Page Instance");
         _outPageName = this.AddDataOutputConnector("PageName", "string", "Page Name");
-        _outFormatError = this.AddConnector("FormatError", "string", FlowDirections.Output, FlowConnectorTypes.Action, false, "Format Error");
+        _outFormatError = this.AddConnector("FormatError", fixType, FlowDirections.Output, FlowConnectorTypes.Action, false, "Format Error");
         _outNoResult = this.AddActionOutputConnector("NoResult", "No Result");
     }
 
@@ -494,12 +497,14 @@ public class ParseTagToPageInstance : TaskPageNode
         }
         catch (FormatException err)
         {
-            compute.SetValue(_outFormatError, err.Message);
+            var fix = new FixJsonRequest(pageName, pageJson, err.Message);
+            compute.SetValue(_outFormatError, fix);
             compute.SetResult(this, _outFormatError);
         }
     }
 
 }
+
 
 #endregion
 
@@ -1702,6 +1707,53 @@ public class PageInstanceToTask : TaskPageNode
         var task = pageInstance?.Owner as IAigcTaskPage;
 
         compute.SetValue(_task, task);
+    }
+}
+
+#endregion
+
+#region Fix
+
+
+[NativeType(CodeBase = "AIGC")]
+public class FixJsonRequest : SObjectController
+{
+    readonly StringProperty _name = new("Name");
+    readonly TextBlockProperty _json = new("Json");
+    readonly StringProperty _errorMessage = new("ErrorMessage", "Error Message");
+
+    public FixJsonRequest()
+    {
+    }
+
+    public FixJsonRequest(string name, string json, string errorMessage)
+    {
+        _name.Text = name;
+        _json.Text = json;
+        _errorMessage.Text = errorMessage;
+    }
+
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _name.Sync(sync);
+        _json.Sync(sync);
+        _errorMessage.Sync(sync);
+    }
+
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _name.InspectorField(setup);
+        _json.InspectorField(setup);
+        _errorMessage.InspectorField(setup);
+    }
+
+    public override string ToString()
+    {
+        return _json.Text;
     }
 }
 
