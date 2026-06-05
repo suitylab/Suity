@@ -1814,7 +1814,7 @@ public struct GraphLinkDescriptor : IViewObject
         setup.InspectorFieldOf<string>(new ViewProperty("ToConnector", "To Connector").WithReadOnly());
         setup.InspectorFieldOf<string>(new ViewProperty("ToType", "To Type").WithReadOnly());
 
-        setup.LabelWithIcon("Conversion", CoreIconCache.Conversation);
+        setup.LabelWithIcon("Convert", CoreIconCache.Conversation);
         setup.InspectorField(Conversion, new ViewProperty("Conversion", "Conversion").WithReadOnly().WithExpand());
     }
 
