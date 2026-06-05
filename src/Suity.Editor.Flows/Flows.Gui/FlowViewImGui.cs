@@ -1,4 +1,3 @@
-using MarkedNet;
 using Suity;
 using Suity.Collections;
 using Suity.Drawing;
@@ -10,6 +9,7 @@ using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Selecting;
+using Suity.Synchonizing;
 using Suity.Synchonizing.Core;
 using Suity.UndoRedos;
 using Suity.Views;
@@ -374,7 +374,9 @@ public abstract class FlowViewImGui :
     /// </summary>
     public void InspectSelection()
     {
-        var nodes = this._graphControl.Diagram.SelectedNodes.OfType<IFlowViewNode>().Select(o => o.Node);
+        var nodes = this._graphControl.Diagram.SelectedNodes
+            .OfType<IFlowViewNode>()
+            .Select(o => o.Node);
 
         if (nodes.Any())
         {
@@ -387,7 +389,18 @@ public abstract class FlowViewImGui :
         }
         else
         {
-            EditorUtility.Inspector.InspectObject(_document, this);
+            var links = this._graphControl.Diagram.SelectedLinks
+                .Select(o => GraphLinkDescriptor.Resolve(_document, o))
+                .OfType<object>();
+
+            if (links.Any())
+            {
+                EditorUtility.Inspector.InspectObjects(links, this);
+            }
+            else
+            {
+                EditorUtility.Inspector.InspectObject(_document, this);
+            }
         }
     }
 
@@ -1767,4 +1780,50 @@ public abstract class FlowViewImGui :
     }
 
     #endregion
+}
+
+
+public struct GraphLinkDescriptor : IViewObject
+{
+    public FlowNodeConnector FromConnector { get; set; }
+    public FlowNodeConnector ToConnector { get; set; }
+    public TypeConvertResult Conversion { get; set; }
+
+    public void Sync(IPropertySync sync, ISyncContext context)
+    {
+        sync.Sync("FromNode", FromConnector?.ParentNode?.Name ?? string.Empty, SyncFlag.GetOnly);
+        sync.Sync("FromConnector", FromConnector?.Name ?? string.Empty, SyncFlag.GetOnly);
+        sync.Sync("ToNode", ToConnector?.ParentNode?.Name ?? string.Empty, SyncFlag.GetOnly);
+        sync.Sync("ToConnector", ToConnector?.Name ?? string.Empty, SyncFlag.GetOnly);
+        sync.Sync("Conversion", Conversion, SyncFlag.GetOnly);
+    }
+
+    public void SetupView(IViewObjectSetup setup)
+    {
+        setup.InspectorFieldOf<string>(new ViewProperty("FromNode", "From Node").WithReadOnly());
+        setup.InspectorFieldOf<string>(new ViewProperty("FromConnector", "From Connector").WithReadOnly());
+        setup.InspectorFieldOf<string>(new ViewProperty("ToNode", "To Node").WithReadOnly());
+        setup.InspectorFieldOf<string>(new ViewProperty("ToConnector", "To Connector").WithReadOnly());
+        setup.InspectorField(Conversion, new ViewProperty("Conversion", "Conversion").WithReadOnly().WithExpand());
+    }
+
+
+    public static GraphLinkDescriptor Resolve(FlowDocument document, GraphLink link)
+    {
+        string fromNode = link?.From?.ParentNode?.Name ?? string.Empty;
+        string fromConnector = link?.From?.Name ?? string.Empty;
+        string toNode = link?.To?.ParentNode?.Name ?? string.Empty;
+        string toConnector = link?.To?.Name ?? string.Empty;
+
+        var connectorFrom = document?.GetConnector(fromNode, fromConnector);
+        var connectorTo = document?.GetConnector(toNode, toConnector);
+        var conversion = EditorServices.TypeConvertService.CanConvert(connectorFrom, connectorTo);
+
+        return new GraphLinkDescriptor
+        {
+            FromConnector = connectorFrom,
+            ToConnector = connectorTo,
+            Conversion = conversion,
+        };
+    }
 }

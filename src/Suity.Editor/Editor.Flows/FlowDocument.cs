@@ -158,6 +158,16 @@ public abstract class FlowDocument : DesignDocument
         => _ex.GetLinkedConnectorCount(connector);
 
     /// <summary>
+    /// Gets a connector by node name and connector name.
+    /// </summary>
+    /// <param name="nodeName">The name of the node</param>
+    /// <param name="connectorName">The name of the connector</param>
+    /// <returns>The flow node connector</returns>
+    public FlowNodeConnector GetConnector(string nodeName, string connectorName)
+        => _ex.GetConnector(nodeName, connectorName);
+
+
+    /// <summary>
     /// Gets the first linked connector
     /// </summary>
     /// <param name="connector">Local connector</param>

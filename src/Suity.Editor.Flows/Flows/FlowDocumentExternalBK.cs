@@ -390,6 +390,11 @@ internal class FlowDocumentExternalBK : FlowDocumentExternal
         return 0;
     }
 
+    public override FlowNodeConnector GetConnector(string nodeName, string connectorName)
+    {
+        return GetFlowItem(nodeName)?.Node?.GetConnector(connectorName);
+    }
+
     /// <inheritdoc/>
     public override FlowNodeConnector GetLinkedConnector(FlowNodeConnector connector)
     {

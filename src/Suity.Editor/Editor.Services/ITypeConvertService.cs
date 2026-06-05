@@ -1,6 +1,7 @@
 using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
@@ -152,7 +153,7 @@ public enum TypeConvertModes
 
 #region TypeConvertResult
 
-public record struct TypeConvertResult
+public record struct TypeConvertResult : IViewObject
 {
     public static TypeConvertResult Unconvertible { get; } = FromState(TypeConvertState.Unconvertible);
 
@@ -170,6 +171,23 @@ public record struct TypeConvertResult
 
     public object From { get; init; }
     public object To { get; init; }
+
+    public void Sync(IPropertySync sync, ISyncContext context)
+    {
+        sync.Sync(nameof(State), State, SyncFlag.GetOnly);
+        sync.Sync(nameof(Mode), Mode, SyncFlag.GetOnly);
+        sync.Sync(nameof(Converter), Converter?.GetType().FullName, SyncFlag.GetOnly);
+    }
+
+    public void SetupView(IViewObjectSetup setup)
+    {
+        setup.InspectorField(State, new ViewProperty(nameof(State)).WithReadOnly());
+        setup.InspectorField(Mode, new ViewProperty(nameof(Mode)).WithReadOnly());
+        setup.InspectorFieldOf<string>(new ViewProperty(nameof(Converter)).WithReadOnly());
+    }
+
+    public override string ToString() => State.ToString();
+
 
     public static TypeConvertResult FromState(TypeConvertState state)
     {
@@ -210,6 +228,7 @@ public record struct TypeConvertResult
             To = to,
         };
     }
+
 }
 
 #endregion

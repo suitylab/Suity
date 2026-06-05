@@ -48,6 +48,8 @@ internal abstract class FlowDocumentExternal
 
     public abstract int GetLinkedConnectorCount(FlowNodeConnector connector);
 
+    public abstract FlowNodeConnector GetConnector(string nodeName, string connectorName);
+
     public abstract FlowNodeConnector GetLinkedConnector(FlowNodeConnector connector);
 
     public abstract FlowNodeConnector[] GetLinkedConnectors(FlowNodeConnector connector, bool sort);
