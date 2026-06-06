@@ -46,6 +46,7 @@
         <Model />
         <Functions />
         <FunctionCall />
+        <CombineMessages>True</CombineMessages>
         <InterruptionWords>
           <Item>- Tool Response -</Item>
           <Item>tool_result</Item>
@@ -566,14 +567,12 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="330" Y="130" Width="99" Height="41">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="330" Y="130" Width="99" Height="52">
       <Name>###ThrowError01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
-        <Message type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
-          <Value type="Suity.Views.TextBlock">
-            <Text>Parse Tag Failed.</Text>
-          </Value>
-        </Message>
+        <ErrorMessage>
+          <Text>Extract XML tag failed.</Text>
+        </ErrorMessage>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.SubFlows.PageMessageParameterItem" X="1060" Y="100" Width="62" Height="17">
@@ -604,14 +603,12 @@
         <TooltipMode>True</TooltipMode>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="980" Y="290" Width="99" Height="41">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="1090" Y="360" Width="99" Height="52">
       <Name>###ThrowError02</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
-        <Message type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
-          <Value type="Suity.Views.TextBlock">
-            <Text>Create page instance failed.</Text>
-          </Value>
-        </Message>
+        <ErrorMessage>
+          <Text>Select Tool Failed</Text>
+        </ErrorMessage>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.SubFlows.PagePresetParameterItem" X="-460" Y="-170" Width="54" Height="17">
@@ -760,13 +757,43 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-240" Y="-100" Width="47" Height="17">
-      <Name>###GetTaskLastPrompt02</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.GetTaskLastPrompt" />
-    </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-150" Y="-140" Width="54" Height="17">
       <Name>###GetWorkSpaceOS01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetWorkSpaceOS" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="1090" Y="290" Width="99" Height="52">
+      <Name>###ThrowError03</Name>
+      <Node type="Suity.Editor.Flows.Nodes.ThrowError">
+        <ErrorMessage>
+          <Text>Select Tool Failed</Text>
+        </ErrorMessage>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="960" Y="300" Width="70" Height="28">
+      <Name>###DataActionDecompose03</Name>
+      <Node type="Suity.Editor.Flows.Nodes.DataActionDecompose">
+        <DataType>
+          <Id>e86c53da-a260-43f4-969b-83341e9977ad</Id>
+        </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="950" Y="330" Width="105" Height="17">
+      <Name>###GetProperty01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.GetProperty">
+        <Struct>
+          <Id>e86c53da-a260-43f4-969b-83341e9977ad</Id>
+        </Struct>
+        <Field>
+          <Id>e1ff53ca-d319-40f2-ab44-83b1efa8368e</Id>
+        </Field>
+        <OutputValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </OutputValueType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-220" Y="-100" Width="35" Height="17">
+      <Name>###GetCurrentTaskPrompt01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskPrompt" />
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -1240,12 +1267,6 @@
       <ToConnector>ScratchPad</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetTaskLastPrompt02</FromNode>
-      <FromConnector>LastPrompt</FromConnector>
-      <ToNode>###FirstNotEmpty01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetWorkSpaceOS01</FromNode>
       <FromConnector>WorkSpaceOS</FromConnector>
       <ToNode>###BuildPrompt01</ToNode>
@@ -1268,6 +1289,36 @@
       <FromConnector>NotEmpty</FromConnector>
       <ToNode>###BuildPrompt01</ToNode>
       <ToConnector>k_INPUT</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose03</FromNode>
+      <FromConnector>ActionOut</FromConnector>
+      <ToNode>###ThrowError03</ToNode>
+      <ToConnector>Input</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ParseTagToolCallingNode01</FromNode>
+      <FromConnector>FormatError</FromConnector>
+      <ToNode>###DataActionDecompose03</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose03</FromNode>
+      <FromConnector>DataOut</FromConnector>
+      <ToNode>###GetProperty01</ToNode>
+      <ToConnector>SObject</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetProperty01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ThrowError03</ToNode>
+      <ToConnector>ErrorMessage</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentTaskPrompt01</FromNode>
+      <FromConnector>Prompt</FromConnector>
+      <ToNode>###FirstNotEmpty01</ToNode>
+      <ToConnector>In</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

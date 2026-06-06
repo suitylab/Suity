@@ -2,8 +2,33 @@
 <ObjectId>
   <Object id="1ad53a16-2f48-4c3e-91e9-ba9e159d1df6" name="*AIGC" />
   <Object id="4bc3fb6a-af12-4a3f-b5c7-4847e050a406" name="*AIGC|AIClissifierConfig" />
+  <Object id="f099b04e-ad6f-434e-9a06-33ad58ab8b73" name="*AIGC|AIClissifierConfig.CorrelationThreshold" />
+  <Object id="beb4bf7f-6e4f-43b0-9fc2-5de5c51c8dba" name="*AIGC|AIClissifierConfig.PromptAssistantClassifier" />
+  <Object id="a6564608-b36e-461f-890d-63417d12a806" name="*AIGC|AIClissifierConfig.PromptCorrelationClassifier" />
+  <Object id="306ff679-0187-4c77-8572-baa9a2962478" name="*AIGC|AIClissifierConfig.PromptDocumentClassifier" />
+  <Object id="b522319c-9257-4508-81ec-a88ae863b0ae" name="*AIGC|AIClissifierConfig.PromptGenerateMultipleClassifier" />
+  <Object id="87fe0511-f614-4fea-a48c-3ba38fd447fa" name="*AIGC|AIClissifierConfig.PromptGenerateSourceClassifier" />
+  <Object id="a83ed814-a792-4b9f-b6ac-c3d27bb9e1be" name="*AIGC|AIClissifierConfig.PromptHasSelection" />
+  <Object id="bf38f8e0-d84c-49c4-953d-9494fc2781ae" name="*AIGC|AIClissifierConfig.PromptKnowledgeClassifier" />
+  <Object id="dd3974da-1f35-4296-87b1-cb996194fc3c" name="*AIGC|AIClissifierConfig.PromptMainClassifier" />
+  <Object id="36293575-3a3d-4c2d-ab6d-28672beac686" name="*AIGC|AIClissifierConfig.PromptNoSelection" />
+  <Object id="ca3f6259-ea45-48d9-aac4-b52d3fe3e524" name="*AIGC|AIClissifierConfig.PromptQueryScopeClassifier" />
   <Object id="8a254dec-8805-4b6d-b68f-a41ea0acb146" name="*AIGC|AIDataGenerationConfig" />
+  <Object id="b513e750-2fc6-4b37-a530-59a609f56781" name="*AIGC|AIDataGenerationConfig.PromptBehaviorTree" />
+  <Object id="38d99bbd-d424-4929-9e24-49028643931a" name="*AIGC|AIDataGenerationConfig.PromptDataFlow" />
+  <Object id="c71f4a23-0d65-494c-8532-277498ed5836" name="*AIGC|AIDataGenerationConfig.PromptFieldEditSuggection" />
+  <Object id="8476eced-d388-4815-b57c-c24f15fb65ce" name="*AIGC|AIDataGenerationConfig.PromptFieldFillSuggection" />
+  <Object id="5eec495c-fdfb-42ea-b696-1f0fd6900d56" name="*AIGC|AIDataGenerationConfig.PromptFieldSelection" />
+  <Object id="03536f85-39a1-426d-874b-3ebb1b0c135d" name="*AIGC|AIDataGenerationConfig.PromptFieldSelectionMultiple" />
+  <Object id="81a2cbf7-72dd-43cc-9bd6-ec5bb04ceb11" name="*AIGC|AIDataGenerationConfig.PromptFieldSuggestionArray" />
+  <Object id="39ff80da-87ef-4d5c-af25-73c1f0553033" name="*AIGC|AIDataGenerationConfig.PromptJsonCreate" />
+  <Object id="40f85619-803f-45a5-8ef0-34e433eb7a77" name="*AIGC|AIDataGenerationConfig.PromptJsonUpdate" />
   <Object id="f215581e-98d0-44bc-83bb-f96e4a5160ec" name="*AIGC|AIExtractorConfig" />
+  <Object id="d2c3995b-4f97-4409-b1f0-981efa7c619c" name="*AIGC|AIExtractorConfig.FeatureExtractTimes" />
+  <Object id="9b9d6140-3037-4940-8c6a-d21bd2743335" name="*AIGC|AIExtractorConfig.PromptEntityCreate" />
+  <Object id="bff1d511-f3ad-4373-97e4-4d917ca4f307" name="*AIGC|AIExtractorConfig.PromptEntityTypeCreateNew" />
+  <Object id="414ec8b1-a32b-4902-b1ca-7d145a02af54" name="*AIGC|AIExtractorConfig.PromptEntityTypeSkipNew" />
+  <Object id="833aa58c-ab82-4ccb-803b-068e1a4f6841" name="*AIGC|AIExtractorConfig.PromptFeatureExtract" />
   <Object id="f79970be-0534-4a63-beb5-d3ac9ef5a5c4" name="*AIGC|AigcModelLevel" />
   <Object id="eb28f77a-2caa-42bf-93c8-35d15d367966" name="*AIGC|AigcModelLevel.Default" />
   <Object id="f30149a8-21bd-4eea-8b48-07c6135b79f7" name="*AIGC|AigcModelLevel.High" />
@@ -11,9 +36,27 @@
   <Object id="36d50664-445e-49fb-afbf-3dda1929357f" name="*AIGC|AigcModelLevel.Medium" />
   <Object id="b5609555-3d7d-4ff7-9329-19f5da6b236e" name="*AIGC|AigcRead" />
   <Object id="44d44bed-9296-4bc6-9a04-e2fce68c381a" name="*AIGC|AIKnowledgeConfig" />
+  <Object id="0dcaf721-7358-49b4-a15e-09854d5ee801" name="*AIGC|AIKnowledgeConfig.PromptRagEnumerateFeatures" />
+  <Object id="393a0af4-0af3-459a-a62b-ef5ef34e82a2" name="*AIGC|AIKnowledgeConfig.PromptRagKeyword" />
+  <Object id="9afed097-fd58-4c28-89a5-0c22d346b228" name="*AIGC|AIKnowledgeConfig.PromptRagOverview" />
+  <Object id="26475835-9e9e-4d48-9b95-f9052b885ec9" name="*AIGC|AIKnowledgeConfig.PromptRagReference" />
+  <Object id="157fdba6-b8ba-4306-82e3-1f865a2276dd" name="*AIGC|AIKnowledgeConfig.PromptRagSelectSynonyms" />
+  <Object id="81461829-c160-408e-9105-541fc32f7cc4" name="*AIGC|AIKnowledgeConfig.PromptRagSummary" />
+  <Object id="218e7d4e-c5da-4d19-8e68-46a0f0b8b997" name="*AIGC|AIKnowledgeConfig.RagMultipleTopK" />
+  <Object id="c7e3f5b7-30e7-4ee6-bd5e-3877209d98b9" name="*AIGC|AIKnowledgeConfig.RagTopK" />
   <Object id="f966dd49-78ab-4231-a830-07c832999fb7" name="*AIGC|AIPromptInfo" />
+  <Object id="e12fb4d8-6482-4909-aa8c-33f3cafb7430" name="*AIGC|AIPromptInfo.Prompt" />
+  <Object id="7e7a2222-0f66-4434-a437-14b0231641d9" name="*AIGC|AIPromptInfo.PromptId" />
   <Object id="9787dd72-1cb9-4a64-926f-dca5b33fc095" name="*AIGC|AISubdivideConfig" />
+  <Object id="7a9e14a7-d891-44bc-b84b-51a40710e03a" name="*AIGC|AISubdivideConfig.PromptBrainStorming" />
+  <Object id="241e6686-fd25-4a25-bcdd-b1655dcf1746" name="*AIGC|AISubdivideConfig.PromptSegment" />
+  <Object id="b266a23a-7970-4c01-a86c-71efa385b872" name="*AIGC|AISubdivideConfig.PromptTaskSubdivide" />
   <Object id="da185afc-bcb8-4ab8-b46b-f8d7373bae7c" name="*AIGC|AISupportConfig" />
+  <Object id="691f349f-2804-42ed-847b-b5cbd71a4e3a" name="*AIGC|AISupportConfig.PromptAnswerQuestion" />
+  <Object id="8d8ddb31-ad70-4bbf-a088-f190b917b229" name="*AIGC|AISupportConfig.PromptIdentifier" />
+  <Object id="32362a5b-4a28-47ac-a9d3-e6b96c00a7b3" name="*AIGC|AISupportConfig.PromptJsonRecovery" />
+  <Object id="ffd855ab-eb22-4453-9b89-49371961613d" name="*AIGC|AISupportConfig.PromptRequirementDesign" />
+  <Object id="a424bb16-bdfd-43f3-9f49-7cecbb4a86c6" name="*AIGC|AISupportConfig.PromptSummary" />
   <Object id="356b2763-5681-445d-946c-09831536f55d" name="*AIGC|Article" />
   <Object id="9f9f8641-6040-4521-8cce-7768c25f4c5b" name="*AIGC|ArticleFilters" />
   <Object id="9a783642-7609-408a-9271-3b4b168fb88b" name="*AIGC|ArticleFilters.All" />
@@ -24,8 +67,13 @@
   <Object id="a9abdbf9-6000-4404-975f-1db9618048ba" name="*AIGC|ArticleFilters.NotBlankGuide" />
   <Object id="2c2f9ff6-650d-4de8-af8d-7898c776b1e9" name="*AIGC|ArticleFilters.NotBlankNote" />
   <Object id="0c2505fd-b928-458f-906e-401325a55b2e" name="*AIGC|Assistant" />
+  <Object id="9dd05e5d-beb2-4702-a730-558d956c92a8" name="*AIGC|Assistant.Assistant" />
   <Object id="2ef906a6-2cc4-44e4-b3d0-c11321b5edfc" name="*AIGC|EmbeddingAsset" />
   <Object id="f0780b8a-f4b7-4cc8-860a-be57c98c148d" name="*AIGC|FeatureKnowledge" />
+  <Object id="e86c53da-a260-43f4-969b-83341e9977ad" name="*AIGC|FixJsonRequest" />
+  <Object id="e1ff53ca-d319-40f2-ab44-83b1efa8368e" name="*AIGC|FixJsonRequest.ErrorMessage" />
+  <Object id="709ce1ad-c798-4625-9474-2969b8a75631" name="*AIGC|FixJsonRequest.Json" />
+  <Object id="5dd2e83f-6076-45e7-891a-a6e3da507d27" name="*AIGC|FixJsonRequest.Name" />
   <Object id="c0c5c1eb-f42f-4142-8edb-9f59872df9f5" name="*AIGC|FlowContextScopes" />
   <Object id="e23f26e5-e07d-466e-aa4b-b61b4eaec212" name="*AIGC|FlowContextScopes.Diagram" />
   <Object id="3fe5f3c0-7e16-4346-b6ba-5f3deba04e0b" name="*AIGC|FlowContextScopes.Global" />
@@ -173,6 +221,7 @@
   <Object id="b0f84af6-7b6c-4833-a75f-ef971f173c2a" name="*Brief|BriefOrTypeName" />
   <Object id="05f5ac6c-e6bc-40ee-8756-65468fdb4491" name="*Brief|CssStyleBrief" />
   <Object id="9fce393e-1486-49f4-a1d2-df837372ac87" name="*Brief|FieldBrief" />
+  <Object id="638aa24b-4fc9-4905-a77b-753b9f620ee4" name="*Brief|FieldBrief.Pattern" />
   <Object id="47729928-0d50-49ff-a36d-6f965626179a" name="*Brief|NoneDefaultFields" />
   <Object id="66ec229f-f5d3-409f-8962-77f0f6f78219" name="*Brief|OriginBrief" />
   <Object id="6d2a52da-0d81-458e-9c31-f06d46e11f66" name="*Brief|TeminalBrief" />
@@ -554,6 +603,7 @@
   <Object id="b8d1023a-0bb2-44ff-8cf3-69142f43c443" name="*DeepSeekLLm" />
   <Object id="0ba87d8d-89f8-4b1d-99f3-02383eb4282f" name="*Design" />
   <Object id="a2ae713e-2a53-4947-9786-4688a3bcc293" name="*Design|AliasTypeName" />
+  <Object id="7ea40120-2f0b-4e7e-803c-4a96f418946b" name="*Design|AliasTypeName.AliasName" />
   <Object id="e0a40790-b21e-4aad-9823-858443cb7222" name="*Design|ArticleReferenceAttribute" />
   <Object id="0e6cbce5-dade-4a7b-ade3-3f87f7f52897" name="*Design|Associate" />
   <Object id="14949de4-86b9-461b-baf8-2df7952128f6" name="*Design|Classify" />
@@ -561,27 +611,48 @@
   <Object id="c85275fc-5d12-4ca3-9de0-c6ab528b6130" name="*Design|Connector" />
   <Object id="cbb517e2-0525-462f-a36f-2e5f927bafce" name="*Design|Consistency" />
   <Object id="2cf79b0b-bae4-4383-9913-8c6beabf4fcb" name="*Design|CustomClass" />
+  <Object id="87f60581-6024-4430-b1f8-993a9f2110d6" name="*Design|CustomClass.ClassEnabled" />
+  <Object id="fcd5cfc3-253d-4e4f-a2e4-d3e155d311b9" name="*Design|CustomClass.IsStatic" />
   <Object id="921622a6-4699-4f6e-88eb-addc0cb26dab" name="*Design|CustomFormatter" />
+  <Object id="e06fec9d-185e-481f-ba2c-a56df846af25" name="*Design|CustomFormatter.Clone" />
+  <Object id="0a096074-ce7e-41ec-b4df-dfdd4bf081a4" name="*Design|CustomFormatter.Exchange" />
+  <Object id="05d73b2a-e303-4821-bfa4-7a072bf9b25b" name="*Design|CustomFormatter.FormatterEnabled" />
+  <Object id="51b5c310-8b76-4974-9d84-9eefe6c82635" name="*Design|CustomFormatter.ObjectEquals" />
+  <Object id="9e33aa9f-5d67-4655-af63-12ca701e9f61" name="*Design|CustomFormatter.Read" />
+  <Object id="958bad5f-1a6c-4060-9e76-ed0b7ec887a4" name="*Design|CustomFormatter.Write" />
   <Object id="eb9f0860-76a8-46b9-886c-c8907705c5ab" name="*Design|DataIdField" />
   <Object id="916a004b-fe99-4519-b92d-2544b4d19e00" name="*Design|DataUsage" />
   <Object id="e5f4c19b-5a39-4131-9377-7c57e5298184" name="*Design|Disabled" />
   <Object id="58638abc-335d-43da-a230-3fc51c4c16d8" name="*Design|Driven" />
   <Object id="82be9dcf-2193-48bd-93d3-2fc12427fdc7" name="*Design|EditorGuidField" />
   <Object id="8a7127c9-b6fe-48e5-ba85-492c59ad9b50" name="*Design|FileSelectionEditor" />
+  <Object id="c3c0b036-b635-4429-ab7b-9b86bf909bd1" name="*Design|FileSelectionEditor.Filter" />
+  <Object id="7e85df95-b609-4e22-86f2-e8da96b0fe71" name="*Design|FileSelectionEditor.Relative" />
   <Object id="3207aaa0-b8e7-4fa4-9fac-5d7dd3f81454" name="*Design|Hidden" />
   <Object id="a33be3db-f204-4f90-b0c9-aba5da70540d" name="*Design|HiddenInMonitor" />
   <Object id="63a1fbef-eb98-4e77-9038-7e158b0ba91c" name="*Design|HorizontalLayout" />
+  <Object id="7ec7d468-4552-43ee-9738-6e309078a921" name="*Design|HorizontalLayout.FirstColumnPercentage" />
+  <Object id="3aa8c492-b38f-4663-a9b7-38d9551f1df0" name="*Design|HorizontalLayout.PreviewFieldOnly" />
   <Object id="efddd3bd-bf08-4f72-a39a-97a3bf795830" name="*Design|KnowledgeAttribute" />
+  <Object id="6a151a7b-4ba6-4d2c-98d1-84398d5276c6" name="*Design|KnowledgeAttribute.Knowledge" />
   <Object id="cce2afd0-c702-4935-aa39-ad21b0c8342a" name="*Design|NumericRange" />
+  <Object id="2155d485-2479-4ed0-a5bb-6d14e0630fb3" name="*Design|NumericRange.ClampMax" />
+  <Object id="1a9d33ed-19fb-48f4-97bb-abf48019ea64" name="*Design|NumericRange.ClampMin" />
+  <Object id="c60333a6-87a4-4495-ab3d-de6dfac34ed2" name="*Design|NumericRange.HasColor" />
+  <Object id="a9510109-2aa7-44f7-8bae-7eb8e4cd9ea9" name="*Design|NumericRange.HasMinMaxColor" />
   <Object id="c3d4e62e-5835-4b68-9933-fb2fcb6e543d" name="*Design|PacketFormat" />
   <Object id="d378ec25-0bc4-40e9-9c26-15d79f0e830a" name="*Design|PosisionXField" />
   <Object id="4922ad93-f954-4d1a-bf46-72139f4badcf" name="*Design|PreviewField" />
   <Object id="9d6500a8-348e-42db-8269-d40a2716dd6b" name="*Design|RemarkAttribute" />
+  <Object id="69ee3697-9e54-45b4-9df6-efc26a6c504c" name="*Design|RemarkAttribute.Remark" />
   <Object id="b7031c83-e9b8-4ef8-ba0d-147be583ba06" name="*Design|SaveData" />
   <Object id="e1a32196-3771-41c8-a1b2-79f59ebba8f5" name="*Design|SourceCodeAutomation" />
+  <Object id="5d06f827-01be-4716-b72c-5f4b5bddbe77" name="*Design|SourceCodeAutomation.DataStorage" />
   <Object id="63ed3eae-6602-4415-978d-b90686002965" name="*Design|StatusColor" />
   <Object id="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" name="*Design|ToolTipsAttribute" />
+  <Object id="c7c2b06a-9192-4995-80b9-bf6ca8ca2e08" name="*Design|ToolTipsAttribute.ToolTips" />
   <Object id="c202389d-d476-424b-b6fc-e43e8f81b57b" name="*Design|Usage" />
+  <Object id="0b8ee7fa-c8e0-4ed5-bf17-020609ad67ba" name="*Design|Usage.Usage" />
   <Object id="dc8f6874-307b-4a94-bcca-edb6e317e2c2" name="*Design|ValueTypeStruct" />
   <Object id="9fc0186d-0fee-43d5-9096-060cede5a84b" name="*LmStudioImage" />
   <Object id="5d3c179f-309b-42da-892f-c0b439cf28c9" name="*LmStudioLLm" />
@@ -651,6 +722,10 @@
   <Object id="8ad332ed-c138-4142-820c-a281cccaa0e4" name="*SubFlow|ISubFlowPresetAsset" />
   <Object id="3ab97a0a-6a21-4497-839d-afd9f7b95876" name="*SubFlow|IToolAsset" />
   <Object id="e16e3a28-f0c3-4faa-a1e4-5380c967379f" name="*SubFlow|ScratchPad" />
+  <Object id="7ff3dfaf-882d-4128-88e2-6208dd486d57" name="*SubFlow|ScratchPad.Content" />
+  <Object id="9af53371-85cc-4c78-a0ae-eebbb41a08d6" name="*SubFlow|ScratchPad.Note" />
+  <Object id="c7d73623-f3f6-449a-9295-611fcb5785bd" name="*SubFlow|ScratchPad.Path" />
+  <Object id="e431152d-361f-4783-892c-ad319ba05bd6" name="*SubFlow|ScratchPad.Type" />
   <Object id="aee79ff9-d800-41a6-8a46-2ddd4e877d6d" name="*SubFlow|ScratchPadTypes" />
   <Object id="e3f5c52b-86f4-4a26-8ea2-46fa2ee596e9" name="*SubFlow|ScratchPadTypes.Article" />
   <Object id="5daae6e7-3d0c-45b0-bf2e-7ca894df9792" name="*SubFlow|ScratchPadTypes.Clear" />
@@ -703,33 +778,68 @@
   <Object id="d35fc3e9-72f3-4292-88c0-a111c49b2891" name="*Suity|BatchApplyDiffPatches" />
   <Object id="d35fc3e9-72f3-4292-88c0-a111c49b2891" name="*Suity|BatchApplyDiffPatches" />
   <Object id="0dd66bca-0935-4a82-9a62-4741e4eb5508" name="*Suity|BatchApplyDiffPatches.FilePatchItem" />
+  <Object id="055a3835-6bb4-419c-98c7-927aa5e715e8" name="*Suity|BatchApplyDiffPatches.FilePatchItem.DiffContent" />
+  <Object id="3da282f7-c325-425e-9500-769b08cd4df2" name="*Suity|BatchApplyDiffPatches.FilePatchItem.FilePath" />
   <Object id="a18b00ea-a6fd-4ac0-b05c-0bf5e8cc10ad" name="*Suity|BatchApplyDiffPatches.FileResult" />
+  <Object id="97b4c1a6-2606-4d90-b953-ae85bf099e70" name="*Suity|BatchApplyDiffPatches.FileResult.Error" />
+  <Object id="96042fe7-67ff-410d-b20d-c2b0045f67f0" name="*Suity|BatchApplyDiffPatches.FileResult.FilePath" />
+  <Object id="d88e8e4d-1265-456e-bef7-eef9a06d2553" name="*Suity|BatchApplyDiffPatches.FileResult.HunksApplied" />
+  <Object id="8fc3b93e-41a1-473b-acdd-be32ca7a64fe" name="*Suity|BatchApplyDiffPatches.FileResult.Status" />
   <Object id="595d4679-2b2d-4859-8ce8-dffa87f71aa3" name="*Suity|BatchCreateDirectory" />
   <Object id="595d4679-2b2d-4859-8ce8-dffa87f71aa3" name="*Suity|BatchCreateDirectory" />
   <Object id="2a64be98-4b72-4b5c-bdbb-e81d01ca19be" name="*Suity|BatchCreateDirectory.DirectoryItem" />
+  <Object id="91665cdc-4034-4ff9-b73e-b5211d987120" name="*Suity|BatchCreateDirectory.DirectoryItem.DirectoryPath" />
   <Object id="531f1963-c04a-4030-96e2-00be842414d2" name="*Suity|BatchCreateDirectory.DirectoryResult" />
+  <Object id="77599703-08f9-47b6-9088-149484ca540a" name="*Suity|BatchCreateDirectory.DirectoryResult.DirectoryPath" />
+  <Object id="9aebd13a-d485-4734-b6b1-178dcb786a88" name="*Suity|BatchCreateDirectory.DirectoryResult.Error" />
+  <Object id="9055ec19-ff1b-42cf-94ce-3a8ad8c85941" name="*Suity|BatchCreateDirectory.DirectoryResult.Status" />
   <Object id="0ff56496-7856-4144-b0af-c11d89a8234c" name="*Suity|BatchDeleteFiles" />
   <Object id="0ff56496-7856-4144-b0af-c11d89a8234c" name="*Suity|BatchDeleteFiles" />
   <Object id="fee358b8-3d93-4147-a352-1175d5f66a3c" name="*Suity|BatchDeleteFiles.DeleteItem" />
+  <Object id="beb9a234-163f-4994-9998-8fc966621608" name="*Suity|BatchDeleteFiles.DeleteItem.FilePath" />
+  <Object id="bf1fefb7-3d36-4b33-8e19-9a87e2d31098" name="*Suity|BatchDeleteFiles.DeleteItem.VerifyExists" />
   <Object id="1d657765-3803-43a6-8e0d-4199b87692ba" name="*Suity|BatchDeleteFiles.DeleteResult" />
+  <Object id="21c47059-8757-4257-9e9b-28f215622f35" name="*Suity|BatchDeleteFiles.DeleteResult.Error" />
+  <Object id="acea2a04-dcfd-4c56-9e5a-91525efffb23" name="*Suity|BatchDeleteFiles.DeleteResult.FilePath" />
   <Object id="62c1e4b5-1e65-422b-836a-3859f0bd143d" name="*Suity|BatchEditInFiles" />
   <Object id="62c1e4b5-1e65-422b-836a-3859f0bd143d" name="*Suity|BatchEditInFiles" />
   <Object id="62c1e4b5-1e65-422b-836a-3859f0bd143d" name="*Suity|BatchEditInFiles" />
   <Object id="451a1bd9-46aa-40b8-8d80-81c921fb3fbf" name="*Suity|BatchEditInFiles.FileEditItem" />
+  <Object id="5ee04a1a-e1ca-401d-8b70-0ce718fe68d6" name="*Suity|BatchEditInFiles.FileEditItem.FilePath" />
+  <Object id="cc34d2b5-9996-4870-a4cf-b258f2260844" name="*Suity|BatchEditInFiles.FileEditItem.NewString" />
+  <Object id="edacd677-2c54-4e2e-8148-0f4cf7032486" name="*Suity|BatchEditInFiles.FileEditItem.OldExactString" />
   <Object id="1a12310c-ed53-4ef4-b669-16ebf141c6fb" name="*Suity|BatchEditInFiles.FileResult" />
+  <Object id="43735fe0-885e-43a6-880f-ed38ebf84363" name="*Suity|BatchEditInFiles.FileResult.FilePath" />
+  <Object id="dc6312a3-c1e9-480c-8c20-dd770a7b9dcc" name="*Suity|BatchEditInFiles.FileResult.ReplacementsMade" />
+  <Object id="9874fb60-d9e0-4b06-899d-6a0ed4e9f7bd" name="*Suity|BatchEditInFiles.FileResult.Status" />
   <Object id="1b5f8cb2-9564-4dd8-9be5-136c833f3a96" name="*Suity|BatchReadFile" />
   <Object id="1b5f8cb2-9564-4dd8-9be5-136c833f3a96" name="*Suity|BatchReadFile" />
   <Object id="e21d2488-e83a-4499-bd50-60dda98f50bd" name="*Suity|BatchReadFiles.FileReadItem" />
+  <Object id="b06a2aac-b758-43d5-a600-65f9602aac66" name="*Suity|BatchReadFiles.FileReadItem.FilePath" />
+  <Object id="16279141-1a22-416b-8f8c-a277c6fcdf4f" name="*Suity|BatchReadFiles.FileReadItem.LineCount" />
+  <Object id="c3e1cd53-1943-4d07-92ce-ce7edd52e7a4" name="*Suity|BatchReadFiles.FileReadItem.StartLine" />
   <Object id="c9bccf22-fbb6-4d35-b1a3-a618b177e57c" name="*Suity|BatchReadFiles.FileResult" />
+  <Object id="e91824c9-a8cb-4de0-8269-ad2c53406db2" name="*Suity|BatchReadFiles.FileResult.FilePath" />
+  <Object id="165b19cb-ce35-49d6-a8a7-2259a9f01dd3" name="*Suity|BatchReadFiles.FileResult.Message" />
   <Object id="62ca154b-5580-4070-b4fc-5164859969d0" name="*Suity|BatchRenameFiles" />
   <Object id="62ca154b-5580-4070-b4fc-5164859969d0" name="*Suity|BatchRenameFiles" />
   <Object id="cef1f7b6-27ba-4e5b-9441-b1557f90ebae" name="*Suity|BatchRenameFiles.RenameItem" />
+  <Object id="53f73e32-d398-4d1e-8eed-a6e5c54a0dce" name="*Suity|BatchRenameFiles.RenameItem.SourcePath" />
+  <Object id="9227a1c4-5691-4fb9-866f-b37b5b790d17" name="*Suity|BatchRenameFiles.RenameItem.TargetPath" />
   <Object id="0ebd3179-7773-49f6-aae8-8dd1665275a1" name="*Suity|BatchRenameFiles.RenameResult" />
+  <Object id="78a69b90-1039-4f79-bb56-4b48f84b92a8" name="*Suity|BatchRenameFiles.RenameResult.Error" />
+  <Object id="c1e855a7-e330-4455-be0c-0298e2ba821e" name="*Suity|BatchRenameFiles.RenameResult.SourcePath" />
+  <Object id="b15d965d-a644-4366-9705-9dc6ac5cae36" name="*Suity|BatchRenameFiles.RenameResult.TargetPath" />
   <Object id="ce07b337-3c42-47c3-959f-7d55145e3848" name="*Suity|BatchWriteFile" />
   <Object id="ce07b337-3c42-47c3-959f-7d55145e3848" name="*Suity|BatchWriteFile" />
   <Object id="ce07b337-3c42-47c3-959f-7d55145e3848" name="*Suity|BatchWriteFile" />
   <Object id="0162c4a7-effb-4b4e-aead-4de564d86c0c" name="*Suity|BatchWriteFile.FileResult" />
+  <Object id="00b47530-b59e-4788-af26-fbf83e424c4a" name="*Suity|BatchWriteFile.FileResult.Error" />
+  <Object id="312cd49b-8929-45e3-9b31-7514294efae3" name="*Suity|BatchWriteFile.FileResult.FilePath" />
+  <Object id="09d7d426-b264-4d16-b72e-d69e4a6902a0" name="*Suity|BatchWriteFile.FileResult.Status" />
   <Object id="9020cb31-73cf-4c54-ac8f-27aeea7d706d" name="*Suity|BatchWriteFile.FileWriteItem" />
+  <Object id="d4e233c3-9033-4454-ac77-2a833dbd905f" name="*Suity|BatchWriteFile.FileWriteItem.Content" />
+  <Object id="36b58eb9-733a-44ef-a1fc-0fb86ea8b8b8" name="*Suity|BatchWriteFile.FileWriteItem.FilePath" />
   <Object id="c30b4a25-23f0-4e12-9779-c9c7d86e09e4" name="*Suity|ByteArray" />
   <Object id="0f588e9a-8cb9-4924-a308-ca3132ba37ca" name="*Suity|ClientHandler" />
   <Object id="e9ed07b7-9b14-411c-bdfd-f585e1a5a752" name="*Suity|CreateNewFile" />
@@ -748,7 +858,13 @@
   <Object id="4e944cc8-2e03-411d-87ce-84206e252c77" name="*Suity|FindAndReplaceInFile" />
   <Object id="4e944cc8-2e03-411d-87ce-84206e252c77" name="*Suity|FindAndReplaceInFile" />
   <Object id="135a3b49-7e85-4d92-bb7e-d964af96b609" name="*Suity|FindAndReplaceInFile.ReplaceItem" />
+  <Object id="28596030-d1a8-4ced-a243-2c2e1f84f438" name="*Suity|FindAndReplaceInFile.ReplaceItem.NewString" />
+  <Object id="27e6e4c7-e96d-4b43-a0a1-d95297c9f6e7" name="*Suity|FindAndReplaceInFile.ReplaceItem.OldString" />
   <Object id="a14d5546-409f-4f81-b6cb-f0077007da5a" name="*Suity|FindAndReplaceInFile.ReplaceResult" />
+  <Object id="be4b50f5-8c0b-41b4-a299-5a4d6ab414b2" name="*Suity|FindAndReplaceInFile.ReplaceResult.MatchCount" />
+  <Object id="563d596d-e0b7-4116-83b7-435d32541c46" name="*Suity|FindAndReplaceInFile.ReplaceResult.Message" />
+  <Object id="def9e5c4-433c-44ad-848c-112442cb818d" name="*Suity|FindAndReplaceInFile.ReplaceResult.NewString" />
+  <Object id="c270f09d-4496-443f-8d80-bd3cc843c653" name="*Suity|FindAndReplaceInFile.ReplaceResult.OldString" />
   <Object id="181a1c7d-5a14-4502-ba71-eb24fcb93b57" name="*Suity|GetFileMetadata" />
   <Object id="181a1c7d-5a14-4502-ba71-eb24fcb93b57" name="*Suity|GetFileMetadata" />
   <Object id="c7c4179d-7e36-46db-9408-a1c9eb816461" name="*Suity|GetTaskHistory" />

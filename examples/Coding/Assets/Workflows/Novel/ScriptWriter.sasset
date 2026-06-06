@@ -1,26 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="AigcFlow">
-  <AssetId>8dd449c3-7044-4619-8d4d-de0df8d31a96</AssetId>
+  <AssetId>40f88d44-7d6b-4843-ae7f-55e9883c53e7</AssetId>
   <NameSpace>TaskTaskPage002</NameSpace>
   <Description>
   </Description>
   <Icon />
   <Nodes>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-430" Y="-110" Width="160" Height="130">
-      <Name>CodeWriter</Name>
-      <AssetId>cba2cec1-4bfe-462c-b3d0-324178e57303</AssetId>
+      <Name>ScriptWriter</Name>
+      <AssetId>8713a2e7-1170-4456-b01e-a6e4bcb08201</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
-        <Name>CodeWriter</Name>
+        <Name>ScriptWriter</Name>
         <Description>
         </Description>
         <Icon>
-          <Id>3df98773-f0da-4039-aa81-ef4af6f8c015</Id>
+          <Id>a8007591-9021-4cf9-a7df-69f1a6bc2205</Id>
         </Icon>
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
           <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
             <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
               <Value type="Suity.Views.TextBlock">
-                <Text>Generate or rewrite source codes base on the user request and the task history.</Text>
+                <Text>Generate or rewrite articles base on the user request and the task history.</Text>
               </Value>
             </ToolTips>
           </Item>
@@ -67,16 +67,16 @@
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-420" Y="-60" Width="49" Height="17">
-      <Name>FilePaths</Name>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-420" Y="-80" Width="46" Height="17">
+      <Name>FilePath</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
-        <Name>FilePaths</Name>
+        <Name>FilePath</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
           <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
             <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
               <Value type="Suity.Views.TextBlock">
-                <Text>The full file paths of the source codes</Text>
+                <Text>The full file path of the targget article to be written. Commonly the file ext is : .md</Text>
               </Value>
             </ToolTips>
           </Item>
@@ -85,19 +85,19 @@
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
         </ValueType>
-        <IsArray>True</IsArray>
-        <Value type="SArray" base="28e873c3-25bc-4001-ac6c-e185033f7056[]" />
+        <Value type="System.String">
+        </Value>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="-100" Width="107" Height="89">
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>e741e0d8-e4f4-4d9d-bbbf-6f5dc5360273</Id>
+          <Id>37d7c15a-04b9-4b71-9eac-a8a558b87711</Id>
         </PromptTemplate>
         <Keywords>
-          <Item>INPUT</Item>
-          <Item>FILES</Item>
+          <Item>PROMPT</Item>
+          <Item>FILE</Item>
           <Item>FRAMEWORK</Item>
           <Item>SPEECH_LANGUAGE</Item>
         </Keywords>
@@ -128,27 +128,11 @@
         <Content />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="510" Y="0" Width="59" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="520" Y="-10" Width="59" Height="17">
       <Name>###GetTaskWorkSpace02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetTaskWorkSpace" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-40" Width="143" Height="89">
-      <Name>###ForeachArray01</Name>
-      <Node type="Suity.Editor.Flows.Nodes.ForeachArray">
-        <OutputValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>3e63d8f9-29dc-4cf2-a10e-ae9cd5acc1a5</Id>
-        </OutputValueType>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="510" Y="20" Width="65" Height="17">
-      <Name>###GetXmlTagAttributesNode01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagAttributes">
-        <AttributeNames>
-          <Item>path</Item>
-        </AttributeNames>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="530" Y="40" Width="28" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="460" Y="30" Width="28" Height="17">
       <Name>###GetXmlTagContentNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
     </Item>
@@ -156,9 +140,8 @@
       <Name>###ExtractXmlsTagAction01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagAction">
         <TagNames>
-          <Item>code</Item>
+          <Item>article</Item>
         </TagNames>
-        <IsArray>True</IsArray>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="310" Y="-80" Width="70" Height="28">
@@ -167,10 +150,9 @@
         <DataType>
           <Id>3e63d8f9-29dc-4cf2-a10e-ae9cd5acc1a5</Id>
         </DataType>
-        <IsArray>True</IsArray>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="60" Y="-170" Width="84" Height="28">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="-140" Width="84" Height="28">
       <Name>###GetGlobalLLmModel01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetGlobalLLmModel">
         <Type>Coding</Type>
@@ -180,7 +162,7 @@
       <Name>###GetCurrentTaskRule01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputItem" X="-420" Y="-80" Width="45" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputItem" X="-420" Y="-60" Width="45" Height="17">
       <Name>Prompt</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputNode">
         <Name>Prompt</Name>
@@ -195,12 +177,6 @@
           </Item>
         </Attributes>
         <Required>False</Required>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-200" Y="-50" Width="38" Height="17">
-      <Name>###JoinString01</Name>
-      <Node type="Suity.Editor.Flows.Nodes.JoinString">
-        <Separator>\r\n</Separator>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-120" Width="48" Height="17">
@@ -267,13 +243,12 @@
         <Value type="System.String">Generation Successful:</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="290" Y="140" Width="28" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="240" Y="140" Width="28" Height="17">
       <Name>###PassValue01</Name>
       <Node type="Suity.Editor.Flows.Nodes.PassValue">
         <DataType>
           <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
         </DataType>
-        <IsArray>True</IsArray>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-140" Width="47" Height="17">
@@ -282,34 +257,59 @@
         <InHierarchy>True</InHierarchy>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageFileOutputItem" X="620" Y="190" Width="56" Height="17">
-      <Name>OutputFiles</Name>
+    <Item type="Suity.Editor.Flows.SubFlows.PageFileOutputItem" X="620" Y="190" Width="53" Height="17">
+      <Name>OutputFile</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageFileOutputNode">
-        <Name>OutputFiles</Name>
+        <Name>OutputFile</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
         <History>True</History>
         <Value type="System.String">
         </Value>
-        <IsArray>True</IsArray>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-40" Y="-140" Width="91" Height="17">
       <Name>###GetScratchPadMessage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetScratchPadMessage" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="430" Y="190" Width="38" Height="17">
-      <Name>###ComposeArray01</Name>
-      <Node type="Suity.Editor.Flows.Nodes.ComposeArray">
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
-        </ValueType>
-      </Node>
-    </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-140" Width="103" Height="56">
       <Name>###ThrowError01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
-        <ErrorMessage />
+        <ErrorMessage>
+          <Text>Extract xml failed.</Text>
+        </ErrorMessage>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="10" Y="-210" Width="28" Height="17">
+      <Name>###PassValue02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="450" Y="190" Width="28" Height="17">
+      <Name>###PassValue03</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-200" Y="-80" Width="28" Height="17">
+      <Name>###PassValue04</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="460" Y="10" Width="28" Height="17">
+      <Name>###PassValue05</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </DataType>
       </Node>
     </Item>
   </Nodes>
@@ -318,7 +318,7 @@
     <Item>
       <FromNode>MultipleCodeResult</FromNode>
       <FromConnector>Definition</FromConnector>
-      <ToNode>CodeWriter</ToNode>
+      <ToNode>ScriptWriter</ToNode>
       <ToConnector>Result</ToConnector>
     </Item>
     <Item>
@@ -346,34 +346,10 @@
       <ToConnector>WorkSpace</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetXmlTagAttributesNode01</FromNode>
-      <FromConnector>Attr-path</FromConnector>
-      <ToNode>###WriteWorkSpaceFile01</ToNode>
-      <ToConnector>FilePath</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###ForeachArray01</FromNode>
-      <FromConnector>Item</FromConnector>
-      <ToNode>###GetXmlTagAttributesNode01</ToNode>
-      <ToConnector>TagIn</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###ForeachArray01</FromNode>
-      <FromConnector>Item</FromConnector>
-      <ToNode>###GetXmlTagContentNode01</ToNode>
-      <ToConnector>TagIn</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetXmlTagContentNode01</FromNode>
       <FromConnector>ContentOut</FromConnector>
       <ToNode>###WriteWorkSpaceFile01</ToNode>
       <ToConnector>Content</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###ForeachArray01</FromNode>
-      <FromConnector>ItemOutput</FromConnector>
-      <ToNode>###WriteWorkSpaceFile01</ToNode>
-      <ToConnector>In</ToConnector>
     </Item>
     <Item>
       <FromNode>###CallLLm01</FromNode>
@@ -388,24 +364,6 @@
       <ToConnector>DataIn</ToConnector>
     </Item>
     <Item>
-      <FromNode>###ExtractXmlsTagAction01</FromNode>
-      <FromConnector>Tag-code</FromConnector>
-      <ToNode>###DataActionDecompose01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###DataActionDecompose01</FromNode>
-      <FromConnector>ActionOut</FromConnector>
-      <ToNode>###ForeachArray01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###DataActionDecompose01</FromNode>
-      <FromConnector>DataOut</FromConnector>
-      <ToNode>###ForeachArray01</ToNode>
-      <ToConnector>Array</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetCurrentTaskRule01</FromNode>
       <FromConnector>Rule</FromConnector>
       <ToNode>###BuildPrompts01</ToNode>
@@ -416,24 +374,6 @@
       <FromConnector>LlmModel</FromConnector>
       <ToNode>###CallLLm01</ToNode>
       <ToConnector>Model</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>Prompt</FromNode>
-      <FromConnector>Prompt</FromConnector>
-      <ToNode>###BuildPrompts01</ToNode>
-      <ToConnector>k_INPUT</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>FilePaths</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###JoinString01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###JoinString01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###BuildPrompts01</ToNode>
-      <ToConnector>k_FILES</ToConnector>
     </Item>
     <Item>
       <FromNode>TaskStart</FromNode>
@@ -466,12 +406,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###ForeachArray01</FromNode>
-      <FromConnector>Output</FromConnector>
-      <ToNode>###DataActionCompose02</ToNode>
-      <ToConnector>ActionIn</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###JoinString02</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###DataActionCompose02</ToNode>
@@ -481,12 +415,6 @@
       <FromNode>###SourceValue03</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###JoinString02</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>FilePaths</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###PassValue01</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
@@ -508,22 +436,88 @@
       <ToConnector>Messages</ToConnector>
     </Item>
     <Item>
-      <FromNode>###PassValue01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###ComposeArray01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###ComposeArray01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>OutputFiles</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###ExtractXmlsTagAction01</FromNode>
       <FromConnector>NoResult</FromConnector>
       <ToNode>###ThrowError01</ToNode>
       <ToConnector>Input</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Prompt</FromNode>
+      <FromConnector>Prompt</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_PROMPT</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagAction01</FromNode>
+      <FromConnector>Tag-article</FromConnector>
+      <ToNode>###DataActionDecompose01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose01</FromNode>
+      <FromConnector>ActionOut</FromConnector>
+      <ToNode>###WriteWorkSpaceFile01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose01</FromNode>
+      <FromConnector>DataOut</FromConnector>
+      <ToNode>###GetXmlTagContentNode01</ToNode>
+      <ToConnector>TagIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>FilePath</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###PassValue02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###PassValue03</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue03</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OutputFile</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue04</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_FILE</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>FilePath</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###PassValue04</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue05</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###WriteWorkSpaceFile01</ToNode>
+      <ToConnector>FilePath</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###PassValue05</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>FilePath</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###PassValue01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###WriteWorkSpaceFile01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###DataActionCompose02</ToNode>
+      <ToConnector>ActionIn</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

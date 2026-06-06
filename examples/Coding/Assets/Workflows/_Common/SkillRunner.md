@@ -52,10 +52,10 @@ action planning of current task
 
 1. Tool Invocation:
 <tool_action tool='ToolName'>
-{"param": "value"}
+{ "param": "value and 'quoted' value" }
 </tool_action>
 - Ensure JSON format in <tool_action> tag.
-- Output single quote(') instead of double quote(") in json string content.
+**NewLine and double quote(") is NOT allowed in the json string value**
 
 2. Continuation:
 <next></next>
@@ -80,5 +80,5 @@ Failed message...
 - When call tool, only call <tool_action> once per turn.
 - Tool usage MUST be justified by Skill Description.
 - If request out-of-scope: clarify in <failed>, do not proceed.
-- **Do not read the local file again if ScratchPad contains these files, ScratchPad ensures that the file ie the lastest one.**
+- **Do NOT read the local file again if ScratchPad contains these files, ScratchPad ensures that the file ie the lastest one.**
 - Output speech language: {{SPEECH_LANGUAGE}}.

@@ -204,7 +204,7 @@
         <CommitName>EditCode</CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="660" Y="-30" Width="37" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="750" Y="-30" Width="37" Height="17">
       <Name>###SourceValue01</Name>
       <Node type="Suity.Editor.Flows.Nodes.SourceValue">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
@@ -213,7 +213,7 @@
         <Value type="System.Boolean">True</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-70" Width="103" Height="85">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-70" Width="107" Height="89">
       <Name>###BuildPrompt01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
@@ -229,7 +229,7 @@
         <UpdateKeywords>False</UpdateKeywords>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="-100" Width="136" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="-100" Width="136" Height="111">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -255,13 +255,13 @@
       <Name>###GetPageToolPagesNode02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="440" Y="-50" Width="187" Height="74">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="440" Y="-50" Width="191" Height="78">
       <Name>###ParseTagToolCallingNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.ParseTagToPageInstance">
         <AttributeName>tool</AttributeName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="440" Y="70" Width="130" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="440" Y="70" Width="134" Height="111">
       <Name>###AddSubTaskPageNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
         <PageTitle>
@@ -288,17 +288,7 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="530" Y="-150" Width="99" Height="41">
-      <Name>###ThrowError02</Name>
-      <Node type="Suity.Editor.Flows.Nodes.ThrowError">
-        <Message type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
-          <Value type="Suity.Views.TextBlock">
-            <Text>Create page instance failed.</Text>
-          </Value>
-        </Message>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="40" Width="146" Height="74">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="40" Width="150" Height="78">
       <Name>###ExtractXmlsTagAction01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagAction">
         <TagNames>
@@ -308,14 +298,10 @@
         </TagNames>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="150" Y="140" Width="99" Height="41">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="150" Y="140" Width="103" Height="56">
       <Name>###ThrowError01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
-        <Message type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
-          <Value type="Suity.Views.TextBlock">
-            <Text>Parse Tag Failed.</Text>
-          </Value>
-        </Message>
+        <ErrorMessage />
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="390" Y="300" Width="69" Height="17">
@@ -328,7 +314,7 @@
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="440" Width="197" Height="63">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="440" Width="201" Height="67">
       <Name>###CreatePageInstanceWithParameter01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
         <ToolDefinition>
@@ -364,7 +350,7 @@
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="510" Width="127" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="510" Width="131" Height="111">
       <Name>###AppendTaskPage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
         <PageTitle>
@@ -482,7 +468,7 @@
         </ValueType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-90" Y="520" Width="28" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-90" Y="510" Width="28" Height="17">
       <Name>###PassValue03</Name>
       <Node type="Suity.Editor.Flows.Nodes.PassValue">
         <DataType>
@@ -509,6 +495,44 @@
       <Node type="Suity.Editor.Flows.Nodes.PassValue">
         <DataType>
           <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="840" Y="40" Width="103" Height="56">
+      <Name>###ThrowError03</Name>
+      <Node type="Suity.Editor.Flows.Nodes.ThrowError">
+        <ErrorMessage>
+          <Text>Select Tool Failed</Text>
+        </ErrorMessage>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="840" Y="100" Width="103" Height="56">
+      <Name>###ThrowError02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.ThrowError">
+        <ErrorMessage>
+          <Text>Select Tool Failed</Text>
+        </ErrorMessage>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="680" Y="100" Width="105" Height="17">
+      <Name>###GetProperty01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.GetProperty">
+        <Struct>
+          <Id>e86c53da-a260-43f4-969b-83341e9977ad</Id>
+        </Struct>
+        <Field>
+          <Id>e1ff53ca-d319-40f2-ab44-83b1efa8368e</Id>
+        </Field>
+        <OutputValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </OutputValueType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="690" Y="70" Width="70" Height="28">
+      <Name>###DataActionDecompose03</Name>
+      <Node type="Suity.Editor.Flows.Nodes.DataActionDecompose">
+        <DataType>
+          <Id>e86c53da-a260-43f4-969b-83341e9977ad</Id>
         </DataType>
       </Node>
     </Item>
@@ -586,12 +610,6 @@
       <FromConnector>DataOut</FromConnector>
       <ToNode>###ParseTagToolCallingNode01</ToNode>
       <ToConnector>XmlTag</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###ParseTagToolCallingNode01</FromNode>
-      <FromConnector>NoResult</FromConnector>
-      <ToNode>###ThrowError02</ToNode>
-      <ToConnector>Input</ToConnector>
     </Item>
     <Item>
       <FromNode>###DataActionDecompose01</FromNode>
@@ -826,6 +844,36 @@
       <FromConnector>DataOut</FromConnector>
       <ToNode>###PassValue04</ToNode>
       <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ParseTagToolCallingNode01</FromNode>
+      <FromConnector>NoResult</FromConnector>
+      <ToNode>###ThrowError02</ToNode>
+      <ToConnector>Input</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose03</FromNode>
+      <FromConnector>DataOut</FromConnector>
+      <ToNode>###GetProperty01</ToNode>
+      <ToConnector>SObject</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ParseTagToolCallingNode01</FromNode>
+      <FromConnector>FormatError</FromConnector>
+      <ToNode>###DataActionDecompose03</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetProperty01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ThrowError03</ToNode>
+      <ToConnector>ErrorMessage</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DataActionDecompose03</FromNode>
+      <FromConnector>ActionOut</FromConnector>
+      <ToNode>###ThrowError03</ToNode>
+      <ToConnector>Input</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

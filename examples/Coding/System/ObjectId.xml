@@ -11,6 +11,9 @@
   <Object id="cc9da65c-10c8-4363-a653-7af74a21ceac" name="Workflows/Coding/KarpaphyPlus.sprompt" />
   <Object id="2ad31242-fa68-4729-8d6a-92efc0a2540b" name="Workflows/Coding/TechSpec.md" />
   <Object id="55a2d6a9-c57d-4639-a70a-b59a96d1c673" name="Workflows/Coding/VerifyCode.md" />
+  <Object id="2d044f93-d625-48e3-84b8-627c2b0c9edd" name="Workflows/Novel/NovelCreator.md" />
+  <Object id="f1612cae-c531-4945-a1f0-a130e5a1e542" name="Workflows/Novel/PlotDocument.md" />
+  <Object id="37d7c15a-04b9-4b71-9eac-a8a558b87711" name="Workflows/Novel/ScriptWriter.md" />
   <Object id="2126a46d-a00b-40b8-9bfa-61701ca90ef5" name="Workflows/Overview/OverviewTask.md" />
   <Object id="e6f667fc-d29e-4294-b8c2-b4065d74a84f" name="Workflows/Planning/Plan.md" />
   <Object id="c06335a2-3588-4390-8865-5524557f2237" name="Workflows/Planning/QuestionAsk.md" />
