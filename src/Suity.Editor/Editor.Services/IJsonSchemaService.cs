@@ -70,8 +70,6 @@ public interface IJsonSchemaService
 
     object GetObject(Type type, string jsonText);
 
-    SimpleType GetViewObjectSimpleType(IViewObject viewObject, string name = null, string fullName = null);
-
 
     /// <summary>
     /// Creates a Schema for the provided type. The returned Schema supports both Newtonsoft.Json and System.Text.Json serialization.

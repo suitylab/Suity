@@ -1,5 +1,8 @@
 using Suity.Drawing;
+using Suity.Editor.Design;
+using Suity.Editor.Services;
 using Suity.Helpers;
+using Suity.Views;
 using System;
 using System.Linq;
 
@@ -30,6 +33,11 @@ public class DNativeStruct : DStruct, IHasNativeType
     {
         NativeType = nativeType;
         _displayName = nativeType.ToDisplayText();
+
+        if (typeof(IViewObject).IsAssignableFrom(nativeType))
+        {
+            UpdateSimpleType();
+        }
     }
 
     /// <summary>
@@ -55,6 +63,73 @@ public class DNativeStruct : DStruct, IHasNativeType
         => TypesExternal._external.ResolveNativeFieldId(this, name);
 
     public override string DisplayText => _displayName ?? base.DisplayText;
+
+    private bool UpdateSimpleType()
+    {
+        var nativeType = this.NativeType;
+        if (nativeType is null)
+        {
+            return false;
+        }
+
+        if (!typeof(IViewObject).IsAssignableFrom(nativeType))
+        {
+            return false;
+        }
+
+        IViewObject viewObj = null;
+
+        try
+        {
+            viewObj = System.Activator.CreateInstance(nativeType) as IViewObject;
+        }
+        catch (Exception err)
+        {
+            err.LogError($"Can not create simple type for view object: {nativeType.GetType().FullName}");
+        }
+
+        if (viewObj is null)
+        {
+            return false;
+        }
+
+        var simpleType = DTypeManager.Instance.GetViewObjectSimpleType(viewObj);
+        if (simpleType is null)
+        {
+            return false;
+        }
+
+        foreach (var field in simpleType.Fields)
+        {
+            var attrs = new SArrayAttributeDesign();
+
+            if (!string.IsNullOrWhiteSpace(field.Tooltips))
+            {
+                attrs.AddAttribute<ToolTipsAttribute>(o => o.ToolTips = field.Tooltips);
+            }
+
+            if (field.Range is { } range)
+            {
+                attrs.AddAttribute<NumericRangeAttribute>(o => 
+                {
+                    o.Min = range.Min;
+                    o.Max = range.Max;
+                    o.Increment = range.Increment;
+                    o.ClampMin = range.ClampMin;
+                    o.ClampMax = range.ClampMax;
+                    o.HasColor = range.HasColor;
+                    o.Color = range.Color;
+                    o.HasMinMaxColor = range.HasMinMaxColor;
+                    o.MinColor = range.MinColor;
+                    o.MaxColor = range.MaxColor;
+                });
+            }
+
+            base.AddOrUpdateField(field.Name, field.Type, AssetAccessMode.Public, null, field.Optional, null, attrs);
+        }
+
+        return true;
+    }
 }
 
 #endregion

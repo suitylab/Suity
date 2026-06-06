@@ -220,7 +220,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         string name = SubFlowExtensions.UseFullName ? tool.FullName : tool.Name;
 
         _input = Activator.CreateInstance<TInput>();
-        _inputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(_input, name, tool.FullName);
+        _inputType = DTypeManager.Instance.GetViewObjectSimpleType(_input, name, tool.FullName);
 
         _errorMessage.Text = null;
         _errorMessage.Property.WithOptional();
@@ -255,7 +255,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
             if (output != null)
             {
-                var outputType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(output, output.GetType().Name, output.GetType().FullName);
+                var outputType = DTypeManager.Instance.GetViewObjectSimpleType(output, output.GetType().Name, output.GetType().FullName);
                 return outputType;
             }
             else

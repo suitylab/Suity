@@ -1,3 +1,4 @@
+using Suity.Views;
 using System;
 
 namespace Suity.Editor.Types;
@@ -92,6 +93,8 @@ public abstract class DTypeManager
     /// Resolves a field by asset field key.
     /// </summary>
     public abstract DField ResolveField(string assetFieldKey);
+
+    public abstract SimpleType GetViewObjectSimpleType(IViewObject viewObject, string name = null, string fullName = null);
 
     /// <summary>
     /// Adds a type to the type manager.

@@ -328,7 +328,7 @@ public static class SValueJsonHelper
         if (isNativeType)
         {
             var fieldObj = (IViewObject)Activator.CreateInstance(nativeType);
-            var simpleType = EditorServices.JsonSchemaService.GetViewObjectSimpleType(fieldObj);
+            var simpleType = DTypeManager.Instance.GetViewObjectSimpleType(fieldObj);
             var dic = FromJson(jsonObj, simpleType, options);
             var setter = new SetAllPropertySync(dic);
             fieldObj.Sync(setter, SyncContext.Empty);

@@ -43,6 +43,7 @@ public class AliasTypeNameAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region ToolTipAttribute
 /// <summary>
 /// Specifies tooltip text for an element.
@@ -89,6 +90,7 @@ public class ToolTipsAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region UsageAttribute
 /// <summary>
 /// Specifies the usage of an element.
@@ -118,6 +120,7 @@ public class UsageAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region DataUsageAttribute
 /// <summary>
 /// Specifies how data is used or displayed in the editor.
@@ -203,6 +206,7 @@ protected override void OnSync(IPropertySync sync, ISyncContext context)
     public override string ToString() => L("Data Usage") + ": " + _usage.Value.ToDisplayText();
 }
 #endregion
+
 #region DrivenAttribute
 /// <summary>
 /// Specifies the driven generation method for data.
@@ -275,6 +279,7 @@ public class DrivenAttribute : DesignAttribute, ITextDisplay
     public override string ToString() => L("Driven") + ": " + _mode.Value.ToDisplayText();
 }
 #endregion
+
 #region KnowledgeAttribute
 /// <summary>
 /// Specifies knowledge content for AI generation.
@@ -321,6 +326,7 @@ public sealed class KnowledgeAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region ArticleReferenceAttribute
 /// <summary>
 /// References an article document.
@@ -369,6 +375,7 @@ public sealed class ArticleReferenceAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region RemarkAttribute
 /// <summary>
 /// Specifies a remark or note.
@@ -408,6 +415,7 @@ public class RemarkAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region CustomClassAttribute
 /// <summary>
 /// Specifies custom class generation options.
@@ -462,6 +470,7 @@ public class CustomClassAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region CustomFormatterAttribute
 /// <summary>
 /// Specifies custom formatter options.
@@ -530,6 +539,7 @@ public class CustomFormatterAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region DisabledAttribute
 /// <summary>
 /// Indicates that the associated element is disabled.
@@ -540,6 +550,7 @@ public class DisabledAttribute : DesignAttribute, IViewObject
     public override string ToString() => "Disabled";
 }
 #endregion
+
 #region HiddenAttribute
 /// <summary>
 /// Indicates that the associated element is hidden.
@@ -553,6 +564,7 @@ public class HiddenAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region HiddenInMonitorAttribute
 /// <summary>
 /// Indicates that the associated element is hidden in monitor views.
@@ -566,6 +578,7 @@ public class HiddenInMonitorAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region PacketFormatAttribute
 /// <summary>
 /// Specifies the packet serialization format.
@@ -595,6 +608,7 @@ public class PacketFormatAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region ValueTypeStructAttribute
 /// <summary>
 /// Indicates that the type is a value type struct.
@@ -608,6 +622,7 @@ public class ValueTypeStructAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region DataIdFieldAttribute
 /// <summary>
 /// Indicates that this field contains a data ID.
@@ -622,6 +637,7 @@ public class DataIdFieldAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region EditorGuidFieldAttribute
 /// <summary>
 /// Indicates that this field contains an editor GUID.
@@ -636,6 +652,7 @@ public class EditorGuidFieldAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region PosisionFieldAttributes
 /// <summary>
 /// Defines the type of auto-fill field.
@@ -704,6 +721,7 @@ public class AutoFieldAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region ConnectorAttribute
 /// <summary>
 /// Indicates that this field is a connector.
@@ -715,6 +733,7 @@ public class ConnectorAttribute : DesignAttribute, IViewObject
     public override string ToString() => L("Connector");
 }
 #endregion
+
 #region AssociateAttribute
 /// <summary>
 /// Indicates that this field is an association port.
@@ -743,6 +762,7 @@ public class AssociateAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region ConsistencyAttribute
 /// <summary>
 /// Indicates that the value should be consistent within the same category.
@@ -754,6 +774,7 @@ public class ConsistencyAttribute : DesignAttribute
     public override string ToString() => L("Consistency");
 }
 #endregion
+
 #region ClassifyAttribute
 /// <summary>
 /// Indicates that the enum field provides classifications for data tables.
@@ -765,6 +786,7 @@ public class ClassifyAttribute : DesignAttribute
     public override string ToString() => L("Classification");
 }
 #endregion
+
 #region HorizontalLayoutAttribute
 /// <summary>
 /// Specifies horizontal layout options for a type.
@@ -813,6 +835,7 @@ public class HorizontalLayoutAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region PreviewFieldAttribute
 /// <summary>
 /// Indicates that this field is a preview field.
@@ -822,6 +845,7 @@ public class PreviewFieldAttribute : DesignAttribute, IViewObject
 {
 }
 #endregion
+
 #region NumericRangeAttribute
 /// <summary>
 /// Specifies a numeric range for a field value.
@@ -937,6 +961,7 @@ public class NumericRangeAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region SourceCodeAutomationAttribute
 /// <summary>
 /// Specifies source code automation options.
@@ -966,6 +991,7 @@ public class SourceCodeAutomationAttribute : DesignAttribute, IViewObject
     }
 }
 #endregion
+
 #region StatusColorAttribute
 /// <summary>
 /// Specifies a status color for display.
@@ -1001,6 +1027,7 @@ public class StatusColorAttribute : DesignAttribute, IViewObject, IViewColor
     }
 }
 #endregion
+
 #region ColorAttribute
 /// <summary>
 /// Specifies a color value.
@@ -1037,6 +1064,7 @@ public class ColorAttribute : DesignAttribute, IViewObject, IViewColor
     }
 }
 #endregion
+
 #region SaveDataAttribute
 /// <summary>
 /// Indicates that data should be saved.

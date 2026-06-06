@@ -32,8 +32,6 @@ internal class JsonSchemaService : IJsonSchemaService
     /// </summary>
     public static JsonSchemaService Instance { get; } = new();
 
-    readonly Dictionary<Type, SimpleType> _simpleTypes = [];
-
     private JsonSchemaService()
     {
     }
@@ -79,62 +77,6 @@ internal class JsonSchemaService : IJsonSchemaService
         return JsonConvert.DeserializeObject(jsonText, type);
     }
 
-
-    public SimpleType GetViewObjectSimpleType(IViewObject viewObject, string name = null, string fullName = null)
-    {
-        lock (_simpleTypes)
-        {
-            if (_simpleTypes.TryGetValue(viewObject.GetType(), out var cached))
-            {
-                return cached;
-            }
-        }
-
-        var setup = new GetFieldSetup();
-        viewObject.SetupView(setup);
-
-        List<SimpleField> fields = [];
-        foreach (var fieldInfo in setup.Fields)
-        {
-            var prop = fieldInfo.Property;
-            if (prop.ReadOnly)
-            {
-                continue;
-            }
-
-            var field = new SimpleField
-            {
-                Name = prop.Name,
-                Description = prop.Description,
-                Tooltips = prop.Styles?.GetToolTips(),
-                Type = fieldInfo.Type,
-                Optional = prop.Optional,
-                Range = prop.Attributes?.GetAttribute<NumericRangeAttribute>(),
-                Selection = prop.Attributes?.GetAttribute<SelectionDesignAttribute>(),
-            };
-
-            fields.Add(field);
-        }
-
-        name ??= viewObject.GetType().Name;
-        fullName ??= viewObject.GetType().FullName;
-
-        var simpleType = new SimpleType
-        {
-            Name = name,
-            FullName = fullName,
-            Description = viewObject.ToDisplayTextL(),
-            Tooltips = viewObject.ToToolTipsTextL(),
-            Fields = [.. fields],
-        };
-
-        lock (_simpleTypes)
-        {
-            _simpleTypes[viewObject.GetType()] = simpleType;
-        }
-
-        return simpleType;
-    }
 
     /// <inheritdoc/>
     public IDataWritable CreateSchema(DCompond type, SchemaGenerateOptions options = null)
@@ -445,7 +387,7 @@ internal class JsonSchemaService : IJsonSchemaService
             {
                 if (Activator.CreateInstance(nativeType) is IViewObject viewObject)
                 {
-                    var simpleType = GetViewObjectSimpleType(viewObject);
+                    var simpleType = DTypeManager.Instance.GetViewObjectSimpleType(viewObject);
                     fieldProp = _CreateSchemaProperty(simpleType, depth, options);
                 }
             }

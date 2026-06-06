@@ -1,6 +1,10 @@
 using Suity.Collections;
+using Suity.Editor.Design;
+using Suity.Editor.Services;
+using Suity.Views;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace Suity.Editor.Types;
 
@@ -29,6 +33,8 @@ internal class DTypeManagerBK : DTypeManager
     private readonly ConcurrentDictionary<TypeDefinition, DFunctionCollection> _funcsByReturnType = new();
 
     private readonly MultipleItemCollection<Type, DType> _nativeTypes = new();
+
+    private readonly Dictionary<Type, SimpleType> _simpleTypes = [];
 
     private DTypeManagerBK()
     {
@@ -184,6 +190,62 @@ internal class DTypeManagerBK : DTypeManager
         var type = GetDType<DType>(fieldCode.MainName);
 
         return type?.GetField(fieldCode.FieldName);
+    }
+
+    public override SimpleType GetViewObjectSimpleType(IViewObject viewObject, string name = null, string fullName = null)
+    {
+        lock (_simpleTypes)
+        {
+            if (_simpleTypes.TryGetValue(viewObject.GetType(), out var cached))
+            {
+                return cached;
+            }
+        }
+
+        var setup = new GetFieldSetup();
+        viewObject.SetupView(setup);
+
+        List<SimpleField> fields = [];
+        foreach (var fieldInfo in setup.Fields)
+        {
+            var prop = fieldInfo.Property;
+            if (prop.ReadOnly)
+            {
+                continue;
+            }
+
+            var field = new SimpleField
+            {
+                Name = prop.Name,
+                Description = prop.Description,
+                Tooltips = prop.Styles?.GetToolTips(),
+                Type = fieldInfo.Type,
+                Optional = prop.Optional,
+                Range = prop.Attributes?.GetAttribute<NumericRangeAttribute>(),
+                Selection = prop.Attributes?.GetAttribute<SelectionDesignAttribute>(),
+            };
+
+            fields.Add(field);
+        }
+
+        name ??= viewObject.GetType().Name;
+        fullName ??= viewObject.GetType().FullName;
+
+        var simpleType = new SimpleType
+        {
+            Name = name,
+            FullName = fullName,
+            Description = viewObject.ToDisplayTextL(),
+            Tooltips = viewObject.ToToolTipsTextL(),
+            Fields = [.. fields],
+        };
+
+        lock (_simpleTypes)
+        {
+            _simpleTypes[viewObject.GetType()] = simpleType;
+        }
+
+        return simpleType;
     }
 
     internal override IRegistryHandle<DType> AddType(DType dType)
