@@ -48,7 +48,7 @@ internal abstract class AvaGraphicBaseContext :
 
     private bool _repaintAll = true;
     private RectangleF[]? _dirtyRects;
-    private readonly AvaTextBoxOverlayEdit _textBoxEdit;
+    private readonly AvaTextBoxTunnelEdit _textBoxEdit;
     private readonly AvaDropDownContextMenuEdit _dropDownEdit;
     private readonly AvaColorPickerEdit _colorPickerEdit;
     private int _toolTipShowing;
@@ -71,7 +71,7 @@ internal abstract class AvaGraphicBaseContext :
         _input = new AvaGraphicInput(control);
         _output = new AvaGraphicOutput(control);
 
-        _textBoxEdit = new AvaTextBoxOverlayEdit(control);
+        _textBoxEdit = new AvaTextBoxTunnelEdit(control);
         _dropDownEdit = new AvaDropDownContextMenuEdit(control);
         _colorPickerEdit = new AvaColorPickerEdit(control);
 
@@ -118,7 +118,7 @@ internal abstract class AvaGraphicBaseContext :
     /// <summary>
     /// Gets the text box edit overlay.
     /// </summary>
-    protected AvaTextBoxOverlayEdit TextBoxEdit => _textBoxEdit;
+    protected AvaTextBoxTunnelEdit TextBoxEdit => _textBoxEdit;
 
     /// <summary>
     /// Gets the drop down context menu edit.
