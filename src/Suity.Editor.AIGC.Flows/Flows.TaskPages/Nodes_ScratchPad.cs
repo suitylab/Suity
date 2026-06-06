@@ -287,7 +287,7 @@ public class GetScratchPadMessage : TaskPageNode
 
         var items = compute.GetValues<ScratchPad>(_items, true);
         var msgs = items
-            .Select(i => i.ToXmlTag(workSpaceDir))
+            .Select(i => i.ToXmlTag(ResolveChatIntents.Normal, workSpaceDir))
             .Select(s => new LLmMessage { Role = LLmMessageRole.User, Message = s})
             .ToArray();
         

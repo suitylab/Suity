@@ -975,7 +975,8 @@ public class AigcWorkflowPage : AigcTaskPage,
     public ScratchPad[] GetHistoryScratchPads(int hierarchyLevels)
     {
         Dictionary<string, ScratchPad> dic = [];
-        CollectScratchPads(dic, hierarchyLevels);
+        int maxHistory = this.GetDocument() is AigcTaskPageDocument doc ? doc.MaxChatHistory : 0;
+        CollectScratchPads(dic, maxHistory, hierarchyLevels);
 
         return dic.Values.Where(o => o.Type.CanDisplay()).ToArray();
     }
@@ -983,7 +984,8 @@ public class AigcWorkflowPage : AigcTaskPage,
     public ScratchPad GetHistoryScratchPad(string path, int hierarchyLevels = 0)
     {
         Dictionary<string, ScratchPad> dic = [];
-        CollectScratchPads(dic, hierarchyLevels);
+        int maxHistory = this.GetDocument() is AigcTaskPageDocument doc ? doc.MaxChatHistory : 0;
+        CollectScratchPads(dic, maxHistory, hierarchyLevels);
 
         if (dic.TryGetValue(path, out var scratchPad) && scratchPad.Type.CanDisplay())
         {
@@ -995,11 +997,21 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
     }
 
-    private void CollectScratchPads(Dictionary<string, ScratchPad> dic, int hierarchyLevel)
+    private void CollectScratchPads(Dictionary<string, ScratchPad> dic, int maxHistory, int hierarchyLevel)
     {
+        if (maxHistory > 0 && dic.Count > maxHistory)
+        {
+            return;
+        }
+
         if (hierarchyLevel > 0 && ParentNode is AigcWorkflowPage parent)
         {
-            parent.CollectScratchPads(dic, hierarchyLevel - 1);
+            parent.CollectScratchPads(dic, maxHistory, hierarchyLevel - 1);
+        }
+
+        if (maxHistory > 0 && dic.Count > maxHistory)
+        {
+            return;
         }
 
         int index = this.GetIndex();
@@ -1037,6 +1049,11 @@ public class AigcWorkflowPage : AigcTaskPage,
                     }
 
                     dic[path] = scratchPad;
+                }
+
+                if (maxHistory > 0 && dic.Count > maxHistory)
+                {
+                    return;
                 }
             }
         }

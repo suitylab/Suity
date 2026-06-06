@@ -257,7 +257,244 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
     #endregion
 
+    #region IDropTarget
+
+    /// <inheritdoc/>
+    public void DragOver(IDragEvent e)
+    {
+        // DragDrop event is initiated by GraphicViewControl, can only route
+        if (_subView.CurrentSubView is IDropTarget dropTarget && dropTarget != this)
+        {
+            dropTarget.DragOver(e);
+        }
+        else
+        {
+            //TODO
+        }
+    }
+
+    /// <inheritdoc/>
+    public void DragDrop(IDragEvent e)
+    {
+        // DragDrop event is initiated by GraphicViewControl, can only route
+        if (_subView.CurrentSubView is IDropTarget dropTarget && dropTarget != this)
+        {
+            dropTarget.DragDrop(e);
+        }
+        else
+        {
+            //TODO
+        }
+    }
+
+    #endregion
+
+    #region IViewRefresh
+
+    /// <inheritdoc/>
+    public void QueueRefreshView() => this.RefreshView();
+
+    #endregion
+
+    #region ISyncStateRecord
+
+    /// <inheritdoc/>
+    void ISyncStateRecord.Record(ISyncObject obj)
+    {
+        _undoManager?.Do(new SnapshotObjectUndoAction(obj, null, this));
+    }
+
+    /// <inheritdoc/>
+    void ISyncStateRecord.Record(ISyncList list)
+    {
+        _undoManager?.Do(new SnapshotListUndoAction(list, null, this));
+    }
+
+    #endregion
+
+    #region Event handlers
+
+    private void View_Dirty(object sender, EventArgs e)
+    {
+        _document?.MarkDirty(this);
+    }
+
+    private void View_Edited(object sender, object[] objs)
+    {
+        //_edit.QueueRefresh();
+        _guiRef.QueueRefresh();
+    }
+
+    private void _treeView_SelectionChanged(object sender, EventArgs e)
+    {
+        UpdateInspector();
+        ClearCache();
+
+        _treeView.QueueRefresh();
+        _guiRef.QueueRefresh();
+    }
+
+    private void _grid_Edited(object sender, ObjectPropertyEventArgs e)
+    {
+    }
+
+    #endregion
+
+    #region Document state
+
+    private void RestoreDocumentViewState(Document document)
+    {
+        var asset = document?.GetAsset();
+        if (asset != null)
+        {
+            object config = EditorServices.PluginService.GetPlugin<GuiStatePlugin>().GetGuiState<object>(asset);
+
+            _treeView.RestoreViewState(config);
+        }
+    }
+
+    private void SaveDocumentViewState(Document document)
+    {
+        var asset = document?.GetAsset();
+        if (asset != null)
+        {
+            var config = _treeView.SaveViewState();
+            if (config != null)
+            {
+                EditorServices.PluginService.GetPlugin<GuiStatePlugin>().SetGuiState<object>(asset, config);
+            }
+        }
+    }
+
+    #endregion
+
+    #region Run
+
+    /// <summary>
+    /// Runs the specified message on the current task.
+    /// </summary>
+    /// <param name="msg">The message to run.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    public async Task<object> Run(string msg)
+    {
+        var runner = _currentRunner;
+
+        if (runner != null)
+        {
+            runner.RequestCancel();
+        }
+
+        if (_document is not { } doc)
+        {
+            return null;
+        }
+
+        if (string.IsNullOrWhiteSpace(msg))
+        {
+            return null;
+        }
+
+        runner = _currentRunner = new AigcTaskPageRunner(doc);
+        SetCurrentCategory(PageViewCategory.Chat);
+
+        var result = await LLmService.Instance.InputMainChat(msg, runner);
+
+        _currentRunner = null;
+        SetCurrentCategory(PageViewCategory.Page);
+
+        return result;
+    }
+
+
+    #endregion
+
+    #region Functions
+    private void UpdateInspector()
+    {
+        if (_treeView.SelectedObjects.CountMoreThanOne())
+        {
+            _currentPage = null;
+            _propGrid.InspectObjects([], context: _inspectorContext);
+        }
+        else if (_treeView.SelectedObjects.FirstOrDefault() is AigcTaskPage pageNode && pageNode.GetPageInstance() is { } instance)
+        {
+            _currentPage = pageNode;
+            _propGrid.InspectObjects([instance], context: _inspectorContext);
+        }
+        else
+        {
+            _currentPage = null;
+            _propGrid.InspectObjects([], context: _inspectorContext);
+        }
+    }
+
+    /// <summary>
+    /// Navigates to the diagram associated with the currently selected task.
+    /// </summary>
+    internal void HandleGotoWorkflow() => HandleGotoWorkflow(_currentPage as AigcWorkflowPage);
+
+    /// <summary>
+    /// Navigates to the diagram associated with the specified task.
+    /// </summary>
+    /// <param name="task">The task whose diagram to navigate to.</param>
+    internal void HandleGotoWorkflow(AigcWorkflowPage task)
+    {
+        if (task is null)
+        {
+            return;
+        }
+
+        if (task.GetDocument() != _document)
+        {
+            return;
+        }
+
+        if (task.GetDefinitionItem()?.GetDocument() is not { } diagramDoc)
+        {
+            return;
+        }
+
+        if (_document is not { } document)
+        {
+            return;
+        }
+
+        var currentView = _subView.CurrentSubView as IFlowView;
+        if (_subView.OpenSubView(diagramDoc) is not { } view)
+        {
+            return;
+        }
+
+        if (view is IFlowView flowView)
+        {
+            if (currentView?.GetViewNode(task.Name) is { } viewNode && viewNode.NodeComputation is { } nodeCompute)
+            {
+                flowView.Computation = nodeCompute;
+            }
+            else if (task.Instance?.LastComputation is { } lastCompute)
+            {
+                flowView.Computation = lastCompute;
+            }
+        }
+
+        if ((view as IServiceProvider)?.GetService<IViewSelectable>() is { } sel && task.GetDefinitionItem() is { } page)
+        {
+            QueuedAction.Do(() =>
+            {
+                sel.SetSelection(new ViewSelection(page));
+            });
+        }
+
+        _guiRef.QueueRefresh();
+    }
+    #endregion
+
     #region IDrawImGui
+
+    HistoryText _cachedInput;
+    HistoryText _cachedOutput;
+    HistoryText _cachedCommit;
+    HistoryText _scratchPads;
 
     private ImGuiTheme CreateTheme()
     {
@@ -322,14 +559,14 @@ public class AigcTaskPageDocumentView : IDocumentView,
             gui.VerticalLayout("left")
             .InitFullHeight()
             .InitWidthPercentage(30)
-            .OnContent(() => 
+            .OnContent(() =>
             {
                 gui.HorizontalFrame("toolBar")
                 .InitClass("toolBar")
                 .InitOverridePadding(3)
                 .InitFullWidth()
                 .InitFitVertical()
-                .OnContent(() => 
+                .OnContent(() =>
                 {
                     if (IsRunning)
                     {
@@ -423,19 +660,19 @@ public class AigcTaskPageDocumentView : IDocumentView,
         OnStartupGui(gui, doc);
 
 
-/*        if (doc.IsTaskEmpty)
-        {
-            OnStartupGui(gui, doc);
-        }
-        else if (doc.GetUnfinishedChildTaskDeep() is null)
-        {
-            // Previous task completed.
-            OnStartupGui(gui, doc);
-        }
-        else
-        {
-            // OnResumeGui(gui, doc);
-        }*/
+        /*        if (doc.IsTaskEmpty)
+                {
+                    OnStartupGui(gui, doc);
+                }
+                else if (doc.GetUnfinishedChildTaskDeep() is null)
+                {
+                    // Previous task completed.
+                    OnStartupGui(gui, doc);
+                }
+                else
+                {
+                    // OnResumeGui(gui, doc);
+                }*/
     }
 
     private void OnStartupGui(ImGui gui, AigcTaskPageDocument doc)
@@ -476,7 +713,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                     .InitHeight(32)
                     .InitVerticalAlignment(GuiAlignment.Center)
                     .InitTextAlignment(GuiAlignment.Center)
-                    .OnContent(() => 
+                    .OnContent(() =>
                     {
                         gui.Text(L("Startup")).InitFit();
                         gui.PropertyEditor(_startupPageTarget, act =>
@@ -625,7 +862,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
             gui.VerticalLayout("#content")
             .InitSizeRest()
-            .OnContent(() => 
+            .OnContent(() =>
             {
                 switch (_pageCategory)
                 {
@@ -746,20 +983,20 @@ public class AigcTaskPageDocumentView : IDocumentView,
         .InitFullWidth()
         .InitClass("resizer");
 
-/*        if (_attachments.Count > 0)
-        {
-            foreach (var attachment in _attachments.Values)
-            {
-                attachment.OnGui(gui, att =>
+        /*        if (_attachments.Count > 0)
                 {
-                    QueuedAction.Do(() =>
+                    foreach (var attachment in _attachments.Values)
                     {
-                        _attachments.Remove(att.Document);
-                        _guiRef.QueueRefresh();
-                    });
-                });
-            }
-        }*/
+                        attachment.OnGui(gui, att =>
+                        {
+                            QueuedAction.Do(() =>
+                            {
+                                _attachments.Remove(att.Document);
+                                _guiRef.QueueRefresh();
+                            });
+                        });
+                    }
+                }*/
 
         _msgInput = gui.TextAreaInput("msgInput", _msgInput, autoFit: false, submitMode: TextBoxEditSubmitMode.Enter)
         //.SetEnabled(started)
@@ -797,15 +1034,14 @@ public class AigcTaskPageDocumentView : IDocumentView,
         });
     }
 
-    HistoryText _cachedInput;
-    HistoryText _cachedOutput;
-    HistoryText _cachedCommit;
+
 
     private void ClearCache()
     {
         _cachedInput = null;
         _cachedOutput = null;
         _cachedCommit = null;
+        _scratchPads = null;
     }
 
     private void ContextGui(ImGui gui, AigcWorkflowPage page)
@@ -813,11 +1049,13 @@ public class AigcTaskPageDocumentView : IDocumentView,
         _cachedInput ??= page.Instance?.GetInputChatHistory(ResolveChatIntents.Preview);
         _cachedOutput ??= page.Instance?.GetOutputChatHistory(ResolveChatIntents.Preview);
         _cachedCommit ??= page.Instance?.GetTaskCommit(ResolveChatIntents.Preview);
+        _scratchPads ??= ScratchPad.ToPreivewHistoryText(page.GetHistoryScratchPads(0));
 
         gui.ScrollableFrame("#chat-history-" + page.Name, GuiOrientation.Vertical)
         .InitFullSize()
         .OnContent(() =>
         {
+            // input
             gui.HorizontalLayout("#input-title")
             .InitFullWidth()
             .InitFitVertical()
@@ -834,6 +1072,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
             .InitFitVertical()
             .InitReadonly(true);
 
+            // output
             gui.HorizontalLayout("#output-title")
             .InitFullWidth()
             .InitFitVertical()
@@ -850,6 +1089,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
             .InitFitVertical()
             .InitReadonly(true);
 
+            // commit
             gui.HorizontalLayout("#commit-title")
             .InitFullWidth()
             .InitFitVertical()
@@ -862,6 +1102,23 @@ public class AigcTaskPageDocumentView : IDocumentView,
             });
 
             gui.TextAreaInput("#commit", null, _cachedCommit)
+            .InitFullWidth()
+            .InitFitVertical()
+            .InitReadonly(true);
+
+            // scratch pads
+            gui.HorizontalLayout("#scratch-pads-title")
+            .InitFullWidth()
+            .InitFitVertical()
+            .OnContent(() =>
+            {
+                gui.Image("icon", CoreIconCache.Scratch).InitClass("titleIcon");
+                gui.Text("scratch-pads", "Scratch Pads")
+                .InitClass("titleText")
+                .InitCenter();
+            });
+
+            gui.TextAreaInput("#scratch-pads", null, _scratchPads)
             .InitFullWidth()
             .InitFitVertical()
             .InitReadonly(true);
@@ -965,236 +1222,4 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
 
     #endregion
-
-    #region IDropTarget
-
-    /// <inheritdoc/>
-    public void DragOver(IDragEvent e)
-    {
-        // DragDrop event is initiated by GraphicViewControl, can only route
-        if (_subView.CurrentSubView is IDropTarget dropTarget && dropTarget != this)
-        {
-            dropTarget.DragOver(e);
-        }
-        else
-        {
-            //TODO
-        }
-    }
-
-    /// <inheritdoc/>
-    public void DragDrop(IDragEvent e)
-    {
-        // DragDrop event is initiated by GraphicViewControl, can only route
-        if (_subView.CurrentSubView is IDropTarget dropTarget && dropTarget != this)
-        {
-            dropTarget.DragDrop(e);
-        }
-        else
-        {
-            //TODO
-        }
-    }
-
-    #endregion
-
-    #region IViewRefresh
-
-    /// <inheritdoc/>
-    public void QueueRefreshView() => this.RefreshView();
-
-    #endregion
-
-    #region ISyncStateRecord
-
-    /// <inheritdoc/>
-    void ISyncStateRecord.Record(ISyncObject obj)
-    {
-        _undoManager?.Do(new SnapshotObjectUndoAction(obj, null, this));
-    }
-
-    /// <inheritdoc/>
-    void ISyncStateRecord.Record(ISyncList list)
-    {
-        _undoManager?.Do(new SnapshotListUndoAction(list, null, this));
-    }
-
-    #endregion
-
-    #region Event handlers
-
-    private void View_Dirty(object sender, EventArgs e)
-    {
-        _document?.MarkDirty(this);
-    }
-
-    private void View_Edited(object sender, object[] objs)
-    {
-        //_edit.QueueRefresh();
-        _guiRef.QueueRefresh();
-    }
-
-    #endregion
-
-    #region Document state
-
-    private void RestoreDocumentViewState(Document document)
-    {
-        var asset = document?.GetAsset();
-        if (asset != null)
-        {
-            object config = EditorServices.PluginService.GetPlugin<GuiStatePlugin>().GetGuiState<object>(asset);
-
-            _treeView.RestoreViewState(config);
-        }
-    }
-
-    private void SaveDocumentViewState(Document document)
-    {
-        var asset = document?.GetAsset();
-        if (asset != null)
-        {
-            var config = _treeView.SaveViewState();
-            if (config != null)
-            {
-                EditorServices.PluginService.GetPlugin<GuiStatePlugin>().SetGuiState<object>(asset, config);
-            }
-        }
-    }
-
-    #endregion
-
-    #region Run
-
-    /// <summary>
-    /// Runs the specified message on the current task.
-    /// </summary>
-    /// <param name="msg">The message to run.</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    public async Task<object> Run(string msg)
-    {
-        var runner = _currentRunner;
-
-        if (runner != null)
-        {
-            runner.RequestCancel();
-        }
-
-        if (_document is not { } doc)
-        {
-            return null;
-        }
-
-        if (string.IsNullOrWhiteSpace(msg))
-        {
-            return null;
-        }
-
-        runner = _currentRunner = new AigcTaskPageRunner(doc);
-        SetCurrentCategory(PageViewCategory.Chat);
-
-        var result = await LLmService.Instance.InputMainChat(msg, runner);
-
-        _currentRunner = null;
-        SetCurrentCategory(PageViewCategory.Page);
-
-        return result;
-    }
-
-
-    #endregion
-
-    private void _treeView_SelectionChanged(object sender, EventArgs e)
-    {
-        UpdateInspector();
-        ClearCache();
-
-        _treeView.QueueRefresh();
-        _guiRef.QueueRefresh();
-    }
-
-    private void UpdateInspector()
-    {
-        if (_treeView.SelectedObjects.CountMoreThanOne())
-        {
-            _currentPage = null;
-            _propGrid.InspectObjects([], context: _inspectorContext);
-        }
-        else if (_treeView.SelectedObjects.FirstOrDefault() is AigcTaskPage pageNode && pageNode.GetPageInstance() is { } instance)
-        {
-            _currentPage = pageNode;
-            _propGrid.InspectObjects([instance], context: _inspectorContext);
-        }
-        else
-        {
-            _currentPage = null;
-            _propGrid.InspectObjects([], context: _inspectorContext);
-        }
-    }
-
-    private void _grid_Edited(object sender, ObjectPropertyEventArgs e)
-    {
-    }
-
-    /// <summary>
-    /// Navigates to the diagram associated with the currently selected task.
-    /// </summary>
-    internal void HandleGotoWorkflow() => HandleGotoWorkflow(_currentPage as AigcWorkflowPage);
-
-    /// <summary>
-    /// Navigates to the diagram associated with the specified task.
-    /// </summary>
-    /// <param name="task">The task whose diagram to navigate to.</param>
-    internal void HandleGotoWorkflow(AigcWorkflowPage task)
-    {
-        if (task is null)
-        {
-            return;
-        }
-
-        if (task.GetDocument() != _document)
-        {
-            return;
-        }
-
-        if (task.GetDefinitionItem()?.GetDocument() is not { } diagramDoc)
-        {
-            return;
-        }
-
-        if (_document is not { } document)
-        {
-            return;
-        }
-
-        var currentView = _subView.CurrentSubView as IFlowView;
-        if (_subView.OpenSubView(diagramDoc) is not { } view)
-        {
-            return;
-        }
-
-        if (view is IFlowView flowView)
-        {
-            if (currentView?.GetViewNode(task.Name) is { } viewNode && viewNode.NodeComputation is { } nodeCompute)
-            {
-                flowView.Computation = nodeCompute;
-            }
-            else if (task.Instance?.LastComputation is { } lastCompute)
-            {
-                flowView.Computation = lastCompute;
-            }
-        }
-
-        if ((view as IServiceProvider)?.GetService<IViewSelectable>() is { } sel && task.GetDefinitionItem() is { } page)
-        {
-            QueuedAction.Do(() =>
-            {
-                sel.SetSelection(new ViewSelection(page));
-            });
-        }
-
-        _guiRef.QueueRefresh();
-    }
-
-
 }

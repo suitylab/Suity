@@ -1,3 +1,4 @@
+using Suity.Collections;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Types;
@@ -7,6 +8,8 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Suity.Editor.Flows.SubFlows;
 
@@ -312,7 +315,7 @@ public class ScratchPad : DesignAttribute, ITextDisplay
         return $"[{Type.ToDisplayTextL()}] {Path}";
     }
 
-    public string ToXmlTag(string basePath)
+    public string ToXmlTag(ResolveChatIntents intent, string basePath = null)
     {
         string path = Path?.Trim();
 
@@ -328,6 +331,13 @@ public class ScratchPad : DesignAttribute, ITextDisplay
                 break;
 
             case ScratchPadTypes.FileFullContent:
+                if (intent == ResolveChatIntents.Preview)
+                {
+                    content = "...";
+                    note = "Skipped in preview mode.";
+                    break;
+                }
+
                 if (string.IsNullOrWhiteSpace(basePath))
                 {
                     note = "Get file content failed due to Workspace missing.";
@@ -386,6 +396,15 @@ public class ScratchPad : DesignAttribute, ITextDisplay
         return $"<ScratchPad type='{type}' path='{path}' note='{note}'>\r\n{content}\r\n</ScratchPad>";
     }
 
+    public static HistoryText ToPreivewHistoryText(IEnumerable<ScratchPad> scratchPads)
+    {
+        if (scratchPads is null || !scratchPads.Any())
+        {
+            return HistoryText.Empty;
+        }
+
+        return string.Join(Environment.NewLine + Environment.NewLine, scratchPads.SkipNull().Select(o => o.ToXmlTag(ResolveChatIntents.Preview)));
+    }
 }
 
 [NativeType(CodeBase = "SubFlow", Icon = "*CoreIcon|Scratch")]
