@@ -1,6 +1,5 @@
 using Suity.Drawing;
 using Suity.Editor.Design;
-using Suity.Editor.Services;
 using Suity.Helpers;
 using Suity.Views;
 using System;
@@ -99,6 +98,7 @@ public class DNativeStruct : DStruct, IHasNativeType
             return false;
         }
 
+        int index = 0;
         foreach (var field in simpleType.Fields)
         {
             var attrs = new SArrayAttributeDesign();
@@ -126,6 +126,10 @@ public class DNativeStruct : DStruct, IHasNativeType
             }
 
             base.AddOrUpdateField(field.Name, field.Type, AssetAccessMode.Public, null, field.Optional, null, attrs);
+
+            base.UpdateFieldDisplay(field.Name, index, field.Description);
+
+            index++;
         }
 
         return true;
