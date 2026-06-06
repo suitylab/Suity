@@ -155,11 +155,10 @@ public interface IAigcWorkflowPage : IAigcTaskPage, IScratchPadOwner
     ISubFlowInstance GetSubFlowInstance();
 
     /// <summary>
-    /// Gets the task prompt, optionally including prompts from the parent hierarchy.
+    /// Gets the current task prompt.
     /// </summary>
-    /// <param name="inHierarchy">If true, collects prompts from all parent tasks in the hierarchy.</param>
-    /// <returns>The task prompt text, potentially combined with parent prompts.</returns>
-    string GetPrompt(bool inHierarchy);
+    /// <returns>Return the current task prompt.</returns>
+    string GetPrompt();
 
     /// <summary>
     /// Sets the task prompt and marks the document as dirty for saving.
@@ -172,6 +171,14 @@ public interface IAigcWorkflowPage : IAigcTaskPage, IScratchPadOwner
     /// </summary>
     /// <returns>The last prompt used by the workflow sequence.</returns>
     string GetLastPrompt();
+
+    /// <summary>
+    /// Gets the last available prompt in the workflow sequence, which may be used for the next task or sub-task. This is typically the most recent prompt that was set or used in the workflow.
+    /// Optionally including prompts from the parent hierarchy.
+    /// </summary>
+    /// <param name="inHierarchy">If true, collects prompts from all parent tasks in the hierarchy.</param>
+    /// <returns>The task prompt text, potentially combined with parent prompts.</returns>
+    string GetLastPrompt(bool inHierarchy);
 
     /// <summary>
     /// Gets or sets the rule prompt associated with this workflow page.

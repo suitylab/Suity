@@ -53,7 +53,7 @@ public class PagePromptParameterInputNode : SubFlowTypeNode
             return;
         }
 
-        string prompt = task.GetPrompt(false);
+        string prompt = task.GetLastPrompt(false);
         compute.SetValue(_prompt, prompt ?? string.Empty);
     }
 

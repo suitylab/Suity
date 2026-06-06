@@ -194,7 +194,7 @@ public class SubFlowPromptParameter : SubFlowElement, IPageParameterInput
     {
         var task = Option.Owner as IAigcWorkflowPage;
         
-        if (task?.GetPrompt(false) is string prompt)
+        if (task?.GetLastPrompt(false) is string prompt)
         {
             _cachedPrompt.Text = prompt;
         }

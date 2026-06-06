@@ -375,8 +375,24 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <inheritdoc/>
     public ISubFlowInstance GetSubFlowInstance() => EnsureInstance();
 
+    public string GetPrompt() => this.TaskPrompt;
+
+    /// <summary>
+    /// Sets the task prompt and marks the document as dirty for saving.
+    /// </summary>
+    /// <param name="prompt">The prompt text to set.</param>
+    public void SetPrompt(string prompt)
+    {
+        this.TaskPrompt = prompt;
+
+        if (this.GetDocument() is { } doc)
+        {
+            doc.MarkDirtyAndSaveDelayed(this);
+        }
+    }
+
     /// <inheritdoc/>
-    public string GetPrompt(bool inHierarchy)
+    public string GetLastPrompt(bool inHierarchy)
     {
         var prompt = this.TaskPrompt;
         if (!string.IsNullOrWhiteSpace(prompt))
@@ -392,25 +408,11 @@ public class AigcWorkflowPage : AigcTaskPage,
                 return string.Empty;
             }
 
-            return (ParentTask as IAigcWorkflowPage)?.GetPrompt(inHierarchy);
+            return (ParentTask as IAigcWorkflowPage)?.GetLastPrompt(inHierarchy);
         }
         else
         {
             return string.Empty;
-        }
-    }
-
-    /// <summary>
-    /// Sets the task prompt and marks the document as dirty for saving.
-    /// </summary>
-    /// <param name="prompt">The prompt text to set.</param>
-    public void SetPrompt(string prompt)
-    {
-        this.TaskPrompt = prompt;
-
-        if (this.GetDocument() is { } doc)
-        {
-            doc.MarkDirtyAndSaveDelayed(this);
         }
     }
 

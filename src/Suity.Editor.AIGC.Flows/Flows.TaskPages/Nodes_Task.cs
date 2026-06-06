@@ -349,7 +349,7 @@ public class GetCurrentTaskPrompt : TaskPageNode
         bool inHierarchy = _inHierarchy.Value;
 
         var workflow = compute.Context.GetArgument<IAigcWorkflowPage>();
-        string prompt = workflow?.GetPrompt(inHierarchy) ?? string.Empty;
+        string prompt = workflow?.GetLastPrompt(inHierarchy) ?? string.Empty;
 
         compute.SetValue(_prompt, prompt);
     }
@@ -357,7 +357,7 @@ public class GetCurrentTaskPrompt : TaskPageNode
 
 #endregion
 
-#region GetCurrentTaskPrompt
+#region GetTaskLastPrompt
 
 /// <summary>
 /// A flow node that retrieves the current task prompt, optionally including prompts from parent tasks.
@@ -366,6 +366,7 @@ public class GetCurrentTaskPrompt : TaskPageNode
 [DisplayText("Get Task Last Prompt", "*CoreIcon|Task")]
 public class GetTaskLastPrompt : TaskPageNode
 {
+    readonly FlowNodeConnector _task;
     readonly FlowNodeConnector _prompt;
 
     /// <summary>
@@ -373,14 +374,16 @@ public class GetTaskLastPrompt : TaskPageNode
     /// </summary>
     public GetTaskLastPrompt()
     {
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
+
+        _task = this.AddDataInputConnector("Task", taskType, "Task");
         _prompt = AddDataOutputConnector("LastPrompt", "string", "Last Prompt");
     }
-
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var workflow = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var workflow = compute.GetValue<IAigcWorkflowPage>(_task);
         string prompt = workflow?.GetLastPrompt() ?? string.Empty;
 
         compute.SetValue(_prompt, prompt);
@@ -595,7 +598,7 @@ public class GetTaskPrompt : TaskPageNode
         bool inHierarchy = _inHierarchy.GetValue(compute, this);
 
         var workflow = compute.GetValue<IAigcWorkflowPage>(_task);
-        string prompt = workflow?.GetPrompt(inHierarchy) ?? string.Empty;
+        string prompt = workflow?.GetPrompt() ?? string.Empty;
 
         compute.SetValue(_prompt, prompt);
     }
