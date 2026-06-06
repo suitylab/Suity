@@ -101,7 +101,7 @@ public abstract class FlowNodeConnector : ISyncObject
     {
         if (ParentNode != null)
         {
-            return $"{ParentNode.Name}-{Name}";
+            return $"{ParentNode.Name}.{Name}";
         }
         else
         {

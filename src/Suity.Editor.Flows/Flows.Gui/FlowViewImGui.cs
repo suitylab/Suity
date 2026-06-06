@@ -1783,13 +1783,19 @@ public abstract class FlowViewImGui :
 }
 
 
-public struct GraphLinkDescriptor : IViewObject
+public struct GraphLinkDescriptor : IViewObject, ITextDisplay
 {
     public FlowNodeConnector FromConnector { get; set; }
     public FlowNodeConnector ToConnector { get; set; }
     public TypeConvertResult Conversion { get; set; }
 
-    public void Sync(IPropertySync sync, ISyncContext context)
+    public string DisplayText => $"{FromConnector} -> {ToConnector}";
+
+    public object DisplayIcon => CoreIconCache.Connection;
+
+    public TextStatus DisplayStatus => TextStatus.Normal;
+
+    public readonly void Sync(IPropertySync sync, ISyncContext context)
     {
         sync.Sync("FromNode", FromConnector?.ParentNode?.Name ?? string.Empty, SyncFlag.GetOnly);
         sync.Sync("FromConnector", FromConnector?.Name ?? string.Empty, SyncFlag.GetOnly);
@@ -1802,7 +1808,7 @@ public struct GraphLinkDescriptor : IViewObject
         sync.Sync("Conversion", Conversion, SyncFlag.GetOnly);
     }
 
-    public void SetupView(IViewObjectSetup setup)
+    public readonly void SetupView(IViewObjectSetup setup)
     {
         setup.LabelWithIcon("From", CoreIconCache.Output);
         setup.InspectorFieldOf<string>(new ViewProperty("FromNode", "From Node").WithReadOnly());

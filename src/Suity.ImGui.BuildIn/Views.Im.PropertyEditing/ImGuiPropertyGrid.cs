@@ -125,7 +125,8 @@ public class ImGuiPropertyGrid : IPropertyGrid,
                             }
                             else if (c == PropertyGridColumn.Name)
                             {
-                                OnGuiToolBox_Condition(gui);
+                                //OnGuiToolBox_Condition(gui);
+                                OnGuiToolBox_CopyTypeName(gui);
                             }
                         }
 
@@ -172,7 +173,8 @@ public class ImGuiPropertyGrid : IPropertyGrid,
                         if (c == PropertyGridColumn.Name && p.HasFlag(GuiPipeline.PreAction))
                         {
                             OnGuiToolBox_MultiColumn(gui);
-                            OnGuiToolBox_Condition(gui);
+                            //OnGuiToolBox_Condition(gui);
+                            OnGuiToolBox_CopyTypeName(gui);
                         }
                     }).InitClass("toolBar");
                 }
@@ -604,10 +606,34 @@ public class ImGuiPropertyGrid : IPropertyGrid,
     {
         gui.ToggleButton("#multiColumn", ImGuiIcons.Column, _gridData.SupportMultipleColumn)
         .InitClass("configBtn")
-        .SetToolTipsL("Bind multiple objects of the same type")
+        .SetToolTipsL("Show multiple columns")
         .OnChecked((n, v) =>
         {
             _gridData.SupportMultipleColumn = v;
+        });
+    }
+
+    private void OnGuiToolBox_CopyTypeName(ImGui gui)
+    {
+        var value = _rootTarget?.GetValues();
+        if (value is null || value.CountMoreThanOne() || value.FirstOrDefault() is not { } val)
+        {
+            return;
+        }
+
+        string typeName = val.GetType().FullName ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(typeName))
+        {
+            return;
+        }
+
+        gui.Button("#copyTypeName", CoreIconCache.Copy)
+        .InitClass("configBtn")
+        .SetToolTipsL(typeName/*"Copy type name to clipboard"*/)
+        .OnClick(n =>
+        {
+            EditorUtility.SetSystemClipboardText(typeName);
+            (gui.Context as IGraphicToolTip)?.ShowToolTip("Copied", (int)n.GlobalRect.X, (int)n.GlobalRect.Y);
         });
     }
 
