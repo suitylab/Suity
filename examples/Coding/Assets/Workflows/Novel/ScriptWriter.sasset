@@ -63,7 +63,7 @@
         <InterruptionWords />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-150" Y="-10" Width="38" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-120" Y="40" Width="38" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -158,7 +158,7 @@
         <Type>Coding</Type>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-140" Y="-30" Width="27" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-120" Y="20" Width="27" Height="17">
       <Name>###GetCurrentTaskRule01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
     </Item>
@@ -280,7 +280,7 @@
         </ErrorMessage>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="10" Y="-210" Width="28" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="240" Y="50" Width="28" Height="17">
       <Name>###PassValue02</Name>
       <Node type="Suity.Editor.Flows.Nodes.PassValue">
         <DataType>
@@ -296,7 +296,7 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-200" Y="-80" Width="28" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-220" Y="-30" Width="28" Height="17">
       <Name>###PassValue04</Name>
       <Node type="Suity.Editor.Flows.Nodes.PassValue">
         <DataType>
@@ -466,12 +466,6 @@
       <ToConnector>TagIn</ToConnector>
     </Item>
     <Item>
-      <FromNode>FilePath</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###PassValue02</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###PassValue01</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###PassValue03</ToNode>
@@ -508,16 +502,22 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>FilePath</FromNode>
+      <FromNode>###WriteWorkSpaceFile01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###DataActionCompose02</ToNode>
+      <ToConnector>ActionIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue04</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###PassValue01</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###WriteWorkSpaceFile01</FromNode>
+      <FromNode>###PassValue04</FromNode>
       <FromConnector>Out</FromConnector>
-      <ToNode>###DataActionCompose02</ToNode>
-      <ToConnector>ActionIn</ToConnector>
+      <ToNode>###PassValue02</ToNode>
+      <ToConnector>In</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

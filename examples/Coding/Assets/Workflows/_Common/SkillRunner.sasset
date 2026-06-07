@@ -66,7 +66,7 @@
       <Name>###GetPageToolPagesNode02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="730" Y="280" Width="187" Height="74">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="730" Y="280" Width="187" Height="85">
       <Name>###ParseTagToolCallingNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.ParseTagToPageInstance">
         <AttributeName>tool</AttributeName>
@@ -154,7 +154,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-460" Y="360" Width="77" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-560" Y="30" Width="77" Height="17">
       <Name>OnSubTaskFinished</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
         <Name>OnSubTaskFinished</Name>
@@ -166,7 +166,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="20" Y="320" Width="120" Height="120">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="-310" Y="0" Width="120" Height="120">
       <Name>SubTask_End</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
         <Name>SubTask_End</Name>
@@ -176,18 +176,7 @@
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-180" Y="330" Width="127" Height="107">
-      <Name>###AppendTaskPageNode01</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
-        <PageTitle>
-        </PageTitle>
-        <TaskPrompt />
-        <TaskRule />
-        <CommitName>
-        </CommitName>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubflowExtendedDiagramItem" X="-470" Y="330" Width="160" Height="120">
+    <Item type="Suity.Editor.Flows.SubFlows.SubflowExtendedDiagramItem" X="-570" Y="0" Width="110" Height="120">
       <Name>SubTask</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowExtendedNode">
         <Name>SubTask</Name>
@@ -292,20 +281,12 @@
       <Name>###GetCurrentTaskRule01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-480" Y="280" Width="630" Height="190">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-580" Y="-30" Width="400" Height="160">
       <Name>###GroupFlowNode01</Name>
       <Node type="Suity.Editor.Flows.GroupFlowNode">
         <GroupName>Sub Task Append</GroupName>
         <Icon />
       </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-240" Y="410" Width="27" Height="17">
-      <Name>###GetCurrentTaskRule02</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-270" Y="430" Width="53" Height="17">
-      <Name>###GetCurrentTaskCommitName01</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskCommitName" />
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="720" Y="-110" Width="53" Height="17">
       <Name>###GetCurrentTaskCommitName02</Name>
@@ -314,10 +295,6 @@
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="740" Y="-150" Width="35" Height="17">
       <Name>###GetCurrentTaskPrompt02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskPrompt" />
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-180" Y="310" Width="67" Height="17">
-      <Name>###GetSelfPageNode03</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.GetSelfPageDefinition" />
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="690" Y="-260" Width="261" Height="171">
       <Name>###GroupFlowNode02</Name>
@@ -334,7 +311,7 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="30" Y="360" Width="57" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="-300" Y="40" Width="57" Height="17">
       <Name>OnNextTask</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
         <Name>OnNextTask</Name>
@@ -383,7 +360,7 @@
         <Icon />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="380" Width="37" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-360" Y="60" Width="37" Height="17">
       <Name>###InputValue01</Name>
       <Node type="Suity.Editor.Flows.Nodes.SourceValue">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
@@ -392,7 +369,7 @@
         <Value type="System.Boolean">True</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="30" Y="380" Width="57" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="-300" Y="60" Width="57" Height="17">
       <Name>SubTaskCall</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
         <Name>SubTaskCall</Name>
@@ -555,7 +532,7 @@
         <TooltipMode>True</TooltipMode>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-460" Y="380" Width="70" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-560" Y="50" Width="70" Height="17">
       <Name>OnSubTaskFailed</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
         <Name>OnSubTaskFailed</Name>
@@ -795,6 +772,10 @@
       <Name>###GetCurrentTaskPrompt01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskPrompt" />
     </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-450" Y="10" Width="122" Height="41">
+      <Name>###AppendSelf01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.AppendSelf" />
+    </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
   <Links>
@@ -838,12 +819,6 @@
       <FromNode>###GetXmlTagContentNode04</FromNode>
       <FromConnector>ContentOut</FromConnector>
       <ToNode>reasoning</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>OnSubTaskFinished</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###AppendTaskPageNode01</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
@@ -901,28 +876,10 @@
       <ToConnector>DataIn</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetCurrentTaskRule02</FromNode>
-      <FromConnector>Rule</FromConnector>
-      <ToNode>###AppendTaskPageNode01</ToNode>
-      <ToConnector>TaskRule</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetCurrentTaskCommitName01</FromNode>
-      <FromConnector>CommitName</FromConnector>
-      <ToNode>###AppendTaskPageNode01</ToNode>
-      <ToConnector>CommitName</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetCurrentTaskCommitName02</FromNode>
       <FromConnector>CommitName</FromConnector>
       <ToNode>###AppendTaskPageNode02</ToNode>
       <ToConnector>CommitName</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetSelfPageNode03</FromNode>
-      <FromConnector>SelfPage</FromConnector>
-      <ToNode>###AppendTaskPageNode01</ToNode>
-      <ToConnector>Page</ToConnector>
     </Item>
     <Item>
       <FromNode>###AppendTaskPageNode02</FromNode>
@@ -1093,12 +1050,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###AppendTaskPageNode01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>OnNextTask</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
       <FromNode>Prompt</FromNode>
       <FromConnector>Prompt</FromConnector>
       <ToNode>###FirstNotEmpty01</ToNode>
@@ -1109,12 +1060,6 @@
       <FromConnector>Out</FromConnector>
       <ToNode>tool_action</ToNode>
       <ToConnector>Message</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>OnSubTaskFailed</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###AppendTaskPageNode01</ToNode>
-      <ToConnector>In</ToConnector>
     </Item>
     <Item>
       <FromNode>###ExtractXmlsTagAction01</FromNode>
@@ -1318,6 +1263,24 @@
       <FromNode>###GetCurrentTaskPrompt01</FromNode>
       <FromConnector>Prompt</FromConnector>
       <ToNode>###FirstNotEmpty01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>OnSubTaskFinished</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AppendSelf01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>OnSubTaskFailed</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AppendSelf01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AppendSelf01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnNextTask</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
   </Links>

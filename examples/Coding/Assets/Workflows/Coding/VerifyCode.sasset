@@ -121,7 +121,7 @@
         <Required>False</Required>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-240" Y="-50" Width="93" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-240" Y="-50" Width="38" Height="17">
       <Name>###JoinString01</Name>
       <Node type="Suity.Editor.Flows.Nodes.JoinString">
         <Separator>\r\n</Separator>
@@ -131,7 +131,7 @@
       <Name>###GetTaskChatHistory01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentChatHistory" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-150" Y="-140" Width="47" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-260" Y="-140" Width="47" Height="17">
       <Name>###GetTaskScratchPad01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentScratchPads">
         <InHierarchy>True</InHierarchy>
@@ -192,6 +192,10 @@
           <EnableThinking>True</EnableThinking>
         </Value>
       </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-190" Y="-140" Width="75" Height="17">
+      <Name>###FullContentScratchPads01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.FullContentScratchPads" />
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -275,12 +279,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetTaskScratchPad01</FromNode>
-      <FromConnector>ScratchPad</FromConnector>
-      <ToNode>###GetScratchPadMessage01</ToNode>
-      <ToConnector>ScratchPad</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetScratchPadMessage01</FromNode>
       <FromConnector>Message</FromConnector>
       <ToNode>###CallLLm01</ToNode>
@@ -291,6 +289,18 @@
       <FromConnector>Out</FromConnector>
       <ToNode>###CallLLm01</ToNode>
       <ToConnector>CallOptionEx</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskScratchPad01</FromNode>
+      <FromConnector>ScratchPad</FromConnector>
+      <ToNode>###FullContentScratchPads01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###FullContentScratchPads01</FromNode>
+      <FromConnector>FullContent</FromConnector>
+      <ToNode>###GetScratchPadMessage01</ToNode>
+      <ToConnector>ScratchPad</ToConnector>
     </Item>
   </Links>
 </SuityAsset>
