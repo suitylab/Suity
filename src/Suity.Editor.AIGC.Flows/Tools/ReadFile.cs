@@ -77,6 +77,16 @@ public class ReadFile : ToolCommand<ReadFile.Output>
         }
 
         string relativePath = FilePath.TrimStart('/', '\\');
+        var lastScratchPad = parentPage?.GetHistoryScratchPad(relativePath);
+
+        var output = new Output();
+
+        if (lastScratchPad?.Type == ScratchPadTypes.FileFullContent)
+        {
+            output.Message = "read successful. See ScratchPad for full content.";
+            return Task.FromResult(output);
+        }
+
         string fullPath = relativePath;
 
         if (!Path.IsPathRooted(relativePath))
@@ -99,7 +109,13 @@ public class ReadFile : ToolCommand<ReadFile.Output>
             msg.AddCode(readInfo);
         });
 
-        var output = new Output();
+        int startLine = StartLine;
+        int lineCount = LineCount;
+        if (startLine == 1 && lineCount <= 0)
+        {
+            startLine = 0;
+            lineCount = 0;
+        }
 
         if (!File.Exists(fullPath))
         {
@@ -108,7 +124,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
         }
         else
         {
-            if (StartLine <= 0 && LineCount <= 0)
+            if (startLine <= 0 && lineCount <= 0)
             {
                 //content = string.Join(Environment.NewLine, lines);
                 output.Message = "read successful, see ScratchPad for detail.";
@@ -120,10 +136,20 @@ public class ReadFile : ToolCommand<ReadFile.Output>
                 int totalLines = lines.Length;
                 string content;
 
-                int start = StartLine <= 0 ? 0 : Math.Min(StartLine - 1, totalLines - 1);
-                int count = LineCount <= 0 ? totalLines - start : Math.Min(LineCount, totalLines - start);
+                int start = startLine <= 0 ? 0 : Math.Min(startLine - 1, totalLines - 1);
+                int count = lineCount <= 0 ? totalLines - start : Math.Min(lineCount, totalLines - start);
                 content = string.Join(Environment.NewLine, lines, start, count);
-                string msg = $"start line: {StartLine}, line count: {LineCount}";
+                string msg = $"start line: {startLine}, line count: {lineCount}";
+
+                if (lastScratchPad?.Type == ScratchPadTypes.FileSegment)
+                {
+                    string previousContent = lastScratchPad.Content;
+                    if (!string.IsNullOrEmpty(previousContent))
+                    {
+                        content = previousContent + Environment.NewLine + content;
+                    }
+                }
+
                 output.Message = $"read successful. {msg}, see ScratchPad for detail.";
                 parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, msg);
             }
