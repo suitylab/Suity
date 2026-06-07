@@ -2,6 +2,7 @@ using Markdig;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
 using MarkedNet;
+using Suity.Collections;
 using Suity.Editor.Documents;
 using Suity.Editor.Transferring;
 using Suity.Editor.WorkSpaces;
@@ -509,5 +510,22 @@ public static class AigcExtensions
         {
             return task.GetChatMessages(true, true);
         }
+    }
+
+    public static LLmMessage CreateTaskMessage(this IAigcTaskPage task, LLmMessageRole role = LLmMessageRole.Assistant)
+    {
+        var msgs = task.GetChatMessages(true, true);
+        return task.CreateTaskMessage(msgs, role);
+    }
+
+    public static LLmMessage CreateTaskMessage(this IAigcTaskPage task, LLmMessage[] msgs, LLmMessageRole role = LLmMessageRole.Assistant)
+    {
+        string eol = Environment.NewLine;
+        string[] msgTexts = msgs.Select(o => !string.IsNullOrWhiteSpace(o.Message) ? o.Message : null).SkipNull().ToArray();
+
+        string text = string.Join(eol + eol, msgTexts);
+        string message = $"<Task id='{task.TaskId}'>{eol}{text}{eol}</Task>";
+
+        return new LLmMessage { Role = role, Message = message };
     }
 }

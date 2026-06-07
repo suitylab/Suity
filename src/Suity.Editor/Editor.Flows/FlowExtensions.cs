@@ -70,7 +70,7 @@ public static class FlowExtensions
         return defaultValue;
     }
 
-    public static T[] GetValues<T>(this IFlowComputation compuate, FlowNodeConnector connector, bool sort)
+    public static T[] GetValues<T>(this IFlowComputation compuate, FlowNodeConnector connector, bool sort = true)
     {
         object[] sourceAry = compuate.GetValues(connector, sort) ?? [];
 

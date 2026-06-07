@@ -276,7 +276,7 @@ public class GetCurrentChatHistory : TaskPageNode
     public GetCurrentChatHistory()
     {
         var msgType = TypeDefinition.FromNative<LLmMessage>().MakeArrayType();
-        _chatHistory = AddDataOutputConnector("ChatHistory", msgType, "Chat History");
+        _chatHistory = AddDataOutputConnector("TaskHistory", msgType, "Task History");
     }
 
     /// <inheritdoc/>

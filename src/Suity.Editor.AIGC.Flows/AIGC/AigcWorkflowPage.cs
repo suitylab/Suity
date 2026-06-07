@@ -394,7 +394,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <inheritdoc/>
     public string GetLastPrompt(bool inHierarchy)
     {
-        var prompt = this.TaskPrompt;
+        var prompt = GetLastPrompt();
         if (!string.IsNullOrWhiteSpace(prompt))
         {
             return prompt;
@@ -402,13 +402,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         if (inHierarchy)
         {
-            prompt = GetLastPrompt();
-            if (!string.IsNullOrWhiteSpace(prompt))
-            {
-                return string.Empty;
-            }
-
-            return (ParentTask as IAigcWorkflowPage)?.GetLastPrompt(inHierarchy);
+            return (ParentTask as IAigcWorkflowPage)?.GetLastPrompt(inHierarchy) ?? string.Empty;
         }
         else
         {
@@ -792,7 +786,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             outputMsg = new()
             {
                 Role = LLmMessageRole.Assistant,
-                Message = $"TaskId: '{TaskId}'\r\n\r\n{instance?.GetOutputChatHistory(ResolveChatIntents.Normal)?.Text}",
+                Message = instance?.GetOutputChatHistory(ResolveChatIntents.Normal)?.Text,
             };
         }
 
@@ -840,20 +834,11 @@ public class AigcWorkflowPage : AigcTaskPage,
         if (includeSelf)
         {
             // As a parent task, since it is currently executing, its current output information should be invalid
-            var myMsgs = GetChatMessages(true, true);
-            for (int j = myMsgs.Length - 1; j >= 0; j--)
+            var myMsg = this.CreateTaskMessage();
+            list.AddFirst(myMsg);
+            if (maxHistory > 0 && list.Count > maxHistory)
             {
-                var myMsg = myMsgs[j];
-                if (string.IsNullOrWhiteSpace(myMsg.Message))
-                {
-                    continue;
-                }
-
-                list.AddFirst(myMsgs[j]);
-                if (maxHistory > 0 && list.Count > maxHistory)
-                {
-                    return;
-                }
+                return;
             }
         }
 
@@ -869,20 +854,11 @@ public class AigcWorkflowPage : AigcTaskPage,
             {
                 if (ParentList.GetItemAt(i) is AigcWorkflowPage task && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
                 {
-                    var msgs = task.GetChatMessages(true, true);
-                    for (int j = msgs.Length - 1; j >= 0; j--)
+                    var msg = task.CreateTaskMessage();
+                    list.AddFirst(msg);
+                    if (maxHistory > 0 && list.Count > maxHistory)
                     {
-                        var msg = msgs[j];
-                        if (string.IsNullOrWhiteSpace(msg.Message))
-                        {
-                            continue;
-                        }
-
-                        list.AddFirst(msgs[j]);
-                        if (maxHistory > 0 && list.Count > maxHistory)
-                        {
-                            return;
-                        }
+                        return;
                     }
                 }
             }

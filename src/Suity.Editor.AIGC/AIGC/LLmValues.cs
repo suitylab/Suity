@@ -68,6 +68,18 @@ public class LLmMessage : IViewObject
     /// <returns>A formatted string containing all messages with role headers.</returns>
     public static string CombineText(IEnumerable<LLmMessage> messages)
     {
+        return CombineText(messages, role => $"------------------ {role} ------------------", null);
+    }
+
+    /// <summary>
+    /// Combines multiple messages into a single formatted text string.
+    /// </summary>
+    /// <param name="messages">The collection of messages to combine.</param>
+    /// <param name="prefixGetter">A function to get the prefix text for each role.</param>
+    /// <param name="suffixGetter">A function to get the suffix text for each role.</param>
+    /// <returns>A formatted string containing all messages with role headers.</returns>
+    public static string CombineText(IEnumerable<LLmMessage> messages, Func<LLmMessageRole, string> prefixGetter, Func<LLmMessageRole, string> suffixGetter)
+    {
         if (messages is null)
         {
             throw new ArgumentNullException(nameof(messages));
@@ -81,8 +93,20 @@ public class LLmMessage : IViewObject
         var builder = new StringBuilder();
         foreach (var msg in messages.SkipNull())
         {
-            builder.AppendLine($"------------------ {msg.Role} ------------------");
+            string prefix = prefixGetter?.Invoke(msg.Role);
+            if (!string.IsNullOrWhiteSpace(prefix))
+            {
+                builder.AppendLine(prefix);
+            }
+            
             builder.AppendLine(msg.Message);
+
+            string suffix = suffixGetter?.Invoke(msg.Role);
+            if (!string.IsNullOrWhiteSpace(suffix))
+            {
+                builder.AppendLine(suffix);
+            }
+
             builder.AppendLine();
         }
 
@@ -96,13 +120,24 @@ public class LLmMessage : IViewObject
     /// </summary>
     /// <param name="messages">The collection of messages to combine.</param>
     /// <returns>A new LLmMessage with the combined content as a user message.</returns>
-    public static LLmMessage Combine(IEnumerable<LLmMessage> messages)
+    public static LLmMessage Combine(IEnumerable<LLmMessage> messages, LLmMessageRole role = LLmMessageRole.User)
     {
         string content = CombineText(messages);
 
         return new LLmMessage
         {
-            Role = LLmMessageRole.User,
+            Role = role,
+            Message = content,
+        };
+    }
+
+    public static LLmMessage Combine(IEnumerable<LLmMessage> messages, LLmMessageRole role, Func<LLmMessageRole, string> prefixGetter, Func<LLmMessageRole, string> suffixGetter)
+    {
+        string content = CombineText(messages, prefixGetter, suffixGetter);
+
+        return new LLmMessage
+        {
+            Role = role,
             Message = content,
         };
     }

@@ -350,7 +350,7 @@ public class CallLLm : AigcFlowNode
 
         if (_combineMessages.Value)
         {
-            msgs = [LLmMessage.Combine(msgs)];
+            msgs = [LLmMessage.Combine(msgs, LLmMessageRole.Assistant, null, null)];
         }
 
         int retryCount = _retry.Value;
@@ -652,5 +652,6 @@ public class StructuredOutputVerify : LLmOutputVerify
     {
         return call.LastFunctionOutput != null;
     }
-} 
+}
 #endregion
+
