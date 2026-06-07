@@ -146,12 +146,21 @@ public class ReadFile : ToolCommand<ReadFile.Output>
                     string previousContent = lastScratchPad.Content;
                     if (!string.IsNullOrEmpty(previousContent))
                     {
-                        content = previousContent + Environment.NewLine + content;
+                        string header = $"========== READ FILE: start line: {startLine}, line count: {count} ==========";
+                        if (!string.IsNullOrEmpty(lastScratchPad.Note))
+                        {
+                            content = $"========== READ FILE: {lastScratchPad.Note} =========={Environment.NewLine}{previousContent}{Environment.NewLine}{Environment.NewLine}{header}{Environment.NewLine}{content}";
+                        }
+                        else
+                        {
+                            content = previousContent + Environment.NewLine + Environment.NewLine + header + Environment.NewLine + content;
+                        }
                     }
                 }
 
                 output.Message = $"read successful. {msg}, see ScratchPad for detail.";
-                parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, msg);
+                bool merged = lastScratchPad?.Type == ScratchPadTypes.FileSegment && !string.IsNullOrEmpty(lastScratchPad.Content);
+                parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, merged ? null : msg);
             }
         }
 
