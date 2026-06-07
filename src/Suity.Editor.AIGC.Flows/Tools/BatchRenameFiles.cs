@@ -7,6 +7,7 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
@@ -118,6 +119,16 @@ public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
         }
 
         var output = new Output();
+
+        var renameSummary = string.Join(", ", RenameItems.Select(i => $"{i.SourcePath} -> {i.TargetPath}"));
+        context.ToolInstance.Conversation?.AddRunningMessage($"Rename {RenameItems.Count} file(s)", msg =>
+        {
+            msg.AddCode(renameSummary);
+        });
+        context.Conversation?.AddRunningMessage($"Rename {RenameItems.Count} file(s)", msg =>
+        {
+            msg.AddCode(renameSummary);
+        });
 
         foreach (var item in RenameItems)
         {

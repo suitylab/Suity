@@ -136,6 +136,16 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
         int successCount = 0;
         int failCount = 0;
 
+        var patchFileNames = string.Join(", ", Patches.Select(p => p.FilePath));
+        context.ToolInstance.Conversation?.AddRunningMessage($"Apply diff patches to {Patches.Count} file(s)", msg =>
+        {
+            msg.AddCode(patchFileNames);
+        });
+        context.Conversation?.AddRunningMessage($"Apply diff patches to {Patches.Count} file(s)", msg =>
+        {
+            msg.AddCode(patchFileNames);
+        });
+
         foreach (var patchItem in Patches)
         {
             var result = new FileResult { FilePath = patchItem.FilePath };

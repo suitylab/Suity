@@ -7,6 +7,7 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
@@ -133,6 +134,16 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
         var output = new Output();
         int successCount = 0;
         int failCount = 0;
+
+        var writeFileNames = string.Join(", ", Files.Select(f => f.FilePath));
+        context.ToolInstance.Conversation?.AddRunningMessage($"Write {Files.Count} file(s)", msg =>
+        {
+            msg.AddCode(writeFileNames);
+        });
+        context.Conversation?.AddRunningMessage($"Write {Files.Count} file(s)", msg =>
+        {
+            msg.AddCode(writeFileNames);
+        });
 
         foreach (var item in Files)
         {

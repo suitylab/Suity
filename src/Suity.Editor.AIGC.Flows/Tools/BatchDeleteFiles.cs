@@ -7,6 +7,7 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
@@ -114,6 +115,16 @@ public class BatchDeleteFiles : ToolCommand<BatchDeleteFiles.Output>
         }
 
         var output = new Output();
+
+        var deleteFileNames = string.Join(", ", DeleteItems.Select(d => d.FilePath));
+        context.ToolInstance.Conversation?.AddRunningMessage($"Delete {DeleteItems.Count} file(s)", msg =>
+        {
+            msg.AddCode(deleteFileNames);
+        });
+        context.Conversation?.AddRunningMessage($"Delete {DeleteItems.Count} file(s)", msg =>
+        {
+            msg.AddCode(deleteFileNames);
+        });
 
         foreach (var item in DeleteItems)
         {

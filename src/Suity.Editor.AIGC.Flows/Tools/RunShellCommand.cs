@@ -79,6 +79,11 @@ public class RunShellCommand : ToolCommand<RunShellCommand.Output>
                 msg.AddCode(command);
             });
 
+            context.Conversation?.AddRunningMessage("Run command", msg =>
+            {
+                msg.AddCode(command);
+            });
+
             string output = await EditorServices.EditorSystem.ExecuteCommandAsync(command, directory, onOutput, context.Cancellation);
             return new Output
             {

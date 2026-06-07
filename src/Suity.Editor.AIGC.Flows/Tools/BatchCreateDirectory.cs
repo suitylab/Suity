@@ -6,6 +6,7 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
@@ -121,6 +122,16 @@ public class BatchCreateDirectory : ToolCommand<BatchCreateDirectory.Output>
         var output = new Output();
         int successCount = 0;
         int failCount = 0;
+
+        var dirNames = string.Join(", ", Directories.Select(d => d.DirectoryPath));
+        context.ToolInstance.Conversation?.AddRunningMessage($"Create {Directories.Count} directory(ies)", msg =>
+        {
+            msg.AddCode(dirNames);
+        });
+        context.Conversation?.AddRunningMessage($"Create {Directories.Count} directory(ies)", msg =>
+        {
+            msg.AddCode(dirNames);
+        });
 
         foreach (var item in Directories)
         {

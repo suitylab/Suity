@@ -89,6 +89,15 @@ public class RewriteEntireFile : ToolCommand<RewriteEntireFile.Output>
             throw new FileNotFoundException($"File not found: {relativePath}");
         }
 
+        context.ToolInstance.Conversation?.AddRunningMessage("Rewrite file", msg =>
+        {
+            msg.AddCode(relativePath);
+        });
+        context.Conversation?.AddRunningMessage("Rewrite file", msg =>
+        {
+            msg.AddCode(relativePath);
+        });
+
         File.WriteAllText(fullPath, NewFullContent);
         parentPage?.SetScratchPad(ScratchPadTypes.FileFullContent, relativePath, null, "rewritten");
 

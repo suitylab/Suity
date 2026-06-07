@@ -224,6 +224,16 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
             throw new AggregateException($"BatchEditInFiles failed with {errors.Count} error(s):\n" + string.Join("\n", errorMessages));
         }
 
+        var fileNames = string.Join(", ", fileResults.Select(f => f.RelativePath));
+        context.ToolInstance.Conversation?.AddRunningMessage($"Batch edit {fileResults.Count} file(s)", msg =>
+        {
+            msg.AddCode(fileNames);
+        });
+        context.Conversation?.AddRunningMessage($"Batch edit {fileResults.Count} file(s)", msg =>
+        {
+            msg.AddCode(fileNames);
+        });
+
         foreach (var file in fileResults)
         {
             File.WriteAllText(file.FullPath, file.NewContent);

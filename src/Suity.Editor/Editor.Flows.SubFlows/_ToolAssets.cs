@@ -22,7 +22,6 @@ public record ToolCallContext
     public IToolInstance ToolInstance { get; init; }
     public string WorkSpaceDirectory { get; init; }
     public IConversationHandler Conversation { get; init; }
-    public IConversationHandler GlobalConversation { get; init; }
     public CancellationToken Cancellation { get; init; }
 }
 #endregion
