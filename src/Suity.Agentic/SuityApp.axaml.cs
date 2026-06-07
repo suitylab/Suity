@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia.Themes;
 using Dock.Avalonia.Themes.Fluent;
@@ -33,7 +32,7 @@ namespace Suity.Editor
     public partial class SuityApp : Application
     {
         public const string ProjectName = "Suity Agentic";
-        public const string VersionCode = "2026.02.14";
+        public const string VersionCode = "2026.02.15";
         public const string GithubPage = "https://github.com/suitylab/Suity";
 
         private const string ConfigFileName = "EditorConfig.json";
