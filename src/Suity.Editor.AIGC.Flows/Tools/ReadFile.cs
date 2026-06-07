@@ -84,13 +84,19 @@ public class ReadFile : ToolCommand<ReadFile.Output>
             fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
+        string readInfo = relativePath;
+        if (StartLine > 0 || LineCount > 0)
+        {
+            readInfo += $" (startLine: {StartLine}, lineCount: {LineCount})";
+        }
+
         context.ToolInstance.Conversation?.AddRunningMessage("Read file", msg =>
         {
-            msg.AddCode(relativePath);
+            msg.AddCode(readInfo);
         });
         context.Conversation?.AddRunningMessage("Read file", msg =>
         {
-            msg.AddCode(relativePath);
+            msg.AddCode(readInfo);
         });
 
         var output = new Output();

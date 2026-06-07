@@ -153,6 +153,19 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                     fullPath = Path.Combine(workspaceDir, relativePath);
                 }
 
+                if (item.StartLine > 0 || item.LineCount > 0)
+                {
+                    string lineInfo = $"{relativePath} (startLine: {item.StartLine}, lineCount: {item.LineCount})";
+                    context.ToolInstance.Conversation?.AddRunningMessage("Read file", msg =>
+                    {
+                        msg.AddCode(lineInfo);
+                    });
+                    context.Conversation?.AddRunningMessage("Read file", msg =>
+                    {
+                        msg.AddCode(lineInfo);
+                    });
+                }
+
                 if (!File.Exists(fullPath))
                 {
                     result.Message = "File not found";
