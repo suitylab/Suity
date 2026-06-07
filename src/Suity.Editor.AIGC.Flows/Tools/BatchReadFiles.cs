@@ -175,9 +175,10 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                 {
                     int startLine = item.StartLine;
                     int lineCount = item.LineCount;
-                    if (startLine == 1 && lineCount == 0)
+                    if (startLine == 1 && lineCount <= 0)
                     {
                         startLine = 0;
+                        lineCount = 0;
                     }
 
                     if (startLine <= 0 && lineCount <= 0)

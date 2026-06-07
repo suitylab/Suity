@@ -76,4 +76,5 @@ This is the user original request which indicates the goal of entire workflow:
 - When call tool, only call <tool_action> once per turn.
 - Tool usage MUST be justified by Skill Description.
 - If request out-of-scope: clarify in <failed>, do not proceed.
+- **Do NOT read the same file repeatly, make dicision or output failed.**
 - Output speech language: {{SPEECH_LANGUAGE}}.
