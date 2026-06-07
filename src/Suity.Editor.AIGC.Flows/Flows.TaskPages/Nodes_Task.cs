@@ -1204,7 +1204,7 @@ public class GetParentTask : TaskPageNode
     /// </summary>
     public GetParentTask()
     {
-        var type = TypeDefinition.FromNative<IAigcTaskPage>();
+        var type = TypeDefinition.FromNative<IAigcWorkflowPage>();
         _out = AddDataOutputConnector("Out", type, "Parent Task");
     }
 

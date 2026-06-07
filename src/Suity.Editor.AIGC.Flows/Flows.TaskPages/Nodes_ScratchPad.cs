@@ -3,9 +3,11 @@ using Suity.Editor.AIGC;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
+using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace Suity.Editor.Flows.TaskPages;
@@ -143,13 +145,14 @@ public class SetTaskScratchPads : TaskPageNode
 
     public SetTaskScratchPads()
     {
+        _in = AddActionInputConnector("In", " ");
+
         var taskType = TypeDefinition.FromNative<IAigcWorkflowPage>();
         _task = this.AddDataInputConnector("Task", taskType, "Task");
 
         var type = TypeDefinition.FromNative<ScratchPad>();
-
-        _in = AddActionInputConnector("In", " ");
         _scratchPad = this.AddConnector("ScratchPad", type, FlowDirections.Input, FlowConnectorTypes.Data, true, "Scratch Pad");
+
         _out = AddActionOutputConnector("Out", " ");
     }
 
@@ -292,6 +295,78 @@ public class GetScratchPadMessage : TaskPageNode
             .ToArray();
         
         compute.SetValue(_text, msgs);
+    }
+}
+
+#endregion
+
+#region FullContentScratchPads
+
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "Scratch Pad")]
+[DisplayText("Full Content Scratch Pads", "*CoreIcon|Scratch")]
+public class FullContentScratchPads : TaskPageNode
+{
+    private readonly FlowNodeConnector _scratchPadIn;
+    private readonly FlowNodeConnector _scratchPadOut;
+
+    public FullContentScratchPads()
+    {
+        var type = TypeDefinition.FromNative<ScratchPad>();
+
+        _scratchPadIn = this.AddConnector("In", type, FlowDirections.Input, FlowConnectorTypes.Data, true, "In");
+        _scratchPadOut = AddDataOutputConnector("FullContent", type.MakeArrayType(), "Full Content");
+    }
+
+    public override void Compute(IFlowComputation compute)
+    {
+        var page = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var workSpace = page?.GetWorkSpace();
+        string workSpaceDir = workSpace?.MasterDirectory;
+
+        var items = compute.GetValues<ScratchPad>(_scratchPadIn, true) ?? [];
+
+        var result = items.Select(item =>
+        {
+            if (item.Type == ScratchPadTypes.FileSegment || item.Type == ScratchPadTypes.FileEdit)
+            {
+                string path = item.Path?.Trim();
+                if (!string.IsNullOrWhiteSpace(path) && !string.IsNullOrWhiteSpace(workSpaceDir))
+                {
+                    var fullPath = workSpaceDir.PathAppend(path);
+                    if (File.Exists(fullPath))
+                    {
+                        return new ScratchPad
+                        {
+                            Path = path,
+                            Type = ScratchPadTypes.FileFullContent,
+                        };
+                    }
+                    else
+                    {
+                        return new ScratchPad
+                        {
+                            Path = path,
+                            Type = ScratchPadTypes.NotFound,
+                        };
+                    }
+                }
+                else
+                {
+                    return new ScratchPad
+                    {
+                        Path = path,
+                        Type = ScratchPadTypes.FileFullContent,
+                    };
+                }
+            }
+            else
+            {
+                return item;
+            }
+            
+        }).ToArray();
+
+        compute.SetValue(_scratchPadOut, result);
     }
 }
 

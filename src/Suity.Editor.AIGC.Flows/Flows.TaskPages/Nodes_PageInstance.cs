@@ -423,6 +423,7 @@ public class ParseTagToPageInstance : TaskPageNode
 
     readonly FlowNodeConnector _outPageInstance;
     readonly FlowNodeConnector _outPageName;
+    readonly FlowNodeConnector _outPageFullName;
     readonly FlowNodeConnector _outFormatError;
     readonly FlowNodeConnector _outNoResult;
 
@@ -444,6 +445,7 @@ public class ParseTagToPageInstance : TaskPageNode
 
         _outPageInstance = this.AddConnector("PageInstance", instanceType, FlowDirections.Output, FlowConnectorTypes.Action, false, "Page Instance");
         _outPageName = this.AddDataOutputConnector("PageName", "string", "Page Name");
+        _outPageFullName = this.AddDataOutputConnector("PageFullName", "string", "Page Full Name");
         _outFormatError = this.AddConnector("FormatError", fixType, FlowDirections.Output, FlowConnectorTypes.Action, false, "Format Error");
         _outNoResult = this.AddActionOutputConnector("NoResult", "No Result");
     }
@@ -487,7 +489,8 @@ public class ParseTagToPageInstance : TaskPageNode
             if (pageInstance != null)
             {
                 compute.SetValue(_outPageInstance, pageInstance);
-                compute.SetValue(_outPageName, pageName);
+                compute.SetValue(_outPageName, pageInstance.Name);
+                compute.SetValue(_outPageFullName, pageInstance.FullName);
                 compute.SetResult(this, _outPageInstance);
             }
             else

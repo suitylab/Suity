@@ -41,7 +41,11 @@ internal class ClonePropertySync(Dictionary<string, SyncValueInfo> values) : Mar
         SyncValueInfo info = _values.GetValueSafe(name);
         if (info is null)
         {
-            return readOnly || notNull ? obj : defaultValue;
+            // If the value is not found in the source, return the passed-in value.
+            // This supports single-property cloning, keeping it unmodified if no property is found.
+            return obj;
+
+            //return readOnly || notNull ? obj : defaultValue;
         }
 
         object resultObj = null;
