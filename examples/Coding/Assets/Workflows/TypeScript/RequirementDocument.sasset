@@ -78,7 +78,7 @@
         <InterruptionWords />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-220" Y="30" Width="38" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-220" Y="30" Width="44" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -171,7 +171,7 @@
         </TagNames>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="380" Y="-20" Width="144" Height="78">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="380" Y="-100" Width="144" Height="78">
       <Name>###WriteWorkSpaceFile01</Name>
       <Node type="Suity.Editor.Flows.WorkSpaces.WriteWorkSpaceFile">
         <WorkSpace />
@@ -180,11 +180,11 @@
         <Content />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="380" Y="-40" Width="59" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="380" Y="-120" Width="59" Height="17">
       <Name>###GetTaskWorkSpace01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetTaskWorkSpace" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="240" Y="-90" Width="108" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="210" Y="-160" Width="108" Height="17">
       <Name>###SourceValue01</Name>
       <Node type="Suity.Editor.Flows.Nodes.SourceValue">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
@@ -193,7 +193,7 @@
         <Value type="System.String">doc/RequirementDocument.md</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="0" Width="70" Height="28">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-80" Width="70" Height="28">
       <Name>###DataActionDecompose01</Name>
       <Node type="Suity.Editor.Flows.Nodes.DataActionDecompose">
         <DataType>
@@ -201,13 +201,13 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="250" Width="103" Height="45">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="70" Y="250" Width="103" Height="56">
       <Name>###ThrowError01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
         <ErrorMessage />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="290" Y="30" Width="28" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="290" Y="-50" Width="28" Height="17">
       <Name>###GetXmlTagContent01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
     </Item>
@@ -237,6 +237,16 @@
           <Text>Please use Read tool to read the following file path for full content:</Text>
         </Message>
         <TooltipMode>True</TooltipMode>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="390" Y="-10" Width="135" Height="67">
+      <Name>###OutputGlobalChat01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.OutputGlobalChat">
+        <Message>
+          <Text>Write file</Text>
+        </Message>
+        <Inner />
+        <Status>ResourceUse</Status>
       </Node>
     </Item>
   </Nodes>
@@ -383,8 +393,20 @@
     <Item>
       <FromNode>###WriteWorkSpaceFile01</FromNode>
       <FromConnector>Out</FromConnector>
+      <ToNode>###OutputGlobalChat01</ToNode>
+      <ToConnector>Input</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###OutputGlobalChat01</FromNode>
+      <FromConnector>Output</FromConnector>
       <ToNode>PlanningEnd</ToNode>
       <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SourceValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###OutputGlobalChat01</ToNode>
+      <ToConnector>Inner</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

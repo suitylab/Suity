@@ -63,7 +63,7 @@
         <InterruptionWords />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-120" Y="40" Width="38" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-120" Y="40" Width="44" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -119,7 +119,7 @@
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="610" Y="-40" Width="144" Height="78">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="590" Y="-80" Width="144" Height="78">
       <Name>###WriteWorkSpaceFile01</Name>
       <Node type="Suity.Editor.Flows.WorkSpaces.WriteWorkSpaceFile">
         <WorkSpace />
@@ -128,7 +128,7 @@
         <Content />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="520" Y="-10" Width="59" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="500" Y="-50" Width="59" Height="17">
       <Name>###GetTaskWorkSpace02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetTaskWorkSpace" />
     </Item>
@@ -179,7 +179,7 @@
         <Required>False</Required>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-120" Width="48" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-140" Width="48" Height="17">
       <Name>###GetTaskChatHistory01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentChatHistory">
         <InHierarchy>True</InHierarchy>
@@ -251,7 +251,7 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-140" Width="47" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-200" Y="-120" Width="47" Height="17">
       <Name>###GetTaskScratchPad01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentScratchPads">
         <InHierarchy>True</InHierarchy>
@@ -268,7 +268,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-40" Y="-140" Width="91" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-140" Y="-120" Width="91" Height="17">
       <Name>###GetScratchPadMessage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetScratchPadMessage" />
     </Item>
@@ -310,6 +310,49 @@
         <DataType>
           <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
         </DataType>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="-160" Width="89" Height="17">
+      <Name>###CombineLLmMessage03</Name>
+      <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
+        <Prefix>=========== Global Objective Begin ===========</Prefix>
+        <Suffix>=========== Global Objective End ===========</Suffix>
+        <ItemPrefix>
+        </ItemPrefix>
+        <ItemSuffix>
+        </ItemSuffix>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="-140" Width="89" Height="17">
+      <Name>###CombineLLmMessage01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
+        <Prefix>=========== Task History Begin ===========</Prefix>
+        <Suffix>=========== Task History End ===========</Suffix>
+        <ItemPrefix>
+        </ItemPrefix>
+        <ItemSuffix>
+        </ItemSuffix>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-30" Y="-120" Width="89" Height="17">
+      <Name>###CombineLLmMessage02</Name>
+      <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
+        <Prefix>=========== Scratch Pad Begin ===========</Prefix>
+        <Suffix>=========== Scratch Pady End ===========</Suffix>
+        <ItemPrefix>
+        </ItemPrefix>
+        <ItemSuffix>
+        </ItemSuffix>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="590" Y="10" Width="135" Height="67">
+      <Name>###OutputGlobalChat01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.OutputGlobalChat">
+        <Message>
+          <Text>Write file</Text>
+        </Message>
+        <Inner />
+        <Status>ResourceUse</Status>
       </Node>
     </Item>
   </Nodes>
@@ -382,12 +425,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetTaskChatHistory01</FromNode>
-      <FromConnector>ChatHistory</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###DataActionCompose01</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>FileCodeFailed</ToNode>
@@ -428,12 +465,6 @@
       <FromConnector>ScratchPad</FromConnector>
       <ToNode>###GetScratchPadMessage01</ToNode>
       <ToConnector>ScratchPad</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetScratchPadMessage01</FromNode>
-      <FromConnector>Message</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
     </Item>
     <Item>
       <FromNode>###ExtractXmlsTagAction01</FromNode>
@@ -502,12 +533,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###WriteWorkSpaceFile01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###DataActionCompose02</ToNode>
-      <ToConnector>ActionIn</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###PassValue04</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###PassValue01</ToNode>
@@ -518,6 +543,48 @@
       <FromConnector>Out</FromConnector>
       <ToNode>###PassValue02</ToNode>
       <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetScratchPadMessage01</FromNode>
+      <FromConnector>Message</FromConnector>
+      <ToNode>###CombineLLmMessage02</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskChatHistory01</FromNode>
+      <FromConnector>TaskHistory</FromConnector>
+      <ToNode>###CombineLLmMessage01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CombineLLmMessage02</FromNode>
+      <FromConnector>Output</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CombineLLmMessage01</FromNode>
+      <FromConnector>Output</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###WriteWorkSpaceFile01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###OutputGlobalChat01</ToNode>
+      <ToConnector>Input</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###OutputGlobalChat01</FromNode>
+      <FromConnector>Output</FromConnector>
+      <ToNode>###DataActionCompose02</ToNode>
+      <ToConnector>ActionIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue05</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###OutputGlobalChat01</ToNode>
+      <ToConnector>Message</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

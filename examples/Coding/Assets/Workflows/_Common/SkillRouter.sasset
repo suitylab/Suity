@@ -72,7 +72,7 @@
         <InterruptionWords />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="60" Y="0" Width="38" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="60" Y="0" Width="44" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -88,7 +88,7 @@
       <Name>###GetPageToolPagesNode02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="740" Y="110" Width="191" Height="78">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="740" Y="110" Width="191" Height="89">
       <Name>###ParseTagToolCallingNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.ParseTagToPageInstance">
         <AttributeName>name</AttributeName>
@@ -176,7 +176,7 @@
         <TaskCommit>True</TaskCommit>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="160" Y="-120" Width="48" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="120" Y="-120" Width="48" Height="17">
       <Name>###GetTaskChatHistoryNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentChatHistory" />
     </Item>
@@ -287,6 +287,17 @@
         </DataType>
       </Node>
     </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="180" Y="-120" Width="89" Height="17">
+      <Name>###CombineLLmMessage01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
+        <Prefix>=========== Task History Begin ===========</Prefix>
+        <Suffix>=========== Task History End ===========</Suffix>
+        <ItemPrefix>
+        </ItemPrefix>
+        <ItemSuffix>
+        </ItemSuffix>
+      </Node>
+    </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
   <Links>
@@ -349,12 +360,6 @@
       <FromConnector>ContentOut</FromConnector>
       <ToNode>answer</ToNode>
       <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetTaskChatHistoryNode01</FromNode>
-      <FromConnector>ChatHistory</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
     </Item>
     <Item>
       <FromNode>TaskBegin</FromNode>
@@ -499,6 +504,18 @@
       <FromConnector>Out</FromConnector>
       <ToNode>###BuildPrompt01</ToNode>
       <ToConnector>k_ROLE</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskChatHistoryNode01</FromNode>
+      <FromConnector>TaskHistory</FromConnector>
+      <ToNode>###CombineLLmMessage01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CombineLLmMessage01</FromNode>
+      <FromConnector>Output</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
     </Item>
   </Links>
 </SuityAsset>
