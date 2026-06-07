@@ -221,7 +221,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                         }
 
                         bool merged = lastScratchPad?.Type == ScratchPadTypes.FileSegment && !string.IsNullOrEmpty(lastScratchPad.Content);
-                        parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, merged ? null : msg);
+                        parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, merged ? "Contains multiple sections (sections start with: ========== READ FILE: ...)" : msg);
                     }
                 }
             }
