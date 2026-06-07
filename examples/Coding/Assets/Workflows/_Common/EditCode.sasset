@@ -79,7 +79,7 @@
         <Value type="System.Boolean">False</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="-90" Width="197" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="-90" Width="201" Height="56">
       <Name>###CreatePageInstanceWithParameter01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
         <ToolDefinition>
@@ -98,7 +98,7 @@
         <UpdateParameter>False</UpdateParameter>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-10" Width="130" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-10" Width="134" Height="111">
       <Name>###AddSubTaskPage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
         <PageTitle>
@@ -249,7 +249,7 @@
         <Value type="System.Boolean">True</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="430" Width="127" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="430" Width="131" Height="111">
       <Name>###AppendTaskPage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
         <PageTitle>
@@ -260,7 +260,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="340" Width="197" Height="63">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="340" Width="201" Height="67">
       <Name>###CreatePageInstanceWithParameter02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
         <ToolDefinition>
@@ -322,6 +322,20 @@
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="300" Width="28" Height="17">
       <Name>###GetTaskPageInstance01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.TaskToPageInstance" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="230" Width="47" Height="17">
+      <Name>###GetTaskScratchPad01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentScratchPads">
+        <InHierarchy>True</InHierarchy>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-20" Y="170" Width="146" Height="67">
+      <Name>###SetTaskScratchPads01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.SetTaskScratchPads" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="210" Width="46" Height="17">
+      <Name>###GetParentTask01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetParentTask" />
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -393,12 +407,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>ToolComplete</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>OnToolComplete</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
       <FromNode>ToolFailed</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###CreatePageInstanceWithParameter02</ToNode>
@@ -463,6 +471,30 @@
       <FromConnector>PageInstance</FromConnector>
       <ToNode>###AddSubTaskPage01</ToNode>
       <ToConnector>PageInstance</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetParentTask01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetTaskScratchPads01</ToNode>
+      <ToConnector>Task</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskScratchPad01</FromNode>
+      <FromConnector>ScratchPad</FromConnector>
+      <ToNode>###SetTaskScratchPads01</ToNode>
+      <ToConnector>ScratchPad</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>ToolComplete</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetTaskScratchPads01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SetTaskScratchPads01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnToolComplete</ToNode>
+      <ToConnector>In</ToConnector>
     </Item>
   </Links>
 </SuityAsset>
