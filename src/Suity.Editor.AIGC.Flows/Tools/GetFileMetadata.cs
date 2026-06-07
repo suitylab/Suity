@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("GetFileMetadata", CodeBase = "*Suity", Category = "WorkSpace")]
+[NativeType("GetFileMetadata", CodeBase = "*Suity", Category = "WorkSpace Tools")]
 [DisplayText("Get File Metadata")]
 [ToolTipsText("Get basic file metadata (size, modified time) to help Agent estimate token consumption before reading.")]
 [NativeAlias("Suity.Editor.AIGC.GetFileMetadata")]

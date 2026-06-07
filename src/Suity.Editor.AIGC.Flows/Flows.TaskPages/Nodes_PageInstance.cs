@@ -763,6 +763,11 @@ public class CreatePageInstanceWithParameter : TaskPageNode
         {
             ParseFromToolDef();
         }
+
+        if (sync.IsSingleSetterOf(_toolDef.Property.Name) && sync.Intent == SyncIntent.View)
+        {
+            ParseFromToolDef();
+        }
     }
 
     private void ParseFromToolDef()
@@ -811,6 +816,12 @@ public class CreatePageInstanceWithParameter : TaskPageNode
             {
                 return;
             }
+        }
+        else
+        {
+            _parameters.List.Clear();
+            UpdateConnectorQueued();
+            this.GetFlowDocument()?.MarkDirty(this);
         }
     }
 
@@ -1478,6 +1489,11 @@ public class GetPageOutputWithParameter : TaskPageNode
         {
             ParseFromToolDef();
         }
+
+        if (sync.IsSingleSetterOf(_toolDef.Property.Name) && sync.Intent == SyncIntent.View)
+        {
+            ParseFromToolDef();
+        }
     }
 
     private void ParseFromToolDef()
@@ -1526,6 +1542,12 @@ public class GetPageOutputWithParameter : TaskPageNode
             {
                 return;
             }
+        }
+        else
+        {
+            _parameters.List.Clear();
+            UpdateConnectorQueued();
+            this.GetFlowDocument()?.MarkDirty(this);
         }
     }
 

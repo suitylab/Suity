@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("BatchWriteFile", CodeBase = "*Suity", Category = "WorkSpace")]
+[NativeType("BatchWriteFile", CodeBase = "*Suity", Category = "WorkSpace Tools")]
 [DisplayText("Batch Write File")]
 [ToolTipsText("Write multiple files at once. Use when initializing new modules, scaffolding, or creating multi-layer architecture code.")]
 [NativeAlias("Suity.Editor.AIGC.BatchCreateNewFiles")]

@@ -176,13 +176,14 @@ public class GroupedAssetSelectionList<TAsset> : ISelectionList
             foreach (var categoryGroup in categoryGroups.Where(o => o.Key != null))
             {
                 string categoryName = $"[{categoryGroup.Key}]";
+                string selectionKey = $"Group-{contentTypeName}-{categoryName}";
 
                 if (!added.Add(categoryName))
                 {
                     continue;
                 }
 
-                var selGroup = new CategorySelectionGroup(categoryName, categoryGroup);
+                var selGroup = new CategorySelectionGroup(selectionKey, categoryName, categoryGroup);
                 _items.Add(selGroup);
             }
 

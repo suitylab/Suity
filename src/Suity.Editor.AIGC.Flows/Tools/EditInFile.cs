@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("EditInFile", CodeBase = "*Suity", Category = "WorkSpace")]
+[NativeType("EditInFile", CodeBase = "*Suity", Category = "WorkSpace Tools")]
 [NativeAlias("Suity.Editor.AIGC.Tools.EditInFile")]
 [DisplayText("Edit In File")]
 [ToolTipsText("Perform an exact string edit in a file with new content. Suitable for Surgical Changes.")]

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("BatchDeleteFiles", CodeBase = "*Suity", Category = "WorkSpace")]
+[NativeType("BatchDeleteFiles", CodeBase = "*Suity", Category = "WorkSpace Tools")]
 [DisplayText("Batch Delete File")]
 [ToolTipsText("Delete multiple files at once.")]
 [NativeAlias("Suity.Editor.AIGC.BatchDeleteFiles")]

@@ -107,7 +107,7 @@ public class EditorColorScheme
     /// <summary>
     /// Gets the color for read-only values.
     /// </summary>
-    public virtual Color ValueReadonly => Color.FromArgb(60, 60, 60);
+    public virtual Color ValueReadonly => Color.FromArgb(50, 50, 50);
 
     /// <summary>
     /// Gets the placement text color.

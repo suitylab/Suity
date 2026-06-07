@@ -163,12 +163,14 @@ public class FuzzySharpSelectionList : IFilteredSelectionList
 
         foreach (var item in list.GetItems().SkipNull())
         {
-            if (string.IsNullOrWhiteSpace(item.SelectionKey))
+            string selectionKey = item.SelectionKey;
+
+            if (string.IsNullOrWhiteSpace(selectionKey))
             {
                 continue;
             }
 
-            _items.TryAdd(item.SelectionKey, item);
+            _items.TryAdd(selectionKey, item);
         }
 
         foreach (var childList in list.GetItems().OfType<ISelectionList>())

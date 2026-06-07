@@ -13,7 +13,7 @@ using Suity.Editor.Values;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("ApplyDiffPatch", CodeBase = "*Suity", Category = "WorkSpace")]
+[NativeType("ApplyDiffPatch", CodeBase = "*Suity", Category = "WorkSpace Tools")]
 [DisplayText("Apply Diff Patch")]
 [ToolTipsText("Apply a Unified Diff format patch to a file. Supports multiple non-contiguous edits in a single file.")]
 [NativeAlias("Suity.Editor.AIGC.ApplyDiffPatch")]

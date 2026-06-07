@@ -111,6 +111,47 @@ public class AppendTaskPage : TaskPageNode
 }
 #endregion
 
+#region AppendSelf
+
+/// <summary>
+/// A flow node that appends a new task page of the same type as the current task.
+/// Uses the current task's Rule and CommitName for the new task.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG)]
+[DisplayText("Append Self Task", "*CoreIcon|Task")]
+public class AppendSelf : TaskPageNode
+{
+    readonly FlowNodeConnector _in;
+    readonly FlowNodeConnector _out;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AppendSelf"/> class.
+    /// </summary>
+    public AppendSelf()
+    {
+        _in = this.AddActionInputConnector("In", "Input");
+        _out = this.AddActionOutputConnector("Out", "Output");
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var workflow = compute.Context.GetArgument<IAigcWorkflowPage>()
+            ?? throw new NullReferenceException("IAigcWorkflowPage is null.");
+
+        var selfPageInstance = workflow.GetPageInstance();
+        var pageAsset = workflow.GetPageAsset();
+        var rule = workflow.GetRule(false);
+        string commitName = workflow.CommitName ?? string.Empty;
+
+        workflow.AppendTask(pageAsset, rule: rule, commitName: commitName);
+
+        compute.SetResult(this, _out);
+    }
+}
+
+#endregion
+
 #region AddSubTaskPage
 
 /// <summary>

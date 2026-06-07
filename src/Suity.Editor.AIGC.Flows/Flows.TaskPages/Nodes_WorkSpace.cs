@@ -13,7 +13,7 @@ namespace Suity.Editor.Flows.TaskPages;
 /// A flow node that retrieves the workspace associated with the current AIGC task page.
 /// Outputs the workspace asset through a data output connector.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "WorkSpace")]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "WorkSpace Tools")]
 [DisplayText("Get Task WorkSpace", "*CoreIcon|WorkSpace")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetTaskWorkSpace")]
 public class GetTaskWorkSpace : TaskPageNode
@@ -48,7 +48,7 @@ public class GetTaskWorkSpace : TaskPageNode
 /// A flow node that checks whether the current AIGC task page has an associated workspace.
 /// Outputs a boolean value indicating whether the workspace exists.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "WorkSpace")]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "WorkSpace Tools")]
 [DisplayText("Has Task WorkSpace", "*CoreIcon|WorkSpace")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.HasTaskWorkSpace")]
 public class HasTaskWorkSpace : TaskPageNode
@@ -81,7 +81,7 @@ public class HasTaskWorkSpace : TaskPageNode
 /// A flow node that retrieves the operating system type of the current workspace.
 /// Outputs the OS type as a string (Windows, macOS, Linux).
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "WorkSpace")]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "WorkSpace Tools")]
 [DisplayText("Get WorkSpace OS", "*CoreIcon|WorkSpace")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetWorkSpaceOS")]
 public class GetWorkSpaceOS : TaskPageNode
@@ -115,7 +115,7 @@ public class GetWorkSpaceOS : TaskPageNode
 /// A flow node that creates a new workspace for the current AIGC task page,
 /// or optionally retrieves an existing one if it already exists.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = true, Category = "WorkSpace")]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = true, Category = "WorkSpace Tools")]
 [DisplayText("Create Task WorkSpace", "*CoreIcon|WorkSpace")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.CreateTaskWorkSpace")]
 public class CreateTaskWorkSpace : TaskPageNode

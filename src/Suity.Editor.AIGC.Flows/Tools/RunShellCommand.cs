@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("RunShellCommand", CodeBase = "*Suity", Icon = "*CoreIcon|System", Category = "WorkSpace")]
+[NativeType("RunShellCommand", CodeBase = "*Suity", Icon = "*CoreIcon|System", Category = "WorkSpace Tools")]
 [DisplayText("Run shell command")]
 [ToolTipsText("Run a single shell command. Do not run multiple commands and a same time.")]
 public class RunShellCommand : ToolCommand<RunShellCommand.Output>

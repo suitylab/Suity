@@ -122,13 +122,15 @@ public class SelectionNode : BaseSelectionNode
     /// <param name="condition">Optional predicate to determine if the item should be displayed.</param>
     public void Add(ISelectionItem item, Predicate<ISelectionItem> condition = null)
     {
-        if (_items.ContainsKey(item.SelectionKey))
+        string selectionKey = item.SelectionKey;
+
+        if (_items.ContainsKey(selectionKey))
         {
-            throw new InvalidOperationException($"SelectionKey is already added : {item.SelectionKey}");
+            throw new InvalidOperationException($"SelectionKey is already added : {selectionKey}");
         }
 
         var store = new SelectionStore(item, condition);
-        _items.Add(item.SelectionKey, store);
+        _items.Add(selectionKey, store);
     }
 
     /// <summary>

@@ -58,8 +58,9 @@ public class FlowNodeSelectionNode : SelectionNode
         foreach (var group in categoryGroups.Where(g => g.Key != null))
         {
             string category = $"[{group.Key}]";
+            string selectionKey = $"Group-{baseType.FullName}-{category}";
 
-            var selGroup = new CategorySelectionGroup(category, group.Select(o => new FlowNodeSelectionItem(o)));
+            var selGroup = new CategorySelectionGroup(selectionKey, category, group.Select(o => new FlowNodeSelectionItem(o)));
             Add(selGroup);
         }
 

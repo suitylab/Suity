@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("BatchEditInFiles", CodeBase = "*Suity", Category = "WorkSpace")]
+[NativeType("BatchEditInFiles", CodeBase = "*Suity", Category = "WorkSpace Tools")]
 [DisplayText("Batch Edit In Files")]
 [ToolTipsText("Perform an exact string edit in multiple files at once. Use for cross-file refactoring, or edit multiple places in one file")]
 [NativeAlias("Suity.Editor.AIGC.BatchReplaceStringInFiles")]

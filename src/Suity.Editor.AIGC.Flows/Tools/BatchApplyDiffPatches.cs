@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("BatchApplyDiffPatches", CodeBase = "*Suity", Category = "WorkSpace")]
+[NativeType("BatchApplyDiffPatches", CodeBase = "*Suity", Category = "WorkSpace Tools")]
 [DisplayText("Batch Apply Diff Patches")]
 [ToolTipsText("Apply multiple unified diff patches at once. Use for complex feature development involving multiple file changes with atomicity.")]
 [NativeAlias("Suity.Editor.AIGC.BatchApplyDiffPatches")]

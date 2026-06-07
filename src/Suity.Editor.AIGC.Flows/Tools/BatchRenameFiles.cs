@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("BatchRenameFiles", CodeBase = "*Suity", Category = "WorkSpace")]
+[NativeType("BatchRenameFiles", CodeBase = "*Suity", Category = "WorkSpace Tools")]
 [DisplayText("Batch Rename File")]
 [ToolTipsText("Rename multiple files at once. Each item specifies the old path and new path.")]
 [NativeAlias("Suity.Editor.AIGC.BatchRenameFiles")]

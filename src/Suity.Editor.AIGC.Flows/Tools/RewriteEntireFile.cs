@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("RewriteEntireFile", CodeBase = "*Suity", Category = "WorkSpace")]
+[NativeType("RewriteEntireFile", CodeBase = "*Suity", Category = "WorkSpace Tools")]
 [DisplayText("Rewrite Entire File")]
 [ToolTipsText("Completely overwrite an existing file with new content. Use as fallback when Diff or Replace operations fail.")]
 [NativeAlias("Suity.Editor.AIGC.RewriteEntireFile")]

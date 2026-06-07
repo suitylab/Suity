@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("SearchFileRegex", CodeBase = "*Suity", Category = "WorkSpace")]
+[NativeType("SearchFileRegex", CodeBase = "*Suity", Category = "WorkSpace Tools")]
 [DisplayText("Search File Regex")]
 [ToolTipsText("Search for regex patterns in the workspace.")]
 [NativeAlias("Suity.Editor.AIGC.SearchFileRegex")]

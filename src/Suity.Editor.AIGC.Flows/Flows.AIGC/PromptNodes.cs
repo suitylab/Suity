@@ -140,6 +140,11 @@ public class BuildPrompt : AigcFlowNode
         {
             ParseFromPrompt();
         }
+
+        if (sync.IsSingleSetterOf(_promptTemplate.Property.Name) && sync.Intent == SyncIntent.View)
+        {
+            ParseFromPrompt();
+        }
     }
 
     private void ParseFromPrompt()
@@ -156,6 +161,12 @@ public class BuildPrompt : AigcFlowNode
             _keywords.List.Clear();
             _keywords.List.AddRange(keywords);
 
+            UpdateConnectorQueued();
+            this.GetFlowDocument()?.MarkDirty(this);
+        }
+        else
+        {
+            _keywords.List.Clear();
             UpdateConnectorQueued();
             this.GetFlowDocument()?.MarkDirty(this);
         }

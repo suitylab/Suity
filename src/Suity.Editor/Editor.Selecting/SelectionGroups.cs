@@ -52,6 +52,7 @@ class ParentAssetSelectionGroup : BaseSelectionNode
 
 class CategorySelectionGroup : BaseSelectionNode, IPreviewDisplay
 {
+    private readonly string _selectionKey;
     private readonly string _category;
 
     private readonly ISelectionItem[] _items;
@@ -61,18 +62,19 @@ class CategorySelectionGroup : BaseSelectionNode, IPreviewDisplay
     /// Initializes a new instance of the GroupNode class.
     /// </summary>
     /// <param name="group">The asset grouping.</param>
-    public CategorySelectionGroup(string category, IEnumerable<ISelectionItem> items, string displayText = null)
+    public CategorySelectionGroup(string selectionKey, string category, IEnumerable<ISelectionItem> items, string displayText = null)
     {
+        _selectionKey = selectionKey ?? throw new ArgumentNullException(nameof(selectionKey));
         _category = category ?? throw new ArgumentNullException(nameof(category));
         _items = items?.OrderBy(o => o.SelectionKey).ToArray() ?? throw new ArgumentNullException(nameof(items));
-        _displayText = displayText;
+        _displayText = _category;
     }
 
     /// <inheritdoc />
-    public override string SelectionKey => _category;
+    public override string SelectionKey => _selectionKey;
 
     /// <inheritdoc />
-    public override string Name => null;
+    public override string Name => _category;
 
     /// <inheritdoc />
     public override string DisplayText => _displayText;
