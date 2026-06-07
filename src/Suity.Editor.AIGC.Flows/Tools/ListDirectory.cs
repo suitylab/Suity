@@ -74,6 +74,16 @@ public class ListDirectory : ToolCommand<ListDirectory.Output>
             throw new DirectoryNotFoundException($"Directory not found: {relativePath}");
         }
 
+        string dirDisplay = string.IsNullOrWhiteSpace(relativePath) ? "workspace" : relativePath;
+        context.ToolInstance.Conversation?.AddRunningMessage("List directory", msg =>
+        {
+            msg.AddCode(dirDisplay);
+        });
+        context.Conversation?.AddRunningMessage("List directory", msg =>
+        {
+            msg.AddCode(dirDisplay);
+        });
+
         var dirInfo = new DirectoryInfo(fullPath);
         var entries = dirInfo.GetFileSystemInfos()
             .OrderBy(f => f is DirectoryInfo ? 0 : 1)

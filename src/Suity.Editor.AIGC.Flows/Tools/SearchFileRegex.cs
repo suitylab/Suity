@@ -117,6 +117,16 @@ public class SearchFileRegex : ToolCommand<SearchFileRegex.Output>
             throw new ArgumentException($"Invalid regex pattern: {ex.Message}");
         }
 
+        string searchInfo = string.IsNullOrWhiteSpace(DirPath) ? $"pattern: {QueryRegex}" : $"pattern: {QueryRegex}, dir: {relativePath}";
+        context.ToolInstance.Conversation?.AddRunningMessage("Search file (regex)", msg =>
+        {
+            msg.AddCode(searchInfo);
+        });
+        context.Conversation?.AddRunningMessage("Search file (regex)", msg =>
+        {
+            msg.AddCode(searchInfo);
+        });
+
         var results = new List<string>();
         int totalMatches = 0;
 

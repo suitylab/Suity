@@ -8,6 +8,7 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
@@ -112,6 +113,16 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
         {
             throw new NullReferenceException("Workspace directory is not set");
         }
+
+        var readFileNames = string.Join(", ", FileItems.Where(i => i != null).Select(i => i.FilePath));
+        context.ToolInstance.Conversation?.AddRunningMessage($"Batch read {FileItems.Count} file(s)", msg =>
+        {
+            msg.AddCode(readFileNames);
+        });
+        context.Conversation?.AddRunningMessage($"Batch read {FileItems.Count} file(s)", msg =>
+        {
+            msg.AddCode(readFileNames);
+        });
 
         var output = new Output();
 

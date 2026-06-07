@@ -84,6 +84,15 @@ public class ReadFile : ToolCommand<ReadFile.Output>
             fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
+        context.ToolInstance.Conversation?.AddRunningMessage("Read file", msg =>
+        {
+            msg.AddCode(relativePath);
+        });
+        context.Conversation?.AddRunningMessage("Read file", msg =>
+        {
+            msg.AddCode(relativePath);
+        });
+
         var output = new Output();
 
         if (!File.Exists(fullPath))

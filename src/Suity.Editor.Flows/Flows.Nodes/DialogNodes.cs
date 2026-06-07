@@ -472,6 +472,7 @@ public class OutputGlobalChat : DialogFlowNode
     private readonly FlowNodeConnector _output;
 
     private ConnectorTextBlockProperty _message = new("Message", "Message");
+    private ConnectorTextBlockProperty _inner = new("Inner", "Inner");
 
     /// <summary>
     /// Gets or sets the status label applied to the output text (e.g., info, warning, error).
@@ -491,6 +492,7 @@ public class OutputGlobalChat : DialogFlowNode
     {
         _input = AddActionInputConnector("Input", "Input");
         _message.AddConnector(this);
+        _inner.AddConnector(this);
 
         _output = AddActionOutputConnector("Output", "Output");
     }
@@ -501,6 +503,8 @@ public class OutputGlobalChat : DialogFlowNode
         base.OnSync(sync, context);
 
         _message.Sync(sync);
+        _inner.Sync(sync);
+
         Status = sync.Sync(nameof(Status), Status);
         DelaySecond = sync.Sync(nameof(DelaySecond), DelaySecond);
     }
@@ -511,6 +515,8 @@ public class OutputGlobalChat : DialogFlowNode
         base.OnSetupView(setup);
 
         _message.InspectorField(setup, this);
+        _inner.InspectorField(setup, this);
+
         setup.InspectorField(Status, new ViewProperty(nameof(Status), "Text Status"));
         setup.InspectorField(DelaySecond, new ViewProperty(nameof(DelaySecond), "Delay").WithUnit("seconds"));
     }
@@ -537,7 +543,14 @@ public class OutputGlobalChat : DialogFlowNode
 
         cancel.ThrowIfCancellationRequested();
 
-        request.Conversation?.AddMessage(message, ConversationRole.System, Status);
+        request.Conversation?.AddMessage(message, ConversationRole.System, Status, msg => 
+        {
+            string inner = _inner.GetText(compute, this);
+            if (!string.IsNullOrWhiteSpace(inner))
+            {
+                msg.AddCode(inner);
+            }
+        });
 
         return _output;
     }
