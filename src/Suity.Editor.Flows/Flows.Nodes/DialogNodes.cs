@@ -1,10 +1,12 @@
-using Suity.Editor.Types;
+using Suity.Editor.AIGC.Assistants;
+using Suity.Parser;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Collections;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace Suity.Editor.Flows.Nodes;
 
@@ -279,7 +281,7 @@ public class OutputMessage : DialogFlowNode
         string message = _message.GetText(compute, this) ?? string.Empty;
         if (string.IsNullOrWhiteSpace(message))
         {
-            return null;
+            return _output;
         }
 
         if (DelaySecond > 0)
@@ -451,6 +453,93 @@ public class ManualTextInput : DialogFlowNode
         compute.SetValue(_result, s);
 
         return _out;
+    }
+}
+
+#endregion
+
+#region OutputMessage
+
+/// <summary>
+/// A flow node that outputs a message to the global chat with a configurable
+/// text status and optional delay before display.
+/// </summary>
+[DisplayText("Output Global Chat", "*CoreIcon|Conversation")]
+[ToolTipsText("Output a message to the global chat")]
+public class OutputGlobalChat : DialogFlowNode
+{
+    private readonly FlowNodeConnector _input;
+    private readonly FlowNodeConnector _output;
+
+    private ConnectorTextBlockProperty _message = new("Message", "Message");
+
+    /// <summary>
+    /// Gets or sets the status label applied to the output text (e.g., info, warning, error).
+    /// </summary>
+    public TextStatus Status { get; set; }
+
+    /// <summary>
+    /// Gets or sets the delay in seconds before the message is output to the chat box.
+    /// </summary>
+    public float DelaySecond { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OutputMessage"/> class,
+    /// setting up the input connector, message property, and output connector.
+    /// </summary>
+    public OutputGlobalChat()
+    {
+        _input = AddActionInputConnector("Input", "Input");
+        _message.AddConnector(this);
+
+        _output = AddActionOutputConnector("Output", "Output");
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _message.Sync(sync);
+        Status = sync.Sync(nameof(Status), Status);
+        DelaySecond = sync.Sync(nameof(DelaySecond), DelaySecond);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _message.InspectorField(setup, this);
+        setup.InspectorField(Status, new ViewProperty(nameof(Status), "Text Status"));
+        setup.InspectorField(DelaySecond, new ViewProperty(nameof(DelaySecond), "Delay").WithUnit("seconds"));
+    }
+
+    /// <inheritdoc/>
+    public override async Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)
+    {
+        var request = compute.Context.GetArgument<AIRequest>();
+        if (request is null)
+        {
+            return _output;
+        }
+
+        string message = _message.GetText(compute, this) ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return _output;
+        }
+
+        if (DelaySecond > 0)
+        {
+            await Task.Delay((int)(DelaySecond * 1000), cancel);
+        }
+
+        cancel.ThrowIfCancellationRequested();
+
+        request.Conversation?.AddMessage(message, ConversationRole.System, Status);
+
+        return _output;
     }
 }
 

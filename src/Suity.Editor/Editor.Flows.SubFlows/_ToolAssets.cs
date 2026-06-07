@@ -9,8 +9,6 @@ using Suity.Synchonizing.Core;
 using Suity.Synchonizing.Preset;
 using Suity.Views;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +22,7 @@ public record ToolCallContext
     public IToolInstance ToolInstance { get; init; }
     public string WorkSpaceDirectory { get; init; }
     public IConversationHandler Conversation { get; init; }
+    public IConversationHandler GlobalConversation { get; init; }
     public CancellationToken Cancellation { get; init; }
 }
 #endregion

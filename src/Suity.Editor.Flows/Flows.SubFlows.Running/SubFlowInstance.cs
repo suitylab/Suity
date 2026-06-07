@@ -1275,7 +1275,11 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         }
 
         _currentEndElement = null;
-        return LLmService.Instance.StartWorkflowTask(request, runnable, view, OnConfigComputation);
+        return LLmService.Instance.StartWorkflowTask(request, runnable, view, computation => 
+        {
+            computation.Context.SetArgument<AIRequest>(request);
+            OnConfigComputation(computation);
+        });
     }
 
     /// <summary>
