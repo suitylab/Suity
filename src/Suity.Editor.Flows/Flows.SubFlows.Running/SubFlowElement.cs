@@ -1,5 +1,6 @@
 using Suity.Drawing;
 using Suity.Synchonizing;
+using Suity.Synchonizing.Core;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
@@ -220,6 +221,7 @@ public abstract class SubFlowElement : IViewObject, ISubFlowElement
     /// <param name="other">The other page element to update from.</param>
     public virtual void UpdateFromOther(ISubFlowElement other)
     {
+        Cloner.CloneProperty(other, this);
     }
 
     #region ISubFlowElement
