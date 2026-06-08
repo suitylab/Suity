@@ -148,12 +148,41 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
         }
         else
         {
-            setup.InspectorFieldOf<TextBlock>(new ViewProperty(Name, DisplayText));
+            setup.InspectorFieldOf<TextBlock>(new ViewProperty(Name, DisplayText).WithStatus(GetStatus()));
         }
     }
 
     /// <inheritdoc/>
-    public override bool? GetIsDone() => null;
+    public override bool? GetIsDone()
+    {
+        if (Required && !TooltipMode)
+        {
+            return !SubFlowHelper.GetIsValueEmpty(_text?.Text);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <inheritdoc/>
+    public override void UpdateFromOther(ISubFlowElement other)
+    {
+        if (other is SubFlowElement otherOutput)
+        {
+            UpdateFromOther(otherOutput);
+        }
+    }
+
+    /// <summary>
+    /// Updates the current element's value from another <see cref="SubFlowMessage"/>.
+    /// </summary>
+    /// <param name="otherParameter">The other element to copy values from.</param>
+    public void UpdateFromOther(SubFlowMessage otherParameter)
+    {
+        _text ??= new();
+        _text.Text = otherParameter._text?.Text ?? string.Empty;
+    }
 
 
     private string ResolveMessage()

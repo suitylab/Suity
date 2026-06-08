@@ -1050,7 +1050,7 @@ public class GetTaskContextText : TaskPageNode
 /// <summary>
 /// A flow node that retrieves the self task reference from the current execution context.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageGroup, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Get Self Task", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetSelfTask")]
 [DisplayOrder(4960)]
@@ -1088,7 +1088,7 @@ public class GetSelfTask : TaskPageNode
 /// A flow node that retrieves the last sub-task from a specified task.
 /// Optionally requires the sub-task to be completed before returning it.
 /// </summary>
-[SimpleFlowNodeStyle(Color = FlowColors.PageGroup, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Width = 100, Height = 20)]
 [DisplayText("Get Last Sub Task", "*CoreIcon|Task")]
 [NativeAlias("Suity.Editor.AIGC.Flows.Pages.GetLastSubTask")]
 [DisplayOrder(4950)]

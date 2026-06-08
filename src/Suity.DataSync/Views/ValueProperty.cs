@@ -329,12 +329,15 @@ public class StringProperty : ValueProperty<string>
         {
             Value = sync.Sync(Property.Name, Value, flag | SyncFlag.NotNull) ?? DefaultValue ?? string.Empty;
 
-            if (sync.IsSetter() && string.IsNullOrWhiteSpace(Value) && !string.IsNullOrWhiteSpace(AutoFillText))
+            if (sync.IsSetter(Property.Name))
             {
-                Value = AutoFillText;
-            }
+                if (string.IsNullOrWhiteSpace(Value) && !string.IsNullOrWhiteSpace(AutoFillText))
+                {
+                    Value = AutoFillText;
+                }
 
-            OnValueChanged();
+                OnValueChanged();
+            }
         }
 
         return Value;
@@ -420,11 +423,11 @@ public class TextBlockProperty : ValueProperty<TextBlock>
         }
         else
         {
-            if (sync.IsGetter())
+            if (sync.IsGetter(Property.Name))
             {
                 sync.Sync(Property.Name, Value, flag);
             }
-            else if (sync.IsSetter())
+            else if (sync.IsSetter(Property.Name))
             {
                 // handle auto convertion from string
                 if (sync.Sync<TextBlock>(Property.Name, null) is TextBlock textBlock)
@@ -439,14 +442,14 @@ public class TextBlockProperty : ValueProperty<TextBlock>
                 {
                     Value ??= new();
                 }
-            }
 
-            if (sync.IsSetter() && string.IsNullOrWhiteSpace(Value.Text) && !string.IsNullOrWhiteSpace(AutoFillText))
-            {
-                Value.Text = AutoFillText;
-            }
+                if (string.IsNullOrWhiteSpace(Value.Text) && !string.IsNullOrWhiteSpace(AutoFillText))
+                {
+                    Value.Text = AutoFillText;
+                }
 
-            OnValueChanged();
+                OnValueChanged();
+            }
         }
 
         return Value;

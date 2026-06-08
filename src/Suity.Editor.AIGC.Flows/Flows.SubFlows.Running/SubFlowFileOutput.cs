@@ -226,7 +226,7 @@ public class SubFlowFileOutput : SubFlowElement, IPageParameterOutput
     /// <summary>
     /// Updates the current element's value from another <see cref="SubFlowFileOutput"/>.
     /// </summary>
-    /// <param name="otherParameter">The other file output element to copy values from.</param>
+    /// <param name="otherParameter">The other element to copy values from.</param>
     public void UpdateFromOther(SubFlowFileOutput otherParameter)
     {
         _path = otherParameter._path;

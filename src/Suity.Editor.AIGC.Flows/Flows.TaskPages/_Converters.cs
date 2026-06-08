@@ -51,3 +51,16 @@ public class AigcPageToPageAssetConverter : TypeConverter<ISubFlow, SubFlowDefin
         return (objFrom as SubflowDefinitionNode)?.GetAsset() as SubFlowDefinitionAsset;
     }
 }
+
+// TODO: Add FunctionContext parameter.
+//public class ScratchPadToLLmMessageConverter : TypeConverter<ScratchPad, LLmMessage>
+//{
+//    public override LLmMessage Convert(ScratchPad objFrom)
+//    {
+//        return new LLmMessage
+//        {
+//            Role = objFrom.Role,
+//            Content = objFrom.Content
+//        };
+//    }
+//}
