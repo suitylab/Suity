@@ -146,10 +146,10 @@ public class ReadFile : ToolCommand<ReadFile.Output>
                     string previousContent = lastScratchPad.Content;
                     if (!string.IsNullOrEmpty(previousContent))
                     {
-                        string header = $"========== READ FILE: start line: {startLine}, line count: {count} ==========";
+                        string header = $"========== FILE SECTION: start line: {startLine}, line count: {count} ==========";
                         if (!string.IsNullOrEmpty(lastScratchPad.Note))
                         {
-                            content = $"========== READ FILE: {lastScratchPad.Note} =========={Environment.NewLine}{previousContent}{Environment.NewLine}{Environment.NewLine}{header}{Environment.NewLine}{content}";
+                            content = $"========== FILE SECTION: {lastScratchPad.Note} =========={Environment.NewLine}{previousContent}{Environment.NewLine}{Environment.NewLine}{header}{Environment.NewLine}{content}";
                         }
                         else
                         {
@@ -160,7 +160,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
 
                 output.Message = $"read successful. {msg}, see ScratchPad for detail.";
                 bool merged = lastScratchPad?.Type == ScratchPadTypes.FileSegment && !string.IsNullOrEmpty(lastScratchPad.Content);
-                parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, merged ? "Contains multiple sections (sections start with: ========== READ FILE: ...)" : msg);
+                parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, merged ? "Contains multiple sections (sections start with: ========== FILE SECTIONE: ...)" : msg);
             }
         }
 
