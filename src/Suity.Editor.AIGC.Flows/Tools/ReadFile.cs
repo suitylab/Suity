@@ -160,7 +160,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
 
                 output.Message = $"read successful. {msg}, see ScratchPad for detail.";
                 bool merged = lastScratchPad?.Type == ScratchPadTypes.FileSegment && !string.IsNullOrEmpty(lastScratchPad.Content);
-                parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, merged ? "Contains multiple sections (sections start with: ========== FILE SECTIONE: ...)" : msg);
+                parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, merged ? "Contains multiple sections (sections start with: ========== FILE SECTION: ...)" : msg);
             }
         }
 
