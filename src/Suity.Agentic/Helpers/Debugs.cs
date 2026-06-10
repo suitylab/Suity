@@ -1,4 +1,5 @@
 using Suity.Editor.Documents;
+using Suity.Editor.Views;
 using Suity.Views;
 using Suity.Views.Menu;
 using System.Linq;
@@ -32,5 +33,36 @@ public class CloseBackendDocuments : MenuCommand
             DocumentManager.Instance.CloseDocument(doc);
             Logs.LogDebug("Closing document: " + doc.FileName.FullPath);
         }
+    }
+}
+
+[InsertInto(":Main/Tool")]
+public class LayoutDockCommand : MenuCommand
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LayoutDockCommand"/> class.
+    /// </summary>
+    public LayoutDockCommand()
+        : base("Layout Dock", CoreIconCache.File)
+    {
+    }
+
+    /// <inheritdoc/>
+    public override void DoCommand()
+    {
+        var mainWindow = SuityApp.Instance.Window as MainWindow;
+        if (mainWindow is null)
+        {
+            return;
+        }
+
+        var dockManager = mainWindow.View?.DockContainer;
+        if (dockManager is null)
+        {
+            return;
+        }
+
+        dockManager.RebuildContents();
+        //dockManager.InvalidateVisual();
     }
 }

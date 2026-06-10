@@ -87,7 +87,7 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
 {
     private readonly IToolWindow? _toolWindow;
 
-    private readonly DocumentWatching? _instance;
+    private readonly DocumentWatching? _docInstance;
     private DisposeCollector? _listeners;
 
     private EditorDocumentDockable? _dockable;
@@ -133,7 +133,7 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
 
     public EditorDocumentContent(DocumentWatching instance, EditorDocumentDockable? dockable = null)
     {
-        _instance = instance ?? throw new ArgumentNullException();
+        _docInstance = instance ?? throw new ArgumentNullException();
         this.Name = Path.GetFileName(instance.Document.FileName.PhysicFileName);
 
         instance.Document.DirtyChanged += document_DocumentDirtyChanged;
@@ -142,18 +142,18 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
 
         _listeners += EditorRexes.DocumentAnalyzeEnabled.AsRexListener().Where(v => v).Subscribe(_ =>
         {
-            (_instance.View as IAnalysable)?.RequestAnalyze();
+            (_docInstance.View as IAnalysable)?.RequestAnalyze();
         }).Push();
 
-        if (_instance.View is Control control)
+        if (_docInstance.View is Control control)
         {
             this.Content = control;
         }
-        else if (_instance.View is IDrawImGui drawImGui)
+        else if (_docInstance.View is IDrawImGui drawImGui)
         {
             SetupImGui(drawImGui);
         }
-        else if (_instance.View is IGraphicObject graphicObject)
+        else if (_docInstance.View is IGraphicObject graphicObject)
         {
             SetupImGui(graphicObject);
         }
@@ -165,7 +165,7 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
         Dispatcher.UIThread.Post(() =>
         {
             // Delay to avoid double execution updates with View.GetDataFromDocument().
-            _instance.View.StartView(_instance.Document.Content, this);
+            _docInstance.View.StartView(_docInstance.Document.Content, this);
         });
     }
 
@@ -196,13 +196,14 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
 
     public IToolWindow? ToolWindow => _toolWindow;
 
-    public DocumentEntry? Document => _instance?.Document;
-    public IDocumentView? DocumentView => _instance?.View;
+    public DocumentWatching? DocumentInstance => _docInstance;
+    public DocumentEntry? Document => _docInstance?.Document;
+    public IDocumentView? DocumentView => _docInstance?.View;
     public IServiceProvider? ViewObject
     {
         get
         {
-            if (_instance is { } instance)
+            if (_docInstance is { } instance)
             {
                 if (instance.View is IHasSubDocumentView hasSubView && hasSubView.CurrentSubView is { } subView)
                 {
@@ -228,7 +229,7 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
 
     public string GetPersistString()
     {
-        if (_instance?.Document is { } doc)
+        if (_docInstance?.Document is { } doc)
         {
             string? rPath = doc.FileName.FullPath?.MakeRalativePath(Project.Current.ProjectBasePath);
             return $":{rPath}";
@@ -333,13 +334,13 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
             return;
         }
 
-        if (_instance is not { } instance)
+        if (_docInstance is not { } instance)
         {
             _canClose = true;
             return;
         }
 
-        if (_instance.Document is not { } doc)
+        if (_docInstance.Document is not { } doc)
         {
             _canClose = true;
             return;
@@ -397,12 +398,12 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
 
     internal async Task<bool?> AskForAppQuit()
     {
-        if (_instance?.Document is not { } doc)
+        if (_docInstance?.Document is not { } doc)
         {
             return true;
         }
 
-        if (!_instance.Document.IsDirty)
+        if (!_docInstance.Document.IsDirty)
         {
             return true;
         }
@@ -457,14 +458,9 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
 
         ClosedEntirely = true;
 
-        if (_instance is { } instance)
+        if (_docInstance is { } instance)
         {
-            if (instance.Document is { } doc)
-            {
-                doc.DirtyChanged -= document_DocumentDirtyChanged;
-                doc.Renamed -= document_Renamed;
-                doc.IconChanged -= document_iconChanged;
-            }
+            DetachDocumentInstance();
 
             instance.View?.StopView();
             instance.Dispose();
@@ -475,6 +471,23 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
         _listeners?.Dispose();
         _listeners = null;
         _dockable = null;
+    }
+
+    internal void DetachDocumentInstance()
+    {
+        if (_docInstance is not { } instance)
+        {
+            return;
+        }
+
+        if (instance.Document is not { } doc)
+        {
+            return;
+        }
+
+        doc.DirtyChanged -= document_DocumentDirtyChanged;
+        doc.Renamed -= document_Renamed;
+        doc.IconChanged -= document_iconChanged;
     }
 
     // Extract a generic close trigger method
@@ -510,7 +523,7 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
     {
         string title = string.Empty;
 
-        if (_instance?.Document is { } doc)
+        if (_docInstance?.Document is { } doc)
         {
             if (!string.IsNullOrEmpty(doc.FileName.FullPath))
             {
@@ -562,6 +575,34 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
         }
     }
 
+    public EditorDocumentContent Rebuild()
+    {
+        if (_docInstance is { } docInstance)
+        {
+            DetachDocumentInstance();
+
+            var newContent = new EditorDocumentContent(docInstance);
+            newContent.Dockable = this.Dockable;
+
+            HandleClosed();
+
+            return newContent;
+
+        }
+        else if (_toolWindow is { } toolWindow)
+        {
+            var newContent = new EditorDocumentContent(toolWindow);
+            newContent.Dockable = this.Dockable;
+
+            HandleClosed();
+
+            return newContent;
+        }
+        else
+        {
+            return this;
+        }
+    }
 
     public static DocumentEntry? ResolveDocumentPersistantString(string id)
     {

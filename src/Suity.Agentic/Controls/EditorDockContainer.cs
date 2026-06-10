@@ -4,6 +4,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Avalonia;
@@ -24,8 +26,10 @@ using Suity.Views.Gui;
 using Suity.Views.Im;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.Controls;
@@ -109,6 +113,27 @@ public class EditorDockContainer : UserControl
                 }
             }
             // If a tool is focused, we do nothing, thereby preserving the reference to the last document
+        };
+
+        // After drag-and-drop split, the new DocumentDockControl's DeferredContentControl
+        // does not have the dockable set as its Content, leaving EditorDocumentContent unloaded
+        // (IsLoaded=false, VisualRoot=null). Fix: rebuild and replace the EditorDocumentContent
+        // to force a fresh render in the new container.
+        _factory.DockableDocked += (_, e) =>
+        {
+            if (e.Dockable is EditorDocumentDockable docDockable)
+            {
+                //Dispatcher.UIThread.Post(() =>
+                //{
+                //    RebuildAndReplaceDocumentContent(docDockable);
+                //}, DispatcherPriority.Loaded);
+                RebuildAndReplaceDocumentContent(docDockable);
+            }
+        };
+
+        _factory.DockableClosed += (s, e) =>
+        {
+            Debug.WriteLine("OK");
         };
 
         _dockControl = new DockControl
@@ -1043,4 +1068,36 @@ public class EditorDockContainer : UserControl
         return null;
     }
 
+    private void RebuildAndReplaceDocumentContent(EditorDocumentDockable docDockable)
+    {
+        var oldDocControl = docDockable.EditorContent;
+        if (oldDocControl is null) return;
+
+        var newDocControl = oldDocControl.Rebuild();
+        if (newDocControl.Document is not { } doc)
+        {
+            return;
+        }
+
+
+        // Unsubscribe from old control's Closed event
+        oldDocControl.Closed -= DocControl_Closed;
+
+        // Subscribe to new control's Closed event
+        newDocControl.Closed += DocControl_Closed;
+
+        // Update the document cache
+        _documentCache[doc] = newDocControl;
+    }
+
+    public void RebuildContents()
+    {
+        foreach (var content in _documentCache.Values.ToArray())
+        {
+            if (content.Dockable is { } dockable)
+            {
+                RebuildAndReplaceDocumentContent(dockable);
+            }
+        }
+    }
 }
