@@ -25,7 +25,7 @@ namespace Suity.Editor.Controls;
 
 public class EditorDocumentDockable : Dock.Model.Avalonia.Controls.Document
 {
-    private EditorDocumentContent? _docControl;
+    private EditorDocumentContent? _docContent;
 
     public object? IconSource { get; internal set; }
 
@@ -39,27 +39,25 @@ public class EditorDocumentDockable : Dock.Model.Avalonia.Controls.Document
     public EditorDocumentDockable(EditorDocumentContent docControl)
         : this()
     {
-        this._docControl = docControl ?? throw new ArgumentNullException(nameof(docControl));
+        this._docContent = docControl ?? throw new ArgumentNullException(nameof(docControl));
 
         base.Content = docControl;
         base.CanClose = true;
     }
 
     [JsonIgnore]
-    public EditorDocumentContent? EditorContent
+    public EditorDocumentContent? EditorContent => _docContent;
+
+    internal void SetEditorContent(EditorDocumentContent? content)
     {
-        get => _docControl;
-        internal set
-        {
-            _docControl = value;
-            base.Content = value;
-            IconSource = value?.GetIcon();
-        }
+        _docContent = content;
+        base.Content = content;
+        IconSource = content?.GetIcon();
     }
 
     public override bool OnClose()
     {
-        if (_docControl is not { } ctrl)
+        if (_docContent is not { } ctrl)
         {
             return true;
         }
@@ -121,7 +119,7 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
         //var text = new TextBox { Text = "OKOK" };
         //this.Content = text;
 
-        Dockable = dockable;
+        SetDockable(dockable);
         UpdateIcon();
         UpdateTitle();
 
@@ -158,7 +156,7 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
             SetupImGui(graphicObject);
         }
 
-        Dockable = dockable;
+        SetDockable(dockable);
         UpdateIcon();
         UpdateTitle();
 
@@ -170,28 +168,26 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
     }
 
     [JsonIgnore]
-    public EditorDocumentDockable? Dockable
+    public EditorDocumentDockable? Dockable => _dockable;
+
+    internal void SetDockable(EditorDocumentDockable? value)
     {
-        get => _dockable;
-        internal set 
+        if (ReferenceEquals(_dockable, value))
         {
-            if (ReferenceEquals(_dockable, value))
-            {
-                return;
-            }
-
-            _dockable?.EditorContent = null;
-            _dockable = value;
-
-            if (_dockable is { } dockable)
-            {
-                dockable.EditorContent = this;
-                dockable.Id = GetPersistString();
-            }
-
-            UpdateIcon();
-            UpdateTitle();
+            return;
         }
+
+        _dockable?.SetEditorContent(null);
+        _dockable = value;
+
+        if (_dockable is { } dockable)
+        {
+            dockable.SetEditorContent(this);
+            dockable.Id = GetPersistString();
+        }
+
+        UpdateIcon();
+        UpdateTitle();
     }
 
     public IToolWindow? ToolWindow => _toolWindow;
@@ -444,6 +440,9 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
         }
     }
 
+    #endregion
+
+    #region Close & Rebuild
 
     internal void HandleClosed()
     {
@@ -471,6 +470,9 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
         _listeners?.Dispose();
         _listeners = null;
         _dockable = null;
+
+        //var content = this.Content;
+        //this.Content = null;
     }
 
     internal void DetachDocumentInstance()
@@ -490,12 +492,69 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
         doc.IconChanged -= document_iconChanged;
     }
 
+    internal EditorDocumentContent Rebuild()
+    {
+        if (_docInstance is { } docInstance)
+        {
+            DetachDocumentInstance();
+            if (this.Content is Control ctrl)
+            {
+                ctrl.RemoveFromVisualTree();
+            }
+
+            var newContent = new EditorDocumentContent(docInstance);
+
+            var dockable = this.Dockable;
+            this.SetDockable(null);
+            newContent.SetDockable(dockable);
+
+            HandleClosed();
+
+            if (this.Parent is { } parent)
+            {
+                this.RemoveFromVisualTree();
+                newContent.AddToVisualTree(parent);
+            }
+
+            return newContent;
+
+        }
+        else if (_toolWindow is { } toolWindow)
+        {
+            if (this.Content is Control ctrl)
+            {
+                ctrl.RemoveFromVisualTree();
+            }
+
+            var newContent = new EditorDocumentContent(toolWindow);
+
+            var dockable = this.Dockable;
+            this.SetDockable(null);
+            newContent.SetDockable(dockable);
+
+            HandleClosed();
+
+            if (this.Parent is { } parent)
+            {
+                this.RemoveFromVisualTree();
+                newContent.AddToVisualTree(parent);
+            }
+
+            return newContent;
+        }
+        else
+        {
+            return this;
+        }
+    }
+
     // Extract a generic close trigger method
     private void CloseThisDockable()
     {
         // Use Dock's Factory to completely remove this component from the UI tree
         _dockable?.Owner?.Factory?.CloseDockable(_dockable);
     }
+
 
     #endregion
 
@@ -575,34 +634,7 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
         }
     }
 
-    public EditorDocumentContent Rebuild()
-    {
-        if (_docInstance is { } docInstance)
-        {
-            DetachDocumentInstance();
-
-            var newContent = new EditorDocumentContent(docInstance);
-            newContent.Dockable = this.Dockable;
-
-            HandleClosed();
-
-            return newContent;
-
-        }
-        else if (_toolWindow is { } toolWindow)
-        {
-            var newContent = new EditorDocumentContent(toolWindow);
-            newContent.Dockable = this.Dockable;
-
-            HandleClosed();
-
-            return newContent;
-        }
-        else
-        {
-            return this;
-        }
-    }
+    
 
     public static DocumentEntry? ResolveDocumentPersistantString(string id)
     {

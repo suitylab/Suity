@@ -37,6 +37,7 @@ public class CloseBackendDocuments : MenuCommand
 }
 
 [InsertInto(":Main/Tool")]
+[NotAvailable]
 public class LayoutDockCommand : MenuCommand
 {
     /// <summary>

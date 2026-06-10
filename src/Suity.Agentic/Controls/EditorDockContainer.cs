@@ -348,7 +348,7 @@ public class EditorDockContainer : UserControl
             if (centerToolControl.Dockable is not { } dockable)
             {
                 dockable = new EditorDocumentDockable { Id = tool.WindowId, Title = title ?? tool.WindowId };
-                centerToolControl.Dockable = dockable;
+                centerToolControl.SetDockable(dockable);
 
                 // Add to the Dock system
                 docDock.AddDocument(dockable);
@@ -652,7 +652,7 @@ public class EditorDockContainer : UserControl
         if (docControl.Dockable is not { } dockable)
         {
             dockable = new EditorDocumentDockable();
-            docControl.Dockable = dockable;
+            docControl.SetDockable(dockable);
 
             // Add to the Dock system
             docDock.AddDocument(dockable);
@@ -902,7 +902,7 @@ public class EditorDockContainer : UserControl
         // But we need to clear old Dockable binding relationships
         foreach (var docContent in _documentCache.Values)
         {
-            docContent.Dockable = null;
+            docContent.SetDockable(null);
         }
 
         // 4. Execute default layout initialization (create new LeftPane, DocumentsPane, etc.)
@@ -928,7 +928,9 @@ public class EditorDockContainer : UserControl
         var layout = _dockControl.Layout;
         if (layout != null)
         {
-            _factory.InitLayout(layout);
+            _dockState.Restore(layout);    // Restore panel visibility state
+            _dockControl.Layout = layout;
+            _factory.InitLayout(layout);   // Key: Rebuild Factory internal events and bindings
         }
     }
 
@@ -954,12 +956,12 @@ public class EditorDockContainer : UserControl
             if (EditorDocumentContent.ResolveDocumentPersistantString(docDockable.Id) is { } entry)
             {
                 var docControl = GetOrCreateDocumentControl(entry, out var created);
-                docControl?.Dockable = docDockable;
+                docControl?.SetDockable(docDockable);
             }
             else if (EditorDocumentContent.ResolveToolWindowPersistantString(docDockable.Id) is { } tool)
             {
                 var toolControl = GetOrCreateCenterToolControl(tool, out var created);
-                toolControl?.Dockable = docDockable;
+                toolControl?.SetDockable(docDockable);
             }
             else
             {
@@ -1099,5 +1101,7 @@ public class EditorDockContainer : UserControl
                 RebuildAndReplaceDocumentContent(dockable);
             }
         }
+
+        UpdateDockLayout();
     }
 }
