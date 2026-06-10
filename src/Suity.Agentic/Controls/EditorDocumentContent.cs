@@ -23,7 +23,7 @@ using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.Controls;
 
-public class EditorDocumentDockable : Dock.Model.Avalonia.Controls.Tool
+public class EditorDocumentDockable : Dock.Model.Avalonia.Controls.Document
 {
     private EditorDocumentContent? _docControl;
 

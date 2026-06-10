@@ -168,7 +168,7 @@ public class SubFlowMessage : SubFlowElement, IPageMessage, IPageParameterInput,
     /// <inheritdoc/>
     public override void UpdateFromOther(ISubFlowElement other)
     {
-        if (other is SubFlowElement otherOutput)
+        if (other is SubFlowMessage otherOutput)
         {
             UpdateFromOther(otherOutput);
         }
