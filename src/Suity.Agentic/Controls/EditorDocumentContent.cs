@@ -31,6 +31,9 @@ public class EditorDocumentDockable : Dock.Model.Avalonia.Controls.Document
 
     public EditorDocumentDockable()
     {
+        this.CanFloat = false;
+        this.CanDockAsDocument = true;
+        this.CanPin = false;
     }
 
     public EditorDocumentDockable(EditorDocumentContent docControl)
