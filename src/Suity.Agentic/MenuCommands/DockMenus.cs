@@ -23,7 +23,7 @@ class DocumentDockTabMenu : RootMenuCommand
 
     public static void HandleSave(EditorDocumentDockable? dockable)
     {
-        if (dockable?.EditorContent?.Document is { } doc)
+        if (dockable?.DocumentContent?.Document is { } doc)
         {
             doc.Save();
         }
@@ -33,7 +33,7 @@ class DocumentDockTabMenu : RootMenuCommand
     {
         if (dockable != null)
         {
-            ResolveDock()?.DockFactory.CloseDockable(dockable);
+            ResolveDock()?.Factory.CloseDockable(dockable);
         }
     }
 
@@ -41,7 +41,7 @@ class DocumentDockTabMenu : RootMenuCommand
     {
         if (dockable != null)
         {
-            ResolveDock()?.DockFactory.CloseOtherDockables(dockable);
+            ResolveDock()?.Factory.CloseOtherDockables(dockable);
         }
     }
 
@@ -49,7 +49,7 @@ class DocumentDockTabMenu : RootMenuCommand
     {
         if (dockable != null)
         {
-            ResolveDock()?.DockFactory.CloseAllDockables(dockable);
+            ResolveDock()?.Factory.CloseAllDockables(dockable);
         }
     }
 
@@ -57,7 +57,7 @@ class DocumentDockTabMenu : RootMenuCommand
     {
         if (dockable != null)
         {
-            ResolveDock()?.DockFactory.CloseLeftDockables(dockable);
+            ResolveDock()?.Factory.CloseLeftDockables(dockable);
         }
     }
 
@@ -65,13 +65,13 @@ class DocumentDockTabMenu : RootMenuCommand
     {
         if (dockable != null)
         {
-            ResolveDock()?.DockFactory.CloseRightDockables(dockable);
+            ResolveDock()?.Factory.CloseRightDockables(dockable);
         }
     }
 
     public static void HandleLocateInProject(EditorDocumentDockable? dockable)
     {
-        if (dockable?.EditorContent?.Document is { } doc)
+        if (dockable?.DocumentContent?.Document is { } doc)
         {
             EditorUtility.LocateInProject(doc);
         }
@@ -95,7 +95,7 @@ class ToolDockTabMenu : RootMenuCommand
     {
         if (dockable != null)
         {
-            ResolveDock()?.DockFactory.CloseDockable(dockable);
+            ResolveDock()?.Factory.CloseDockable(dockable);
         }
     }
 

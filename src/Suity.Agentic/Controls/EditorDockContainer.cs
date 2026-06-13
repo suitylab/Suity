@@ -4,8 +4,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
-using Avalonia.Threading;
-using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Avalonia;
@@ -29,7 +27,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.Controls;
@@ -105,7 +102,7 @@ public class EditorDockContainer : UserControl
             // e is the newly focused IDockable
             if (e.Dockable is EditorDocumentDockable docDockable)
             {
-                _lastActiveDocument = docDockable.EditorContent;
+                _lastActiveDocument = docDockable.DocumentContent;
 
                 if (_loaded && ViewPlugin.Instance.AutoLocateInProject && _lastActiveDocument?.Document?.Content is IViewLocateInProject p)
                 {
@@ -175,7 +172,9 @@ public class EditorDockContainer : UserControl
 
     public string? LayoutConfigFilName { get; set; }
 
-    public Factory DockFactory => _factory;
+    public Factory Factory => _factory;
+
+    public DockControl Dock => _dockControl;
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -596,6 +595,9 @@ public class EditorDockContainer : UserControl
             }
         }
     }
+
+    public EditorDocumentContent? ActiveDocumentControl => GetDocumentControl(ActiveDocument);
+
 
     // 2. Implement bool CloseDocument(Documents.DocumentEntry entry)
     public bool CloseDocument(Documents.DocumentEntry entry)
@@ -1072,7 +1074,7 @@ public class EditorDockContainer : UserControl
 
     private void RebuildAndReplaceDocumentContent(EditorDocumentDockable docDockable)
     {
-        var oldDocControl = docDockable.EditorContent;
+        var oldDocControl = docDockable.DocumentContent;
         if (oldDocControl is null) return;
 
         var newDocControl = oldDocControl.Rebuild();
@@ -1099,6 +1101,18 @@ public class EditorDockContainer : UserControl
             if (content.Dockable is { } dockable)
             {
                 RebuildAndReplaceDocumentContent(dockable);
+
+                if (dockable?.Owner is IDock dock)
+                {
+                    var focus = dock.FocusedDockable;
+                    var active = dock.ActiveDockable;
+                    var visibles = dock.VisibleDockables;
+                    bool isActive = dock.IsActive;
+
+                    //dock.FocusedDockable = null;
+                    //dock.FocusedDockable = dockable;
+                    dock.IsActive = true;
+                }
             }
         }
 

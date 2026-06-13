@@ -46,7 +46,7 @@ public class EditorDocumentDockable : Dock.Model.Avalonia.Controls.Document
     }
 
     [JsonIgnore]
-    public EditorDocumentContent? EditorContent => _docContent;
+    public EditorDocumentContent? DocumentContent => _docContent;
 
     internal void SetEditorContent(EditorDocumentContent? content)
     {
