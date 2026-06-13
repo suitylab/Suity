@@ -34,12 +34,13 @@ public class DebugRebuildContents : MenuCommand
             return;
         }
 
-        var dockManager = mainWindow.View?.DockContainer;
-        if (dockManager is null)
+        var docks = mainWindow.View?.DockContainer;
+        if (docks is null)
         {
             return;
         }
 
-        dockManager.QueueRebuildAll();
+        docks.QueueRebuildDocuments();
+        docks.QueueRebuildTools();
     }
 }

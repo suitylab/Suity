@@ -14,7 +14,7 @@ namespace Suity.Editor.Controls;
 
 public class EditorToolDockable : Dock.Model.Avalonia.Controls.Tool
 {
-    private EditorToolContent? _toolControl;
+    private DockBridgeControl<EditorToolContent>? _bridge;
 
     public object? IconSource { get; internal set; }
 
@@ -23,35 +23,63 @@ public class EditorToolDockable : Dock.Model.Avalonia.Controls.Tool
         this.CanFloat = false;
         this.CanDockAsDocument = false;
         this.CanPin = true;
-
-        //IconSource = "M12,2L1,21H23L12,2M12,6L19.53,19H4.47L12,6M11,10V14H13V10H11M11,16V18H13V16H11Z";
     }
 
-    public EditorToolDockable(EditorToolContent toolControl)
+    public EditorToolDockable(EditorToolContent content)
         : this()
     {
-        _toolControl = toolControl ?? throw new ArgumentNullException(nameof(toolControl));
-
-        base.Content = toolControl;
-        base.CanClose = true;
+        SetEditorContent(content);
     }
 
     [JsonIgnore]
-    public EditorToolContent? EditorContent
+    public DockBridgeControl<EditorToolContent>? Bridge => _bridge;
+
+    [JsonIgnore]
+    public EditorToolContent? EditorContent => _bridge?.Target;
+
+    internal void SetEditorBridge(DockBridgeControl<EditorToolContent>? bridge)
     {
-        get => _toolControl;
-        internal set
+        _bridge = bridge;
+        base.Content = bridge;
+        IconSource = bridge?.Target.ToolWindow?.Icon?.ToAvaloniaBitmapCached();
+    }
+
+    internal void SetEditorContent(EditorToolContent? content)
+    {
+        if (content != null)
         {
-            _toolControl = value;
-            base.Content = value;
-            IconSource = value?.ToolWindow?.Icon?.ToAvaloniaBitmapCached();
+            SetEditorBridge(new DockBridgeControl<EditorToolContent>(content));
         }
+        else
+        {
+            SetEditorBridge(null);
+        }
+    }
+
+    internal void Rebuild()
+    {
+        if (_bridge is null)
+        {
+            return;
+        }
+
+        var content = _bridge.Target;
+        this.Content = null;
+
+        content.RemoveFromVisualTree();
+        var newBridge = new DockBridgeControl<EditorToolContent>(content);
+        SetEditorBridge(newBridge);
     }
 
     public override bool OnClose()
     {
-        _toolControl?.HandleClosed();
-        _toolControl = null;
+        if (_bridge is not { } bridge)
+        {
+            return true;
+        }
+
+        var ctrl = _bridge.Target;
+        ctrl.HandleClosed();
 
         return true;
     }
@@ -88,7 +116,7 @@ public class EditorToolContent : UserControl
         //var text = new TextBox { Text = "OKOK" };
         //this.Content = text;
 
-        Dockable = dockable;
+        SetDockable(dockable);
         UpdateIcon();
         UpdateTitle();
 
@@ -99,28 +127,26 @@ public class EditorToolContent : UserControl
     }
 
     [JsonIgnore]
-    public EditorToolDockable? Dockable
+    public EditorToolDockable? Dockable => _dockable;
+
+    internal void SetDockable(EditorToolDockable? value)
     {
-        get => _dockable;
-        internal set
+        if (ReferenceEquals(_dockable, value))
         {
-            if (ReferenceEquals(_dockable, value))
-            {
-                return;
-            }
-
-            _dockable?.EditorContent = null;
-            _dockable = value;
-
-            if (_dockable is { } dockable)
-            {
-                dockable.EditorContent = this;
-                dockable.Id = _toolWindow?.WindowId ?? "???";
-            }
-
-            UpdateIcon();
-            UpdateTitle();
+            return;
         }
+
+        _dockable?.SetEditorContent(null);
+        _dockable = value;
+
+        if (_dockable is { } dockable)
+        {
+            dockable.SetEditorContent(this);
+            dockable.Id = _toolWindow?.WindowId ?? "???";
+        }
+
+        UpdateIcon();
+        UpdateTitle();
     }
 
     public IToolWindow? ToolWindow => _toolWindow;

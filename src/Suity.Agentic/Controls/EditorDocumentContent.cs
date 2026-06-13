@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
-using Dock.Model.Controls;
 using Newtonsoft.Json;
 using Suity.Controls;
 using Suity.Editor.Analyzing;

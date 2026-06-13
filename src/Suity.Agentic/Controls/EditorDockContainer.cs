@@ -8,7 +8,6 @@ using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
-using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Serializer;
@@ -26,7 +25,6 @@ using Suity.Views.Gui;
 using Suity.Views.Im;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using static Suity.Helpers.GlobalLocalizer;
@@ -82,15 +80,35 @@ public class EditorDockContainer : UserControl
 
     public event EventHandler? ConfigLayout;
 
-    private readonly QueueOnceAction _rebuildAll;
+    private readonly QueueOnceAction _rebuildDocuments;
+    private readonly QueueOnceAction _rebuildTools;
 
     public EditorDockContainer()
     {
-        _rebuildAll = new QueueOnceAction(() =>
+        _rebuildDocuments = new QueueOnceAction(() =>
         {
-            foreach (var docCtrl in DocumentControls)
+            foreach (var docCtrl in _documentCache.Values)
             {
                 if (docCtrl.Dockable is not { } dockable)
+                {
+                    continue;
+                }
+
+                dockable.Rebuild();
+
+                if (dockable.Owner is IDock dock && dock.ActiveDockable == dockable)
+                {
+                    dock.ActiveDockable = null;
+                    dock.ActiveDockable = dockable;
+                }
+            }
+        });
+
+        _rebuildTools = new QueueOnceAction(() =>
+        {
+            foreach (var toolCtrl in _toolCache.Values)
+            {
+                if (toolCtrl.Dockable is not { } dockable)
                 {
                     continue;
                 }
@@ -142,17 +160,17 @@ public class EditorDockContainer : UserControl
         // to force a fresh render in the new container.
         _factory.DockableDocked += (_, e) =>
         {
-            _rebuildAll.DoQueuedAction();
+            QueueRebuild(e.Dockable);
         };
 
         _factory.DockableClosed += (s, e) =>
         {
-            _rebuildAll.DoQueuedAction();
+            QueueRebuild(e.Dockable);
         };
 
         _factory.DockableRemoved += (s, e) =>
         {
-            _rebuildAll.DoQueuedAction();
+            QueueRebuild(e.Dockable);
         };
 
         _dockControl = new DockControl
@@ -197,10 +215,28 @@ public class EditorDockContainer : UserControl
 
     public DockControl Dock => _dockControl;
 
+    public void QueueRebuildDocuments() => _rebuildDocuments.DoQueuedAction();
+
+    public void QueueRebuildTools() => _rebuildTools.DoQueuedAction();
+
     public void QueueRebuildAll()
     {
-        _rebuildAll.DoQueuedAction();
+        QueueRebuildDocuments();
+        QueueRebuildTools();
     }
+
+    public void QueueRebuild(IDockable? dockable)
+    {
+        if (dockable is EditorDocumentDockable)
+        {
+            QueueRebuildDocuments();
+        }
+        else if (dockable is EditorToolDockable)
+        {
+            QueueRebuildTools();
+        }
+    }
+
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -342,7 +378,7 @@ public class EditorDockContainer : UserControl
             if (toolControl.Dockable is not { } dockable)
             {
                 dockable = new EditorToolDockable { Id = tool.WindowId, Title = title ?? tool.WindowId };
-                toolControl.Dockable = dockable;
+                toolControl.SetDockable(dockable);
 
                 // Add to the Dock system
                 toolDock.Add(dockable);
@@ -978,7 +1014,7 @@ public class EditorDockContainer : UserControl
             if (_toolsById.GetValueSafe(toolDockable.Id)?.Tool is { } tool)
             {
                 var toolControl = GetOrCreateToolControl(tool, out var created);
-                toolControl?.Dockable = toolDockable;
+                toolControl?.SetDockable(toolDockable);
             }
             else
             {
