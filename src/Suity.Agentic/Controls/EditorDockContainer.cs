@@ -8,6 +8,7 @@ using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
+using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Serializer;
@@ -18,6 +19,7 @@ using Suity.Editor;
 using Suity.Editor.MenuCommands;
 using Suity.Editor.Services;
 using Suity.Editor.WinformGui;
+using Suity.Helpers;
 using Suity.Views;
 using Suity.Views.Graphics;
 using Suity.Views.Gui;
@@ -80,8 +82,30 @@ public class EditorDockContainer : UserControl
 
     public event EventHandler? ConfigLayout;
 
+    private readonly QueueOnceAction _rebuildAll;
+
     public EditorDockContainer()
     {
+        _rebuildAll = new QueueOnceAction(() =>
+        {
+            foreach (var docCtrl in DocumentControls)
+            {
+                if (docCtrl.Dockable is not { } dockable)
+                {
+                    continue;
+                }
+
+                dockable.Rebuild();
+
+                if (dockable.Owner is IDock dock && dock.ActiveDockable == dockable)
+                {
+                    dock.ActiveDockable = null;
+                    dock.ActiveDockable = dockable;
+                }
+            }
+        });
+
+
         HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
         VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch;
 
@@ -118,19 +142,17 @@ public class EditorDockContainer : UserControl
         // to force a fresh render in the new container.
         _factory.DockableDocked += (_, e) =>
         {
-            if (e.Dockable is EditorDocumentDockable docDockable)
-            {
-                //Dispatcher.UIThread.Post(() =>
-                //{
-                //    RebuildAndReplaceDocumentContent(docDockable);
-                //}, DispatcherPriority.Loaded);
-                RebuildAndReplaceDocumentContent(docDockable);
-            }
+            _rebuildAll.DoQueuedAction();
         };
 
         _factory.DockableClosed += (s, e) =>
         {
-            Debug.WriteLine("OK");
+            _rebuildAll.DoQueuedAction();
+        };
+
+        _factory.DockableRemoved += (s, e) =>
+        {
+            _rebuildAll.DoQueuedAction();
         };
 
         _dockControl = new DockControl
@@ -167,7 +189,6 @@ public class EditorDockContainer : UserControl
             new FuncTemplate<ContextMenu>(CreateToolControlMenu) // Reuse the method for creating Tool menus
         ));
         _dockControl.Styles.Add(toolControlStyle);
-
     }
 
     public string? LayoutConfigFilName { get; set; }
@@ -175,6 +196,11 @@ public class EditorDockContainer : UserControl
     public Factory Factory => _factory;
 
     public DockControl Dock => _dockControl;
+
+    public void QueueRebuildAll()
+    {
+        _rebuildAll.DoQueuedAction();
+    }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -566,7 +592,7 @@ public class EditorDockContainer : UserControl
 
     public IEnumerable<EditorDocumentContent> DirtyDocuments => _documentCache.Values.Where(o => o.Document?.IsDirty == true);
 
-    public IEnumerable<Documents.DocumentEntry> OpenedDocuments => DocumentControls.Select(o => o.Document).SkipNull() ?? [];
+    public IEnumerable<Documents.DocumentEntry> OpenedDocuments => _documentCache.Values.Select(o => o.Document).SkipNull() ?? [];
 
     public EditorDocumentContent? GetDocumentControl(Documents.DocumentEntry entry) => _documentCache.GetValueSafe(entry);
 
@@ -709,12 +735,18 @@ public class EditorDockContainer : UserControl
         }
 
         // If not open, create new DocumentControl and associated Dockable
-        var docWatching = new DocumentWatching(entry, view); // Assuming you have this constructor
+        var docWatching = new DocumentWatching(entry, view);
+
+        // Assuming you have this constructor
+
         var docControl = new EditorDocumentContent(docWatching);
         docControl.Closed += DocControl_Closed;
 
         // Register to cache
         _documentCache[entry] = docControl;
+
+        //view.StartView(entry.Content, docWatching.ViewHost);
+
         created = true;
 
         return docControl;
@@ -1072,50 +1104,5 @@ public class EditorDockContainer : UserControl
         return null;
     }
 
-    private void RebuildAndReplaceDocumentContent(EditorDocumentDockable docDockable)
-    {
-        var oldDocControl = docDockable.DocumentContent;
-        if (oldDocControl is null) return;
 
-        var newDocControl = oldDocControl.Rebuild();
-        if (newDocControl.Document is not { } doc)
-        {
-            return;
-        }
-
-
-        // Unsubscribe from old control's Closed event
-        oldDocControl.Closed -= DocControl_Closed;
-
-        // Subscribe to new control's Closed event
-        newDocControl.Closed += DocControl_Closed;
-
-        // Update the document cache
-        _documentCache[doc] = newDocControl;
-    }
-
-    public void RebuildContents()
-    {
-        foreach (var content in _documentCache.Values.ToArray())
-        {
-            if (content.Dockable is { } dockable)
-            {
-                RebuildAndReplaceDocumentContent(dockable);
-
-                if (dockable?.Owner is IDock dock)
-                {
-                    var focus = dock.FocusedDockable;
-                    var active = dock.ActiveDockable;
-                    var visibles = dock.VisibleDockables;
-                    bool isActive = dock.IsActive;
-
-                    //dock.FocusedDockable = null;
-                    //dock.FocusedDockable = dockable;
-                    dock.IsActive = true;
-                }
-            }
-        }
-
-        UpdateDockLayout();
-    }
 }

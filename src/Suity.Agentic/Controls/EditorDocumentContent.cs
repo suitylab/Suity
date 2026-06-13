@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
+using Dock.Model.Controls;
 using Newtonsoft.Json;
 using Suity.Controls;
 using Suity.Editor.Analyzing;
@@ -25,7 +26,7 @@ namespace Suity.Editor.Controls;
 
 public class EditorDocumentDockable : Dock.Model.Avalonia.Controls.Document
 {
-    private EditorDocumentContent? _docContent;
+    private DockBridgeControl<EditorDocumentContent>? _bridge;
 
     public object? IconSource { get; internal set; }
 
@@ -34,33 +35,64 @@ public class EditorDocumentDockable : Dock.Model.Avalonia.Controls.Document
         this.CanFloat = false;
         this.CanDockAsDocument = true;
         this.CanPin = false;
-    }
-
-    public EditorDocumentDockable(EditorDocumentContent docControl)
-        : this()
-    {
-        this._docContent = docControl ?? throw new ArgumentNullException(nameof(docControl));
-
-        base.Content = docControl;
         base.CanClose = true;
     }
 
+    public EditorDocumentDockable(EditorDocumentContent content)
+        : this()
+    {
+        SetEditorContent(content);
+    }
+
     [JsonIgnore]
-    public EditorDocumentContent? DocumentContent => _docContent;
+    public DockBridgeControl<EditorDocumentContent>? Bridge => _bridge;
+
+    [JsonIgnore] 
+    public EditorDocumentContent? DocumentContent => _bridge?.Target;
+
+    internal void SetEditorBridge(DockBridgeControl<EditorDocumentContent>? bridge)
+    {
+        _bridge = bridge;
+        base.Content = bridge;
+        IconSource = bridge?.Target.GetIcon();
+    }
 
     internal void SetEditorContent(EditorDocumentContent? content)
     {
-        _docContent = content;
-        base.Content = content;
-        IconSource = content?.GetIcon();
+        if (content != null)
+        {
+            SetEditorBridge(new DockBridgeControl<EditorDocumentContent>(content));
+        }
+        else
+        {
+            SetEditorBridge(null);
+        }
     }
+
+    internal void Rebuild()
+    {
+        if (_bridge is null)
+        {
+            return;
+        }
+
+        var content = _bridge.Target;
+        this.Content = null;
+
+        content.RemoveFromVisualTree();
+        var newBridge = new DockBridgeControl<EditorDocumentContent>(content);
+        SetEditorBridge(newBridge);
+    }
+
 
     public override bool OnClose()
     {
-        if (_docContent is not { } ctrl)
+        if (_bridge is not { } bridge)
         {
             return true;
         }
+
+        var ctrl = _bridge.Target;
 
         if (ctrl.Document is { } doc)
         {
@@ -490,62 +522,6 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
         doc.DirtyChanged -= document_DocumentDirtyChanged;
         doc.Renamed -= document_Renamed;
         doc.IconChanged -= document_iconChanged;
-    }
-
-    internal EditorDocumentContent Rebuild()
-    {
-        if (_docInstance is { } docInstance)
-        {
-            DetachDocumentInstance();
-            if (this.Content is Control ctrl)
-            {
-                ctrl.RemoveFromVisualTree();
-            }
-
-            var newContent = new EditorDocumentContent(docInstance);
-
-            var dockable = this.Dockable;
-            this.SetDockable(null);
-            newContent.SetDockable(dockable);
-
-            HandleClosed();
-
-            if (this.Parent is { } parent)
-            {
-                this.RemoveFromVisualTree();
-                newContent.AddToVisualTree(parent);
-            }
-
-            return newContent;
-
-        }
-        else if (_toolWindow is { } toolWindow)
-        {
-            if (this.Content is Control ctrl)
-            {
-                ctrl.RemoveFromVisualTree();
-            }
-
-            var newContent = new EditorDocumentContent(toolWindow);
-
-            var dockable = this.Dockable;
-            this.SetDockable(null);
-            newContent.SetDockable(dockable);
-
-            HandleClosed();
-
-            if (this.Parent is { } parent)
-            {
-                this.RemoveFromVisualTree();
-                newContent.AddToVisualTree(parent);
-            }
-
-            return newContent;
-        }
-        else
-        {
-            return this;
-        }
     }
 
     // Extract a generic close trigger method
