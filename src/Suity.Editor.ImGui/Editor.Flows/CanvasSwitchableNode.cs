@@ -93,9 +93,9 @@ public class CanvasSwitchableNode<TAsset> : CanvasAssetNode<TAsset>,
     {
         base.EditorGui = DrawEditorGui;
 
-        DataTransportConnector = FixedNodeConnector.CreateControlInput("DataIn", TypeDefinition.FromNative<IDataTransport>(), DEFAULT_TRANSPORT_TITLE);
-        KnowledgeInConnector = FixedNodeConnector.CreateDataInput("KnowledgeIn", TypeDefinition.FromNative<IKnowledgeBase>(), "Knowledge Input");
-        KnowledgeOutConnector = FixedNodeConnector.CreateDataOutput("KnowledgeOut", TypeDefinition.FromNative<IKnowledgeBase>(), "Knowledge Output");
+        DataTransportConnector = FixedNodeConnector.CreateControlInput("DataIn", TypeDefinition.FromNative<IDataTransport>(), description: DEFAULT_TRANSPORT_TITLE);
+        KnowledgeInConnector = FixedNodeConnector.CreateDataInput("KnowledgeIn", TypeDefinition.FromNative<IKnowledgeBase>(), description: "Knowledge Input");
+        KnowledgeOutConnector = FixedNodeConnector.CreateDataOutput("KnowledgeOut", TypeDefinition.FromNative<IKnowledgeBase>(), description: "Knowledge Output");
 
         _mode.ValueChanged += (s, e) => UpdateConnectorQueued();
 

@@ -272,7 +272,7 @@ public class CanvasAssetNode : CanvasFlowNode,
     /// Gets the target object.
     /// </summary>
     /// <returns>The target object.</returns>
-    public object GetTargetObject()
+    public virtual object GetTargetObject()
     {
         var asset = _assetRef.Target;
         if (asset is null)
@@ -328,14 +328,14 @@ public class CanvasAssetNode : CanvasFlowNode,
 
         if (sync.Intent == SyncIntent.View)
         {
-            if (sync.IsGetterOf("Content"))
-            {
-                var vobj = GetTargetObject();
-                if (vobj != null)
-                {
-                    sync.Sync("Content", vobj);
-                }
-            }
+            //if (sync.IsGetterOf("Content"))
+            //{
+            //    var vobj = GetTargetObject();
+            //    if (vobj != null)
+            //    {
+            //        sync.Sync("Content", vobj);
+            //    }
+            //}
 
             if (sync.Intent == SyncIntent.View && sync.IsSetterOf("#EditButton"))
             {
@@ -368,7 +368,7 @@ public class CanvasAssetNode : CanvasFlowNode,
             return;
         }
 
-        setup.InspectorFieldOf<IViewObject>(new ViewProperty("Content", "Content").WithReadOnly());
+        //setup.InspectorFieldOf<IViewObject>(new ViewProperty("Content", "Content").WithReadOnly());
     }
 
     protected override void OnUpdateConnector()

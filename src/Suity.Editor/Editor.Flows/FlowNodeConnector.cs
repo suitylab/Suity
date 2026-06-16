@@ -364,16 +364,16 @@ public class FixedNodeConnector : FlowNodeConnector
 
 
     public static FixedNodeConnector CreateControlInput(string name, string dataType, string description = null)
-        => new(name, dataType, FlowDirections.Input, FlowConnectorTypes.Control, false, description);
+        => new(name, dataType, FlowDirections.Input, FlowConnectorTypes.Control, true, description);
 
     public static FixedNodeConnector CreateControlInput(string name, TypeDefinition dataType, string description = null)
-        => new(name, FlowNode.GetDataTypeString(dataType), FlowDirections.Input, FlowConnectorTypes.Control, false, description);
+        => new(name, FlowNode.GetDataTypeString(dataType), FlowDirections.Input, FlowConnectorTypes.Control, true, description);
 
     public static FixedNodeConnector CreateControlInput(Guid id, string dataType, string description = null)
-        => new(id, dataType, FlowDirections.Input, FlowConnectorTypes.Control, false, description);
+        => new(id, dataType, FlowDirections.Input, FlowConnectorTypes.Control, true, description);
 
     public static FixedNodeConnector CreateControlInput(Guid id, TypeDefinition dataType, string description = null)
-        => new(id, FlowNode.GetDataTypeString(dataType), FlowDirections.Input, FlowConnectorTypes.Control, false, description);
+        => new(id, FlowNode.GetDataTypeString(dataType), FlowDirections.Input, FlowConnectorTypes.Control, true, description);
 
 
 
