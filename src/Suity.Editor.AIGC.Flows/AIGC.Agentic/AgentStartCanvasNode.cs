@@ -1,6 +1,6 @@
 ﻿using Suity.Drawing;
+using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Flows;
-using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Views;
@@ -14,12 +14,21 @@ namespace Suity.Editor.AIGC.Agentic;
 [NativeAlias("Suity.Editor.AIGC.AgentStartCanvasNode")]
 public class AgentStartCanvasNode : CanvasDesignNode
 {
-    internal FlowNodeConnector _out;
+    internal FlowNodeConnector _in;
+
+    private IAgentNode _agentNode;
 
     public AgentStartCanvasNode()
     {
-        var output = FixedNodeConnector.CreateControlInput("Out", TypeDefinition.FromNative<IDataTransport>(), description: "Out");
-        _out = AddConnector(output);
+        var output = FixedNodeConnector.CreateControlInput("In", TypeDefinition.FromNative<IAgentNode>(), false, description: "Out");
+        _in = AddConnector(output);
+    }
+
+    public IAgentNode AgentNode => _agentNode;
+
+    public override void Compute(IFlowComputation compute)
+    {
+        _agentNode = compute.GetValue<IAgentNode>(_in);
     }
 }
 
@@ -47,6 +56,12 @@ public class AgentStartAsset : Asset, ILLmChatProvider
 
     public ILLmChat CreateChat(FunctionContext context)
     {
+        var node = (this.GetStorageObject(true) as AgentStartDiagramItem)?.Node;
+        if (node != null)
+        {
+            return new AgentChat(node, context);
+        }
+
         return null;
     } 
 
@@ -65,7 +80,31 @@ public class AgentChat : BaseLLmChat
 
     protected override async Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource)
     {
-        return null;
+        var node = StartNode.AgentNode;
+        if (node is null)
+        {
+            return null;
+        }
+
+        var request = new AIRequest
+        {
+            UserMessage = msg ?? string.Empty,
+            Conversation = _conversation,
+            FuncContext = this._context,
+            Option = option,
+            Cancellation = cancelSource.Token,
+            RequestCancel = () =>
+            {
+                cancelSource.Cancel();
+                // _conversation.AddSystemMessage(L("Request cancelled."));
+            }
+        };
+
+        var result = await node.Run(request);
+
+        //this._conversation.AddSystemMessage("OK");
+
+        return result?.Result;
     }
 
     protected override void HandleConversation(IConversationHandler handler)

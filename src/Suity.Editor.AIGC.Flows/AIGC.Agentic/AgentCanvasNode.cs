@@ -1,11 +1,12 @@
-﻿using Suity.Editor.Flows;
+﻿using Suity.Editor.AIGC.Assistants;
+using Suity.Editor.Flows;
 using Suity.Editor.Flows.TaskPages;
 using Suity.Editor.Selecting;
-using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
 using Suity.Views.Im;
+using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Agentic;
 
@@ -21,11 +22,11 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     public AgentCanvasNode()
     {
-        var output = FixedNodeConnector.CreateControlInput("Out", TypeDefinition.FromNative<IAgentNode>(), description: "Out");
-        var input = FixedNodeConnector.CreateControlOutput("In", TypeDefinition.FromNative<IAgentNode>(), description: "In");
+        var input = FixedNodeConnector.CreateControlInput("In", TypeDefinition.FromNative<IAgentNode>(), description: "Out");
+        var output = FixedNodeConnector.CreateControlOutput("Out", TypeDefinition.FromNative<IAgentNode>(), description: "In");
 
-        _out = AddConnector(output);
         _in = AddConnector(input);
+        _out = AddConnector(output);
     }
 
     public override object GetTargetObject() => this;
@@ -45,6 +46,11 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         setup.InspectorField(AssetRef, new ViewProperty(nameof(AssetRef), "Asset"));
         _agentName.InspectorField(setup);
         _tasks.InspectorField(setup);
+    }
+
+    public override void Compute(IFlowComputation compute)
+    {
+        compute.SetValue(_out, this);
     }
 
     public override string DisplayText => !string.IsNullOrWhiteSpace(_agentName.Text) ? _agentName.Text : base.DisplayText;
@@ -85,15 +91,18 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     #endregion
 
-    #region IDataTransport
+    #region IAgentNode
 
-    void IDataTransport.SendData(object data, int channel)
+    public void AddTask(string prompt)
     {
-        
-    } 
+    }
+
+    public async Task<AICallResult> Run(AIRequest request)
+    {
+        return AICallResult.Empty;
+    }
 
     #endregion
-
 }
 
 public class AgentTaskItem : IViewObject
