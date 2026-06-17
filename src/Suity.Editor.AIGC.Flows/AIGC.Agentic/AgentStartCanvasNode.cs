@@ -3,6 +3,7 @@ using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Flows;
 using Suity.Editor.Types;
 using Suity.Helpers;
+using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Threading;
@@ -18,6 +19,8 @@ public class AgentStartCanvasNode : CanvasDesignNode
 
     private IAgentNode _agentNode;
 
+    readonly StringProperty _entryTaskName = new(nameof(EntryTaskName), "Entry task name", "Entry");
+
     public AgentStartCanvasNode()
     {
         var output = FixedNodeConnector.CreateControlInput("In", TypeDefinition.FromNative<IAgentNode>(), false, description: "Out");
@@ -25,6 +28,22 @@ public class AgentStartCanvasNode : CanvasDesignNode
     }
 
     public IAgentNode AgentNode => _agentNode;
+
+    public string EntryTaskName => _entryTaskName.Text;
+
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _entryTaskName.Sync(sync);
+    }
+
+    protected override void OnSetupViewContent(IViewObjectSetup setup)
+    {
+        base.OnSetupViewContent(setup);
+
+        _entryTaskName.InspectorField(setup);
+    }
 
     public override void Compute(IFlowComputation compute)
     {
@@ -80,11 +99,24 @@ public class AgentChat : BaseLLmChat
 
     protected override async Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource)
     {
+        if (string.IsNullOrWhiteSpace(msg))
+        {
+            return null;
+        }
+
         var node = StartNode.AgentNode;
         if (node is null)
         {
             return null;
         }
+
+        string name = node.PageAsset?.Name;
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return null;
+        }
+
+        node.AddTask(name, StartNode.EntryTaskName, msg);
 
         var request = new AIRequest
         {
@@ -93,14 +125,11 @@ public class AgentChat : BaseLLmChat
             FuncContext = this._context,
             Option = option,
             Cancellation = cancelSource.Token,
-            RequestCancel = () =>
-            {
-                cancelSource.Cancel();
-                // _conversation.AddSystemMessage(L("Request cancelled."));
-            }
+            RequestCancel = cancelSource.Cancel
         };
 
         var result = await node.Run(request);
+
 
         //this._conversation.AddSystemMessage("OK");
 

@@ -900,10 +900,22 @@ public static class EditorUtility
     /// </summary>
     /// <param name="format">The format of the new document</param>
     /// <param name="defaultName">The default name for the new document</param>
+    /// <param name="directory">The directory to create the new document in</param>
     /// <returns>DocumentEntry instance representing the new document</returns>
-    public static DocumentEntry AutoNewDocument(this DocumentFormat format, string defaultName)
+    public static DocumentEntry AutoNewDocument(this DocumentFormat format, string defaultName, string directory = null)
     {
         string basePath = EditorServices.CurrentProject.AssetDirectory;
+        directory = directory?.Trim();
+        if (!string.IsNullOrEmpty(directory))
+        {
+            basePath = basePath.PathAppend(directory);
+        }
+
+        if (!Directory.Exists(basePath))
+        {
+            Directory.CreateDirectory(basePath);
+        }
+
         string canvasFileName = EditorServices.FileNameService.GetIncrementalFileName(basePath, defaultName, format.Extension);
         string fullName = Path.Combine(basePath, canvasFileName);
 

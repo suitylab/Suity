@@ -443,8 +443,6 @@ public class SubFlowPresetAssetBuilder : AssetBuilder<SubFlowPresetAsset>
 /// </summary>
 [NativeType(Name = "SubFlowPresetAsset", Description = "Preset Asset", CodeBase = "SubFlow", Icon = "*CoreIcon|Skil", Color = FlowColors.Agent)]
 public class SubFlowPresetAsset : Asset,
-    IPageAsset,
-    ISubFlowAsset,
     ISubFlowPresetAsset,
     IViewObject,
     IInspectorEditNotify
