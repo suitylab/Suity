@@ -85,10 +85,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
 
         // Prevent text from being too long
         string text = L(context.DisplayText ?? string.Empty);
-        if (text.Length > 30)
-        {
-            text = text[..15] + "..." + text[^15..];
-        }
+        text = text.ToShortcutBeginEnd(30);
 
         gui.Text("text", text)
          .InitClass("titleText");
@@ -370,7 +367,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
 
                     if (!string.IsNullOrWhiteSpace(text))
                     {
-                        gui.Text(text.ToShortcutString(30))
+                        gui.Text(text.ToShortcut(30))
                         .InitClass("connectorText");
                     }
                 });
@@ -399,7 +396,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
                     string textV = text ?? connector.DisplayName;
                     if (!string.IsNullOrWhiteSpace(textV))
                     {
-                        gui.Text(textV.ToShortcutString(30))
+                        gui.Text(textV.ToShortcut(30))
                             .InitClass("connectorText");
                     }
 

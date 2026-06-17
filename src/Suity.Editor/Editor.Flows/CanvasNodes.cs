@@ -1,21 +1,25 @@
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.Analyzing;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
+using Suity.Editor.Values;
 using Suity.Helpers;
 using Suity.NodeQuery;
 using Suity.Synchonizing;
 using Suity.UndoRedos;
 using Suity.Views;
+using Suity.Views.Graphics;
 using Suity.Views.Im;
 using Suity.Views.Named;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.Flows;
 
@@ -70,7 +74,7 @@ public abstract class CanvasFlowNode : FlowNode
     /// <summary>
     /// Gets the icon.
     /// </summary>
-    public override ImageDef Icon => CoreIconCache.Canvas;
+    public override ImageDef Icon => this.GetType().ToDisplayIcon() ?? CoreIconCache.Canvas;
 
     /// <summary>
     /// Gets the connector value.
@@ -817,4 +821,305 @@ public class CanvasAssetDiagramItem : FlowDiagramItem<CanvasAssetNode>,
 //        }
 //    }
 //} 
+#endregion
+
+#region DesignFlowNode
+
+/// <summary>
+/// Base class for design flow nodes with editor properties such as name, description, icon, and color.
+/// </summary>
+public abstract class CanvasDesignNode : CanvasToolNode,
+    IDesignObject,
+    IHasAttributeDesign,
+    IAttributeGetter
+{
+    private string _description;
+    private AssetSelection<ImageAsset> _iconSelection = new();
+    private Color _color = Color.Empty;
+
+    private readonly SArrayAttributeDesign _attributes = new();
+
+    /// <summary>
+    /// Initializes a new instance of the DesignFlowNode.
+    /// </summary>
+    public CanvasDesignNode()
+    {
+        base.CustomDraw = Draw;
+        base.EditorGui = OnEditorGui;
+    }
+
+    /// <summary>
+    /// Gets or sets the description text of the node.
+    /// </summary>
+    public string Description
+    {
+        get => _description;
+        set
+        {
+            if (_description == value)
+            {
+                return;
+            }
+
+            _description = value;
+
+            (DiagramItem as FlowDiagramItem)?.AssetBuilder?.SetDescription(_description);
+        }
+    }
+
+    /// <summary>
+    /// Gets the default icon for the node when no custom icon is set.
+    /// </summary>
+    public virtual ImageDef DefaultIcon => base.Icon;
+
+    /// <summary>
+    /// Gets the icon for the node, using custom icon if available.
+    /// </summary>
+    public override ImageDef Icon => _iconSelection.Icon ?? DefaultIcon;
+
+    /// <summary>
+    /// Gets the default color for the node title.
+    /// </summary>
+    public virtual Color? DefaultNodeColor => base.TitleColor;
+
+    /// <summary>
+    /// Gets or sets the title color, using custom color if set, otherwise using default.
+    /// </summary>
+    public override Color? TitleColor
+    {
+        get
+        {
+            if (_color != Color.Empty)
+            {
+                return _color;
+            }
+
+            return DefaultNodeColor;
+        }
+    }
+
+    /// <summary>
+    /// Gets the ID of the icon asset.
+    /// </summary>
+    public Guid IconId => _iconSelection.Id;
+
+    /// <summary>
+    /// Gets the default design color for the node.
+    /// </summary>
+    public virtual Color? DefaultDesignColor => null;
+
+    /// <summary>
+    /// Gets or sets the design color of the node.
+    /// </summary>
+    public Color DesignColor
+    {
+        get => _color != Color.Empty ? _color : DefaultDesignColor ?? Color.Empty;
+        set
+        {
+            if (_color == value)
+            {
+                return;
+            }
+
+            _color = value;
+
+            Color? c = _color != Color.Empty ? _color : null;
+            (DiagramItem as FlowDiagramItem)?.AssetBuilder?.SetColor(c);
+        }
+    }
+
+    /// <summary>
+    /// Gets the display text for the node, using description if set, otherwise using name.
+    /// </summary>
+    public override string DisplayText => !string.IsNullOrEmpty(_description) ? _description : this.Name;
+
+    /// <summary>
+    /// Gets or sets the icon selection for the node.
+    /// </summary>
+    protected AssetSelection<ImageAsset> IconSelection
+    {
+        get => _iconSelection;
+        set
+        {
+            value ??= new();
+
+            if (_iconSelection.Id != value.Id)
+            {
+                _iconSelection = value;
+                (DiagramItem as FlowDiagramItem)?.AssetBuilder?.SetIconId(_iconSelection.Id);
+            }
+        }
+    }
+
+    #region Virtual
+    /// <summary>
+    /// Synchronizes the properties of the node.
+    /// </summary>
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        Name = sync.Sync("Name", Name, SyncFlag.NotNull);
+
+        Description = sync.Sync("Description", Description);
+        IconSelection = sync.Sync("Icon", IconSelection, SyncFlag.NotNull);
+        // Pass _color, not DesignColor, because reading DesignColor overrides the default color logic
+        DesignColor = sync.Sync("Color", _color, SyncFlag.None, Color.Empty);
+        sync.Sync("Attributes", _attributes.Array, SyncFlag.GetOnly);
+    }
+
+    /// <summary>
+    /// Sets up the view for the node.
+    /// </summary>
+    public override void SetupView(IViewObjectSetup setup)
+    {
+        base.SetupView(setup);
+
+        OnSetupViewAppearance(setup);
+        OnSetupViewContent(setup);
+    }
+
+    /// <summary>
+    /// Sets up the view properties for the inspector.
+    /// </summary>
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        setup.InspectorField(Name, new ViewProperty("Name", "Name"));
+    }
+
+    /// <summary>
+    /// Sets up the appearance view properties for the node.
+    /// </summary>
+    protected virtual void OnSetupViewAppearance(IViewObjectSetup setup)
+    {
+        setup.Label(new ViewProperty("#Appearance", "Appearance", CoreIconCache.View));
+
+        setup.InspectorField(Description, new ViewProperty("Description", "Description"));
+        setup.InspectorField(_iconSelection, new ViewProperty("Icon", "Icon"));
+        setup.InspectorField(_color, new ViewProperty("Color", "Color", CoreIconCache.Color)
+            .WithColor(_color != Color.Empty ? _color : (Color?)null));
+    }
+
+    /// <summary>
+    /// Sets up the content view properties for the node.
+    /// </summary>
+    protected virtual void OnSetupViewContent(IViewObjectSetup setup)
+    { }
+
+    /// <summary>
+    /// Called when the diagram item is updated.
+    /// </summary>
+    protected override void OnDiagramItemUpdated()
+    {
+        base.OnDiagramItemUpdated();
+
+        var builder = (DiagramItem as FlowDiagramItem)?.AssetBuilder;
+        if (builder != null)
+        {
+            builder.SetDescription(_description);
+
+            Color? c = _color != Color.Empty ? _color : null;
+            builder.SetColor(c);
+
+            builder.SetIconId(_iconSelection.Id);
+        }
+    }
+    #endregion
+
+    #region IDesignObject
+
+    /// <summary>
+    /// Gets the design items array.
+    /// </summary>
+    SArray IDesignObject.DesignItems => _attributes.Array;
+
+    /// <summary>
+    /// Gets the property name for design attributes.
+    /// </summary>
+    string IDesignObject.DesignPropertyName => "Attributes";
+
+    /// <summary>
+    /// Gets the property description for design attributes.
+    /// </summary>
+    string IDesignObject.DesignPropertyDescription => "Property";
+
+    #endregion
+
+    #region IAttributeDesign
+
+    /// <summary>
+    /// Gets the attribute design for the node.
+    /// </summary>
+    public IAttributeDesign Attributes => _attributes;
+
+    #endregion
+
+    #region IHasAttribute
+
+    /// <summary>
+    /// Gets all attributes for the node.
+    /// </summary>
+    public IEnumerable<object> GetAttributes() => _attributes.GetAttributes();
+
+    /// <summary>
+    /// Gets attributes of the specified type name.
+    /// </summary>
+    public IEnumerable<object> GetAttributes(string typeName) => _attributes.GetAttributes(typeName);
+
+    /// <summary>
+    /// Gets attributes of the specified type.
+    /// </summary>
+    public IEnumerable<T> GetAttributes<T>() where T : class => _attributes.GetAttributes<T>();
+
+    #endregion
+
+    /// <summary>
+    /// Draws the node with its background, header, and connectors.
+    /// </summary>
+    protected virtual void Draw(IGraphicOutput output, IDrawNodeContext context, float zoom, Point pos, Rectangle rect, bool drawText)
+    {
+        context.DrawShadow(output);
+
+        context.DrawPanel(output, zoom, rect);
+
+        if (drawText)
+        {
+            context.DrawHeader(output, zoom, rect);
+        }
+
+        context.DrawConnectors(output);
+
+        if (!string.IsNullOrWhiteSpace(context.PreviewText) && drawText)
+        {
+            context.DrawPreviewText(output, zoom, rect, context.PreviewText);
+        }
+
+        if (DiagramItem is ISupportAnalysis s && s.Analysis is AnalysisResult analysis && analysis.ReferenceCount > 0 && zoom > 0.9)
+        {
+            output.DrawRef(zoom, rect, analysis);
+        }
+    }
+
+    /// <summary>
+    /// Draws the editor GUI for the node.
+    /// </summary>
+    protected virtual bool OnEditorGui(ImGui gui, EditorImGuiPipeline pipeline, IDrawContext context)
+    {
+        if (pipeline == EditorImGuiPipeline.Preview)
+        {
+            if (DiagramItem is ISupportAnalysis s && s.Analysis is AnalysisResult analysis && analysis.ReferenceCount > 0)
+            {
+                var c = EditorServices.ColorConfig;
+                gui.NumberBox("ref", analysis.ReferenceCount.ToString(), c.GetStatusColor(TextStatus.Reference), CoreIconCache.Reference, iconDark: true, tooltips: L("Reference Count"));
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
 #endregion

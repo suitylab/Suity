@@ -89,7 +89,7 @@ public class SAIGeneration : SDynamic, ITextDisplay
     /// <summary>
     /// Gets the display text for this AI generation, derived from the prompt.
     /// </summary>
-    public string DisplayText => Prompt.Text?.ToShortcutString() ?? string.Empty;
+    public string DisplayText => Prompt.Text?.ToShortcut() ?? string.Empty;
 
     /// <summary>
     /// Gets the display icon for this AI generation.

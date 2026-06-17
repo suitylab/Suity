@@ -118,7 +118,7 @@ public static class SObjectPropertyFunctions
                                 Type type = pair.Value.GetType();
                                 if (type == typeof(string))
                                 {
-                                    tooltip = $"{title}: {pair.Key}=\"{pair.Value.ToString().ToShortcutString()}\"";
+                                    tooltip = $"{title}: {pair.Key}=\"{pair.Value.ToString().ToShortcut()}\"";
                                     gui.Image(aid, CoreIconCache.Attachment).InitClass("icon").InitToolTips(pair.Key).InitToolTips(tooltip);
                                 }
                                 else if (type.IsPrimitive)
@@ -128,7 +128,7 @@ public static class SObjectPropertyFunctions
                                 }
                                 else if (pair.Value is ITextDisplay display)
                                 {
-                                    tooltip = $"{title}: {pair.Key}={display.ToDisplayTextL().ToShortcutString()}";
+                                    tooltip = $"{title}: {pair.Key}={display.ToDisplayTextL().ToShortcut()}";
                                     gui.Image(aid, display.ToDisplayIcon() ?? CoreIconCache.Attachment).InitClass("icon").InitToolTips(pair.Key).InitToolTips(tooltip);
                                 }
                                 else

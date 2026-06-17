@@ -53,14 +53,14 @@ public class NodeGraphTheme : ThemeBase
         this.ClassStyle("headerFrame")
             .SetFitOrientation(GuiOrientation.Vertical)
             .SetFullWidth()
-            .SetColor(FlowColors.NodeHaderColor)
+            .SetColor(FlowColors.NodeHeaderColor)
             .SetBorder(0)
             .SetCornerRound(6)
             .SetPadding(4);
 
         this.ClassStyle("headerFrameFit")
             .SetFitOrientation(GuiOrientation.Both)
-            .SetColor(FlowColors.NodeHaderColor)
+            .SetColor(FlowColors.NodeHeaderColor)
             .SetBorder(0)
             .SetCornerRound(6)
             .SetPadding(4);

@@ -144,7 +144,7 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
                     if (first != null)
                     {
                         string str = values.First()?.ToString() ?? "(null)";
-                        string shortcut = EditorUtility.ToShortcutString(str);
+                        string shortcut = EditorUtility.ToShortcut(str);
                         gui.Text("text-shortcut", shortcut);
                     }
                     else
@@ -503,7 +503,7 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
             }
 
             var obj = handler.GetItemAt(ary, i);
-            builder.Append((obj?.ToString() ?? string.Empty).ToShortcutString());
+            builder.Append((obj?.ToString() ?? string.Empty).ToShortcut());
         }
 
         if (moreThen3)

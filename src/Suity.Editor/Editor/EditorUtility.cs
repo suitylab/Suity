@@ -29,6 +29,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Suity.Editor;
 
@@ -2099,8 +2100,13 @@ public static class EditorUtility
     /// <param name="s">The string to shorten</param>
     /// <param name="length">Maximum length of the resulting string (default: 50)</param>
     /// <returns>A shortened version of the input string</returns>
-    public static string ToShortcutString(this string s, int length = 50)
+    public static string ToShortcut(this string s, int length = 50)
     {
+        if (string.IsNullOrWhiteSpace(s))
+        {
+            return string.Empty;
+        }
+
         if (s.Length > length)
         {
             s = s[..length] + "...";
@@ -2108,6 +2114,23 @@ public static class EditorUtility
 
         return s;
     }
+
+    public static string ToShortcutBeginEnd(this string s, int length = 30)
+    {
+        if (string.IsNullOrWhiteSpace(s))
+        {
+            return string.Empty;
+        }
+
+        if (s.Length > length)
+        {
+            int half = length / 2;
+            s = s[..half] + "..." + s[^half..];
+        }
+
+        return s;
+    }
+
 
     public static ImageDef ToStatusIcon(this TextStatus status) => status switch
     {

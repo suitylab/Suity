@@ -363,29 +363,29 @@ public class FixedNodeConnector : FlowNodeConnector
 
 
 
-    public static FixedNodeConnector CreateControlInput(string name, string dataType, string description = null)
-        => new(name, dataType, FlowDirections.Input, FlowConnectorTypes.Control, true, description);
+    public static FixedNodeConnector CreateControlInput(string name, string dataType, bool? multiple = true, string description = null)
+        => new(name, dataType, FlowDirections.Input, FlowConnectorTypes.Control, multiple, description);
 
-    public static FixedNodeConnector CreateControlInput(string name, TypeDefinition dataType, string description = null)
-        => new(name, FlowNode.GetDataTypeString(dataType), FlowDirections.Input, FlowConnectorTypes.Control, true, description);
+    public static FixedNodeConnector CreateControlInput(string name, TypeDefinition dataType, bool? multiple = true, string description = null)
+        => new(name, FlowNode.GetDataTypeString(dataType), FlowDirections.Input, FlowConnectorTypes.Control, multiple, description);
 
-    public static FixedNodeConnector CreateControlInput(Guid id, string dataType, string description = null)
-        => new(id, dataType, FlowDirections.Input, FlowConnectorTypes.Control, true, description);
+    public static FixedNodeConnector CreateControlInput(Guid id, string dataType, bool? multiple = true, string description = null)
+        => new(id, dataType, FlowDirections.Input, FlowConnectorTypes.Control, multiple, description);
 
-    public static FixedNodeConnector CreateControlInput(Guid id, TypeDefinition dataType, string description = null)
-        => new(id, FlowNode.GetDataTypeString(dataType), FlowDirections.Input, FlowConnectorTypes.Control, true, description);
+    public static FixedNodeConnector CreateControlInput(Guid id, TypeDefinition dataType, bool? multiple = true, string description = null)
+        => new(id, FlowNode.GetDataTypeString(dataType), FlowDirections.Input, FlowConnectorTypes.Control, multiple, description);
 
 
 
-    public static FixedNodeConnector CreateControlOutput(string name, string dataType, string description = null)
-        => new(name, dataType, FlowDirections.Output, FlowConnectorTypes.Control, true, description);
+    public static FixedNodeConnector CreateControlOutput(string name, string dataType, bool? multiple = true, string description = null)
+        => new(name, dataType, FlowDirections.Output, FlowConnectorTypes.Control, multiple, description);
 
-    public static FixedNodeConnector CreateControlOutput(string name, TypeDefinition dataType, string description = null)
-        => new(name, FlowNode.GetDataTypeString(dataType), FlowDirections.Output, FlowConnectorTypes.Control, true, description);
+    public static FixedNodeConnector CreateControlOutput(string name, TypeDefinition dataType, bool? multiple = true, string description = null)
+        => new(name, FlowNode.GetDataTypeString(dataType), FlowDirections.Output, FlowConnectorTypes.Control, multiple, description);
 
-    public static FixedNodeConnector CreateControlOutput(Guid id, string dataType, string description = null)
-        => new(id, dataType, FlowDirections.Output, FlowConnectorTypes.Control, true, description);
+    public static FixedNodeConnector CreateControlOutput(Guid id, string dataType, bool? multiple = true, string description = null)
+        => new(id, dataType, FlowDirections.Output, FlowConnectorTypes.Control, multiple, description);
 
-    public static FixedNodeConnector CreateControlOutput(Guid id, TypeDefinition dataType, string description = null)
-        => new(id, FlowNode.GetDataTypeString(dataType), FlowDirections.Output, FlowConnectorTypes.Control, true, description);
+    public static FixedNodeConnector CreateControlOutput(Guid id, TypeDefinition dataType, bool? multiple = true, string description = null)
+        => new(id, FlowNode.GetDataTypeString(dataType), FlowDirections.Output, FlowConnectorTypes.Control, multiple, description);
 }

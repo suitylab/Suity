@@ -1,6 +1,11 @@
+using Suity.Drawing;
+using Suity.Editor.Analyzing;
 using Suity.Editor.Values;
+using Suity.Views.Graphics;
+using Suity.Views.Im;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace Suity.Editor.Flows;
@@ -294,4 +299,48 @@ public static class FlowExtensions
     {
         ctx.SetArgument("##var:" + varName, value);
     }
+
+
+    #region DrawRef
+
+    private static Color _refColorDark = Color.FromArgb(36, 36, 36);
+
+    private static BrushDef _refBrush;
+    private static FontDef _refFont;
+    private static BrushDef _refTextBrush;
+    private static BrushDef _refBrushDark;
+
+    /// <summary>
+    /// Draws the reference count indicator.
+    /// </summary>
+    public static void DrawRef(this IGraphicOutput output, float zoom, Rectangle rect, AnalysisResult analysis)
+    {
+        _refBrush ??= new SolidBrushDef(TextStatus.Reference.ToColor());
+        _refFont ??= new FontDef(ImGuiTheme.DefaultFont, 12);
+        _refBrushDark ??= new SolidBrushDef(_refColorDark);
+        _refTextBrush ??= new SolidBrushDef(TextStatus.Normal.ToColor());
+
+        string text = analysis.ReferenceCount.ToString();
+        SizeF textSize = output.MeasureString(text, _refFont);
+        int textW = (int)textSize.Width + 4;
+
+        int w = 20 + textW;
+        int h = 16;
+        int m = (int)(4 * zoom);
+
+        var rectRef = new Rectangle(rect.Right - w - m, rect.Y + m, w, h);
+        var rectIcon = new Rectangle(rectRef.X + 1, rectRef.Y + 1, 16, 16);
+
+        var rectDark = new Rectangle(rectRef.X + 18, rectRef.Y + 2, textW, 12);
+        var rectText = new Rectangle(rectRef.X + 20, rectRef.Y + 13, textW, 16);
+
+        // int textCenter = rectText.X + rectText.Width / 2;
+
+        output.FillRoundRectangle(_refBrush, rectRef, 6);
+        output.DrawImage(CoreIconCache.Reference, rectIcon, _refColorDark);
+        output.FillRoundRectangle(_refBrushDark, rectDark, 10);
+        output.DrawString(text, _refFont, _refTextBrush, rectText.X, rectText.Y);
+    }
+
+    #endregion
 }

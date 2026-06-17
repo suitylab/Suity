@@ -1,5 +1,7 @@
 using Suity.Editor.AIGC;
 using Suity.Editor.Types;
+using Suity.Views;
+using System;
 
 namespace Suity.Editor.Flows.AIGC;
 
@@ -61,7 +63,7 @@ internal class WorkflowChat : BaseFlowChat
     public WorkflowChat(IFlowRunnable runnable, FunctionContext context = null)
         : base(runnable.Name, runnable.ToDisplayTextL(), context)
     {
-        Runnable = runnable ?? throw new System.ArgumentNullException(nameof(runnable));
+        Runnable = runnable ?? throw new ArgumentNullException(nameof(runnable));
     }
 
     /// <inheritdoc/>
@@ -72,4 +74,7 @@ internal class WorkflowChat : BaseFlowChat
         return flowNode;
     }
 
+    protected override void HandleConversation(IConversationHandler handler)
+    {
+    }
 }

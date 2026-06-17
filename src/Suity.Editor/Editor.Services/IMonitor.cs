@@ -175,7 +175,7 @@ public sealed class EmptyMonitorService : IMonitorService
 /// <summary>
 /// Interface for sending data over a channel.
 /// </summary>
-[NativeType(CodeBase = "Suity", Description = "Data transport", Color = "#9900FF")]
+[NativeType(CodeBase = "Suity", Description = "Data transport", Color = "#0099FF")]
 public interface IDataTransport
 {
     /// <summary>

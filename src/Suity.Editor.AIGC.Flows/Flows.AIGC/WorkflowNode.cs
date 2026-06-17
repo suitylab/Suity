@@ -166,6 +166,8 @@ public class WorkflowAsset : Asset, ILLmChatProvider
     /// </summary>
     public override ImageDef DefaultIcon => CoreIconCache.Workflow;
 
+    #region ILLmChatProvider
+
     /// <summary>
     /// Creates a chat instance for this workflow.
     /// </summary>
@@ -174,14 +176,15 @@ public class WorkflowAsset : Asset, ILLmChatProvider
     public ILLmChat CreateChat(FunctionContext context)
     {
         var node = (this.GetStorageObject(true) as WorkflowDiagramItem)?.Node;
-
         if (node != null)
         {
             return new WorkflowChat(node, context);
         }
 
         return null;
-    }
+    } 
+
+    #endregion
 }
 
 /// <summary>

@@ -335,18 +335,13 @@ public abstract class BaseLLmChat : ILLmChat,
     /// <param name="option">Optional configuration for the conversation.</param>
     /// <param name="cancel">The cancellation token for the operation.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    protected virtual Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource)
-    {
-        return Task.FromResult<object>(null);
-    }
+    protected abstract Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource);
 
     /// <summary>
     /// Handles conversation input. Override to implement custom conversation logic.
     /// </summary>
     /// <param name="handler">The conversation handler to interact with.</param>
-    protected virtual void HandleConversation(IConversationHandler handler)
-    {
-    }
+    protected abstract void HandleConversation(IConversationHandler handler);
 
     #endregion
 
@@ -372,6 +367,15 @@ public sealed class EmptyLLmChat : BaseLLmChat
         : base("(Empty)")
     {
     }
+
+    protected override Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource)
+    {
+        return Task.FromResult<object>(null);
+    }
+
+    protected override void HandleConversation(IConversationHandler handler)
+    {
+    }
 }
 
 #endregion
@@ -391,6 +395,7 @@ public class ManualLLmChat : BaseLLmChat
         : base("Manual", "Manual", context)
     {
     }
+
 
     /// <summary>
     /// Handles the start of a manual chat session by copying the message to clipboard and prompting the user to paste external results.
@@ -435,6 +440,10 @@ public class ManualLLmChat : BaseLLmChat
         _guiRef.QueueRefresh();
 
         return null;
+    }
+
+    protected override void HandleConversation(IConversationHandler handler)
+    {
     }
 
     private void ProcessMarkdown(string msg)

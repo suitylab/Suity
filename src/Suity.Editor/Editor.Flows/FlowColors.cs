@@ -130,7 +130,7 @@ public class FlowColors
     /// <summary>
     /// Color object for node header with semi-transparent white overlay.
     /// </summary>
-    public static Color NodeHaderColor { get; } = Color.FromArgb(30, 255, 255, 255);
+    public static Color NodeHeaderColor { get; } = Color.FromArgb(30, 255, 255, 255);
 
     //public static Color GroupHeaderColor { get; } = Color.FromArgb(30, 0, 0, 0);
 
