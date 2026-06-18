@@ -29,7 +29,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Suity.Editor;
 

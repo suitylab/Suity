@@ -320,16 +320,16 @@ internal class MainChat : ILLmChat
             return _innerChat;
         }
 
-        var asset = _chatAssetSel.Target;
-        if (asset is null)
+        var provider = _chatAssetSel.Target;
+        if (provider is null)
         {
             if (!await _chatAssetSel.ShowSelectionGUIAsync(L("Select Workflow")))
             {
                 return null;
             }
 
-            asset = _chatAssetSel.Target;
-            if (asset is null)
+            provider = _chatAssetSel.Target;
+            if (provider is null)
             {
                 return null;
             }
@@ -342,7 +342,7 @@ internal class MainChat : ILLmChat
             ctx.SetArgument(option.GetType().FullName, option);
         }
 
-        _innerChat = asset?.CreateChat(ctx);
+        _innerChat = provider?.CreateChat(ctx);
 
         return _innerChat;
     }

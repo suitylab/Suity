@@ -80,7 +80,7 @@ internal class AvaToolWindowService : IToolWindowService
     #region IToolWindowService
     public IEnumerable<IToolWindow> ToolWindows => _toolWindows.Values;
 
-    public IWindowHandle CreateViewObjectWindow(IViewObjectWindow window)
+    public IWindowHandle? CreateViewObjectWindow(IViewObjectWindow window)
     {
         return null;
     }
