@@ -26,24 +26,24 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 
     protected override async Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource)
     {
-        if (string.IsNullOrWhiteSpace(msg))
+        if (string.IsNullOrWhiteSpace(msg) || msg?.Trim() == "/resume")
+        {
+            return await HandleResume(option, cancelSource);
+        }
+
+        var starter = StartNode.AgentNode;
+        if (starter is null)
         {
             return null;
         }
 
-        var node = StartNode.AgentNode;
-        if (node is null)
-        {
-            return null;
-        }
-
-        string name = node.PageAsset?.Name;
+        string name = starter.PageAsset?.Name;
         if (string.IsNullOrWhiteSpace(name))
         {
             return null;
         }
 
-        AddLoop(node, name, StartNode.EntryTaskName, msg);
+        AddLoop(starter, name, StartNode.EntryTaskName, msg);
 
         var request = new AIRequest
         {
@@ -55,7 +55,30 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
             RequestCancel = cancelSource.Cancel
         };
 
-        var result = await node.Run(request, this);
+        var result = await starter.Run(request, this);
+
+        return result?.Result;
+    }
+
+    private async Task<object> HandleResume(object option, CancellationTokenSource cancelSource) 
+    {
+        var starter = StartNode.AgentNode;
+        if (starter is null)
+        {
+            return null;
+        }
+
+        var request = new AIRequest
+        {
+            UserMessage = "/resume",
+            Conversation = _conversation,
+            FuncContext = this._context,
+            Option = option,
+            Cancellation = cancelSource.Token,
+            RequestCancel = cancelSource.Cancel
+        };
+
+        var result = await starter.Run(request, this);
 
         return result?.Result;
     }

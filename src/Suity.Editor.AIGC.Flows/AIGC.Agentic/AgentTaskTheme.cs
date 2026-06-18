@@ -13,7 +13,7 @@ internal class AgentTaskTheme : ImGuiTheme
 
     protected override void OnBuildTheme()
     {
-        this.ClassStyle("taskFrame")
+        this.ClassStyle("loopFrame")
         .SetColor(ColorScheme.EditorBG2.MultiplyAlpha(0.3f))
         .SetBorder(1, ColorScheme.EditorBG);
 

@@ -1,5 +1,7 @@
 ﻿using Suity.Collections;
 using Suity.Editor.AIGC.Assistants;
+using Suity.Editor.Documents;
+using Suity.Editor.Documents.Canvas;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.TaskPages;
@@ -141,6 +143,9 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     {
         var item = new AgentTaskItem(loopAsset, description);
         _loops.List.Add(item);
+
+        (this.Canvas as Document)?.MarkDirtyAndSaveDelayed(this);
+        QueueRefreshView();
 
         return item;
     }
