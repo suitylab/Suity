@@ -36,11 +36,27 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 
     protected override async Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource)
     {
-        if (string.IsNullOrWhiteSpace(msg) || msg?.Trim() == "/resume")
+        try
         {
-            return await HandleResume(option, cancelSource);
-        }
+            QueuedAction.Do(QueueRefreshView);
 
+            if (string.IsNullOrWhiteSpace(msg) || msg?.Trim() == "/resume")
+            {
+                return await HandleResume(option, cancelSource);
+            }
+            else
+            {
+                return await HandleNew(msg, option, cancelSource);
+            }
+        }
+        finally
+        {
+            QueueRefreshView();
+        }
+    }
+
+    private async Task<object> HandleNew(string msg, object option, CancellationTokenSource cancelSource)
+    {
         var starter = StartNode.AgentNode;
         if (starter is null)
         {
@@ -218,7 +234,15 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 
     public AgentState EnsureAgentState(IAgentNode agent)
     {
-        return _agentStates.GetOrAdd(agent, _ => new AgentState(agent));
+        return _agentStates.GetOrAdd(agent, _ => new AgentState(this, agent));
+    }
+
+    public void QueueRefreshView()
+    {
+        foreach (var agent in _agentStates.Keys)
+        {
+            agent.QueueRefreshView();
+        }
     }
 }
 
@@ -226,10 +250,13 @@ public class AgentState : IAgentState
 {
     readonly Dictionary<IAgentLoop, AgentLoopState> _loops = [];
 
-    public AgentState(IAgentNode agent)
+    public AgentState(AgentGraphRunner parent, IAgentNode agent)
     {
+        Parent = parent ?? throw new ArgumentNullException(nameof(parent));
         Agent = agent ?? throw new ArgumentNullException(nameof(agent));
     }
+
+    public AgentGraphRunner Parent { get; }
 
     public IAgentNode Agent { get; }
 
@@ -243,18 +270,44 @@ public class AgentState : IAgentState
 
     public AgentLoopState EnsureLoop(IAgentLoop loop)
     {
-        return _loops.GetOrAdd(loop, _ => new AgentLoopState(loop));
+        return _loops.GetOrAdd(loop, _ => new AgentLoopState(this, loop));
     }
 }
 
 public class AgentLoopState : IAgentLoopState
 {
-    public AgentLoopState(IAgentLoop loop)
+    private AigcLoopRunner _runner;
+
+    public AgentLoopState(AgentState parent, IAgentLoop loop)
     {
+        Parent = parent ?? throw new ArgumentNullException(nameof(parent));
         Loop = loop ?? throw new ArgumentNullException(nameof(loop));
     }
 
-    internal AigcLoopRunner Runner { get; set; }
+    public AgentState Parent { get; }
+
+    internal AigcLoopRunner Runner
+    {
+        get => _runner;
+        set
+        {
+            if (ReferenceEquals(_runner, value))
+            {
+                return;
+            }
+
+            var runner = _runner;
+            runner?.TaskChanged -= OnTaskChanged;
+
+            _runner = value;
+            value?.TaskChanged += OnTaskChanged;
+        }
+    }
+
+    private void OnTaskChanged(object sender, IAigcTaskPage e)
+    {
+        QueuedAction.Do(Parent.Agent.QueueRefreshView);
+    }
 
     public IAgentLoop Loop { get; }
 

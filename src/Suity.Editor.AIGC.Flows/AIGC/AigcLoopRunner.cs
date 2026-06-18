@@ -28,6 +28,8 @@ internal class AigcLoopRunner : AIAssistant
     private IAigcTaskPage _lastTask;
     private AIRequest _lastRequest;
 
+    public event EventHandler<IAigcTaskPage> TaskChanged;
+
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AigcLoopRunner"/> class.
@@ -69,6 +71,8 @@ internal class AigcLoopRunner : AIAssistant
     /// Gets a value indicating whether the task runner is currently executing a task.
     /// </summary>
     public bool IsRunning => _lastRequest != null;
+
+    public IAigcTaskPage LastTask => _lastTask;
 
     /// <summary>
     /// Requests cancellation of the currently running task.
@@ -200,6 +204,7 @@ internal class AigcLoopRunner : AIAssistant
         }
 
         _lastTask = task;
+        RaiseTaskChanged(task);
 
         bool hasSubTask = task.Count > 0;
         if (!hasSubTask)
@@ -232,6 +237,18 @@ internal class AigcLoopRunner : AIAssistant
         }
 
         return (flowControl: true, value: null);
+    }
+
+    private void RaiseTaskChanged(IAigcTaskPage task)
+    {
+        try
+        {
+            this.TaskChanged?.Invoke(this, task);
+        }
+        catch (Exception err)
+        {
+            err.LogError();
+        }
     }
 
     private bool CheckCommitScratchPad(AigcTaskPage task, AigcTaskPage subTask)

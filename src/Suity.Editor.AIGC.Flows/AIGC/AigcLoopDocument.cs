@@ -169,7 +169,7 @@ public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
     /// Gets the first top level task that has not been fully completed, searching from the last task backward.
     /// </summary>
     /// <returns>The first top level running <see cref="AigcTaskPage"/>, or null if all tasks are done.</returns>
-    public AigcTaskPage GetUnfinishedChildTask()
+    public AigcTaskPage GetUnfinishedTask()
     {
         int c = Count;
         if (c == 0)
@@ -202,7 +202,7 @@ public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
         return working;
     }
 
-    public bool GetAllDone() => GetUnfinishedChildTask() is null;
+    public bool GetAllDone() => GetUnfinishedTask() is null;
 
 
     /// <summary>
@@ -216,7 +216,7 @@ public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
             return null;
         }
 
-        var task = GetUnfinishedChildTask();
+        var task = GetUnfinishedTask();
         if (task != null && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
         {
             return task.GetUnfinishedChildTaskDeep() ?? task;
@@ -466,7 +466,7 @@ public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
 
     public TaskCommitStatus GetCommitStatus()
     {
-        if (GetUnfinishedChildTask() is { } task)
+        if (GetUnfinishedTask() is { } task)
         {
             return task.GetCommitStatus();
         }
@@ -474,7 +474,7 @@ public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
         return TaskCommitStatus.TaskFinished;
     }
 
-    IAigcTaskPage IAigcLoop.GetLastTask() => GetUnfinishedChildTask();
+    IAigcTaskPage IAigcLoop.GetLastTask() => GetUnfinishedTask();
     
 
     #endregion
