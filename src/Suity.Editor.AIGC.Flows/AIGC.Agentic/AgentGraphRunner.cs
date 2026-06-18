@@ -1,4 +1,5 @@
-﻿using Suity.Editor.AIGC.Assistants;
+﻿using Suity.Collections;
+using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows;
@@ -7,7 +8,9 @@ using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Views;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,6 +18,9 @@ namespace Suity.Editor.AIGC.Agentic;
 
 public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 {
+    readonly Dictionary<IAgentNode, AgentState> _agentStates = [];
+
+
     public AgentStartCanvasNode StartNode { get; }
     public ICanvasDocument CanvasDocument { get; }
 
@@ -164,11 +170,33 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
     #region IAgentGraphRunner
     public IAgentState GetAgentState(IAgentNode agent)
     {
-        return null;
+        return _agentStates.GetValueSafe(agent);
     }
 
     public async Task<AICallResult> RunLoop(AIRequest request, IAgentNode agent, IAgentLoop loop)
     {
+        if (request is null)
+        {
+            throw new ArgumentNullException(nameof(request));
+        }
+
+        if (agent is null)
+        {
+            throw new ArgumentNullException(nameof(agent));
+        }
+
+        if (loop is null)
+        {
+            throw new ArgumentNullException(nameof(loop));
+        }
+
+        var agentState = EnsureAgentState(agent);
+        var loopState = agentState.EnsureLoop(loop);
+        if (loopState.IsRunning)
+        {
+            return AICallResult.FromFailed("Loop is running.");
+        }
+
         var loopDoc = loop?.LoopAsset?.GetLoop() as AigcLoopDocument;
         if (loopDoc is null)
         {
@@ -181,10 +209,54 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         }
 
         var resume = new AIRequest(request, "/resume");
-
         var runner = new AigcLoopRunner(loopDoc);
+        loopState.Runner = runner;
+
         return await runner.HandleRequest(resume);
     } 
     #endregion
+
+    public AgentState EnsureAgentState(IAgentNode agent)
+    {
+        return _agentStates.GetOrAdd(agent, _ => new AgentState(agent));
+    }
 }
 
+public class AgentState : IAgentState
+{
+    readonly Dictionary<IAgentLoop, AgentLoopState> _loops = [];
+
+    public AgentState(IAgentNode agent)
+    {
+        Agent = agent ?? throw new ArgumentNullException(nameof(agent));
+    }
+
+    public IAgentNode Agent { get; }
+
+    public IAgentLoopState GetLoopState(IAgentLoop loop)
+    {
+        return _loops.GetValueSafe(loop);
+    }
+
+    public bool IsRunning => _loops.Values.Any(o => o.IsRunning);
+
+
+    public AgentLoopState EnsureLoop(IAgentLoop loop)
+    {
+        return _loops.GetOrAdd(loop, _ => new AgentLoopState(loop));
+    }
+}
+
+public class AgentLoopState : IAgentLoopState
+{
+    public AgentLoopState(IAgentLoop loop)
+    {
+        Loop = loop ?? throw new ArgumentNullException(nameof(loop));
+    }
+
+    internal AigcLoopRunner Runner { get; set; }
+
+    public IAgentLoop Loop { get; }
+
+    public bool IsRunning => Runner?.IsRunning == true;
+}

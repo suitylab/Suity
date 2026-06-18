@@ -33,14 +33,16 @@ public interface IAgentGraphRunner
 
 public interface IAgentState
 {
+    IAgentNode Agent { get; }
+
     IAgentLoopState GetLoopState(IAgentLoop loop);
+
+    bool IsRunning { get; }
 }
 
 public interface IAgentLoopState
 {
-    IAgentLoop AgentLoop { get; }
+    IAgentLoop Loop { get; }
 
     bool IsRunning { get; }
-
-    Task<AICallResult> Run(AIRequest request);
 }
