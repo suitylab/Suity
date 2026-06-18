@@ -51,6 +51,9 @@ internal class LLmServiceBK : LLmService
         }
     }
 
+    /// <inheritdoc/>
+    public override ILLmChat CurrentChat => AigcChatToolWindow.Instance.Main.Inner;
+
 
     /// <inheritdoc/>
     public override async Task<bool> CheckCurrentModelConfig()

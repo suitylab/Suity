@@ -72,6 +72,8 @@ internal class MainChat : ILLmChat
     /// </summary>
     public FunctionContext Context => _context;
 
+    public ILLmChat Inner => _innerChat;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="MainChat"/> class with a default conversation.
     /// </summary>

@@ -222,7 +222,19 @@ public class ImFlowViewNode : ImExpandableNode,
 
     /// <inheritdoc/>
     public override FlowComputationStates ComputationState
-        => Computation?.GetNodeRunningState(_node)?.State ?? FlowComputationStates.None;
+    {
+        get
+        {
+            if (_node is IHasFlowComputionState hasState)
+            {
+                return hasState.ComputationState;
+            }
+            else
+            {
+                return Computation?.GetNodeRunningState(_node)?.State ?? FlowComputationStates.None;
+            }
+        }
+    }
 
     /// <inheritdoc/>
     public override void RenameConnector(string oldName, string newName)

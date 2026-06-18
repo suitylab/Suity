@@ -1,7 +1,6 @@
 using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Flows;
-using Suity.Editor.Flows.AIGC;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Views;
@@ -23,6 +22,8 @@ public abstract class LLmService
     /// </summary>
     public static LLmService Instance => _external;
 
+
+    public abstract ILLmChat CurrentChat { get; }
 
     /// <summary>
     /// Checks whether the current model configuration is valid and ready for use.

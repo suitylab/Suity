@@ -1,7 +1,6 @@
 ﻿using Suity.Collections;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Documents;
-using Suity.Editor.Documents.Canvas;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.TaskPages;
@@ -17,7 +16,7 @@ namespace Suity.Editor.AIGC.Agentic;
 
 
 [NativeAlias("Suity.Editor.AIGC.AgentCanvasNode")]
-public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAgentNode
+public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAgentNode, IHasFlowComputionState
 {
     internal FlowNodeConnector _out;
     internal FlowNodeConnector _in;
@@ -64,6 +63,9 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     public override ImGuiNode OnExpandedGui(ImGui gui)
     {
+        var runner = LLmService.Instance.CurrentChat as IAgentGraphRunner;
+        var state = runner?.GetAgentState(this);
+
         var node = gui.VerticalLayout("loop-list")
         .InitTheme(AgentTaskTheme.Instance)
         .InitPadding(25)
@@ -167,6 +169,25 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
         return result;
     }
+
+    #endregion
+
+    #region IHasFlowComputionState
+
+    public FlowComputationStates ComputationState
+    {
+        get
+        {
+            var runner = LLmService.Instance.CurrentChat as IAgentGraphRunner;
+            if (runner?.GetAgentState(this) is { } state)
+            {
+                return state.IsRunning ? FlowComputationStates.Running : FlowComputationStates.None;
+            }
+
+            return FlowComputationStates.None;
+        }
+    }
+
 
     #endregion
 }

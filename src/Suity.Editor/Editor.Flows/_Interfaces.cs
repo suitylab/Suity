@@ -990,3 +990,11 @@ public class FlowComputaionException : Exception
 
 #endregion
 
+#region IHasFlowComputionState
+
+public interface IHasFlowComputionState
+{
+    FlowComputationStates ComputationState { get; }
+}
+
+#endregion

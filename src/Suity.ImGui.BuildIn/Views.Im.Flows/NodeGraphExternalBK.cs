@@ -16,7 +16,7 @@ internal class NodeGraphExternalBK : NodeGraphExternal
     /// <summary>
     /// Gets the singleton instance of this backend.
     /// </summary>
-    public static NodeGraphExternalBK Instance { get; } = new NodeGraphExternalBK();
+    public static NodeGraphExternalBK Instance { get; } = new();
 
     /// <inheritdoc/>
     public override ImGuiNode FittedNodeFrame(ImGui gui, IDrawNodeContext context)

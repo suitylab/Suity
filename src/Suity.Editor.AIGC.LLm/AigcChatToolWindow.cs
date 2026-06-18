@@ -88,6 +88,8 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
         set => _mainChat.SelectedChatAssetId = value;
     }
 
+    internal MainChat Main => _mainChat;
+
     #region Config
 
     /// <summary>
