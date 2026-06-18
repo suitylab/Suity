@@ -1,6 +1,9 @@
 ﻿using Suity.Drawing;
+using Suity.Editor.Documents;
 using Suity.Editor.Flows;
+using Suity.Editor.Selecting;
 using Suity.Editor.Types;
+using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -17,6 +20,7 @@ public class AgentStartCanvasNode : CanvasDesignNode
     private IAgentNode _agentNode;
 
     readonly StringProperty _entryTaskName = new(nameof(EntryTaskName), "Entry task name", "Entry");
+    readonly AssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
 
     public AgentStartCanvasNode()
     {
@@ -28,11 +32,32 @@ public class AgentStartCanvasNode : CanvasDesignNode
 
     public string EntryTaskName => _entryTaskName.Text;
 
+    /// <summary>
+    /// Gets or sets the workspace associated with this task page document.
+    /// </summary>
+    public WorkSpace WorkSpace
+    {
+        get => _workSpace.Target?.WorkSpace;
+        set
+        {
+            var workSpace = value?.GetAsset();
+
+            if (_workSpace.Target == workSpace)
+            {
+                return;
+            }
+
+            _workSpace.Target = workSpace;
+            (this.Canvas as Document)?.MarkDirtyAndSaveDelayed(this);
+        }
+    }
+
     protected override void OnSync(IPropertySync sync, ISyncContext context)
     {
         base.OnSync(sync, context);
 
         _entryTaskName.Sync(sync);
+        _workSpace.Sync(sync);
     }
 
     protected override void OnSetupViewContent(IViewObjectSetup setup)
@@ -40,6 +65,7 @@ public class AgentStartCanvasNode : CanvasDesignNode
         base.OnSetupViewContent(setup);
 
         _entryTaskName.InspectorField(setup);
+        _workSpace.InspectorField(setup);
     }
 
     public override void Compute(IFlowComputation compute)

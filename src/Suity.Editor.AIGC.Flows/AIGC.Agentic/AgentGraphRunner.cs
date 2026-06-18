@@ -3,6 +3,7 @@ using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Services;
+using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Views;
 using System;
@@ -23,6 +24,9 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         StartNode = node ?? throw new ArgumentNullException(nameof(node));
         CanvasDocument = StartNode.Canvas ?? throw new ArgumentNullException(nameof(CanvasDocument));
     }
+
+    public WorkSpace WorkSpace => StartNode.WorkSpace;
+
 
     protected override async Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource)
     {
@@ -138,8 +142,10 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 
         startupWorkflow.SetPrompt(prompt);
         startupWorkflow.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
+
         loopDoc.AddTask(startupWorkflow);
         loopDoc.MarkDirtyAndSaveDelayed(this);
+        loopDoc.WorkSpace = this.WorkSpace;
 
         var loopAsset = loopDoc.TargetAsset as IAigcLoopAsset;
         var item = agentNode.AddLoop(loopAsset, description);
@@ -167,6 +173,11 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         if (loopDoc is null)
         {
             return AICallResult.Empty;
+        }
+
+        if (loopDoc.WorkSpace is { } workSpace)
+        {
+            StartNode.WorkSpace = workSpace;
         }
 
         var resume = new AIRequest(request, "/resume");
