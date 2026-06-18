@@ -20,20 +20,20 @@ internal record TaskRunResult(TaskCommitStatus EndType, object Parameter);
 /// Runner that orchestrates the execution of AIGC task pages, handling task creation, execution, and parent reporting.
 /// </summary>
 [DisplayText("Task Page Runner")]
-internal class AigcTaskPageRunner : AIAssistant
+internal class AigcLoopRunner : AIAssistant
 {
-    private readonly AigcTaskPageDocument _document;
-    private readonly DocumentUsageToken _usageToken = new(nameof(AigcTaskPageRunner));
+    private readonly AigcLoopDocument _document;
+    private readonly DocumentUsageToken _usageToken = new(nameof(AigcLoopRunner));
 
     private IAigcTaskPage _lastTask;
     private AIRequest _lastRequest;
 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AigcTaskPageRunner"/> class.
+    /// Initializes a new instance of the <see cref="AigcLoopRunner"/> class.
     /// </summary>
     /// <param name="document">The task page document to run tasks for.</param>
-    public AigcTaskPageRunner(AigcTaskPageDocument document)
+    public AigcLoopRunner(AigcLoopDocument document)
     {
         _document = document ?? throw new ArgumentNullException(nameof(document));
     }

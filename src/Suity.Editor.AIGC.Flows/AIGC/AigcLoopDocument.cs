@@ -21,11 +21,12 @@ namespace Suity.Editor.AIGC;
 /// <summary>
 /// Document that manages AIGC task pages, including task creation, configuration, and execution orchestration.
 /// </summary>
-[DocumentFormat(FormatName = "AigcTaskPage", Extension = "aigctask", DisplayText = "Task", Icon = "*CoreIcon|Task", Categoty = "AIGC", Order = 100, Iteration = LoadingIterations.Iteration2)]
+[DocumentFormat(FormatNames = ["AigcLoop", "AigcTaskPage"], Extensions = ["aigcloop", "aigctask"], DisplayText = "Task", Icon = "*CoreIcon|Task", Categoty = "AIGC", Order = 100, Iteration = LoadingIterations.Iteration2)]
 [EditorFeature(EditorFeatures.AigcWorkflow)]
 [NativeAlias("Suity.Editor.AIGC.PageTasks.AigcTaskPageDocument")]
 [NativeAlias("Suity.Editor.AIGC.Flows.AigcTaskPageDocument")]
-public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IAigcTaskHost
+[NativeAlias("Suity.Editor.AIGC.AigcTaskPageDocument")]
+public class AigcLoopDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IAigcLoop
 {
     readonly TextBlockProperty _initialTaskPrompt = new("InitialTaskPrompt", "Initial Task Prompt", string.Empty);
     readonly AssetProperty<ISubFlowAsset> _startupPage = new("StartupPage", "Startup Page") { Filter = StartupPageFilter.Instance };
@@ -39,9 +40,9 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     readonly ValueProperty<bool> _autoFocusRunningTask = new("AutoFocusRunningTask", "Auto Focus Running Task", true, "Automatically focus the running task when it starts.");
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AigcTaskPageDocument"/> class.
+    /// Initializes a new instance of the <see cref="AigcLoopDocument"/> class.
     /// </summary>
-    public AigcTaskPageDocument()
+    public AigcLoopDocument()
     {
         ItemCollection.FieldName = "Tasks";
         ItemCollection.FieldDescription = "Tasks";
@@ -203,15 +204,6 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
 
     public bool GetAllDone() => GetUnfinishedChildTask() is null;
 
-    public TaskCommitStatus GetCommitStatus()
-    {
-        if (GetUnfinishedChildTask() is { } task)
-        {
-            return task.GetCommitStatus();
-        }
-
-        return TaskCommitStatus.TaskFinished;
-    }
 
     /// <summary>
     /// Gets the last task that is currently unfinished or the most recent task if all are completed.
@@ -466,12 +458,24 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
     }
 
     /// <inheritdoc/>
-    IAigcTaskPage IAigcTaskHost.GetTask(string taskId) 
+    IAigcTaskPage IAigcLoop.GetTask(string taskId) 
         => ItemCollection.GetItem(taskId) as IAigcTaskPage;
 
-    IAigcTaskPage[] IAigcTaskHost.GetSubTasks()
+    IAigcTaskPage[] IAigcLoop.GetSubTasks()
         => ItemCollection.Items.OfType<IAigcTaskPage>().ToArray();
 
+    public TaskCommitStatus GetCommitStatus()
+    {
+        if (GetUnfinishedChildTask() is { } task)
+        {
+            return task.GetCommitStatus();
+        }
+
+        return TaskCommitStatus.TaskFinished;
+    }
+
+    IAigcTaskPage IAigcLoop.GetLastTask() => GetUnfinishedChildTask();
+    
 
     #endregion
 
@@ -499,12 +503,19 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
 /// <summary>
 /// Asset class representing an AIGC task page.
 /// </summary>
-public class AigcTaskPageAsset : Asset
+public class AigcTaskPageAsset : Asset, IAigcLoopAsset
 {
+    public AigcTaskPageAsset()
+    {
+        UpdateAssetTypes(this.GetType(), typeof(IAigcLoopAsset));
+    }
+
     /// <inheritdoc/>
     public override ImageDef DefaultIcon => CoreIconCache.Task;
 
-    public AigcTaskPageDocument GetDocument() => GetStorageObject() as AigcTaskPageDocument;
+    public AigcLoopDocument GetDocument() => GetStorageObject() as AigcLoopDocument;
+
+    public IAigcLoop GetTaskHost() => GetDocument();
 }
 
 /// <summary>

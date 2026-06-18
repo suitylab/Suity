@@ -36,7 +36,7 @@ public class GotoDiagramMenu : MenuCommand
             return;
         }
 
-        var view = task.GetDocument()?.View as AigcTaskPageDocumentView;
+        var view = task.GetDocument()?.View as AigcLoopDocumentView;
         view?.HandleGotoWorkflow(task);
     }
 

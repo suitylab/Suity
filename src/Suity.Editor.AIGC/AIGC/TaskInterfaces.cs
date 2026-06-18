@@ -25,12 +25,12 @@ public enum TaskDirectoryTargets
 
 #endregion
 
-#region IAigcTaskHost
+#region IAigcLoop
 
 /// <summary>
-/// Represents a host for AIGC tasks, providing workspace management and knowledge article access.
+/// Represents a loop of tasks that can be executed in sequence.
 /// </summary>
-public interface IAigcTaskHost
+public interface IAigcLoop
 {
     /// <summary>
     /// Gets the initial task prompt.
@@ -72,6 +72,19 @@ public interface IAigcTaskHost
     /// </summary>
     /// <returns>An array of sub-tasks.</returns>
     IAigcTaskPage[] GetSubTasks();
+
+    TaskCommitStatus GetCommitStatus();
+
+    IAigcTaskPage GetLastTask();
+}
+
+#endregion
+
+#region IAigcTaskHostAsset
+
+public interface IAigcLoopAsset
+{
+    IAigcLoop GetTaskHost();
 }
 
 #endregion
@@ -87,7 +100,7 @@ public interface IAigcTaskPage : INamed, ITextDisplay
     /// <summary>
     /// Gets the task host document for this task page.
     /// </summary>
-    IAigcTaskHost TaskHost { get; }
+    IAigcLoop TaskHost { get; }
 
     /// <summary>
     /// Gets the parent task page, or null if this is a top-level task.

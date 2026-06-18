@@ -11,7 +11,30 @@ public interface IAgentNode : INamed
 {
     IPageAsset PageAsset { get; }
 
-    AgentTaskItem AddTask(string name, string description, string prompt);
+    IAgentTask AddTask(IAigcLoopAsset loopAsset, string description);
 
     Task<AICallResult> Run(AIRequest request);
+
+    void QueueRefreshView();
+}
+
+public interface IAgentTask
+{
+    IAigcLoopAsset LoopAsset { get; }
+}
+
+
+public interface IAgentGraphRunner
+{
+    IAgentState GetAgentState(IAgentNode agent);
+}
+
+public interface IAgentState
+{
+    IAgentTaskState GetTaskState(IAgentTask task);
+}
+
+public interface IAgentTaskState
+{
+
 }

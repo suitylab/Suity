@@ -226,7 +226,7 @@ public class AigcToolPage : AigcTaskPage,
         BuildInstance();
     }
 
-    public static AigcToolPage CreatToolPage(AigcTaskPageDocument doc, IToolAsset toolAsset, string title = null, string taskPrompt = null, string commitName = null)
+    public static AigcToolPage CreatToolPage(AigcLoopDocument doc, IToolAsset toolAsset, string title = null, string taskPrompt = null, string commitName = null)
     {
         if (doc is null)
         {
@@ -279,7 +279,7 @@ public class AigcToolPage : AigcTaskPage,
         return taskPage;
     }
 
-    public static AigcToolPage CreatToolPage(AigcTaskPageDocument doc, IToolInstance toolInstance, string title = null, string taskPrompt = null, string commitName = null)
+    public static AigcToolPage CreatToolPage(AigcLoopDocument doc, IToolInstance toolInstance, string title = null, string taskPrompt = null, string commitName = null)
     {
         if (doc is null)
         {

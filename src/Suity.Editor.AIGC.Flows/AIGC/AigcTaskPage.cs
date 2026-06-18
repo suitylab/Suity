@@ -28,7 +28,7 @@ public abstract class AigcTaskPage : DesignNode,
     #region Core Prop
 
     /// <inheritdoc/>
-    public AigcTaskPageDocument TaskPageDocument => this.GetDocument() as AigcTaskPageDocument;
+    public AigcLoopDocument TaskPageDocument => this.GetDocument() as AigcLoopDocument;
 
     /// <inheritdoc/>
     public IAigcTaskPage ParentTask => ParentNode as IAigcTaskPage;
@@ -137,7 +137,7 @@ public abstract class AigcTaskPage : DesignNode,
     #region Virtual (IAigcTaskPage)
 
     /// <inheritdoc/>
-    public IAigcTaskHost TaskHost => this.GetDocument() as AigcTaskPageDocument;
+    public IAigcLoop TaskHost => this.GetDocument() as AigcLoopDocument;
 
     public virtual TaskCommitStatus GetCommitStatus()
     {
@@ -413,7 +413,7 @@ public abstract class AigcTaskPage : DesignNode,
     /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
     public IAigcTaskPage CreateTaskPage(IPageAsset asset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
-        if (this.GetDocument() is not AigcTaskPageDocument doc)
+        if (this.GetDocument() is not AigcLoopDocument doc)
         {
             throw new InvalidOperationException("AigcTaskPageDocument not found.");
         }
@@ -433,7 +433,7 @@ public abstract class AigcTaskPage : DesignNode,
     /// <exception cref="InvalidOperationException">Thrown when the AigcTaskPageDocument is not found.</exception>
     public IAigcTaskPage CreateTaskPage(IPageInstance pageInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
-        if (this.GetDocument() is not AigcTaskPageDocument doc)
+        if (this.GetDocument() is not AigcLoopDocument doc)
         {
             throw new InvalidOperationException("AigcTaskPageDocument not found.");
         }
@@ -452,7 +452,7 @@ public abstract class AigcTaskPage : DesignNode,
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="doc"/> or <paramref name="pageAsset"/> is null.</exception>
-    public static IAigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, IPageAsset pageAsset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
+    public static IAigcTaskPage CreateTaskPage(AigcLoopDocument doc, IPageAsset pageAsset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
         if (doc is null)
         {
@@ -488,7 +488,7 @@ public abstract class AigcTaskPage : DesignNode,
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="doc"/> or <paramref name="pageInstance"/> is null.</exception>
-    public static IAigcTaskPage CreateTaskPage(AigcTaskPageDocument doc, IPageInstance pageInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
+    public static IAigcTaskPage CreateTaskPage(AigcLoopDocument doc, IPageInstance pageInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
         if (doc is null)
         {

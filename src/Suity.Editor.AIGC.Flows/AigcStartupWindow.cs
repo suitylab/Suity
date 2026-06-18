@@ -277,7 +277,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
             return;
         }
 
-        var format = DocumentManager.Instance.GetDocumentFormat("AigcTaskPage");
+        var format = DocumentManager.Instance.GetDocumentFormat("AigcLoop");
         if (format is null)
         {
             return;
@@ -289,7 +289,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
             return;
         }
 
-        var doc = docEntry.Content as AigcTaskPageDocument;
+        var doc = docEntry.Content as AigcLoopDocument;
         if (doc is null)
         {
             return;
@@ -304,6 +304,6 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
         // Waiting for document view to be ready
         await EditorUtility.WaitForNextQueuedAction();
 
-        (view as AigcTaskPageDocumentView)?.Run(prompt);
+        (view as AigcLoopDocumentView)?.Run(prompt);
     }
 }

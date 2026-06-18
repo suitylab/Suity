@@ -1,18 +1,13 @@
 ﻿using Suity.Collections;
 using Suity.Editor.AIGC.Assistants;
-using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.TaskPages;
 using Suity.Editor.Selecting;
-using Suity.Editor.Services;
 using Suity.Editor.Types;
-using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using Suity.Views.Im;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -97,7 +92,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         .InitFitVertical()
         .OnContent(() =>
         {
-            if (item.PageAsset is not { } asset)
+            if (item.LoopAsset is not { } asset)
             {
                 gui.Text("title-missing", item.ToString()?.ToShortcutBeginEnd())
                 .InitFullWidth()
@@ -142,74 +137,10 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     public IPageAsset PageAsset => this.Target;
 
-    public AgentTaskItem AddTask(string name, string description, string prompt)
+    public IAgentTask AddTask(IAigcLoopAsset loopAsset, string description)
     {
-        var canvasDoc = this.Canvas as Document;
-        if (canvasDoc is null)
-        {
-            return null;
-        }
-
-        var startupPage = this.Target;
-        if (startupPage is null)
-        {
-            return null;
-        }
-
-        var format = DocumentManager.Instance.GetDocumentFormat("AigcTaskPage");
-        if (format is null)
-        {
-            return null;
-        }
-
-        name = name?.Trim();
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            name = "TaskPage";
-        }
-
-        description = description?.Trim() ?? string.Empty;
-
-        string currentPath = Path.GetDirectoryName(canvasDoc.FileName.PhysicFileName);
-        currentPath = PathUtility.MakeRalativePath(currentPath, EditorServices.CurrentProject.AssetDirectory);
-
-        var docEntry = format.AutoNewDocument(name, currentPath);
-        if (docEntry is null)
-        {
-            return null;
-        }
-
-        var taskDoc = docEntry.Content as AigcTaskPageDocument;
-        if (taskDoc is null)
-        {
-            return null;
-        }
-
-        taskDoc.StartupPage = startupPage;
-        taskDoc.InitialTaskPrompt = prompt;
-
-        var startupTask = AigcWorkflowPage.CreateWorkflowPage(taskDoc, startupPage);
-        if (startupTask is null)
-        {
-            return null;
-        }
-
-        if (startupTask.EnsureInstance() is null)
-        {
-            return null;
-        }
-
-        startupTask.SetPrompt(prompt);
-        startupTask.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
-        taskDoc.AddTask(startupTask);
-        taskDoc.MarkDirtyAndSaveDelayed(this);
-
-        var taskPageAsset = taskDoc.TargetAsset as AigcTaskPageAsset;
-        var item = new AgentTaskItem(taskPageAsset, description);
+        var item = new AgentTaskItem(loopAsset, description);
         _tasks.List.Add(item);
-
-        this.GetTargetDocument()?.MarkDirtyAndSaveDelayed(this);
-        this.QueueRefreshView();
 
         return item;
     }
@@ -227,13 +158,13 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         var resume = new AIRequest(request, "/resume");
         foreach (var item in tasks)
         {
-            var taskDoc = item.PageAsset?.GetStorageObject() as AigcTaskPageDocument;
+            var taskDoc = item.LoopAsset?.GetTaskHost() as AigcLoopDocument;
             if (taskDoc is null)
             {
                 continue;
             }
 
-            var runner = new AigcTaskPageRunner(taskDoc);
+            var runner = new AigcLoopRunner(taskDoc);
             await runner.HandleRequest(resume);
         }
 
@@ -243,41 +174,38 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     #endregion
 }
 
-public class AgentTaskItem : IViewObject
+public class AgentTaskItem : IAgentTask, IViewObject
 {
-    readonly AssetProperty<AigcTaskPageAsset> _taskPage = new("TaskPage", "Task Page");
+    readonly AssetProperty<IAigcLoopAsset> _loop = new("Loop", "Loop");
     readonly StringProperty _description = new("Description");
-
 
     public AgentTaskItem()
     {
     }
 
-    public AgentTaskItem(AigcTaskPageAsset asset, string description)
+    public AgentTaskItem(IAigcLoopAsset loopAsset, string description)
     {
-        _taskPage.Target = asset;
+        _loop.Target = loopAsset;
         _description.Text = description;
     }
-
-    public AigcTaskPageAsset PageAsset => _taskPage.Target;
 
     public string Description => _description.Text;
 
     public void Sync(IPropertySync sync, ISyncContext context)
     {
-        _taskPage.Sync(sync);
+        _loop.Sync(sync);
         _description.Sync(sync);
     }
 
     public void SetupView(IViewObjectSetup setup)
     {
-        _taskPage.InspectorField(setup);
+        _loop.InspectorField(setup);
         _description.InspectorField(setup);
     }
 
     public TaskCommitStatus GetCommitStatus()
     {
-        if (_taskPage.Target?.GetDocument() is { } doc)
+        if (_loop.Target?.GetTaskHost() is { } doc)
         {
             return doc.GetCommitStatus();
         }
@@ -285,15 +213,21 @@ public class AgentTaskItem : IViewObject
         return TaskCommitStatus.None;
     }
 
-    public AigcTaskPage GetLastTask()
+    public IAigcTaskPage GetLastTask()
     {
-        if (_taskPage.Target?.GetDocument() is { } doc)
+        if (_loop.Target?.GetTaskHost() is { } doc)
         {
-            return doc.GetUnfinishedChildTask();
+            return doc.GetLastTask();
         }
 
         return null;
     }
+
+    #region IAgentTask
+
+    public IAigcLoopAsset LoopAsset => _loop.Target;
+
+    #endregion
 
     public override string ToString()
     {
@@ -302,6 +236,6 @@ public class AgentTaskItem : IViewObject
             return _description.Text;
         }
 
-        return _taskPage.Target?.ToDisplayTextL() ?? string.Empty;
+        return _loop.Target?.ToDisplayTextL() ?? string.Empty;
     }
 }

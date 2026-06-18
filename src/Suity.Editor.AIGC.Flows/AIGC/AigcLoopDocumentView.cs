@@ -45,10 +45,10 @@ namespace Suity.Editor.AIGC;
     }
 
     /// <summary>
-/// Document view for <see cref="AigcTaskPageDocument"/>, providing tree-based navigation, property editing, and AI task interaction UI.
+/// Document view for <see cref="AigcLoopDocument"/>, providing tree-based navigation, property editing, and AI task interaction UI.
 /// </summary>
-[DocumentViewUsage(typeof(AigcTaskPageDocument))]
-public class AigcTaskPageDocumentView : IDocumentView,
+[DocumentViewUsage(typeof(AigcLoopDocument))]
+public class AigcLoopDocumentView : IDocumentView,
     IHasSubDocumentView,
     IDrawImGui,
     IDrawContext, 
@@ -64,7 +64,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
     private readonly SubDocumentView _subView;
 
     private UndoRedoManager _undoManager;
-    private AigcTaskPageDocument _document;
+    private AigcLoopDocument _document;
     private PropertyTarget _startupPageTarget;
 
     private readonly IPropertyGrid _propGrid;
@@ -72,13 +72,13 @@ public class AigcTaskPageDocumentView : IDocumentView,
     private AigcTaskPage _currentPage;
     private readonly GuiOptionalValue _pageNaviOption = new();
     private PageViewCategory _pageCategory;
-    private AigcTaskPageRunner _currentRunner;
+    private AigcLoopRunner _currentRunner;
     private string _msgInput = string.Empty;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AigcTaskPageDocumentView"/> class.
+    /// Initializes a new instance of the <see cref="AigcLoopDocumentView"/> class.
     /// </summary>
-    public AigcTaskPageDocumentView()
+    public AigcLoopDocumentView()
     {
         _theme = CreateTheme();
 
@@ -176,7 +176,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
             throw new InvalidOperationException();
         }
 
-        _document = (AigcTaskPageDocument)document;
+        _document = (AigcLoopDocument)document;
         _subView.Document = document;
         _startupPageTarget = PropertyTargetUtility.CreatePropertyTarget(_document.StartupPageSelection);
 
@@ -394,7 +394,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
             return null;
         }
 
-        runner = _currentRunner = new AigcTaskPageRunner(doc);
+        runner = _currentRunner = new AigcLoopRunner(doc);
         SetCurrentCategory(PageViewCategory.Chat);
 
         var result = await LLmService.Instance.InputMainChat(msg, runner);
@@ -620,7 +620,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
 
             var sel = _treeView.SelectedObjects;
 
-            if (sel.CountOne() && sel.FirstOrDefault() is AigcTaskPageDocument doc)
+            if (sel.CountOne() && sel.FirstOrDefault() is AigcLoopDocument doc)
             {
                 OnDocumentGui(gui, doc);
             }
@@ -650,7 +650,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
         });
     }
 
-    private void OnDocumentGui(ImGui gui, AigcTaskPageDocument doc)
+    private void OnDocumentGui(ImGui gui, AigcLoopDocument doc)
     {
         if (IsRunning)
         {
@@ -675,7 +675,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                 }*/
     }
 
-    private void OnStartupGui(ImGui gui, AigcTaskPageDocument doc)
+    private void OnStartupGui(ImGui gui, AigcLoopDocument doc)
     {
         gui.Frame("#startup")
         .InitClass("editorBg")
@@ -764,7 +764,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
         });
     }
 
-    private void OnResumeGui(ImGui gui, AigcTaskPageDocument doc)
+    private void OnResumeGui(ImGui gui, AigcLoopDocument doc)
     {
         gui.Frame("#resume")
         .InitClass("editorBg")

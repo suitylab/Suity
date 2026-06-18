@@ -332,7 +332,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         compute.Context.SetArgument<IAigcTaskPage>(this);
         compute.Context.SetArgument<IAigcWorkflowPage>(this);
 
-        var doc = this.GetDocument() as AigcTaskPageDocument;
+        var doc = this.GetDocument() as AigcLoopDocument;
         compute.Context.SetArgument<WorkSpace>(doc?.WorkSpace);
     }
 
@@ -463,7 +463,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <returns>True if the task was successfully appended; otherwise, false.</returns>
     public bool AppendTask(IPageAsset asset, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
-        if (this.GetDocument() is not AigcTaskPageDocument doc)
+        if (this.GetDocument() is not AigcLoopDocument doc)
         {
             return false;
         }
@@ -510,7 +510,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <returns>True if the task was successfully appended; otherwise, false.</returns>
     public bool AppendTask(IPageInstance pageInstance, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
-        if (this.GetDocument() is not AigcTaskPageDocument doc)
+        if (this.GetDocument() is not AigcLoopDocument doc)
         {
             return false;
         }
@@ -554,7 +554,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <returns>True if the sub-task was successfully added; otherwise, false.</returns>
     public bool AddSubTask(IPageAsset asset, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
-        if (this.GetDocument() is not AigcTaskPageDocument doc)
+        if (this.GetDocument() is not AigcLoopDocument doc)
         {
             return false;
         }
@@ -591,7 +591,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <returns>True if the sub-task was successfully added; otherwise, false.</returns>
     public bool AddSubTask(IPageInstance pageInstance, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
-        if (this.GetDocument() is not AigcTaskPageDocument doc)
+        if (this.GetDocument() is not AigcLoopDocument doc)
         {
             return false;
         }
@@ -811,7 +811,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <inheritdoc/>
     public LLmMessage[] GetChatHistory(int hierarchyLevels)
     {
-        if (GetDocument() is not AigcTaskPageDocument doc)
+        if (GetDocument() is not AigcLoopDocument doc)
         {
             return [];
         }
@@ -885,7 +885,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
 
         IEnumerable<IPageAsset> tools = instance.GetToolList();
-        if (includeDocumentTools && this.GetDocument() is AigcTaskPageDocument doc)
+        if (includeDocumentTools && this.GetDocument() is AigcLoopDocument doc)
         {
             tools = tools.Concat(doc.GetToolList());
         }
@@ -953,7 +953,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     public ScratchPad[] GetHistoryScratchPads(int hierarchyLevels)
     {
         Dictionary<string, ScratchPad> dic = [];
-        int maxHistory = this.GetDocument() is AigcTaskPageDocument doc ? doc.MaxChatHistory : 0;
+        int maxHistory = this.GetDocument() is AigcLoopDocument doc ? doc.MaxChatHistory : 0;
         CollectScratchPads(dic, maxHistory, hierarchyLevels);
 
         return dic.Values.Where(o => o.Type.CanDisplay()).ToArray();
@@ -962,7 +962,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     public ScratchPad GetHistoryScratchPad(string path, int hierarchyLevels = 0)
     {
         Dictionary<string, ScratchPad> dic = [];
-        int maxHistory = this.GetDocument() is AigcTaskPageDocument doc ? doc.MaxChatHistory : 0;
+        int maxHistory = this.GetDocument() is AigcLoopDocument doc ? doc.MaxChatHistory : 0;
         CollectScratchPads(dic, maxHistory, hierarchyLevels);
 
         if (dic.TryGetValue(path, out var scratchPad) && scratchPad.Type.CanDisplay())
@@ -1077,7 +1077,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// </summary>
     public void ShowWorkflow()
     {
-        (this.GetDocument()?.View as AigcTaskPageDocumentView)?.HandleGotoWorkflow(this);
+        (this.GetDocument()?.View as AigcLoopDocumentView)?.HandleGotoWorkflow(this);
     }
 
     /// <summary>
@@ -1192,7 +1192,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         var asset = (page as SubflowDefinitionNode)?.GetAsset() as SubFlowDefinitionAsset
             ?? throw new NullReferenceException("page is not a PageDefinitionNode or PageDefinitionAsset.");
 
-        if (this.GetDocument() is not AigcTaskPageDocument doc)
+        if (this.GetDocument() is not AigcLoopDocument doc)
         {
             throw new InvalidOperationException("AigcTaskPageDocument not found.");
         }
@@ -1210,7 +1210,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="subFlowAsset"/> is null.</exception>
-    public static AigcWorkflowPage CreateWorkflowPage(AigcTaskPageDocument doc, ISubFlowAsset subFlowAsset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
+    public static AigcWorkflowPage CreateWorkflowPage(AigcLoopDocument doc, ISubFlowAsset subFlowAsset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
         if (doc is null)
         {
@@ -1280,7 +1280,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="commitName">Optional commit name for the task page.</param>
     /// <returns>The newly created task page.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="subFlowInstance"/> is null.</exception>
-    public static AigcWorkflowPage CreateWorkflowPage(AigcTaskPageDocument doc, ISubFlowInstance subFlowInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
+    public static AigcWorkflowPage CreateWorkflowPage(AigcLoopDocument doc, ISubFlowInstance subFlowInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null)
     {
         if (doc is null)
         {
