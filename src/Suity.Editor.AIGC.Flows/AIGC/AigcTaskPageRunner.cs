@@ -50,7 +50,7 @@ internal class AigcTaskPageRunner : AIAssistant
         {
             _lastRequest = request;
 
-            if (request.UserMessage == "-resume")
+            if (request.UserMessage == "/resume")
             {
                 return await HandleResume(request);
             }
@@ -103,7 +103,13 @@ internal class AigcTaskPageRunner : AIAssistant
             return AICallResult.FromFailed("Failed to instantiate startup page");
         }
 
-        startupTask.SetPrompt(request.UserMessage);
+        string userMessage = request.UserMessage;
+        if (userMessage == "/init")
+        {
+            userMessage = _document.InitialTaskPrompt;
+        }
+
+        startupTask.SetPrompt(userMessage);
         startupTask.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
 
         // Disalbe last un-calculated tasks to avoid unexpected task running when the task tree is being built.

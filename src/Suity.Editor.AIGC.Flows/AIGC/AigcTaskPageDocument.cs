@@ -201,6 +201,18 @@ public class AigcTaskPageDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IA
         return working;
     }
 
+    public bool GetAllDone() => GetUnfinishedChildTask() is null;
+
+    public TaskCommitStatus GetCommitStatus()
+    {
+        if (GetUnfinishedChildTask() is { } task)
+        {
+            return task.GetCommitStatus();
+        }
+
+        return TaskCommitStatus.TaskFinished;
+    }
+
     /// <summary>
     /// Gets the last task that is currently unfinished or the most recent task if all are completed.
     /// </summary>
@@ -491,6 +503,8 @@ public class AigcTaskPageAsset : Asset
 {
     /// <inheritdoc/>
     public override ImageDef DefaultIcon => CoreIconCache.Task;
+
+    public AigcTaskPageDocument GetDocument() => GetStorageObject() as AigcTaskPageDocument;
 }
 
 /// <summary>

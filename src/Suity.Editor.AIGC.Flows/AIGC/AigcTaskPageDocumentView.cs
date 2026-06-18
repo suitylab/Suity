@@ -597,7 +597,7 @@ public class AigcTaskPageDocumentView : IDocumentView,
                         .SetEnabled(_document?.GetUnfinishedChildTaskDeep() != null)
                         .OnClick(() =>
                         {
-                            Run("-resume");
+                            Run("/resume");
                         });
                     }
 

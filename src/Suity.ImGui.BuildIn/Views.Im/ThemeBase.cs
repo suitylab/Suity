@@ -47,6 +47,19 @@ public abstract class ThemeBase : ImGuiTheme
             .SetImageFilterColor(ColorScheme.EditorBG)
             .SetVerticalAlignment(GuiAlignment.Center);
 
+        this.ClassStyle("iconBtn")
+            .SetSize(16, 16)
+            .SetColor(Color.Transparent)
+            //.SetImageFilterColor(ColorScheme.EditorBG)
+            .SetBorder(0)
+            .SetPadding(0)
+            .SetCornerRound(1)
+            .SetVerticalAlignment(GuiAlignment.Center);
+        this.PseudoMouseIn()
+            .SetColor(ColorScheme.ToolButton);
+        this.PseudoMouseDown()
+            .SetColor(ColorScheme.ToolButton.Multiply(0.8f));
+
         this.ClassStyle("numBox")
             .SetHeight(13)
             .SetFitOrientation(GuiOrientation.Horizontal)

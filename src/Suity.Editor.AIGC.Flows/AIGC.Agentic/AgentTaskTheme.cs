@@ -3,7 +3,7 @@ using Suity.Helpers;
 using Suity.Views.Im;
 using System.Drawing;
 
-namespace Suity.Editor.AIGC;
+namespace Suity.Editor.AIGC.Agentic;
 
 internal class AgentTaskTheme : ImGuiTheme
 {
@@ -19,11 +19,18 @@ internal class AgentTaskTheme : ImGuiTheme
 
         var font = new FontDef(ImGuiTheme.DefaultFont, 14);
         var fontBold = new FontDef(ImGuiTheme.DefaultFont, 14, FontStyle.Bold);
+        var fontSub = new FontDef(ImGuiTheme.DefaultFont, 12);
 
         this.ClassStyle("textLight")
         .SetFont(font, Color.White.MultiplyAlpha(0.5f));
 
         this.ClassStyle("textBold")
         .SetFont(fontBold, Color.White);
+
+        this.ClassStyle("textSub")
+        .SetFont(fontSub, Color.LightGray.MultiplyAlpha(0.5f));
+
+        this.ClassStyle("textBoldRed")
+        .SetFont(fontBold, Color.Red);
     }
 }

@@ -17,14 +17,13 @@ public abstract class BaseLLmChat : ILLmChat,
 {
     private readonly string _name;
     private readonly string _text;
+    private LLmChatStates _state;
 
     protected readonly IConversationImGui _conversation;
 
     protected readonly FunctionContext _context;
 
     protected readonly ImGuiNodeRef _guiRef = new();
-
-    private LLmChatStates _state;
 
     protected CancellationTokenSource _cancelSource;
 

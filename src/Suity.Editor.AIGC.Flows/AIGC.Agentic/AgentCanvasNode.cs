@@ -1,4 +1,5 @@
-﻿using Suity.Editor.AIGC.Assistants;
+﻿using Suity.Collections;
+using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
@@ -10,7 +11,9 @@ using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using Suity.Views.Im;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Agentic;
@@ -78,20 +81,59 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             for (int i = 0; i < _tasks.List.Count; i++)
             {
                 var item = _tasks.List[i];
-                gui.Frame("task-" + i)
-                .InitClass("taskFrame")
-                .InitPadding(10)
-                .InitFullWidth()
-                .InitFitVertical()
-                .OnContent(() =>
-                {
-                    gui.Text(item.ToString()?.ToShortcutBeginEnd())
-                    .InitClass("textBold");
-                });
+                TaskItemGui(gui, i, item);
             }
         });
 
         return node;
+    }
+
+    private static void TaskItemGui(ImGui gui, int i, AgentTaskItem item)
+    {
+        gui.Frame("task-" + i)
+        .InitClass("taskFrame")
+        .InitPadding(10)
+        .InitFullWidth()
+        .InitFitVertical()
+        .OnContent(() =>
+        {
+            if (item.PageAsset is not { } asset)
+            {
+                gui.Text("title-missing", item.ToString()?.ToShortcutBeginEnd())
+                .InitFullWidth()
+                .InitClass("textBoldRed");
+
+                return;
+            }
+
+            gui.HorizontalLayout("task-view")
+            .InitFullWidth()
+            .InitFitVertical()
+            .OnContent(() => 
+            {
+                var status = item.GetCommitStatus();
+
+                gui.Text(item.ToString()?.ToShortcutBeginEnd())
+                .InitWidthRest(48)
+                .InitClass("textBold");
+
+                gui.Image("btnChecked", status.ToCheckedStatus().ToStatusIcon())
+                .InitClass("icon");
+
+                gui.Button("btnNavigate", ImGuiIcons.Open)
+                .InitClass("configBtn")
+                .OnClick(() =>
+                {
+                    EditorUtility.LocateInProject(asset);
+                });
+            });
+
+            if (item.GetLastTask() is { } lastTask)
+            {
+                gui.Text("sub-title", lastTask.DisplayText)
+                .InitClass("textSub");
+            }
+        });
     }
 
     #endregion
@@ -102,8 +144,8 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     public AgentTaskItem AddTask(string name, string description, string prompt)
     {
-        var currentDoc = this.Canvas as Document;
-        if (currentDoc is null)
+        var canvasDoc = this.Canvas as Document;
+        if (canvasDoc is null)
         {
             return null;
         }
@@ -128,7 +170,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
         description = description?.Trim() ?? string.Empty;
 
-        string currentPath = Path.GetDirectoryName(currentDoc.FileName.PhysicFileName);
+        string currentPath = Path.GetDirectoryName(canvasDoc.FileName.PhysicFileName);
         currentPath = PathUtility.MakeRalativePath(currentPath, EditorServices.CurrentProject.AssetDirectory);
 
         var docEntry = format.AutoNewDocument(name, currentPath);
@@ -137,17 +179,32 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             return null;
         }
 
-        var doc = docEntry.Content as AigcTaskPageDocument;
-        if (doc is null)
+        var taskDoc = docEntry.Content as AigcTaskPageDocument;
+        if (taskDoc is null)
         {
             return null;
         }
 
-        doc.StartupPage = startupPage;
-        doc.InitialTaskPrompt = prompt;
-        doc.MarkDirtyAndSaveDelayed(this);
+        taskDoc.StartupPage = startupPage;
+        taskDoc.InitialTaskPrompt = prompt;
 
-        var taskPageAsset = doc.TargetAsset as AigcTaskPageAsset;
+        var startupTask = AigcWorkflowPage.CreateWorkflowPage(taskDoc, startupPage);
+        if (startupTask is null)
+        {
+            return null;
+        }
+
+        if (startupTask.EnsureInstance() is null)
+        {
+            return null;
+        }
+
+        startupTask.SetPrompt(prompt);
+        startupTask.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
+        taskDoc.AddTask(startupTask);
+        taskDoc.MarkDirtyAndSaveDelayed(this);
+
+        var taskPageAsset = taskDoc.TargetAsset as AigcTaskPageAsset;
         var item = new AgentTaskItem(taskPageAsset, description);
         _tasks.List.Add(item);
 
@@ -159,7 +216,28 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     public async Task<AICallResult> Run(AIRequest request)
     {
-        return AICallResult.Empty;
+        var tasks = _tasks.List.SkipNull().ToArray();
+        if (tasks.Length == 0)
+        {
+            return AICallResult.Empty;
+        }
+
+        var result = AICallResult.Empty;
+
+        var resume = new AIRequest(request, "/resume");
+        foreach (var item in tasks)
+        {
+            var taskDoc = item.PageAsset?.GetStorageObject() as AigcTaskPageDocument;
+            if (taskDoc is null)
+            {
+                continue;
+            }
+
+            var runner = new AigcTaskPageRunner(taskDoc);
+            await runner.HandleRequest(resume);
+        }
+
+        return result;
     }
 
     #endregion
@@ -195,6 +273,26 @@ public class AgentTaskItem : IViewObject
     {
         _taskPage.InspectorField(setup);
         _description.InspectorField(setup);
+    }
+
+    public TaskCommitStatus GetCommitStatus()
+    {
+        if (_taskPage.Target?.GetDocument() is { } doc)
+        {
+            return doc.GetCommitStatus();
+        }
+
+        return TaskCommitStatus.None;
+    }
+
+    public AigcTaskPage GetLastTask()
+    {
+        if (_taskPage.Target?.GetDocument() is { } doc)
+        {
+            return doc.GetUnfinishedChildTask();
+        }
+
+        return null;
     }
 
     public override string ToString()

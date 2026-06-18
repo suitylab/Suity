@@ -170,6 +170,7 @@ public class AIRequest
         ComplexField = source.ComplexField;
         Conversation = source.Conversation;
         Cancellation = source.Cancellation;
+        RequestCancel = source.RequestCancel;
         FuncContext = source.FuncContext;
         ItemName = source.ItemName;
         Depth = increaseDepth ? source.Depth + 1 : source.Depth;
@@ -177,6 +178,12 @@ public class AIRequest
         CustomLLmModel = source.CustomLLmModel;
         Option = source.Option;
         BackgroundMode = source.BackgroundMode;
+    }
+
+    public AIRequest(AIRequest source, string userMessage, bool increaseDepth = false)
+        : this(source, increaseDepth)
+    {
+        this.UserMessage = userMessage;
     }
 
     /// <summary>
