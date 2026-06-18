@@ -22,7 +22,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     internal FlowNodeConnector _in;
 
     readonly StringProperty _agentName = new("AgentName", "Agent Name");
-    readonly SyncListProperty<AgentTaskItem> _loops = new("Loops", () => new());
+    readonly SyncListProperty<AgentLoopItem> _loops = new("Loops", () => new());
 
     public AgentCanvasNode()
     {
@@ -79,26 +79,33 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
             for (int i = 0; i < _loops.List.Count; i++)
             {
-                var item = _loops.List[i];
-                LoopItemGui(gui, i, item);
+                var loop = _loops.List[i];
+                var loopState = state?.GetLoopState(loop);
+                LoopItemGui(gui, i, loop, loopState);
             }
         });
 
         return node;
     }
 
-    private static void LoopItemGui(ImGui gui, int i, AgentTaskItem item)
+    private static void LoopItemGui(ImGui gui, int i, AgentLoopItem loop, IAgentLoopState loopState)
     {
-        gui.Frame("loop-" + i)
-        .InitClass("loopFrame")
-        .InitPadding(10)
-        .InitFullWidth()
-        .InitFitVertical()
+        bool running = loopState?.IsRunning == true;
+
+        var node = gui.Frame("loop-" + i)
+        .OnInitialize(n =>
+        {
+            n.InitClass("loopFrame");
+            n.InitPadding(10);
+            n.InitFullWidth();
+            n.InitFitVertical();
+        })
+        .SetPseudo(running ? "running" : null)
         .OnContent(() =>
         {
-            if (item.LoopAsset is not { } asset)
+            if (loop.LoopAsset is not { } asset)
             {
-                gui.Text("title-missing", item.ToString()?.ToShortcutBeginEnd())
+                gui.Text("title-missing", loop.ToString()?.ToShortcutBeginEnd())
                 .InitFullWidth()
                 .InitClass("textBoldRed");
 
@@ -110,9 +117,9 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             .InitFitVertical()
             .OnContent(() => 
             {
-                var status = item.GetCommitStatus();
+                var status = loop.GetCommitStatus();
 
-                gui.Text(item.ToString()?.ToShortcutBeginEnd())
+                gui.Text(loop.ToString()?.ToShortcutBeginEnd())
                 .InitWidthRest(48)
                 .InitClass("textBold");
 
@@ -127,7 +134,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
                 });
             });
 
-            if (item.GetLastTask() is { } lastTask)
+            if (loop.GetLastTask() is { } lastTask)
             {
                 gui.Text("sub-title", lastTask.DisplayText)
                 .InitClass("textSub");
@@ -143,7 +150,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     public IAgentLoop AddLoop(IAigcLoopAsset loopAsset, string description)
     {
-        var item = new AgentTaskItem(loopAsset, description);
+        var item = new AgentLoopItem(loopAsset, description);
         _loops.List.Add(item);
 
         (this.Canvas as Document)?.MarkDirtyAndSaveDelayed(this);
@@ -192,16 +199,16 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     #endregion
 }
 
-public class AgentTaskItem : IAgentLoop, IViewObject
+public class AgentLoopItem : IAgentLoop, IViewObject
 {
     readonly AssetProperty<IAigcLoopAsset> _loop = new("Loop", "Loop");
     readonly StringProperty _description = new("Description");
 
-    public AgentTaskItem()
+    public AgentLoopItem()
     {
     }
 
-    public AgentTaskItem(IAigcLoopAsset loopAsset, string description)
+    public AgentLoopItem(IAigcLoopAsset loopAsset, string description)
     {
         _loop.Target = loopAsset;
         _description.Text = description;

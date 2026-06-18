@@ -185,6 +185,19 @@ public static class GuiCoreExtensions
     }
 
     /// <summary>
+    /// Sets the pseudo state of a node.
+    /// </summary>
+    /// <param name="node">The target ImGui node.</param>
+    /// <param name="pseudo">The pseudo state to set.</param>
+    /// <returns>The same node for method chaining.</returns>
+    public static ImGuiNode SetPseudo(this ImGuiNode node, string? pseudo)
+    {
+        node.Pseudo = pseudo;
+
+        return node;
+    }
+
+    /// <summary>
     /// Updates the pseudo state based on active status.
     /// </summary>
     /// <param name="node">The target ImGui node.</param>

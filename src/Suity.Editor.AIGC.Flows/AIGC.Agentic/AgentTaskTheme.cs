@@ -16,6 +16,8 @@ internal class AgentTaskTheme : ImGuiTheme
         this.ClassStyle("loopFrame")
         .SetColor(ColorScheme.EditorBG2.MultiplyAlpha(0.3f))
         .SetBorder(1, ColorScheme.EditorBG);
+        this.Pseudo("running")
+        .SetColor(Color.Cyan.MultiplyAlpha(0.35f));
 
         var font = new FontDef(ImGuiTheme.DefaultFont, 14);
         var fontBold = new FontDef(ImGuiTheme.DefaultFont, 14, FontStyle.Bold);
