@@ -8,6 +8,7 @@ using Suity.Views;
 namespace Suity.Editor.AIGC.Agentic;
 
 [DisplayText("Agent Start", "*CoreIcon|Agent")]
+[SimpleFlowNodeStyle(Color = FlowColors.AgentBg)]
 [NativeAlias("Suity.Editor.AIGC.AgentStartCanvasNode")]
 public class AgentStartCanvasNode : CanvasDesignNode
 {

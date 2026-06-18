@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Agentic;
 
-public class AgentGraphRunner : BaseLLmChat
+public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 {
     public AgentStartCanvasNode StartNode { get; }
     public ICanvasDocument CanvasDocument { get; }
@@ -43,7 +43,7 @@ public class AgentGraphRunner : BaseLLmChat
             return null;
         }
 
-        AddTask(node, name, StartNode.EntryTaskName, msg);
+        AddLoop(node, name, StartNode.EntryTaskName, msg);
 
         var request = new AIRequest
         {
@@ -55,12 +55,12 @@ public class AgentGraphRunner : BaseLLmChat
             RequestCancel = cancelSource.Cancel
         };
 
-        var result = await node.Run(request);
+        var result = await node.Run(request, this);
 
         return result?.Result;
     }
 
-    public IAgentTask AddTask(IAgentNode agentNode, string name, string description, string prompt)
+    public IAgentLoop AddLoop(IAgentNode agentNode, string name, string description, string prompt)
     {
         var startupPage = agentNode.PageAsset as ISubFlowAsset;
         if (startupPage is null)
@@ -102,24 +102,24 @@ public class AgentGraphRunner : BaseLLmChat
         loopDoc.StartupPage = startupPage;
         loopDoc.InitialTaskPrompt = prompt;
 
-        var startupTask = AigcWorkflowPage.CreateWorkflowPage(loopDoc, startupPage);
-        if (startupTask is null)
+        var startupWorkflow = AigcWorkflowPage.CreateWorkflowPage(loopDoc, startupPage);
+        if (startupWorkflow is null)
         {
             return null;
         }
 
-        if (startupTask.EnsureInstance() is null)
+        if (startupWorkflow.EnsureInstance() is null)
         {
             return null;
         }
 
-        startupTask.SetPrompt(prompt);
-        startupTask.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
-        loopDoc.AddTask(startupTask);
+        startupWorkflow.SetPrompt(prompt);
+        startupWorkflow.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
+        loopDoc.AddTask(startupWorkflow);
         loopDoc.MarkDirtyAndSaveDelayed(this);
 
         var loopAsset = loopDoc.TargetAsset as IAigcLoopAsset;
-        var item = agentNode.AddTask(loopAsset, description);
+        var item = agentNode.AddLoop(loopAsset, description);
 
         (CanvasDocument as Document)?.MarkDirtyAndSaveDelayed(this);
         agentNode.QueueRefreshView();
@@ -131,4 +131,26 @@ public class AgentGraphRunner : BaseLLmChat
     protected override void HandleConversation(IConversationHandler handler)
     {
     }
+
+    #region IAgentGraphRunner
+    public IAgentState GetAgentState(IAgentNode agent)
+    {
+        return null;
+    }
+
+    public async Task<AICallResult> RunLoop(AIRequest request, IAgentNode agent, IAgentLoop loop)
+    {
+        var loopDoc = loop?.LoopAsset?.GetLoop() as AigcLoopDocument;
+        if (loopDoc is null)
+        {
+            return AICallResult.Empty;
+        }
+
+        var resume = new AIRequest(request, "/resume");
+
+        var runner = new AigcLoopRunner(loopDoc);
+        return await runner.HandleRequest(resume);
+    } 
+    #endregion
 }
+

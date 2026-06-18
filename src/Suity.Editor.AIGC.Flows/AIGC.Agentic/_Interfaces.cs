@@ -11,14 +11,14 @@ public interface IAgentNode : INamed
 {
     IPageAsset PageAsset { get; }
 
-    IAgentTask AddTask(IAigcLoopAsset loopAsset, string description);
+    IAgentLoop AddLoop(IAigcLoopAsset loopAsset, string description);
 
-    Task<AICallResult> Run(AIRequest request);
+    Task<AICallResult> Run(AIRequest request, IAgentGraphRunner runner);
 
     void QueueRefreshView();
 }
 
-public interface IAgentTask
+public interface IAgentLoop
 {
     IAigcLoopAsset LoopAsset { get; }
 }
@@ -27,14 +27,20 @@ public interface IAgentTask
 public interface IAgentGraphRunner
 {
     IAgentState GetAgentState(IAgentNode agent);
+
+    Task<AICallResult> RunLoop(AIRequest request, IAgentNode agent, IAgentLoop loop);
 }
 
 public interface IAgentState
 {
-    IAgentTaskState GetTaskState(IAgentTask task);
+    IAgentLoopState GetLoopState(IAgentLoop loop);
 }
 
-public interface IAgentTaskState
+public interface IAgentLoopState
 {
+    IAgentLoop AgentLoop { get; }
 
+    bool IsRunning { get; }
+
+    Task<AICallResult> Run(AIRequest request);
 }

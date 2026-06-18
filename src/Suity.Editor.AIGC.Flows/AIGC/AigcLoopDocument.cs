@@ -21,12 +21,12 @@ namespace Suity.Editor.AIGC;
 /// <summary>
 /// Document that manages AIGC task pages, including task creation, configuration, and execution orchestration.
 /// </summary>
-[DocumentFormat(FormatNames = ["AigcLoop", "AigcTaskPage"], Extensions = ["aigcloop", "aigctask"], DisplayText = "Task", Icon = "*CoreIcon|Task", Categoty = "AIGC", Order = 100, Iteration = LoadingIterations.Iteration2)]
+[DocumentFormat(FormatName = "AigcLoop", FormatNames = ["AigcTaskPage"], Extension = "aigcloop", Extensions = ["aigcloop", "aigctask"], DisplayText = "Loop", Icon = "*CoreIcon|Loop", Categoty = "AIGC", Order = 100, Iteration = LoadingIterations.Iteration2)]
 [EditorFeature(EditorFeatures.AigcWorkflow)]
 [NativeAlias("Suity.Editor.AIGC.PageTasks.AigcTaskPageDocument")]
 [NativeAlias("Suity.Editor.AIGC.Flows.AigcTaskPageDocument")]
 [NativeAlias("Suity.Editor.AIGC.AigcTaskPageDocument")]
-public class AigcLoopDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IAigcLoop
+public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
 {
     readonly TextBlockProperty _initialTaskPrompt = new("InitialTaskPrompt", "Initial Task Prompt", string.Empty);
     readonly AssetProperty<ISubFlowAsset> _startupPage = new("StartupPage", "Startup Page") { Filter = StartupPageFilter.Instance };
@@ -260,10 +260,10 @@ public class AigcLoopDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IAigcL
     #region Virtual & Override
 
     /// <inheritdoc/>
-    public override ImageDef Icon => CoreIconCache.Task;
+    public override ImageDef Icon => CoreIconCache.Loop;
 
     /// <inheritdoc/>
-    public override ImageDef DefaultIcon => CoreIconCache.Task;
+    public override ImageDef DefaultIcon => CoreIconCache.Loop;
 
 
     /// <inheritdoc/>
@@ -503,25 +503,25 @@ public class AigcLoopDocument : SNamedDocument<AigcTaskPageAssetBuilder>, IAigcL
 /// <summary>
 /// Asset class representing an AIGC task page.
 /// </summary>
-public class AigcTaskPageAsset : Asset, IAigcLoopAsset
+public class AigcLoopAsset : Asset, IAigcLoopAsset
 {
-    public AigcTaskPageAsset()
+    public AigcLoopAsset()
     {
         UpdateAssetTypes(this.GetType(), typeof(IAigcLoopAsset));
     }
 
     /// <inheritdoc/>
-    public override ImageDef DefaultIcon => CoreIconCache.Task;
+    public override ImageDef DefaultIcon => CoreIconCache.Loop;
 
     public AigcLoopDocument GetDocument() => GetStorageObject() as AigcLoopDocument;
 
-    public IAigcLoop GetTaskHost() => GetDocument();
+    public IAigcLoop GetLoop() => GetDocument();
 }
 
 /// <summary>
-/// Asset builder for creating <see cref="AigcTaskPageAsset"/> instances.
+/// Asset builder for creating <see cref="AigcLoopAsset"/> instances.
 /// </summary>
-public class AigcTaskPageAssetBuilder : AssetBuilder<AigcTaskPageAsset>
+public class AigcLoopAssetBuilder : AssetBuilder<AigcLoopAsset>
 {
 }
 

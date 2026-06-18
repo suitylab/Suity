@@ -84,7 +84,7 @@ public interface IAigcLoop
 
 public interface IAigcLoopAsset
 {
-    IAigcLoop GetTaskHost();
+    IAigcLoop GetLoop();
 }
 
 #endregion

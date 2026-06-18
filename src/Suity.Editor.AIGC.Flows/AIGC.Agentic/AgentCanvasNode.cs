@@ -21,7 +21,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     internal FlowNodeConnector _in;
 
     readonly StringProperty _agentName = new("AgentName", "Agent Name");
-    readonly SyncListProperty<AgentTaskItem> _tasks = new("Tasks", () => new());
+    readonly SyncListProperty<AgentTaskItem> _loops = new("Loops", () => new());
 
     public AgentCanvasNode()
     {
@@ -39,7 +39,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         base.OnSync(sync, context);
 
         _agentName.Sync(sync);
-        _tasks.Sync(sync);
+        _loops.Sync(sync);
     }
 
     protected override void OnSetupView(IViewObjectSetup setup)
@@ -48,7 +48,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
         setup.InspectorField(AssetRef, new ViewProperty(nameof(AssetRef), "Asset"));
         _agentName.InspectorField(setup);
-        _tasks.InspectorField(setup);
+        _loops.InspectorField(setup);
     }
 
     public override void Compute(IFlowComputation compute)
@@ -62,7 +62,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     public override ImGuiNode OnExpandedGui(ImGui gui)
     {
-        var node = gui.VerticalLayout("task-list")
+        var node = gui.VerticalLayout("loop-list")
         .InitTheme(AgentTaskTheme.Instance)
         .InitPadding(25)
         .InitWidth(400)
@@ -70,23 +70,23 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         .InitChildSpacing(10)
         .OnContent(() => 
         {
-            gui.Text("TASKS")
+            gui.Text("LOOPS")
             .InitClass("textLight");
 
-            for (int i = 0; i < _tasks.List.Count; i++)
+            for (int i = 0; i < _loops.List.Count; i++)
             {
-                var item = _tasks.List[i];
-                TaskItemGui(gui, i, item);
+                var item = _loops.List[i];
+                LoopItemGui(gui, i, item);
             }
         });
 
         return node;
     }
 
-    private static void TaskItemGui(ImGui gui, int i, AgentTaskItem item)
+    private static void LoopItemGui(ImGui gui, int i, AgentTaskItem item)
     {
-        gui.Frame("task-" + i)
-        .InitClass("taskFrame")
+        gui.Frame("loop-" + i)
+        .InitClass("loopFrame")
         .InitPadding(10)
         .InitFullWidth()
         .InitFitVertical()
@@ -101,7 +101,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
                 return;
             }
 
-            gui.HorizontalLayout("task-view")
+            gui.HorizontalLayout("loop-view")
             .InitFullWidth()
             .InitFitVertical()
             .OnContent(() => 
@@ -137,17 +137,17 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     public IPageAsset PageAsset => this.Target;
 
-    public IAgentTask AddTask(IAigcLoopAsset loopAsset, string description)
+    public IAgentLoop AddLoop(IAigcLoopAsset loopAsset, string description)
     {
         var item = new AgentTaskItem(loopAsset, description);
-        _tasks.List.Add(item);
+        _loops.List.Add(item);
 
         return item;
     }
 
-    public async Task<AICallResult> Run(AIRequest request)
+    public async Task<AICallResult> Run(AIRequest request, IAgentGraphRunner runner)
     {
-        var tasks = _tasks.List.SkipNull().ToArray();
+        var tasks = _loops.List.SkipNull().ToArray();
         if (tasks.Length == 0)
         {
             return AICallResult.Empty;
@@ -155,17 +155,9 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
         var result = AICallResult.Empty;
 
-        var resume = new AIRequest(request, "/resume");
         foreach (var item in tasks)
         {
-            var taskDoc = item.LoopAsset?.GetTaskHost() as AigcLoopDocument;
-            if (taskDoc is null)
-            {
-                continue;
-            }
-
-            var runner = new AigcLoopRunner(taskDoc);
-            await runner.HandleRequest(resume);
+            result = await runner.RunLoop(request, this, item);
         }
 
         return result;
@@ -174,7 +166,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     #endregion
 }
 
-public class AgentTaskItem : IAgentTask, IViewObject
+public class AgentTaskItem : IAgentLoop, IViewObject
 {
     readonly AssetProperty<IAigcLoopAsset> _loop = new("Loop", "Loop");
     readonly StringProperty _description = new("Description");
@@ -205,7 +197,7 @@ public class AgentTaskItem : IAgentTask, IViewObject
 
     public TaskCommitStatus GetCommitStatus()
     {
-        if (_loop.Target?.GetTaskHost() is { } doc)
+        if (_loop.Target?.GetLoop() is { } doc)
         {
             return doc.GetCommitStatus();
         }
@@ -215,7 +207,7 @@ public class AgentTaskItem : IAgentTask, IViewObject
 
     public IAigcTaskPage GetLastTask()
     {
-        if (_loop.Target?.GetTaskHost() is { } doc)
+        if (_loop.Target?.GetLoop() is { } doc)
         {
             return doc.GetLastTask();
         }
