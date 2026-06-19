@@ -150,7 +150,6 @@ public class GetCurrentToolList : TaskPageNode
     public GetCurrentToolList()
     {
         var type = AssetManager.Instance.GetAssetLink<IPageAsset>().Definition.MakeArrayType();
-
         _toolPages = this.AddDataOutputConnector("Tools", type, "Tools");
     }
 

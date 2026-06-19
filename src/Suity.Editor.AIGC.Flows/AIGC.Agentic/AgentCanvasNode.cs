@@ -48,8 +48,8 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     {
         base.OnSetupView(setup);
 
-        setup.InspectorField(AssetRef, new ViewProperty(nameof(AssetRef), "Asset"));
         _agentName.InspectorField(setup);
+        setup.InspectorField(AssetRef, new ViewProperty(nameof(AssetRef), "Starter Loop"));
         _loops.InspectorField(setup);
     }
 

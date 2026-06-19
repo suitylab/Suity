@@ -1,3 +1,4 @@
+using Suity.Editor.Flows.Agentic;
 using Suity.Editor.Flows.Nodes;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.TaskPages;
@@ -30,6 +31,7 @@ namespace Suity.Editor.Flows.AIGC;
         AddDerived<AigcFlowNode>();
         AddDerived<SubFlowNode>();
         AddDerived<TaskPageNode>();
+        AddDerived<AgentNode>();
         AddDerived<AigcXmlNode>();
         //AddDerived<AigcAgentNode>();
         AddDerived<AigcArticleNode>();
