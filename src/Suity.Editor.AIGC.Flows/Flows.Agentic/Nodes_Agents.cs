@@ -26,5 +26,7 @@ public class GetSubAgentList : AgentNode
 
         var workflowPage = compute.Context.GetArgument<IAigcWorkflowPage>();
         var loop = workflowPage?.ParentLoop;
+
+        var agent = compute.Context.GetArgument<IAgentNode>();
     }
 }

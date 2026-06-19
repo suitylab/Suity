@@ -220,7 +220,8 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
             return AICallResult.Empty;
         }
 
-        if (loopDoc.WorkSpace is { } workSpace)
+        var workSpace = loopDoc.WorkSpace;
+        if (workSpace != null)
         {
             StartNode.WorkSpace = workSpace;
         }
@@ -228,6 +229,15 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         var resume = new AIRequest(request, "/resume");
         resume.FuncContext.SetArgument(this);
         resume.FuncContext.SetArgument<IAgentGraphRunner>(this);
+        resume.FuncContext.SetArgument<IAigcLoop>(loopDoc);
+
+        resume.FuncContext.SetArgument(agent);
+        resume.FuncContext.SetArgument(loop);
+
+        resume.FuncContext.SetArgument(agentState);
+        resume.FuncContext.SetArgument(loopState);
+
+        resume.FuncContext.SetArgument(workSpace);
 
         var runner = new AigcLoopRunner(loopDoc);
         loopState.Runner = runner;
