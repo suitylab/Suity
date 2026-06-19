@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Suity;
 
 /// <summary>
-/// Function call context
+/// Represents a function call context that carries event key, value, arguments, and a parent context chain.
 /// </summary>
 public class FunctionContext
 {
@@ -13,32 +13,59 @@ public class FunctionContext
     internal FunctionContext _inner;
     internal object _value;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="FunctionContext"/>.
+    /// </summary>
     public FunctionContext()
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="FunctionContext"/> with the specified event key.
+    /// </summary>
+    /// <param name="eventKey">The event key identifying this context.</param>
     public FunctionContext(string eventKey)
     {
         EventKey = eventKey;
     }
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="FunctionContext"/> with the specified event key and value.
+    /// </summary>
+    /// <param name="eventKey">The event key identifying this context.</param>
+    /// <param name="value">The value associated with this context.</param>
     public FunctionContext(string eventKey, object value)
     {
         EventKey = eventKey;
         _value = value;
     }
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="FunctionContext"/> with a parent context.
+    /// </summary>
+    /// <param name="inner">The parent context. Can be <c>null</c>.</param>
     public FunctionContext(FunctionContext inner)
     {
-        _inner = inner ?? throw new ArgumentNullException(nameof(inner));
+        _inner = inner;
     }
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="FunctionContext"/> with a parent context and event key.
+    /// </summary>
+    /// <param name="inner">The parent context. Can be <c>null</c>.</param>
+    /// <param name="eventKey">The event key identifying this context.</param>
     public FunctionContext(FunctionContext inner, string eventKey)
         : this(inner)
     {
         EventKey = eventKey;
     }
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="FunctionContext"/> with a parent context, event key, and value.
+    /// </summary>
+    /// <param name="inner">The parent context. Can be <c>null</c>.</param>
+    /// <param name="eventKey">The event key identifying this context.</param>
+    /// <param name="value">The value associated with this context.</param>
     public FunctionContext(FunctionContext inner, string eventKey, object value)
         : this(inner)
     {
@@ -46,10 +73,27 @@ public class FunctionContext
         _value = value;
     }
 
+    /// <summary>
+    /// Gets the event key identifying this context.
+    /// </summary>
     public string EventKey { get; internal set; }
+
+    /// <summary>
+    /// Gets the value associated with this context.
+    /// </summary>
     public object Value => _value;
+
+    /// <summary>
+    /// Gets the parent context, or <c>null</c> if none.
+    /// </summary>
     public FunctionContext Parent => _inner;
 
+    /// <summary>
+    /// Sets an argument in this context. If <paramref name="argument"/> is <c>null</c>, the argument is removed.
+    /// </summary>
+    /// <param name="id">The argument identifier. Must not be <c>null</c> or empty.</param>
+    /// <param name="argument">The argument value, or <c>null</c> to remove.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="id"/> is <c>null</c> or empty.</exception>
     public void SetArgument(string id, object argument)
     {
         if (string.IsNullOrEmpty(id))
@@ -69,6 +113,11 @@ public class FunctionContext
         }
     }
 
+    /// <summary>
+    /// Gets an argument by identifier from this context, searching up through parent contexts if not found locally.
+    /// </summary>
+    /// <param name="id">The argument identifier.</param>
+    /// <returns>The argument value, or <c>null</c> if not found.</returns>
     public object GetArgument(string id)
     {
         if (string.IsNullOrEmpty(id))
@@ -93,12 +142,16 @@ public class FunctionContext
 }
 
 /// <summary>
-/// Function call context object pool
+/// Object pool for <see cref="FunctionContext"/> instances to reduce allocations.
 /// </summary>
 public class FunctionContextPool
 {
     private readonly Stack<FunctionContext> _pool = new();
 
+    /// <summary>
+    /// Gets a pooled <see cref="FunctionContext"/> with default values.
+    /// </summary>
+    /// <returns>A <see cref="FunctionContext"/> instance.</returns>
     public FunctionContext Get()
     {
         if (_pool.Count > 0)
@@ -110,6 +163,11 @@ public class FunctionContextPool
         return new FunctionContext();
     }
 
+    /// <summary>
+    /// Gets a pooled <see cref="FunctionContext"/> with the specified event key.
+    /// </summary>
+    /// <param name="eventKey">The event key.</param>
+    /// <returns>A <see cref="FunctionContext"/> instance.</returns>
     public FunctionContext Get(string eventKey)
     {
         if (_pool.Count > 0)
@@ -122,6 +180,12 @@ public class FunctionContextPool
         return new FunctionContext(eventKey);
     }
 
+    /// <summary>
+    /// Gets a pooled <see cref="FunctionContext"/> with the specified event key and value.
+    /// </summary>
+    /// <param name="eventKey">The event key.</param>
+    /// <param name="value">The value.</param>
+    /// <returns>A <see cref="FunctionContext"/> instance.</returns>
     public FunctionContext Get(string eventKey, object value)
     {
         if (_pool.Count > 0)
@@ -135,6 +199,11 @@ public class FunctionContextPool
         return new FunctionContext(eventKey, value);
     }
 
+    /// <summary>
+    /// Gets a pooled <see cref="FunctionContext"/> with a parent context.
+    /// </summary>
+    /// <param name="inner">The parent context. Can be <c>null</c>.</param>
+    /// <returns>A <see cref="FunctionContext"/> instance.</returns>
     public FunctionContext Get(FunctionContext inner)
     {
         if (_pool.Count > 0)
@@ -147,6 +216,12 @@ public class FunctionContextPool
         return new FunctionContext(inner);
     }
 
+    /// <summary>
+    /// Gets a pooled <see cref="FunctionContext"/> with a parent context and event key.
+    /// </summary>
+    /// <param name="inner">The parent context. Can be <c>null</c>.</param>
+    /// <param name="eventKey">The event key.</param>
+    /// <returns>A <see cref="FunctionContext"/> instance.</returns>
     public FunctionContext Get(FunctionContext inner, string eventKey)
     {
         if (_pool.Count > 0)
@@ -160,6 +235,13 @@ public class FunctionContextPool
         return new FunctionContext(inner, eventKey);
     }
 
+    /// <summary>
+    /// Gets a pooled <see cref="FunctionContext"/> with a parent context, event key, and value.
+    /// </summary>
+    /// <param name="inner">The parent context. Can be <c>null</c>.</param>
+    /// <param name="eventKey">The event key.</param>
+    /// <param name="value">The value.</param>
+    /// <returns>A <see cref="FunctionContext"/> instance.</returns>
     public FunctionContext Get(FunctionContext inner, string eventKey, object value)
     {
         if (_pool.Count > 0)
@@ -174,6 +256,11 @@ public class FunctionContextPool
         return new FunctionContext(inner, eventKey, value);
     }
 
+    /// <summary>
+    /// Recycles a <see cref="FunctionContext"/> back into the pool, resetting its state.
+    /// </summary>
+    /// <param name="context">The context to recycle. Must not be <c>null</c>.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="context"/> is <c>null</c>.</exception>
     public void Recycle(FunctionContext context)
     {
         if (context is null)
@@ -190,8 +277,17 @@ public class FunctionContextPool
     }
 }
 
+/// <summary>
+/// Provides extension methods for <see cref="FunctionContext"/>.
+/// </summary>
 public static class FunctionContextExtensions
 {
+    /// <summary>
+    /// Gets an argument of the specified type from the context using the type's full name as the key.
+    /// </summary>
+    /// <typeparam name="T">The type of the argument.</typeparam>
+    /// <param name="context">The function context.</param>
+    /// <returns>The argument value, or <c>null</c> if not found.</returns>
     public static T GetArgument<T>(this FunctionContext context) where T : class
     {
         return context.GetArgument(typeof(T).FullName) as T;

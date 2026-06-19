@@ -343,3 +343,19 @@ public interface IScratchPadOwner
 }
 
 #endregion
+
+#region IAigcLoopRunner
+
+/// <summary>
+/// Represents a runner for an AI loop.
+/// </summary>
+public interface IAigcLoopRunner
+{
+    bool IsRunning { get; }
+
+    IAigcTaskPage LastTask { get; }
+
+    void RequestCancel();
+}
+
+#endregion

@@ -171,7 +171,7 @@ public class AIRequest
         Conversation = source.Conversation;
         Cancellation = source.Cancellation;
         RequestCancel = source.RequestCancel;
-        FuncContext = source.FuncContext;
+        FuncContext = new FunctionContext(source.FuncContext);
         ItemName = source.ItemName;
         Depth = increaseDepth ? source.Depth + 1 : source.Depth;
         SpeechLanguage = source.SpeechLanguage;

@@ -225,6 +225,9 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         }
 
         var resume = new AIRequest(request, "/resume");
+        resume.FuncContext.SetArgument(this);
+        resume.FuncContext.SetArgument<IAgentGraphRunner>(this);
+
         var runner = new AigcLoopRunner(loopDoc);
         loopState.Runner = runner;
 

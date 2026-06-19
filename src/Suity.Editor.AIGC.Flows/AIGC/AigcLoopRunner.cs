@@ -20,7 +20,7 @@ internal record TaskRunResult(TaskCommitStatus EndType, object Parameter);
 /// Runner that orchestrates the execution of AIGC task pages, handling task creation, execution, and parent reporting.
 /// </summary>
 [DisplayText("Task Page Runner")]
-internal class AigcLoopRunner : AIAssistant
+internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
 {
     private readonly AigcLoopDocument _document;
     private readonly DocumentUsageToken _usageToken = new(nameof(AigcLoopRunner));
@@ -51,6 +51,8 @@ internal class AigcLoopRunner : AIAssistant
         try
         {
             _lastRequest = request;
+            request.FuncContext?.SetArgument(this);
+            request.FuncContext?.SetArgument<IAigcLoopRunner>(this);
 
             if (request.UserMessage == "/resume")
             {
