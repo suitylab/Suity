@@ -7,6 +7,7 @@ using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
+using Suity.Views.Im.Flows;
 
 namespace Suity.Editor.AIGC.Agentic;
 
@@ -71,6 +72,11 @@ public class AgentStartCanvasNode : CanvasDesignNode
     public override void Compute(IFlowComputation compute)
     {
         _agentNode = compute.GetValue<IAgentNode>(_in);
+    }
+
+    internal void FlashingConnector()
+    {
+        _in.FlashingOnce();
     }
 }
 

@@ -39,6 +39,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         try
         {
             QueuedAction.Do(QueueRefreshView);
+            StartNode.FlashingConnector();
 
             if (string.IsNullOrWhiteSpace(msg) || msg?.Trim() == "/resume")
             {

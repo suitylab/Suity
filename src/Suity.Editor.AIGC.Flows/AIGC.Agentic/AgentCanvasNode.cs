@@ -9,6 +9,7 @@ using Suity.Editor.Types;
 using Suity.Synchonizing;
 using Suity.Views;
 using Suity.Views.Im;
+using Suity.Views.Im.Flows;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -161,6 +162,8 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     public async Task<AICallResult> Run(AIRequest request, IAgentGraphRunner runner)
     {
+        _out.FlashingOnce();
+
         var tasks = _loops.List.SkipNull().ToArray();
         if (tasks.Length == 0)
         {
