@@ -225,10 +225,21 @@ internal class TypeConvertService : ITypeConvertService
             return TypeConvertResult.FromConvert(TypeConvertModes.KeyToLink);
         }
 
-        if (typeDefFrom.ElementType is null && typeDefTo.ElementType is null)
+        if (typeDefFrom.IsArray && typeDefFrom.ElementType?.ElementType is null && typeDefTo.ElementType is null)
+        {
+            var aryType = typeDefFrom.ElementType?.NativeType?.MakeArrayType();
+            return CanConvert(aryType, typeDefTo.NativeType);
+        }
+        else if (typeDefFrom.ElementType is null && typeDefTo.IsArray && typeDefTo.ElementType?.ElementType is null)
+        {
+            var aryType = typeDefTo.ElementType?.NativeType?.MakeArrayType();
+            return CanConvert(typeDefFrom.NativeType, aryType);
+        }
+        else if (typeDefFrom.ElementType is null && typeDefTo.ElementType is null)
         {
             return CanConvert(typeDefFrom.NativeType, typeDefTo.NativeType);
         }
+
 
         return TypeConvertResult.Unconvertible;
     }
@@ -465,7 +476,17 @@ internal class TypeConvertService : ITypeConvertService
             return TypeConvertResult.FromConvert(TypeConvertModes.KeyToLink, null, objFrom, result);
         }
 
-        if (typeDefFrom.ElementType is null && typeDefTo.ElementType is null)
+        if (typeDefFrom.IsArray && typeDefFrom.ElementType?.ElementType is null && typeDefTo.ElementType is null)
+        {
+            var aryType = typeDefFrom.ElementType?.NativeType?.MakeArrayType();
+            return TryConvert(aryType, typeDefTo.NativeType, objFrom);
+        }
+        else if (typeDefFrom.ElementType is null && typeDefTo.IsArray && typeDefTo.ElementType?.ElementType is null)
+        {
+            var aryType = typeDefTo.ElementType?.NativeType?.MakeArrayType();
+            return TryConvert(typeDefFrom.NativeType, aryType, objFrom);
+        }
+        else if (typeDefFrom.ElementType is null && typeDefTo.ElementType is null)
         {
             return TryConvert(typeDefFrom.NativeType, typeDefTo.NativeType, objFrom);
         }

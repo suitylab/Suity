@@ -137,7 +137,7 @@ public abstract class AigcTaskPage : DesignNode,
     #region Virtual (IAigcTaskPage)
 
     /// <inheritdoc/>
-    public IAigcLoop TaskHost => this.GetDocument() as AigcLoopDocument;
+    public IAigcLoop ParentLoop => this.GetDocument() as AigcLoopDocument;
 
     public virtual TaskCommitStatus GetCommitStatus()
     {

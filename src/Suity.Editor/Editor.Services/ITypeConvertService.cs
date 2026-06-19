@@ -5,6 +5,7 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Suity.Editor.Services;
 
@@ -272,10 +273,12 @@ public abstract class TypeConverter<TFrom, TTo> : ITypeConverter
 public abstract class TypeToTextConverter<TFrom> : ITypeConverter
 {
     /// <inheritdoc/>
-    public Type[] TypesFrom => [typeof(TFrom)];
+    public Type[] TypesFrom => [typeof(TFrom), typeof(TFrom[])];
 
     /// <inheritdoc/>
     public Type[] TypesTo => [typeof(string), typeof(TextBlock), typeof(STextBlock)];
+
+    public virtual string Saperator => Environment.NewLine + Environment.NewLine;
 
     /// <inheritdoc/>
     public object ConvertType(object objFrom, Type typeTo)
@@ -283,6 +286,12 @@ public abstract class TypeToTextConverter<TFrom> : ITypeConverter
         if (objFrom is TFrom from)
         {
             string s = Convert(from) ?? string.Empty;
+            return TypeConvertExtensions.ConvertText(s, typeTo);
+        }
+        else if (objFrom is TFrom[] ary)
+        {
+            string[] strAry = ary.Select(x => Convert(x) ?? string.Empty).ToArray();
+            string s = string.Join(Saperator, strAry);
             return TypeConvertExtensions.ConvertText(s, typeTo);
         }
 

@@ -339,7 +339,7 @@ public class GetInitialTaskPrompt : TaskPageNode
     public override void Compute(IFlowComputation compute)
     {
         var taskPage = compute.Context.GetArgument<IAigcTaskPage>();
-        string prompt = taskPage?.TaskHost?.InitialTaskPrompt ?? string.Empty;
+        string prompt = taskPage?.ParentLoop?.InitialTaskPrompt ?? string.Empty;
 
         compute.SetValue(_prompt, prompt);
     }
@@ -1255,7 +1255,7 @@ public class GetTaskById : TaskPageNode
         var task = compute.Context.GetArgument<IAigcTaskPage>();
         string taskId = _taskId.GetValue(compute, this);
 
-        var taskHost = task?.TaskHost;
+        var taskHost = task?.ParentLoop;
         var targetTask = taskHost?.GetTask(taskId);
 
         compute.SetValue(_task, targetTask);

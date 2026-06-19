@@ -161,9 +161,9 @@ public class AddKnowledgeArticle : TaskPageNode
         {
             throw new ArgumentNullException(nameof(task));
         }
-        if (task.TaskHost is not { } host)
+        if (task.ParentLoop is not { } host)
         {
-            throw new NullReferenceException(nameof(task.TaskHost));
+            throw new NullReferenceException(nameof(task.ParentLoop));
         }
 
         var article = compute.GetValue<IArticle>(_article)

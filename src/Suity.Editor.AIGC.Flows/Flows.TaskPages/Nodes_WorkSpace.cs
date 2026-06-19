@@ -36,7 +36,7 @@ public class GetTaskWorkSpace : TaskPageNode
     {
         var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
 
-        var workSpace = taskPage?.TaskHost?.WorkSpace;
+        var workSpace = taskPage?.ParentLoop?.WorkSpace;
 
         compute.SetValue(_taskWorkSpace, workSpace?.GetAsset());
     }
@@ -69,7 +69,7 @@ public class HasTaskWorkSpace : TaskPageNode
     {
         var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
 
-        var workSpace = taskPage?.TaskHost?.WorkSpace;
+        var workSpace = taskPage?.ParentLoop?.WorkSpace;
 
         compute.SetValue(_hasWorkSpace, workSpace != null);
     }
@@ -102,7 +102,7 @@ public class GetWorkSpaceOS : TaskPageNode
     {
         var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
 
-        var workSpace = taskPage?.TaskHost?.WorkSpace;
+        var workSpace = taskPage?.ParentLoop?.WorkSpace;
 
         string osType = Environment.OSVersion.Platform.ToString();
         compute.SetValue(_workSpaceOS, osType);
@@ -167,7 +167,7 @@ public class CreateTaskWorkSpace : TaskPageNode
     public override void Compute(IFlowComputation compute)
     {
         var taskPage = compute.Context.GetArgument<IAigcWorkflowPage>();
-        if (taskPage?.TaskHost is not { } host)
+        if (taskPage?.ParentLoop is not { } host)
         {
             throw new NullReferenceException("TaskHost is null.");
         }

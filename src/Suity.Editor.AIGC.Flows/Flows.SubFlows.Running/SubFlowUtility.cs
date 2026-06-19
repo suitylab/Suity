@@ -81,7 +81,7 @@ public static class SubFlowUtility
     /// <returns>The workspace, or <c>null</c> if not available.</returns>
     public static WorkSpace GetWorkSpace(this IAigcWorkflowPage page)
     {
-        var workSpace = page?.TaskHost?.WorkSpace;
+        var workSpace = page?.ParentLoop?.WorkSpace;
 
         return workSpace;
     }

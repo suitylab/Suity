@@ -98,9 +98,9 @@ public interface IAigcLoopAsset
 public interface IAigcTaskPage : INamed, ITextDisplay
 {
     /// <summary>
-    /// Gets the task host document for this task page.
+    /// Gets the parent loop.
     /// </summary>
-    IAigcLoop TaskHost { get; }
+    IAigcLoop ParentLoop { get; }
 
     /// <summary>
     /// Gets the parent task page, or null if this is a top-level task.

@@ -1,6 +1,7 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Agentic;
+using Suity.Editor.Types;
 
 namespace Suity.Editor.Flows.Agentic;
 
@@ -12,7 +13,7 @@ public class GetSubAgentList : AgentNode
 
     public GetSubAgentList()
     {
-        var type = AssetManager.Instance.GetAssetLink<IAgentNode>().Definition.MakeArrayType();
+        var type = TypeDefinition.FromNative<IAgentNode>().MakeArrayType();
         _agents = this.AddDataOutputConnector("Agents", type, "Agents");
     }
 
@@ -20,7 +21,10 @@ public class GetSubAgentList : AgentNode
 
     public override void Compute(IFlowComputation compute)
     {
-        var runner = compute.Context.GetArgument<IAgentGraphRunner>();
+        var loopRunner = compute.Context.GetArgument<IAigcLoopRunner>();
+        var agentRunner = compute.Context.GetArgument<IAgentGraphRunner>();
+
         var workflowPage = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var loop = workflowPage?.ParentLoop;
     }
 }

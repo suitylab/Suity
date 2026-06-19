@@ -76,7 +76,7 @@ public class GetTaskHistory : ToolCommand<GetTaskHistory.Output>
             throw new ArgumentException("Task ID cannot be null or whitespace.", nameof(taskId));
         }
 
-        var host = myTask.TaskHost
+        var host = myTask.ParentLoop
             ?? throw new NullReferenceException("The task host is null.");
 
         var task = host.GetTask(taskId) as IAigcTaskPage
