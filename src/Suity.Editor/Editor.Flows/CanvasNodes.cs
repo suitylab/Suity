@@ -112,28 +112,26 @@ public abstract class CanvasToolNode : CanvasFlowNode
 
 #endregion
 
-#region CanvasAssetNode
+#region CanvasAssetNode<TAsset>
 
 /// <summary>
 /// Canvas asset node
 /// </summary>
-[DisplayText("Canvas Resource Node", "*CoreIcon|Kanban")]
-public class CanvasAssetNode : CanvasFlowNode,
-    IInspectorRoute,
-    IInspectorContext,
-    INavigable
+[DisplayText("Canvas Asset Node", "*CoreIcon|Kanban")]
+public abstract class CanvasAssetNode<TAsset> : CanvasFlowNode, IInspectorRoute, IInspectorContext, INavigable
+    where TAsset: class
 {
-    private AssetSelection<Asset> _assetRef = new();
+    private AssetSelection<TAsset> _assetRef = new();
 
     private DocumentEntry _currentDocEntry;
-    private readonly DocumentUsageToken _docUseToken = new(nameof(CanvasAssetNode));
+    private readonly DocumentUsageToken _docUseToken = new(nameof(CanvasAssetNode<>));
     private bool _occupyDocumentUsage = true;
 
 
     /// <summary>
     /// Initializes a new instance of the CanvasAssetNode.
     /// </summary>
-    public CanvasAssetNode()
+    protected CanvasAssetNode()
     {
         _assetRef.Filter = AssetFilters.All;
         _assetRef.TargetUpdated += _assetRef_TargetUpdated;
@@ -144,13 +142,13 @@ public class CanvasAssetNode : CanvasFlowNode,
     /// <summary>
     /// Initializes a new instance of the CanvasAssetNode with an asset.
     /// </summary>
-    public CanvasAssetNode(Asset asset)
+    protected CanvasAssetNode(TAsset asset)
         : this()
     {
-        if (asset is null)
-        {
-            throw new ArgumentNullException(nameof(asset));
-        }
+        //if (asset is null)
+        //{
+        //    throw new ArgumentNullException(nameof(asset));
+        //}
 
         _assetRef.Target = asset;
     }
@@ -160,7 +158,7 @@ public class CanvasAssetNode : CanvasFlowNode,
     /// </summary>
     public Asset TargetAsset
     {
-        get => _assetRef.Target;
+        get => _assetRef.Target as Asset;
         set
         {
             if (ReferenceEquals(_assetRef.Target, value))
@@ -168,17 +166,19 @@ public class CanvasAssetNode : CanvasFlowNode,
                 return;
             }
 
-            _assetRef.Target = value;
+            _assetRef.Target = value as TAsset;
 
             // Update connectors when referenced asset changes
             UpdateConnectorQueued();
         }
     }
 
+    public TAsset Target => TargetAsset as TAsset;
+
     /// <summary>
     /// Gets or sets the asset reference.
     /// </summary>
-    internal AssetSelection<Asset> AssetRef
+    internal AssetSelection<TAsset> AssetRef
     {
         get => _assetRef;
         set
@@ -217,7 +217,7 @@ public class CanvasAssetNode : CanvasFlowNode,
     /// <summary>
     /// Gets the asset type.
     /// </summary>
-    public virtual Type AssetType => null;
+    public virtual Type AssetType => typeof(TAsset);
 
     /// <summary>
     /// Indicates whether to display as read-only in the inspector.
@@ -227,7 +227,7 @@ public class CanvasAssetNode : CanvasFlowNode,
     /// <summary>
     /// Gets the icon.
     /// </summary>
-    public override ImageDef Icon => _assetRef?.Target?.Icon;
+    public override ImageDef Icon => TargetAsset?.Icon;
 
     /// <summary>
     /// Gets the title color.
@@ -262,7 +262,7 @@ public class CanvasAssetNode : CanvasFlowNode,
     /// Gets the target document.
     /// </summary>
     /// <returns>The document.</returns>
-    public Document GetTargetDocument() => _assetRef.Target?.GetDocument(true);
+    public Document GetTargetDocument() => TargetAsset?.GetDocument(true);
 
     /// <summary>
     /// Gets the target document as a specific type.
@@ -270,7 +270,7 @@ public class CanvasAssetNode : CanvasFlowNode,
     /// <typeparam name="T">Document type.</typeparam>
     /// <returns>The document.</returns>
     public T GetTargetDocument<T>() where T : class
-        => _assetRef.Target?.GetDocument<T>(true);
+        => TargetAsset?.GetDocument<T>(true);
 
     /// <summary>
     /// Gets the target object.
@@ -278,7 +278,7 @@ public class CanvasAssetNode : CanvasFlowNode,
     /// <returns>The target object.</returns>
     public virtual object GetTargetObject()
     {
-        var asset = _assetRef.Target;
+        var asset = TargetAsset;
         if (asset is null)
         {
             return null;
@@ -328,7 +328,7 @@ public class CanvasAssetNode : CanvasFlowNode,
     {
         base.OnSync(sync, context);
 
-        AssetRef = sync.Sync(nameof(AssetRef), AssetRef, SyncFlag.NotNull) ?? new AssetSelection<Asset>();
+        AssetRef = sync.Sync(nameof(AssetRef), AssetRef, SyncFlag.NotNull) ?? new AssetSelection<TAsset>();
 
         if (sync.Intent == SyncIntent.View)
         {
@@ -383,7 +383,7 @@ public class CanvasAssetNode : CanvasFlowNode,
         if (type != null)
         {
             var connector = AddAssociateOutputConnector("#USAGE", type.FullName);
-            if (_assetRef.Target is { } asset)
+            if (_assetRef.Target is Asset asset)
             {
                 connector.AssociateValue = asset.Id;
             }
@@ -671,22 +671,17 @@ public class CanvasAssetNode : CanvasFlowNode,
 }
 #endregion
 
-#region CanvasAssetNode<TAsset>
+#region CanvasAssetNode
 
-public abstract class CanvasAssetNode<TAsset> : CanvasAssetNode
-    where TAsset : Asset
+public class CanvasAssetNode : CanvasAssetNode<Asset>
 {
-    protected CanvasAssetNode() : base()
+    public CanvasAssetNode() : base()
     {
     }
 
-    protected CanvasAssetNode(TAsset asset) : base(asset)
+    public CanvasAssetNode(Asset asset) : base(asset)
     {
     }
-
-    public override Type AssetType => typeof(TAsset);
-
-    public TAsset Target => TargetAsset as TAsset;
 }
 
 #endregion
@@ -694,7 +689,7 @@ public abstract class CanvasAssetNode<TAsset> : CanvasAssetNode
 #region ExpandedCanvasAssetNode<TAsset>
 
 public abstract class ExpandedCanvasAssetNode<TAsset> : CanvasAssetNode<TAsset>, IDrawExpandedImGui
-    where TAsset : Asset
+    where TAsset : class
 {
     public IInspectorContext TargetContext { get; protected set; }
 

@@ -18,7 +18,7 @@ namespace Suity.Editor.AIGC.Agentic;
 
 
 [NativeAlias("Suity.Editor.AIGC.AgentCanvasNode")]
-public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAgent, IHasFlowComputionState
+public class AgentCanvasNode : ExpandedCanvasAssetNode<ISubFlowAsset>, IAgent, IHasFlowComputionState
 {
     internal FlowNodeConnector _out;
     internal FlowNodeConnector _in;
@@ -174,7 +174,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     public void SetParentAgent(IAgent parent) => _parent = parent;
 
 
-    public IPageAsset StarterWorkflow => this.Target;
+    public ISubFlowAsset StarterWorkflow => this.Target;
 
     public IAgentLoop AddLoop(IAigcLoopAsset loopAsset, string description)
     {

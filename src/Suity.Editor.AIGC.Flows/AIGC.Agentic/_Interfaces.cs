@@ -17,7 +17,7 @@ public interface IAgent : INamed
     void SetParentAgent(IAgent parent);
 
 
-    IPageAsset StarterWorkflow { get; }
+    ISubFlowAsset StarterWorkflow { get; }
 
     IAgentLoop AddLoop(IAigcLoopAsset loopAsset, string description);
 
