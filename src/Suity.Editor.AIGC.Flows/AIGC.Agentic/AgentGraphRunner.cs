@@ -18,7 +18,7 @@ namespace Suity.Editor.AIGC.Agentic;
 
 public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 {
-    readonly Dictionary<IAgentNode, AgentState> _agentStates = [];
+    readonly Dictionary<IAgent, AgentState> _agentStates = [];
 
 
     public AgentStartCanvasNode StartNode { get; }
@@ -110,7 +110,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         return result?.Result;
     }
 
-    public IAgentLoop AddLoop(IAgentNode agentNode, string name, string description, string prompt)
+    public IAgentLoop AddLoop(IAgent agentNode, string name, string description, string prompt)
     {
         var startupPage = agentNode.PageAsset as ISubFlowAsset;
         if (startupPage is null)
@@ -185,12 +185,12 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
     }
 
     #region IAgentGraphRunner
-    public IAgentState GetAgentState(IAgentNode agent)
+    public IAgentState GetAgentState(IAgent agent)
     {
         return _agentStates.GetValueSafe(agent);
     }
 
-    public async Task<AICallResult> RunLoop(AIRequest request, IAgentNode agent, IAgentLoop loop)
+    public async Task<AICallResult> RunLoop(AIRequest request, IAgent agent, IAgentLoop loop)
     {
         if (request is null)
         {
@@ -246,7 +246,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
     } 
     #endregion
 
-    public AgentState EnsureAgentState(IAgentNode agent)
+    public AgentState EnsureAgentState(IAgent agent)
     {
         return _agentStates.GetOrAdd(agent, _ => new AgentState(this, agent));
     }
@@ -264,7 +264,7 @@ public class AgentState : IAgentState
 {
     readonly Dictionary<IAgentLoop, AgentLoopState> _loops = [];
 
-    public AgentState(AgentGraphRunner parent, IAgentNode agent)
+    public AgentState(AgentGraphRunner parent, IAgent agent)
     {
         Parent = parent ?? throw new ArgumentNullException(nameof(parent));
         Agent = agent ?? throw new ArgumentNullException(nameof(agent));
@@ -272,7 +272,7 @@ public class AgentState : IAgentState
 
     public AgentGraphRunner Parent { get; }
 
-    public IAgentNode Agent { get; }
+    public IAgent Agent { get; }
 
     public IAgentLoopState GetLoopState(IAgentLoop loop)
     {

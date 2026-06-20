@@ -1,5 +1,4 @@
 ﻿using Suity.Drawing;
-using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Agentic;
 using Suity.Editor.Types;
 
@@ -13,7 +12,7 @@ public class GetSubAgentList : AgentNode
 
     public GetSubAgentList()
     {
-        var type = TypeDefinition.FromNative<IAgentNode>().MakeArrayType();
+        var type = TypeDefinition.FromNative<IAgent>().MakeArrayType();
         _agents = this.AddDataOutputConnector("Agents", type, "Agents");
     }
 
@@ -21,12 +20,31 @@ public class GetSubAgentList : AgentNode
 
     public override void Compute(IFlowComputation compute)
     {
-        var loopRunner = compute.Context.GetArgument<IAigcLoopRunner>();
-        var agentRunner = compute.Context.GetArgument<IAgentGraphRunner>();
+        var agent = compute.Context.GetArgument<IAgent>();
 
-        var workflowPage = compute.Context.GetArgument<IAigcWorkflowPage>();
-        var loop = workflowPage?.ParentLoop;
+        var subAgents = agent.GetSubAgents();
+        compute.SetValue(_agents, subAgents);
+    }
+}
 
-        var agent = compute.Context.GetArgument<IAgentNode>();
+[SimpleFlowNodeStyle(Color = FlowColors.AgentBg, HasHeader = false, Width = 100, Height = 20)]
+public class GetParentAgent : AgentNode
+{
+    readonly FlowNodeConnector _parent;
+
+
+    public GetParentAgent()
+    {
+        _parent = this.AddDataOutputConnector("Parent", TypeDefinition.FromNative<IAgent>(), "Parent");
+    }
+
+    public override ImageDef Icon => CoreIconCache.Agent;
+
+    public override void Compute(IFlowComputation compute)
+    {
+        var agent = compute.Context.GetArgument<IAgent>();
+
+        var parent = agent.ParentAgent;
+        compute.SetValue(_parent, parent);
     }
 }

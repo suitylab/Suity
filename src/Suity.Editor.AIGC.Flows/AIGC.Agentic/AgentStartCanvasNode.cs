@@ -18,18 +18,18 @@ public class AgentStartCanvasNode : CanvasDesignNode
 {
     internal FlowNodeConnector _in;
 
-    private IAgentNode _agentNode;
+    private IAgent _agentNode;
 
     readonly StringProperty _entryTaskName = new(nameof(EntryTaskName), "Entry task name", "Entry");
     readonly AssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
 
     public AgentStartCanvasNode()
     {
-        var output = FixedNodeConnector.CreateControlInput("In", TypeDefinition.FromNative<IAgentNode>(), false, description: "Out");
+        var output = FixedNodeConnector.CreateControlInput("In", TypeDefinition.FromNative<IAgent>(), false, description: "Out");
         _in = AddConnector(output);
     }
 
-    public IAgentNode AgentNode => _agentNode;
+    public IAgent AgentNode => _agentNode;
 
     public string EntryTaskName => _entryTaskName.Text;
 
@@ -71,7 +71,8 @@ public class AgentStartCanvasNode : CanvasDesignNode
 
     public override void Compute(IFlowComputation compute)
     {
-        _agentNode = compute.GetValue<IAgentNode>(_in);
+        _agentNode?.SetParentAgent(null);
+        _agentNode = compute.GetValue<IAgent>(_in);
     }
 
     internal void FlashingConnector()

@@ -2,6 +2,7 @@
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
+using Suity.Editor.Flows.Agentic;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.TaskPages;
 using Suity.Editor.Selecting;
@@ -17,7 +18,7 @@ namespace Suity.Editor.AIGC.Agentic;
 
 
 [NativeAlias("Suity.Editor.AIGC.AgentCanvasNode")]
-public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAgentNode, IHasFlowComputionState
+public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAgent, IHasFlowComputionState
 {
     internal FlowNodeConnector _out;
     internal FlowNodeConnector _in;
@@ -25,10 +26,13 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     readonly StringProperty _agentName = new("AgentName", "Agent Name");
     readonly SyncListProperty<AgentLoopItem> _loops = new("Loops", () => new());
 
+    private IAgent _parent;
+    private IAgent[] _subAgents = [];
+
     public AgentCanvasNode()
     {
-        var input = FixedNodeConnector.CreateControlInput("In", TypeDefinition.FromNative<IAgentNode>(), description: "Out");
-        var output = FixedNodeConnector.CreateControlOutput("Out", TypeDefinition.FromNative<IAgentNode>(), description: "In");
+        var input = FixedNodeConnector.CreateControlInput("In", TypeDefinition.FromNative<IAgent>(), true, description: "Out");
+        var output = FixedNodeConnector.CreateControlOutput("Out", TypeDefinition.FromNative<IAgent>(), false, description: "In");
 
         _in = AddConnector(input);
         _out = AddConnector(output);
@@ -56,6 +60,19 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     public override void Compute(IFlowComputation compute)
     {
         compute.SetValue(_out, this);
+
+        var lastSubAgents = _subAgents ?? [];
+        _subAgents = compute.GetValues<IAgent>(_in) ?? [];
+
+        foreach (var agent in lastSubAgents)
+        {
+            agent.SetParentAgent(null);
+        }
+
+        foreach (var agent in _subAgents)
+        {
+            agent.SetParentAgent(this);
+        }
     }
 
     public override string DisplayText => !string.IsNullOrWhiteSpace(_agentName.Text) ? _agentName.Text : base.DisplayText;
@@ -147,6 +164,13 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     #region IAgentNode
 
+    public IAgent ParentAgent => _parent;
+
+    public IAgent[] GetSubAgents() => _subAgents;
+
+    public void SetParentAgent(IAgent parent) => _parent = parent;
+
+
     public IPageAsset PageAsset => this.Target;
 
     public IAgentLoop AddLoop(IAigcLoopAsset loopAsset, string description)
@@ -200,6 +224,8 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
 
     #endregion
+
+    public override string ToString() => _agentName.Text;
 }
 
 public class AgentLoopItem : IAgentLoop, IViewObject

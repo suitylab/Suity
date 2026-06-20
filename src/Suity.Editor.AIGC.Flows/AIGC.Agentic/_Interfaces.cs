@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 namespace Suity.Editor.AIGC.Agentic;
 
 [NativeType(CodeBase = "Suity", Description = "Agent Node", Color = "#9900FF")]
-public interface IAgentNode : INamed
+[NativeAlias("Suity.Editor.AIGC.Agentic.IAgentNode")]
+public interface IAgent : INamed
 {
+    IAgent ParentAgent { get; }
+
+    IAgent[] GetSubAgents();
+
+    void SetParentAgent(IAgent parent);
+
+
     IPageAsset PageAsset { get; }
 
     IAgentLoop AddLoop(IAigcLoopAsset loopAsset, string description);
@@ -26,14 +34,14 @@ public interface IAgentLoop
 
 public interface IAgentGraphRunner
 {
-    IAgentState GetAgentState(IAgentNode agent);
+    IAgentState GetAgentState(IAgent agent);
 
-    Task<AICallResult> RunLoop(AIRequest request, IAgentNode agent, IAgentLoop loop);
+    Task<AICallResult> RunLoop(AIRequest request, IAgent agent, IAgentLoop loop);
 }
 
 public interface IAgentState
 {
-    IAgentNode Agent { get; }
+    IAgent Agent { get; }
 
     IAgentLoopState GetLoopState(IAgentLoop loop);
 
