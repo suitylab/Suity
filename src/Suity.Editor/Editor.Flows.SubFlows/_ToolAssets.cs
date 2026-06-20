@@ -2,6 +2,7 @@
 using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.NodeQuery;
 using Suity.Synchonizing;
@@ -20,7 +21,9 @@ namespace Suity.Editor.Flows.SubFlows;
 public record ToolCallContext
 {
     public IToolInstance ToolInstance { get; init; }
-    public string WorkSpaceDirectory { get; init; }
+    public WorkSpace WorkSpace { get; init; }
+    public string RootDirectory { get; init; }
+    public FunctionContext FuncContext { get; init; }
     public IConversationHandler Conversation { get; init; }
     public CancellationToken Cancellation { get; init; }
 }

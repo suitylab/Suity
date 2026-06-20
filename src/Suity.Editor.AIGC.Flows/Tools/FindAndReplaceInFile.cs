@@ -119,7 +119,7 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
     {
         var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
 
-        string workspaceDir = context.WorkSpaceDirectory;
+        string workspaceDir = context.RootDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
             throw new NullReferenceException("Workspace directory is not set");

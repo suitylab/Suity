@@ -78,5 +78,17 @@
       <ToNode>WorkflowB</ToNode>
       <ToConnector>Result</ToConnector>
     </Item>
+    <Item>
+      <FromNode>OnStart</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnComplete</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Input</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>Output</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
   </Links>
 </SuityAsset>

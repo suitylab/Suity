@@ -51,7 +51,7 @@ public class RunShellCommand : ToolCommand<RunShellCommand.Output>
 
     public override async Task<Output> Run(ToolCallContext context)
     {
-        string directory = context.WorkSpaceDirectory;
+        string directory = context.RootDirectory;
         if (string.IsNullOrWhiteSpace(directory))
         {
             throw new NullReferenceException("Workspace directory is not set");

@@ -104,7 +104,9 @@ public class AigcToolPage : AigcTaskPage,
         var context = new ToolCallContext
         {
             ToolInstance = instance,
-            WorkSpaceDirectory = this.TaskPageDocument?.WorkSpace?.MasterDirectory,
+            WorkSpace = this.TaskPageDocument?.WorkSpace,
+            RootDirectory = this.TaskPageDocument?.WorkSpace?.MasterDirectory,
+            FuncContext = request.FuncContext ?? new FunctionContext(),
             Conversation = request.Conversation,
             Cancellation = request.Cancellation,
         };

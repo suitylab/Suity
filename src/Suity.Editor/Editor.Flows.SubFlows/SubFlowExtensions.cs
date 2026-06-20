@@ -144,6 +144,9 @@ public static class SubFlowExtensions
             case TaskCommitStatus.TaskDisabled:
                 return TextStatus.Disabled;
 
+            case TaskCommitStatus.Delegating:
+                return TextStatus.Reference;
+
             case TaskCommitStatus.None:
             default:
                 return TextStatus.Unchecked;
@@ -161,6 +164,7 @@ public static class SubFlowExtensions
                 return TaskEventTypes.SubTaskFailed;
 
             case TaskCommitStatus.TaskDisabled:
+            case TaskCommitStatus.Delegating:
             case TaskCommitStatus.None:
             default:
                 return TaskEventTypes.None;

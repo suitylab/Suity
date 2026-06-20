@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="AigcLoop">
+  <AssetId>04773ac6-0886-4c9b-93de-f4129e282a11</AssetId>
+  <NameSpace>Agent</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Tasks>
+    <Item type="Suity.Editor.AIGC.AigcWorkflowPage">
+      <Name>#Task-dO08d1aEJluo</Name>
+      <List type="NamedItemList">
+        <Item type="Suity.Editor.AIGC.AigcToolPage">
+          <Name>#Task-MzKHrcaYygcr</Name>
+          <List type="NamedItemList" />
+          <Description>Call Sub-Agent</Description>
+          <Icon />
+          <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
+          <TaskId>#Task-MzKHrcaYygcr</TaskId>
+          <CommitName>
+          </CommitName>
+          <CommitStatus>TaskFinished</CommitStatus>
+          <Tool>
+            <Id>01cc1566-4ea2-418c-aebd-34d40f024f9b</Id>
+          </Tool>
+          <Page type="Suity.Editor.Flows.SubFlows.ToolInstance`2[[Suity.Editor.AIGC.Tools.CallSubAgent],[Suity.Editor.AIGC.Tools.CallSubAgent+Output]]">
+            <Input>
+              <AgentName>SubAgent</AgentName>
+              <Loops>
+                <Item>
+                  <TaskName>TaskA</TaskName>
+                  <Prompt>
+                    <Text>TaskA Prompt</Text>
+                  </Prompt>
+                </Item>
+                <Item>
+                  <TaskName>TaskB</TaskName>
+                  <Prompt>
+                    <Text>TaskB Prompt</Text>
+                  </Prompt>
+                </Item>
+              </Loops>
+            </Input>
+            <Output>
+              <Results />
+            </Output>
+            <Error />
+          </Page>
+        </Item>
+      </List>
+      <Description>PresetA</Description>
+      <Icon />
+      <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]">
+        <Item type="SObject" struct="71dcdae5-2d2a-4144-9703-de9d48360cfa" base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471">
+          <Path type="SString" base="b78929d1-570d-4816-8364-881e4dab4925">
+            <Value type="System.String">-</Value>
+          </Path>
+          <Type type="SNumeric" base="">
+            <Value type="Suity.Editor.Flows.SubFlows.ScratchPadTypes">Clear</Value>
+          </Type>
+          <Note type="SString" base="b78929d1-570d-4816-8364-881e4dab4925">
+            <Value type="System.String">
+            </Value>
+          </Note>
+          <Content type="STextBlock" base="a3ebc9cb-6bf2-473f-b246-83c0fbcb9261">
+            <Value type="Suity.Views.TextBlock">
+              <Text>
+              </Text>
+            </Value>
+          </Content>
+        </Item>
+      </Attributes>
+      <TaskId>#Task-dO08d1aEJluo</TaskId>
+      <CommitName>
+      </CommitName>
+      <Workflow>
+        <Id>b8096d3e-1ed2-45ad-94b5-f0c85e26e664</Id>
+      </Workflow>
+      <Article />
+      <TaskPrompt>
+        <Text>bbb</Text>
+      </TaskPrompt>
+      <Rule />
+      <Page>
+        <__preset__>
+          <Id>b8096d3e-1ed2-45ad-94b5-f0c85e26e664</Id>
+        </__preset__>
+        <Output type="System.Boolean">True</Output>
+      </Page>
+    </Item>
+  </Tasks>
+  <InitialTaskPrompt>
+    <Text>bbb</Text>
+  </InitialTaskPrompt>
+  <StartupPage />
+  <WorkSpace />
+  <Tools />
+  <KnowledgeArticles />
+</SuityAsset>

@@ -64,7 +64,7 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
 
     public override Task<Output> Run(ToolCallContext context)
     {
-        string workspaceDir = context.WorkSpaceDirectory;
+        string workspaceDir = context.RootDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
             throw new NullReferenceException("Workspace directory is not set");

@@ -71,6 +71,12 @@ public enum TaskCommitStatus
     /// </summary>
     [DisplayText("Task Disabled")]
     TaskDisabled,
+
+    /// <summary>
+    /// Indicates the task has been delegated to another handler or subtask.
+    /// </summary>
+    [DisplayText("Delegating")]
+    Delegating,
 }
 
 public record TaskCommitParameter(TaskCommitStatus EndType, object Value);

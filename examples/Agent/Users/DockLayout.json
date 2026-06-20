@@ -157,6 +157,9 @@
                 }
               ],
               "ActiveDockable": {
+                "$ref": "9"
+              },
+              "FocusedDockable": {
                 "$ref": "6"
               },
               "IsActive": false,
@@ -271,9 +274,9 @@
                         "Height": 0.0
                       },
                       "MdiState": 0,
-                      "MdiZIndex": 0,
-                      "Id": ":Assets/WorkflowA.sasset",
-                      "Title": "WorkflowA",
+                      "MdiZIndex": 1,
+                      "Id": ":Assets/Canvas01.sasset",
+                      "Title": "Canvas01",
                       "Owner": {
                         "$ref": "16"
                       },
@@ -323,9 +326,9 @@
                         "Height": 0.0
                       },
                       "MdiState": 0,
-                      "MdiZIndex": 1,
-                      "Id": ":Assets/Canvas01.sasset",
-                      "Title": "Canvas01",
+                      "MdiZIndex": 0,
+                      "Id": ":Assets/PresetA01.sasset",
+                      "Title": "PresetA01",
                       "Owner": {
                         "$ref": "16"
                       },
@@ -365,56 +368,10 @@
                     }
                   ],
                   "ActiveDockable": {
-                    "$ref": "20"
+                    "$ref": "17"
                   },
                   "FocusedDockable": {
-                    "$id": "23",
-                    "$type": "Suity.Editor.Controls.EditorDocumentDockable, Suity.Agentic",
-                    "MdiBounds": {
-                      "$id": "24",
-                      "$type": "Dock.Model.Core.DockRect, Dock.Model",
-                      "X": 0.0,
-                      "Y": 0.0,
-                      "Width": 0.0,
-                      "Height": 0.0
-                    },
-                    "MdiState": 0,
-                    "MdiZIndex": 2,
-                    "Id": ":Assets/WorkflowB.sasset",
-                    "Title": "WorkflowB",
-                    "Owner": {
-                      "$ref": "16"
-                    },
-                    "IsEmpty": false,
-                    "IsCollapsable": true,
-                    "Proportion": "NaN",
-                    "Dock": 0,
-                    "DockingState": 4,
-                    "Column": 0,
-                    "Row": 0,
-                    "ColumnSpan": 1,
-                    "RowSpan": 1,
-                    "IsSharedSizeScope": false,
-                    "CollapsedProportion": "NaN",
-                    "MinWidth": "NaN",
-                    "MaxWidth": "NaN",
-                    "MinHeight": "NaN",
-                    "MaxHeight": "NaN",
-                    "CanClose": true,
-                    "CanPin": false,
-                    "KeepPinnedDockableVisible": false,
-                    "CanFloat": false,
-                    "CanDrag": true,
-                    "CanDrop": true,
-                    "CanDockAsDocument": true,
-                    "IsModified": false,
-                    "AllowedDockOperations": 63,
-                    "AllowedDropOperations": 63,
-                    "ShowInSelector": true,
-                    "Resources": {
-                      "$id": "25",
-                      "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
-                    }
+                    "$ref": "20"
                   },
                   "IsActive": true,
                   "OpenedDockablesCount": 1,
@@ -455,12 +412,12 @@
                     "$ref": "16"
                   },
                   "Resources": {
-                    "$id": "26",
+                    "$id": "23",
                     "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
                   }
                 },
                 {
-                  "$id": "27",
+                  "$id": "24",
                   "$type": "Dock.Model.Avalonia.Controls.ProportionalDockSplitter, Dock.Model.Avalonia",
                   "CanResize": true,
                   "ResizePreview": false,
@@ -501,12 +458,12 @@
                   "AllowedDropOperations": 63,
                   "ShowInSelector": true,
                   "Resources": {
-                    "$id": "28",
+                    "$id": "25",
                     "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
                   }
                 },
                 {
-                  "$id": "29",
+                  "$id": "26",
                   "$type": "Dock.Model.Avalonia.Controls.ToolDock, Dock.Model.Avalonia",
                   "Alignment": 1,
                   "IsExpanded": false,
@@ -514,10 +471,10 @@
                   "GripMode": 0,
                   "VisibleDockables": [
                     {
-                      "$id": "30",
+                      "$id": "27",
                       "$type": "Suity.Editor.Controls.EditorToolDockable, Suity.Agentic",
                       "MdiBounds": {
-                        "$id": "31",
+                        "$id": "28",
                         "$type": "Dock.Model.Core.DockRect, Dock.Model",
                         "X": 0.0,
                         "Y": 0.0,
@@ -529,7 +486,7 @@
                       "Id": "Log",
                       "Title": "Log",
                       "Owner": {
-                        "$ref": "29"
+                        "$ref": "26"
                       },
                       "IsEmpty": false,
                       "IsCollapsable": true,
@@ -558,16 +515,16 @@
                       "AllowedDropOperations": 63,
                       "ShowInSelector": true,
                       "DataContext": {
-                        "$ref": "30"
+                        "$ref": "27"
                       },
                       "Resources": {
-                        "$id": "32",
+                        "$id": "29",
                         "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
                       }
                     }
                   ],
                   "ActiveDockable": {
-                    "$ref": "30"
+                    "$ref": "27"
                   },
                   "IsActive": false,
                   "OpenedDockablesCount": 1,
@@ -605,7 +562,7 @@
                   "AllowedDropOperations": 63,
                   "ShowInSelector": true,
                   "Resources": {
-                    "$id": "33",
+                    "$id": "30",
                     "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
                   }
                 }
@@ -646,12 +603,12 @@
               "AllowedDropOperations": 63,
               "ShowInSelector": true,
               "Resources": {
-                "$id": "34",
+                "$id": "31",
                 "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
               }
             },
             {
-              "$id": "35",
+              "$id": "32",
               "$type": "Dock.Model.Avalonia.Controls.ProportionalDockSplitter, Dock.Model.Avalonia",
               "CanResize": true,
               "ResizePreview": false,
@@ -692,12 +649,12 @@
               "AllowedDropOperations": 63,
               "ShowInSelector": true,
               "Resources": {
-                "$id": "36",
+                "$id": "33",
                 "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
               }
             },
             {
-              "$id": "37",
+              "$id": "34",
               "$type": "Dock.Model.Avalonia.Controls.ToolDock, Dock.Model.Avalonia",
               "Alignment": 2,
               "IsExpanded": false,
@@ -705,10 +662,10 @@
               "GripMode": 0,
               "VisibleDockables": [
                 {
-                  "$id": "38",
+                  "$id": "35",
                   "$type": "Suity.Editor.Controls.EditorToolDockable, Suity.Agentic",
                   "MdiBounds": {
-                    "$id": "39",
+                    "$id": "36",
                     "$type": "Dock.Model.Core.DockRect, Dock.Model",
                     "X": 0.0,
                     "Y": 0.0,
@@ -720,7 +677,7 @@
                   "Id": "Inspector",
                   "Title": "Property Inspector",
                   "Owner": {
-                    "$ref": "37"
+                    "$ref": "34"
                   },
                   "IsEmpty": false,
                   "IsCollapsable": true,
@@ -749,16 +706,16 @@
                   "AllowedDropOperations": 63,
                   "ShowInSelector": true,
                   "DataContext": {
-                    "$ref": "38"
+                    "$ref": "35"
                   },
                   "Resources": {
-                    "$id": "40",
+                    "$id": "37",
                     "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
                   }
                 }
               ],
               "ActiveDockable": {
-                "$ref": "38"
+                "$ref": "35"
               },
               "IsActive": false,
               "OpenedDockablesCount": 1,
@@ -796,7 +753,7 @@
               "AllowedDropOperations": 63,
               "ShowInSelector": true,
               "Resources": {
-                "$id": "41",
+                "$id": "38",
                 "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
               }
             }
@@ -840,7 +797,7 @@
             "$ref": "1"
           },
           "Resources": {
-            "$id": "42",
+            "$id": "39",
             "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
           }
         }
@@ -884,12 +841,12 @@
       "AllowedDropOperations": 63,
       "ShowInSelector": true,
       "Resources": {
-        "$id": "43",
+        "$id": "40",
         "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
       }
     },
     "Resources": {
-      "$id": "44",
+      "$id": "41",
       "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
     }
   },
@@ -908,7 +865,7 @@
     "$ref": "4"
   },
   "FocusedDockable": {
-    "$ref": "20"
+    "$ref": "17"
   },
   "IsActive": false,
   "OpenedDockablesCount": 7,
@@ -943,11 +900,11 @@
   "AllowedDropOperations": 63,
   "ShowInSelector": true,
   "DataContext": {
-    "$id": "45",
+    "$id": "42",
     "$type": "Suity.Editor.ViewModels.MainWindowViewModel, Suity.Agentic"
   },
   "Resources": {
-    "$id": "46",
+    "$id": "43",
     "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
   }
 }

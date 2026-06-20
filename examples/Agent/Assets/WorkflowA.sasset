@@ -6,7 +6,7 @@
   </Description>
   <Icon />
   <Nodes>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-320" Y="-60" Width="140" Height="120">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-360" Y="-90" Width="140" Height="120">
       <Name>WorkflowA</Name>
       <AssetId>5f9760d9-61ca-442c-9224-e5102019b1fb</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
@@ -16,7 +16,7 @@
         <Tools />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="160" Y="-60" Width="140" Height="120">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="150" Y="-90" Width="140" Height="120">
       <Name>WorkflowA_End</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
         <Name>WorkflowA_End</Name>
@@ -25,7 +25,7 @@
         <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowBeginDiagramItem" X="-310" Y="-30" Width="46" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowBeginDiagramItem" X="-350" Y="-60" Width="46" Height="17">
       <Name>OnStart</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowBeginNode">
         <Name>OnStart</Name>
@@ -34,20 +34,7 @@
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-310" Y="-10" Width="40" Height="17">
-      <Name>Input</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
-        <Name>Input</Name>
-        <Icon />
-        <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>b78929d1-570d-4816-8364-881e4dab4925</Id>
-        </ValueType>
-        <Value type="System.String">
-        </Value>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="170" Y="-20" Width="58" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="160" Y="-50" Width="58" Height="17">
       <Name>OnComplete</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
         <Name>OnComplete</Name>
@@ -56,17 +43,102 @@
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="170" Y="0" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="160" Y="-30" Width="44" Height="17">
       <Name>Output</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
         <Name>Output</Name>
         <Icon />
         <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>88bd4085-233a-4cd3-96bc-1d1acea9054f</Id>
+        </ValueType>
+        <Value type="System.Boolean">False</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-130" Y="-80" Width="201" Height="67">
+      <Name>###CreatePageInstanceWithParameter01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
+        <ToolDefinition>
+          <Id>01cc1566-4ea2-418c-aebd-34d40f024f9b</Id>
+        </ToolDefinition>
+        <Parameters>
+          <Item>
+            <Name>AgentName</Name>
+            <Description>Agent Name</Description>
+            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
+              <Id>b78929d1-570d-4816-8364-881e4dab4925</Id>
+            </ParameterType>
+          </Item>
+          <Item>
+            <Name>Loops</Name>
+            <Description>Loops</Description>
+            <ParameterType type="Suity.Editor.Types.TypeDesignSelection">
+              <Id>cf0b384f-2d2d-429a-b0f7-ae5afd9f9397</Id>
+            </ParameterType>
+            <IsArray>True</IsArray>
+          </Item>
+        </Parameters>
+        <UpdateParameter>False</UpdateParameter>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-180" Y="-10" Width="22" Height="14">
+      <Name>###SourceValue01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>cf0b384f-2d2d-429a-b0f7-ae5afd9f9397</Id>
+        </ValueType>
+        <IsArray>True</IsArray>
+        <Value type="SArray" base="cf0b384f-2d2d-429a-b0f7-ae5afd9f9397[]">
+          <Item type="SObject" struct="cf0b384f-2d2d-429a-b0f7-ae5afd9f9397" base="cf0b384f-2d2d-429a-b0f7-ae5afd9f9397">
+            <TaskName type="SString" base="b78929d1-570d-4816-8364-881e4dab4925">
+              <Value type="System.String">TaskA</Value>
+            </TaskName>
+            <Prompt type="STextBlock" base="a3ebc9cb-6bf2-473f-b246-83c0fbcb9261">
+              <Value type="Suity.Views.TextBlock">
+                <Text>TaskA Prompt</Text>
+              </Value>
+            </Prompt>
+          </Item>
+          <Item type="SObject" struct="cf0b384f-2d2d-429a-b0f7-ae5afd9f9397" base="cf0b384f-2d2d-429a-b0f7-ae5afd9f9397">
+            <TaskName type="SString" base="b78929d1-570d-4816-8364-881e4dab4925">
+              <Value type="System.String">TaskB</Value>
+            </TaskName>
+            <Prompt type="STextBlock" base="a3ebc9cb-6bf2-473f-b246-83c0fbcb9261">
+              <Value type="Suity.Views.TextBlock">
+                <Text>TaskB Prompt</Text>
+              </Value>
+            </Prompt>
+          </Item>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="50" Width="37" Height="17">
+      <Name>###SourceValue02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>88bd4085-233a-4cd3-96bc-1d1acea9054f</Id>
+        </ValueType>
+        <Value type="System.Boolean">True</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-210" Y="-30" Width="51" Height="17">
+      <Name>###SourceValue03</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>b78929d1-570d-4816-8364-881e4dab4925</Id>
         </ValueType>
-        <Value type="System.String">
-        </Value>
+        <Value type="System.String">SubAgent</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="20" Width="134" Height="111">
+      <Name>###AddSubTaskPage01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
+        <PageTitle>
+        </PageTitle>
+        <TaskPrompt />
+        <TaskRule />
+        <CommitName>
+        </CommitName>
       </Node>
     </Item>
   </Nodes>
@@ -77,6 +149,48 @@
       <FromConnector>Definition</FromConnector>
       <ToNode>WorkflowA</ToNode>
       <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SourceValue02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>Output</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>OnStart</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreatePageInstanceWithParameter01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SourceValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreatePageInstanceWithParameter01</ToNode>
+      <ToConnector>p_Loops</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SourceValue03</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreatePageInstanceWithParameter01</ToNode>
+      <ToConnector>p_AgentName</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CreatePageInstanceWithParameter01</FromNode>
+      <FromConnector>PageInstance</FromConnector>
+      <ToNode>###AddSubTaskPage01</ToNode>
+      <ToConnector>PageInstance</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AddSubTaskPage01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnComplete</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CreatePageInstanceWithParameter01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AddSubTaskPage01</ToNode>
+      <ToConnector>In</ToConnector>
     </Item>
   </Links>
 </SuityAsset>
