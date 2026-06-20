@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="AigcFlow">
+  <AssetId>87000086-20d8-4de6-8dfa-e6cdbd343a6e</AssetId>
+  <NameSpace>Agent</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-320" Y="-60" Width="140" Height="120">
+      <Name>WorkflowA</Name>
+      <AssetId>5f9760d9-61ca-442c-9224-e5102019b1fb</AssetId>
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
+        <Name>WorkflowA</Name>
+        <Icon />
+        <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
+        <Tools />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="160" Y="-60" Width="140" Height="120">
+      <Name>WorkflowA_End</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
+        <Name>WorkflowA_End</Name>
+        <Description>Result</Description>
+        <Icon />
+        <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowBeginDiagramItem" X="-310" Y="-30" Width="46" Height="17">
+      <Name>OnStart</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowBeginNode">
+        <Name>OnStart</Name>
+        <Icon />
+        <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-310" Y="-10" Width="40" Height="17">
+      <Name>Input</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
+        <Name>Input</Name>
+        <Icon />
+        <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>b78929d1-570d-4816-8364-881e4dab4925</Id>
+        </ValueType>
+        <Value type="System.String">
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="170" Y="-20" Width="58" Height="17">
+      <Name>OnComplete</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
+        <Name>OnComplete</Name>
+        <Icon />
+        <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="170" Y="0" Width="44" Height="17">
+      <Name>Output</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>Output</Name>
+        <Icon />
+        <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>b78929d1-570d-4816-8364-881e4dab4925</Id>
+        </ValueType>
+        <Value type="System.String">
+        </Value>
+      </Node>
+    </Item>
+  </Nodes>
+  <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
+  <Links>
+    <Item>
+      <FromNode>WorkflowA_End</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>WorkflowA</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

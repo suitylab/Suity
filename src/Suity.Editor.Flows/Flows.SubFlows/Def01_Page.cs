@@ -230,8 +230,6 @@ public class SubFlowDefinitionDiagramItem : FlowDiagramItem<SubflowDefinitionNod
 /// </summary>
 [NativeType(CodeBase = "SubFlow", Description = "Sub-flow Definition", Color = FlowColors.PageGroup, Icon = "*CoreIcon|Workflow")]
 public class SubFlowDefinitionAsset : Asset,
-    IPageAsset,
-    ISubFlowAsset,
     ISubFlowDefAsset
 {
     /// <inheritdoc/>

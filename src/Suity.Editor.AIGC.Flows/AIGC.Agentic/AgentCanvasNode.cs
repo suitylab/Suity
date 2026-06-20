@@ -18,7 +18,7 @@ namespace Suity.Editor.AIGC.Agentic;
 
 
 [NativeAlias("Suity.Editor.AIGC.AgentCanvasNode")]
-public class AgentCanvasNode : ExpandedCanvasAssetNode<ISubFlowAsset>, IAgent, IHasFlowComputionState
+public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAgent, IHasFlowComputionState
 {
     internal FlowNodeConnector _out;
     internal FlowNodeConnector _in;
@@ -79,6 +79,16 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<ISubFlowAsset>, IAgent, I
     }
 
     public override string DisplayText => !string.IsNullOrWhiteSpace(_agentName.Text) ? _agentName.Text : base.DisplayText;
+
+    protected override void OnAssetTargetUpdated()
+    {
+        base.OnAssetTargetUpdated();
+
+        if (string.IsNullOrWhiteSpace(_agentName.Text))
+        {
+            _agentName.Text = Target?.Name ?? string.Empty;
+        }
+    }
 
     #region IDrawExpandedImGui
 

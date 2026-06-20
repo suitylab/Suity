@@ -128,7 +128,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Finds a document node by its usage attribute.
     /// </summary>
-    public static CanvasAssetNode FindDocumentNodeByUsage<T>(this ICanvasDocument canvas, string usage, out T document) where T : class
+    public static BaseCanvasAssetNode FindDocumentNodeByUsage<T>(this ICanvasDocument canvas, string usage, out T document) where T : class
     {
         var docs = canvas.FindDocumentNodes<T>();
         var node = docs
@@ -162,7 +162,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Creates a document with the specified document type, file path, and suffix.
     /// </summary>
-    public static CanvasAssetNode CreateDocument<T>(this ICanvasDocument canvas, string docType, string rFilePath, string suffix, out T document)
+    public static BaseCanvasAssetNode CreateDocument<T>(this ICanvasDocument canvas, string docType, string rFilePath, string suffix, out T document)
         where T : class
     {
         if (string.IsNullOrWhiteSpace(rFilePath))
@@ -187,7 +187,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Creates a document with the specified document format and file path.
     /// </summary>
-    public static CanvasAssetNode CreateDocument<T>(this ICanvasDocument canvas, DocumentFormat docFormat, string rFilePath, out T document)
+    public static BaseCanvasAssetNode CreateDocument<T>(this ICanvasDocument canvas, DocumentFormat docFormat, string rFilePath, out T document)
         where T : class
     {
         if (canvas is null)
@@ -222,7 +222,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Gets an article by usage.
     /// </summary>
-    public static CanvasAssetNode GetArticle(this ICanvasDocument canvas, string usage, out IArticleDocument document)
+    public static BaseCanvasAssetNode GetArticle(this ICanvasDocument canvas, string usage, out IArticleDocument document)
     {
         var node = canvas.FindDocumentNodeByUsage<IArticleDocument>(usage, out document);
 
@@ -232,7 +232,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Creates a new article document.
     /// </summary>
-    public static CanvasAssetNode CreateArticle(this ICanvasDocument canvas, string rFilePath, out IArticleDocument document, string suffix = "Article")
+    public static BaseCanvasAssetNode CreateArticle(this ICanvasDocument canvas, string rFilePath, out IArticleDocument document, string suffix = "Article")
     {
         var node = CreateDocument<IArticleDocument>(canvas, "ArticleEdit", rFilePath, suffix, out document);
 
@@ -248,7 +248,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Gets or creates an article document.
     /// </summary>
-    public static CanvasAssetNode GetOrCreateArticle(this ICanvasDocument canvas, string rFilePath, string name, out IArticleDocument document)
+    public static BaseCanvasAssetNode GetOrCreateArticle(this ICanvasDocument canvas, string rFilePath, string name, out IArticleDocument document)
     {
         var node = canvas.FindDocumentNodeByUsage<IArticleDocument>(name, out document);
         if (node is null)
@@ -273,7 +273,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Gets a type edit document by name.
     /// </summary>
-    public static CanvasAssetNode GetTypeEdit(this ICanvasDocument canvas, string name, out ITypeDesignDocument document)
+    public static BaseCanvasAssetNode GetTypeEdit(this ICanvasDocument canvas, string name, out ITypeDesignDocument document)
     {
         var node = canvas.FindDocumentNodeByUsage<ITypeDesignDocument>(name, out document);
 
@@ -283,7 +283,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Creates a new type edit document.
     /// </summary>
-    public static CanvasAssetNode CreateTypeEdit(this ICanvasDocument canvas, string rFilePath, out ITypeDesignDocument document, string suffix = "Model")
+    public static BaseCanvasAssetNode CreateTypeEdit(this ICanvasDocument canvas, string rFilePath, out ITypeDesignDocument document, string suffix = "Model")
     {
         var node = CreateDocument<ITypeDesignDocument>(canvas, "TypeEdit", rFilePath, suffix, out document);
 
@@ -299,7 +299,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Gets or creates a type edit document.
     /// </summary>
-    public static CanvasAssetNode GetOrCreateTypeEdit(this ICanvasDocument canvas, string rFilePath, string name, out ITypeDesignDocument document)
+    public static BaseCanvasAssetNode GetOrCreateTypeEdit(this ICanvasDocument canvas, string rFilePath, string name, out ITypeDesignDocument document)
     {
         var node = canvas.FindDocumentNodeByUsage<ITypeDesignDocument>(name, out document);
         if (document is null)
@@ -502,7 +502,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Creates a new data grid document.
     /// </summary>
-    public static CanvasAssetNode CreateDataGrid(this ICanvasDocument canvas, string rFilePath, DCompond dataType, out IDataGridDocument document, string docSuffix = "Grid", string ns = null, string nsSuffix = "Data")
+    public static BaseCanvasAssetNode CreateDataGrid(this ICanvasDocument canvas, string rFilePath, DCompond dataType, out IDataGridDocument document, string docSuffix = "Grid", string ns = null, string nsSuffix = "Data")
     {
         var node = CreateDocument<IDataGridDocument>(canvas, "DataEdit", rFilePath, docSuffix, out document);
 
@@ -524,7 +524,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Gets or creates a data grid document.
     /// </summary>
-    public static CanvasAssetNode GetOrCreateDataGrid(this ICanvasDocument canvas, string rFilePath, DCompond dataType, out IDataGridDocument document, string docSuffix = "Grid", string ns = null, string nsSuffix = "Data")
+    public static BaseCanvasAssetNode GetOrCreateDataGrid(this ICanvasDocument canvas, string rFilePath, DCompond dataType, out IDataGridDocument document, string docSuffix = "Grid", string ns = null, string nsSuffix = "Data")
     {
         document = GetDataGrids(canvas, dataType).FirstOrDefault();
         if (document is AssetDocument { TargetAsset: { } asset })
@@ -552,7 +552,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Creates a new flow graph document.
     /// </summary>
-    public static CanvasAssetNode CreateFlowGraph(this ICanvasDocument canvas, string rFilePath, DStruct dataType, out IDataFlowDocument document, string docSuffix = "Flow", string ns = null, string nsSuffix = "Data")
+    public static BaseCanvasAssetNode CreateFlowGraph(this ICanvasDocument canvas, string rFilePath, DStruct dataType, out IDataFlowDocument document, string docSuffix = "Flow", string ns = null, string nsSuffix = "Data")
     {
         var node = CreateDocument<IDataFlowDocument>(canvas, "DataFlow", rFilePath, docSuffix, out document);
 
@@ -573,7 +573,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Gets or creates a flow graph document.
     /// </summary>
-    public static CanvasAssetNode GetOrCreateFlowGraph(this ICanvasDocument canvas, string rFilePath, DStruct dataType, out IDataFlowDocument document, string docSuffix = "Flow", string ns = null, string nsSuffix = "Data")
+    public static BaseCanvasAssetNode GetOrCreateFlowGraph(this ICanvasDocument canvas, string rFilePath, DStruct dataType, out IDataFlowDocument document, string docSuffix = "Flow", string ns = null, string nsSuffix = "Data")
     {
         document = GetFlowGraphs(canvas, dataType).FirstOrDefault();
         if (document is AssetDocument { TargetAsset: { } asset })
@@ -604,7 +604,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Creates a new flow graph document with all types derived from the base type.
     /// </summary>
-    public static CanvasAssetNode CreateFlowGraph(this ICanvasDocument canvas, string rFilePath, DAbstract baseType, out IDataFlowDocument document, string docSuffix = "Flow", string ns = null, string nsSuffix = "Data")
+    public static BaseCanvasAssetNode CreateFlowGraph(this ICanvasDocument canvas, string rFilePath, DAbstract baseType, out IDataFlowDocument document, string docSuffix = "Flow", string ns = null, string nsSuffix = "Data")
     {
         var types = DTypeManager.Instance.GetStructsByBaseType(baseType);
         if (types is null || types.Count == 0)
@@ -635,7 +635,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Gets or creates a flow graph document with all types derived from the base type.
     /// </summary>
-    public static CanvasAssetNode GetOrCreateFlowGraph(this ICanvasDocument canvas, string rFilePath, DAbstract baseType, out IDataFlowDocument document, string docSuffix = "Flow", string ns = null, string nsSuffix = "Data")
+    public static BaseCanvasAssetNode GetOrCreateFlowGraph(this ICanvasDocument canvas, string rFilePath, DAbstract baseType, out IDataFlowDocument document, string docSuffix = "Flow", string ns = null, string nsSuffix = "Data")
     {
         document = GetFlowGraphs(canvas, baseType).FirstOrDefault();
         if (document is AssetDocument { TargetAsset: { } asset })
@@ -677,7 +677,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Creates a new tree graph document.
     /// </summary>
-    public static CanvasAssetNode CreateTreeGraph(this ICanvasDocument canvas, string rFilePath, DAbstract baseType, out IDataTreeDocument document, string docSuffix = "Tree", string ns = null, string nsSuffix = "Data")
+    public static BaseCanvasAssetNode CreateTreeGraph(this ICanvasDocument canvas, string rFilePath, DAbstract baseType, out IDataTreeDocument document, string docSuffix = "Tree", string ns = null, string nsSuffix = "Data")
     {
         var node = CreateDocument<IDataTreeDocument>(canvas, "BehaviourTree", rFilePath, docSuffix, out document);
 
@@ -698,7 +698,7 @@ public static class CanvasDocumentExtensions
     /// <summary>
     /// Gets or creates a tree graph document.
     /// </summary>
-    public static CanvasAssetNode GetOrCreateTreeGraph(this ICanvasDocument canvas, string rFilePath, DAbstract baseType, out IDataTreeDocument document, string docSuffix = "Tree", string ns = null, string nsSuffix = "Data")
+    public static BaseCanvasAssetNode GetOrCreateTreeGraph(this ICanvasDocument canvas, string rFilePath, DAbstract baseType, out IDataTreeDocument document, string docSuffix = "Tree", string ns = null, string nsSuffix = "Data")
     {
         document = GetTreeGraphs(canvas, baseType).FirstOrDefault();
         if (document is AssetDocument { TargetAsset: { } asset })

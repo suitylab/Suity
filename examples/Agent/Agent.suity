@@ -1,0 +1,15 @@
+﻿{
+  "Version": "2026.02.21",
+  "AssetDirectory": "Assets",
+  "UserDirectory": "Users",
+  "SystemDirectory": "System",
+  "PublishDirectory": "Publish",
+  "WorkSpaceDirectory": "WorkSpaces",
+  "AssembliesDirectory": "Assemblies",
+  "ProjectGuid": "00000000-0000-0000-0000-000000000000",
+  "PlanetFolderGuid": "3387cad0-872f-449a-b65c-2d55de485056",
+  "SateliteFolderGuid": "04b44829-b4c8-4947-86bc-7b24064d5789",
+  "SpaceshipFolderGuid": "d1272379-f893-4089-8623-c1fb656e1de4",
+  "AstronautFolderGuid": "5e8ee724-064d-4e38-b949-14784b8d0987",
+  "PluginFolderGuid": "534f616e-eb88-44d9-8d46-220a644eb4bc"
+}

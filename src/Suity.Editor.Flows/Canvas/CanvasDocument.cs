@@ -70,7 +70,7 @@ public class CanvasDocument : FlowDocument<CanvasAssetBuilder>,
     /// </summary>
     /// <param name="doc">The document to search for.</param>
     /// <returns>An enumerable collection of canvas asset nodes referencing the document.</returns>
-    public IEnumerable<CanvasAssetNode> FindDocumentNodes(Document doc)
+    public IEnumerable<BaseCanvasAssetNode> FindDocumentNodes(Document doc)
     {
         if (doc is null)
         {
@@ -88,7 +88,7 @@ public class CanvasDocument : FlowDocument<CanvasAssetBuilder>,
     /// </summary>
     /// <typeparam name="T">The type of the target asset.</typeparam>
     /// <returns>An enumerable collection of canvas asset nodes with matching target asset type.</returns>
-    public IEnumerable<CanvasAssetNode> FindDocumentNodes<T>() where T : class
+    public IEnumerable<BaseCanvasAssetNode> FindDocumentNodes<T>() where T : class
     {
         return ItemCollection.AllItems.OfType<CanvasAssetDiagramItem>()
             .Select(o => o.Node)
@@ -114,7 +114,7 @@ public class CanvasDocument : FlowDocument<CanvasAssetBuilder>,
     /// <param name="asset">The asset to create a node for.</param>
     /// <param name="size">Optional size for the node. Defaults to 200x200 if not specified.</param>
     /// <returns>The created canvas asset node, or null if creation failed.</returns>
-    public CanvasAssetNode CreateAssetNode(Asset asset, Size? size = null)
+    public BaseCanvasAssetNode CreateAssetNode(Asset asset, Size? size = null)
     {
         if (asset is null)
         {
@@ -156,7 +156,7 @@ public class CanvasDocument : FlowDocument<CanvasAssetBuilder>,
     /// <param name="rFilePath">The file path for the new document.</param>
     /// <param name="size">Optional size for the node. Defaults to 200x200 if not specified.</param>
     /// <returns>The created canvas asset node containing the new document.</returns>
-    public CanvasAssetNode CreateDocument(DocumentFormat format, string rFilePath, Size? size = null)
+    public BaseCanvasAssetNode CreateDocument(DocumentFormat format, string rFilePath, Size? size = null)
     {
         if (format is null)
         {

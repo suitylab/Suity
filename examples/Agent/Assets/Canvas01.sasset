@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="Canvas">
+  <AssetId>18bc7a62-48bd-43ae-bd63-87ebd578d483</AssetId>
+  <NameSpace>Agent</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.AIGC.Agentic.AgentStartDiagramItem" X="-40" Y="-200" Width="87" Height="38">
+      <Name>Agent01</Name>
+      <AssetId>201bf47b-1003-40fb-aaa7-64dc12e7db7f</AssetId>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentStartCanvasNode">
+        <Name>Agent01</Name>
+        <Icon />
+        <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
+        <EntryTaskName>Entry</EntryTaskName>
+        <WorkSpace />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="-120" Width="162" Height="79">
+      <Name>###AgentCanvasNode01</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>b8096d3e-1ed2-45ad-94b5-f0c85e26e664</Id>
+        </AssetRef>
+        <AgentName>PresetA</AgentName>
+        <Overview />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="-10" Width="162" Height="79">
+      <Name>###AgentCanvasNode02</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>4cebbdaa-3667-4ef4-bd95-8cc6efad637b</Id>
+        </AssetRef>
+        <AgentName>PresetA</AgentName>
+        <Overview />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+  </Nodes>
+  <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
+  <Links>
+    <Item>
+      <FromNode>###AgentCanvasNode01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>Agent01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

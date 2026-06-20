@@ -112,13 +112,36 @@ public abstract class CanvasToolNode : CanvasFlowNode
 
 #endregion
 
+#region BaseCanvasAssetNode
+
+public abstract class BaseCanvasAssetNode : CanvasFlowNode
+{
+    public abstract Asset TargetAsset { get; set; }
+
+    /// <summary>
+    /// Gets the target document.
+    /// </summary>
+    /// <returns>The document.</returns>
+    public Document GetTargetDocument() => TargetAsset?.GetDocument(true);
+
+    /// <summary>
+    /// Gets the target document as a specific type.
+    /// </summary>
+    /// <typeparam name="T">Document type.</typeparam>
+    /// <returns>The document.</returns>
+    public T GetTargetDocument<T>() where T : class
+        => TargetAsset?.GetDocument<T>(true);
+
+}
+
+#endregion
+
 #region CanvasAssetNode<TAsset>
 
 /// <summary>
 /// Canvas asset node
 /// </summary>
-[DisplayText("Canvas Asset Node", "*CoreIcon|Kanban")]
-public abstract class CanvasAssetNode<TAsset> : CanvasFlowNode, IInspectorRoute, IInspectorContext, INavigable
+public abstract class CanvasAssetNode<TAsset> : BaseCanvasAssetNode, IInspectorRoute, IInspectorContext, INavigable
     where TAsset: class
 {
     private AssetSelection<TAsset> _assetRef = new();
@@ -156,7 +179,7 @@ public abstract class CanvasAssetNode<TAsset> : CanvasFlowNode, IInspectorRoute,
     /// <summary>
     /// Gets or sets the target asset.
     /// </summary>
-    public Asset TargetAsset
+    public override Asset TargetAsset
     {
         get => _assetRef.Target as Asset;
         set
@@ -258,19 +281,6 @@ public abstract class CanvasAssetNode<TAsset> : CanvasFlowNode, IInspectorRoute,
     }
 
 
-    /// <summary>
-    /// Gets the target document.
-    /// </summary>
-    /// <returns>The document.</returns>
-    public Document GetTargetDocument() => TargetAsset?.GetDocument(true);
-
-    /// <summary>
-    /// Gets the target document as a specific type.
-    /// </summary>
-    /// <typeparam name="T">Document type.</typeparam>
-    /// <returns>The document.</returns>
-    public T GetTargetDocument<T>() where T : class
-        => TargetAsset?.GetDocument<T>(true);
 
     /// <summary>
     /// Gets the target object.
@@ -673,6 +683,10 @@ public abstract class CanvasAssetNode<TAsset> : CanvasFlowNode, IInspectorRoute,
 
 #region CanvasAssetNode
 
+/// <summary>
+/// Canvas asset node
+/// </summary>
+[DisplayText("Canvas Asset Node", "*CoreIcon|Kanban")]
 public class CanvasAssetNode : CanvasAssetNode<Asset>
 {
     public CanvasAssetNode() : base()

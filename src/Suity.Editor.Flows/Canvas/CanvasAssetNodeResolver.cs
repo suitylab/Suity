@@ -58,7 +58,7 @@ internal sealed class CanvasAssetNodeResolver
     /// </summary>
     /// <param name="asset">The asset to create a node for.</param>
     /// <returns>The created canvas asset node.</returns>
-    internal CanvasAssetNode CreateNode(Asset asset)
+    internal BaseCanvasAssetNode CreateNode(Asset asset)
     {
         if (asset is null)
         {
@@ -73,7 +73,7 @@ internal sealed class CanvasAssetNodeResolver
         Type viewType = ResolveViewType(asset.GetType());
         if (viewType != null)
         {
-            var node = (CanvasAssetNode)viewType.CreateInstanceOf();
+            var node = (BaseCanvasAssetNode)viewType.CreateInstanceOf();
             node.TargetAsset = asset;
 
             return node;

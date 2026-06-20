@@ -39,12 +39,12 @@ public interface ICanvasDocument : IFlowDiagramContext, IMemberContainer
     /// <summary>
     /// Finds document nodes for the specified document.
     /// </summary>
-    IEnumerable<CanvasAssetNode> FindDocumentNodes(Document doc);
+    IEnumerable<BaseCanvasAssetNode> FindDocumentNodes(Document doc);
 
     /// <summary>
     /// Finds document nodes of the specified type.
     /// </summary>
-    IEnumerable<CanvasAssetNode> FindDocumentNodes<T>() where T : class;
+    IEnumerable<BaseCanvasAssetNode> FindDocumentNodes<T>() where T : class;
 
     /// <summary>
     /// Gets all documents of the specified type.
@@ -54,12 +54,12 @@ public interface ICanvasDocument : IFlowDiagramContext, IMemberContainer
     /// <summary>
     /// Creates an asset node with the specified asset.
     /// </summary>
-    CanvasAssetNode CreateAssetNode(Asset asset, Size? size = null);
+    BaseCanvasAssetNode CreateAssetNode(Asset asset, Size? size = null);
 
     /// <summary>
     /// Creates a document with the specified format and file path.
     /// </summary>
-    CanvasAssetNode CreateDocument(DocumentFormat format, string rFilePath, Size? size = null);
+    BaseCanvasAssetNode CreateDocument(DocumentFormat format, string rFilePath, Size? size = null);
 
     /// <summary>
     /// Creates a tool node of the specified type.

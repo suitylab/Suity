@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="SubFlowPreset">
+  <AssetId>4cebbdaa-3667-4ef4-bd95-8cc6efad637b</AssetId>
+  <PresetName>
+  </PresetName>
+  <BaseWorkflow>
+    <Id>35679ee7-1ccb-4790-aee8-3acd973d6a6f</Id>
+  </BaseWorkflow>
+  <Tools />
+  <Overview>
+    <Text>
+    </Text>
+  </Overview>
+  <UserInputHint>
+    <Text>
+    </Text>
+  </UserInputHint>
+  <Skill />
+  <Rule />
+  <Description>
+  </Description>
+  <Icon />
+  <Page>
+    <__preset__ />
+  </Page>
+</SuityAsset>
