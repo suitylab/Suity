@@ -24,6 +24,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     internal FlowNodeConnector _in;
 
     readonly StringProperty _agentName = new("AgentName", "Agent Name");
+    readonly TextBlockProperty _overview = new("Overview", "Overview");
     readonly SyncListProperty<AgentLoopItem> _loops = new("Loops", () => new());
 
     private IAgent _parent;
@@ -45,6 +46,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         base.OnSync(sync, context);
 
         _agentName.Sync(sync);
+        _overview.Sync(sync);
         _loops.Sync(sync);
     }
 
@@ -53,7 +55,8 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         base.OnSetupView(setup);
 
         _agentName.InspectorField(setup);
-        setup.InspectorField(AssetRef, new ViewProperty(nameof(AssetRef), "Starter Loop"));
+        _overview.InspectorField(setup);
+        setup.InspectorField(AssetRef, new ViewProperty(nameof(AssetRef), "Starter Workflow"));
         _loops.InspectorField(setup);
     }
 
@@ -171,7 +174,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     public void SetParentAgent(IAgent parent) => _parent = parent;
 
 
-    public IPageAsset PageAsset => this.Target;
+    public IPageAsset StarterWorkflow => this.Target;
 
     public IAgentLoop AddLoop(IAigcLoopAsset loopAsset, string description)
     {

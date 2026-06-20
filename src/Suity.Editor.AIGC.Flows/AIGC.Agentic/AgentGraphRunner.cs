@@ -64,7 +64,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
             return null;
         }
 
-        string name = starter.PageAsset?.Name;
+        string name = starter.StarterWorkflow?.Name;
         if (string.IsNullOrWhiteSpace(name))
         {
             return null;
@@ -112,7 +112,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 
     public IAgentLoop AddLoop(IAgent agentNode, string name, string description, string prompt)
     {
-        var startupPage = agentNode.PageAsset as ISubFlowAsset;
+        var startupPage = agentNode.StarterWorkflow as ISubFlowAsset;
         if (startupPage is null)
         {
             return null;
