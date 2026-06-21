@@ -466,6 +466,11 @@ public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
 
     public TaskCommitStatus GetCommitStatus()
     {
+        if (Count == 0)
+        {
+            return TaskCommitStatus.None;
+        }
+
         if (GetUnfinishedTask() is { } task)
         {
             return task.GetCommitStatus();

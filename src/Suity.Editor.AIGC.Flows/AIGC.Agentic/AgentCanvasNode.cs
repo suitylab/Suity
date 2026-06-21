@@ -32,6 +32,8 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     public AgentCanvasNode()
     {
+        base.Filter = StartupPageFilter.Instance;
+
         var input = FixedNodeConnector.CreateControlInput("In", TypeDefinition.FromNative<IAgent>(), true, description: "Out");
         var output = FixedNodeConnector.CreateControlOutput("Out", TypeDefinition.FromNative<IAgent>(), false, description: "In");
 

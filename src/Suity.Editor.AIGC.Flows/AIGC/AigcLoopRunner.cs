@@ -98,6 +98,11 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             return AICallResult.FromFailed("Startup page not set");
         }
 
+        if (!startupPageAsset.IsStartup)
+        {
+            return AICallResult.FromFailed("Startup page is not a startup page");
+        }
+
         var startupWorkflow = AigcWorkflowPage.CreateWorkflowPage(_document, startupPageAsset);
         if (startupWorkflow is null)
         {

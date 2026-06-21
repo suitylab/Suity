@@ -144,6 +144,8 @@ public abstract class BaseCanvasAssetNode : CanvasFlowNode
 public abstract class CanvasAssetNode<TAsset> : BaseCanvasAssetNode, IInspectorRoute, IInspectorContext, INavigable
     where TAsset: class
 {
+    private IAssetFilter _filter = AssetFilters.All;
+
     private AssetSelection<TAsset> _assetRef = new();
 
     private DocumentEntry _currentDocEntry;
@@ -156,7 +158,7 @@ public abstract class CanvasAssetNode<TAsset> : BaseCanvasAssetNode, IInspectorR
     /// </summary>
     protected CanvasAssetNode()
     {
-        _assetRef.Filter = AssetFilters.All;
+        _assetRef.Filter = _filter;
         _assetRef.TargetUpdated += _assetRef_TargetUpdated;
 
         base.EditorGui = DrawEditorGui;
@@ -225,6 +227,7 @@ public abstract class CanvasAssetNode<TAsset> : BaseCanvasAssetNode, IInspectorR
 
             if (_assetRef != null)
             {
+                _assetRef.Filter = _filter;
                 _assetRef.TargetUpdated += _assetRef_TargetUpdated;
                 _assetRef.ListenEnabled = listen;
             }
@@ -235,6 +238,12 @@ public abstract class CanvasAssetNode<TAsset> : BaseCanvasAssetNode, IInspectorR
             // Callback
             OnAssetTargetUpdated();
         }
+    }
+
+    protected IAssetFilter Filter
+    {
+        get => _filter;
+        set => _assetRef?.Filter = _filter = value;
     }
 
     /// <summary>

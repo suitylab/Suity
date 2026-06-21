@@ -7,6 +7,7 @@
     <Id>35679ee7-1ccb-4790-aee8-3acd973d6a6f</Id>
   </BaseWorkflow>
   <Tools />
+  <IsStartup>True</IsStartup>
   <Overview>
     <Text>
     </Text>

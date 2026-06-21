@@ -2,7 +2,6 @@
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
-using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Services;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
@@ -41,14 +40,33 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
             QueuedAction.Do(QueueRefreshView);
             StartNode.FlashingConnector();
 
+            AICallResult result = null;
+
             if (string.IsNullOrWhiteSpace(msg) || msg?.Trim() == "/resume")
             {
-                return await HandleResume(option, cancelSource);
+                result = await HandleResume(option, cancelSource);
             }
             else
             {
-                return await HandleNew(msg, option, cancelSource);
+                result = await HandleNew(msg, option, cancelSource);
             }
+
+            string resultMsg = result?.Message;
+            if (string.IsNullOrWhiteSpace(msg))
+            {
+                resultMsg = null;
+            }
+
+            if (result?.Status == AICallStatus.Failed)
+            {
+                _conversation.AddErrorMessage(resultMsg ?? "Unkown Error.");
+            }
+            else
+            {
+                _conversation.AddSystemMessage(resultMsg ?? "Agent Finished.");
+            }
+
+            return result?.Result;
         }
         finally
         {
@@ -56,7 +74,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         }
     }
 
-    private async Task<object> HandleNew(string msg, object option, CancellationTokenSource cancelSource)
+    private async Task<AICallResult> HandleNew(string msg, object option, CancellationTokenSource cancelSource)
     {
         var starter = StartNode.AgentNode;
         if (starter is null)
@@ -85,10 +103,10 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 
         var result = await starter.Run(request, this);
 
-        return result?.Result;
+        return result;
     }
 
-    private async Task<object> HandleResume(object option, CancellationTokenSource cancelSource) 
+    private async Task<AICallResult> HandleResume(object option, CancellationTokenSource cancelSource) 
     {
         var starter = StartNode.AgentNode;
         if (starter is null)
@@ -110,15 +128,15 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 
         var result = await starter.Run(request, this);
 
-        return result?.Result;
+        return result;
     }
 
     private IAgentLoop GetOrAddEntryLoop(IAgent agent, string description, string prompt)
     {
-        var lastLoop = agent.GetLoops();
-        if (lastLoop.Length > 0)
+        var loops = agent.GetLoops().Where(o => o.Description == description).ToArray();
+        if (loops.Length > 0)
         {
-            return lastLoop[lastLoop.Length - 1];
+            return loops[loops.Length - 1];
         }
 
         return AddLoop(agent, description, prompt);
@@ -185,23 +203,23 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         loopDoc.StartupPage = startupPage;
         loopDoc.InitialTaskPrompt = prompt;
 
-        {
-            var startupWorkflow = AigcWorkflowPage.CreateWorkflowPage(loopDoc, startupPage);
-            if (startupWorkflow is null)
-            {
-                throw new NullReferenceException("Failed to create workflow.");
-            }
+        //{
+        //    var startupWorkflow = AigcWorkflowPage.CreateWorkflowPage(loopDoc, startupPage);
+        //    if (startupWorkflow is null)
+        //    {
+        //        throw new NullReferenceException("Failed to create workflow.");
+        //    }
 
-            if (startupWorkflow.EnsureInstance() is null)
-            {
-                throw new NullReferenceException("Failed to create workflow instance.");
-            }
+        //    if (startupWorkflow.EnsureInstance() is null)
+        //    {
+        //        throw new NullReferenceException("Failed to create workflow instance.");
+        //    }
 
-            startupWorkflow.SetPrompt(prompt);
-            startupWorkflow.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
+        //    startupWorkflow.SetPrompt(prompt);
+        //    startupWorkflow.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
 
-            loopDoc.AddTask(startupWorkflow);
-        }
+        //    loopDoc.AddTask(startupWorkflow);
+        //}
 
         
         loopDoc.WorkSpace = this.WorkSpace;
@@ -252,8 +270,9 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
             StartNode.WorkSpace = workSpace;
         }
 
-        var resume = new AIRequest(request, "/resume");
-        
+        //var resume = new AIRequest(request, "/resume");
+        var resume = new AIRequest(request);
+
         resume.FuncContext.SetArgument(this);
         resume.FuncContext.SetArgument(resume);
 
