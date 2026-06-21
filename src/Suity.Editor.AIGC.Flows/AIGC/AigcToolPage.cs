@@ -111,6 +111,7 @@ public class AigcToolPage : AigcTaskPage, IAigcToolPage
         };
 
         request.FuncContext.SetArgument(this);
+        request.FuncContext.SetArgument<IAigcTaskPage>(this);
         request.FuncContext.SetArgument<IAigcToolPage>(this);
         request.FuncContext.SetArgument(request);
         request.FuncContext.SetArgument(context);

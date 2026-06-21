@@ -23,6 +23,8 @@ public interface IAgent
 
     IAgentLoop[] GetLoops();
 
+    IAgentLoop GetLoop(string id);
+
     IAgentLoop AddLoop(IAigcLoopAsset loopAsset, string description);
 
     Task<AICallResult> Run(AIRequest request, IAgentGraphRunner runner);
@@ -34,6 +36,10 @@ public interface IAgent
 
 public interface IAgentLoop
 {
+    public string Id { get; }
+
+    public string Description { get; }
+
     IAigcLoopAsset LoopAsset { get; }
 }
 

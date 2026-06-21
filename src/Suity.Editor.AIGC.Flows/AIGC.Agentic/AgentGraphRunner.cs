@@ -61,12 +61,12 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         var starter = StartNode.AgentNode;
         if (starter is null)
         {
-            return null;
+            throw new NullReferenceException("Starter agent node is not connected.");
         }
 
         if (starter.StarterWorkflow is null)
         {
-            return null;
+            throw new NullReferenceException("Agent workflow not set: " + starter.AgentName);
         }
 
         AddLoop(starter, StartNode.EntryTaskName, msg);

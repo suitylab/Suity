@@ -22,16 +22,17 @@
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
         <AssetRef>
-          <Id>b8096d3e-1ed2-45ad-94b5-f0c85e26e664</Id>
+          <Id>d81bfc8c-4374-4497-bb03-9f5ea32f38c2</Id>
         </AssetRef>
         <AgentName>PresetA</AgentName>
         <Overview />
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]">
           <Item>
+            <Id>AB6mZO8jh9</Id>
+            <Description>Entry</Description>
             <Loop>
               <Id>cc50bb56-9448-4303-bc65-bd504e7d5652</Id>
             </Loop>
-            <Description>Entry</Description>
           </Item>
         </Loops>
       </Node>
@@ -47,16 +48,18 @@
         <Overview />
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]">
           <Item>
+            <Id>VOxLSSByMM</Id>
+            <Description>TaskA</Description>
             <Loop>
               <Id>249d9a12-85c8-4ae3-8d79-e9c291d4ba26</Id>
             </Loop>
-            <Description>TaskA</Description>
           </Item>
           <Item>
+            <Id>vt3oyN33jD</Id>
+            <Description>TaskB</Description>
             <Loop>
               <Id>65ef5b0c-cf27-4ec4-8711-1c829b457fc4</Id>
             </Loop>
-            <Description>TaskB</Description>
           </Item>
         </Loops>
       </Node>

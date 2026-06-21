@@ -7,6 +7,7 @@ using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.TaskPages;
 using Suity.Editor.Selecting;
 using Suity.Editor.Types;
+using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using Suity.Views.Im;
@@ -205,11 +206,26 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         return _loops.List.SkipNull().ToArray();
     }
 
+    public IAgentLoop GetLoop(string id)
+    {
+        return _loops.List.FirstOrDefault(x => x.Id == id);
+    }
+
     public IAgentLoop AddLoop(IAigcLoopAsset loopAsset, string description)
     {
         _out.FlashingOnce();
 
-        var item = new AgentLoopItem(loopAsset, description);
+        string id = null;
+        while (true)
+        {
+            id = IdGenerator.GenerateId(10);
+            if (_loops.List.All(x => x.Id != id))
+            {
+                break;
+            }
+        }
+
+        var item = new AgentLoopItem(id, description, loopAsset);
         _loops.List.Add(item);
 
         (this.Canvas as Document)?.MarkDirtyAndSaveDelayed(this);
@@ -276,31 +292,35 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
 public class AgentLoopItem : IAgentLoop, IViewObject
 {
-    readonly AssetProperty<IAigcLoopAsset> _loop = new("Loop", "Loop");
+    readonly StringProperty _id = new("Id");
     readonly StringProperty _description = new("Description");
+    readonly AssetProperty<IAigcLoopAsset> _loop = new("Loop", "Loop");
+    
 
     public AgentLoopItem()
     {
     }
 
-    public AgentLoopItem(IAigcLoopAsset loopAsset, string description)
+    public AgentLoopItem(string id, string description, IAigcLoopAsset loopAsset)
     {
-        _loop.Target = loopAsset;
+        _id.Text = id;
         _description.Text = description;
+        _loop.Target = loopAsset;
     }
 
-    public string Description => _description.Text;
 
     public void Sync(IPropertySync sync, ISyncContext context)
     {
-        _loop.Sync(sync);
+        _id.Sync(sync);
         _description.Sync(sync);
+        _loop.Sync(sync);
     }
 
     public void SetupView(IViewObjectSetup setup)
     {
-        _loop.InspectorField(setup);
+        _id.InspectorField(setup);
         _description.InspectorField(setup);
+        _loop.InspectorField(setup);
     }
 
     public TaskCommitStatus GetCommitStatus()
@@ -323,7 +343,11 @@ public class AgentLoopItem : IAgentLoop, IViewObject
         return null;
     }
 
-    #region IAgentTask
+    #region IAgentLoop
+
+    public string Id => _id.Text;
+
+    public string Description => _description.Text;
 
     public IAigcLoopAsset LoopAsset => _loop.Target;
 
@@ -336,6 +360,6 @@ public class AgentLoopItem : IAgentLoop, IViewObject
             return _description.Text;
         }
 
-        return _loop.Target?.ToDisplayTextL() ?? string.Empty;
+        return _id.Text ?? string.Empty;
     }
 }

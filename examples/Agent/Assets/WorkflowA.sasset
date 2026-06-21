@@ -55,7 +55,7 @@
         <Value type="System.Boolean">False</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-130" Y="-80" Width="201" Height="67">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-130" Y="-80" Width="197" Height="63">
       <Name>###CreatePageInstanceWithParameter01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
         <ToolDefinition>
@@ -112,7 +112,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="50" Width="37" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="0" Width="37" Height="17">
       <Name>###SourceValue02</Name>
       <Node type="Suity.Editor.Flows.Nodes.SourceValue">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
@@ -130,7 +130,7 @@
         <Value type="System.String">SubAgent</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="20" Width="134" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="20" Width="130" Height="107">
       <Name>###AddSubTaskPage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
         <PageTitle>
@@ -139,6 +139,15 @@
         <TaskRule />
         <CommitName>
         </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageTaskOutputItem" X="160" Y="-10" Width="46" Height="17">
+      <Name>SubTask01</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageTaskOutputNode">
+        <Name>SubTask01</Name>
+        <Icon />
+        <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
+        <TaskCommit>True</TaskCommit>
       </Node>
     </Item>
   </Nodes>

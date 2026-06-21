@@ -245,13 +245,13 @@ public abstract class DesignNode : SNamedNode,
 
     #endregion
 
-    #region IAttributeDesign
+    #region IHasAttributeDesign
 
     public IAttributeDesign Attributes => _attributes;
 
     #endregion
 
-    #region IHasAttribute
+    #region IAttributeGetter
 
     public IEnumerable<object> GetAttributes() => _attributes.GetAttributes();
 

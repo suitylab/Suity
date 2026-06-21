@@ -1,5 +1,6 @@
 using Suity.Editor.AIGC.Agentic;
 using Suity.Editor.AIGC.Assistants;
+using Suity.Editor.Design;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
@@ -19,6 +20,7 @@ namespace Suity.Editor.AIGC.Tools;
 [ToolTipsText("Call a sub-agent to execute tasks. Each loop item runs independently as a separate loop.")]
 public class CallSubAgent : ToolCommand<CallSubAgent.Output>
 {
+    #region LoopItem
     [NativeType("CallAgent.LoopItem", CodeBase = "*Suity")]
     public class LoopItem : SObjectController
     {
@@ -40,7 +42,9 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
         }
         public override string ToString() => $"{TaskName}";
     }
+    #endregion
 
+    #region LoopResult
     [NativeType("CallAgent.LoopResult", CodeBase = "*Suity")]
     public class LoopResult : SObjectController
     {
@@ -71,7 +75,9 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
         }
         public override string ToString() => $"{TaskName}" + (HasError ? $" - Error: {Error}" : "");
     }
+    #endregion
 
+    #region Output
     public class Output : SObjectController
     {
         readonly ListProperty<LoopResult> _results = new("Results", "Results");
@@ -101,7 +107,8 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
         }
 
         public override string ToString() => $"Results: {SuccessCount} succeeded, {FailCount} failed ({Results.Count} items)";
-    }
+    } 
+    #endregion
 
     readonly StringProperty _agentName = new("AgentName", "Agent Name");
     readonly ListProperty<LoopItem> _loops = new("Loops", "Loops", "List of loop items to execute.");
@@ -121,7 +128,7 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
         _loops.InspectorField(setup);
     }
 
-    public override Task<Output> Run(ToolCallContext context)
+    public override async Task<Output> Run(ToolCallContext context)
     {
         var myAgent = context.FuncContext.GetArgument<IAgent>();
         if (myAgent is null)
@@ -135,8 +142,13 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
             throw new NullReferenceException("AI request is not set");
         }
 
-        myAgent.FlashingConnector(FlowDirections.Input);
+        var toolPage = context.FuncContext.GetArgument<IAigcToolPage>();
+        if (toolPage is null)
+        {
+            throw new NullReferenceException("Tool page is not set");
+        }
 
+        myAgent.FlashingConnector(FlowDirections.Input);
 
         var subAgents = myAgent?.GetSubAgents() ?? [];
 
@@ -146,8 +158,8 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
             throw new NullReferenceException("Agent name is not set");
         }
 
-        var agent = subAgents.FirstOrDefault(o => o.AgentName == agentName);
-        if (agent is null)
+        var subAgent = subAgents.FirstOrDefault(o => o.AgentName == agentName);
+        if (subAgent is null)
         {
             throw new NullReferenceException($"Agent '{agentName}' not found");
         }
@@ -158,9 +170,32 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
             throw new NullReferenceException("Agent graph runner is not set");
         }
 
-        foreach (var loopItem in _loops.List)
+        List<IAgentLoop> loops = [];
+        var loopRecords = toolPage.GetAttributes<SubAgentLoopIdAttribute>().ToArray();
+        if (loopRecords.Length == 0)
         {
-            runner.AddLoop(agent, loopItem.TaskName, loopItem.Prompt);
+            foreach (var loopItem in _loops.List)
+            {
+                var loop = runner.AddLoop(subAgent, loopItem.TaskName, loopItem.Prompt);
+                loops.Add(loop);
+
+                toolPage.AddAttribute<SubAgentLoopIdAttribute>(o => o.Id = loop.Id);
+            }
+        }
+        else
+        {
+            foreach (var loopRecord in loopRecords)
+            {
+                var loop = subAgent.GetLoop(loopRecord.Id);
+                if (loop != null)
+                {
+                    loops.Add(loop);
+                }
+                else
+                {
+                    throw new NullReferenceException($"Loop '{loopRecord.Id}' not found");
+                }
+            }
         }
 
         var output = new Output();
@@ -181,10 +216,42 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
         //   1. Create and run a loop for the specified agent
         //   2. Capture result or error
         //   3. Add LoopResult to output.Results
+        foreach (var loop in loops)
+        {
+            var result = await runner.RunLoop(request, subAgent, loop);
+        }
 
         output.SuccessCount = successCount;
         output.FailCount = failCount;
 
-        return Task.FromResult(output);
+        return output;
     }
+}
+
+[NativeType(CodeBase = "*AIGC", Name = "SubAgentLoopId", Description = "Sub-Agent Loop Id", Icon = "*CoreIcon|Loop")]
+public class SubAgentLoopIdAttribute : DesignAttribute
+{
+    readonly StringProperty _id = new("Id");
+
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        _id.Sync(sync);
+    }
+
+    protected override void OnSetupView(IViewObjectSetup setup)
+    {
+        base.OnSetupView(setup);
+
+        _id.InspectorField(setup);
+    }
+
+    public string Id
+    {
+        get => _id.Text;
+        set => _id.Text = value;
+    }
+
+    public override string ToString() => _id.Text;
 }

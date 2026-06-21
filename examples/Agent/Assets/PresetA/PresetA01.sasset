@@ -7,18 +7,28 @@
   <Icon />
   <Tasks>
     <Item type="Suity.Editor.AIGC.AigcWorkflowPage">
-      <Name>#Task-MLdEadFI9sLV</Name>
+      <Name>#Task-CkpcZZjkgLM1</Name>
       <List type="NamedItemList">
         <Item type="Suity.Editor.AIGC.AigcToolPage">
-          <Name>#Task-68pHD1Eexc7V</Name>
+          <Name>#Task-LVwhd36sQ74E</Name>
           <List type="NamedItemList" />
           <Description>Call Sub-Agent</Description>
           <Icon />
-          <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
-          <TaskId>#Task-68pHD1Eexc7V</TaskId>
+          <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]">
+            <Item type="SObject" struct="9be4b58e-4267-4abf-8aad-5964e83933b4" base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471">
+              <Id type="SString" base="b78929d1-570d-4816-8364-881e4dab4925">
+                <Value type="System.String">VOxLSSByMM</Value>
+              </Id>
+            </Item>
+            <Item type="SObject" struct="9be4b58e-4267-4abf-8aad-5964e83933b4" base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471">
+              <Id type="SString" base="b78929d1-570d-4816-8364-881e4dab4925">
+                <Value type="System.String">vt3oyN33jD</Value>
+              </Id>
+            </Item>
+          </Attributes>
+          <TaskId>#Task-LVwhd36sQ74E</TaskId>
           <CommitName>
           </CommitName>
-          <CommitStatus>TaskFinished</CommitStatus>
           <Tool>
             <Id>01cc1566-4ea2-418c-aebd-34d40f024f9b</Id>
           </Tool>
@@ -40,9 +50,6 @@
                 </Item>
               </Loops>
             </Input>
-            <Output>
-              <Results />
-            </Output>
             <Error />
           </Page>
         </Item>
@@ -69,27 +76,31 @@
           </Content>
         </Item>
       </Attributes>
-      <TaskId>#Task-MLdEadFI9sLV</TaskId>
+      <TaskId>#Task-CkpcZZjkgLM1</TaskId>
       <CommitName>
       </CommitName>
       <Workflow>
-        <Id>b8096d3e-1ed2-45ad-94b5-f0c85e26e664</Id>
+        <Id>d81bfc8c-4374-4497-bb03-9f5ea32f38c2</Id>
       </Workflow>
       <Article />
       <TaskPrompt>
-        <Text>cxvv</Text>
+        <Text>sfs</Text>
       </TaskPrompt>
       <Rule />
       <Page>
         <__preset__>
-          <Id>b8096d3e-1ed2-45ad-94b5-f0c85e26e664</Id>
+          <Id>d81bfc8c-4374-4497-bb03-9f5ea32f38c2</Id>
         </__preset__>
         <Output type="System.Boolean">True</Output>
+        <SubTask01>
+          <Text>&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ToolCall name="CallSubAgent" /&gt;</Text>
+        </SubTask01>
       </Page>
     </Item>
   </Tasks>
   <InitialTaskPrompt>
-    <Text>cxvv</Text>
+    <Text>sfs</Text>
   </InitialTaskPrompt>
   <StartupPage />
   <WorkSpace />

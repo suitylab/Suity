@@ -7,7 +7,7 @@
   <Icon />
   <Tasks>
     <Item type="Suity.Editor.AIGC.AigcWorkflowPage">
-      <Name>#Task-WcK2PUgBKKEq</Name>
+      <Name>#Task-6oLZfGonZJ1E</Name>
       <List type="NamedItemList" />
       <Description>PresetB</Description>
       <Icon />
@@ -31,7 +31,7 @@
           </Content>
         </Item>
       </Attributes>
-      <TaskId>#Task-WcK2PUgBKKEq</TaskId>
+      <TaskId>#Task-6oLZfGonZJ1E</TaskId>
       <CommitName>
       </CommitName>
       <Workflow>

@@ -104,6 +104,8 @@
   <Object id="e92f966f-53dc-41a2-9833-55edb8271a2e" name="*AIGC|PromptAsset" />
   <Object id="dacf0271-f566-49eb-a631-3d57818ef90c" name="*AIGC|PromptBuilder" />
   <Object id="09813d22-eeb2-45ca-b5b8-73303ea3d0c2" name="*AIGC|SkipAIGeneration" />
+  <Object id="9be4b58e-4267-4abf-8aad-5964e83933b4" name="*AIGC|SubAgentLoopId" />
+  <Object id="b95c327f-8aa6-4aa8-aafd-350b565a9a68" name="*AIGC|SubAgentLoopId.Id" />
   <Object id="f4fadf91-5522-47e6-9014-0112ec0c5b9d" name="*AIGC|VectorKnowledge" />
   <Object id="c9ce0dcb-85d7-4ce7-9545-44aafd6871ad" name="*AIGC|XmlTag" />
   <Object id="2d84fe20-b04b-4ba9-b498-b87745738e2c" name="*AIHubMixImage" />

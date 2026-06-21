@@ -157,7 +157,7 @@
                 }
               ],
               "ActiveDockable": {
-                "$ref": "9"
+                "$ref": "6"
               },
               "FocusedDockable": {
                 "$ref": "6"
@@ -274,7 +274,7 @@
                         "Height": 0.0
                       },
                       "MdiState": 0,
-                      "MdiZIndex": 0,
+                      "MdiZIndex": 1,
                       "Id": ":Assets/Canvas01.sasset",
                       "Title": "Canvas01",
                       "Owner": {
@@ -313,62 +313,65 @@
                         "$id": "19",
                         "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
                       }
+                    },
+                    {
+                      "$id": "20",
+                      "$type": "Suity.Editor.Controls.EditorDocumentDockable, Suity.Agentic",
+                      "MdiBounds": {
+                        "$id": "21",
+                        "$type": "Dock.Model.Core.DockRect, Dock.Model",
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Width": 0.0,
+                        "Height": 0.0
+                      },
+                      "MdiState": 0,
+                      "MdiZIndex": 0,
+                      "Id": ":Assets/PresetA/PresetA01.sasset",
+                      "Title": "PresetA01",
+                      "Owner": {
+                        "$ref": "16"
+                      },
+                      "IsEmpty": false,
+                      "IsCollapsable": true,
+                      "Proportion": "NaN",
+                      "Dock": 0,
+                      "DockingState": 4,
+                      "Column": 0,
+                      "Row": 0,
+                      "ColumnSpan": 1,
+                      "RowSpan": 1,
+                      "IsSharedSizeScope": false,
+                      "CollapsedProportion": "NaN",
+                      "MinWidth": "NaN",
+                      "MaxWidth": "NaN",
+                      "MinHeight": "NaN",
+                      "MaxHeight": "NaN",
+                      "CanClose": true,
+                      "CanPin": false,
+                      "KeepPinnedDockableVisible": false,
+                      "CanFloat": false,
+                      "CanDrag": true,
+                      "CanDrop": true,
+                      "CanDockAsDocument": true,
+                      "IsModified": false,
+                      "AllowedDockOperations": 63,
+                      "AllowedDropOperations": 63,
+                      "ShowInSelector": true,
+                      "DataContext": {
+                        "$ref": "20"
+                      },
+                      "Resources": {
+                        "$id": "22",
+                        "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
+                      }
                     }
                   ],
                   "ActiveDockable": {
                     "$ref": "17"
                   },
                   "FocusedDockable": {
-                    "$id": "20",
-                    "$type": "Suity.Editor.Controls.EditorDocumentDockable, Suity.Agentic",
-                    "MdiBounds": {
-                      "$id": "21",
-                      "$type": "Dock.Model.Core.DockRect, Dock.Model",
-                      "X": 0.0,
-                      "Y": 0.0,
-                      "Width": 0.0,
-                      "Height": 0.0
-                    },
-                    "MdiState": 0,
-                    "MdiZIndex": 0,
-                    "Id": ":Assets/PresetA01.sasset",
-                    "Title": "PresetA01",
-                    "Owner": {
-                      "$ref": "16"
-                    },
-                    "IsEmpty": false,
-                    "IsCollapsable": true,
-                    "Proportion": "NaN",
-                    "Dock": 0,
-                    "DockingState": 4,
-                    "Column": 0,
-                    "Row": 0,
-                    "ColumnSpan": 1,
-                    "RowSpan": 1,
-                    "IsSharedSizeScope": false,
-                    "CollapsedProportion": "NaN",
-                    "MinWidth": "NaN",
-                    "MaxWidth": "NaN",
-                    "MinHeight": "NaN",
-                    "MaxHeight": "NaN",
-                    "CanClose": true,
-                    "CanPin": false,
-                    "KeepPinnedDockableVisible": false,
-                    "CanFloat": false,
-                    "CanDrag": true,
-                    "CanDrop": true,
-                    "CanDockAsDocument": true,
-                    "IsModified": false,
-                    "AllowedDockOperations": 63,
-                    "AllowedDropOperations": 63,
-                    "ShowInSelector": true,
-                    "DataContext": {
-                      "$ref": "20"
-                    },
-                    "Resources": {
-                      "$id": "22",
-                      "$type": "Avalonia.Controls.ResourceDictionary, Avalonia.Base"
-                    }
+                    "$ref": "20"
                   },
                   "IsActive": true,
                   "OpenedDockablesCount": 1,

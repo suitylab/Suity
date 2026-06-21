@@ -197,7 +197,7 @@ public sealed class SArrayAttributeDesign : IAttributeDesign
             }
             catch (Exception err)
             {
-                err.LogError("Add attribute failed.");
+                err.LogError();
             }
         }
 
@@ -231,7 +231,7 @@ public sealed class SArrayAttributeDesign : IAttributeDesign
             }
             catch (Exception err)
             {
-                err.LogError("Remove attribute failed.");
+                err.LogError();
             }
         }
     }
@@ -310,6 +310,15 @@ public static class AttrubuteDesignExtensions
         return attribute;
     }
 
+    public static void RemoveAttributes<T>(this IAttributeDesign design) where T : DesignAttribute
+    {
+        var attrs = design.GetAttributes<T>().ToArray();
+        foreach (var attr in attrs)
+        {
+            design.RemoveAttribute(attr);
+        }
+    }
+
     /// <summary>
     /// Adds an attribute to a collection that has attribute design support.
     /// </summary>
@@ -338,6 +347,11 @@ public static class AttrubuteDesignExtensions
     /// <returns>The attribute instance.</returns>
     public static T SetAttribute<T>(this IHasAttributeDesign collection) where T : DesignAttribute, new()
         => collection.Attributes?.SetAttribute<T>();
+
+
+    public static void RemoveAttributes<T>(this IHasAttributeDesign collection) where T : DesignAttribute
+        => collection.Attributes?.RemoveAttributes<T>();
+    
 
     /// <summary>
     /// Adds a design attribute to a view property.

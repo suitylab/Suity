@@ -180,14 +180,28 @@ public abstract class AigcTaskPage : DesignNode,
     /// <inheritdoc/>
     public abstract LLmMessage[] GetChatMessages(bool input, bool output);
 
+    public T AddAttribute<T>(Action<T> setter) where T : DesignAttribute, new()
+    {
+        var attribute = Attributes.AddAttribute<T>(setter);
+        this.TaskPageDocument?.MarkDirtyAndSaveDelayed(this);
+
+        return attribute;
+    }
+
+    public void RemoveAttributes<T>() where T : DesignAttribute
+    {
+        Attributes.RemoveAttributes<T>();
+        this.TaskPageDocument?.MarkDirtyAndSaveDelayed(this);
+    }
+
     #endregion
 
-    #region Virtual (Other)
+        #region Virtual (Other)
 
 
-    /// <summary>
-    /// Handle <see cref="IViewDoubleClickAction"/> interface
-    /// </summary>
+        /// <summary>
+        /// Handle <see cref="IViewDoubleClickAction"/> interface
+        /// </summary>
     protected virtual void OnDoubleClick()
     {
     }

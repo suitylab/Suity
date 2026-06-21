@@ -1,4 +1,5 @@
 ﻿using Suity.Editor.AIGC.Assistants;
+using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
@@ -6,6 +7,7 @@ using Suity.Editor.Types;
 using Suity.Editor.WorkSpaces;
 using Suity.Views;
 using Suity.Views.Named;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -95,7 +97,7 @@ public interface IAigcLoopAsset
 /// Represents an AIGC task page that manages task execution, subtasks, prompts, and chat history.
 /// </summary>
 [NativeType(CodeBase = "AIGC", Description = "AIGC Task Page", Color = FlowColors.Task, Icon = "*CoreIcon|Task")]
-public interface IAigcTaskPage : INamed, ITextDisplay
+public interface IAigcTaskPage : INamed, ITextDisplay, IAttributeGetter
 {
     /// <summary>
     /// Gets the parent loop.
@@ -150,6 +152,10 @@ public interface IAigcTaskPage : INamed, ITextDisplay
     /// <param name="parameter">The parameter to pass to the event handler.</param>
     /// <returns>True if any events were handled; otherwise, false.</returns>
     Task<bool> RunTask(AIRequest request, TaskEventTypes eventType, string commitName, object parameter);
+
+    T AddAttribute<T>(Action<T> setter) where T : DesignAttribute, new();
+
+    void RemoveAttributes<T>() where T : DesignAttribute;
 }
 
 #endregion
