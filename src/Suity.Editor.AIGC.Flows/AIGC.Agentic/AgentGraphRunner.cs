@@ -69,7 +69,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
             throw new NullReferenceException("Agent workflow not set: " + starter.AgentName);
         }
 
-        AddLoop(starter, StartNode.EntryTaskName, msg);
+        GetOrAddEntryLoop(starter, StartNode.EntryTaskName, msg);
 
         var request = new AIRequest
         {
@@ -111,6 +111,17 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         var result = await starter.Run(request, this);
 
         return result?.Result;
+    }
+
+    private IAgentLoop GetOrAddEntryLoop(IAgent agent, string description, string prompt)
+    {
+        var lastLoop = agent.GetLoops();
+        if (lastLoop.Length > 0)
+        {
+            return lastLoop[lastLoop.Length - 1];
+        }
+
+        return AddLoop(agent, description, prompt);
     }
 
 
@@ -174,23 +185,27 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         loopDoc.StartupPage = startupPage;
         loopDoc.InitialTaskPrompt = prompt;
 
-        var startupWorkflow = AigcWorkflowPage.CreateWorkflowPage(loopDoc, startupPage);
-        if (startupWorkflow is null)
         {
-            throw new NullReferenceException("Failed to create workflow.");
+            var startupWorkflow = AigcWorkflowPage.CreateWorkflowPage(loopDoc, startupPage);
+            if (startupWorkflow is null)
+            {
+                throw new NullReferenceException("Failed to create workflow.");
+            }
+
+            if (startupWorkflow.EnsureInstance() is null)
+            {
+                throw new NullReferenceException("Failed to create workflow instance.");
+            }
+
+            startupWorkflow.SetPrompt(prompt);
+            startupWorkflow.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
+
+            loopDoc.AddTask(startupWorkflow);
         }
 
-        if (startupWorkflow.EnsureInstance() is null)
-        {
-            throw new NullReferenceException("Failed to create workflow instance.");
-        }
-
-        startupWorkflow.SetPrompt(prompt);
-        startupWorkflow.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
-
-        loopDoc.AddTask(startupWorkflow);
-        loopDoc.MarkDirtyAndSaveDelayed(this);
+        
         loopDoc.WorkSpace = this.WorkSpace;
+        loopDoc.MarkDirtyAndSaveDelayed(this);
 
         var loopAsset = loopDoc.TargetAsset as IAigcLoopAsset;
         var item = agent.AddLoop(loopAsset, description);

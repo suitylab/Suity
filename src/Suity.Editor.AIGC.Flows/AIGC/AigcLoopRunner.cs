@@ -98,13 +98,13 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             return AICallResult.FromFailed("Startup page not set");
         }
 
-        var startupTask = AigcWorkflowPage.CreateWorkflowPage(_document, startupPageAsset);
-        if (startupTask is null)
+        var startupWorkflow = AigcWorkflowPage.CreateWorkflowPage(_document, startupPageAsset);
+        if (startupWorkflow is null)
         {
             return AICallResult.FromFailed("Failed to create startup page");
         }
 
-        if (startupTask.EnsureInstance() is null)
+        if (startupWorkflow.EnsureInstance() is null)
         {
             return AICallResult.FromFailed("Failed to instantiate startup page");
         }
@@ -115,8 +115,8 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             userMessage = _document.InitialTaskPrompt;
         }
 
-        startupTask.SetPrompt(userMessage);
-        startupTask.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
+        startupWorkflow.SetPrompt(userMessage);
+        startupWorkflow.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
 
         // Disalbe last un-calculated tasks to avoid unexpected task running when the task tree is being built.
         int count = _document.Count;
@@ -132,11 +132,11 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             }
         }
 
-        _document.AddTask(startupTask);
-        _document.Entry.MarkUsage(_usageToken);
+        _document.AddTask(startupWorkflow);
 
         try
         {
+            _document.Entry.MarkUsage(_usageToken);
             return await HandleRun(request);
         }
         finally
