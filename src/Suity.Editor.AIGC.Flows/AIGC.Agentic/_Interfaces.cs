@@ -54,6 +54,8 @@ public interface IAgentGraphRunner
 }
 
 public interface IAgentState
+
+
 {
     IAgent Agent { get; }
 

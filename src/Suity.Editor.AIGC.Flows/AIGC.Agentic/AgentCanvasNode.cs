@@ -2,7 +2,6 @@
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
-using Suity.Editor.Flows.Agentic;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.TaskPages;
 using Suity.Editor.Selecting;
@@ -38,6 +37,28 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
         _in = AddConnector(input);
         _out = AddConnector(output);
+
+        _loops.SyncList.Added += SyncList_Added;
+    }
+
+    private void SyncList_Added(object sender, IndexEventArgs<AgentLoopItem, int> e)
+    {
+        if (!string.IsNullOrWhiteSpace(e.Value.Id))
+        {
+            return;
+        }
+
+        string id = null;
+        while (true)
+        {
+            id = IdGenerator.GenerateId(10);
+            if (_loops.List.All(x => x.Id != id))
+            {
+                break;
+            }
+        }
+
+        e.Value.Id = id;
     }
 
     public override object GetTargetObject() => this;
@@ -345,7 +366,11 @@ public class AgentLoopItem : IAgentLoop, IViewObject
 
     #region IAgentLoop
 
-    public string Id => _id.Text;
+    public string Id
+    {
+        get => _id.Text;
+        set => _id.Text = value;
+    }
 
     public string Description => _description.Text;
 

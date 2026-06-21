@@ -8,7 +8,87 @@
   <Tasks>
     <Item type="Suity.Editor.AIGC.AigcWorkflowPage">
       <Name>#Task-CkpcZZjkgLM1</Name>
-      <List type="NamedItemList" />
+      <List type="NamedItemList">
+        <Item type="Suity.Editor.AIGC.AigcToolPage">
+          <Name>#Task-WIZxoJeUZzcE</Name>
+          <List type="NamedItemList" />
+          <Description>Call Sub-Agent</Description>
+          <Icon />
+          <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]">
+            <Item type="SObject" struct="9be4b58e-4267-4abf-8aad-5964e83933b4" base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471">
+              <Id type="SString" base="b78929d1-570d-4816-8364-881e4dab4925">
+                <Value type="System.String">wOrawIIDhY</Value>
+              </Id>
+            </Item>
+            <Item type="SObject" struct="9be4b58e-4267-4abf-8aad-5964e83933b4" base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471">
+              <Id type="SString" base="b78929d1-570d-4816-8364-881e4dab4925">
+                <Value type="System.String">X3aizCtdkQ</Value>
+              </Id>
+            </Item>
+            <Item type="SObject" struct="9be4b58e-4267-4abf-8aad-5964e83933b4" base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471">
+              <Id type="SString" base="b78929d1-570d-4816-8364-881e4dab4925">
+                <Value type="System.String">y8NZ0CpxWU</Value>
+              </Id>
+            </Item>
+          </Attributes>
+          <TaskId>#Task-WIZxoJeUZzcE</TaskId>
+          <CommitName>
+          </CommitName>
+          <CommitStatus>TaskFinished</CommitStatus>
+          <Tool>
+            <Id>01cc1566-4ea2-418c-aebd-34d40f024f9b</Id>
+          </Tool>
+          <Page type="Suity.Editor.Flows.SubFlows.ToolInstance`2[[Suity.Editor.AIGC.Tools.CallSubAgent],[Suity.Editor.AIGC.Tools.CallSubAgent+Output]]">
+            <Input>
+              <AgentName>SubAgent</AgentName>
+              <Loops>
+                <Item>
+                  <TaskName>TaskA</TaskName>
+                  <Prompt>
+                    <Text>TaskA Prompt</Text>
+                  </Prompt>
+                </Item>
+                <Item>
+                  <TaskName>TaskB</TaskName>
+                  <Prompt>
+                    <Text>TaskB Prompt</Text>
+                  </Prompt>
+                </Item>
+                <Item>
+                  <TaskName>TaskC</TaskName>
+                  <Prompt>
+                    <Text>TaskC Prompt</Text>
+                  </Prompt>
+                </Item>
+              </Loops>
+            </Input>
+            <Output>
+              <Results>
+                <Item>
+                  <TaskName>TaskA</TaskName>
+                  <Result>
+                    <Text>All tasks have been completed.</Text>
+                  </Result>
+                </Item>
+                <Item>
+                  <TaskName>TaskB</TaskName>
+                  <Result>
+                    <Text>All tasks have been completed.</Text>
+                  </Result>
+                </Item>
+                <Item>
+                  <TaskName>TaskC</TaskName>
+                  <Result>
+                    <Text>All tasks have been completed.</Text>
+                  </Result>
+                </Item>
+              </Results>
+              <SuccessCount>3</SuccessCount>
+            </Output>
+            <Error />
+          </Page>
+        </Item>
+      </List>
       <Description>PresetA</Description>
       <Icon />
       <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]">
@@ -47,7 +127,32 @@
           <Id>d81bfc8c-4374-4497-bb03-9f5ea32f38c2</Id>
         </__preset__>
         <Output type="System.Boolean">True</Output>
-        <SubTask01 />
+        <SubTask01>
+          <Text>&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ToolCall name="CallSubAgent"&gt;
+  &lt;Results&gt;
+    &lt;Item&gt;
+      &lt;TaskName&gt;TaskA&lt;/TaskName&gt;
+      &lt;Result&gt;
+        &lt;Text&gt;All tasks have been completed.&lt;/Text&gt;
+      &lt;/Result&gt;
+    &lt;/Item&gt;
+    &lt;Item&gt;
+      &lt;TaskName&gt;TaskB&lt;/TaskName&gt;
+      &lt;Result&gt;
+        &lt;Text&gt;All tasks have been completed.&lt;/Text&gt;
+      &lt;/Result&gt;
+    &lt;/Item&gt;
+    &lt;Item&gt;
+      &lt;TaskName&gt;TaskC&lt;/TaskName&gt;
+      &lt;Result&gt;
+        &lt;Text&gt;All tasks have been completed.&lt;/Text&gt;
+      &lt;/Result&gt;
+    &lt;/Item&gt;
+  &lt;/Results&gt;
+  &lt;SuccessCount&gt;3&lt;/SuccessCount&gt;
+&lt;/ToolCall&gt;</Text>
+        </SubTask01>
       </Page>
     </Item>
   </Tasks>

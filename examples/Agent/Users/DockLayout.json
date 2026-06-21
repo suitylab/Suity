@@ -373,7 +373,7 @@
                   "FocusedDockable": {
                     "$ref": "20"
                   },
-                  "IsActive": true,
+                  "IsActive": false,
                   "OpenedDockablesCount": 1,
                   "CanCloseLastDockable": true,
                   "EnableGlobalDocking": true,
@@ -717,7 +717,7 @@
               "ActiveDockable": {
                 "$ref": "35"
               },
-              "IsActive": false,
+              "IsActive": true,
               "OpenedDockablesCount": 1,
               "CanCloseLastDockable": true,
               "EnableGlobalDocking": true,
@@ -865,7 +865,7 @@
     "$ref": "4"
   },
   "FocusedDockable": {
-    "$ref": "17"
+    "$ref": "35"
   },
   "IsActive": false,
   "OpenedDockablesCount": 7,
