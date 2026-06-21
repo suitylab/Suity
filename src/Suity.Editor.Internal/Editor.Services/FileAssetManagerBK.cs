@@ -1000,7 +1000,8 @@ internal sealed class FileAssetManagerBK : FileAssetManager
 
         string prefix = this.MakeAssetKey(fullPath);
 
-        return [.. AssetManager.Instance.GetAssetsByPrefix(prefix)];
+        return [.. AssetManager.Instance.GetAssetsByPrefix(prefix)
+            .Where(asset => asset.AssetKey.Length > prefix.Length && asset.AssetKey[prefix.Length] == '/')];
     }
 
     /// <summary>

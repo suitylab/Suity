@@ -51,6 +51,8 @@ public interface IAigcLoop
     /// <returns>The newly created <see cref="WorkSpace"/>.</returns>
     WorkSpace CreateWorkSpace(string workSpaceName);
 
+    IAigcWorkflowPage NewTaskPrompt(string prompt);
+
     /// <summary>
     /// Gets the collection of knowledge articles used as reference material.
     /// </summary>

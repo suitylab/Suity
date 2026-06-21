@@ -134,12 +134,23 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
     private IAgentLoop GetOrAddEntryLoop(IAgent agent, string description, string prompt)
     {
         var loops = agent.GetLoops().Where(o => o.Description == description).ToArray();
-        if (loops.Length > 0)
+        if (loops.Length == 0)
         {
-            return loops[loops.Length - 1];
+            return AddLoop(agent, description, prompt);
         }
 
-        return AddLoop(agent, description, prompt);
+        var loop = loops[loops.Length - 1];
+        var loopDoc = loop.LoopAsset.GetLoop() as AigcLoopDocument;
+        if (loopDoc is null)
+        {
+            throw new NullReferenceException("Failed to create loop document.");
+        }
+
+        var startupWorkflow = loopDoc.NewTaskPrompt(prompt);
+
+        loopDoc.MarkDirtyAndSaveDelayed(this);
+
+        return loop;
     }
 
 
@@ -182,8 +193,8 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 
         description = description?.Trim() ?? string.Empty;
 
-        string currentPath = Path.GetDirectoryName(fileName?.PhysicFileName);
-        currentPath = PathUtility.MakeRalativePath(currentPath, EditorServices.CurrentProject.AssetDirectory);
+        string currentFullPath = Path.GetDirectoryName(fileName?.PhysicFileName);
+        string currentPath = PathUtility.MakeRalativePath(currentFullPath, EditorServices.CurrentProject.AssetDirectory);
 
         string subDir = ResolveDirectoryName(agent.AgentName);
         currentPath = currentPath.PathAppend(subDir);
@@ -203,24 +214,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         loopDoc.StartupPage = startupPage;
         loopDoc.InitialTaskPrompt = prompt;
 
-        //{
-        //    var startupWorkflow = AigcWorkflowPage.CreateWorkflowPage(loopDoc, startupPage);
-        //    if (startupWorkflow is null)
-        //    {
-        //        throw new NullReferenceException("Failed to create workflow.");
-        //    }
-
-        //    if (startupWorkflow.EnsureInstance() is null)
-        //    {
-        //        throw new NullReferenceException("Failed to create workflow instance.");
-        //    }
-
-        //    startupWorkflow.SetPrompt(prompt);
-        //    startupWorkflow.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
-
-        //    loopDoc.AddTask(startupWorkflow);
-        //}
-
+        var startupWorkflow = loopDoc.NewTaskPrompt(prompt);
         
         loopDoc.WorkSpace = this.WorkSpace;
         loopDoc.MarkDirtyAndSaveDelayed(this);
@@ -270,8 +264,9 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
             StartNode.WorkSpace = workSpace;
         }
 
-        //var resume = new AIRequest(request, "/resume");
-        var resume = new AIRequest(request);
+        // workflow is created by loopDoc.NewTaskPrompt(prompt)
+        //var resume = new AIRequest(request);
+        var resume = new AIRequest(request, "/resume");
 
         resume.FuncContext.SetArgument(this);
         resume.FuncContext.SetArgument(resume);
@@ -290,7 +285,14 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         var runner = new AigcLoopRunner(loopDoc);
         loopState.Runner = runner;
 
-        return await runner.HandleRequest(resume);
+        try
+        {
+            return await runner.HandleRequest(resume);
+        }
+        finally
+        {
+            QueueRefreshView();
+        }
     } 
 
     #endregion

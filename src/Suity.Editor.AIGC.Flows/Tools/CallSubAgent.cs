@@ -184,17 +184,21 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
         }
         else
         {
-            foreach (var loopRecord in loopRecords)
+            HashSet<string> ids = [..loopRecords.Select(o => o.Id).Where(id => !string.IsNullOrWhiteSpace(id))];
+            foreach (var loop in subAgent.GetLoops())
             {
-                var loop = subAgent.GetLoop(loopRecord.Id);
-                if (loop != null)
+                if (!ids.Contains(loop.Id))
                 {
-                    loops.Add(loop);
+                    continue;
                 }
-                else
-                {
-                    throw new NullReferenceException($"Loop '{loopRecord.Id}' not found");
-                }
+
+                loops.Add(loop);
+            }
+
+            if (loops.Count != loopRecords.Length)
+            {
+                var missingIds = loopRecords.Where(o => !loops.Any(l => l.Id == o.Id)).Select(o => o.Id).ToArray();
+                throw new NullReferenceException($"Loop records with ids '{string.Join(", ", missingIds)}' not found");
             }
         }
 
@@ -217,6 +221,7 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
             try
             {
                 var result = await runner.RunLoop(request, subAgent, loop);
+                context.Cancellation.ThrowIfCancellationRequested();
 
                 if (result.Status == AICallStatus.Failed)
                 {
@@ -229,14 +234,25 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
                     successCount++;
                 }
             }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
             catch (Exception err)
             {
                 loopResult.Error = err.Message;
                 failCount++;
             }
+            finally
+            {
+                myAgent.QueueRefreshView();
+                subAgent.QueueRefreshView();
+            }
 
             output.Results.Add(loopResult);
         }
+
+        context.Cancellation.ThrowIfCancellationRequested();
 
         output.SuccessCount = successCount;
         output.FailCount = failCount;

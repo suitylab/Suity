@@ -1,5 +1,6 @@
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows.SubFlows;
@@ -15,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Suity.Editor.AIGC;
 
@@ -427,6 +429,68 @@ public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
         return workSpace;
     }
 
+    public IAigcWorkflowPage NewTaskPrompt(string prompt)
+    {
+        if (string.IsNullOrWhiteSpace(prompt))
+        {
+            throw new ArgumentNullException(prompt);
+        }
+
+        if (prompt == "/resume")
+        {
+            throw new InvalidOperationException("Cannot start a new task with /resume");
+        }
+
+        var startupPageAsset = StartupPage;
+        if (startupPageAsset is null)
+        {
+            throw new ArgumentNullException("Startup page not set");
+        }
+
+        if (!startupPageAsset.IsStartup)
+        {
+            throw new InvalidOperationException("Startup page is not a startup page");
+        }
+
+        var startupWorkflow = AigcWorkflowPage.CreateWorkflowPage(this, startupPageAsset);
+        if (startupWorkflow is null)
+        {
+            throw new ArgumentNullException("Failed to create startup page");
+        }
+
+        if (startupWorkflow.EnsureInstance() is null)
+        {
+            throw new ArgumentNullException("Failed to instantiate startup page");
+        }
+
+        string userMessage = prompt;
+        if (userMessage == "/init")
+        {
+            userMessage = prompt;
+        }
+
+        startupWorkflow.SetPrompt(userMessage);
+        startupWorkflow.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
+
+        // Disalbe last un-calculated tasks to avoid unexpected task running when the task tree is being built.
+        int count = Count;
+        for (int i = count - 1; i >= 0; i--)
+        {
+            if (GetTaskAt(i) is { } task && !task.GetAllDone())
+            {
+                task.CommitStatus = TaskCommitStatus.TaskDisabled;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        AddTask(startupWorkflow);
+        MarkDirtyAndSaveDelayed(this);
+
+        return startupWorkflow;
+    }
 
     /// <inheritdoc/>
     public IEnumerable<IArticleAsset> KnowledgeArticles => _knowledgeArticles.List.Select(o => o.Target).SkipNull();

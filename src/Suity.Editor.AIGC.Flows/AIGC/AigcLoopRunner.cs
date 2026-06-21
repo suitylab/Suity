@@ -92,52 +92,20 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             return AICallResult.FromFailed("Please enter task content");
         }
 
-        var startupPageAsset = _document.StartupPage;
-        if (startupPageAsset is null)
+        IAigcWorkflowPage workflow = null;
+
+        try
         {
-            return AICallResult.FromFailed("Startup page not set");
+            workflow = _document.NewTaskPrompt(request.UserMessage);
         }
-
-        if (!startupPageAsset.IsStartup)
+        catch (OperationCanceledException)
         {
-            return AICallResult.FromFailed("Startup page is not a startup page");
+            throw;
         }
-
-        var startupWorkflow = AigcWorkflowPage.CreateWorkflowPage(_document, startupPageAsset);
-        if (startupWorkflow is null)
+        catch (Exception err)
         {
-            return AICallResult.FromFailed("Failed to create startup page");
+            return AICallResult.FromFailed(err.Message);
         }
-
-        if (startupWorkflow.EnsureInstance() is null)
-        {
-            return AICallResult.FromFailed("Failed to instantiate startup page");
-        }
-
-        string userMessage = request.UserMessage;
-        if (userMessage == "/init")
-        {
-            userMessage = _document.InitialTaskPrompt;
-        }
-
-        startupWorkflow.SetPrompt(userMessage);
-        startupWorkflow.SetScratchPad(ScratchPadTypes.Clear, null, null, null);
-
-        // Disalbe last un-calculated tasks to avoid unexpected task running when the task tree is being built.
-        int count = _document.Count;
-        for (int i = count - 1; i >= 0; i--)
-        {
-            if (_document.GetTaskAt(i) is { } task && !task.GetAllDone())
-            {
-                task.CommitStatus = TaskCommitStatus.TaskDisabled;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        _document.AddTask(startupWorkflow);
 
         try
         {
@@ -218,6 +186,8 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
         {
             // Task begin.
             var runResult = await RunTaskWithRetry(request, task, TaskEventTypes.TaskBegin, null, null);
+            _document.MarkDirtyAndSaveDelayed(this);
+
             if (request.Cancellation.IsCancellationRequested)
             {
                 return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
@@ -236,6 +206,8 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
                 var eventType = lastTask.GetCommitStatus().ToEventType();
 
                 var commitResult = await RunTaskWithRetry(request, task, eventType, lastTask.CommitName, null);
+                _document.MarkDirtyAndSaveDelayed(this);
+
                 if (request.Cancellation.IsCancellationRequested)
                 {
                     return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
@@ -303,9 +275,9 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
                 var result = await RunTask(request, task, eventType, commitName, parameter);
                 return result;
             }
-            catch (TaskCanceledException)
+            catch (OperationCanceledException)
             {
-                return new(TaskCommitStatus.None, "Task is cancelled.");
+                return new(TaskCommitStatus.None, "Task cancelled.");
             }
             catch (Exception err)
             {

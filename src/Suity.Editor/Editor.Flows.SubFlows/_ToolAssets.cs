@@ -183,6 +183,10 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset, IHasCategory, IPre
                 return true;
             }
         }
+        catch (TaskCanceledException)
+        {
+            throw;
+        }
         catch (OperationCanceledException)
         {
             throw;

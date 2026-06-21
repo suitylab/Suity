@@ -17,6 +17,11 @@ public static class PathUtility
             return string.Empty;
         }
 
+        if (path == basePath)
+        {
+            return string.Empty;
+        }
+
         if (string.IsNullOrEmpty(basePath))
         {
             return path;

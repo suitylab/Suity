@@ -272,7 +272,10 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         foreach (var item in loos)
         {
             result = await runner.RunLoop(request, this, item);
+            request.Cancellation.ThrowIfCancellationRequested();
         }
+
+        request.Cancellation.ThrowIfCancellationRequested();
 
         return result;
     }
