@@ -211,14 +211,31 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
             msg.AddCode(string.Join(", ", Loops.Select(l => l.TaskName)));
         });
 
-        // TODO: Implement agent invocation logic here
-        // For each LoopItem:
-        //   1. Create and run a loop for the specified agent
-        //   2. Capture result or error
-        //   3. Add LoopResult to output.Results
         foreach (var loop in loops)
         {
-            var result = await runner.RunLoop(request, subAgent, loop);
+            var loopResult = new LoopResult { TaskName = loop.Description };
+            try
+            {
+                var result = await runner.RunLoop(request, subAgent, loop);
+
+                if (result.Status == AICallStatus.Failed)
+                {
+                    loopResult.Error = result.Message ?? "Unknown error";
+                    failCount++;
+                }
+                else
+                {
+                    loopResult.Result = result.Message ?? result.Result?.ToString() ?? "Success";
+                    successCount++;
+                }
+            }
+            catch (Exception err)
+            {
+                loopResult.Error = err.Message;
+                failCount++;
+            }
+
+            output.Results.Add(loopResult);
         }
 
         output.SuccessCount = successCount;

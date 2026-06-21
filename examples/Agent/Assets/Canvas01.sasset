@@ -37,7 +37,7 @@
         </Loops>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="50" Width="162" Height="135">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="50" Width="162" Height="79">
       <Name>###AgentCanvasNode02</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -46,22 +46,7 @@
         </AssetRef>
         <AgentName>SubAgent</AgentName>
         <Overview />
-        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]">
-          <Item>
-            <Id>VOxLSSByMM</Id>
-            <Description>TaskA</Description>
-            <Loop>
-              <Id>249d9a12-85c8-4ae3-8d79-e9c291d4ba26</Id>
-            </Loop>
-          </Item>
-          <Item>
-            <Id>vt3oyN33jD</Id>
-            <Description>TaskB</Description>
-            <Loop>
-              <Id>65ef5b0c-cf27-4ec4-8711-1c829b457fc4</Id>
-            </Loop>
-          </Item>
-        </Loops>
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
   </Nodes>

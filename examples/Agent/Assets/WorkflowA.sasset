@@ -109,6 +109,16 @@
               </Value>
             </Prompt>
           </Item>
+          <Item type="SObject" struct="cf0b384f-2d2d-429a-b0f7-ae5afd9f9397" base="cf0b384f-2d2d-429a-b0f7-ae5afd9f9397">
+            <TaskName type="SString" base="b78929d1-570d-4816-8364-881e4dab4925">
+              <Value type="System.String">TaskC</Value>
+            </TaskName>
+            <Prompt type="STextBlock" base="a3ebc9cb-6bf2-473f-b246-83c0fbcb9261">
+              <Value type="Suity.Views.TextBlock">
+                <Text>TaskC Prompt</Text>
+              </Value>
+            </Prompt>
+          </Item>
         </Value>
       </Node>
     </Item>

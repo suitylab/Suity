@@ -8,52 +8,7 @@
   <Tasks>
     <Item type="Suity.Editor.AIGC.AigcWorkflowPage">
       <Name>#Task-CkpcZZjkgLM1</Name>
-      <List type="NamedItemList">
-        <Item type="Suity.Editor.AIGC.AigcToolPage">
-          <Name>#Task-LVwhd36sQ74E</Name>
-          <List type="NamedItemList" />
-          <Description>Call Sub-Agent</Description>
-          <Icon />
-          <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]">
-            <Item type="SObject" struct="9be4b58e-4267-4abf-8aad-5964e83933b4" base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471">
-              <Id type="SString" base="b78929d1-570d-4816-8364-881e4dab4925">
-                <Value type="System.String">VOxLSSByMM</Value>
-              </Id>
-            </Item>
-            <Item type="SObject" struct="9be4b58e-4267-4abf-8aad-5964e83933b4" base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471">
-              <Id type="SString" base="b78929d1-570d-4816-8364-881e4dab4925">
-                <Value type="System.String">vt3oyN33jD</Value>
-              </Id>
-            </Item>
-          </Attributes>
-          <TaskId>#Task-LVwhd36sQ74E</TaskId>
-          <CommitName>
-          </CommitName>
-          <Tool>
-            <Id>01cc1566-4ea2-418c-aebd-34d40f024f9b</Id>
-          </Tool>
-          <Page type="Suity.Editor.Flows.SubFlows.ToolInstance`2[[Suity.Editor.AIGC.Tools.CallSubAgent],[Suity.Editor.AIGC.Tools.CallSubAgent+Output]]">
-            <Input>
-              <AgentName>SubAgent</AgentName>
-              <Loops>
-                <Item>
-                  <TaskName>TaskA</TaskName>
-                  <Prompt>
-                    <Text>TaskA Prompt</Text>
-                  </Prompt>
-                </Item>
-                <Item>
-                  <TaskName>TaskB</TaskName>
-                  <Prompt>
-                    <Text>TaskB Prompt</Text>
-                  </Prompt>
-                </Item>
-              </Loops>
-            </Input>
-            <Error />
-          </Page>
-        </Item>
-      </List>
+      <List type="NamedItemList" />
       <Description>PresetA</Description>
       <Icon />
       <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]">
@@ -92,10 +47,7 @@
           <Id>d81bfc8c-4374-4497-bb03-9f5ea32f38c2</Id>
         </__preset__>
         <Output type="System.Boolean">True</Output>
-        <SubTask01>
-          <Text>&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ToolCall name="CallSubAgent" /&gt;</Text>
-        </SubTask01>
+        <SubTask01 />
       </Page>
     </Item>
   </Tasks>

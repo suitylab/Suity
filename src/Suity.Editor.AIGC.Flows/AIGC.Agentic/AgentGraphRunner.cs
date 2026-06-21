@@ -130,13 +130,13 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         var startupPage = agent.StarterWorkflow;
         if (startupPage is null)
         {
-            return null;
+            throw new NullReferenceException("Agent workflow not set: " + agent.AgentName);
         }
 
         var loopFormat = DocumentManager.Instance.GetDocumentFormat("AigcLoop");
         if (loopFormat is null)
         {
-            return null;
+            throw new NullReferenceException("AigcLoop document format not found.");
         }
 
         var fileName = (CanvasDocument as Document)?.FileName;
@@ -162,13 +162,13 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         var loopDocEntry = loopFormat.AutoNewDocument(loopFileName, currentPath);
         if (loopDocEntry is null)
         {
-            return null;
+            throw new NullReferenceException("Failed to create loop document.");
         }
 
         var loopDoc = loopDocEntry.Content as AigcLoopDocument;
         if (loopDoc is null)
         {
-            return null;
+            throw new NullReferenceException("Failed to create loop document.");
         }
 
         loopDoc.StartupPage = startupPage;
@@ -177,12 +177,12 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         var startupWorkflow = AigcWorkflowPage.CreateWorkflowPage(loopDoc, startupPage);
         if (startupWorkflow is null)
         {
-            return null;
+            throw new NullReferenceException("Failed to create workflow.");
         }
 
         if (startupWorkflow.EnsureInstance() is null)
         {
-            return null;
+            throw new NullReferenceException("Failed to create workflow instance.");
         }
 
         startupWorkflow.SetPrompt(prompt);

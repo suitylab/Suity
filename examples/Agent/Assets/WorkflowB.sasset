@@ -34,19 +34,6 @@
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-310" Y="-10" Width="40" Height="17">
-      <Name>Input</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
-        <Name>Input</Name>
-        <Icon />
-        <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
-        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>b78929d1-570d-4816-8364-881e4dab4925</Id>
-        </ValueType>
-        <Value type="System.String">
-        </Value>
-      </Node>
-    </Item>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="170" Y="-20" Width="58" Height="17">
       <Name>OnComplete</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
@@ -63,10 +50,24 @@
         <Icon />
         <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
-          <Id>b78929d1-570d-4816-8364-881e4dab4925</Id>
+          <Id>88bd4085-233a-4cd3-96bc-1d1acea9054f</Id>
         </ValueType>
-        <Value type="System.String">
-        </Value>
+        <Value type="System.Boolean">False</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="100" Y="0" Width="37" Height="17">
+      <Name>###SourceValue01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>88bd4085-233a-4cd3-96bc-1d1acea9054f</Id>
+        </ValueType>
+        <Value type="System.Boolean">True</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-43" Y="-53" Width="75" Height="45">
+      <Name>###DelayAction01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.DelayAction">
+        <DelaySecond>3</DelaySecond>
       </Node>
     </Item>
   </Nodes>
@@ -79,15 +80,21 @@
       <ToConnector>Result</ToConnector>
     </Item>
     <Item>
-      <FromNode>OnStart</FromNode>
+      <FromNode>###SourceValue01</FromNode>
       <FromConnector>Out</FromConnector>
-      <ToNode>OnComplete</ToNode>
+      <ToNode>Output</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>Input</FromNode>
+      <FromNode>OnStart</FromNode>
       <FromConnector>Out</FromConnector>
-      <ToNode>Output</ToNode>
+      <ToNode>###DelayAction01</ToNode>
+      <ToConnector>Input</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###DelayAction01</FromNode>
+      <FromConnector>Output</FromConnector>
+      <ToNode>OnComplete</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
   </Links>

@@ -46,6 +46,8 @@ class DeleteNodeAction : UndoRedoAction
         }
 
         _view.SetNodeSelection([], false);
+        _view.InspectSelection();
+
         diagram.RefreshView();
         diagram.QueueComputeData();
     }
@@ -64,6 +66,8 @@ class DeleteNodeAction : UndoRedoAction
         }
 
         _view.SetNodeSelection(_nodes, false);
+        _view.InspectSelection();
+
         diagram.RefreshView();
         diagram.QueueComputeData();
     }
