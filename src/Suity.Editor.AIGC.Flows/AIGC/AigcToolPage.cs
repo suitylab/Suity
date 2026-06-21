@@ -12,8 +12,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
 
-public class AigcToolPage : AigcTaskPage,
-    IAigcToolPage
+public class AigcToolPage : AigcTaskPage, IAigcToolPage
 {
     readonly AssetProperty<IToolAsset> _tool = new("Tool", "Tool");
 
@@ -106,10 +105,15 @@ public class AigcToolPage : AigcTaskPage,
             ToolInstance = instance,
             WorkSpace = this.TaskPageDocument?.WorkSpace,
             RootDirectory = this.TaskPageDocument?.WorkSpace?.MasterDirectory,
-            FuncContext = request.FuncContext ?? new FunctionContext(),
+            FuncContext = new FunctionContext(request.FuncContext),
             Conversation = request.Conversation,
             Cancellation = request.Cancellation,
         };
+
+        request.FuncContext.SetArgument(this);
+        request.FuncContext.SetArgument<IAigcToolPage>(this);
+        request.FuncContext.SetArgument(request);
+        request.FuncContext.SetArgument(context);
 
         return await tool.Run(context);
     }

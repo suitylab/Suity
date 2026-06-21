@@ -7,6 +7,6 @@ public class IAgentNodeToTextConverter : TypeToTextConverter<IAgent>
 {
     public override string Convert(IAgent objFrom)
     {
-        return objFrom.Name;
+        return objFrom.AgentName;
     }
 }

@@ -17,7 +17,7 @@
         <WorkSpace />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="-120" Width="162" Height="119">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="-120" Width="162" Height="99">
       <Name>###AgentCanvasNode01</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -29,20 +29,14 @@
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]">
           <Item>
             <Loop>
-              <Id>4972fe4d-52b7-4b3d-9183-cab417759e48</Id>
-            </Loop>
-            <Description>Entry</Description>
-          </Item>
-          <Item>
-            <Loop>
-              <Id>04773ac6-0886-4c9b-93de-f4129e282a11</Id>
+              <Id>cc50bb56-9448-4303-bc65-bd504e7d5652</Id>
             </Loop>
             <Description>Entry</Description>
           </Item>
         </Loops>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="60" Width="162" Height="79">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="50" Width="162" Height="135">
       <Name>###AgentCanvasNode02</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -51,7 +45,20 @@
         </AssetRef>
         <AgentName>SubAgent</AgentName>
         <Overview />
-        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]">
+          <Item>
+            <Loop>
+              <Id>249d9a12-85c8-4ae3-8d79-e9c291d4ba26</Id>
+            </Loop>
+            <Description>TaskA</Description>
+          </Item>
+          <Item>
+            <Loop>
+              <Id>65ef5b0c-cf27-4ec4-8711-1c829b457fc4</Id>
+            </Loop>
+            <Description>TaskB</Description>
+          </Item>
+        </Loops>
       </Node>
     </Item>
   </Nodes>

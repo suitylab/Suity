@@ -1,15 +1,17 @@
 ﻿using Suity.Editor.AIGC.Assistants;
+using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
-using Suity.Views.Named;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Agentic;
 
 [NativeType(CodeBase = "Suity", Description = "Agent Node", Color = "#9900FF")]
 [NativeAlias("Suity.Editor.AIGC.Agentic.IAgentNode")]
-public interface IAgent : INamed
+public interface IAgent
 {
+    string AgentName { get; }
+
     IAgent ParentAgent { get; }
 
     IAgent[] GetSubAgents();
@@ -19,11 +21,15 @@ public interface IAgent : INamed
 
     ISubFlowAsset StarterWorkflow { get; }
 
+    IAgentLoop[] GetLoops();
+
     IAgentLoop AddLoop(IAigcLoopAsset loopAsset, string description);
 
     Task<AICallResult> Run(AIRequest request, IAgentGraphRunner runner);
 
     void QueueRefreshView();
+
+    void FlashingConnector(FlowDirections direction);
 }
 
 public interface IAgentLoop
@@ -35,6 +41,8 @@ public interface IAgentLoop
 public interface IAgentGraphRunner
 {
     IAgentState GetAgentState(IAgent agent);
+
+    IAgentLoop AddLoop(IAgent agent, string description, string prompt, string loopFileName = null);
 
     Task<AICallResult> RunLoop(AIRequest request, IAgent agent, IAgentLoop loop);
 }

@@ -1,4 +1,6 @@
 using Suity.Editor.AIGC.Agentic;
+using Suity.Editor.AIGC.Assistants;
+using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
@@ -121,13 +123,44 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
 
     public override Task<Output> Run(ToolCallContext context)
     {
-        var agent = context.FuncContext.GetArgument<IAgent>();
-        var subAgents = agent?.GetSubAgents() ?? [];
+        var myAgent = context.FuncContext.GetArgument<IAgent>();
+        if (myAgent is null)
+        {
+            throw new NullReferenceException("Agent is not set");
+        }
+
+        var request = context.FuncContext.GetArgument<AIRequest>();
+        if (request is null)
+        {
+            throw new NullReferenceException("AI request is not set");
+        }
+
+        myAgent.FlashingConnector(FlowDirections.Input);
+
+
+        var subAgents = myAgent?.GetSubAgents() ?? [];
 
         string agentName = AgentName;
         if (string.IsNullOrWhiteSpace(agentName))
         {
             throw new NullReferenceException("Agent name is not set");
+        }
+
+        var agent = subAgents.FirstOrDefault(o => o.AgentName == agentName);
+        if (agent is null)
+        {
+            throw new NullReferenceException($"Agent '{agentName}' not found");
+        }
+
+        var runner = context.FuncContext.GetArgument<IAgentGraphRunner>();
+        if (runner is null)
+        {
+            throw new NullReferenceException("Agent graph runner is not set");
+        }
+
+        foreach (var loopItem in _loops.List)
+        {
+            runner.AddLoop(agent, loopItem.TaskName, loopItem.Prompt);
         }
 
         var output = new Output();

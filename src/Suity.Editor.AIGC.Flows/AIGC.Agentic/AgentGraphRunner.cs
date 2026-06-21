@@ -64,23 +64,24 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
             return null;
         }
 
-        string name = starter.StarterWorkflow?.Name;
-        if (string.IsNullOrWhiteSpace(name))
+        if (starter.StarterWorkflow is null)
         {
             return null;
         }
 
-        AddLoop(starter, name, StartNode.EntryTaskName, msg);
+        AddLoop(starter, StartNode.EntryTaskName, msg);
 
         var request = new AIRequest
         {
             UserMessage = msg ?? string.Empty,
             Conversation = _conversation,
-            FuncContext = this._context,
+            FuncContext = new FunctionContext(this._context),
             Option = option,
             Cancellation = cancelSource.Token,
             RequestCancel = cancelSource.Cancel
         };
+
+        request.FuncContext.SetArgument(request);
 
         var result = await starter.Run(request, this);
 
@@ -99,20 +100,34 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         {
             UserMessage = "/resume",
             Conversation = _conversation,
-            FuncContext = this._context,
+            FuncContext = new FunctionContext(this._context),
             Option = option,
             Cancellation = cancelSource.Token,
             RequestCancel = cancelSource.Cancel
         };
+
+        request.FuncContext.SetArgument(request);
 
         var result = await starter.Run(request, this);
 
         return result?.Result;
     }
 
-    public IAgentLoop AddLoop(IAgent agentNode, string name, string description, string prompt)
+
+    protected override void HandleConversation(IConversationHandler handler)
     {
-        var startupPage = agentNode.StarterWorkflow as ISubFlowAsset;
+    }
+
+    #region IAgentGraphRunner
+
+    public IAgentState GetAgentState(IAgent agent)
+    {
+        return _agentStates.GetValueSafe(agent);
+    }
+
+    public IAgentLoop AddLoop(IAgent agent, string description, string prompt, string loopFileName = null)
+    {
+        var startupPage = agent.StarterWorkflow;
         if (startupPage is null)
         {
             return null;
@@ -126,10 +141,14 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 
         var fileName = (CanvasDocument as Document)?.FileName;
 
-        name = name?.Trim();
-        if (string.IsNullOrWhiteSpace(name))
+        loopFileName = loopFileName?.Trim();
+        if (string.IsNullOrWhiteSpace(loopFileName))
         {
-            name = "TaskPage";
+            loopFileName = agent.StarterWorkflow?.Name;
+        }
+        if (string.IsNullOrWhiteSpace(loopFileName))
+        {
+            loopFileName = "TaskPage";
         }
 
         description = description?.Trim() ?? string.Empty;
@@ -137,7 +156,10 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         string currentPath = Path.GetDirectoryName(fileName?.PhysicFileName);
         currentPath = PathUtility.MakeRalativePath(currentPath, EditorServices.CurrentProject.AssetDirectory);
 
-        var loopDocEntry = loopFormat.AutoNewDocument(name, currentPath);
+        string subDir = ResolveDirectoryName(agent.AgentName);
+        currentPath = currentPath.PathAppend(subDir);
+
+        var loopDocEntry = loopFormat.AutoNewDocument(loopFileName, currentPath);
         if (loopDocEntry is null)
         {
             return null;
@@ -171,23 +193,12 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         loopDoc.WorkSpace = this.WorkSpace;
 
         var loopAsset = loopDoc.TargetAsset as IAigcLoopAsset;
-        var item = agentNode.AddLoop(loopAsset, description);
+        var item = agent.AddLoop(loopAsset, description);
 
         (CanvasDocument as Document)?.MarkDirtyAndSaveDelayed(this);
-        agentNode.QueueRefreshView();
+        agent.QueueRefreshView();
 
         return item;
-    }
-
-
-    protected override void HandleConversation(IConversationHandler handler)
-    {
-    }
-
-    #region IAgentGraphRunner
-    public IAgentState GetAgentState(IAgent agent)
-    {
-        return _agentStates.GetValueSafe(agent);
     }
 
     public async Task<AICallResult> RunLoop(AIRequest request, IAgent agent, IAgentLoop loop)
@@ -227,7 +238,10 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         }
 
         var resume = new AIRequest(request, "/resume");
+        
         resume.FuncContext.SetArgument(this);
+        resume.FuncContext.SetArgument(resume);
+
         resume.FuncContext.SetArgument<IAgentGraphRunner>(this);
         resume.FuncContext.SetArgument<IAigcLoop>(loopDoc);
 
@@ -244,6 +258,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 
         return await runner.HandleRequest(resume);
     } 
+
     #endregion
 
     public AgentState EnsureAgentState(IAgent agent)
@@ -257,6 +272,27 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         {
             agent.QueueRefreshView();
         }
+    }
+
+    public static string ResolveDirectoryName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return "Unnamed";
+        }
+
+        name = name.Replace(' ', '_');
+        name = name.Replace('/', '_');
+        name = name.Replace('\\', '_');
+        name = name.Replace(':', '_');
+        name = name.Replace('*', '_');
+        name = name.Replace('?', '_');
+        name = name.Replace('"', '_');
+        name = name.Replace('<', '_');
+        name = name.Replace('>', '_');
+        name = name.Replace('|', '_');
+
+        return name;
     }
 }
 

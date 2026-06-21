@@ -177,6 +177,20 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     #region IAgentNode
 
+    public string AgentName
+    {
+        get
+        {
+            string agentName = _agentName.Text;
+            if (!string.IsNullOrWhiteSpace(agentName))
+            {
+                return agentName;
+            }
+
+            return base.Name;
+        }
+    }
+
     public IAgent ParentAgent => _parent;
 
     public IAgent[] GetSubAgents() => _subAgents;
@@ -186,8 +200,15 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     public ISubFlowAsset StarterWorkflow => this.Target;
 
+    public IAgentLoop[] GetLoops()
+    {
+        return _loops.List.SkipNull().ToArray();
+    }
+
     public IAgentLoop AddLoop(IAigcLoopAsset loopAsset, string description)
     {
+        _out.FlashingOnce();
+
         var item = new AgentLoopItem(loopAsset, description);
         _loops.List.Add(item);
 
@@ -201,20 +222,32 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     {
         _out.FlashingOnce();
 
-        var tasks = _loops.List.SkipNull().ToArray();
-        if (tasks.Length == 0)
+        var loos = _loops.List.SkipNull().ToArray();
+        if (loos.Length == 0)
         {
             return AICallResult.Empty;
         }
 
         var result = AICallResult.Empty;
 
-        foreach (var item in tasks)
+        foreach (var item in loos)
         {
             result = await runner.RunLoop(request, this, item);
         }
 
         return result;
+    }
+
+    public void FlashingConnector(FlowDirections direction)
+    {
+        if (direction == FlowDirections.Input)
+        {
+            _in.FlashingOnce();
+        }
+        else
+        {
+            _out.FlashingOnce();
+        }
     }
 
     #endregion
