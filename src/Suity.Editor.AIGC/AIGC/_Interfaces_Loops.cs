@@ -20,8 +20,19 @@ namespace Suity.Editor.AIGC;
 /// </summary>
 public enum TaskDirectoryTargets
 {
+    /// <summary>
+    /// No target location specified.
+    /// </summary>
     None,
+
+    /// <summary>
+    /// Target is a workspace directory.
+    /// </summary>
     WorkSpace,
+
+    /// <summary>
+    /// Target is an assets directory.
+    /// </summary>
     Assets,
 }
 
@@ -51,6 +62,11 @@ public interface IAigcLoop
     /// <returns>The newly created <see cref="WorkSpace"/>.</returns>
     WorkSpace CreateWorkSpace(string workSpaceName);
 
+    /// <summary>
+    /// Creates a new task prompt page with the specified prompt text.
+    /// </summary>
+    /// <param name="prompt">The initial prompt text for the new task.</param>
+    /// <returns>A new <see cref="IAigcWorkflowPage"/> representing the task prompt page.</returns>
     IAigcWorkflowPage NewTaskPrompt(string prompt);
 
     /// <summary>
@@ -77,17 +93,32 @@ public interface IAigcLoop
     /// <returns>An array of sub-tasks.</returns>
     IAigcTaskPage[] GetSubTasks();
 
+    /// <summary>
+    /// Gets the commit status of the loop.
+    /// </summary>
+    /// <returns>The current <see cref="TaskCommitStatus"/>.</returns>
     TaskCommitStatus GetCommitStatus();
 
+    /// <summary>
+    /// Gets the next task to run in the loop.
+    /// </summary>
+    /// <returns>The task page to run, or null if no task is pending.</returns>
     IAigcTaskPage GetTaskToRun();
 }
 
 #endregion
 
-#region IAigcTaskHostAsset
+#region IAigcLoopAsset
 
+/// <summary>
+/// Represents an asset that provides access to an AIGC loop.
+/// </summary>
 public interface IAigcLoopAsset
 {
+    /// <summary>
+    /// Gets the AIGC loop associated with this asset.
+    /// </summary>
+    /// <returns>The <see cref="IAigcLoop"/> instance.</returns>
     IAigcLoop GetLoop();
 }
 
@@ -155,8 +186,18 @@ public interface IAigcTaskPage : INamed, ITextDisplay, IAttributeGetter
     /// <returns>True if any events were handled; otherwise, false.</returns>
     Task<bool> RunTask(AIRequest request, TaskEventTypes eventType, string commitName, object parameter);
 
+    /// <summary>
+    /// Adds a design attribute of the specified type with the given setter action.
+    /// </summary>
+    /// <typeparam name="T">The type of design attribute to add.</typeparam>
+    /// <param name="setter">An action to configure the attribute.</param>
+    /// <returns>The newly added attribute instance.</returns>
     T AddAttribute<T>(Action<T> setter) where T : DesignAttribute, new();
 
+    /// <summary>
+    /// Removes all design attributes of the specified type.
+    /// </summary>
+    /// <typeparam name="T">The type of design attribute to remove.</typeparam>
     void RemoveAttributes<T>() where T : DesignAttribute;
 }
 
@@ -307,6 +348,9 @@ public interface IAigcWorkflowPage : IAigcTaskPage, IScratchPadOwner
 
 #region IAigcToolPage
 
+/// <summary>
+/// Represents an AIGC tool page that extends the base task page functionality.
+/// </summary>
 public interface IAigcToolPage : IAigcTaskPage
 {
 }
@@ -347,6 +391,12 @@ public interface IScratchPadOwner
     /// <returns>The resolved scratch pad items, or null if not available.</returns>
     ScratchPad[] GetHistoryScratchPads(int hierarchyLevels = 0);
 
+    /// <summary>
+    /// Gets the history scratch pad item at the specified path, optionally including parent hierarchy.
+    /// </summary>
+    /// <param name="path">The path of the scratch pad item to retrieve.</param>
+    /// <param name="hierarchyLevels">The number of parent levels to include.</param>
+    /// <returns>The scratch pad item, or null if not found.</returns>
     ScratchPad GetHistoryScratchPad(string path, int hierarchyLevels = 0);
 }
 
@@ -359,10 +409,19 @@ public interface IScratchPadOwner
 /// </summary>
 public interface IAigcLoopRunner
 {
+    /// <summary>
+    /// Gets a value indicating whether the loop is currently running.
+    /// </summary>
     bool IsRunning { get; }
 
+    /// <summary>
+    /// Gets the last task that was executed.
+    /// </summary>
     IAigcTaskPage LastTask { get; }
 
+    /// <summary>
+    /// Requests cancellation of the currently running loop.
+    /// </summary>
     void RequestCancel();
 }
 
