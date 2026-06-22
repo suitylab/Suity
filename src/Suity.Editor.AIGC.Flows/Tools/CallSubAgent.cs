@@ -3,7 +3,6 @@ using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
-using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
@@ -17,7 +16,7 @@ namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("CallSubAgent", CodeBase = "*Suity", Category = "Agent Tools")]
 [DisplayText("Call Sub-Agent")]
-[ToolTipsText("Call a sub-agent to execute tasks. Each loop item runs independently as a separate loop.")]
+[ToolTipsText("Call a sub-agent to execute task loops. Each loop item runs independently as a separate loop.")]
 public class CallSubAgent : ToolCommand<CallSubAgent.Output>
 {
     #region LoopItem

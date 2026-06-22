@@ -19,6 +19,11 @@ public interface IAgent
     string AgentName { get; }
 
     /// <summary>
+    /// Gets the overview of the agent.
+    /// </summary>
+    string Overview { get; }
+
+    /// <summary>
     /// Gets the parent agent, or null if this is a root agent.
     /// </summary>
     IAgent ParentAgent { get; }

@@ -4,7 +4,7 @@ using Suity.Editor.Types;
 
 namespace Suity.Editor.Flows.Agentic;
 
-[SimpleFlowNodeStyle(Color = FlowColors.AgentBg, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.AgentBg, Icon = "*CoreIcon|Agent", HasHeader = false, Width = 100, Height = 20)]
 public class GetSubAgentList : AgentNode
 {
     readonly FlowNodeConnector _agents;
@@ -27,7 +27,7 @@ public class GetSubAgentList : AgentNode
     }
 }
 
-[SimpleFlowNodeStyle(Color = FlowColors.AgentBg, HasHeader = false, Width = 100, Height = 20)]
+[SimpleFlowNodeStyle(Color = FlowColors.AgentBg, Icon = "*CoreIcon|Agent", HasHeader = false, Width = 100, Height = 20)]
 public class GetParentAgent : AgentNode
 {
     readonly FlowNodeConnector _parent;

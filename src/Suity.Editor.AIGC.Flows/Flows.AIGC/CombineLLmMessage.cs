@@ -24,7 +24,7 @@ public class CombineLLmMessage : AigcFlowNode
     {
         var msgType = TypeDefinition.FromNative<LLmMessage>();
 
-        _messages = AddConnector("Messages", msgType, FlowDirections.Input, FlowConnectorTypes.Data, true, "Messages");
+        _messages = AddConnector("Messages", msgType, FlowDirections.Input, FlowConnectorTypes.Data, true, " ");
         _output = AddDataOutputConnector("Output", msgType, "Combined");
     }
 

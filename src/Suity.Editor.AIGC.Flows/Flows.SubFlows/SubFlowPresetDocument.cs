@@ -479,6 +479,8 @@ public class SubFlowPresetAsset : Asset,
     /// <inheritdoc/>
     public override bool CanExportToLibrary => true;
 
+    public SubFlowPresetDocument GetPresetDocument() => this.GetDocument<SubFlowPresetDocument>();
+
     /// <summary>
     /// Synchronizes the asset properties with the given sync context.
     /// </summary>
@@ -566,28 +568,28 @@ public class SubFlowPresetAsset : Asset,
     /// <returns>A new <see cref="ISubFlowInstance"/>, or null if creation fails.</returns>
     public ISubFlowInstance CreateSubFlowInstance(PageCreateOption option)
     {
-        if (this.GetDocument<SubFlowPresetDocument>() is not { } doc)
+        if (this.GetDocument<SubFlowPresetDocument>() is not { } preset)
         {
             return null;
         }
 
-        if (doc.BaseWorkflowPage is not { } toolPageItem)
+        if (preset.BaseWorkflowPage is not { } toolPageItem)
         {
             return null;
         }
 
-        if (doc.EnsureSubFlowInstance() is not { } root)
+        if (preset.EnsureSubFlowInstance() is not { } root)
         {
             return null;
         }
 
         var instance = new SubFlowInstance(toolPageItem, option, this);
 
-        string presetName = doc.Name;
-        string description = doc.Overview;
+        string presetName = preset.Name;
+        string description = preset.Overview;
         if (string.IsNullOrWhiteSpace(description))
         {
-            description = doc.Description;
+            description = preset.Description;
         }
 
         instance.UpdateFromOther(root);

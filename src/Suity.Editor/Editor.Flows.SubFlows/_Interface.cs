@@ -111,6 +111,11 @@ public interface ISubFlowPreset
     string PresetTooltips { get; }
 
     /// <summary>
+    /// Gets the overview of the preset.
+    /// </summary>
+    string Overview { get; }
+
+    /// <summary>
     /// Used to provide guidance on how to use the preset effectively.
     /// </summary>
     string UserInputHint { get; }

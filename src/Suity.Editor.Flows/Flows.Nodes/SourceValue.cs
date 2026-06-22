@@ -692,7 +692,7 @@ public class FirstNotEmpty : ValueFlowNode
             type = type.MakeArrayType();
         }
 
-        _in = AddConnector("In", type, FlowDirections.Input, FlowConnectorTypes.Data, true, "In");
+        _in = AddConnector("In", type, FlowDirections.Input, FlowConnectorTypes.Data, true, " ");
         _notNull = AddDataOutputConnector("NotEmpty", type, "Not Empty");
     }
 

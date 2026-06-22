@@ -40,6 +40,8 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         _in = AddConnector(input);
         _out = AddConnector(output);
 
+        _overview.Property.WithOptional();
+
         _loops.SyncList.Added += SyncList_Added;
     }
 
@@ -212,6 +214,24 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             }
 
             return base.Name;
+        }
+    }
+
+    public string Overview
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(_overview.Text))
+            {
+                return _overview.Text;
+            }
+
+            if (this.Target is { } target)
+            {
+                return target.GetPresetDocument()?.Overview ?? string.Empty;
+            }
+
+            return string.Empty;
         }
     }
 
