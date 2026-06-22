@@ -171,7 +171,7 @@ public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
     /// Gets the first top level task that has not been fully completed, searching from the last task backward.
     /// </summary>
     /// <returns>The first top level running <see cref="AigcTaskPage"/>, or null if all tasks are done.</returns>
-    public AigcTaskPage GetUnfinishedTask()
+    public AigcTaskPage GetTaskToRun()
     {
         int c = Count;
         if (c == 0)
@@ -204,21 +204,73 @@ public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
         return working;
     }
 
-    public bool GetAllDone() => GetUnfinishedTask() is null;
+    public AigcTaskPage GetLastCompletedTask()
+    {
+        int c = Count;
+        if (c == 0)
+        {
+            return null;
+        }
+
+        for (int i = c - 1; i >= 0; i--)
+        {
+            var task = GetTaskAt(i);
+            if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+            {
+                continue;
+            }
+
+            if (task.GetAllDone())
+            {
+                return task;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    public AigcTaskPage GetLastTask()
+    {
+        int c = Count;
+        if (c == 0)
+        {
+            return null;
+        }
+
+        for (int i = c - 1; i >= 0; i--)
+        {
+            var task = GetTaskAt(i);
+            if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+            {
+                continue;
+            }
+
+            return task;
+        }
+
+        return null;
+    }
+
+
+    public bool GetAllDone() => GetTaskToRun() is null;
 
 
     /// <summary>
     /// Gets the last task that is currently unfinished or the most recent task if all are completed.
     /// </summary>
     /// <returns>The last unfinished <see cref="AigcTaskPage"/>, or null if no tasks exist.</returns>
-    public AigcTaskPage GetUnfinishedChildTaskDeep()
+    public AigcTaskPage GetTaskToRunDeep()
     {
         if (Count == 0)
         {
             return null;
         }
 
-        var task = GetUnfinishedTask();
+        var task = GetTaskToRun();
         if (task != null && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
         {
             return task.GetUnfinishedChildTaskDeep() ?? task;
@@ -535,15 +587,20 @@ public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
             return TaskCommitStatus.None;
         }
 
-        if (GetUnfinishedTask() is { } task)
+        if (GetTaskToRun() is { } task)
         {
             return task.GetCommitStatus();
         }
 
-        return TaskCommitStatus.TaskFinished;
+        if (GetLastCompletedTask() is { } completedTask)
+        {
+            return completedTask.GetCommitStatus();
+        }
+
+        return TaskCommitStatus.None;
     }
 
-    IAigcTaskPage IAigcLoop.GetLastTask() => GetUnfinishedTask();
+    IAigcTaskPage IAigcLoop.GetTaskToRun() => GetTaskToRun();
     
 
     #endregion

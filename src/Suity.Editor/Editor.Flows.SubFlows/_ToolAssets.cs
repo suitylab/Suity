@@ -110,6 +110,7 @@ public abstract class ToolInstance : IToolInstance, IViewObject
     public abstract bool SetParameter(string name, object value);
 
     public abstract HistoryText GetTaskCommit(ResolveChatIntents intent);
+    public abstract string GetResponseString(ResolveChatIntents intent);
     public abstract TaskCommitParameter GetTaskCommitParameter();
 
     #endregion
@@ -334,6 +335,17 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         }
 
         XmlNodeWriter.ConvertEscapedTextToCData(writer.GetDocument());
+
+        return writer.ToString();
+    }
+
+    public override string GetResponseString(ResolveChatIntents intent)
+    {
+        var writer = new JsonNodeWriter("ToolCall");
+        if (_output is { } output)
+        {
+            Serializer.Serialize(output, writer);
+        }
 
         return writer.ToString();
     }

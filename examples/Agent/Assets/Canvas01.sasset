@@ -34,7 +34,7 @@
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
         <AssetRef>
-          <Id>4cebbdaa-3667-4ef4-bd95-8cc6efad637b</Id>
+          <Id>76b580f3-d3e0-4136-8205-68cec20f7dc3</Id>
         </AssetRef>
         <AgentName>SubAgent</AgentName>
         <Overview />

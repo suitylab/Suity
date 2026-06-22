@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="AigcFlow">
-  <AssetId>0e55aa0f-bb98-45a6-a1f9-a0cbbae4ae94</AssetId>
+  <AssetId>1e0f0792-d421-4b9b-b3e6-5a0018e31e96</AssetId>
   <NameSpace>Agent</NameSpace>
   <Description>
   </Description>
   <Icon />
   <Nodes>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-320" Y="-60" Width="140" Height="120">
-      <Name>WorkflowB</Name>
-      <AssetId>35679ee7-1ccb-4790-aee8-3acd973d6a6f</AssetId>
+      <Name>WorkflowB_Failed</Name>
+      <AssetId>14129828-43fa-4666-8848-fdff13b97a1d</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
-        <Name>WorkflowB</Name>
+        <Name>WorkflowB_Failed</Name>
         <Icon />
         <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
         <Tools />
@@ -49,29 +49,29 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-43" Y="-53" Width="71" Height="41">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-43" Y="-53" Width="75" Height="45">
       <Name>###DelayAction01</Name>
       <Node type="Suity.Editor.Flows.Nodes.DelayAction">
         <DelaySecond>3</DelaySecond>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="0" Width="101" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="0" Width="96" Height="17">
       <Name>###SourceValue01</Name>
       <Node type="Suity.Editor.Flows.Nodes.SourceValue">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>b78929d1-570d-4816-8364-881e4dab4925</Id>
         </ValueType>
-        <Value type="System.String">WorkflowB Commit Message</Value>
+        <Value type="System.String">WorkflowB Failed Message</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="170" Y="-20" Width="58" Height="17">
-      <Name>OnComplete</Name>
+    <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="170" Y="-20" Width="49" Height="17">
+      <Name>OnFailed</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageCommitNode">
-        <Name>OnComplete</Name>
+        <Name>OnFailed</Name>
         <Icon />
         <Attributes base="5e70938a-0c1b-4bb1-8319-c5b14fd9f471[]" />
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
-        <CommitType>TaskFinished</CommitType>
+        <CommitType>TaskFailed</CommitType>
       </Node>
     </Item>
   </Nodes>
@@ -80,7 +80,7 @@
     <Item>
       <FromNode>WorkflowA_End</FromNode>
       <FromConnector>Definition</FromConnector>
-      <ToNode>WorkflowB</ToNode>
+      <ToNode>WorkflowB_Failed</ToNode>
       <ToConnector>Result</ToConnector>
     </Item>
     <Item>
@@ -98,7 +98,7 @@
     <Item>
       <FromNode>###DelayAction01</FromNode>
       <FromConnector>Output</FromConnector>
-      <ToNode>OnComplete</ToNode>
+      <ToNode>OnFailed</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
   </Links>

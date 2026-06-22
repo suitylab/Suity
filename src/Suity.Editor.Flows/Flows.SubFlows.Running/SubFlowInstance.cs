@@ -344,6 +344,21 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         return builder.ToString();
     }
 
+    public string GetResponseString(ResolveChatIntents intent)
+    {
+        var response = GetAllChildElements(true).OfType<IPageParameter>()
+            .Where(o => o.TaskCommit && o.ParameterType == NativeTypes.StringType)
+            .Select(o => o.ResolveChatHistory(intent))
+            .FirstOrDefault(o => !string.IsNullOrWhiteSpace(o?.Text));
+            
+        if (response is null)
+        {
+            return null;
+        }
+
+        return response;
+    }
+
     /// <inheritdoc/>
     public virtual bool GetError() => false;
 
@@ -876,9 +891,9 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     public SubFlowEndElement CurrentEndElement => _currentEndElement;
 
 
-    private void BuildParameter(StringBuilder builder, IPageParameter[] outputs, ResolveChatIntents intent)
+    private void BuildParameter(StringBuilder builder, IPageParameter[] elements, ResolveChatIntents intent)
     {
-        foreach (var element in outputs.SkipNull())
+        foreach (var element in elements.SkipNull())
         {
             HistoryTag tag;
             try

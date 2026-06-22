@@ -139,10 +139,33 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             }
 
             // Get task for running, if the last task is not completed, continue to run it; otherwise get the next task to run.
-            var task = _document.GetUnfinishedChildTaskDeep();
+            var task = _document.GetTaskToRunDeep();
             if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
             {
-                return AICallResult.FromMessage("All tasks have been completed.");
+                if (_document.GetLastCompletedTask() is { } completedTask)
+                {
+                    var status = completedTask.GetCommitStatus();
+                    var response = completedTask.GetPageInstance().GetResponseString(ResolveChatIntents.Normal);
+
+                    switch (status)
+                    {
+                        case TaskCommitStatus.TaskFinished:
+                            return AICallResult.FromMessage(response);
+
+                        case TaskCommitStatus.TaskFailed:
+                            return AICallResult.FromFailed(response);
+
+                        case TaskCommitStatus.TaskDisabled:
+                        case TaskCommitStatus.Delegating:
+                        case TaskCommitStatus.None:
+                        default:
+                            return AICallResult.FromFailed("Task status is not valid: " + status);
+                    }
+                }
+                else
+                {
+                    return AICallResult.FromFailed("Completed task not found.");
+                }
             }
 
             (bool flowControl, AICallResult value) = await RunTask(request, task);

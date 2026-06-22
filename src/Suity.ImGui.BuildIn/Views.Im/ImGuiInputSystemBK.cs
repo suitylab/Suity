@@ -1704,6 +1704,7 @@ public class ImGuiInputSystemBK : ImGuiInputSystem
                                 ImGui.MergeState(ref state, GuiInputState.PartialSync);
                             }
                         }
+                        Debug.WriteLine(offset);
                     }
                     else
                     {
@@ -1713,6 +1714,10 @@ public class ImGuiInputSystemBK : ImGuiInputSystem
                 break;
 
             case GuiEventTypes.MouseOut:
+                if (value.MouseDown)
+                {
+                    value.MouseDown = false;
+                }
                 value.Tree.ClearDroppingNode();
                 break;
         }

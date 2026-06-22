@@ -94,6 +94,8 @@ public interface IPageInstance : INamed
     /// <returns>The formatted task commit data.</returns>
     HistoryText GetTaskCommit(ResolveChatIntents intent);
 
+    string GetResponseString(ResolveChatIntents intent);
+
     TaskCommitParameter GetTaskCommitParameter();
 }
 

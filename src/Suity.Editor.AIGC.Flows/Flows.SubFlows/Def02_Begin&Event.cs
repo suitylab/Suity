@@ -242,7 +242,10 @@ public class PageCommitNode : BaseSubFlowEndNode, IFlowNodeComputeAsync, ISubFlo
     /// <summary>
     /// Initializes a new instance of the <see cref="PageCommitNode"/> class.
     /// </summary>
-    public PageCommitNode() : base(TaskCommitStatus.TaskFinished) { }
+    public PageCommitNode() : base(TaskCommitStatus.TaskFinished) 
+    {
+        _endType = TaskCommitStatus.TaskFinished;
+    }
 
     /// <inheritdoc/>
     public override TaskCommitStatus EndType => _endType;

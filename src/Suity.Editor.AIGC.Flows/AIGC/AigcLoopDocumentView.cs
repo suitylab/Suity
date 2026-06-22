@@ -594,7 +594,7 @@ public class AigcLoopDocumentView : IDocumentView,
                         gui.Button("btnResume", "Resume", CoreIconCache.Play)
                         .InitClass("simpleBtn")
                         .SetToolTipsL("Start task")
-                        .SetEnabled(_document?.GetUnfinishedChildTaskDeep() != null)
+                        .SetEnabled(_document?.GetTaskToRunDeep() != null)
                         .OnClick(() =>
                         {
                             Run("/resume");

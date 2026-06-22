@@ -79,7 +79,7 @@ public interface IAigcLoop
 
     TaskCommitStatus GetCommitStatus();
 
-    IAigcTaskPage GetLastTask();
+    IAigcTaskPage GetTaskToRun();
 }
 
 #endregion

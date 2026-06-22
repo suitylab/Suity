@@ -363,7 +363,7 @@ public class AgentLoopItem : IAgentLoop, IViewObject
     {
         if (_loop.Target?.GetLoop() is { } doc)
         {
-            return doc.GetLastTask();
+            return doc.GetTaskToRun();
         }
 
         return null;
