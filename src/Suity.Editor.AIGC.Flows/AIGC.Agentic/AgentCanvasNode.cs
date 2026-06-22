@@ -80,7 +80,9 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     {
         base.OnSetupView(setup);
 
+        _agentName.Property.WithHintText(AssetRef?.TargetAsset?.Name ?? string.Empty);
         _agentName.InspectorField(setup);
+
         _overview.InspectorField(setup);
         setup.InspectorField(AssetRef, new ViewProperty(nameof(AssetRef), "Starter Workflow"));
         _loops.InspectorField(setup);
@@ -104,7 +106,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         }
     }
 
-    public override string DisplayText => !string.IsNullOrWhiteSpace(_agentName.Text) ? _agentName.Text : base.DisplayText;
+    public override string DisplayText => AgentName;
 
     protected override void OnAssetTargetUpdated()
     {
@@ -211,6 +213,12 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             if (!string.IsNullOrWhiteSpace(agentName))
             {
                 return agentName;
+            }
+
+            string assetName = AssetRef?.TargetAsset?.Name;
+            if (!string.IsNullOrWhiteSpace(assetName))
+            {
+                return assetName;
             }
 
             return base.Name;

@@ -266,30 +266,36 @@ public static class GuiTreeViewExtensions
         {
             return;
         }
+
         if (node.Gui.Input.EventType == GuiEventTypes.DragDrop)
         {
             return;
         }
+
         var value = node.GetValue<VisualTreeNode>();
         if (value is null)
         {
             return;
         }
+
         if (!(node.Gui.Input.MouseLocation is { } pos))
         {
             return;
         }
+
         var rect = node.GlobalRect;
         if (!rect.Contains(pos))
         {
             return;
         }
+
         float h4 = rect.Height * 0.25f;
         float top = rect.Top + h4;
         float bottom = rect.Bottom - h4;
         float indent = (value.Indent + 1) * value.Tree.IndentWidth;
         float x = rect.X + indent;
         float w = rect.Width - indent;
+
         if (pos.Y < top)
         {
             output.FillRectangle(_dragDropBrush, new RectangleF(x, rect.Y, w, 3));

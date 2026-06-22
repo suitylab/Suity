@@ -1574,7 +1574,8 @@ public class ImGuiInputSystemBK : ImGuiInputSystem
         switch (input.EventType)
         {
             case GuiEventTypes.MouseDown:
-                if (input.MouseButton == GuiMouseButtons.Left || input.MouseButton == GuiMouseButtons.Right) {
+                if (input.MouseButton == GuiMouseButtons.Left || input.MouseButton == GuiMouseButtons.Right) 
+                {
                     var selMode = value.Tree.SelectionMode;
 
                     bool allowMultiple = false;
@@ -1719,6 +1720,14 @@ public class ImGuiInputSystemBK : ImGuiInputSystem
                     value.MouseDown = false;
                 }
                 value.Tree.ClearDroppingNode();
+                break;
+
+            case GuiEventTypes.KeyDown:
+                if (input.KeyCode == "Escape")
+                {
+                    value.MouseDown = false;
+                    value.Tree.ClearDroppingNode();
+                }
                 break;
         }
 

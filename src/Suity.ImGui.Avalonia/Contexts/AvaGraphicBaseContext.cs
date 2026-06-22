@@ -570,6 +570,11 @@ internal abstract class AvaGraphicBaseContext :
             return;
         }
 
+        if (e.Key == Key.Escape)
+        {
+            _input.DragEvent = null;
+        }
+
         _input.SetKeyEvent(eventType, e);
         _graphicObject?.HandleGraphicInput(_input);
     }
