@@ -64,6 +64,13 @@ public static class FlowNodePropertyFunctions
                         .OverrideFont(new FontDef(ImGuiTheme.DefaultFont, 14, FontStyle.Bold), Color.Cyan);
                         break;
 
+                    case FlowComputationStates.Delegating:
+                        gui.Text("Delegating")
+                        .InitClass("propLabelText")
+                        .InitCenterHorizontal()
+                        .OverrideFont(new FontDef(ImGuiTheme.DefaultFont, 14, FontStyle.Bold), Color.Orange);
+                        break;
+
                     case FlowComputationStates.Finished:
                         {
                             string formattedTime = GetFormattedTime(state.ElapsedTime);

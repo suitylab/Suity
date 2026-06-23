@@ -2,6 +2,7 @@
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Agentic;
@@ -105,6 +106,12 @@ public interface IAgentLoop
     /// Gets the loop asset associated with this agent loop.
     /// </summary>
     IAigcLoopAsset LoopAsset { get; }
+
+    /// <summary>
+    /// Gets the status of the loop commit.
+    /// </summary>
+    /// <returns>The commit status.</returns>
+    TaskCommitStatus GetCommitStatus();
 }
 
 
@@ -156,6 +163,12 @@ public interface IAgentState
     /// <param name="loop">The loop to get state for.</param>
     /// <returns>The loop state.</returns>
     IAgentLoopState GetLoopState(IAgentLoop loop);
+
+    /// <summary>
+    /// Gets all loop states associated with this agent.
+    /// </summary>
+    /// <returns>Returns agent loop states.</returns>
+    IEnumerable<IAgentLoopState> GetLoopStates();
 
     /// <summary>
     /// Gets a value indicating whether the agent is currently running.

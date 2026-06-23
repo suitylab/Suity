@@ -31,6 +31,8 @@ public enum TextStatus
 
     ResourceUse,
 
+    Delegete,
+
     Comment,
 
     Preview,

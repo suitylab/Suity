@@ -264,7 +264,7 @@ public abstract class AigcTaskPage : DesignNode,
     /// Gets the unfinished child task, searching from the last task backward.
     /// </summary>
     /// <returns>The first unfinished child <see cref="AigcTaskPage"/>, or null if all tasks are done.</returns>
-    public AigcTaskPage GetUnfinishedChildTask()
+    public AigcTaskPage GetTaskToRun()
     {
         int c = Count;
         if (c == 0)
@@ -301,25 +301,18 @@ public abstract class AigcTaskPage : DesignNode,
     /// Gets the unfinished child task, recursively checking sub-tasks.
     /// </summary>
     /// <returns>The last unfinished child task, or null if no tasks exist.</returns>
-    public AigcTaskPage GetUnfinishedChildTaskDeep()
+    public AigcTaskPage GetTaskToRunDeep()
     {
         if (Count == 0)
         {
             return null;
         }
 
-        var task = GetUnfinishedChildTask();
+        var task = GetTaskToRun();
         if (task != null && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
         {
-            return task.GetUnfinishedChildTaskDeep() ?? task;
+            return task.GetTaskToRunDeep() ?? task;
         }
-
-        // This is the last completed task.
-        //task = GetTaskAt(Count - 1);
-        //if (task != null)
-        //{
-        //    return task.GetUnfinishedChildTaskDeep() ?? task;
-        //}
 
         return null;
     }
@@ -378,7 +371,7 @@ public abstract class AigcTaskPage : DesignNode,
     public bool GetAllDone()
     {
         var status = this.GetCommitStatus();
-        if (status == TaskCommitStatus.None)
+        if (status == TaskCommitStatus.None || status == TaskCommitStatus.Delegating)
         {
             return false;
         }

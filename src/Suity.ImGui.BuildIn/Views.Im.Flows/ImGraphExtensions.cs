@@ -28,6 +28,7 @@ public static class ImGraphExtensions
     readonly static BrushDef _NodeBG = new SolidBrushDef(EditorColorScheme.Default.Background);
 
     readonly static Color ColorRunning = Color.Cyan.MultiplyAlpha(0.5f);
+    readonly static Color ColorDelegating = Color.Orange.MultiplyAlpha(0.5f);
     readonly static Color ColorFinished = Color.DarkGreen.MultiplyAlpha(0.5f);
     readonly static Color ColorError = Color.Red.MultiplyAlpha(0.5f);
     readonly static Color ColorCancelled = Color.Gray.MultiplyAlpha(0.5f);
@@ -129,6 +130,7 @@ public static class ImGraphExtensions
             {
                 FlowComputationStates.None => null,
                 FlowComputationStates.Running => ColorRunning,
+                FlowComputationStates.Delegating => ColorDelegating,
                 FlowComputationStates.Finished => ColorFinished,
                 FlowComputationStates.Error => ColorError,
                 FlowComputationStates.Cancelled => ColorCancelled,

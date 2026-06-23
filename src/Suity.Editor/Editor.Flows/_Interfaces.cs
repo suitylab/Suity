@@ -617,6 +617,11 @@ public enum FlowComputationStates
     Running,
 
     /// <summary>
+    /// Delegating
+    /// </summary>
+    Delegating,
+
+    /// <summary>
     /// Finished
     /// </summary>
     Finished,

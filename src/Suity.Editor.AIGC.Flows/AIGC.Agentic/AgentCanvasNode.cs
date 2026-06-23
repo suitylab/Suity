@@ -164,6 +164,20 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     private static void LoopItemGui(ImGui gui, int i, AgentLoopItem loop, IAgentLoopState loopState)
     {
         bool running = loopState?.IsRunning == true;
+        var status = loop.GetCommitStatus();
+
+        string style = "loopFrame";
+        if (running)
+        {
+            if (status == TaskCommitStatus.Delegating)
+            {
+                style = "loopFrame-delegating";
+            }
+            else
+            {
+                style = "loopFrame-running";
+            }
+        }
 
         var node = gui.Frame("loop-" + i)
         .OnInitialize(n =>
@@ -174,7 +188,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             //n.SetInputFunction(ImGuiInputSystem.MouseInRender);
             n.InitInputFunctionChain(nameof(GuiButtonExtensions.Button));
         })
-        .SetClass(running ? ["loopFrame-running", "debug_draw"] : ["loopFrame", "debug_draw"])
+        .SetClass([style, "debug_draw"])
         .OnContent(() =>
         {
             if (loop.LoopAsset is not { } loopAsset)
@@ -192,8 +206,6 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             .InitFitVertical()
             .OnContent(() =>
             {
-                var status = loop.GetCommitStatus();
-
                 gui.Text(loop.ToString()?.ToShortcutBeginEnd())
                 .InitWidthRest(48)
                 .InitClass("textBold");
@@ -361,7 +373,18 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             var runner = LLmService.Instance.CurrentChat as IAgentGraphRunner;
             if (runner?.GetAgentState(this) is { } state)
             {
-                return state.IsRunning ? FlowComputationStates.Running : FlowComputationStates.None;
+                if (state.IsRunning)
+                {
+                    if (state.GetLoopStates().FirstOrDefault() is { } loopState)
+                    {
+                        if (loopState.Loop?.GetCommitStatus() == TaskCommitStatus.Delegating)
+                        {
+                            return FlowComputationStates.Delegating;
+                        }
+                    }
+
+                    return FlowComputationStates.Running;
+                }
             }
 
             return FlowComputationStates.None;

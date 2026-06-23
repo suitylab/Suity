@@ -127,6 +127,11 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
                 .ThenBy(f => f.Name)
                 .ToList();
 
+            if (entries.Count == 0)
+            {
+                return "(empty directory)";
+            }
+
             foreach (var entry in entries)
             {
                 string prefix = currentDepth == 0 ? "" : new string(' ', currentDepth * 4) + "|-- ";

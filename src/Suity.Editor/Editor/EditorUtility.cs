@@ -2155,6 +2155,7 @@ public static class EditorUtility
         TextStatus.Tag => CoreIconCache.Tag,
         TextStatus.UserCode => null,
         TextStatus.ResourceUse => null,
+        TextStatus.Delegete => CoreIconCache.Delegate,
         TextStatus.Reference => CoreIconCache.Reference,
         TextStatus.FileReference => CoreIconCache.Reference,
         TextStatus.EnumReference => CoreIconCache.Reference,

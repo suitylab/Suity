@@ -346,10 +346,9 @@ public class AgentState : IAgentState
 
     public IAgent Agent { get; }
 
-    public IAgentLoopState GetLoopState(IAgentLoop loop)
-    {
-        return _loops.GetValueSafe(loop);
-    }
+    public IAgentLoopState GetLoopState(IAgentLoop loop) => _loops.GetValueSafe(loop);
+
+    public IEnumerable<IAgentLoopState> GetLoopStates() => _loops.Values;
 
     public bool IsRunning => _loops.Values.Any(o => o.IsRunning);
 

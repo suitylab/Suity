@@ -1,6 +1,5 @@
 using Suity.Collections;
 using Suity.Drawing;
-using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows.SubFlows;
@@ -16,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Suity.Editor.AIGC;
 
@@ -273,7 +271,7 @@ public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
         var task = GetTaskToRun();
         if (task != null && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
         {
-            return task.GetUnfinishedChildTaskDeep() ?? task;
+            return task.GetTaskToRunDeep() ?? task;
         }
 
         // This is the last completed task.
@@ -587,7 +585,7 @@ public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
             return TaskCommitStatus.None;
         }
 
-        if (GetTaskToRun() is { } task)
+        if (GetTaskToRunDeep() is { } task)
         {
             return task.GetCommitStatus();
         }

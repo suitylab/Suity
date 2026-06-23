@@ -145,7 +145,7 @@ public static class SubFlowExtensions
                 return TextStatus.Disabled;
 
             case TaskCommitStatus.Delegating:
-                return TextStatus.Reference;
+                return TextStatus.Delegete;
 
             case TaskCommitStatus.None:
             default:
