@@ -198,6 +198,7 @@ public abstract class BaseOpenAICall : BaseLLmCall
         {
             Type = (option?.EnableThinking ?? false) ? "enabled" : "disabled",
         };
+
         if (option?.EnableThinking == true)
         {
             param.ReasoningEffort = "high";
@@ -264,6 +265,8 @@ public abstract class BaseOpenAICall : BaseLLmCall
                             break;
                         }
                     }
+
+                    bool finished = true;
                 }, cancel);
 
                 msgReasoning?.Dispose();

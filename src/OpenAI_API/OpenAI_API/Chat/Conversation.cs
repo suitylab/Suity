@@ -405,11 +405,13 @@ namespace OpenAI_API.Chat
                 throw new Exception("The chat result stream is null, but it shouldn't be");
             }
 
+            ChatResult lastRes = null;
+
             do
             {
                 cancel.ThrowIfCancellationRequested();
 
-                ChatResult res = enumerator.Current;
+                ChatResult res = lastRes = enumerator.Current;
                 if (res.Choices.FirstOrDefault()?.Delta is ChatMessage delta)
                 {
                     if (delta.Role != null)

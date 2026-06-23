@@ -217,7 +217,7 @@ public class LLmModelParameter : IViewObject
         = new(nameof(FrequencyPenalty), "Repetition penalty", 0, "");
 
     private readonly ValueProperty<int> _maxTokens
-        = new(nameof(MaxTokens), "Token number limit", 0, "TOOLTIPS_MAXTOKEN");
+        = new(nameof(MaxTokens), "Max tokens", 8192, "TOOLTIPS_MAXTOKEN");
 
     public LLmModelParameter()
     {
@@ -398,7 +398,7 @@ public class LLmModelPresetConfig : IViewObject
     /// Gets the default parameter configuration applied to language model calls.
     /// </summary>
     public ValueProperty<LLmModelParameter> DefaultParameters { get; }
-        = new(nameof(DefaultParameters), "Default parameters", new LLmModelParameter());
+        = new(nameof(DefaultParameters), "Default parameters", null);
 
 
     public LLmModelPresetConfig()
