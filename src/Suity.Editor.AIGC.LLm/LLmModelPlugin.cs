@@ -218,7 +218,7 @@ public class LLmModelPlugin : EditorPlugin, IViewObject
     /// <summary>
     /// Gets the default LLM model for the current preset.
     /// </summary>
-    public ILLmModel DefaultModel => GetLLmPreset(_llmLevel.Value).Default.Target;
+    public ILLmModel DefaultModel => GetLLmPreset(_llmLevel.Value).Default.Value?.Target;
 
     /// <summary>
     /// Gets a value indicating whether AI call logging is enabled.

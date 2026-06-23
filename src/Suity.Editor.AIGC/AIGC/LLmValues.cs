@@ -353,44 +353,44 @@ public class LLmModelPresetConfig : IViewObject
     /// <summary>
     /// Gets the default language model used when no specific model type is specified.
     /// </summary>
-    public AssetProperty<ILLmModel> Default { get; }
-        = new(nameof(Default), "Default", toolTips: "TOOLTIPS_DEFAULT_MODEL");
+    public ValueProperty<LLmModelConfig> Default { get; }
+        = new(nameof(Default), "Default", null, toolTips: "TOOLTIPS_DEFAULT_MODEL");
 
     /// <summary>
     /// Gets the language model configured for deep thinking or reasoning tasks.
     /// </summary>
-    public AssetProperty<ILLmModel> Thinking { get; }
-        = new(nameof(Thinking), "Thinking", toolTips: "TOOLTIPS_THINKING_MODEL");
+    public ValueProperty<LLmModelConfig> Thinking { get; }
+        = new(nameof(Thinking), "Thinking", null, toolTips: "TOOLTIPS_THINKING_MODEL");
 
     /// <summary>
     /// Gets the language model configured for web search operations.
     /// </summary>
-    public AssetProperty<ILLmModel> WebSearch { get; }
-        = new(nameof(WebSearch), "Web search", toolTips: "TOOLTIPS_WEB_SEARCH_MODEL");
+    public ValueProperty<LLmModelConfig> WebSearch { get; }
+        = new(nameof(WebSearch), "Web search", null, toolTips: "TOOLTIPS_WEB_SEARCH_MODEL");
 
     /// <summary>
     /// Gets the language model configured for code-specific tasks.
     /// </summary>
-    public AssetProperty<ILLmModel> Coding { get; }
-        = new(nameof(Coding), "Coding", toolTips: "TOOLTS_CODE_SPECIFIC_MODEL");
+    public ValueProperty<LLmModelConfig> Coding { get; }
+        = new(nameof(Coding), "Coding", null, toolTips: "TOOLTS_CODE_SPECIFIC_MODEL");
 
     /// <summary>
     /// Gets the language model configured for creative tasks.
     /// </summary>
-    public AssetProperty<ILLmModel> Creative { get; }
-        = new(nameof(Creative), "Creative", toolTips: "TOOLTS_CREATIVE_MODEL");
+    public ValueProperty<LLmModelConfig> Creative { get; }
+        = new(nameof(Creative), "Creative", null, toolTips: "TOOLTS_CREATIVE_MODEL");
 
     /// <summary>
     /// Gets the language model configured for summary tasks.
     /// </summary>
-    public AssetProperty<ILLmModel> Summary { get; }
-        = new(nameof(Summary), "Summary", toolTips: "TOOLTS_SUMMARY_MODEL");
+    public ValueProperty<LLmModelConfig> Summary { get; }
+        = new(nameof(Summary), "Summary", null, toolTips: "TOOLTS_SUMMARY_MODEL");
 
     /// <summary>
     /// Gets the lightweight language model for simple or fast operations.
     /// </summary>
-    public AssetProperty<ILLmModel> Lightweight { get; }
-        = new(nameof(Lightweight), "Lightweight", toolTips: "TOOLTIPS_LIGHTWEIGHT_MODEL");
+    public ValueProperty<LLmModelConfig> Lightweight { get; }
+        = new(nameof(Lightweight), "Lightweight", null, toolTips: "TOOLTIPS_LIGHTWEIGHT_MODEL");
 
 
 
@@ -403,6 +403,14 @@ public class LLmModelPresetConfig : IViewObject
 
     public LLmModelPresetConfig()
     {
+        Default.Property.WithOptional().WithExpand();
+        Thinking.Property.WithOptional().WithExpand();
+        WebSearch.Property.WithOptional().WithExpand();
+        Coding.Property.WithOptional().WithExpand();
+        Creative.Property.WithOptional().WithExpand();
+        Summary.Property.WithOptional().WithExpand();
+        Lightweight.Property.WithOptional().WithExpand();
+
         DefaultParameters.Property.WithWriteBack().WithOptional().WithExpand();
     }
 
@@ -437,6 +445,7 @@ public class LLmModelPresetConfig : IViewObject
         WebSearch.InspectorField(setup);
         Coding.InspectorField(setup);
         Lightweight.InspectorField(setup);
+
         DefaultParameters.InspectorField(setup);
     }
 
@@ -447,13 +456,13 @@ public class LLmModelPresetConfig : IViewObject
     /// <returns>The configured language model for the specified type, or the default model.</returns>
     public ILLmModel GetModel(LLmModelType type) => type switch
     {
-        LLmModelType.Thinking => Thinking.Target ?? Default.Target,
-        LLmModelType.WebSearch => WebSearch.Target ?? Default.Target,
-        LLmModelType.Coding => Coding.Target ?? Default.Target,
-        LLmModelType.Creative => Creative.Target ?? Default.Target,
-        LLmModelType.Summary => Summary.Target ?? Default.Target,
-        LLmModelType.Lightweight => Lightweight.Target ?? Default.Target,
-        _ => Default.Target,
+        LLmModelType.Thinking => Thinking.Value?.Target ?? Default.Value?.Target,
+        LLmModelType.WebSearch => WebSearch.Value?.Target ?? Default.Value?.Target,
+        LLmModelType.Coding => Coding.Value?.Target ?? Default.Value?.Target,
+        LLmModelType.Creative => Creative.Value?.Target ?? Default.Value?.Target,
+        LLmModelType.Summary => Summary.Value?.Target ?? Default.Value?.Target,
+        LLmModelType.Lightweight => Lightweight.Value?.Target ?? Default.Value?.Target,
+        _ => Default.Value?.Target,
     };
 
     /// <summary>
@@ -463,27 +472,27 @@ public class LLmModelPresetConfig : IViewObject
     /// <returns>True if all configured models are valid; otherwise, false.</returns>
     public bool GetIsValud(ref List<string> message)
     {
-        if (!GetLLmModelIsValud(Default, ref message))
+        if (!GetLLmModelIsValid(Default, ref message))
         {
             return false;
         }
 
-        if (!string.IsNullOrWhiteSpace(Thinking.Selection.SelectedKey) && !GetLLmModelIsValud(Thinking, ref message))
+        if (!string.IsNullOrWhiteSpace(Thinking.Value?.SelectedKey) && !GetLLmModelIsValid(Thinking, ref message))
         {
             return false;
         }
 
-        if (!string.IsNullOrWhiteSpace(WebSearch.Selection.SelectedKey) && !GetLLmModelIsValud(WebSearch, ref message))
+        if (!string.IsNullOrWhiteSpace(WebSearch.Value?.SelectedKey) && !GetLLmModelIsValid(WebSearch, ref message))
         {
             return false;
         }
 
-        if (!string.IsNullOrWhiteSpace(Lightweight.Selection.SelectedKey) && !GetLLmModelIsValud(Lightweight, ref message))
+        if (!string.IsNullOrWhiteSpace(Lightweight.Value?.SelectedKey) && !GetLLmModelIsValid(Lightweight, ref message))
         {
             return false;
         }
 
-        if (!string.IsNullOrWhiteSpace(Coding.Selection.SelectedKey) && !GetLLmModelIsValud(Coding, ref message))
+        if (!string.IsNullOrWhiteSpace(Coding.Value?.SelectedKey) && !GetLLmModelIsValid(Coding, ref message))
         {
             return false;
         }
@@ -491,15 +500,23 @@ public class LLmModelPresetConfig : IViewObject
         return true;
     }
 
-    /// <summary>
-    /// Validates that a specific language model property is properly configured.
-    /// </summary>
-    /// <param name="model">The asset property containing the language model to validate.</param>
-    /// <param name="message">A list to populate with validation error messages if validation fails.</param>
-    /// <returns>True if the model is valid; otherwise, false.</returns>
-    private bool GetLLmModelIsValud(AssetProperty<ILLmModel> model, ref List<string> message)
+    private bool GetLLmModelIsValid(ValueProperty<LLmModelConfig> model, ref List<string> message)
     {
-        if (model.Target is not { } target)
+        if (model.Value is not { } config)
+        {
+            message ??= [];
+            message.Add(L("Language model not configured correctly") + ": " + model.Property.DisplayName);
+
+            return false;
+        }
+
+        return GetLLmModelIsValid(config.Model, ref message);
+    }
+
+
+    private bool GetLLmModelIsValid(AssetProperty<ILLmModel> model, ref List<string> message)
+    {
+        if (model?.Target is not { } target)
         {
             message ??= [];
             message.Add(L("Language model not configured correctly") + ": " + model.Property.DisplayName);
@@ -528,7 +545,7 @@ public class LLmModelPresetConfig : IViewObject
 
         if (GetIsValud(ref message))
         {
-            return Default?.Target?.ToDisplayText() ?? string.Empty;
+            return Default?.Value?.Target?.ToDisplayText() ?? string.Empty;
         }
         else
         {
@@ -543,11 +560,15 @@ public class LLmModelPresetConfig : IViewObject
 
 public class LLmModelConfig : IViewObject
 {
-    public AssetProperty<ILLmModel> Thinking { get; }
-        = new(nameof(Thinking), "Thinking", toolTips: "TOOLTIPS_THINKING_MODEL");
+    public AssetProperty<ILLmModel> Model { get; }
+        = new(nameof(Model), "Model");
 
     public ValueProperty<LLmModelParameter> Parameters { get; }
-        = new(nameof(Parameters), "parameters", null);
+        = new(nameof(Parameters), "Parameters", new());
+
+    public ILLmModel Target => Model.Target;
+
+    public string SelectedKey => Model.Selection?.SelectedKey;
 
     public LLmModelConfig()
     {
@@ -556,19 +577,19 @@ public class LLmModelConfig : IViewObject
 
     public void Sync(IPropertySync sync, ISyncContext context)
     {
-        Thinking.Sync(sync);
+        Model.Sync(sync);
         Parameters.Sync(sync);
     }
 
     public void SetupView(IViewObjectSetup setup)
     {
-        Thinking.InspectorField(setup);
+        Model.InspectorField(setup);
         Parameters.InspectorField(setup);
     }
 
     public override string ToString()
     {
-        return Thinking.TargetAsset?.Name ?? string.Empty;
+        return Model.TargetAsset?.Name ?? string.Empty;
     }
 }
 
