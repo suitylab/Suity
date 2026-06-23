@@ -210,10 +210,22 @@ public class LLmModelPlugin : EditorPlugin, IViewObject
         return GetLLmPreset(level).GetModel(type);
     }
 
+    public LLmModelParameter GetLLmModelParameter(LLmModelType type) => GetLLmPreset(_llmLevel.Value).GetModelParameter(type);
+
+    public LLmModelParameter GetLLmModelParameter(LLmModelType type, AigcModelLevel level)
+    {
+        if (level == AigcModelLevel.Default)
+        {
+            level = _llmLevel.Value;
+        }
+
+        return GetLLmPreset(level).GetModelParameter(type);
+    }
+
     /// <summary>
     /// Gets the default LLM model parameters for the current preset.
     /// </summary>
-    public LLmModelParameter DefaultParameters => GetLLmPreset(_llmLevel.Value).DefaultParameters.Value;
+    public LLmModelParameter DefaultParameters => GetLLmPreset(_llmLevel.Value).DefaultParameter.Value;
 
     /// <summary>
     /// Gets the default LLM model for the current preset.

@@ -4,8 +4,6 @@ using OpenAI_API.ChatFunctions;
 using OpenAI_API.Models;
 using Suity.Editor.AIGC.API;
 using Suity.Views;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,7 +18,7 @@ public abstract class BaseOpenAICall : BaseLLmCall
 {
     private readonly BaseOpenAIPlugin _plugin;
     private readonly Model? _model;
-    private OpenAIAPI _api;
+    private OpenAIAPI? _api;
 
     private readonly ValueStore<Conversation> _request = new();
 
@@ -89,7 +87,12 @@ public abstract class BaseOpenAICall : BaseLLmCall
     /// <param name="msg">The message to append.</param>
     public override void AppendMessage(LLmMessage msg)
     {
-        if (string.IsNullOrWhiteSpace(msg?.Message))
+        if (msg is null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(msg.Message))
         {
             return;
         }
@@ -165,15 +168,8 @@ public abstract class BaseOpenAICall : BaseLLmCall
         base.SetFunctionCall(name);
     }
 
-    /// <summary>
-    /// Executes the API call and returns the response text.
-    /// </summary>
-    /// <param name="cancel">Cancellation token.</param>
-    /// <param name="config">Model configuration parameters.</param>
-    /// <param name="option">Call options.</param>
-    /// <param name="title">Optional title for the call.</param>
-    /// <returns>The response text from the API.</returns>
-    public override async Task<string?> Call(CancellationToken cancel, LLmModelParameter config, LLmCallOption? option = null, string? title = null)
+    /// <inheritdoc/>
+    public override async Task<string?> Call(CancellationToken cancel, LLmModelParameter? config = null, LLmCallOption? option = null, string? title = null)
     {
         string modelId = base.Model.ModelId ?? _model ?? throw new AigcException(L("Model Id not set"));
 
@@ -205,7 +201,7 @@ public abstract class BaseOpenAICall : BaseLLmCall
         }
 
         string[]? interruptions = option?.InterruptionWords;
-        LLmCallInterruptionModes interruptionMode = option?.InterruptionMode ?? LLmCallInterruptionModes.None;
+        var interruptionMode = option?.InterruptionMode ?? LLmCallInterruptionModes.None;
 
         // Handle cases where tool calling is not supported
         if (HasFunction && !Model.SupportToolCalling)
@@ -296,18 +292,13 @@ public abstract class BaseOpenAICall : BaseLLmCall
         return LastTextOutput;
     }
 
-    /// <summary>
-    /// Clears the current conversation state.
-    /// </summary>
+    /// <inheritdoc/>
     public override void Clear()
     {
         _request.PickUp();
     }
 
-    /// <summary>
-    /// Process chat result, attempt to parse function call
-    /// </summary>
-    /// <param name="chatResult"></param>
+    /// <inheritdoc/>
     protected virtual void ProcessManualFunctionCall(ChatResult chatResult)
     {
         if (!HasFunction)

@@ -33,6 +33,7 @@ public class GetGlobalLLmModel : AigcFlowNode
     private readonly ConnectorValueProperty<LLmModelType> _type = new("Type", "Type", LLmModelType.Default, "The type of the LLM model usage configured in the settings.");
 
     readonly FlowNodeConnector _llmModel;
+    readonly FlowNodeConnector _parameter;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GetGlobalLLmModel"/> class.
@@ -43,8 +44,10 @@ public class GetGlobalLLmModel : AigcFlowNode
         _type.AddConnector(this);
 
         var modelType = TypeDefinition.FromNative<ILLmModel>();
+        var settingType = TypeDefinition.FromNative<LLmModelParameter>();
 
         _llmModel = this.AddDataOutputConnector("LlmModel", modelType, "Language Model");
+        _parameter = this.AddDataOutputConnector("Parameter", settingType, "Parameter");
     }
 
     /// <inheritdoc/>
@@ -72,8 +75,10 @@ public class GetGlobalLLmModel : AigcFlowNode
         var type = _type.GetValue(compute, this);
 
         var model = LLmService.Instance.GetLLmModel(level, type);
+        var parameter = LLmService.Instance.GetLLmModelParameter(level, type);
 
         compute.SetValue(_llmModel, model);
+        compute.SetValue(_parameter, parameter);
     }
 }
 
@@ -325,10 +330,10 @@ public class CallLLm : AigcFlowNode
             }
         }
 
-        if (model is not LLmModelAsset)
-        {
-            throw new InvalidOperationException($"Model resource must inherit from {nameof(LLmModelAsset)}");
-        }
+        //if (model is not LLmModelAsset)
+        //{
+        //    throw new InvalidOperationException($"Model asset must inherit from {nameof(LLmModelAsset)}");
+        //}
 
         var c = compute.Context.GetArgument<IConversationHandler>();
 

@@ -204,6 +204,9 @@ public class TextToLLmMessageConverter : TextToTypeConverter<LLmMessage>
 [NativeType(CodeBase = "AIGC", Description = "Language Model Parameter")]
 public class LLmModelParameter : IViewObject
 {
+    private readonly ValueProperty<int> _maxTokens
+        = new(nameof(MaxTokens), "Max tokens", 65536, "TOOLTIPS_MAXTOKEN");
+
     private readonly ValueProperty<double> _temperature
         = new(nameof(Temperature), "Temperature", 0.5, "TOOLTIPS_TEMPERATURE");
 
@@ -215,9 +218,6 @@ public class LLmModelParameter : IViewObject
 
     private readonly ValueProperty<double> _frequencyPenalty
         = new(nameof(FrequencyPenalty), "Repetition penalty", 0, "");
-
-    private readonly ValueProperty<int> _maxTokens
-        = new(nameof(MaxTokens), "Max tokens", 8192, "TOOLTIPS_MAXTOKEN");
 
     public LLmModelParameter()
     {
@@ -253,11 +253,11 @@ public class LLmModelParameter : IViewObject
     /// <param name="context">The synchronization context.</param>
     public void Sync(IPropertySync sync, ISyncContext context)
     {
+        _maxTokens.Sync(sync);
         _temperature.Sync(sync);
         _topP.Sync(sync);
         _presencePenalty.Sync(sync);
         _frequencyPenalty.Sync(sync);
-        _maxTokens.Sync(sync);
     }
 
     /// <summary>
@@ -266,11 +266,11 @@ public class LLmModelParameter : IViewObject
     /// <param name="setup">The view object setup interface.</param>
     public void SetupView(IViewObjectSetup setup)
     {
+        _maxTokens.InspectorField(setup);
         _temperature.InspectorField(setup);
         _topP.InspectorField(setup);
         _presencePenalty.InspectorField(setup);
         _frequencyPenalty.InspectorField(setup);
-        _maxTokens.InspectorField(setup);
     }
 
     /// <summary>
@@ -279,7 +279,8 @@ public class LLmModelParameter : IViewObject
     /// <returns>A localized string representing the parameter configuration.</returns>
     public override string ToString()
     {
-        return L(this.GetType().ToDisplayText());
+        //return L(this.GetType().ToDisplayText());
+        return $"{_maxTokens.Value} Max Tokens";
     }
 }
 
@@ -397,8 +398,8 @@ public class LLmModelPresetConfig : IViewObject
     /// <summary>
     /// Gets the default parameter configuration applied to language model calls.
     /// </summary>
-    public ValueProperty<LLmModelParameter> DefaultParameters { get; }
-        = new(nameof(DefaultParameters), "Default parameters", null);
+    public ValueProperty<LLmModelParameter> DefaultParameter { get; }
+        = new(nameof(DefaultParameter), "Default Parameter", null);
 
 
     public LLmModelPresetConfig()
@@ -411,7 +412,7 @@ public class LLmModelPresetConfig : IViewObject
         Summary.Property.WithOptional().WithExpand();
         Lightweight.Property.WithOptional().WithExpand();
 
-        DefaultParameters.Property.WithWriteBack().WithOptional().WithExpand();
+        DefaultParameter.Property.WithWriteBack().WithOptional().WithExpand();
     }
 
     /// <summary>
@@ -429,7 +430,7 @@ public class LLmModelPresetConfig : IViewObject
         Summary.Sync(sync);
         Lightweight.Sync(sync);
 
-        DefaultParameters.Sync(sync);
+        DefaultParameter.Sync(sync);
     }
 
     /// <summary>
@@ -446,7 +447,7 @@ public class LLmModelPresetConfig : IViewObject
         Coding.InspectorField(setup);
         Lightweight.InspectorField(setup);
 
-        DefaultParameters.InspectorField(setup);
+        DefaultParameter.InspectorField(setup);
     }
 
     /// <summary>
@@ -454,15 +455,20 @@ public class LLmModelPresetConfig : IViewObject
     /// </summary>
     /// <param name="type">The type of language model to retrieve.</param>
     /// <returns>The configured language model for the specified type, or the default model.</returns>
-    public ILLmModel GetModel(LLmModelType type) => type switch
+    public ILLmModel GetModel(LLmModelType type) => GetModelConfig(type)?.Target;
+
+    public LLmModelParameter GetModelParameter(LLmModelType type)
+        => GetModelConfig(type)?.Parameter ?? DefaultParameter.Value;
+
+    public LLmModelConfig GetModelConfig(LLmModelType type) => type switch
     {
-        LLmModelType.Thinking => Thinking.Value?.Target ?? Default.Value?.Target,
-        LLmModelType.WebSearch => WebSearch.Value?.Target ?? Default.Value?.Target,
-        LLmModelType.Coding => Coding.Value?.Target ?? Default.Value?.Target,
-        LLmModelType.Creative => Creative.Value?.Target ?? Default.Value?.Target,
-        LLmModelType.Summary => Summary.Value?.Target ?? Default.Value?.Target,
-        LLmModelType.Lightweight => Lightweight.Value?.Target ?? Default.Value?.Target,
-        _ => Default.Value?.Target,
+        LLmModelType.Thinking => Thinking.Value ?? Default.Value,
+        LLmModelType.WebSearch => WebSearch.Value ?? Default.Value,
+        LLmModelType.Coding => Coding.Value ?? Default.Value,
+        LLmModelType.Creative => Creative.Value ?? Default.Value,
+        LLmModelType.Summary => Summary.Value ?? Default.Value,
+        LLmModelType.Lightweight => Lightweight.Value ?? Default.Value,
+        _ => Default.Value,
     };
 
     /// <summary>
@@ -563,8 +569,8 @@ public class LLmModelConfig : IViewObject
     public AssetProperty<ILLmModel> Model { get; }
         = new(nameof(Model), "Model");
 
-    public ValueProperty<LLmModelParameter> Parameters { get; }
-        = new(nameof(Parameters), "Parameters", new());
+    public ValueProperty<LLmModelParameter> Parameter { get; }
+        = new(nameof(Parameter), "Parameter", new());
 
     public ILLmModel Target => Model.Target;
 
@@ -572,19 +578,19 @@ public class LLmModelConfig : IViewObject
 
     public LLmModelConfig()
     {
-        Parameters.Property.WithWriteBack().WithOptional().WithExpand();
+        Parameter.Property.WithWriteBack().WithOptional();
     }
 
     public void Sync(IPropertySync sync, ISyncContext context)
     {
         Model.Sync(sync);
-        Parameters.Sync(sync);
+        Parameter.Sync(sync);
     }
 
     public void SetupView(IViewObjectSetup setup)
     {
         Model.InspectorField(setup);
-        Parameters.InspectorField(setup);
+        Parameter.InspectorField(setup);
     }
 
     public override string ToString()

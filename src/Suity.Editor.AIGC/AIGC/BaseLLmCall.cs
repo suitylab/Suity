@@ -214,7 +214,7 @@ Export pure json code using the function schema without any '//' comments.
     /// <param name="option">Optional call options.</param>
     /// <param name="title">Optional title for the call.</param>
     /// <returns>A task representing the async operation, returning the text output.</returns>
-    public virtual Task<string> Call(CancellationToken cancel, LLmModelParameter config, LLmCallOption option = null, string title = null)
+    public virtual Task<string> Call(CancellationToken cancel, LLmModelParameter config = null, LLmCallOption option = null, string title = null)
     {
         _lastTextOutput = string.Empty;
         return Task.FromResult<string>(string.Empty);

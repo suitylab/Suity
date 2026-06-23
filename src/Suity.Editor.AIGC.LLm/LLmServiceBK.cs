@@ -162,6 +162,18 @@ internal class LLmServiceBK : LLmService
         }
     }
 
+    public override LLmModelParameter GetLLmModelParameter(AigcModelLevel level, LLmModelType type)
+    {
+        if (level != AigcModelLevel.Default)
+        {
+            return LLmModelPlugin.Instance.GetLLmModelParameter(type, level);
+        }
+        else
+        {
+            return LLmModelPlugin.Instance.GetLLmModelParameter(type);
+        }
+    }
+
     /// <inheritdoc/>
     public override IImageGenModel GetImageGenModel(AigcModelLevel level)
     {
