@@ -404,15 +404,15 @@ public class LLmModelPresetConfig : IViewObject
 
     public LLmModelPresetConfig()
     {
-        Default.Property.WithOptional().WithExpand();
-        Thinking.Property.WithOptional().WithExpand();
-        WebSearch.Property.WithOptional().WithExpand();
-        Coding.Property.WithOptional().WithExpand();
-        Creative.Property.WithOptional().WithExpand();
-        Summary.Property.WithOptional().WithExpand();
-        Lightweight.Property.WithOptional().WithExpand();
+        Default.Property.WithOptional();
+        Thinking.Property.WithOptional();
+        WebSearch.Property.WithOptional();
+        Coding.Property.WithOptional();
+        Creative.Property.WithOptional();
+        Summary.Property.WithOptional();
+        Lightweight.Property.WithOptional();
 
-        DefaultParameter.Property.WithWriteBack().WithOptional().WithExpand();
+        DefaultParameter.Property.WithWriteBack().WithOptional();
     }
 
     /// <summary>
@@ -551,7 +551,7 @@ public class LLmModelPresetConfig : IViewObject
 
         if (GetIsValud(ref message))
         {
-            return Default?.Value?.Target?.ToDisplayText() ?? string.Empty;
+            return Default.Value?.ToString() ?? string.Empty;
         }
         else
         {
@@ -595,7 +595,8 @@ public class LLmModelConfig : IViewObject
 
     public override string ToString()
     {
-        return Model.TargetAsset?.Name ?? string.Empty;
+        string name = Model.Target?.ToDisplayText() ?? string.Empty;
+        return $"{name} {Parameter.Value}";
     }
 }
 
