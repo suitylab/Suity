@@ -60,3 +60,30 @@ class ResetLayoutMenuCommand : MenuCommand
         (SuityApp.Instance.Window as MainWindow)?.View.DockContainer.ResetLayout();
     }
 }
+
+public class RefreshLayoutMenuCommand : MenuCommand
+{
+    public RefreshLayoutMenuCommand()
+        : base("Refresh Layout")
+    {
+    }
+
+    /// <inheritdoc/>
+    public override void DoCommand()
+    {
+        var mainWindow = SuityApp.Instance.Window as MainWindow;
+        if (mainWindow is null)
+        {
+            return;
+        }
+
+        var docks = mainWindow.View?.DockContainer;
+        if (docks is null)
+        {
+            return;
+        }
+
+        docks.QueueRebuildDocuments();
+        docks.QueueRebuildTools();
+    }
+}

@@ -213,6 +213,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 
         loopDoc.StartupPage = startupPage;
         loopDoc.InitialTaskPrompt = prompt;
+        loopDoc.Attributes.AddAttribute<UsageAttribute>(o => o.Usage = "AgentGraph");
 
         var startupWorkflow = loopDoc.NewTaskPrompt(prompt);
         

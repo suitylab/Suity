@@ -1,5 +1,6 @@
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows.SubFlows;
@@ -26,7 +27,7 @@ namespace Suity.Editor.AIGC;
 [NativeAlias("Suity.Editor.AIGC.PageTasks.AigcTaskPageDocument")]
 [NativeAlias("Suity.Editor.AIGC.Flows.AigcTaskPageDocument")]
 [NativeAlias("Suity.Editor.AIGC.AigcTaskPageDocument")]
-public class AigcLoopDocument : SNamedDocument<AigcLoopAssetBuilder>, IAigcLoop
+public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
 {
     readonly TextBlockProperty _initialTaskPrompt = new("InitialTaskPrompt", "Initial Task Prompt", string.Empty);
     readonly AssetProperty<ISubFlowAsset> _startupPage = new("StartupPage", "Startup Page") { Filter = StartupPageFilter.Instance };

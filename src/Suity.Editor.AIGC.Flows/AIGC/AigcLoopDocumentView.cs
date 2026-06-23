@@ -1,5 +1,6 @@
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows;
@@ -547,6 +548,8 @@ public class AigcLoopDocumentView : IDocumentView,
 
     private void MainGui(ImGui gui)
     {
+        bool hasUsage = _document.GetAttribute<UsageAttribute>() != null;
+
         _guiRef.Node = gui.HorizontalFrame("main_ui")
         .OnInitialize(n =>
         {
@@ -573,6 +576,7 @@ public class AigcLoopDocumentView : IDocumentView,
                         gui.Button("btnStop", "Stop", CoreIconCache.Stop)
                         .InitClass("simpleBtn")
                         .SetToolTipsL("Stop task")
+                        .SetDisabled(hasUsage)
                         .OnClick(() =>
                         {
                             _currentRunner?.RequestCancel();
@@ -585,7 +589,7 @@ public class AigcLoopDocumentView : IDocumentView,
                         gui.Button("btnPrompt", "Prompt", CoreIconCache.Prompt)
                         .InitClass("simpleBtn")
                         .SetToolTipsL("Start task")
-                        //.SetEnabled(_document?.GetUnfinishedChildTaskDeep() != null)
+                        .SetDisabled(hasUsage)
                         .OnClick(() =>
                         {
                             _treeView.DoServiceAction<IViewSelectable>(o => o.SetSelection(new ViewSelection(_document)));
@@ -594,7 +598,7 @@ public class AigcLoopDocumentView : IDocumentView,
                         gui.Button("btnResume", "Resume", CoreIconCache.Play)
                         .InitClass("simpleBtn")
                         .SetToolTipsL("Start task")
-                        .SetEnabled(_document?.GetTaskToRunDeep() != null)
+                        .SetDisabled(hasUsage || _document?.GetTaskToRunDeep() is null)
                         .OnClick(() =>
                         {
                             Run("/resume");
@@ -677,6 +681,12 @@ public class AigcLoopDocumentView : IDocumentView,
 
     private void OnStartupGui(ImGui gui, AigcLoopDocument doc)
     {
+        bool hasUsage = _document.GetAttribute<UsageAttribute>() != null;
+        if (hasUsage)
+        {
+            return;
+        }
+
         gui.Frame("#startup")
         .InitClass("editorBg")
         .InitSizeRest()

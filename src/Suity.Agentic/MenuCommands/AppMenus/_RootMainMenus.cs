@@ -68,6 +68,7 @@ class ViewMenu : MainMenuCommand
         AddSeparator();
 
         AddCommand(new ResetLayoutMenuCommand());
+        AddCommand(new RefreshLayoutMenuCommand());
         AddCommand(new ToggleDescription());
         AddSeparator();
     }
