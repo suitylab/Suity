@@ -539,6 +539,41 @@ public class LLmModelPresetConfig : IViewObject
 
 #endregion
 
+#region LLmModelConfig
+
+public class LLmModelConfig : IViewObject
+{
+    public AssetProperty<ILLmModel> Thinking { get; }
+        = new(nameof(Thinking), "Thinking", toolTips: "TOOLTIPS_THINKING_MODEL");
+
+    public ValueProperty<LLmModelParameter> Parameters { get; }
+        = new(nameof(Parameters), "parameters", null);
+
+    public LLmModelConfig()
+    {
+        Parameters.Property.WithWriteBack().WithOptional().WithExpand();
+    }
+
+    public void Sync(IPropertySync sync, ISyncContext context)
+    {
+        Thinking.Sync(sync);
+        Parameters.Sync(sync);
+    }
+
+    public void SetupView(IViewObjectSetup setup)
+    {
+        Thinking.InspectorField(setup);
+        Parameters.InspectorField(setup);
+    }
+
+    public override string ToString()
+    {
+        return Thinking.TargetAsset?.Name ?? string.Empty;
+    }
+}
+
+#endregion
+
 #region LLmCallRequest
 
 /// <summary>
