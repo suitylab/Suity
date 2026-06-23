@@ -1,9 +1,11 @@
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Flows.TaskPages;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
@@ -354,15 +356,33 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
     {
         if (item is AigcWorkflowPage workflowPage)
         {
-            var selection = new AssetSelection<SubFlowDefinitionAsset>();
+            ISubFlowAsset workflowAsset = null;
+            PromptAsset rule = null;
+
+            //if (_startupPage.Target is ISubFlowAsset startup)
+            //{
+            //    workflowAsset = startup;
+            //}
+            //else
+            //{
+            var selection = new AssetSelection<ISubFlowAsset>();
             if (!await selection.ShowSelectionGUIAsync("Select Workflow"))
             {
                 return false;
             }
 
+            workflowAsset = selection.Target;
+            //}
+
+            if (workflowAsset is SubFlowPresetAsset presetAsset)
+            {
+                rule = (presetAsset.GetPresetDefinition() as SubFlowPresetDocument)?.Rule;
+            }
+
             workflowPage.Name = AllocateTaskId();
-            workflowPage.Workflow = selection.Target;
-            workflowPage.Description = selection.Target?.ToDisplayTextL() ?? string.Empty;
+            workflowPage.Workflow = workflowAsset;
+            workflowPage.Rule = rule;
+            workflowPage.Description = workflowAsset?.ToDisplayTextL() ?? string.Empty;
             return true;
         }
         else if (item is AigcToolPage toolPage)

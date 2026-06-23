@@ -191,7 +191,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         base.OnSync(sync, context);
 
         _workflow.Sync(sync);
-        _article.Sync(sync);
+        //_article.Sync(sync);
         _taskPrompt.Sync(sync);
         _rule.Sync(sync);
 
@@ -204,7 +204,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         base.OnSetupViewTask(setup);
 
         _workflow.InspectorField(setup);
-        _article.InspectorField(setup);
+        //_article.InspectorField(setup);
         _taskPrompt.InspectorField(setup);
         _rule.InspectorField(setup);
 
@@ -1140,10 +1140,11 @@ public class AigcWorkflowPage : AigcTaskPage,
     {
         SubFlowInstance instance = null;
 
-        if (GetDefinitionItem() is { } page)
+        if (Workflow is { } workflowAsset)
         {
-            instance = Instance;
+            var page = GetDefinitionItem();
 
+            instance = Instance;
             if (instance != null && instance.IsInDiagram && instance.DiagramItem == page)
             {
                 instance.Build();
@@ -1156,19 +1157,22 @@ public class AigcWorkflowPage : AigcTaskPage,
                     Owner = this,
                 };
 
-                Instance = new SubFlowInstance(page, option);
+                Instance = workflowAsset.CreatePageInstance(option) as SubFlowInstance;
                 if (instance != null)
                 {
-                    Instance.UpdateFromOther(instance);
+                    Instance?.UpdateFromOther(instance);
                 }
+            }
+
+            if (Instance != null)
+            {
+                this.TaskPageDocument?.View?.DoServiceAction<IViewRefresh>(o => o.QueueRefreshView());
             }
         }
         else
         {
             Instance = null;
         }
-
-        this.TaskPageDocument?.View?.DoServiceAction<IViewRefresh>(o => o.QueueRefreshView());
 
         return instance;
     }

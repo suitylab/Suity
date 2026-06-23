@@ -65,4 +65,9 @@ public interface ICanvasDocument : IFlowDiagramContext, IMemberContainer
     /// Creates a tool node of the specified type.
     /// </summary>
     T CreateToolNode<T>(Size? size = null) where T : CanvasToolNode, new();
+
+    /// <summary>
+    /// Compute all connection values.
+    /// </summary>
+    void ComputeConnections();
 }

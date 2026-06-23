@@ -2,6 +2,7 @@
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
+using Suity.Editor.Documents.Canvas;
 using Suity.Editor.Services;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
@@ -37,6 +38,8 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
     {
         try
         {
+            CanvasDocument.ComputeConnections();
+
             QueuedAction.Do(QueueRefreshView);
             StartNode.FlashingConnector();
 

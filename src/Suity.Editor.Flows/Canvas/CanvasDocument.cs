@@ -300,6 +300,23 @@ public class CanvasDocument : FlowDocument<CanvasAssetBuilder>,
         }
     }
 
+    public void ComputeConnections()
+    {
+        if (Entry is null)
+        {
+            return;
+        }
+
+        var compute = _computation ??= new();
+        foreach (var node in FlowNodes)
+        {
+            if (!compute.GetNodeRunningState(node).GetIsEnded())
+            {
+                node.Compute(compute);
+            }
+        }
+    }
+
     #endregion
 
     internal protected override void OnLoaded(DocumentLoadingIntent intent)
@@ -307,23 +324,8 @@ public class CanvasDocument : FlowDocument<CanvasAssetBuilder>,
         base.OnLoaded(intent);
 
 // Most canvas nodes reference external resources, and their connection points are from external resources.
-/// Connection ports are created with delay, so need to queue once before executing computation
-        QueuedAction.Do(() =>
-        {
-            if (Entry is null)
-            {
-                return;
-            }
-
-            var compute = _computation ??= new();
-            foreach (var node in FlowNodes)
-            {
-                if (!compute.GetNodeRunningState(node).GetIsEnded())
-                {
-                    node.Compute(compute);
-                }
-            }
-        });
+// Connection ports are created with delay, so need to queue once before executing computation
+        QueuedAction.Do(ComputeConnections);
     }
 
     internal protected override void OnLinkAdded(NodeLink link)

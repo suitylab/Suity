@@ -147,6 +147,8 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
             throw new NullReferenceException("Tool page is not set");
         }
 
+        (toolPage as AigcTaskPage)?.CommitStatus = TaskCommitStatus.Delegating;
+
         myAgent.FlashingConnector(FlowDirections.Input);
 
         var subAgents = myAgent?.GetSubAgents() ?? [];
