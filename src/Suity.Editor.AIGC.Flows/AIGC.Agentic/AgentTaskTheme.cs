@@ -16,8 +16,12 @@ internal class AgentTaskTheme : ImGuiTheme
         this.ClassStyle("loopFrame")
         .SetColor(ColorScheme.EditorBG2.MultiplyAlpha(0.3f))
         .SetBorder(1, ColorScheme.EditorBG);
-        this.Pseudo("running")
-        .SetColor(Color.Cyan.MultiplyAlpha(0.35f));
+        //this.PseudoMouseIn()
+        //.SetBorder(1, Color.White.MultiplyAlpha(0.5f));
+
+        this.ClassStyle("loopFrame-running")
+        .SetColor(Color.Cyan.MultiplyAlpha(0.35f))
+        .SetBorder(1, ColorScheme.EditorBG);
 
         var font = new FontDef(ImGuiTheme.DefaultFont, 14);
         var fontBold = new FontDef(ImGuiTheme.DefaultFont, 14, FontStyle.Bold);

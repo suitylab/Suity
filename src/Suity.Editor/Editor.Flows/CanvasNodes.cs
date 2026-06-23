@@ -490,7 +490,7 @@ public abstract class CanvasAssetNode<TAsset> : BaseCanvasAssetNode, IInspectorR
                 {
                     gui.Button("#open", ImGuiIcons.Open)
                     .InitClass("configBtn")
-                    .OnClick(n => 
+                    .OnClick(() => 
                     {
                         if (context is IFlowViewNode { FlowView: IHasSubDocumentView subView })
                         {
@@ -499,9 +499,12 @@ public abstract class CanvasAssetNode<TAsset> : BaseCanvasAssetNode, IInspectorR
                         else
                         {
                             subView = gui.GetValue<IHasSubDocumentView>();
-                            //var currentView = n.GetValue<IFlowView>();
                             OnNavigationButtonClicked(subView);
                         }
+                    })
+                    .OnDoubleClick(() => 
+                    {
+                        TargetAsset?.ShowDocumentView();
                     });
 
                     return true;

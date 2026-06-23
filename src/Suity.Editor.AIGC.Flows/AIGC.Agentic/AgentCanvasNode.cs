@@ -1,6 +1,7 @@
 ﻿using Suity.Collections;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Documents;
+using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.TaskPages;
@@ -125,23 +126,36 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         var runner = LLmService.Instance.CurrentChat as IAgentGraphRunner;
         var state = runner?.GetAgentState(this);
 
-        var node = gui.VerticalLayout("loop-list")
-        .InitTheme(AgentTaskTheme.Instance)
-        .InitPadding(25)
-        .InitWidth(400)
-        .InitFitVertical()
-        .InitChildSpacing(10)
-        .OnContent(() => 
+        var node = gui.VerticalLayout("loop-layout")
+        .OnInitialize(n =>
         {
-            gui.Text("LOOPS")
-            .InitClass("textLight");
-
-            for (int i = 0; i < _loops.List.Count; i++)
+            n.InitTheme(AgentTaskTheme.Instance);
+            n.SetClass("debug_draw");
+            n.InitWidth(400);
+            n.InitFitVertical();
+        })
+        .OnContent(() =>
+        {
+            gui.VerticalLayout("loop-list")
+            .OnInitialize(n => 
             {
-                var loop = _loops.List[i];
-                var loopState = state?.GetLoopState(loop);
-                LoopItemGui(gui, i, loop, loopState);
-            }
+                n.InitPadding(25);
+                n.InitFullWidth();
+                n.InitFitVertical();
+                n.InitChildSpacing(10);
+            })
+            .OnContent(() =>
+            {
+                gui.Text("LOOPS")
+                .InitClass("textLight");
+
+                for (int i = 0; i < _loops.List.Count; i++)
+                {
+                    var loop = _loops.List[i];
+                    var loopState = state?.GetLoopState(loop);
+                    LoopItemGui(gui, i, loop, loopState);
+                }
+            });
         });
 
         return node;
@@ -154,15 +168,16 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         var node = gui.Frame("loop-" + i)
         .OnInitialize(n =>
         {
-            n.InitClass("loopFrame");
             n.InitPadding(10);
             n.InitFullWidth();
             n.InitFitVertical();
+            //n.SetInputFunction(ImGuiInputSystem.MouseInRender);
+            n.InitInputFunctionChain(nameof(GuiButtonExtensions.Button));
         })
-        .SetPseudo(running ? "running" : null)
+        .SetClass(running ? ["loopFrame-running", "debug_draw"] : ["loopFrame", "debug_draw"])
         .OnContent(() =>
         {
-            if (loop.LoopAsset is not { } asset)
+            if (loop.LoopAsset is not { } loopAsset)
             {
                 gui.Text("title-missing", loop.ToString()?.ToShortcutBeginEnd())
                 .InitFullWidth()
@@ -172,9 +187,10 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             }
 
             gui.HorizontalLayout("loop-view")
+            .SetClass("debug_draw")
             .InitFullWidth()
             .InitFitVertical()
-            .OnContent(() => 
+            .OnContent(() =>
             {
                 var status = loop.GetCommitStatus();
 
@@ -189,7 +205,14 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
                 .InitClass("configBtn")
                 .OnClick(() =>
                 {
-                    EditorUtility.LocateInProject(asset);
+                    EditorUtility.LocateInProject(loopAsset);
+                })
+                .OnDoubleClick(() =>
+                {
+                    if (loopAsset is Asset asset)
+                    {
+                        asset.ShowDocumentView();
+                    }
                 });
             });
 
@@ -197,6 +220,13 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             {
                 gui.Text("sub-title", lastTask.DisplayText)
                 .InitClass("textSub");
+            }
+        })
+        .OnDoubleClick(() => 
+        {
+            if (loop.LoopAsset is Asset asset)
+            {
+                asset.ShowDocumentView();
             }
         });
     }

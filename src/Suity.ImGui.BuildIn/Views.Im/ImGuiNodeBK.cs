@@ -349,31 +349,32 @@ internal class ImGuiNodeBK : ImGuiNode
             //TODO: If the parent is a scrollable control, need to get the parent's DirtyRect and intersect with current DirtyRect
             // Try to only do one level
 
-            if (_parent is { } p)
-            {
-                var pInnerRect = p.InnerRect;
-                pInnerRect = p.RevertTransformChildRect(pInnerRect);
-                rect.Intersect(pInnerRect);
-            }
-
-            return rect.IsEmpty ? null : rect;
-
-            var parent = _parent;
-            while (parent is { })
+            if (_parent is { } parent)
             {
                 var pInnerRect = parent.InnerRect;
-
+                //TODO: Make mistake when render in node graph
+                pInnerRect = parent.RevertTransformChildRect(pInnerRect);
                 rect.Intersect(pInnerRect);
-
-                if (rect.IsEmpty)
-                {
-                    return null;
-                }
-
-                parent = parent._parent;
             }
 
             return rect.IsEmpty ? null : rect;
+
+            //var parent = _parent;
+            //while (parent is { })
+            //{
+            //    var pInnerRect = parent.InnerRect;
+
+            //    rect.Intersect(pInnerRect);
+
+            //    if (rect.IsEmpty)
+            //    {
+            //        return null;
+            //    }
+
+            //    parent = parent._parent;
+            //}
+
+            //return rect.IsEmpty ? null : rect;
         }
     }
 
@@ -414,19 +415,19 @@ internal class ImGuiNodeBK : ImGuiNode
         {
             bool changed = false;
 
-            if (value is { } t)
+            if (value is { } trans)
             {
                 if (_transform != null)
                 {
-                    if (_transform.Transform != t)
+                    if (_transform.Transform != trans)
                     {
-                        _transform.Transform = t;
+                        _transform.Transform = trans;
                         changed = true;
                     }
                 }
                 else
                 {
-                    _transform = new TransformNode(this, t);
+                    _transform = new TransformNode(this, trans);
                     UpdateGlobalTransform();
                     changed = true;
                 }
