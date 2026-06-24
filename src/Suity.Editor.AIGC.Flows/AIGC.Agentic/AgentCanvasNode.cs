@@ -88,6 +88,8 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         _overview.InspectorField(setup);
 
         setup.InspectorField(AssetRef, new ViewProperty(nameof(AssetRef), "Starter Workflow"));
+
+        setup.LabelWithIcon("Execution", CoreIconCache.Play);
         _loops.InspectorField(setup);
     }
 
