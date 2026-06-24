@@ -359,20 +359,20 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
             ISubFlowAsset workflowAsset = null;
             PromptAsset rule = null;
 
-            //if (_startupPage.Target is ISubFlowAsset startup)
-            //{
-            //    workflowAsset = startup;
-            //}
-            //else
-            //{
-            var selection = new AssetSelection<ISubFlowAsset>();
-            if (!await selection.ShowSelectionGUIAsync("Select Workflow"))
+            if (_startupPage.Target is ISubFlowAsset startup)
             {
-                return false;
+                workflowAsset = startup;
             }
+            else
+            {
+                var selection = new AssetSelection<ISubFlowAsset>();
+                if (!await selection.ShowSelectionGUIAsync("Select Workflow"))
+                {
+                    return false;
+                }
 
-            workflowAsset = selection.Target;
-            //}
+                workflowAsset = selection.Target;
+            }
 
             if (workflowAsset is SubFlowPresetAsset presetAsset)
             {

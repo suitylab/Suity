@@ -2,7 +2,6 @@
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
-using Suity.Editor.Documents.Canvas;
 using Suity.Editor.Services;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
@@ -13,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.AIGC.Agentic;
 
@@ -66,7 +66,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
             }
             else
             {
-                _conversation.AddSystemMessage(resultMsg ?? "Agent Finished.");
+                _conversation.AddSystemMessage(resultMsg ?? "Agent Graph Finished.");
             }
 
             return result?.Result;
@@ -109,13 +109,15 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         return result;
     }
 
-    private async Task<AICallResult> HandleResume(object option, CancellationTokenSource cancelSource) 
+    private async Task<AICallResult> HandleResume(object option, CancellationTokenSource cancelSource)
     {
         var starter = StartNode.AgentNode;
         if (starter is null)
         {
             return null;
         }
+
+        _conversation.AddRunningMessage(L("Resuming agent execution..."));
 
         var request = new AIRequest
         {

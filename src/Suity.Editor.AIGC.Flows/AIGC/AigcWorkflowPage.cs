@@ -191,9 +191,9 @@ public class AigcWorkflowPage : AigcTaskPage,
         base.OnSync(sync, context);
 
         _workflow.Sync(sync);
-        //_article.Sync(sync);
         _taskPrompt.Sync(sync);
         _rule.Sync(sync);
+        _article.Sync(sync);
 
         sync.Sync("Page", EnsureInstance(), SyncFlag.GetOnly);
     }
@@ -204,9 +204,9 @@ public class AigcWorkflowPage : AigcTaskPage,
         base.OnSetupViewTask(setup);
 
         _workflow.InspectorField(setup);
-        //_article.InspectorField(setup);
         _taskPrompt.InspectorField(setup);
         _rule.InspectorField(setup);
+        _article.InspectorField(setup);
 
         CheckRebuild();
     }

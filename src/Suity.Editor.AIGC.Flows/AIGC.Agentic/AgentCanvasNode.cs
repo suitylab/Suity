@@ -84,7 +84,9 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         _agentName.Property.WithHintText(AssetRef?.TargetAsset?.Name ?? string.Empty);
         _agentName.InspectorField(setup);
 
+        _overview.Property.WithHintText(AssetRef?.Target?.GetPresetDocument()?.Overview ?? string.Empty);
         _overview.InspectorField(setup);
+
         setup.InspectorField(AssetRef, new ViewProperty(nameof(AssetRef), "Starter Workflow"));
         _loops.InspectorField(setup);
     }
@@ -164,18 +166,27 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     private static void LoopItemGui(ImGui gui, int i, AgentLoopItem loop, IAgentLoopState loopState)
     {
         bool running = loopState?.IsRunning == true;
-        var status = loop.GetCommitStatus();
+        var commitStatus = loop.GetCommitStatus();
+        var textStatus = commitStatus.ToCheckedStatus();
 
         string style = "loopFrame";
         if (running)
         {
-            if (status == TaskCommitStatus.Delegating)
+            if (commitStatus == TaskCommitStatus.Delegating)
             {
                 style = "loopFrame-delegating";
             }
             else
             {
                 style = "loopFrame-running";
+            }
+        }
+        else
+        {
+            if (loop.LoopAsset is null)
+            {
+                style = "loopFrame-missing";
+                textStatus = TextStatus.Error;
             }
         }
 
@@ -191,46 +202,54 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         .SetClass([style, "debug_draw"])
         .OnContent(() =>
         {
-            if (loop.LoopAsset is not { } loopAsset)
-            {
-                gui.Text("title-missing", loop.ToString()?.ToShortcutBeginEnd())
-                .InitFullWidth()
-                .InitClass("textBoldRed");
-
-                return;
-            }
-
             gui.HorizontalLayout("loop-view")
             .SetClass("debug_draw")
             .InitFullWidth()
             .InitFitVertical()
             .OnContent(() =>
             {
-                gui.Text(loop.ToString()?.ToShortcutBeginEnd())
-                .InitWidthRest(48)
-                .InitClass("textBold");
-
-                gui.Image("btnChecked", status.ToCheckedStatus().ToStatusIcon())
-                .InitClass("icon");
-
-                gui.Button("btnNavigate", ImGuiIcons.Open)
-                .InitClass("configBtn")
-                .OnClick(() =>
+                if (loop.LoopAsset is { } loopAsset)
                 {
-                    EditorUtility.LocateInProject(loopAsset);
-                })
-                .OnDoubleClick(() =>
-                {
-                    if (loopAsset is Asset asset)
+                    gui.Text("title", loop.ToString()?.ToShortcutBeginEnd())
+                    .InitWidthRest(48)
+                    .InitClass("textBold");
+
+                    gui.Image("btnChecked", textStatus.ToStatusIcon())
+                    .InitClass("icon");
+
+                    gui.Button("btnNavigate", ImGuiIcons.Open)
+                    .InitClass("configBtn")
+                    .OnClick(() =>
                     {
-                        asset.ShowDocumentView();
-                    }
-                });
+                        EditorUtility.LocateInProject(loopAsset);
+                    })
+                    .OnDoubleClick(() =>
+                    {
+                        if (loopAsset is Asset asset)
+                        {
+                            asset.ShowDocumentView();
+                        }
+                    });
+                }
+                else
+                {
+                    gui.Text("title-missing", loop.ToString()?.ToShortcutBeginEnd())
+                    .InitWidthRest(24)
+                    .InitClass("textBoldRed");
+
+                    gui.Image("btnChecked", TextStatus.Error.ToStatusIcon())
+                    .InitClass("icon");
+                }
             });
 
             if (loop.GetLastTask() is { } lastTask)
             {
                 gui.Text("sub-title", lastTask.DisplayText)
+                .InitClass("textSub");
+            }
+            else if (loop.LoopAsset is null)
+            {
+                gui.Text("sub-title", "Loop missing.")
                 .InitClass("textSub");
             }
         })
@@ -334,6 +353,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         var loos = _loops.List.SkipNull().ToArray();
         if (loos.Length == 0)
         {
+            request.Conversation.AddWarningMessage($"No loops defined for agent '{this.ToDisplayTextL()}'");
             return AICallResult.Empty;
         }
 
