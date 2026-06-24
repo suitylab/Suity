@@ -35,7 +35,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
     /// </summary>
     public static Color LogoFilterColor { get; } = Color.FromArgb(128, 128, 128, 128);
 
-    private class StartupSelection : AssetSelection<ISubFlowAsset>
+    private class StartupSelection : AssetSelection<IAigcStartup>
     {
         public StartupSelection()
         {
@@ -57,7 +57,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
     {
         Instance ??= this;
 
-        _startupAssetSel.Target = _startupAssetSel.GetSelectionList()?.GetItems()?.FirstOrDefault() as ISubFlowAsset;
+        _startupAssetSel.Target = _startupAssetSel.GetSelectionList()?.GetItems()?.FirstOrDefault() as IAigcStartup;
         _startupAssetSel.TargetUpdated += (s, e, ref handled) => { _guiRef.QueueRefresh(); };
         _startupAssetSel.ListenEnabled = true;
         _startupAssetTarget = PropertyTargetUtility.CreatePropertyTarget(_startupAssetSel, "Select Startup Agent");
@@ -121,7 +121,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
     /// <inheritdoc/>
     public void NotifyShow()
     {
-        _startupAssetSel.Target = _startupAssetSel.GetSelectionList()?.GetItems()?.FirstOrDefault() as ISubFlowAsset;
+        _startupAssetSel.Target = _startupAssetSel.GetSelectionList()?.GetItems()?.FirstOrDefault() as IAigcStartup;
 
         _guiRef.QueueRefresh(true);
     }
@@ -267,7 +267,14 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
         var startupPage = _startupAssetSel.Target;
         if (startupPage is null)
         {
-            await DialogUtility.ShowMessageBoxAsyncL("Please select a startup agent.");
+            await DialogUtility.ShowMessageBoxAsyncL("Please select a startup assistant.");
+            return;
+        }
+
+        if (!startupPage.IsStartup)
+        {
+            await DialogUtility.ShowMessageBoxAsyncL("Selected assistant is not a startup assistant.");
+            return;
         }
 
         string prompt = _msgInput;
@@ -277,33 +284,14 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
             return;
         }
 
-        var format = DocumentManager.Instance.GetDocumentFormat("AigcLoop");
-        if (format is null)
+        try
         {
-            return;
+            startupPage.HandleStartup(prompt);
         }
-
-        var docEntry = format.AutoNewDocument("TaskPage");
-        if (docEntry is null)
+        catch (Exception err)
         {
-            return;
+            err.LogError();
         }
-
-        var doc = docEntry.Content as AigcLoopDocument;
-        if (doc is null)
-        {
-            return;
-        }
-
-        var view = doc.ShowView();
-
-        doc.StartupPage = startupPage;
-        doc.InitialTaskPrompt = prompt;
-        doc.MarkDirtyAndSaveDelayed(this);
-
-        // Waiting for document view to be ready
-        await EditorUtility.WaitForNextQueuedAction();
-
-        (view as AigcLoopDocumentView)?.Run(prompt);
+        
     }
 }

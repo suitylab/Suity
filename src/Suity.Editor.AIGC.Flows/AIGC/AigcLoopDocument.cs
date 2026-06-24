@@ -32,7 +32,7 @@ namespace Suity.Editor.AIGC;
 public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
 {
     readonly TextBlockProperty _initialTaskPrompt = new("InitialTaskPrompt", "Initial Task Prompt", string.Empty);
-    readonly AssetProperty<ISubFlowAsset> _startupPage = new("StartupPage", "Startup Page") { Filter = StartupPageFilter.Instance };
+    readonly AssetProperty<ISubFlowAsset> _startupPage = new("StartupPage", "Startup Page");
     readonly AssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
     readonly AssetListProperty<IPageAsset> _tools = new("Tools", "Tools List");
     readonly AssetListProperty<IArticleAsset> _knowledgeArticles
@@ -518,11 +518,6 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
             throw new ArgumentNullException("Startup page not set");
         }
 
-        if (!startupPageAsset.IsStartup)
-        {
-            throw new InvalidOperationException("Startup page is not a startup page");
-        }
-
         var startupWorkflow = AigcWorkflowPage.CreateWorkflowPage(this, startupPageAsset);
         if (startupWorkflow is null)
         {
@@ -668,26 +663,4 @@ public class AigcLoopAsset : Asset, IAigcLoopAsset
 /// </summary>
 public class AigcLoopAssetBuilder : AssetBuilder<AigcLoopAsset>
 {
-}
-
-/// <summary>
-/// Filter that selects assets suitable for use as startup pages.
-/// </summary>
-public class StartupPageFilter : IAssetFilter
-{
-    /// <summary>
-    /// Gets the singleton instance of the <see cref="StartupPageFilter"/>.
-    /// </summary>
-    public static StartupPageFilter Instance { get; } = new();
-
-    /// <inheritdoc/>
-    public bool FilterAsset(Asset asset)
-    {
-        if (asset is not ISubFlowAsset subFlow)
-        {
-            return false;
-        }
-
-        return subFlow.IsStartup;
-    }
 }

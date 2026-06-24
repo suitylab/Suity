@@ -33,11 +33,6 @@ public interface IPageAsset : INamed, IHasId
 public interface ISubFlowAsset : IPageAsset
 {
     /// <summary>
-    /// Gets whether this tool asset is a startup page.
-    /// </summary>
-    bool IsStartup { get; }
-
-    /// <summary>
     /// Gets the base page definition.
     /// </summary>
     ISubFlow GetBaseDefinition();

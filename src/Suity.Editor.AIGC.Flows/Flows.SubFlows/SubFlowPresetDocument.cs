@@ -1,5 +1,6 @@
 using Suity.Collections;
 using Suity.Drawing;
+using Suity.Editor.AIGC;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
@@ -444,6 +445,7 @@ public class SubFlowPresetAssetBuilder : AssetBuilder<SubFlowPresetAsset>
 [NativeType(Name = "SubFlowPresetAsset", Description = "Preset Asset", CodeBase = "SubFlow", Icon = "*CoreIcon|Skil", Color = FlowColors.Agent)]
 public class SubFlowPresetAsset : Asset,
     ISubFlowPresetAsset,
+    IAigcStartup,
     IViewObject,
     IInspectorEditNotify
 {
@@ -468,10 +470,7 @@ public class SubFlowPresetAsset : Asset,
         internal set => _baseFlow.Target = value;
     }
 
-    /// <summary>
-    /// Gets a value indicating whether this preset is configured as a startup page.
-    /// </summary>
-    public bool IsStartup { get; internal set; }
+
 
     /// <inheritdoc/>
     public override ImageDef DefaultIcon => CoreIconCache.Preset;
@@ -595,6 +594,48 @@ public class SubFlowPresetAsset : Asset,
         instance.UpdateFromOther(root);
 
         return instance;
+    }
+
+    #endregion
+
+    #region IAigcStartup
+
+    /// <summary>
+    /// Gets a value indicating whether this preset is configured as a startup page.
+    /// </summary>
+    public bool IsStartup { get; internal set; }
+
+    public void HandleStartup(string prompt)
+    {
+        var format = DocumentManager.Instance.GetDocumentFormat("AigcLoop");
+        if (format is null)
+        {
+            return;
+        }
+
+        var docEntry = format.AutoNewDocument("TaskPage");
+        if (docEntry is null)
+        {
+            return;
+        }
+
+        var doc = docEntry.Content as AigcLoopDocument;
+        if (doc is null)
+        {
+            return;
+        }
+
+        var view = doc.ShowView();
+
+        doc.StartupPage = this;
+        doc.InitialTaskPrompt = prompt;
+        doc.MarkDirtyAndSaveDelayed(this);
+
+        // Waiting for document view to be ready
+        QueuedAction.Do(() => 
+        {
+            (view as AigcLoopDocumentView)?.Run(prompt);
+        });
     }
 
     #endregion
