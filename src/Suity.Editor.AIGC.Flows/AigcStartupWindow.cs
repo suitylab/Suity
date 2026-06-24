@@ -1,4 +1,5 @@
 ﻿using Suity.Drawing;
+using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Properties;
@@ -11,6 +12,7 @@ using Suity.Views.Im.PropertyEditing;
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.AIGC;
@@ -257,7 +259,68 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
     #endregion
 
-    private async void ProcessInput()
+    public async Task<string> ResolveWorkSpaceName(string userInput)
+    {
+        if (!await LLmService.Instance.CheckCurrentModelConfig())
+        {
+            return null;
+        }
+
+        if (string.IsNullOrWhiteSpace(userInput))
+        {
+            await DialogUtility.ShowMessageBoxAsyncL("Please input a prompt.");
+            return null;
+        }
+
+        string workspacePrompt = AigcWorkflowPlugin.Instance.PromptWorkSpace;
+        if (string.IsNullOrWhiteSpace(workspacePrompt))
+        {
+            await DialogUtility.ShowMessageBoxAsyncL("Please configure workspace prompt.");
+            return null;
+        }
+
+        var model = LLmService.Instance.GetLLmModel(AigcModelLevel.Default, LLmModelType.Lightweight);
+        if (model is null)
+        {
+            await DialogUtility.ShowMessageBoxAsyncL("Please configure LLm model first.");
+            return null;
+        }
+
+        var parameter = LLmService.Instance.GetLLmModelParameter(AigcModelLevel.Default, LLmModelType.Lightweight);
+
+        var promptBuilder = new PromptBuilder(workspacePrompt);
+        promptBuilder.Replace("{{INPUT}}", userInput);
+
+        var call = model.CreateCall(parameter);
+        if (call is null)
+        {
+            await DialogUtility.ShowMessageBoxAsyncL("Failed to create call.");
+            return null;
+        }
+
+        call.NewMessage();
+        call.AppendUserMessage(promptBuilder.ToString());
+
+        var option = new LLmCallOption
+        {
+            EnableSearch = false,
+            EnableThinking = false,
+        };
+
+        try
+        {
+            string result = await call.Call(default, parameter, option);
+            return result?.Trim();
+        }
+        catch (Exception err)
+        {
+            err.LogError();
+            return null;
+        }
+    }
+
+
+    public async void ProcessInput()
     {
         if (!await LLmService.Instance.CheckCurrentModelConfig())
         {
@@ -277,16 +340,22 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
             return;
         }
 
-        string prompt = _msgInput;
-        if (string.IsNullOrWhiteSpace(prompt))
+        string userInput = _msgInput;
+        if (string.IsNullOrWhiteSpace(userInput))
         {
             await DialogUtility.ShowMessageBoxAsyncL("Please input a prompt.");
             return;
         }
 
+        string workspaceName = await ResolveWorkSpaceName(userInput);
+        if (string.IsNullOrWhiteSpace(workspaceName))
+        {
+            return;
+        }
+
         try
         {
-            startupPage.HandleStartup(prompt);
+            startupPage.HandleStartup(userInput, workspaceName);
         }
         catch (Exception err)
         {

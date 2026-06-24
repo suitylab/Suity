@@ -92,6 +92,13 @@ public class RetryConfig : IViewObject
 /// </summary>
 public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
 {
+    public const string PROMPT_WORKSPACE = @"Create a workspace name based on the user input:
+{{INPUT}}
+
+# Output format: PascalCase Identifier.
+# Output the workspace name and nothing else.
+";
+
     public static AigcWorkflowPlugin Instance { get; private set; }
 
     readonly Dictionary<Type, ToolAsset> _pageToolAssets = [];
@@ -105,6 +112,8 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     private readonly ValueProperty<RetryConfig> _retry
         = new("Retry", "Retry", new(), "Retry when failed.");
 
+    private readonly TextBlockProperty _promptWorkSpace
+        = new("PromptWorkSpace", "WorkSpace Prompt");
 
     public AigcWorkflowPlugin()
     {
@@ -124,6 +133,8 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
         };
 
         _retry.Property.WithOptional().WithExpand();
+
+        _promptWorkSpace.Property.WithHintText(PROMPT_WORKSPACE);
     }
 
     public override string Description => "AIGC Workflow";
@@ -132,6 +143,20 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
 
 
     public RetryConfig Retry => _retry.Value;
+
+    public string PromptWorkSpace
+    {
+        get
+        {
+            string prompt = _promptWorkSpace.Text;
+            if (!string.IsNullOrWhiteSpace(prompt))
+            {
+                return prompt;
+            }
+
+            return PROMPT_WORKSPACE;
+        }
+    }
 
     /// <inheritdoc/>
     protected internal override void Awake(PluginContext context)
@@ -155,6 +180,7 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
         _useFullName.Sync(sync);
         _minimalToolSchema.Sync(sync);
         _retry.Sync(sync);
+        _promptWorkSpace.Sync(sync);
     }
 
     /// <inheritdoc/>
@@ -163,6 +189,9 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
         _useFullName.InspectorField(setup);
         _minimalToolSchema.InspectorField(setup);
         _retry.InspectorField(setup);
+
+        setup.LabelWithIcon("Prompt", CoreIconCache.Prompt);
+        _promptWorkSpace.InspectorField(setup);
     }
 
     /// <inheritdoc/>

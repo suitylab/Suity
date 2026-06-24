@@ -159,6 +159,11 @@ internal class EditorTemplateExternalBK : EditorTemplateExternal
                 n.SetClass(PropertyGridThemes.ClassPropertyInput);
             });
 
+            if (target.Styles?.GetHintText() is { } hintText && !string.IsNullOrWhiteSpace(hintText))
+            {
+                node.SetHintText(hintText);
+            }
+
             gui.VerticalResizer(30, null)
             .InitFullWidth()
             .InitClass("resizer");

@@ -1,5 +1,6 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.Documents;
+using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.TaskPages;
 using Suity.Editor.Selecting;
@@ -36,6 +37,8 @@ public class AgentStartCanvasNode : CanvasDesignNode
     public IAgent AgentNode => _agentNode;
 
     public string EntryTaskName => _entryTaskName.Text;
+
+    public bool IsTemplate => _isTemplate.Value;
 
     /// <summary>
     /// Gets or sets the workspace associated with this task page document.
@@ -143,8 +146,13 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
 
     public bool IsStartup { get; internal set; }
 
-    public void HandleStartup(string prompt)
+    public void HandleStartup(string prompt, string workspaceName)
     {
+        var doc = this.GetDocument();
+        if (doc is null)
+        {
+            return;
+        }
     }
 
     #endregion

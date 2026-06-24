@@ -605,7 +605,7 @@ public class SubFlowPresetAsset : Asset,
     /// </summary>
     public bool IsStartup { get; internal set; }
 
-    public void HandleStartup(string prompt)
+    public void HandleStartup(string prompt, string workspaceName)
     {
         var format = DocumentManager.Instance.GetDocumentFormat("AigcLoop");
         if (format is null)

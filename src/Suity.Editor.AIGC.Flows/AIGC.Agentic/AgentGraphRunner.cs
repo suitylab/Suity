@@ -36,6 +36,13 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
 
     protected override async Task<object> HandleStart(string msg, object option, CancellationTokenSource cancelSource)
     {
+        if (StartNode.IsTemplate)
+        {
+            string errorMsg = L("This is a template agent graph, can't run.");
+            _conversation.AddErrorMessage(errorMsg);
+            return AICallResult.FromFailed(errorMsg);
+        }
+
         try
         {
             CanvasDocument.ComputeConnections();

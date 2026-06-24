@@ -53,18 +53,18 @@ public interface ILLmModel
     /// <summary>
     /// Creates a new call instance for the model.
     /// </summary>
-    /// <param name="config">The configuration for the call. Can be null.</param>
+    /// <param name="parameter">The parameters for the call. Can be null.</param>
     /// <param name="context">The function context. Can be null.</param>
     /// <returns>An instance of ILLmCall.</returns>
-    ILLmCall CreateCall(LLmModelParameter config = null, FunctionContext context = null);
+    ILLmCall CreateCall(LLmModelParameter parameter = null, FunctionContext context = null);
 
     /// <summary>
     /// Creates a new conversation instance for the model.
     /// </summary>
-    /// <param name="config">The configuration for the conversation. Can be null.</param>
+    /// <param name="parameter">The parameters for the conversation. Can be null.</param>
     /// <param name="context">The function context. Can be null.</param>
     /// <returns>An instance of ILLmChat.</returns>
-    ILLmChat CreateConversation(LLmModelParameter config = null, FunctionContext context = null);
+    ILLmChat CreateConversation(LLmModelParameter parameter = null, FunctionContext context = null);
 }
 
 #endregion

@@ -4,7 +4,7 @@ public interface IAigcStartup
 {
     bool IsStartup { get; }
 
-    void HandleStartup(string prompt);
+    void HandleStartup(string prompt, string workspaceName);
 }
 
 /// <summary>
