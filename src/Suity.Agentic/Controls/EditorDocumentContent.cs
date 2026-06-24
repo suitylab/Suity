@@ -52,6 +52,9 @@ public class EditorDocumentDockable : Dock.Model.Avalonia.Controls.Document
     internal void SetEditorBridge(DockBridgeControl<EditorDocumentContent>? bridge)
     {
         _bridge = bridge;
+
+        bridge?.RemoveFromVisualTree();
+
         base.Content = bridge;
         IconSource = bridge?.Target.GetIcon();
     }
@@ -60,6 +63,7 @@ public class EditorDocumentDockable : Dock.Model.Avalonia.Controls.Document
     {
         if (content != null)
         {
+            content.RemoveFromVisualTree();
             SetEditorBridge(new DockBridgeControl<EditorDocumentContent>(content));
         }
         else

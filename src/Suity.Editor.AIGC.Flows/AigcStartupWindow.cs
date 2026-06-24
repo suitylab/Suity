@@ -44,6 +44,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
         }
     }
 
+
     private StartupSelection _startupAssetSel = new();
     private readonly PropertyTarget _startupAssetTarget;
 

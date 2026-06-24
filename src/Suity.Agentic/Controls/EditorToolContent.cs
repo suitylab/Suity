@@ -48,6 +48,7 @@ public class EditorToolDockable : Dock.Model.Avalonia.Controls.Tool
     {
         if (content != null)
         {
+            content.RemoveFromVisualTree();
             SetEditorBridge(new DockBridgeControl<EditorToolContent>(content));
         }
         else

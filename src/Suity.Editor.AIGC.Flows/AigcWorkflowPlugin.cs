@@ -185,6 +185,8 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
         _useFullName.Sync(sync);
         _minimalToolSchema.Sync(sync);
         _retry.Sync(sync);
+
+        _fixedWorkSpaceName.Sync(sync);
         _promptWorkSpace.Sync(sync);
     }
 
@@ -196,6 +198,7 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
         _retry.InspectorField(setup);
 
         setup.LabelWithIcon("Prompt", CoreIconCache.Prompt);
+        _fixedWorkSpaceName.InspectorField(setup);
         _promptWorkSpace.InspectorField(setup);
     }
 

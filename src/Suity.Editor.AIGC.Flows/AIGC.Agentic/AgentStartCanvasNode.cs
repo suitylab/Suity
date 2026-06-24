@@ -10,6 +10,7 @@ using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using Suity.Views.Im.Flows;
+using System.IO;
 
 namespace Suity.Editor.AIGC.Agentic;
 
@@ -70,8 +71,15 @@ public class AgentStartCanvasNode : CanvasDesignNode
 
         if (sync.IsSetterOf(_isTemplate.Property.Name))
         {
-            (this.DiagramItem as AgentStartDiagramItem)?.AssetBuilder.SetIsStartupPage(_isTemplate.Value);
+            UpdateAsset();
         }
+    }
+
+    protected override void OnDiagramItemUpdated()
+    {
+        base.OnDiagramItemUpdated();
+
+        UpdateAsset();
     }
 
     protected override void OnSetupViewContent(IViewObjectSetup setup)
@@ -87,6 +95,11 @@ public class AgentStartCanvasNode : CanvasDesignNode
     {
         _agentNode?.SetParentAgent(null);
         _agentNode = compute.GetValue<IAgent>(_in);
+    }
+
+    private void UpdateAsset()
+    {
+        (this.DiagramItem as AgentStartDiagramItem)?.AssetBuilder.SetIsStartupPage(_isTemplate.Value);
     }
 
     internal void FlashingConnector()
@@ -159,6 +172,37 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
         {
             return;
         }
+
+        string assetBaseDir = Project.Current.AssetDirectory;
+
+        string finalName = KeyIncrementHelper.MakeKey(workspaceName, 2, s => 
+        {
+            string assetDir = assetBaseDir.PathAppend(s);
+            if (Directory.Exists(assetDir))
+            {
+                return false;
+            }
+
+            if (WorkSpaceManager.Current.ContainsWorkSpace(s))
+            {
+                return false;
+            }
+
+            return true;
+        });
+
+        if (string.IsNullOrWhiteSpace(finalName))
+        {
+            return;
+        }
+
+        string assetDir = assetBaseDir.PathAppend(finalName);
+        Directory.CreateDirectory(assetDir);
+
+        var workSpace = WorkSpaceManager.Current.AddWorkSpace(finalName);
+
+        var newDocEntry = DocumentManager.Instance.CloneDocument(doc.FileName.PhysicFileName, assetDir.PathAppend("AgentCanvas.sasset"));
+        newDocEntry.ShowView();
     }
 
     #endregion
