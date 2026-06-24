@@ -148,6 +148,12 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
 
     public void HandleStartup(string prompt, string workspaceName)
     {
+        workspaceName = workspaceName?.Trim();
+        if (string.IsNullOrWhiteSpace(workspaceName))
+        {
+            return;
+        }
+
         var doc = this.GetDocument();
         if (doc is null)
         {

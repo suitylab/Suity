@@ -112,6 +112,9 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     private readonly ValueProperty<RetryConfig> _retry
         = new("Retry", "Retry", new(), "Retry when failed.");
 
+    private readonly StringProperty _fixedWorkSpaceName
+        = new("FixedWorkSpaceName", "Fixed WorkSpace Name", "", "Fixed workspace name for testing, leave blank for automatic creation based on user input.");
+
     private readonly TextBlockProperty _promptWorkSpace
         = new("PromptWorkSpace", "WorkSpace Prompt");
 
@@ -144,6 +147,8 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
 
     public RetryConfig Retry => _retry.Value;
 
+
+    public string FixedWorkSpaceName => _fixedWorkSpaceName.Text;
     public string PromptWorkSpace
     {
         get

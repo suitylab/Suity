@@ -1,6 +1,5 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
-using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Properties;
 using Suity.Editor.Selecting;
@@ -259,8 +258,58 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
     #endregion
 
-    public async Task<string> ResolveWorkSpaceName(string userInput)
+    public async void ProcessInput()
     {
+        if (!await LLmService.Instance.CheckCurrentModelConfig())
+        {
+            return;
+        }
+
+        var startupPage = _startupAssetSel.Target;
+        if (startupPage is null)
+        {
+            await DialogUtility.ShowMessageBoxAsyncL("Please select a startup assistant.");
+            return;
+        }
+
+        if (!startupPage.IsStartup)
+        {
+            await DialogUtility.ShowMessageBoxAsyncL("Selected assistant is not a startup assistant.");
+            return;
+        }
+
+        string userInput = _msgInput;
+        if (string.IsNullOrWhiteSpace(userInput))
+        {
+            await DialogUtility.ShowMessageBoxAsyncL("Please input a prompt.");
+            return;
+        }
+
+        string workspaceName = await ResolveWorkSpaceName(userInput);
+        if (string.IsNullOrWhiteSpace(workspaceName))
+        {
+            return;
+        }
+
+        try
+        {
+            startupPage.HandleStartup(userInput, workspaceName);
+        }
+        catch (Exception err)
+        {
+            err.LogError();
+        }
+        
+    }
+
+    public static async Task<string> ResolveWorkSpaceName(string userInput)
+    {
+        string fixedName = AigcWorkflowPlugin.Instance.FixedWorkSpaceName?.Trim();
+        if (!string.IsNullOrWhiteSpace(fixedName) && NamingVerifier.VerifyIdentifier(fixedName))
+        {
+            return fixedName;
+        }
+
         if (!await LLmService.Instance.CheckCurrentModelConfig())
         {
             return null;
@@ -310,7 +359,13 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
         try
         {
             string result = await call.Call(default, parameter, option);
-            return result?.Trim();
+            result = result?.Trim();
+            if (NamingVerifier.VerifyIdentifier(result))
+            {
+                return result;
+            }
+
+            return null;
         }
         catch (Exception err)
         {
@@ -319,48 +374,4 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
         }
     }
 
-
-    public async void ProcessInput()
-    {
-        if (!await LLmService.Instance.CheckCurrentModelConfig())
-        {
-            return;
-        }
-
-        var startupPage = _startupAssetSel.Target;
-        if (startupPage is null)
-        {
-            await DialogUtility.ShowMessageBoxAsyncL("Please select a startup assistant.");
-            return;
-        }
-
-        if (!startupPage.IsStartup)
-        {
-            await DialogUtility.ShowMessageBoxAsyncL("Selected assistant is not a startup assistant.");
-            return;
-        }
-
-        string userInput = _msgInput;
-        if (string.IsNullOrWhiteSpace(userInput))
-        {
-            await DialogUtility.ShowMessageBoxAsyncL("Please input a prompt.");
-            return;
-        }
-
-        string workspaceName = await ResolveWorkSpaceName(userInput);
-        if (string.IsNullOrWhiteSpace(workspaceName))
-        {
-            return;
-        }
-
-        try
-        {
-            startupPage.HandleStartup(userInput, workspaceName);
-        }
-        catch (Exception err)
-        {
-            err.LogError();
-        }
-        
-    }
 }
