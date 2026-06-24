@@ -1,6 +1,7 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
+using Suity.Editor.Flows.TaskPages;
 using Suity.Editor.Selecting;
 using Suity.Editor.Types;
 using Suity.Editor.WorkSpaces;
@@ -22,6 +23,9 @@ public class AgentStartCanvasNode : CanvasDesignNode
 
     readonly StringProperty _entryTaskName = new(nameof(EntryTaskName), "Entry task name", "Entry");
     readonly AssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
+
+    private readonly ValueProperty<bool> _isTemplate
+        = new("IsTemplate", "Is Template", false, "When enabled, this node will be used as a template for creating new agent.");
 
     public AgentStartCanvasNode()
     {
@@ -59,6 +63,12 @@ public class AgentStartCanvasNode : CanvasDesignNode
 
         _entryTaskName.Sync(sync);
         _workSpace.Sync(sync);
+        _isTemplate.Sync(sync);
+
+        if (sync.IsSetterOf(_isTemplate.Property.Name))
+        {
+            (this.DiagramItem as AgentStartDiagramItem)?.AssetBuilder.SetIsStartupPage(_isTemplate.Value);
+        }
     }
 
     protected override void OnSetupViewContent(IViewObjectSetup setup)
@@ -67,6 +77,7 @@ public class AgentStartCanvasNode : CanvasDesignNode
 
         _entryTaskName.InspectorField(setup);
         _workSpace.InspectorField(setup);
+        _isTemplate.InspectorField(setup);
     }
 
     public override void Compute(IFlowComputation compute)
@@ -90,13 +101,25 @@ public class AgentStartDiagramItem : FlowDiagramItem<AgentStartCanvasNode, Agent
 
 public class AgentStartAssetBuilder : AssetBuilder<AgentStartAsset>
 {
+    bool _startupPage;
+
+    public AgentStartAssetBuilder()
+    {
+        AddAutoUpdate(nameof(SubFlowPresetAsset.IsStartup), v => v.IsStartup = _startupPage);
+    }
+
+    public void SetIsStartupPage(bool isStartupPage)
+    {
+        _startupPage = isStartupPage;
+        this.UpdateAuto(nameof(SubFlowPresetAsset.IsStartup));
+    }
 }
 
-public class AgentStartAsset : Asset, ILLmChatProvider
+public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
 {
     public AgentStartAsset()
     {
-        UpdateAssetTypes(this.GetType(), typeof(ILLmChatProvider));
+        UpdateAssetTypes(this.GetType(), typeof(ILLmChatProvider), typeof(IAigcStartup));
     }
 
     public override ImageDef DefaultIcon => CoreIconCache.Agent;
@@ -112,7 +135,17 @@ public class AgentStartAsset : Asset, ILLmChatProvider
         }
 
         return null;
-    } 
+    }
+
+    #endregion
+
+    #region IAigcStartup
+
+    public bool IsStartup { get; internal set; }
+
+    public void HandleStartup(string prompt)
+    {
+    }
 
     #endregion
 }

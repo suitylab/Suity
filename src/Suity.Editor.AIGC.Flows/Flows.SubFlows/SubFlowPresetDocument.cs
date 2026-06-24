@@ -456,7 +456,7 @@ public class SubFlowPresetAsset : Asset,
     /// </summary>
     public SubFlowPresetAsset()
     {
-        UpdateAssetTypes(typeof(IPageAsset), typeof(ISubFlowAsset), typeof(ISubFlowPresetAsset));
+        UpdateAssetTypes(typeof(IPageAsset), typeof(ISubFlowAsset), typeof(ISubFlowPresetAsset), typeof(IAigcStartup));
 
         base.AddUpdateRelationship(_baseFlow);
     }

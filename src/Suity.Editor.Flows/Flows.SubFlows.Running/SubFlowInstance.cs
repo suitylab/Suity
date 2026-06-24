@@ -744,7 +744,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     {
         _preset.TargetAsset = otherRoot._preset.TargetAsset;
 
-        foreach (var other in otherRoot._dic.Values)
+        foreach (var other in otherRoot._dic.Values.ToArray())
         {
             if (_dic.TryGetValue(other.DiagramItem.Name, out var exist))
             {
