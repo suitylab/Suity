@@ -98,13 +98,20 @@ public class AgentStartCanvasNode : CanvasDesignNode
         UpdateAsset();
     }
 
-    protected override void OnSetupViewContent(IViewObjectSetup setup)
+    protected override void OnSetupView(IViewObjectSetup setup)
     {
-        base.OnSetupViewContent(setup);
+        base.OnSetupView(setup);
 
         _entryTaskName.InspectorField(setup);
         _workSpace.InspectorField(setup);
+
+        setup.LabelWithIcon("Startup", CoreIconCache.Play);
         _isTemplate.InspectorField(setup);
+    }
+
+    protected override void OnSetupViewContent(IViewObjectSetup setup)
+    {
+        base.OnSetupViewContent(setup);
     }
 
     public override void Compute(IFlowComputation compute)
@@ -178,7 +185,7 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
     public void HandleStartup(string prompt, string workspaceName)
     {
         workspaceName = workspaceName?.Trim();
-        if (string.IsNullOrWhiteSpace(workspaceName))
+        if (!NamingVerifier.VerifyIdentifier(workspaceName))
         {
             return;
         }
@@ -196,7 +203,6 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
         }
 
         string assetBaseDir = Project.Current.AssetDirectory;
-
         string finalName = KeyIncrementHelper.MakeKey(workspaceName, 2, s => 
         {
             string assetDir = assetBaseDir.PathAppend(s);

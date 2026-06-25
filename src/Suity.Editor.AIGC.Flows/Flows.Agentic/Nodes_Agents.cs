@@ -22,7 +22,7 @@ public class GetSubAgentList : AgentNode
     {
         var agent = compute.Context.GetArgument<IAgent>();
 
-        var subAgents = agent.GetSubAgents();
+        var subAgents = agent?.GetSubAgents() ?? [];
         compute.SetValue(_agents, subAgents);
     }
 }

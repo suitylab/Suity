@@ -9,6 +9,7 @@ using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Editor.Types;
+using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
@@ -52,8 +53,8 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     private readonly AssetProperty<PromptAsset> _rule
         = new("Rule", "Rule", "Rules shared across the entire task hierarchy.");
 
-    private readonly ValueProperty<bool> _isStartup
-        = new("IsStartup", "Is Startup", false, "When enabled, this preset can be used as the startup page.");
+    private readonly ValueProperty<bool> _isTemplate
+        = new("IsTemplate", "Is Template", false, "When enabled, this preset can be used as the startup page.");
 
     private readonly ValueProperty<bool> _useParentArticle =
         new("UseParentArticle", "Use Parent Article", false, "Use parent article as the article record for this page content. This setting will override the value of the base execution flow.");
@@ -226,7 +227,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
     /// <summary>
     /// Gets a value indicating whether this preset can be used as a startup page.
     /// </summary>
-    public bool IsStartupPage => _isStartup.Value;
+    public bool IsStartupPage => _isTemplate.Value;
 
     /// <summary>
     /// Gets a value indicating whether to use the parent article as the article record for this page content.
@@ -262,7 +263,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
         _baseWorkflow.Sync(sync);
         _tools.Sync(sync);
-        _isStartup.Sync(sync);
+        _isTemplate.Sync(sync);
         _useParentArticle.Sync(sync);
         
         _overview.Sync(sync);
@@ -277,9 +278,9 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         var element = EnsureSubFlowInstance();
         sync.Sync("Page", element, SyncFlag.GetOnly | SyncFlag.AffectsParent);
 
-        if (sync.IsSetterOf(_isStartup.Property.Name))
+        if (sync.IsSetterOf(_isTemplate.Property.Name))
         {
-            AssetBuilder.SetIsStartupPage(_isStartup.Value);
+            AssetBuilder.SetIsStartupPage(_isTemplate.Value);
         }
 
         if (sync.IsSetter())
@@ -316,8 +317,10 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         _skill.InspectorField(setup);
         _rule.InspectorField(setup);
         _tools.InspectorField(setup);
-        _isStartup.InspectorField(setup);
         _useParentArticle.InspectorField(setup);
+
+        setup.LabelWithIcon("Startup", CoreIconCache.Play);
+        _isTemplate.InspectorField(setup);
 
         setup.LabelWithIcon("Preset Settings", CoreIconCache.Page);
         setup.InspectorField(Instance, new ViewProperty("Page", "Preset Parameters").WithExpand());
@@ -607,13 +610,42 @@ public class SubFlowPresetAsset : Asset,
 
     public void HandleStartup(string prompt, string workspaceName)
     {
+        workspaceName = workspaceName?.Trim();
+        if (!NamingVerifier.VerifyIdentifier(workspaceName))
+        {
+            return;
+        }
+
+        string assetBaseDir = Project.Current.AssetDirectory;
+        string finalName = KeyIncrementHelper.MakeKey(workspaceName, 2, s =>
+        {
+            string assetDir = assetBaseDir.PathAppend(s + ".sasset");
+            if (File.Exists(assetDir))
+            {
+                return false;
+            }
+
+            if (WorkSpaceManager.Current.ContainsWorkSpace(s))
+            {
+                return false;
+            }
+
+            return true;
+        }, true);
+
+        if (string.IsNullOrWhiteSpace(finalName))
+        {
+            return;
+        }
+
         var format = DocumentManager.Instance.GetDocumentFormat("AigcLoop");
         if (format is null)
         {
             return;
         }
 
-        var docEntry = format.AutoNewDocument("TaskPage");
+        string fileName = assetBaseDir.PathAppend(finalName + ".sasset");
+        var docEntry = DocumentManager.Instance.NewDocument(fileName, format);
         if (docEntry is null)
         {
             return;
@@ -625,10 +657,13 @@ public class SubFlowPresetAsset : Asset,
             return;
         }
 
+        var workSpace = WorkSpaceManager.Current.AddWorkSpace(finalName);
+
         var view = doc.ShowView();
 
         doc.StartupPage = this;
         doc.InitialTaskPrompt = prompt;
+        doc.WorkSpace = workSpace;
         doc.MarkDirtyAndSaveDelayed(this);
 
         // Waiting for document view to be ready
