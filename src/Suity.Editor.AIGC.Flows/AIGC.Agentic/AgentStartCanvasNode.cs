@@ -51,6 +51,8 @@ public class AgentStartCanvasNode : CanvasDesignNode
             }
 
             _isTemplate.Value = value;
+            UpdateAsset();
+
             this.ParentDocument?.MarkDirtyAndSaveDelayed(this);
         }
     }
@@ -235,21 +237,28 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
 
         newDocEntry.ShowView();
 
-        var canvas = newDocEntry.Content as CanvasDocument;
-        if (canvas is null)
+        if (newDocEntry.Content is not CanvasDocument canvas)
         {
             return;
         }
 
-        var newNode = canvas.GetFlowNode(node.Name) as AgentStartCanvasNode;
-        if (newNode is null)
+        if (canvas.GetFlowNode(node.Name) is not AgentStartCanvasNode newNode)
+        {
+            return;
+        }
+
+        if (newNode.GetAsset() is not AgentStartAsset newAsset)
         {
             return;
         }
 
         newNode.IsTemplate = false;
         newNode.Description = finalName;
+        newNode.WorkSpace = workSpace;
+
         canvas.MarkDirtyAndSaveDelayed(this);
+
+        LLmService.Instance.InputChat(newAsset, prompt);
     }
 
     #endregion
