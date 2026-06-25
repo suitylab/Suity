@@ -3,34 +3,73 @@
   <Plugin name="ViewPlugin" />
   <Plugin name="LLmModelPlugin">
     <LowLLmPreset>
-      <Default />
-      <Thinking />
-      <WebSearch />
-      <Coding />
-      <Creative />
-      <Summary />
-      <Lightweight />
-      <DefaultParameters />
+      <Default>
+        <Model />
+      </Default>
+      <Thinking>
+        <Model />
+      </Thinking>
+      <WebSearch>
+        <Model />
+      </WebSearch>
+      <Coding>
+        <Model />
+      </Coding>
+      <Creative>
+        <Model />
+      </Creative>
+      <Summary>
+        <Model />
+      </Summary>
+      <Lightweight>
+        <Model />
+      </Lightweight>
     </LowLLmPreset>
     <MediumLLmPreset>
-      <Default />
-      <Thinking />
-      <WebSearch />
-      <Coding />
-      <Creative />
-      <Summary />
-      <Lightweight />
-      <DefaultParameters />
+      <Default>
+        <Model />
+      </Default>
+      <Thinking>
+        <Model />
+      </Thinking>
+      <WebSearch>
+        <Model />
+      </WebSearch>
+      <Coding>
+        <Model />
+      </Coding>
+      <Creative>
+        <Model />
+      </Creative>
+      <Summary>
+        <Model />
+      </Summary>
+      <Lightweight>
+        <Model />
+      </Lightweight>
     </MediumLLmPreset>
     <HighLLmPreset>
-      <Default />
-      <Thinking />
-      <WebSearch />
-      <Coding />
-      <Creative />
-      <Summary />
-      <Lightweight />
-      <DefaultParameters />
+      <Default>
+        <Model />
+      </Default>
+      <Thinking>
+        <Model />
+      </Thinking>
+      <WebSearch>
+        <Model />
+      </WebSearch>
+      <Coding>
+        <Model />
+      </Coding>
+      <Creative>
+        <Model />
+      </Creative>
+      <Summary>
+        <Model />
+      </Summary>
+      <Lightweight>
+        <Model />
+      </Lightweight>
     </HighLLmPreset>
     <DefaultEmbedding />
     <LowImageGenModel />
@@ -76,6 +115,9 @@
   </Plugin>
   <Plugin name="AigcWorkflowPlugin">
     <Retry />
+    <FixedWorkSpaceName>
+    </FixedWorkSpaceName>
+    <PromptWorkSpace />
   </Plugin>
   <Plugin name="AIHubMixPlugin">
     <ApiKey>
