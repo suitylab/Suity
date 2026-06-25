@@ -1,5 +1,6 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.Documents;
+using Suity.Editor.Documents.Canvas;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.TaskPages;
@@ -39,7 +40,20 @@ public class AgentStartCanvasNode : CanvasDesignNode
 
     public string EntryTaskName => _entryTaskName.Text;
 
-    public bool IsTemplate => _isTemplate.Value;
+    public bool IsTemplate
+    {
+        get => _isTemplate.Value;
+        set
+        {
+            if (_isTemplate.Value == value)
+            {
+                return;
+            }
+
+            _isTemplate.Value = value;
+            this.ParentDocument?.MarkDirtyAndSaveDelayed(this);
+        }
+    }
 
     /// <summary>
     /// Gets or sets the workspace associated with this task page document.
@@ -167,6 +181,12 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
             return;
         }
 
+        var node = (this.GetStorageObject() as AgentStartDiagramItem)?.Node;
+        if (node is null)
+        {
+            return;
+        }
+
         var doc = this.GetDocument();
         if (doc is null)
         {
@@ -189,7 +209,7 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
             }
 
             return true;
-        });
+        }, true);
 
         if (string.IsNullOrWhiteSpace(finalName))
         {
@@ -202,7 +222,34 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
         var workSpace = WorkSpaceManager.Current.AddWorkSpace(finalName);
 
         var newDocEntry = DocumentManager.Instance.CloneDocument(doc.FileName.PhysicFileName, assetDir.PathAppend("AgentCanvas.sasset"));
+        if (newDocEntry is null)
+        {
+            return;
+        }
+
+        newDocEntry = DocumentManager.Instance.OpenDocument(newDocEntry.FileName);
+        if (newDocEntry is null)
+        {
+            return;
+        }
+
         newDocEntry.ShowView();
+
+        var canvas = newDocEntry.Content as CanvasDocument;
+        if (canvas is null)
+        {
+            return;
+        }
+
+        var newNode = canvas.GetFlowNode(node.Name) as AgentStartCanvasNode;
+        if (newNode is null)
+        {
+            return;
+        }
+
+        newNode.IsTemplate = false;
+        newNode.Description = finalName;
+        canvas.MarkDirtyAndSaveDelayed(this);
     }
 
     #endregion

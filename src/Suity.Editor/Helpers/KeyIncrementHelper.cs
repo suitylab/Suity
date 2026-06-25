@@ -49,9 +49,15 @@ public static class KeyIncrementHelper
     /// <param name="prefix">The non-digit prefix for the key (e.g., "item", "file").</param>
     /// <param name="digilen">The number of digits to use for the numeric suffix, including leading zeros.</param>
     /// <param name="predicate">A function that returns true when a generated key is acceptable (e.g., not already in use).</param>
+    /// <param name="tryOrigin">If true, the function will try the original key first before incrementing.</param>
     /// <returns>The first key for which the predicate returns true.</returns>
-    public static string MakeKey(string prefix, int digilen, Predicate<string> predicate)
+    public static string MakeKey(string prefix, int digilen, Predicate<string> predicate, bool tryOrigin = false)
     {
+        if (tryOrigin && predicate(prefix))
+        {
+            return prefix;
+        }
+
         for (ulong i = 1; ; i++)
         {
             string key = MakeKey(prefix, digilen, i);

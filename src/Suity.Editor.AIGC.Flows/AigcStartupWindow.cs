@@ -4,6 +4,7 @@ using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Properties;
 using Suity.Editor.Selecting;
 using Suity.Helpers;
+using Suity.Selecting;
 using Suity.Views.Graphics;
 using Suity.Views.Gui;
 using Suity.Views.Im;
@@ -59,7 +60,11 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
     {
         Instance ??= this;
 
-        _startupAssetSel.Target = _startupAssetSel.GetSelectionList()?.GetItems()?.FirstOrDefault() as IAigcStartup;
+        _startupAssetSel.Target = _startupAssetSel.GetSelectionList()
+        ?.ToEnumerable()
+        .OfType<IAigcStartup>()
+        .FirstOrDefault();
+
         _startupAssetSel.TargetUpdated += (s, e, ref handled) => { _guiRef.QueueRefresh(); };
         _startupAssetSel.ListenEnabled = true;
         _startupAssetTarget = PropertyTargetUtility.CreatePropertyTarget(_startupAssetSel, "Select Startup Agent");
@@ -123,7 +128,10 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
     /// <inheritdoc/>
     public void NotifyShow()
     {
-        _startupAssetSel.Target = _startupAssetSel.GetSelectionList()?.GetItems()?.FirstOrDefault() as IAigcStartup;
+        _startupAssetSel.Target = _startupAssetSel.GetSelectionList()
+        ?.ToEnumerable()
+        .OfType<IAigcStartup>()
+        .FirstOrDefault();
 
         _guiRef.QueueRefresh(true);
     }

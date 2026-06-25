@@ -177,6 +177,27 @@ public static class SelectionExtensions
         
         return (false, null);
     }
+
+    public static IEnumerable<ISelectionItem> ToEnumerable(this ISelectionList list)
+    {
+        if (list is null)
+        {
+            yield break;
+        }
+
+        foreach (var item in list.GetItems())
+        {
+            yield return item;
+
+            if (item is ISelectionList subList)
+            {
+                foreach (var subItem in subList.ToEnumerable())
+                {
+                    yield return subItem;
+                }
+            }
+        }
+    }
 }
 
 /// <summary>
