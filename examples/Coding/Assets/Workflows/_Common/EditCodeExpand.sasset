@@ -439,7 +439,7 @@
       <Name>###GetTaskPageInstance01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.TaskToPageInstance" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="-140" Width="460" Height="270">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="-190" Width="460" Height="320">
       <Name>###GroupFlowNode01</Name>
       <Node type="Suity.Editor.Flows.GroupFlowNode">
         <GroupName>LLm</GroupName>
@@ -461,7 +461,7 @@
         <CommitName>BatchReadFiles</CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-20" Y="490" Width="71" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-20" Y="490" Width="66" Height="17">
       <Name>###FirstNotEmpty01</Name>
       <Node type="Suity.Editor.Flows.Nodes.FirstNotEmpty">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
@@ -549,7 +549,7 @@
       <Name>###GetParentTask01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetParentTask" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="0" Y="-90" Width="89" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="0" Y="-90" Width="64" Height="17">
       <Name>###CombineLLmMessage02</Name>
       <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
         <Prefix>=========== Scratch Pad Begin ===========</Prefix>
@@ -560,7 +560,7 @@
         </ItemSuffix>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="0" Y="-110" Width="89" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="0" Y="-110" Width="64" Height="17">
       <Name>###CombineLLmMessage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
         <Prefix>=========== Task History Begin ===========</Prefix>
@@ -570,6 +570,10 @@
         <ItemSuffix>
         </ItemSuffix>
       </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="-140" Width="84" Height="28">
+      <Name>###GetGlobalLLmModel02</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetGlobalLLmModel" />
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -939,6 +943,18 @@
       <FromConnector>Output</FromConnector>
       <ToNode>###CallLLm01</ToNode>
       <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetGlobalLLmModel02</FromNode>
+      <FromConnector>LlmModel</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Model</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetGlobalLLmModel02</FromNode>
+      <FromConnector>Parameter</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Parameter</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

@@ -9,8 +9,6 @@ Plan the next action based on the user original request and previous working ste
 The working environment uses scratch pad to store the lastest files from the local file system as follow:
 <ScratchPad>...</ScratchPad>
 
-**Do NOT read file again if the Scratch pad contains the file full content**
-
 # Workspace:
 You are working in a workspace, The current directory is workspace root directory, OS is: {{OS}}
 
@@ -28,6 +26,9 @@ You are working in a workspace, The current directory is workspace root director
 {{TOOLS}}
 </tools>
 
+## Sub-Agents:
+{{SUB-AGENTS}}
+
 # Mandatory Output Structure
 
 ## First output the following tags:
@@ -36,7 +37,10 @@ reasoning of current task
 </reasoning>
 
 <plan title='task title'>
-action planning of current task
+[Done]
+action done of current task.
+[Plan]
+action planning of current task.
 </plan>
 (Output task title in 'title' attribute)
 

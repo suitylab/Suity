@@ -101,6 +101,8 @@
   <Object id="1b952042-8712-40d9-b851-6cd7cacf72c4" name="*AIGC|PromptAsset" />
   <Object id="903aa1cc-8908-49e3-9b10-83a0bb67005b" name="*AIGC|PromptBuilder" />
   <Object id="f9e4d782-f4a5-46bb-86e3-2d79325a961f" name="*AIGC|SkipAIGeneration" />
+  <Object id="4dc7b245-9d4d-40a6-afb3-5ce18d70e00e" name="*AIGC|SubAgentLoopId" />
+  <Object id="d588e727-405b-437b-8943-ff60212980de" name="*AIGC|SubAgentLoopId.Id" />
   <Object id="4e73c3cc-effc-465d-8fe8-5e9b3dd8c87c" name="*AIGC|VectorKnowledge" />
   <Object id="3e63d8f9-29dc-4cf2-a10e-ae9cd5acc1a5" name="*AIGC|XmlTag" />
   <Object id="74f1f0ec-d71b-49d5-a1f4-891235d8d5dd" name="*AIHubMixImage" />
@@ -119,7 +121,9 @@
   <Object id="0a0eed59-d0ce-448f-8d54-e26e3b320eca" name="*AssetLink|DTypeFamily" />
   <Object id="cf8d9834-2862-4567-ade0-e2cc016fdba2" name="*AssetLink|KeyLink" />
   <Object id="93330065-5a39-47f2-b10c-5e5585537f7f" name="*AssetLink|LogicModule" />
-  <Object id="ce81276b-7bce-4071-8b21-076f73ef9360" name="*AssetLink|Suity.Editor.AIGC.AigcTaskPageAsset" />
+  <Object id="97f8c69d-afc9-4894-992b-88ae8a16847b" name="*AssetLink|Suity.Editor.AIGC.Agentic.AgentStartAsset" />
+  <Object id="b633d743-49e5-4bbf-ba5d-6e81cc2e1518" name="*AssetLink|Suity.Editor.AIGC.Agentic.IAgent" />
+  <Object id="fc84e138-b1a8-4b53-a559-9f05d359c90b" name="*AssetLink|Suity.Editor.AIGC.AigcLoopAsset" />
   <Object id="880ab2af-d3de-41d8-82f9-bdd736add765" name="*AssetLink|Suity.Editor.AIGC.API.AIHubMixImageGenModelAsset" />
   <Object id="9b675e1c-b7a5-481d-8e98-fa7fe1c299ef" name="*AssetLink|Suity.Editor.AIGC.API.AIHubMixLLmModelAsset" />
   <Object id="2bd0a910-90bf-4182-908c-de3974bc85cc" name="*AssetLink|Suity.Editor.AIGC.API.DashScopeImageGenModelAsset" />
@@ -668,6 +672,7 @@
   <Object id="1d7c4267-b004-429b-8070-b74e2710dd69" name="*PageTool|Suity|BatchReadFile" />
   <Object id="07d8f308-0fe6-4e09-bfc0-2510b8297135" name="*PageTool|Suity|BatchRenameFiles" />
   <Object id="bf224512-e826-4d71-a19d-95b47fed695a" name="*PageTool|Suity|BatchWriteFile" />
+  <Object id="8722e349-3173-4b3e-8cba-ccc3f9485b5f" name="*PageTool|Suity|CallSubAgent" />
   <Object id="02c01430-74d8-4e59-a7b5-6094cb171ec3" name="*PageTool|Suity|CreateNewFile" />
   <Object id="2c1e3f5e-c326-4260-a4dd-dc404aaaef0b" name="*PageTool|Suity|EditInFile" />
   <Object id="c9d4cc11-5bcc-4563-8789-d53c9d97e474" name="*PageTool|Suity|FindAndReplaceInFile" />
@@ -841,6 +846,14 @@
   <Object id="d4e233c3-9033-4454-ac77-2a833dbd905f" name="*Suity|BatchWriteFile.FileWriteItem.Content" />
   <Object id="36b58eb9-733a-44ef-a1fc-0fb86ea8b8b8" name="*Suity|BatchWriteFile.FileWriteItem.FilePath" />
   <Object id="c30b4a25-23f0-4e12-9779-c9c7d86e09e4" name="*Suity|ByteArray" />
+  <Object id="8f06c0c7-a63b-4178-be0e-ffb8e2f6643f" name="*Suity|CallAgent.LoopItem" />
+  <Object id="ae5a5050-f0c6-406c-9b5b-dca1d73d5b42" name="*Suity|CallAgent.LoopItem.Prompt" />
+  <Object id="4c7f284d-9a4b-4833-be69-6f0fe52ce09d" name="*Suity|CallAgent.LoopItem.TaskName" />
+  <Object id="38a236d3-76d2-449d-9eb9-9d732f3bd3f2" name="*Suity|CallAgent.LoopResult" />
+  <Object id="6090eac2-084e-41d0-863f-94d71016f0d1" name="*Suity|CallAgent.LoopResult.Error" />
+  <Object id="37be194c-6040-443e-bfa6-df79bb99899f" name="*Suity|CallAgent.LoopResult.Result" />
+  <Object id="447c4421-db59-44db-9b0c-07bba54965e8" name="*Suity|CallAgent.LoopResult.TaskName" />
+  <Object id="f3609217-bb0c-401a-a5ff-a044aaad998d" name="*Suity|CallSubAgent" />
   <Object id="0f588e9a-8cb9-4924-a308-ca3132ba37ca" name="*Suity|ClientHandler" />
   <Object id="e9ed07b7-9b14-411c-bdfd-f585e1a5a752" name="*Suity|CreateNewFile" />
   <Object id="e9ed07b7-9b14-411c-bdfd-f585e1a5a752" name="*Suity|CreateNewFile" />
@@ -871,6 +884,8 @@
   <Object id="54b6a3ee-c60b-4076-b3fc-9bcbed8be2ec" name="*Suity|GetWorkspaceTree" />
   <Object id="54b6a3ee-c60b-4076-b3fc-9bcbed8be2ec" name="*Suity|GetWorkspaceTree" />
   <Object id="7dbb0e76-8fd4-44ae-9c3d-ec283e58f49a" name="*Suity|Handler" />
+  <Object id="35c9c6f1-938f-4bd6-a456-0450f607b1f0" name="*Suity|IAgent" />
+  <Object id="35c9c6f1-938f-4bd6-a456-0450f607b1f0" name="*Suity|IAgent" />
   <Object id="1d085265-fda7-4f1f-ad09-f397b1a5d34c" name="*Suity|IArticleAsset" />
   <Object id="ae2fbbb1-bb48-4d93-971f-1cae5c652f84" name="*Suity|IDataTransport" />
   <Object id="4bbdb419-7fa3-450f-ab9c-621e2f749095" name="*Suity|IMonitable" />

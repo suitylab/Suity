@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>158c5b72-adea-4fb6-bbc5-a6b966871b60</AssetId>
+  <AssetId>1c93ad5e-2ee9-4018-8ca6-4aa6bf795e0b</AssetId>
   <PresetName>
   </PresetName>
   <BaseWorkflow>
@@ -49,11 +49,7 @@
     <Item>
       <Id>0c0e6e87-c484-44be-8d2b-1e00a40300e0</Id>
     </Item>
-    <Item>
-      <Id>8722e349-3173-4b3e-8cba-ccc3f9485b5f</Id>
-    </Item>
   </Tools>
-  <IsTemplate>True</IsTemplate>
   <Overview>
     <Text>I am a Coding Agent, an episodic creator spawned with a blank-slate context to perform precise code creaction directly on the local filesystem.</Text>
   </Overview>
@@ -62,16 +58,14 @@
     </Text>
   </UserInputHint>
   <Skill>
-    <Id>c9d07914-4cf5-4828-8f98-4885848d8d09</Id>
+    <Id>9c17ca55-f195-4e0f-88b4-008fff0a7011</Id>
   </Skill>
   <Rule>
     <Id>b5af5156-628d-43bb-9b7f-13bcb5026008</Id>
   </Rule>
   <Description>
   </Description>
-  <Icon>
-    <Id>742d63f8-1c54-4fe3-a420-526fd210dedd</Id>
-  </Icon>
+  <Icon />
   <Page>
     <__preset__ />
     <ModelType type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">

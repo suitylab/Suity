@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="AigcFlow">
+  <AssetId>25ee50b6-b26e-458f-bfe7-a3d0756ac689</AssetId>
+  <NameSpace>TestAgent01</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-570" Y="-50" Width="140" Height="120">
+      <Name>CreateWorkSpace</Name>
+      <AssetId>693fab37-47bb-4d41-8c65-179e1c557fdc</AssetId>
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
+        <Name>CreateWorkSpace</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Tools />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="420" Y="-50" Width="140" Height="120">
+      <Name>CreateWorkSpace_End</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
+        <Name>CreateWorkSpace_End</Name>
+        <Description>Result</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="430" Y="-10" Width="58" Height="17">
+      <Name>OnComplete</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
+        <Name>OnComplete</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="430" Y="10" Width="70" Height="17">
+      <Name>WorkSpaceName</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>WorkSpaceName</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </ValueType>
+        <Value type="System.String">
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-340" Y="-100" Width="674" Height="190">
+      <Name>###GroupFlowNode05</Name>
+      <Node type="Suity.Editor.Flows.GroupFlowNode">
+        <GroupName>Create Workspace</GroupName>
+        <Icon />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-330" Y="-10" Width="107" Height="56">
+      <Name>###BuildPrompt02</Name>
+      <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
+        <PromptTemplate>
+          <Id>aedb5425-5102-4bba-ab72-1b4e095b2749</Id>
+        </PromptTemplate>
+        <Keywords>
+          <Item>INPUT</Item>
+        </Keywords>
+        <MissingContent>---</MissingContent>
+        <UpdateKeywords>False</UpdateKeywords>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-190" Y="-70" Width="84" Height="28">
+      <Name>###GetGlobalLLmModel02</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetGlobalLLmModel">
+        <Type>Lightweight</Type>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-190" Y="-30" Width="136" Height="111">
+      <Name>###CallLLm02</Name>
+      <Node type="Suity.Editor.Flows.AIGC.CallLLm">
+        <DialogName>
+        </DialogName>
+        <Model />
+        <Functions />
+        <FunctionCall />
+        <CombineMessages>True</CombineMessages>
+        <InterruptionWords />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-20" Y="-10" Width="119" Height="56">
+      <Name>###ExtractXmlsTagNode02</Name>
+      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
+        <TagNames>
+          <Item>workspace</Item>
+        </TagNames>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="170" Y="-50" Width="154" Height="67">
+      <Name>###CreateTaskWorkSpace01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.CreateTaskWorkSpace">
+        <WorkSpaceName>
+        </WorkSpaceName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="120" Y="50" Width="28" Height="17">
+      <Name>###GetXmlTagContentNode01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputItem" X="-560" Y="-20" Width="45" Height="17">
+      <Name>Prompt</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputNode">
+        <Name>Prompt</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Fill in the task requirement</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <Required>False</Required>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-560" Y="0" Width="52" Height="17">
+      <Name>TaskBegin</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
+        <Name>TaskBegin</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+  </Nodes>
+  <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+  <Links>
+    <Item>
+      <FromNode>CreateWorkSpace_End</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>CreateWorkSpace</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###BuildPrompt02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CallLLm02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###BuildPrompt02</FromNode>
+      <FromConnector>PromptOut</FromConnector>
+      <ToNode>###CallLLm02</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetGlobalLLmModel02</FromNode>
+      <FromConnector>LlmModel</FromConnector>
+      <ToNode>###CallLLm02</ToNode>
+      <ToConnector>Model</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetGlobalLLmModel02</FromNode>
+      <FromConnector>Parameter</FromConnector>
+      <ToNode>###CallLLm02</ToNode>
+      <ToConnector>Parameter</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ExtractXmlsTagNode02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm02</FromNode>
+      <FromConnector>Result</FromConnector>
+      <ToNode>###ExtractXmlsTagNode02</ToNode>
+      <ToConnector>DataIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagNode02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreateTaskWorkSpace01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagNode02</FromNode>
+      <FromConnector>Tag-workspace</FromConnector>
+      <ToNode>###GetXmlTagContentNode01</ToNode>
+      <ToConnector>TagIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagContentNode01</FromNode>
+      <FromConnector>ContentOut</FromConnector>
+      <ToNode>###CreateTaskWorkSpace01</ToNode>
+      <ToConnector>WorkSpaceName</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>TaskBegin</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompt02</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Prompt</FromNode>
+      <FromConnector>Prompt</FromConnector>
+      <ToNode>###BuildPrompt02</ToNode>
+      <ToConnector>k_INPUT</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagContentNode01</FromNode>
+      <FromConnector>ContentOut</FromConnector>
+      <ToNode>WorkSpaceName</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CreateTaskWorkSpace01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnComplete</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

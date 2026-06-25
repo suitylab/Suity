@@ -20,6 +20,10 @@
   <Object id="dfe46840-4a9b-425e-b959-f2dfa8de8999" name="Workflows/Rules/Html_JavaScript.md" />
   <Object id="38ca77a8-d9d2-44e3-b77d-ad8d6baf80bd" name="Workflows/Rules/Html_Simple.md" />
   <Object id="b5af5156-628d-43bb-9b7f-13bcb5026008" name="Workflows/Rules/Html_TypeScript.md" />
+  <Object id="c65c4898-7698-425e-9d38-8c297a8df603" name="Workflows/SoftwareTeam/Coder.md" />
+  <Object id="f8edf2d9-077a-435d-9569-d5a6f1d88980" name="Workflows/SoftwareTeam/Manager.md" />
+  <Object id="9c17ca55-f195-4e0f-88b4-008fff0a7011" name="Workflows/SoftwareTeam/Planner.md" />
+  <Object id="4641d488-5c1e-486f-ae8c-900cb01f3705" name="Workflows/SoftwareTeam/Verifier.md" />
   <Object id="3173c737-5a5d-4be7-bcee-8f06cb2c995c" name="Workflows/TypeScript/RequirementDocument.md" />
   <Object id="c9d07914-4cf5-4828-8f98-4885848d8d09" name="Workflows/TypeScript/TypeScriptCreator.md" />
   <Object id="dfb27678-d6d0-4ed5-b780-ad7a12f24358" name="Workflows/Workers/Analyzer.md" />

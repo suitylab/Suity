@@ -5,34 +5,73 @@
   </Plugin>
   <Plugin name="LLmModelPlugin">
     <LowLLmPreset>
-      <Default />
-      <Thinking />
-      <WebSearch />
-      <Coding />
-      <Creative />
-      <Summary />
-      <Lightweight />
-      <DefaultParameters />
+      <Default>
+        <Model />
+      </Default>
+      <Thinking>
+        <Model />
+      </Thinking>
+      <WebSearch>
+        <Model />
+      </WebSearch>
+      <Coding>
+        <Model />
+      </Coding>
+      <Creative>
+        <Model />
+      </Creative>
+      <Summary>
+        <Model />
+      </Summary>
+      <Lightweight>
+        <Model />
+      </Lightweight>
     </LowLLmPreset>
     <MediumLLmPreset>
-      <Default />
-      <Thinking />
-      <WebSearch />
-      <Coding />
-      <Creative />
-      <Summary />
-      <Lightweight />
-      <DefaultParameters />
+      <Default>
+        <Model />
+      </Default>
+      <Thinking>
+        <Model />
+      </Thinking>
+      <WebSearch>
+        <Model />
+      </WebSearch>
+      <Coding>
+        <Model />
+      </Coding>
+      <Creative>
+        <Model />
+      </Creative>
+      <Summary>
+        <Model />
+      </Summary>
+      <Lightweight>
+        <Model />
+      </Lightweight>
     </MediumLLmPreset>
     <HighLLmPreset>
-      <Default />
-      <Thinking />
-      <WebSearch />
-      <Coding />
-      <Creative />
-      <Summary />
-      <Lightweight />
-      <DefaultParameters />
+      <Default>
+        <Model />
+      </Default>
+      <Thinking>
+        <Model />
+      </Thinking>
+      <WebSearch>
+        <Model />
+      </WebSearch>
+      <Coding>
+        <Model />
+      </Coding>
+      <Creative>
+        <Model />
+      </Creative>
+      <Summary>
+        <Model />
+      </Summary>
+      <Lightweight>
+        <Model />
+      </Lightweight>
     </HighLLmPreset>
     <DefaultEmbedding />
     <LowImageGenModel />
@@ -70,7 +109,11 @@
     </SpeechLanguage>
     <PromptOverrides base="@f966dd49-78ab-4231-a830-07c832999fb7[]" />
   </Plugin>
-  <Plugin name="AigcWorkflowPlugin" />
+  <Plugin name="AigcWorkflowPlugin">
+    <FixedWorkSpaceName>
+    </FixedWorkSpaceName>
+    <PromptWorkSpace />
+  </Plugin>
   <Plugin name="AIHubMixPlugin">
     <ApiKey>
     </ApiKey>
