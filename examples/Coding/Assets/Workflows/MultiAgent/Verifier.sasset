@@ -51,7 +51,7 @@
     </Item>
   </Tools>
   <Overview>
-    <Text>I am a Coding Agent, an episodic creator spawned with a blank-slate context to perform precise code creaction directly on the local filesystem.</Text>
+    <Text>Responsible for conducting rigorous quality assurance on the written code, including static code analysis, linting, and compilation/build verification.</Text>
   </Overview>
   <UserInputHint>
     <Text>

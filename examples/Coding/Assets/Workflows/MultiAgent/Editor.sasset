@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>1c93ad5e-2ee9-4018-8ca6-4aa6bf795e0b</AssetId>
+  <AssetId>7cf86fe1-534f-4b3e-abfa-88ae8446915f</AssetId>
   <PresetName>
   </PresetName>
   <BaseWorkflow>
@@ -51,14 +51,14 @@
     </Item>
   </Tools>
   <Overview>
-    <Text>Responsible for analyzing requirements and writing comprehensive documentation, including Software Requirements Specifications (SRS) and Technical Specification documents.</Text>
+    <Text>Responsible for executing precise code modifications and file management based on user requirements, strictly adhering to an explore-read-act-verify protocol to maintain project integrity.</Text>
   </Overview>
   <UserInputHint>
     <Text>
     </Text>
   </UserInputHint>
   <Skill>
-    <Id>9c17ca55-f195-4e0f-88b4-008fff0a7011</Id>
+    <Id>6accf8cc-5dd0-465d-b358-a0817d72e05b</Id>
   </Skill>
   <Rule>
     <Id>b5af5156-628d-43bb-9b7f-13bcb5026008</Id>

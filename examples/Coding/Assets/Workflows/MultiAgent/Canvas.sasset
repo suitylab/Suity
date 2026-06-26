@@ -6,7 +6,7 @@
   </Description>
   <Icon />
   <Nodes>
-    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-70" Y="-330" Width="162" Height="79">
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-80" Y="-250" Width="162" Height="79">
       <Name>###AgentCanvasNode01</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -19,7 +19,7 @@
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-270" Y="-80" Width="162" Height="79">
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-380" Y="0" Width="162" Height="79">
       <Name>###AgentCanvasNode02</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -32,7 +32,7 @@
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-70" Y="-80" Width="162" Height="79">
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-180" Y="0" Width="162" Height="79">
       <Name>###AgentCanvasNode03</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -45,7 +45,7 @@
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="130" Y="-80" Width="162" Height="79">
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="20" Y="0" Width="162" Height="79">
       <Name>###AgentCanvasNode04</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -58,7 +58,7 @@
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Agentic.AgentStartDiagramItem" X="-70" Y="-420" Width="151" Height="38">
+    <Item type="Suity.Editor.AIGC.Agentic.AgentStartDiagramItem" X="-80" Y="-340" Width="151" Height="38">
       <Name>SoftwareDev</Name>
       <AssetId>58b42172-8c9f-48d2-bec5-d449eb06b446</AssetId>
       <Node type="Suity.Editor.AIGC.Agentic.AgentStartCanvasNode">
@@ -71,6 +71,18 @@
         <EntryTaskName>Entry</EntryTaskName>
         <WorkSpace />
         <IsTemplate>True</IsTemplate>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="220" Y="0" Width="162" Height="79">
+      <Name>###AgentCanvasNode05</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>7cf86fe1-534f-4b3e-abfa-88ae8446915f</Id>
+        </AssetRef>
+        <AgentName>Editor</AgentName>
+        <Overview />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
   </Nodes>
@@ -96,6 +108,12 @@
     </Item>
     <Item>
       <FromNode>###AgentCanvasNode04</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode05</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###AgentCanvasNode01</ToNode>
       <ToConnector>In</ToConnector>

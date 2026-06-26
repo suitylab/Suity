@@ -34,6 +34,8 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
     private readonly StringProperty _presetName = new("PresetName", "Preset Name");
 
+    private readonly ValueProperty<bool> _isTemplate
+        = new("IsTemplate", "Is Template", false, "When enabled, this preset can be used as the startup page.");
 
     private readonly AssetProperty<ISubFlowDefAsset> _baseWorkflow
         = new("BaseWorkflow", "Base Workflow", "The base execution flow that this preset is built upon.");
@@ -52,9 +54,6 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
     private readonly AssetProperty<PromptAsset> _rule
         = new("Rule", "Rule", "Rules shared across the entire task hierarchy.");
-
-    private readonly ValueProperty<bool> _isTemplate
-        = new("IsTemplate", "Is Template", false, "When enabled, this preset can be used as the startup page.");
 
     private readonly ValueProperty<bool> _useParentArticle =
         new("UseParentArticle", "Use Parent Article", false, "Use parent article as the article record for this page content. This setting will override the value of the base execution flow.");
@@ -261,6 +260,11 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
         _presetName.Sync(sync);
 
+        if (sync.IsSetterOf(_isTemplate.Property.Name))
+        {
+            AssetBuilder.SetIsStartupPage(_isTemplate.Value);
+        }
+
         _baseWorkflow.Sync(sync);
         _tools.Sync(sync);
         _isTemplate.Sync(sync);
@@ -277,11 +281,6 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
         var element = EnsureSubFlowInstance();
         sync.Sync("Page", element, SyncFlag.GetOnly | SyncFlag.AffectsParent);
-
-        if (sync.IsSetterOf(_isTemplate.Property.Name))
-        {
-            AssetBuilder.SetIsStartupPage(_isTemplate.Value);
-        }
 
         if (sync.IsSetter())
         {
@@ -308,6 +307,9 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         _iconSelection.InspectorField(setup);
         _colorSelection.InspectorField(setup);
 
+        setup.LabelWithIcon("Startup", CoreIconCache.Play);
+        _isTemplate.InspectorField(setup);
+
         setup.LabelWithIcon("Preset", CoreIconCache.Preset);
         _presetName.InspectorField(setup);
         _overview.InspectorField(setup);
@@ -318,9 +320,6 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         _rule.InspectorField(setup);
         _tools.InspectorField(setup);
         _useParentArticle.InspectorField(setup);
-
-        setup.LabelWithIcon("Startup", CoreIconCache.Play);
-        _isTemplate.InspectorField(setup);
 
         setup.LabelWithIcon("Preset Settings", CoreIconCache.Page);
         setup.InspectorField(Instance, new ViewProperty("Page", "Preset Parameters").WithExpand());
