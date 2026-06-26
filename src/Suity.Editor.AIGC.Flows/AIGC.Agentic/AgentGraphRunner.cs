@@ -265,8 +265,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
             return AICallResult.FromFailed("Loop is running.");
         }
 
-        var loopDoc = loop?.LoopAsset?.GetLoop() as AigcLoopDocument;
-        if (loopDoc is null)
+        if (loop?.LoopAsset?.GetLoop() is not AigcLoopDocument loopDoc)
         {
             return AICallResult.Empty;
         }

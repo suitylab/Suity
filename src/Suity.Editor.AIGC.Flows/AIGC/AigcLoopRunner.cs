@@ -145,7 +145,7 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
                 if (_document.GetLastCompletedTask() is { } completedTask)
                 {
                     var status = completedTask.GetCommitStatus();
-                    var response = completedTask.GetPageInstance().GetResponseString(ResolveChatIntents.Normal);
+                    string response = completedTask.GetPageInstance().GetResponseString(ResolveChatIntents.Normal);
 
                     switch (status)
                     {
@@ -203,18 +203,21 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
 
         _lastTask = task;
         RaiseTaskChanged(task);
+        TaskRunResult runResult = null;
 
         bool hasSubTask = task.Count > 0;
         if (!hasSubTask)
         {
             // Task begin.
-            var runResult = await RunTaskWithRetry(request, task, TaskEventTypes.TaskBegin, null, null);
+            runResult = await RunTaskWithRetry(request, task, TaskEventTypes.TaskBegin, null, null);
             _document.MarkDirtyAndSaveDelayed(this);
 
-            if (request.Cancellation.IsCancellationRequested)
-            {
-                return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
-            }
+            request.Cancellation.ThrowIfCancellationRequested();
+
+            //if (request.Cancellation.IsCancellationRequested)
+            //{
+            //    return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
+            //}
         }
 
         // When a task is completed but no end event is triggered,
@@ -238,7 +241,9 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             }
         }
 
-        return (flowControl: true, value: null);
+        var result = ToAICallResult(runResult);
+
+        return (flowControl: true, value: result);
     }
 
     private void RaiseTaskChanged(IAigcTaskPage task)
@@ -300,7 +305,8 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             }
             catch (OperationCanceledException)
             {
-                return new(TaskCommitStatus.None, "Task cancelled.");
+                //return new(TaskCommitStatus.None, "Task cancelled.");
+                throw;
             }
             catch (Exception err)
             {
@@ -449,4 +455,42 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
 
     }
 
+    public static AICallResult ToAICallResult(TaskRunResult runResult)
+    {
+        if (runResult is null)
+        {
+            return AICallResult.Empty;
+        }
+
+        object value = null;
+        string message = string.Empty;
+
+        if (runResult.Parameter is string s)
+        {
+            message = s;
+        }
+        else if (runResult.Parameter is TextBlock textBlock)
+        {
+            message = textBlock.Text;
+        }
+        else
+        {
+            value = runResult.Parameter;
+        }
+
+        switch (runResult.EndType)
+        {
+            case TaskCommitStatus.TaskFinished:
+                return AICallResult.FromResult(value, message);
+
+            case TaskCommitStatus.TaskFailed:
+                return AICallResult.FromFailed(message);
+
+            case TaskCommitStatus.TaskDisabled:
+            case TaskCommitStatus.Delegating:
+            case TaskCommitStatus.None:
+            default:
+                return AICallResult.Empty;
+        }
+    }
 }

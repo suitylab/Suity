@@ -347,7 +347,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     public string GetResponseString(ResolveChatIntents intent)
     {
         var response = GetAllChildElements(true).OfType<IPageParameter>()
-            .Where(o => o.TaskCommit && o.ParameterType == NativeTypes.StringType)
+            .Where(o => o.TaskCommit && (o.ParameterType == NativeTypes.StringType || o.ParameterType == NativeTypes.TextBlockType))
             .Select(o => o.ResolveChatHistory(intent))
             .FirstOrDefault(o => !string.IsNullOrWhiteSpace(o?.Text));
             

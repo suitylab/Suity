@@ -280,7 +280,7 @@ public class LLmModelParameter : IViewObject
     public override string ToString()
     {
         //return L(this.GetType().ToDisplayText());
-        return $"{_maxTokens.Value} Max Tokens";
+        return $"(Max Tokens: {_maxTokens.Value})";
     }
 }
 
