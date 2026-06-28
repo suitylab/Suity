@@ -18,14 +18,17 @@ public class ReadFile : ToolCommand<ReadFile.Output>
 {
     public class Output : SObjectController
     {
+        readonly StringProperty _filePath = new("FilePath", "FilePath", string.Empty, "The file path that was read.");
         readonly StringProperty _message = new("Message");
 
+        public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
         public string Message { get => _message.Text; set => _message.Text = value; }
 
         protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             base.OnSync(sync, context);
 
+            _filePath.Sync(sync);
             _message.Sync(sync);
         }
 
@@ -33,6 +36,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
         {
             base.OnSetupView(setup);
 
+            _filePath.InspectorField(setup);
             _message.InspectorField(setup);
         }
 
@@ -83,6 +87,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
 
         if (lastScratchPad?.Type == ScratchPadTypes.FileFullContent)
         {
+            output.FilePath = relativePath;
             output.Message = "read successful. See ScratchPad for full content.";
             return Task.FromResult(output);
         }
@@ -120,6 +125,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
         if (!File.Exists(fullPath))
         {
             parentPage?.RemoveScratchPad(relativePath);
+            output.FilePath = fullPath;
             output.Message = "File not found";
         }
         else
@@ -127,6 +133,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
             if (startLine <= 0 && lineCount <= 0)
             {
                 //content = string.Join(Environment.NewLine, lines);
+                output.FilePath = fullPath;
                 output.Message = "read successful, see ScratchPad for detail.";
                 parentPage?.SetScratchPad(ScratchPadTypes.FileFullContent, relativePath);
             }
@@ -138,7 +145,13 @@ public class ReadFile : ToolCommand<ReadFile.Output>
 
                 int start = startLine <= 0 ? 0 : Math.Min(startLine - 1, totalLines - 1);
                 int count = lineCount <= 0 ? totalLines - start : Math.Min(lineCount, totalLines - start);
-                content = string.Join(Environment.NewLine, lines, start, count);
+                
+                var linesWithNumbers = new string[count];
+                for (int i = 0; i < count; i++)
+                {
+                    linesWithNumbers[i] = $"{start + i + 1}: {lines[start + i]}";
+                }
+                content = string.Join(Environment.NewLine, linesWithNumbers);
                 string msg = $"start line: {startLine}, line count: {lineCount}";
 
                 if (lastScratchPad?.Type == ScratchPadTypes.FileSegment)
@@ -158,6 +171,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
                     }
                 }
 
+                output.FilePath = fullPath;
                 output.Message = $"read successful. {msg}, see ScratchPad for detail.";
                 bool merged = lastScratchPad?.Type == ScratchPadTypes.FileSegment && !string.IsNullOrEmpty(lastScratchPad.Content);
                 parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, merged ? "Contains multiple sections (sections start with: ========== FILE SECTION: ...)" : msg);

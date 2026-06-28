@@ -329,7 +329,7 @@ public abstract class AigcTaskPage : DesignNode,
             return null;
         }
 
-        return GetTaskAt(index - 1);
+        return ParentList.GetItemAt(index - 1) as AigcTaskPage;
     }
 
     /// <summary>
@@ -344,7 +344,7 @@ public abstract class AigcTaskPage : DesignNode,
             return null;
         }
 
-        return GetTaskAt(index + 1);
+        return ParentList.GetItemAt(index + 1) as AigcTaskPage;
     }
 
     /// <summary>

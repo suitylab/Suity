@@ -1156,6 +1156,84 @@ public class GetLastSubTask : TaskPageNode
 
 #endregion
 
+#region GetPreviousTask
+
+/// <summary>
+/// A flow node that retrieves the previous task from the specified task.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Width = 100, Height = 20)]
+[DisplayText("Get Previous Task", "*CoreIcon|Task")]
+[DisplayOrder(4945)]
+public class GetPreviousTask : TaskPageNode
+{
+    readonly FlowNodeConnector _task;
+    readonly FlowNodeConnector _previousTask;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetPreviousTask"/> class.
+    /// </summary>
+    public GetPreviousTask()
+    {
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
+
+        _task = this.AddDataInputConnector("Task", taskType, "Task");
+        _previousTask = this.AddDataOutputConnector("PreviousTask", taskType, "Previous Task");
+    }
+
+    /// <inheritdoc/>
+    public override ImageDef Icon => CoreIconCache.Task;
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var task = compute.GetValue<IAigcTaskPage>(_task) as AigcWorkflowPage;
+        var previousTask = task?.GetPreviousTask();
+
+        compute.SetValue(_previousTask, previousTask);
+    }
+}
+
+#endregion
+
+#region GetPreviousTaskId
+
+/// <summary>
+/// A flow node that retrieves the task ID of the previous task.
+/// </summary>
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Width = 100, Height = 20)]
+[DisplayText("Get Previous Task Id", "*CoreIcon|Task")]
+[DisplayOrder(4944)]
+public class GetPreviousTaskId : TaskPageNode
+{
+    readonly FlowNodeConnector _task;
+    readonly FlowNodeConnector _previousTaskId;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetPreviousTaskId"/> class.
+    /// </summary>
+    public GetPreviousTaskId()
+    {
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
+
+        _task = this.AddDataInputConnector("Task", taskType, "Task");
+        _previousTaskId = this.AddDataOutputConnector("PreviousTaskId", "string", "Previous Task Id");
+    }
+
+    /// <inheritdoc/>
+    public override ImageDef Icon => CoreIconCache.Task;
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        var task = compute.GetValue<IAigcTaskPage>(_task) as AigcWorkflowPage;
+        string previousTaskId = task?.GetPreviousTask()?.Name ?? string.Empty;
+
+        compute.SetValue(_previousTaskId, previousTaskId);
+    }
+}
+
+#endregion
+
 #region GetCurrentTask
 
 /// <summary>

@@ -195,7 +195,13 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
 
                         int start = startLine <= 0 ? 0 : Math.Min(startLine - 1, totalLines - 1);
                         int count = lineCount <= 0 ? totalLines - start : Math.Min(lineCount, totalLines - start);
-                        content = string.Join(Environment.NewLine, lines, start, count);
+                        
+                        var linesWithNumbers = new string[count];
+                        for (int i = 0; i < count; i++)
+                        {
+                            linesWithNumbers[i] = $"{start + i + 1}: {lines[start + i]}";
+                        }
+                        content = string.Join(Environment.NewLine, linesWithNumbers);
                         string msg = $"start line: {startLine}, line count: {lineCount}";
                         result.Message = $"read successful. {msg}, see ScratchPad for detail.";
 
