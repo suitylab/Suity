@@ -19,7 +19,7 @@
           <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
             <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
               <Value type="Suity.Views.TextBlock">
-                <Text>Perform an exact string edit in multiple files at once. Use for cross-file refactoring, or edit multiple places in one file</Text>
+                <Text>Perform an exact string edit in multiple files at once. Use for cross-file refactoring, or edit multiple places in one file. Do NOT edit too much files in one time, try saperate them to smaller sections.</Text>
               </Value>
             </ToolTips>
           </Item>
@@ -79,7 +79,7 @@
         <Value type="System.Boolean">False</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="-90" Width="201" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="-90" Width="197" Height="52">
       <Name>###CreatePageInstanceWithParameter01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
         <ToolDefinition>
@@ -98,7 +98,7 @@
         <UpdateParameter>False</UpdateParameter>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-10" Width="134" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-10" Width="130" Height="107">
       <Name>###AddSubTaskPage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
         <PageTitle>
@@ -249,7 +249,7 @@
         <Value type="System.Boolean">True</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="430" Width="131" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="430" Width="127" Height="107">
       <Name>###AppendTaskPage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
         <PageTitle>
@@ -260,7 +260,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="340" Width="201" Height="67">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="340" Width="197" Height="63">
       <Name>###CreatePageInstanceWithParameter02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
         <ToolDefinition>
@@ -329,7 +329,7 @@
         <InHierarchy>True</InHierarchy>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-20" Y="170" Width="146" Height="67">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-20" Y="170" Width="142" Height="63">
       <Name>###SetTaskScratchPads01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.SetTaskScratchPads" />
     </Item>

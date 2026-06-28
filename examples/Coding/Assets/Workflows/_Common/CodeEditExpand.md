@@ -21,12 +21,21 @@ The working environment uses scratch pad to store the lastest files from the loc
 {{TOOLS}}
 
 # When you are ready to proceed with the next editing step, you MUST strictly follow this output format:
-1. First, output your step-by-step reasoning process inside `<reasoning>` tags. Analyze the error message, determine which of the two reasons applies, and formulate your precise text-matching strategy:
+1. output the review of the previous task: {{PREVIOUS_TASK_ID}}
+<review>
+review of the previous task in one sentence.
+</review>
+
+2. Then, output your step-by-step reasoning process inside `<reasoning>` tags. Analyze the error message, determine which of the two reasons applies, and formulate your precise text-matching strategy:
 <reasoning>
 thinking...
 </reasoning>
 
-2. Then, output one of the followings:
+<plan>
+planning...
+</plan>
+
+3. Then, output one of the followings:
 Tool call inside `<tool_action>` tags:
 <tool_action tool='ToolName'>
 {"param": "value"}
@@ -42,5 +51,5 @@ failed message...
 # Notice
 - Always output <reasoning>.
 - When call tool, only call <tool_action> once per turn.
-- **Do not read the local file again if ScratchPad contains these files, ScratchPad ensures that the file ie the lastest one.**
+- **Do not read the local file again if ScratchPad contains these files, Do action now if the scratch pad contains the requested files.**
 - Output speech language: {{SPEECH_LANGUAGE}}.

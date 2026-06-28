@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="Canvas">
+  <AssetId>f1fa1510-ecb2-441f-aada-65d7526ab528</AssetId>
+  <NameSpace>TestRelease010</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-80" Y="-250" Width="162" Height="79">
+      <Name>###AgentCanvasNode01</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>a3c82024-3f24-4b4c-a8dd-be6c4760f85f</Id>
+        </AssetRef>
+        <AgentName>Manager_3Pass</AgentName>
+        <Overview />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-530" Y="0" Width="162" Height="79">
+      <Name>###AgentCanvasNode02</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>1c93ad5e-2ee9-4018-8ca6-4aa6bf795e0b</Id>
+        </AssetRef>
+        <AgentName>
+        </AgentName>
+        <Overview />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-350" Y="0" Width="162" Height="79">
+      <Name>###AgentCanvasNode03</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>f5fedc8d-841d-420c-a154-678b1b9eea33</Id>
+        </AssetRef>
+        <AgentName>Coder1</AgentName>
+        <Overview />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="190" Y="0" Width="162" Height="79">
+      <Name>###AgentCanvasNode04</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>6bd4c7e5-2ee3-4d6a-b471-21a692d37889</Id>
+        </AssetRef>
+        <AgentName>
+        </AgentName>
+        <Overview />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Agentic.AgentStartDiagramItem" X="-80" Y="-340" Width="189" Height="38">
+      <Name>SoftwareDev3Pass</Name>
+      <AssetId>29472bbd-a6f6-4428-a60e-2782a0f1dcbd</AssetId>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentStartCanvasNode">
+        <Name>SoftwareDev3Pass</Name>
+        <Description>Software Development (3 Pass)</Description>
+        <Icon>
+          <Id>21cb8223-3635-4954-a2d8-e30d0e3ebd8d</Id>
+        </Icon>
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <EntryTaskName>Entry</EntryTaskName>
+        <WorkSpace />
+        <IsTemplate>True</IsTemplate>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="370" Y="0" Width="162" Height="79">
+      <Name>###AgentCanvasNode05</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>7cf86fe1-534f-4b3e-abfa-88ae8446915f</Id>
+        </AssetRef>
+        <AgentName>Editor</AgentName>
+        <Overview />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-170" Y="0" Width="162" Height="79">
+      <Name>###AgentCanvasNode06</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>f5fedc8d-841d-420c-a154-678b1b9eea33</Id>
+        </AssetRef>
+        <AgentName>Coder2</AgentName>
+        <Overview />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="10" Y="0" Width="162" Height="79">
+      <Name>###AgentCanvasNode07</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>f5fedc8d-841d-420c-a154-678b1b9eea33</Id>
+        </AssetRef>
+        <AgentName>Coder3</AgentName>
+        <Overview />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+  </Nodes>
+  <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+  <Links>
+    <Item>
+      <FromNode>###AgentCanvasNode01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>SoftwareDev3Pass</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode03</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode04</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode05</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode06</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode07</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

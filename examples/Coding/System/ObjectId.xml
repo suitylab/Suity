@@ -9,10 +9,12 @@
   <Object id="7ecdb907-dfd4-4d21-b74e-05d994154a69" name="Workflows/Coding/FullProjectCode.md" />
   <Object id="0fef4b38-fc48-4381-ad56-baa6158d40b1" name="Workflows/Coding/FullProjectCodeBatch.md" />
   <Object id="cc9da65c-10c8-4363-a653-7af74a21ceac" name="Workflows/Coding/KarpaphyPlus.sprompt" />
+  <Object id="3173c737-5a5d-4be7-bcee-8f06cb2c995c" name="Workflows/Coding/RequirementDocument.md" />
   <Object id="2ad31242-fa68-4729-8d6a-92efc0a2540b" name="Workflows/Coding/TechSpec.md" />
   <Object id="55a2d6a9-c57d-4639-a70a-b59a96d1c673" name="Workflows/Coding/VerifyCode.md" />
   <Object id="c65c4898-7698-425e-9d38-8c297a8df603" name="Workflows/MultiAgent/Coder.md" />
   <Object id="6accf8cc-5dd0-465d-b358-a0817d72e05b" name="Workflows/MultiAgent/Editor.md" />
+  <Object id="8acee21e-5de9-4280-8c55-1681b3c046e7" name="Workflows/MultiAgent/Manager_3Pass.md" />
   <Object id="f8edf2d9-077a-435d-9569-d5a6f1d88980" name="Workflows/MultiAgent/Manager.md" />
   <Object id="9c17ca55-f195-4e0f-88b4-008fff0a7011" name="Workflows/MultiAgent/Planner.md" />
   <Object id="4641d488-5c1e-486f-ae8c-900cb01f3705" name="Workflows/MultiAgent/Verifier.md" />
@@ -25,7 +27,6 @@
   <Object id="dfe46840-4a9b-425e-b959-f2dfa8de8999" name="Workflows/Rules/Html_JavaScript.md" />
   <Object id="38ca77a8-d9d2-44e3-b77d-ad8d6baf80bd" name="Workflows/Rules/Html_Simple.md" />
   <Object id="b5af5156-628d-43bb-9b7f-13bcb5026008" name="Workflows/Rules/Html_TypeScript.md" />
-  <Object id="3173c737-5a5d-4be7-bcee-8f06cb2c995c" name="Workflows/TypeScript/RequirementDocument.md" />
   <Object id="c9d07914-4cf5-4828-8f98-4885848d8d09" name="Workflows/TypeScript/TypeScriptCreator.md" />
   <Object id="dfb27678-d6d0-4ed5-b780-ad7a12f24358" name="Workflows/Workers/Analyzer.md" />
   <Object id="bc29d645-a31e-45f1-9837-44a439f29f1e" name="Workflows/Workers/Builder.md" />

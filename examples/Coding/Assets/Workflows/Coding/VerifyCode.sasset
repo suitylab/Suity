@@ -62,7 +62,7 @@
         <InterruptionWords />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-190" Y="-10" Width="38" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-190" Y="-10" Width="44" Height="17">
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
@@ -131,7 +131,7 @@
       <Name>###GetTaskChatHistory01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentChatHistory" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-330" Y="-140" Width="47" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-460" Y="-200" Width="47" Height="17">
       <Name>###GetTaskScratchPad01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentScratchPads">
         <InHierarchy>True</InHierarchy>
@@ -193,11 +193,11 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-280" Y="-140" Width="75" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-410" Y="-200" Width="75" Height="17">
       <Name>###FullContentScratchPads01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.FullContentScratchPads" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-140" Width="89" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-140" Width="64" Height="17">
       <Name>###CombineLLmMessage02</Name>
       <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
         <Prefix>=========== Scratch Pad Begin ===========</Prefix>
@@ -208,7 +208,7 @@
         </ItemSuffix>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-160" Width="89" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-160" Width="64" Height="17">
       <Name>###CombineLLmMessage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
         <Prefix>=========== Task History Begin ===========</Prefix>
@@ -219,15 +219,15 @@
         </ItemSuffix>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-100" Width="142" Height="63">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="260" Y="40" Width="142" Height="63">
       <Name>###SetTaskScratchPads01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.SetTaskScratchPads" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-120" Width="46" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="260" Y="20" Width="46" Height="17">
       <Name>###GetParentTask01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetParentTask" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-30" Width="79" Height="50">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="260" Y="110" Width="79" Height="50">
       <Name>###CreateScratchPad01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreateScratchPad">
         <Path>
@@ -237,6 +237,14 @@
         </Note>
         <Content />
       </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-320" Y="-170" Width="90" Height="17">
+      <Name>###ReadFilesToScratchPads01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.ReadFilesToScratchPads" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-320" Y="-200" Width="87" Height="28">
+      <Name>###AppendScratchPads01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.AppendScratchPads" />
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -320,12 +328,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###FullContentScratchPads01</FromNode>
-      <FromConnector>FullContent</FromConnector>
-      <ToNode>###GetScratchPadMessage01</ToNode>
-      <ToConnector>ScratchPad</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetScratchPadMessage01</FromNode>
       <FromConnector>Message</FromConnector>
       <ToNode>###CombineLLmMessage02</ToNode>
@@ -362,13 +364,25 @@
       <ToConnector>ScratchPad</ToConnector>
     </Item>
     <Item>
-      <FromNode>###CallLLm01</FromNode>
+      <FromNode>FilePaths</FromNode>
       <FromConnector>Out</FromConnector>
-      <ToNode>###SetTaskScratchPads01</ToNode>
-      <ToConnector>In</ToConnector>
+      <ToNode>###ReadFilesToScratchPads01</ToNode>
+      <ToConnector>FileNames</ToConnector>
     </Item>
     <Item>
-      <FromNode>###SetTaskScratchPads01</FromNode>
+      <FromNode>###FullContentScratchPads01</FromNode>
+      <FromConnector>FullContent</FromConnector>
+      <ToNode>###AppendScratchPads01</ToNode>
+      <ToConnector>ScratchPads</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ReadFilesToScratchPads01</FromNode>
+      <FromConnector>ScratchPads</FromConnector>
+      <ToNode>###GetScratchPadMessage01</ToNode>
+      <ToConnector>ScratchPad</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>FileCodeOK</ToNode>
       <ToConnector>In</ToConnector>
