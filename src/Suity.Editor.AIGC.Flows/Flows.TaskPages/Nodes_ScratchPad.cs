@@ -300,6 +300,60 @@ public class GetScratchPadMessage : TaskPageNode
 
 #endregion
 
+#region ReadFilesToScratchPads
+
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "Scratch Pad")]
+[DisplayText("Read Files To Scratch Pads", "*CoreIcon|Scratch")]
+public class ReadFilesToScratchPads : TaskPageNode
+{
+    readonly FlowNodeConnector _fileNames;
+    readonly FlowNodeConnector _scratchPads;
+
+    public ReadFilesToScratchPads()
+    {
+        _fileNames = AddDataInputConnector("FileNames", "string[]", "File Names");
+        _scratchPads = AddDataOutputConnector("ScratchPads", TypeDefinition.FromNative<ScratchPad>().MakeArrayType(), "Scratch Pads");
+    }
+
+    public override void Compute(IFlowComputation compute)
+    {
+        var page = compute.Context.GetArgument<IAigcWorkflowPage>();
+        var workSpace = page?.GetWorkSpace();
+        string workSpaceDir = workSpace?.MasterDirectory;
+
+        var fileNames = compute.GetValues<string>(_fileNames, true)
+            ?.Where(f => !string.IsNullOrWhiteSpace(f))
+            .Select(f => f.Trim())
+            .ToArray() ?? [];
+
+        var result = fileNames.Select(fileName =>
+        {
+            if (!string.IsNullOrWhiteSpace(workSpaceDir))
+            {
+                var fullPath = workSpaceDir.PathAppend(fileName);
+                if (File.Exists(fullPath))
+                {
+                    return new ScratchPad
+                    {
+                        Path = fileName,
+                        Type = ScratchPadTypes.FileFullContent,
+                    };
+                }
+            }
+
+            return new ScratchPad
+            {
+                Path = fileName,
+                Type = ScratchPadTypes.NotFound,
+            };
+        }).ToArray();
+
+        compute.SetValue(_scratchPads, result);
+    }
+}
+
+#endregion
+
 #region FullContentScratchPads
 
 [SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "Scratch Pad")]
@@ -367,6 +421,51 @@ public class FullContentScratchPads : TaskPageNode
         }).ToArray();
 
         compute.SetValue(_scratchPadOut, result);
+    }
+}
+
+#endregion
+
+#region AppendScratchPads
+
+[SimpleFlowNodeStyle(Color = FlowColors.TaskBG, HasHeader = false, Category = "Scratch Pad")]
+[DisplayText("Append Scratch Pads", "*CoreIcon|Scratch")]
+public class AppendScratchPads : TaskPageNode
+{
+    readonly FlowNodeConnector _scratchPads;
+    readonly FlowNodeConnector _append;
+    readonly FlowNodeConnector _combined;
+
+    public AppendScratchPads()
+    {
+        var type = TypeDefinition.FromNative<ScratchPad>();
+        var aryType = type.MakeArrayType();
+
+        _scratchPads = AddDataInputConnector("ScratchPads", aryType, "Scratch Pads");
+        _append = AddConnector("Append", type, FlowDirections.Input, FlowConnectorTypes.Data, true, "Append");
+        _combined = AddDataOutputConnector("Combined", aryType, "Combined");
+    }
+
+    public override void Compute(IFlowComputation compute)
+    {
+        var existing = compute.GetValues<ScratchPad>(_scratchPads, true)?.ToList() ?? [];
+        var appending = compute.GetValues<ScratchPad>(_append, true) ?? [];
+
+        foreach (var item in appending)
+        {
+            string path = item.Path?.Trim();
+            int index = existing.FindIndex(e => string.Equals(e.Path?.Trim(), path, StringComparison.Ordinal));
+            if (index >= 0)
+            {
+                existing[index] = item;
+            }
+            else
+            {
+                existing.Add(item);
+            }
+        }
+
+        compute.SetValue(_combined, existing.ToArray());
     }
 }
 

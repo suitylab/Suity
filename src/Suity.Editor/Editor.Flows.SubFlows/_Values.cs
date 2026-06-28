@@ -238,7 +238,7 @@ public enum ScratchPadTypes
     Error,
 }
 
-[NativeType(CodeBase = "SubFlow", Icon = "*CoreIcon|Scratch")]
+[NativeType(CodeBase = "SubFlow", Icon = "*CoreIcon|Scratch", Color = FlowColors.Task)]
 [DisplayText("Scratch Pad")]
 public class ScratchPad : DesignAttribute, ITextDisplay
 {

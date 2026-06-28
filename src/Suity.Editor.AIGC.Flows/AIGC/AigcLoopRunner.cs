@@ -6,6 +6,7 @@ using Suity.Helpers;
 using Suity.Views;
 using System;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Suity.Editor.AIGC;
 
@@ -23,7 +24,7 @@ internal record TaskRunResult(TaskCommitStatus EndType, object Parameter);
 internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
 {
     private readonly AigcLoopDocument _document;
-    private readonly DocumentUsageToken _usageToken = new(nameof(AigcLoopRunner));
+    private readonly DocumentUsageToken _docUsage = new(nameof(AigcLoopRunner));
 
     private IAigcTaskPage _lastTask;
     private AIRequest _lastRequest;
@@ -48,8 +49,13 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             return AICallResult.Empty;
         }
 
+        var usageToken = new DocumentUsageToken(nameof(AigcLoopRunner));
+
         try
         {
+            // Prevent the document from being closed while a task is running.
+            _document.Entry.MarkUsage(usageToken);
+
             _lastRequest = request;
             request.FuncContext?.SetArgument(this);
             request.FuncContext?.SetArgument<IAigcLoopRunner>(this);
@@ -65,6 +71,9 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
         }
         finally
         {
+            _document.Entry.UnmarkUsage(usageToken);
+            usageToken.Dispose();
+
             _lastRequest = null;
         }
     }
@@ -107,16 +116,7 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             return AICallResult.FromFailed(err.Message);
         }
 
-        try
-        {
-            _document.Entry.MarkUsage(_usageToken);
-            return await HandleRun(request);
-        }
-        finally
-        {
-            _document.Entry.UnmarkUsage(_usageToken);
-        }
-        
+        return await HandleRun(request);
     }
 
     private Task<AICallResult> HandleResume(AIRequest request)
