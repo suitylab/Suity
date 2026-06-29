@@ -931,17 +931,28 @@ public class AigcWorkflowPage : AigcTaskPage,
     public ScratchPad[] GetHistoryScratchPads(int hierarchyLevels)
     {
         Dictionary<string, ScratchPad> dic = [];
-        int max = AigcWorkflowPlugin.Instance.MaxScratchPad;
-        CollectScratchPads(dic, max, hierarchyLevels);
+        CollectScratchPads(dic, hierarchyLevels);
 
-        return dic.Values.Where(o => o.Type.CanDisplay()).ToArray();
+        int max = AigcWorkflowPlugin.Instance.MaxScratchPad;
+
+        var result = dic.Values.Where(o => o.Type.CanDisplay()).ToArray();
+
+        if (max > 0 && dic.Count > max)
+        {
+            // remove earliest history, keep latest.
+            return result.Skip(result.Length - max).ToArray();
+        }
+        else
+        {
+            return result;
+        }
+        
     }
 
     public ScratchPad GetHistoryScratchPad(string path, int hierarchyLevels = 0)
     {
         Dictionary<string, ScratchPad> dic = [];
-        int max = AigcWorkflowPlugin.Instance.MaxScratchPad;
-        CollectScratchPads(dic, max, hierarchyLevels);
+        CollectScratchPads(dic, hierarchyLevels);
 
         if (dic.TryGetValue(path, out var scratchPad) && scratchPad.Type.CanDisplay())
         {
@@ -953,21 +964,11 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
     }
 
-    private void CollectScratchPads(Dictionary<string, ScratchPad> dic, int max, int hierarchyLevel)
+    private void CollectScratchPads(Dictionary<string, ScratchPad> dic, int hierarchyLevel)
     {
-        if (max > 0 && dic.Count > max)
-        {
-            return;
-        }
-
         if (hierarchyLevel > 0 && ParentNode is AigcWorkflowPage parent)
         {
-            parent.CollectScratchPads(dic, max, hierarchyLevel - 1);
-        }
-
-        if (max > 0 && dic.Count > max)
-        {
-            return;
+            parent.CollectScratchPads(dic, hierarchyLevel - 1);
         }
 
         int index = this.GetIndex();
@@ -1005,11 +1006,6 @@ public class AigcWorkflowPage : AigcTaskPage,
                     }
 
                     dic[path] = scratchPad;
-                }
-
-                if (max > 0 && dic.Count > max)
-                {
-                    return;
                 }
             }
         }

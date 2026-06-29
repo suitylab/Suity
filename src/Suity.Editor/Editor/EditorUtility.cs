@@ -2133,7 +2133,7 @@ public static class EditorUtility
             return string.Empty;
         }
 
-        if (s.Length > length)
+        if (s.Length > length + 2)
         {
             int half = length / 2;
             s = s[..half] + "..." + s[^half..];

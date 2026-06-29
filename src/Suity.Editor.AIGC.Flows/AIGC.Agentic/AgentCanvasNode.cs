@@ -210,7 +210,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             {
                 if (loop.LoopAsset is { } loopAsset)
                 {
-                    gui.Text("title", loop.ToString()?.ToShortcutBeginEnd())
+                    gui.Text("title", loop.ToString()?.ToShortcutBeginEnd(36))
                     .InitWidthRest(48)
                     .InitClass("textBold");
 
