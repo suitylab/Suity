@@ -109,6 +109,12 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     private readonly ValueProperty<bool> _minimalToolSchema
         = new("MinimalToolSchema", "Minimal Tool Schema", true, "Use minimal tool schema representation.");
 
+    readonly ValueProperty<int> _maxChatHistory
+        = new("MaxChatHistory", "Max Chat History", 30, "Maximum number of chat history entries to keep, <=0 means unlimited");
+
+    readonly ValueProperty<int> _maxScratchPad
+        = new("MaxScratchPad", "Max Scratch Pad", 30, "Maximum number of scratch pad entries to keep, <=0 means unlimited");
+
     private readonly ValueProperty<RetryConfig> _retry
         = new("Retry", "Retry", new(), "Retry when failed.");
 
@@ -144,6 +150,15 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
 
     public override ImageDef Icon => CoreIconCache.Workflow;
 
+    /// <summary>
+    /// Gets or sets the maximum number of chat history entries to keep. A value of 0 or less means unlimited.
+    /// </summary>
+    public int MaxChatHistory => _maxChatHistory.Value;
+
+    /// <summary>
+    /// Gets or sets the maximum number of scratch pad entries to keep. A value of 0 or less means unlimited.
+    /// </summary>
+    public int MaxScratchPad => _maxScratchPad.Value;
 
     public RetryConfig Retry => _retry.Value;
 
@@ -184,6 +199,8 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     {
         _useFullName.Sync(sync);
         _minimalToolSchema.Sync(sync);
+        _maxChatHistory.Sync(sync);
+        _maxScratchPad.Sync(sync);
         _retry.Sync(sync);
 
         _fixedWorkSpaceName.Sync(sync);
@@ -195,6 +212,8 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     {
         _useFullName.InspectorField(setup);
         _minimalToolSchema.InspectorField(setup);
+        _maxChatHistory.InspectorField(setup);
+        _maxScratchPad.InspectorField(setup);
         _retry.InspectorField(setup);
 
         setup.LabelWithIcon("Prompt", CoreIconCache.Prompt);

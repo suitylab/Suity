@@ -468,12 +468,6 @@ public class AigcWorkflowPage : AigcTaskPage,
             return false;
         }
 
-        int maxTask = doc.MaxTaskCount;
-        if (maxTask > 0 && doc.GetTotalTaskCount() > maxTask)
-        {
-            return false;
-        }
-
         // If a task does not have a task prompt set, it will automatically transfer the prompt from the previous task to ensure continuity of the task chain.
         // Clear the previous task's prompt to prevent repeated use and save storage space.
         // Without transferring the prompt, there would be additional overhead of searching upward for task prompts.
@@ -511,12 +505,6 @@ public class AigcWorkflowPage : AigcTaskPage,
     public bool AppendTask(IPageInstance pageInstance, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
         if (this.GetDocument() is not AigcLoopDocument doc)
-        {
-            return false;
-        }
-
-        int maxTask = doc.MaxTaskCount;
-        if (maxTask > 0 && doc.GetTotalTaskCount() > maxTask)
         {
             return false;
         }
@@ -559,12 +547,6 @@ public class AigcWorkflowPage : AigcTaskPage,
             return false;
         }
 
-        int maxTask = doc.MaxTaskCount;
-        if (maxTask > 0 && doc.GetTotalTaskCount() > maxTask)
-        {
-            return false;
-        }
-
         var task = CreateTaskPage(asset, title, taskPrompt, rule, commitName);
         if (task is not NamedItem { } item)
         {
@@ -592,12 +574,6 @@ public class AigcWorkflowPage : AigcTaskPage,
     public bool AddSubTask(IPageInstance pageInstance, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
         if (this.GetDocument() is not AigcLoopDocument doc)
-        {
-            return false;
-        }
-
-        int maxTask = doc.MaxTaskCount;
-        if (maxTask > 0 && doc.GetTotalTaskCount() > maxTask)
         {
             return false;
         }
@@ -818,7 +794,9 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         LinkedList<LLmMessage> list = [];
 
-        CollectChatHistory(list, doc.MaxChatHistory, false, hierarchyLevels);
+        int maxChatHistory = AigcWorkflowPlugin.Instance.MaxChatHistory;
+
+        CollectChatHistory(list, maxChatHistory, false, hierarchyLevels);
 
         return [.. list];
     }
@@ -953,8 +931,8 @@ public class AigcWorkflowPage : AigcTaskPage,
     public ScratchPad[] GetHistoryScratchPads(int hierarchyLevels)
     {
         Dictionary<string, ScratchPad> dic = [];
-        int maxHistory = this.GetDocument() is AigcLoopDocument doc ? doc.MaxChatHistory : 0;
-        CollectScratchPads(dic, maxHistory, hierarchyLevels);
+        int max = AigcWorkflowPlugin.Instance.MaxScratchPad;
+        CollectScratchPads(dic, max, hierarchyLevels);
 
         return dic.Values.Where(o => o.Type.CanDisplay()).ToArray();
     }
@@ -962,8 +940,8 @@ public class AigcWorkflowPage : AigcTaskPage,
     public ScratchPad GetHistoryScratchPad(string path, int hierarchyLevels = 0)
     {
         Dictionary<string, ScratchPad> dic = [];
-        int maxHistory = this.GetDocument() is AigcLoopDocument doc ? doc.MaxChatHistory : 0;
-        CollectScratchPads(dic, maxHistory, hierarchyLevels);
+        int max = AigcWorkflowPlugin.Instance.MaxScratchPad;
+        CollectScratchPads(dic, max, hierarchyLevels);
 
         if (dic.TryGetValue(path, out var scratchPad) && scratchPad.Type.CanDisplay())
         {
@@ -975,19 +953,19 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
     }
 
-    private void CollectScratchPads(Dictionary<string, ScratchPad> dic, int maxHistory, int hierarchyLevel)
+    private void CollectScratchPads(Dictionary<string, ScratchPad> dic, int max, int hierarchyLevel)
     {
-        if (maxHistory > 0 && dic.Count > maxHistory)
+        if (max > 0 && dic.Count > max)
         {
             return;
         }
 
         if (hierarchyLevel > 0 && ParentNode is AigcWorkflowPage parent)
         {
-            parent.CollectScratchPads(dic, maxHistory, hierarchyLevel - 1);
+            parent.CollectScratchPads(dic, max, hierarchyLevel - 1);
         }
 
-        if (maxHistory > 0 && dic.Count > maxHistory)
+        if (max > 0 && dic.Count > max)
         {
             return;
         }
@@ -1029,7 +1007,7 @@ public class AigcWorkflowPage : AigcTaskPage,
                     dic[path] = scratchPad;
                 }
 
-                if (maxHistory > 0 && dic.Count > maxHistory)
+                if (max > 0 && dic.Count > max)
                 {
                     return;
                 }

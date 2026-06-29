@@ -37,8 +37,6 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
     readonly AssetListProperty<IPageAsset> _tools = new("Tools", "Tools List");
     readonly AssetListProperty<IArticleAsset> _knowledgeArticles
         = new("KnowledgeArticles", "Knowledge Articles", "Reading materials used as knowledge reference.") { Filter = ReadingMaterialFilter.Instance };
-    readonly ValueProperty<int> _maxChatHistory = new("MaxChatHistory", "Max Chat History", 30, "Maximum number of chat history entries to keep, <=0 means unlimited");
-    readonly ValueProperty<int> _maxTaskCount = new("MaxTaskCount", "Max Task Count", 0, "Maximum number of tasks supported, <=0 means unlimited");
 
     readonly ValueProperty<bool> _autoFocusRunningTask = new("AutoFocusRunningTask", "Auto Focus Running Task", true, "Automatically focus the running task when it starts.");
 
@@ -84,23 +82,6 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
     /// </summary>
     public IEnumerable<IPageAsset> ToolPages => _tools.Targets;
 
-    /// <summary>
-    /// Gets or sets the maximum number of chat history entries to keep. A value of 0 or less means unlimited.
-    /// </summary>
-    public int MaxChatHistory
-    {
-        get => _maxChatHistory.Value;
-        set => _maxChatHistory.Value = value;
-    }
-
-    /// <summary>
-    /// Gets or sets the maximum number of tasks supported. A value of 0 or less means unlimited.
-    /// </summary>
-    public int MaxTaskCount
-    {
-        get => _maxTaskCount.Value;
-        set => _maxTaskCount.Value = value;
-    }
 
     /// <summary>
     /// Gets the list of configured tool pages, excluding null entries.
@@ -331,8 +312,6 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
         _workSpace.Sync(sync);
         _tools.Sync(sync);
         _knowledgeArticles.Sync(sync);
-        _maxChatHistory.Sync(sync);
-        _maxTaskCount.Sync(sync);
         _autoFocusRunningTask.Sync(sync);
     }
 
@@ -347,8 +326,6 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
         _workSpace.InspectorField(setup);
         _tools.InspectorField(setup);
         _knowledgeArticles.InspectorField(setup);
-        _maxChatHistory.InspectorField(setup);
-        _maxTaskCount.InspectorField(setup);
     }
 
     /// <inheritdoc/>
