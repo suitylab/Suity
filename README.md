@@ -9,6 +9,28 @@
 
 ---
 
+## Screenshots
+
+### Landing Page
+![Landing Page](screenshots/LandingPage.gif)
+
+### First Person Shooter
+![First Person Shooter](screenshots/FirstPersonShooter.gif)
+
+### Minecraft Clone
+![Minecraft Clone](screenshots/MineCraftClone.gif)
+
+### Racing 3D
+![Racing 3D](screenshots/Racing3D.gif)
+
+### Space Shooter 2D
+![Space Shooter 2D](screenshots/SpaceShooter2D.gif)
+
+### Tank 3D
+![Tank 3D](screenshots/Tank3D.gif)
+
+---
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -36,28 +58,6 @@
 - 📦 **Agent Prefab System** — Package complex Loop matrices into reusable, shareable modules.
 - 🌐 **Cross-Platform Architecture** — Powered by **Avalonia UI** and **.NET 10** for seamless cross-platform deployment (Windows, Linux, macOS).
 - 🎨 **Native C# ImGui Framework** — A proprietary, high-performance GUI system written in pure C#, enabling fluid visual node rendering for massive AI workflows.
-
----
-
-## Screenshots
-
-### Landing Page
-![Landing Page](screenshots/LandingPage.gif)
-
-### First Person Shooter
-![First Person Shooter](screenshots/FirstPersonShooter.gif)
-
-### Minecraft Clone
-![Minecraft Clone](screenshots/MineCraftClone.gif)
-
-### Racing 3D
-![Racing 3D](screenshots/Racing3D.gif)
-
-### Space Shooter 2D
-![Space Shooter 2D](screenshots/SpaceShooter2D.gif)
-
-### Tank 3D
-![Tank 3D](screenshots/Tank3D.gif)
 
 ---
 
