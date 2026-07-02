@@ -19,7 +19,8 @@
           <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
             <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
               <Value type="Suity.Views.TextBlock">
-                <Text>Perform an exact string edit in multiple files at once. Use for cross-file refactoring, or edit multiple places in one file. Do NOT edit too much files in one time, try saperate them to smaller sections.</Text>
+                <Text>Perform an exact string edit in multiple files at once. Use for cross-file refactoring, or edit multiple places in one file. Do NOT edit too much files in one time, try saperate them to smaller sections.
+Notice: must include comments for exact replacement if the origin code contains any.</Text>
               </Value>
             </ToolTips>
           </Item>

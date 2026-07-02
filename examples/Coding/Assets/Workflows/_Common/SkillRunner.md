@@ -79,7 +79,9 @@ Failed message...
 
 # Reminder
 This is the user original request which indicates the goal of entire workflow:
+```
 {{INPUT}}
+```
 
 # Constraints
 - Always output <reasoning>.

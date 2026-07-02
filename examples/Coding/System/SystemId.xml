@@ -93,6 +93,7 @@
   <Object id="38539ccf-5aa6-40e9-be02-071b91d620fd" name="*AIGC|LLmModelType.Coding" />
   <Object id="55ff6f66-fda5-4407-a80d-1d8aebb1e4a1" name="*AIGC|LLmModelType.Creative" />
   <Object id="7d8cfc15-87ea-4994-b2db-e6e165641a0e" name="*AIGC|LLmModelType.Default" />
+  <Object id="631303e9-3e90-42db-81c9-a2145616da84" name="*AIGC|LLmModelType.Expert" />
   <Object id="25053922-d516-447e-a4f4-da8230781503" name="*AIGC|LLmModelType.Lightweight" />
   <Object id="e47b50da-0dfd-40b8-b068-157ebaadea1d" name="*AIGC|LLmModelType.Summary" />
   <Object id="d4121d71-3c91-482c-aaf7-a07dd828766f" name="*AIGC|LLmModelType.Thinking" />

@@ -20,7 +20,7 @@
           <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
             <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
               <Value type="Suity.Views.TextBlock">
-                <Text>I am an Analyzer and Verify Agent, a specialized diagnostic module spawned to systematically examine existing code files, verify architectural and security compliance, and generate comprehensive validation reports. Fill in your requirement in the Prompt field.</Text>
+                <Text>I am an static Analyzer and Verify Agent, a specialized diagnostic module spawned to systematically examine existing code files, verify architectural and security compliance, and generate comprehensive validation reports. Fill in your requirement in the Prompt field.</Text>
               </Value>
             </ToolTips>
           </Item>
@@ -50,7 +50,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="50" Y="-110" Width="136" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="50" Y="-110" Width="136" Height="111">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -66,7 +66,7 @@
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-100" Width="103" Height="85">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-100" Y="-100" Width="107" Height="89">
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
@@ -219,7 +219,7 @@
         </ItemSuffix>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="260" Y="40" Width="142" Height="63">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="260" Y="40" Width="146" Height="67">
       <Name>###SetTaskScratchPads01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.SetTaskScratchPads" />
     </Item>
