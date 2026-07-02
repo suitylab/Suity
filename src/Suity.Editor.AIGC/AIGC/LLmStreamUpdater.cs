@@ -35,7 +35,10 @@ public abstract class LLmStreamUpdater : IDisposable
     {
         var fullText = FullText;
 
-        fullText.Append(text);
+        lock (fullText)
+        {
+            fullText.Append(text);
+        }
 
         if (Conversation is { } conversation)
         {
@@ -54,6 +57,10 @@ public abstract class LLmStreamUpdater : IDisposable
 
     public override string ToString()
     {
-        return FullText.ToString();
+        var fullText = FullText;
+        lock (fullText)
+        {
+            return fullText.ToString();
+        }
     }
 }

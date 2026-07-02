@@ -393,6 +393,11 @@ public class LLmModelPresetConfig : IViewObject
     public ValueProperty<LLmModelConfig> Lightweight { get; }
         = new(nameof(Lightweight), "Lightweight", null, toolTips: "TOOLTIPS_LIGHTWEIGHT_MODEL");
 
+    /// <summary>
+    /// Gets the expert language model configuration for advanced or specialized tasks.
+    /// </summary>
+    public ValueProperty<LLmModelConfig> Expert { get; }
+        = new(nameof(Expert), "Expert", null, toolTips: "TOOLTIPS_EXPERT_MODEL");
 
 
     /// <summary>
@@ -411,6 +416,7 @@ public class LLmModelPresetConfig : IViewObject
         Creative.Property.WithOptional();
         Summary.Property.WithOptional();
         Lightweight.Property.WithOptional();
+        Expert.Property.WithOptional();
 
         DefaultParameter.Property.WithWriteBack().WithOptional();
     }
@@ -429,6 +435,7 @@ public class LLmModelPresetConfig : IViewObject
         Creative.Sync(sync);
         Summary.Sync(sync);
         Lightweight.Sync(sync);
+        Expert.Sync(sync);
 
         DefaultParameter.Sync(sync);
     }
@@ -446,6 +453,7 @@ public class LLmModelPresetConfig : IViewObject
         WebSearch.InspectorField(setup);
         Coding.InspectorField(setup);
         Lightweight.InspectorField(setup);
+        Expert.InspectorField(setup);
 
         DefaultParameter.InspectorField(setup);
     }
@@ -468,6 +476,7 @@ public class LLmModelPresetConfig : IViewObject
         LLmModelType.Creative => Creative.Value ?? Default.Value,
         LLmModelType.Summary => Summary.Value ?? Default.Value,
         LLmModelType.Lightweight => Lightweight.Value ?? Default.Value,
+        LLmModelType.Expert => Expert.Value ?? Default.Value,
         _ => Default.Value,
     };
 
@@ -476,7 +485,7 @@ public class LLmModelPresetConfig : IViewObject
     /// </summary>
     /// <param name="message">A list to populate with validation error messages if validation fails.</param>
     /// <returns>True if all configured models are valid; otherwise, false.</returns>
-    public bool GetIsValud(ref List<string> message)
+    public bool GetIsValid(ref List<string> message)
     {
         if (!GetLLmModelIsValid(Default, ref message))
         {
@@ -493,12 +502,27 @@ public class LLmModelPresetConfig : IViewObject
             return false;
         }
 
+        if (!string.IsNullOrWhiteSpace(Coding.Value?.SelectedKey) && !GetLLmModelIsValid(Coding, ref message))
+        {
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(Creative.Value?.SelectedKey) && !GetLLmModelIsValid(Creative, ref message))
+        {
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(Summary.Value?.SelectedKey) && !GetLLmModelIsValid(Summary, ref message))
+        {
+            return false;
+        }
+
         if (!string.IsNullOrWhiteSpace(Lightweight.Value?.SelectedKey) && !GetLLmModelIsValid(Lightweight, ref message))
         {
             return false;
         }
 
-        if (!string.IsNullOrWhiteSpace(Coding.Value?.SelectedKey) && !GetLLmModelIsValid(Coding, ref message))
+        if (!string.IsNullOrWhiteSpace(Expert.Value?.SelectedKey) && !GetLLmModelIsValid(Expert, ref message))
         {
             return false;
         }
@@ -549,7 +573,7 @@ public class LLmModelPresetConfig : IViewObject
     {
         List<string> message = null;
 
-        if (GetIsValud(ref message))
+        if (GetIsValid(ref message))
         {
             return Default.Value?.ToString() ?? string.Empty;
         }

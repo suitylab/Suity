@@ -14,7 +14,12 @@ public class SimpleStreamUpdater : LLmStreamUpdater
     protected override void UpdateConversation(IConversationHandler conversation, string text, StringBuilder fullText)
     {
         _msg?.Dispose();
-        _msg = conversation.AddSystemMessage(fullText.ToString());
+        string msg = string.Empty;
+        lock (fullText)
+        {
+            msg = fullText.ToString();
+        }
+        _msg = conversation.AddSystemMessage(msg);
     }
 
     public override void Dispose()

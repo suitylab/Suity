@@ -1,3 +1,4 @@
+using Suity.Collections;
 using Suity.Editor.Services;
 using Suity.Views;
 using Suity.Views.Im;
@@ -120,7 +121,7 @@ public class ConversationHandlerImGui :
             {
                 for (int i = 0; i < _items.Count; i++)
                 {
-                    var item = _items[i];
+                    var item = _items.GetListItemSafe(i);
                     item?.OnGui(gui, i, true, _menu, this);
                 }
             }
@@ -359,7 +360,10 @@ public class ConversationHandlerImGui :
 
         config?.Invoke(item);
 
-        _items.Add(item);
+        lock (_items)
+        {
+            _items.Add(item);
+        }
 
         ScrollToBottom();
         _guiRef.QueueRefresh();
@@ -375,7 +379,16 @@ public class ConversationHandlerImGui :
             return;
         }
 
-        if (item is DialogItem o && _items.Remove(o))
+        bool removed = false;
+        lock (_items)
+        {
+            if (item is DialogItem o && _items.Remove(o))
+            {
+                removed = true;
+            }
+        }
+
+        if (removed)
         {
             _guiRef.QueueRefresh();
         }
@@ -384,14 +397,21 @@ public class ConversationHandlerImGui :
     /// <inheritdoc/>
     public void RemoveMessages(Predicate<IDIalogItem> predicate)
     {
-        _items.RemoveAll(predicate);
+        lock (_items)
+        {
+            _items.RemoveAll(predicate);
+        }
         _guiRef.QueueRefresh();
     }
 
     /// <inheritdoc/>
     public void RemoveDebugMessages()
     {
-        _items.RemoveAll(o => o.Role == ConversationRole.Debug);
+        lock (_items)
+        {
+            _items.RemoveAll(o => o.Role == ConversationRole.Debug);
+        }
+
         _guiRef.QueueRefresh();
     }
 

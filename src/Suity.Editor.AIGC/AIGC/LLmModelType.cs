@@ -28,6 +28,9 @@ public enum LLmModelType
 
     [DisplayText("Lightweight")]
     Lightweight,
+
+    [DisplayText("Expert")]
+    Expert,
 }
 
 /// <summary>

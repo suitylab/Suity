@@ -424,9 +424,9 @@ public class LLmModelPlugin : EditorPlugin, IViewObject
     /// <param name="message">The list to collect error messages.</param>
     /// <returns>True if all configurations are valid; otherwise, false.</returns>
     public bool GetAllModelConfigValid(ref List<string> message) 
-        => _lowLLmPreset.Value?.GetIsValud(ref message) == true
-            && _mediumLLmPreset.Value?.GetIsValud(ref message) == true
-            && _highLLmPreset.Value?.GetIsValud(ref message) == true;
+        => _lowLLmPreset.Value?.GetIsValid(ref message) == true
+            && _mediumLLmPreset.Value?.GetIsValid(ref message) == true
+            && _highLLmPreset.Value?.GetIsValid(ref message) == true;
 
     /// <summary>
     /// Validates the current model configuration and collects any error messages.
@@ -434,7 +434,7 @@ public class LLmModelPlugin : EditorPlugin, IViewObject
     /// <param name="message">The list to collect error messages.</param>
     /// <returns>True if the current configuration is valid; otherwise, false.</returns>
     public bool GetCurrentModelConfigValid(ref List<string> message)
-        => GetCurrentLLmPreset()?.GetIsValud(ref message) == true;
+        => GetCurrentLLmPreset()?.GetIsValid(ref message) == true;
 
 
     private void UpdateBaseLLmCall()
