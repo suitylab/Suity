@@ -88,6 +88,7 @@ This is the user original request which indicates the goal of entire workflow:
 - Output exactly ONE of <tool_action>, <next>, <end> or <failed> per turn.
 - When call tool, only call <tool_action> once per turn.
 - Tool usage MUST be justified by Skill Description.
+- If no action needed, clarify in <end>, do not proceed.
 - If request out-of-scope: clarify in <failed>, do not proceed.
 - **Do NOT read the same file repeatly, make tool action or output end/failed.**
 - Output speech language: {{SPEECH_LANGUAGE}}.

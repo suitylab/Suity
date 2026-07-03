@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>f5fedc8d-841d-420c-a154-678b1b9eea33</AssetId>
+  <AssetId>f576cc7f-d356-4acc-ab3a-55f4bfb3696c</AssetId>
   <PresetName>
   </PresetName>
   <BaseWorkflow>
@@ -49,26 +49,23 @@
     <Item>
       <Id>0c0e6e87-c484-44be-8d2b-1e00a40300e0</Id>
     </Item>
-    <Item>
-      <Id>7ce7cf58-b151-456a-947b-c11640abd028</Id>
-    </Item>
   </Tools>
   <Overview>
-    <Text>Responsible for implementing concrete code based on the technical specifications and performing self-review during the coding process.</Text>
+    <Text>Responsible for running build command and fixing issues.</Text>
   </Overview>
   <UserInputHint>
     <Text>
     </Text>
   </UserInputHint>
   <Skill>
-    <Id>c65c4898-7698-425e-9d38-8c297a8df603</Id>
+    <Id>1debf615-6ae3-4e12-877e-5b4390bc9472</Id>
   </Skill>
-  <Rule>
-    <Id>b5af5156-628d-43bb-9b7f-13bcb5026008</Id>
-  </Rule>
+  <Rule />
   <Description>
   </Description>
-  <Icon />
+  <Icon>
+    <Id>742d63f8-1c54-4fe3-a420-526fd210dedd</Id>
+  </Icon>
   <Page>
     <__preset__ />
     <ModelType type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">

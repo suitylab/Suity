@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="AigcFlow">
+  <AssetId>6664dec3-6bde-49f5-a247-3c3aea1a3b11</AssetId>
+  <NameSpace>TestMultiAgent03</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-300" Y="-70" Width="140" Height="120">
+      <Name>RunBuildCommand</Name>
+      <AssetId>7ce7cf58-b151-456a-947b-c11640abd028</AssetId>
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
+        <Name>RunBuildCommand</Name>
+        <Description>Run build command</Description>
+        <Icon>
+          <Id>742d63f8-1c54-4fe3-a420-526fd210dedd</Id>
+        </Icon>
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Responsible for running build command and fixing issues.</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <Tools />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="150" Y="-70" Width="140" Height="120">
+      <Name>RunBuildCommand_End</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
+        <Name>RunBuildCommand_End</Name>
+        <Description>Result</Description>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowBeginDiagramItem" X="-290" Y="-30" Width="46" Height="17">
+      <Name>OnStart</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowBeginNode">
+        <Name>OnStart</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputItem" X="-290" Y="-10" Width="52" Height="17">
+      <Name>Command</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterInputNode">
+        <Name>Command</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
+            <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+              <Value type="Suity.Views.TextBlock">
+                <Text>Command to run</Text>
+              </Value>
+            </ToolTips>
+          </Item>
+        </Attributes>
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>28e873c3-25bc-4001-ac6c-e185033f7056</Id>
+        </ValueType>
+        <Value type="System.String">
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="160" Y="-30" Width="58" Height="17">
+      <Name>OnComplete</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
+        <Name>OnComplete</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="10" Width="131" Height="111">
+      <Name>###AppendTaskPage01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
+        <PageTitle>
+        </PageTitle>
+        <TaskPrompt />
+        <TaskRule />
+        <CommitName>
+        </CommitName>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="-10" Width="37" Height="17">
+      <Name>###SourceValue01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
+        </ValueType>
+        <Value type="System.Boolean">True</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="160" Y="-10" Width="44" Height="17">
+      <Name>Output</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>Output</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>2c44eb3c-bf52-419c-b320-ce1864cd4c0d</Id>
+        </ValueType>
+        <Value type="System.Boolean">False</Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-160" Y="210" Width="44" Height="17">
+      <Name>###SourceValue03</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>e16e3a28-f0c3-4faa-a1e4-5380c967379f</Id>
+        </ValueType>
+        <Value type="SObject" struct="e16e3a28-f0c3-4faa-a1e4-5380c967379f" base="e16e3a28-f0c3-4faa-a1e4-5380c967379f">
+          <Path type="SString" base="28e873c3-25bc-4001-ac6c-e185033f7056">
+            <Value type="System.String">
+            </Value>
+          </Path>
+          <Type type="SNumeric" base="">
+            <Value type="Suity.Editor.Flows.SubFlows.ScratchPadTypes">Clear</Value>
+          </Type>
+          <Note type="SString" base="28e873c3-25bc-4001-ac6c-e185033f7056">
+            <Value type="System.String">
+            </Value>
+          </Note>
+          <Content type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+            <Value type="Suity.Views.TextBlock" />
+          </Content>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="140" Width="146" Height="67">
+      <Name>###SetTaskScratchPads04</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.SetTaskScratchPads" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-80" Y="-70" Width="145" Height="56">
+      <Name>###CreatePageInstance01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstance" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-220" Y="-110" Width="47" Height="17">
+      <Name>###SourceValue02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>5ec9dea8-3c72-4720-be46-cf5728aaa6af</Id>
+          <Prefix>&amp;</Prefix>
+        </ValueType>
+        <Value type="SAssetKey" base="&amp;5ec9dea8-3c72-4720-be46-cf5728aaa6af">
+          <Value>
+            <Id>f576cc7f-d356-4acc-ab3a-55f4bfb3696c</Id>
+          </Value>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-140" Y="-110" Width="28" Height="17">
+      <Name>###PassValue01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.PassValue">
+        <DataType>
+          <Id>6072f32d-473e-483e-a9a7-757d5a032a68</Id>
+        </DataType>
+      </Node>
+    </Item>
+  </Nodes>
+  <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+  <Links>
+    <Item>
+      <FromNode>RunBuildCommand_End</FromNode>
+      <FromConnector>Definition</FromConnector>
+      <ToNode>RunBuildCommand</ToNode>
+      <ToConnector>Result</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SourceValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>Output</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SourceValue03</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetTaskScratchPads04</ToNode>
+      <ToConnector>ScratchPad</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SourceValue02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###PassValue01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###PassValue01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreatePageInstance01</ToNode>
+      <ToConnector>ToolPage</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>OnStart</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreatePageInstance01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CreatePageInstance01</FromNode>
+      <FromConnector>PageInstance</FromConnector>
+      <ToNode>###AppendTaskPage01</ToNode>
+      <ToConnector>PageInstance</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Command</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AppendTaskPage01</ToNode>
+      <ToConnector>TaskPrompt</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AppendTaskPage01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetTaskScratchPads04</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AppendTaskPage01</FromNode>
+      <FromConnector>Task</FromConnector>
+      <ToNode>###SetTaskScratchPads04</ToNode>
+      <ToConnector>Task</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SetTaskScratchPads04</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnComplete</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CreatePageInstance01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AppendTaskPage01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

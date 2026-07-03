@@ -51,5 +51,6 @@ failed message...
 # Notice
 - Always output <reasoning>.
 - When call tool, only call <tool_action> once per turn.
+- If no action needed, clarify in <end>, do not proceed.
 - **Do not read the local file again if ScratchPad contains these files, Do action now if the scratch pad contains the requested files.**
 - Output speech language: {{SPEECH_LANGUAGE}}.

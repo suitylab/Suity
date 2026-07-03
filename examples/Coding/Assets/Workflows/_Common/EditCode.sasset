@@ -52,6 +52,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         <Name>Modifications</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <History>True</History>
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>451a1bd9-46aa-40b8-8d80-81c921fb3fbf</Id>
         </ValueType>
@@ -143,11 +144,11 @@ Notice: must include comments for exact replacement if the origin code contains 
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="270" Width="80" Height="28">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="290" Width="80" Height="28">
       <Name>###GetLastSubTask01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetLastSubTask" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="300" Width="103" Height="39">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="320" Width="103" Height="39">
       <Name>###GetPageOutputWithParameter01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetPageOutputWithParameter">
         <ToolDefinition>
@@ -225,7 +226,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         <Value type="System.Int32">0</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="250" Width="49" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="270" Width="49" Height="17">
       <Name>###GetCurrentTask01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTask" />
     </Item>
@@ -250,7 +251,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         <Value type="System.Boolean">True</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="430" Width="127" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="450" Width="127" Height="107">
       <Name>###AppendTaskPage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
         <PageTitle>
@@ -261,7 +262,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="340" Width="197" Height="63">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="360" Width="197" Height="63">
       <Name>###CreatePageInstanceWithParameter02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
         <ToolDefinition>
@@ -316,11 +317,11 @@ Notice: must include comments for exact replacement if the origin code contains 
         <CloneElements>True</CloneElements>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="410" Width="78" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="430" Width="78" Height="17">
       <Name>###GetPageErrorMessage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetPageErrorMessage" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="300" Width="28" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="320" Width="28" Height="17">
       <Name>###GetTaskPageInstance01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.TaskToPageInstance" />
     </Item>
@@ -337,6 +338,43 @@ Notice: must include comments for exact replacement if the origin code contains 
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="210" Width="46" Height="17">
       <Name>###GetParentTask01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetParentTask" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="100" Y="520" Width="44" Height="17">
+      <Name>###SourceValue02</Name>
+      <Node type="Suity.Editor.Flows.Nodes.SourceValue">
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>e16e3a28-f0c3-4faa-a1e4-5380c967379f</Id>
+        </ValueType>
+        <Value type="SObject" struct="e16e3a28-f0c3-4faa-a1e4-5380c967379f" base="e16e3a28-f0c3-4faa-a1e4-5380c967379f">
+          <Path type="SString" base="28e873c3-25bc-4001-ac6c-e185033f7056">
+            <Value type="System.String">
+            </Value>
+          </Path>
+          <Type type="SNumeric" base="">
+            <Value type="Suity.Editor.Flows.SubFlows.ScratchPadTypes">Clear</Value>
+          </Type>
+          <Note type="SString" base="28e873c3-25bc-4001-ac6c-e185033f7056">
+            <Value type="System.String">
+            </Value>
+          </Note>
+          <Content type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+            <Value type="Suity.Views.TextBlock" />
+          </Content>
+        </Value>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="100" Y="450" Width="142" Height="63">
+      <Name>###SetTaskScratchPads03</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.SetTaskScratchPads" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageTaskOutputItem" X="190" Y="0" Width="56" Height="17">
+      <Name>SubTaskResult</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageTaskOutputNode">
+        <Name>SubTaskResult</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <History>True</History>
+      </Node>
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -400,12 +438,6 @@ Notice: must include comments for exact replacement if the origin code contains 
       <FromConnector>PageInstance</FromConnector>
       <ToNode>###AppendTaskPage01</ToNode>
       <ToConnector>PageInstance</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###AppendTaskPage01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>OnExpand</ToNode>
-      <ToConnector>In</ToConnector>
     </Item>
     <Item>
       <FromNode>ToolFailed</FromNode>
@@ -495,6 +527,30 @@ Notice: must include comments for exact replacement if the origin code contains 
       <FromNode>###SetTaskScratchPads01</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>OnToolComplete</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SourceValue02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetTaskScratchPads03</ToNode>
+      <ToConnector>ScratchPad</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AppendTaskPage01</FromNode>
+      <FromConnector>Task</FromConnector>
+      <ToNode>###SetTaskScratchPads03</ToNode>
+      <ToConnector>Task</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SetTaskScratchPads03</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>OnExpand</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AppendTaskPage01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetTaskScratchPads03</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
   </Links>

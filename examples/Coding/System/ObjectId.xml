@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ObjectId>
-  <Object id="8f563d5d-d0c4-45ec-9dda-75bcf34dda50" name="Workflows/_Common/CodeEditExpand.md" />
   <Object id="aedb5425-5102-4bba-ab72-1b4e095b2749" name="Workflows/_Common/CreateWorkSpace.md" />
+  <Object id="c672b445-b91e-42d3-b5b4-df381e185e74" name="Workflows/_Common/EditCodeExpand.md" />
+  <Object id="1debf615-6ae3-4e12-877e-5b4390bc9472" name="Workflows/_Common/FixIssue.md" />
   <Object id="60e07ca4-90a6-4826-bb70-9a256e2db395" name="Workflows/_Common/QueryTaskHistory.md" />
   <Object id="cb17b70d-9398-4352-8684-c6d0c0bf7c7d" name="Workflows/_Common/SkillRouter.md" />
   <Object id="d51ed5f3-d18e-48cf-a5fc-1f375fdc3fca" name="Workflows/_Common/SkillRunner.md" />
@@ -27,7 +28,6 @@
   <Object id="dfe46840-4a9b-425e-b959-f2dfa8de8999" name="Workflows/Rules/Html_JavaScript.md" />
   <Object id="38ca77a8-d9d2-44e3-b77d-ad8d6baf80bd" name="Workflows/Rules/Html_Simple.md" />
   <Object id="b5af5156-628d-43bb-9b7f-13bcb5026008" name="Workflows/Rules/Html_TypeScript.md" />
-  <Object id="997676c7-9b2f-4183-b3df-6cf158ac372c" name="Workflows/TypeScript/RequirementDocument.md" />
   <Object id="c9d07914-4cf5-4828-8f98-4885848d8d09" name="Workflows/TypeScript/TypeScriptCreator.md" />
   <Object id="dfb27678-d6d0-4ed5-b780-ad7a12f24358" name="Workflows/Workers/Analyzer.md" />
   <Object id="bc29d645-a31e-45f1-9837-44a439f29f1e" name="Workflows/Workers/Builder.md" />

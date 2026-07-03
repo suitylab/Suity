@@ -49,6 +49,9 @@
     <Item>
       <Id>0c0e6e87-c484-44be-8d2b-1e00a40300e0</Id>
     </Item>
+    <Item>
+      <Id>7ce7cf58-b151-456a-947b-c11640abd028</Id>
+    </Item>
   </Tools>
   <Overview>
     <Text>Responsible for conducting rigorous quality assurance on the written code, including static code analysis, linting, and compilation/build verification.</Text>
