@@ -262,8 +262,8 @@ public interface IAigcWorkflowPage : IAigcTaskPage, IScratchPadOwner
     /// <param name="taskPrompt">The prompt for the new task.</param>
     /// <param name="rule">The rule prompt for the new task.</param>
     /// <param name="commitName">The commit name for the new task.</param>
-    /// <returns>True if the task was successfully appended; otherwise, false.</returns>
-    bool AppendTask(IPageAsset asset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null);
+    /// <returns>The appended task page if successfully appended; otherwise, null.</returns>
+    IAigcTaskPage AppendTask(IPageAsset asset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null);
 
     /// <summary>
     /// Appends a new task to the parent list using the specified page instance.
@@ -273,8 +273,8 @@ public interface IAigcWorkflowPage : IAigcTaskPage, IScratchPadOwner
     /// <param name="taskPrompt">The prompt for the new task.</param>
     /// <param name="rule">The rule prompt for the new task.</param>
     /// <param name="commitName">The commit name for the new task.</param>
-    /// <returns>True if the task was successfully appended; otherwise, false.</returns>
-    bool AppendTask(IPageInstance pageInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null);
+    /// <returns>The appended task page if successfully appended; otherwise, null.</returns>
+    IAigcTaskPage AppendTask(IPageInstance pageInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null);
 
     /// <summary>
     /// Adds a new sub-task using the specified tool asset.
@@ -284,8 +284,8 @@ public interface IAigcWorkflowPage : IAigcTaskPage, IScratchPadOwner
     /// <param name="taskPrompt">The prompt for the new sub-task.</param>
     /// <param name="rule">The rule prompt for the new sub-task.</param>
     /// <param name="commitName">The commit name for the new sub-task.</param>
-    /// <returns>True if the sub-task was successfully added; otherwise, false.</returns>
-    bool AddSubTask(IPageAsset asset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null);
+    /// <returns>The added sub-task page if successfully added; otherwise, null.</returns>
+    IAigcTaskPage AddSubTask(IPageAsset asset, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null);
 
     /// <summary>
     /// Adds a new sub-task using the specified page instance.
@@ -295,9 +295,8 @@ public interface IAigcWorkflowPage : IAigcTaskPage, IScratchPadOwner
     /// <param name="taskPrompt">The prompt for the new sub-task.</param>
     /// <param name="rule">The rule prompt for the new sub-task.</param>
     /// <param name="commitName">The commit name for the new sub-task.</param>
-    /// <returns>True if the sub-task was successfully added; otherwise, false.</returns>
-    bool AddSubTask(IPageInstance pageInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null);
-
+    /// <returns>The added sub-task page if successfully added; otherwise, null.</returns>
+    IAigcTaskPage AddSubTask(IPageInstance pageInstance, string title = null, string taskPrompt = null, PromptAsset rule = null, string commitName = null);
     /// <summary>
     /// Gets the last sub-task in this task's collection.
     /// </summary>

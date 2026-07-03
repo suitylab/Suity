@@ -461,11 +461,11 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="rule">The prompt rule for the new task.</param>
     /// <param name="commitName">The commit name for the new task.</param>
     /// <returns>True if the task was successfully appended; otherwise, false.</returns>
-    public bool AppendTask(IPageAsset asset, string title, string taskPrompt, PromptAsset rule, string commitName)
+    public IAigcTaskPage AppendTask(IPageAsset asset, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
         if (this.GetDocument() is not AigcLoopDocument doc)
         {
-            return false;
+            return null;
         }
 
         // If a task does not have a task prompt set, it will automatically transfer the prompt from the previous task to ensure continuity of the task chain.
@@ -481,7 +481,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         var task = CreateTaskPage(asset, title, taskPrompt, rule, commitName);
         if (task is not NamedItem item)
         {
-            return false;
+            return null;
         }
 
         this.ParentList?.Add(item);
@@ -490,7 +490,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         doc.View?.RefreshView();
 
-        return true;
+        return task;
     }
 
     /// <summary>
@@ -502,11 +502,11 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="rule">The prompt rule for the new task.</param>
     /// <param name="commitName">The commit name for the new task.</param>
     /// <returns>True if the task was successfully appended; otherwise, false.</returns>
-    public bool AppendTask(IPageInstance pageInstance, string title, string taskPrompt, PromptAsset rule, string commitName)
+    public IAigcTaskPage AppendTask(IPageInstance pageInstance, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
         if (this.GetDocument() is not AigcLoopDocument doc)
         {
-            return false;
+            return null;
         }
 
 /*        if (string.IsNullOrWhiteSpace(taskPrompt))
@@ -519,7 +519,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         var task = CreateTaskPage(pageInstance, title, taskPrompt, rule, commitName);
         if (task is not NamedItem item)
         {
-            return false;
+            return null;
         }
 
         this.ParentList?.Add(item);
@@ -528,7 +528,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         doc.View?.RefreshView();
 
-        return true;
+        return task;
     }
 
     /// <summary>
@@ -540,17 +540,17 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="rule">The prompt rule for the new sub-task.</param>
     /// <param name="commitName">The commit name for the new sub-task.</param>
     /// <returns>True if the sub-task was successfully added; otherwise, false.</returns>
-    public bool AddSubTask(IPageAsset asset, string title, string taskPrompt, PromptAsset rule, string commitName)
+    public IAigcTaskPage AddSubTask(IPageAsset asset, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
         if (this.GetDocument() is not AigcLoopDocument doc)
         {
-            return false;
+            return null;
         }
 
         var task = CreateTaskPage(asset, title, taskPrompt, rule, commitName);
         if (task is not NamedItem { } item)
         {
-            return false;
+            return null;
         }
 
         this.AddItem(item);
@@ -559,7 +559,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         doc.View?.RefreshView();
 
-        return true;
+        return task;
     }
 
     /// <summary>
@@ -571,17 +571,17 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="rule">The prompt rule for the new sub-task.</param>
     /// <param name="commitName">The commit name for the new sub-task.</param>
     /// <returns>True if the sub-task was successfully added; otherwise, false.</returns>
-    public bool AddSubTask(IPageInstance pageInstance, string title, string taskPrompt, PromptAsset rule, string commitName)
+    public IAigcTaskPage AddSubTask(IPageInstance pageInstance, string title, string taskPrompt, PromptAsset rule, string commitName)
     {
         if (this.GetDocument() is not AigcLoopDocument doc)
         {
-            return false;
+            return null;
         }
 
         var task = CreateTaskPage(pageInstance, title, taskPrompt, rule, commitName);
         if (task is not NamedItem item)
         {
-            return false;
+            return null;
         }
 
         this.AddItem(item);
@@ -590,7 +590,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         doc.View?.RefreshView();
 
-        return true;
+        return task;
     }
 
     /// <summary>

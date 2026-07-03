@@ -31,6 +31,7 @@ public class AppendTaskPage : TaskPageNode
     readonly ConnectorStringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "Name used when submitting to parent task.");
 
     readonly FlowNodeConnector _out;
+    readonly FlowNodeConnector _task;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AppendTaskPage"/> class.
@@ -39,6 +40,7 @@ public class AppendTaskPage : TaskPageNode
     {
         var instanceType = TypeDefinition.FromNative<IPageInstance>();
         var type = TypeDefinition.FromAssetLink<IPageAsset>();
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
 
         _in = this.AddActionInputConnector("In", "Input");
         _inPageInstance = this.AddDataInputConnector("PageInstance", instanceType, "Page Instance");
@@ -49,6 +51,7 @@ public class AppendTaskPage : TaskPageNode
         _commitName.AddConnector(this);
 
         _out = this.AddActionOutputConnector("Out", "Output");
+        _task = this.AddDataOutputConnector("Task", taskType, "Task");
     }
 
     /// <summary>
@@ -96,16 +99,17 @@ public class AppendTaskPage : TaskPageNode
         var taskRule = _taskRule.GetTarget(compute, this);
         string commitName = _commitName.GetValue(compute, this);
 
+        IAigcTaskPage newTask = null;
         if (pageInstance != null)
         {
-            workflow.AppendTask(pageInstance, title, taskPrompt, taskRule, commitName);
+            newTask = workflow.AppendTask(pageInstance, title, taskPrompt, taskRule, commitName);
         }
         else if (page != null)
         {
-            workflow.AppendTask(page, title, taskPrompt, taskRule, commitName);
+            newTask = workflow.AppendTask(page, title, taskPrompt, taskRule, commitName);
         }
-        
 
+        compute.SetValue(_task, newTask);
         compute.SetResult(this, _out);
     }
 }
@@ -123,14 +127,18 @@ public class AppendSelf : TaskPageNode
 {
     readonly FlowNodeConnector _in;
     readonly FlowNodeConnector _out;
+    readonly FlowNodeConnector _task;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AppendSelf"/> class.
     /// </summary>
     public AppendSelf()
     {
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
+
         _in = this.AddActionInputConnector("In", "Input");
         _out = this.AddActionOutputConnector("Out", "Output");
+        _task = this.AddDataOutputConnector("Task", taskType, "Task");
     }
 
     /// <inheritdoc/>
@@ -144,8 +152,9 @@ public class AppendSelf : TaskPageNode
         var rule = workflow.GetRule(false);
         string commitName = workflow.CommitName ?? string.Empty;
 
-        workflow.AppendTask(pageAsset, rule: rule, commitName: commitName);
+        var newTask = workflow.AppendTask(pageAsset, rule: rule, commitName: commitName);
 
+        compute.SetValue(_task, newTask);
         compute.SetResult(this, _out);
     }
 }
@@ -173,6 +182,7 @@ public class AddSubTaskPage : TaskPageNode
     readonly ConnectorStringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "Name used when submitting to parent task.");
 
     readonly FlowNodeConnector _out;
+    readonly FlowNodeConnector _task;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AddSubTaskPage"/> class.
@@ -181,6 +191,7 @@ public class AddSubTaskPage : TaskPageNode
     {
         var instanceType = TypeDefinition.FromNative<IPageInstance>();
         var type = TypeDefinition.FromAssetLink<IPageAsset>();
+        var taskType = TypeDefinition.FromNative<IAigcTaskPage>();
 
         _in = this.AddActionInputConnector("In", "Input");
         _inPageInstance = this.AddDataInputConnector("PageInstance", instanceType, "Page Instance");
@@ -191,6 +202,7 @@ public class AddSubTaskPage : TaskPageNode
         _commitName.AddConnector(this);
 
         _out = this.AddActionOutputConnector("Out", "Output");
+        _task = this.AddDataOutputConnector("Task", taskType, "Task");
     }
 
     /// <summary>
@@ -238,15 +250,17 @@ public class AddSubTaskPage : TaskPageNode
         var taskRule = _taskRule.GetTarget(compute, this);
         string commitName = _commitName.GetValue(compute, this);
 
+        IAigcTaskPage newTask = null;
         if (pageInstance != null)
         {
-            workflow.AddSubTask(pageInstance, title, taskPrompt, taskRule, commitName);
+            newTask = workflow.AddSubTask(pageInstance, title, taskPrompt, taskRule, commitName);
         }
         else if (page != null)
         {
-            workflow.AddSubTask(page, title, taskPrompt, taskRule, commitName);
+            newTask = workflow.AddSubTask(page, title, taskPrompt, taskRule, commitName);
         }
 
+        compute.SetValue(_task, newTask);
         compute.SetResult(this, _out);
     }
 }

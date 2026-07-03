@@ -52,6 +52,14 @@ public class AigcPageToPageAssetConverter : TypeConverter<ISubFlow, SubFlowDefin
     }
 }
 
+public class AigcTaskPageToAigcWorkflowConverter : TypeConverter<IAigcTaskPage, IAigcWorkflowPage>
+{
+    public override IAigcWorkflowPage Convert(IAigcTaskPage objFrom)
+    {
+        return objFrom as IAigcWorkflowPage;
+    }
+}
+
 // TODO: Add FunctionContext parameter.
 //public class ScratchPadToLLmMessageConverter : TypeConverter<ScratchPad, LLmMessage>
 //{
