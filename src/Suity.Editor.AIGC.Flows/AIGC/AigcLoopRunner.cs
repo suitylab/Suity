@@ -24,7 +24,6 @@ internal record TaskRunResult(TaskCommitStatus EndType, object Parameter);
 internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
 {
     private readonly AigcLoopDocument _document;
-    private readonly DocumentUsageToken _docUsage = new(nameof(AigcLoopRunner));
 
     private IAigcTaskPage _lastTask;
     private AIRequest _lastRequest;
@@ -208,16 +207,18 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
         bool hasSubTask = task.Count > 0;
         if (!hasSubTask)
         {
+            // Loop bein.
+            if (task.ParentList is { } list && list.Count > 0 && list.GetItemAt(0) == task)
+            {
+                await RunTaskWithRetry(request, task, TaskEventTypes.LoopBegin, null, null);
+                _document.MarkDirtyAndSaveDelayed(this);
+                request.Cancellation.ThrowIfCancellationRequested();
+            }
+
             // Task begin.
             runResult = await RunTaskWithRetry(request, task, TaskEventTypes.TaskBegin, null, null);
             _document.MarkDirtyAndSaveDelayed(this);
-
             request.Cancellation.ThrowIfCancellationRequested();
-
-            //if (request.Cancellation.IsCancellationRequested)
-            //{
-            //    return (flowControl: false, value: AICallResult.FromFailed("Task canceled."));
-            //}
         }
 
         // When a task is completed but no end event is triggered,

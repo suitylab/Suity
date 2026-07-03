@@ -66,6 +66,11 @@ public static class FlowExtensions
             return t;
         }
 
+        if (o is SAssetKey sAssetKey && sAssetKey.TargetAsset is T t2)
+        {
+            return t2;
+        }
+
         if (typeof(T).IsArray && o is SArray sary)
         {
             var ary = sary.ToArray(typeof(T).GetElementType());
@@ -99,9 +104,13 @@ public static class FlowExtensions
             {
                 yield return t;
             }
-            else if (o is SItem sItem && SItem.ResolveValue(sItem) is { } v && v is T vt)
+            else if (o is SObject sObj && sObj.Controller is { } v1 && v1 is T v1t)
             {
-                yield return vt;
+                yield return v1t;
+            }
+            else if (o is SItem sItem && SItem.ResolveValue(sItem) is { } v2 && v2 is T v2t)
+            {
+                yield return v2t;
             }
         }
 

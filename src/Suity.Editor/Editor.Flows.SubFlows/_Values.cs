@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Suity.Editor.Flows.SubFlows;
 
@@ -23,6 +22,12 @@ public enum TaskEventTypes
     /// </summary>
     [DisplayText("None")]
     None,
+
+    /// <summary>
+    /// Indicates that a loop has begun.
+    /// </summary>
+    [DisplayText("Loop Start")]
+    LoopBegin,
 
     /// <summary>
     /// Indicates that a task has begun.
