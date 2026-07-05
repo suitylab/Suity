@@ -1236,6 +1236,10 @@ public class AigcWorkflowPage : AigcTaskPage,
         if (rule is null && subFlowAsset is SubFlowPresetAsset presetAsset)
         {
             rule = (presetAsset.GetPresetDefinition() as SubFlowPresetDocument)?.Rule;
+            if (doc.Rule is { } ruleOverride)
+            {
+                rule = ruleOverride;
+            }
         }
 
         taskPage.Rule = rule;
@@ -1315,6 +1319,10 @@ public class AigcWorkflowPage : AigcTaskPage,
         if (rule is null && subFlowAsset is SubFlowPresetAsset presetAsset)
         {
             rule = (presetAsset.GetPresetDefinition() as SubFlowPresetDocument)?.Rule;
+            if (doc.Rule is { } ruleOverride)
+            {
+                rule = ruleOverride;
+            }
         }
 
         taskPage.Rule = rule;

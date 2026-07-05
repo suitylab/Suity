@@ -69,9 +69,7 @@
   </Rule>
   <Description>
   </Description>
-  <Icon>
-    <Id>742d63f8-1c54-4fe3-a420-526fd210dedd</Id>
-  </Icon>
+  <Icon />
   <Page>
     <__preset__ />
     <ModelType type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">

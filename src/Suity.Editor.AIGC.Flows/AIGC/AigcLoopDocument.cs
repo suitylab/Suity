@@ -33,6 +33,7 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
 {
     readonly TextBlockProperty _initialTaskPrompt = new("InitialTaskPrompt", "Initial Task Prompt", string.Empty);
     readonly AssetProperty<ISubFlowAsset> _startupPage = new("StartupPage", "Startup Page");
+    readonly AssetProperty<PromptAsset> _rule = new("Rule", "Rule", "Prompt asset that defines the rules or instructions that overrides the startup page.");
     readonly AssetProperty<WorkSpaceAsset> _workSpace = new("WorkSpace", "WorkSpace");
     readonly AssetListProperty<IPageAsset> _tools = new("Tools", "Tools List");
     readonly AssetListProperty<IArticleAsset> _knowledgeArticles
@@ -70,6 +71,15 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
     {
         get => _startupPage.Target;
         internal set => _startupPage.Target = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the rule prompt asset that defines the rules or instructions that override the startup page.
+    /// </summary>
+    public PromptAsset Rule
+    {
+        get => _rule.Target;
+        internal set => _rule.Target = value;
     }
 
     /// <summary>
@@ -309,6 +319,7 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
 
         _initialTaskPrompt.Sync(sync);
         _startupPage.Sync(sync);
+        _rule.Sync(sync);
         _workSpace.Sync(sync);
         _tools.Sync(sync);
         _knowledgeArticles.Sync(sync);
@@ -322,6 +333,7 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
 
         setup.LabelWithIcon("#PageSetting", "Page", CoreIconCache.Page);
         _startupPage.InspectorField(setup);
+        _rule.InspectorField(setup);
         _initialTaskPrompt.InspectorField(setup);
         _workSpace.InspectorField(setup);
         _tools.InspectorField(setup);
@@ -354,6 +366,11 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
             if (workflowAsset is SubFlowPresetAsset presetAsset)
             {
                 rule = (presetAsset.GetPresetDefinition() as SubFlowPresetDocument)?.Rule;
+            }
+
+            if (this.Rule is { } ruleOverride)
+            {
+                rule = ruleOverride;
             }
 
             workflowPage.Name = AllocateTaskId();

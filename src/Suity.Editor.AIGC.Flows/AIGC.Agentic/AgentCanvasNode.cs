@@ -26,6 +26,8 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
     readonly StringProperty _agentName = new("AgentName", "Agent Name");
     readonly TextBlockProperty _overview = new("Overview", "Overview");
+    readonly AssetProperty<PromptAsset> _rule = new("Rule", "Rule", "Prompt asset that defines the rules or instructions that overrides the startup page.");
+
     readonly SyncListProperty<AgentLoopItem> _loops = new("Loops", () => new());
 
     private IAgent _parent;
@@ -72,6 +74,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
 
         _agentName.Sync(sync);
         _overview.Sync(sync);
+        _rule.Sync(sync);
         _loops.Sync(sync);
     }
 
@@ -79,13 +82,15 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
     {
         base.OnSetupView(setup);
 
+        setup.InspectorField(AssetRef, new ViewProperty(nameof(AssetRef), "Starter Workflow"));
+
         _agentName.Property.WithHintText(AssetRef?.TargetAsset?.Name ?? string.Empty);
         _agentName.InspectorField(setup);
 
         _overview.Property.WithHintText(AssetRef?.Target?.GetPresetDocument()?.Overview ?? string.Empty);
         _overview.InspectorField(setup);
 
-        setup.InspectorField(AssetRef, new ViewProperty(nameof(AssetRef), "Starter Workflow"));
+        _rule.InspectorField(setup);
 
         setup.LabelWithIcon("Execution", CoreIconCache.Play);
         _loops.InspectorField(setup);
@@ -335,6 +340,12 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             {
                 break;
             }
+        }
+
+        if (loopAsset.GetLoop() is AigcLoopDocument loopDoc && this._rule.Target is { } ruleOverride)
+        {
+            loopDoc.Rule = ruleOverride;
+            loopDoc.MarkDirtyAndSaveDelayed(this);
         }
 
         var item = new AgentLoopItem(id, description, loopAsset);
