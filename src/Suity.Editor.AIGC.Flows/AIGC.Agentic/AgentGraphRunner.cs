@@ -297,6 +297,8 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         var runner = new AigcLoopRunner(loopDoc);
         loopState.Runner = runner;
 
+        QueueRefreshView();
+
         try
         {
             return await runner.HandleRequest(resume);

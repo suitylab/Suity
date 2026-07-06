@@ -138,7 +138,8 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         {
             n.InitTheme(AgentTaskTheme.Instance);
             n.SetClass("debug_draw");
-            n.InitWidth(400);
+            n.InitWidth(600);
+            //n.InitFullWidth();
             n.InitFitVertical();
         })
         .OnContent(() =>
