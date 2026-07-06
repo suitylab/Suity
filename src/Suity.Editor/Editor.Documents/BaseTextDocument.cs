@@ -3,6 +3,7 @@ using Suity.Editor.Documents.Linked;
 using Suity.Editor.Types;
 using Suity.Helpers;
 using Suity.Synchonizing.Core;
+using System;
 using System.Drawing;
 using System.Text;
 
@@ -71,7 +72,8 @@ public abstract class BaseTextDocument : AssetDocument
     /// <returns>True if save was successful.</returns>
     protected internal override bool SaveDocument(IStorageItem op)
     {
-        TextFileHelper.WriteFile(op.GetOutputStream(), TextContent, Encoding.GetEncoding(CodePage), true);
+        var encoding = GetEncoding();
+        TextFileHelper.WriteFile(op.GetOutputStream(), TextContent, encoding, true);
         return true;
     }
 
@@ -82,7 +84,8 @@ public abstract class BaseTextDocument : AssetDocument
     /// <returns>True if export was successful.</returns>
     protected internal override bool ExportDocument(IStorageItem op, bool cloneMode = false)
     {
-        TextFileHelper.WriteFile(op.GetOutputStream(), TextContent, Encoding.GetEncoding(CodePage), true);
+        var encoding = GetEncoding();
+        TextFileHelper.WriteFile(op.GetOutputStream(), TextContent, encoding, true);
         return true;
     }
 
@@ -101,6 +104,22 @@ public abstract class BaseTextDocument : AssetDocument
     protected virtual void OnContentChanged()
     {
         AssetBuilder?.UpdateAsset();
+    }
+
+    /// <summary>
+    /// Gets the encoding based on the current code page. If the code page is invalid, it defaults to UTF-8.
+    /// </summary>
+    /// <returns></returns>
+    public Encoding GetEncoding()
+    {
+        try
+        {
+            return Encoding.GetEncoding(CodePage);
+        }
+        catch (Exception)
+        {
+            return Encoding.UTF8;
+        }
     }
 
     /// <summary>
