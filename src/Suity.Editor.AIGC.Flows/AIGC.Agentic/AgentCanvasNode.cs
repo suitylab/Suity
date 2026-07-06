@@ -138,7 +138,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
         {
             n.InitTheme(AgentTaskTheme.Instance);
             n.SetClass("debug_draw");
-            n.InitWidth(600);
+            n.InitWidth(500);
             //n.InitFullWidth();
             n.InitFitVertical();
         })
@@ -216,7 +216,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
             {
                 if (loop.LoopAsset is { } loopAsset)
                 {
-                    gui.Text("title", loop.ToString()?.ToShortcutBeginEnd(36))
+                    gui.Text("title", loop.ToString()?.ToShortcutBeginEnd(50))
                     .InitWidthRest(48)
                     .InitClass("textBold");
 
@@ -239,7 +239,7 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
                 }
                 else
                 {
-                    gui.Text("title-missing", loop.ToString()?.ToShortcutBeginEnd())
+                    gui.Text("title-missing", loop.ToString()?.ToShortcutBeginEnd(50))
                     .InitWidthRest(24)
                     .InitClass("textBoldRed");
 
