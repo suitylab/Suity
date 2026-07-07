@@ -23,7 +23,7 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
     [NativeType("CallAgent.LoopItem", CodeBase = "*Suity")]
     public class LoopItem : SObjectController
     {
-        readonly StringProperty _taskName = new("TaskName", "Task Name");
+        readonly StringProperty _taskName = new("TaskName", "Task Name", null, "Task name (with serial number prefix, e.g. pass/iteration/step)");
         readonly TextBlockProperty _prompt = new("Prompt", "Prompt");
 
         public string TaskName { get => _taskName.Text; set => _taskName.Text = value; }
