@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="Canvas">
+  <AssetId>d8456f98-92c8-48df-b348-c23657b58c37</AssetId>
+  <NameSpace>TestRelease010</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-80" Y="-250" Width="202" Height="79">
+      <Name>###AgentCanvasNode01</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>720d3238-85c9-4522-9c9b-0ec6136c360b</Id>
+        </AssetRef>
+        <AgentName>
+        </AgentName>
+        <Overview />
+        <Rule />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-300" Y="-40" Width="202" Height="79">
+      <Name>###AgentCanvasNode02</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>1c93ad5e-2ee9-4018-8ca6-4aa6bf795e0b</Id>
+        </AssetRef>
+        <AgentName>
+        </AgentName>
+        <Overview />
+        <Rule>
+          <Id>8e300a0f-7053-4903-9e5a-8c6b857cf146</Id>
+        </Rule>
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-630" Y="230" Width="202" Height="79">
+      <Name>###AgentCanvasNode03</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>f5fedc8d-841d-420c-a154-678b1b9eea33</Id>
+        </AssetRef>
+        <AgentName>FoundationArchitect</AgentName>
+        <Overview>
+          <Text>Establishes the fundamental game engine infrastructure, memory management, and low-level system integrations to ensure high performance and cross-platform stability.</Text>
+        </Overview>
+        <Rule>
+          <Id>4d695227-dc34-427b-aa69-7f84aa473f73</Id>
+        </Rule>
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="360" Y="-40" Width="202" Height="79">
+      <Name>###AgentCanvasNode04</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>6bd4c7e5-2ee3-4d6a-b471-21a692d37889</Id>
+        </AssetRef>
+        <AgentName>
+        </AgentName>
+        <Overview />
+        <Rule />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Agentic.AgentStartDiagramItem" X="-70" Y="-360" Width="176" Height="38">
+      <Name>GameDev3Pass</Name>
+      <AssetId>8ed9bb70-7aff-4099-9505-05a446a9db7d</AssetId>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentStartCanvasNode">
+        <Name>GameDev3Pass</Name>
+        <Description>Game Development (3 Pass)</Description>
+        <Icon>
+          <Id>21cb8223-3635-4954-a2d8-e30d0e3ebd8d</Id>
+        </Icon>
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <EntryTaskName>Entry</EntryTaskName>
+        <WorkSpace />
+        <IsTemplate>True</IsTemplate>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="140" Y="-40" Width="202" Height="79">
+      <Name>###AgentCanvasNode05</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>7cf86fe1-534f-4b3e-abfa-88ae8446915f</Id>
+        </AssetRef>
+        <AgentName>Editor</AgentName>
+        <Overview />
+        <Rule />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-410" Y="230" Width="202" Height="79">
+      <Name>###AgentCanvasNode06</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>f5fedc8d-841d-420c-a154-678b1b9eea33</Id>
+        </AssetRef>
+        <AgentName>DataDrivenArchitect</AgentName>
+        <Overview>
+          <Text>Manages resource loading, configuration parsing, and persistent state storage to seamlessly feed dynamic content and parameters into the game systems.</Text>
+        </Overview>
+        <Rule>
+          <Id>97c2c807-b8e5-410a-be2f-8e6e340beab9</Id>
+        </Rule>
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-190" Y="230" Width="202" Height="79">
+      <Name>###AgentCanvasNode07</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>f5fedc8d-841d-420c-a154-678b1b9eea33</Id>
+        </AssetRef>
+        <AgentName>GameplayLogicEngineer</AgentName>
+        <Overview>
+          <Text>Implements the central game mechanics, rules, AI behaviors, and interactive systems that define the actual player experience and core gameplay loop.</Text>
+        </Overview>
+        <Rule>
+          <Id>2785629b-2469-44e1-a5c1-1a217299e765</Id>
+        </Rule>
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-80" Y="-40" Width="202" Height="79">
+      <Name>###AgentCanvasNode08</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>d631b206-19df-4299-807e-d9a1188b1a94</Id>
+        </AssetRef>
+        <AgentName>CoderManager</AgentName>
+        <Overview />
+        <Rule />
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="30" Y="230" Width="202" Height="79">
+      <Name>###AgentCanvasNode09</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>f5fedc8d-841d-420c-a154-678b1b9eea33</Id>
+        </AssetRef>
+        <AgentName>GraphicsVFXEngineer</AgentName>
+        <Overview>
+          <Text>Develops the rendering pipelines, shaders, particle systems, and visual effects to create stunning, immersive, and performant graphical presentations.</Text>
+        </Overview>
+        <Rule>
+          <Id>77116b62-14ea-402c-b686-88f2a1744e3a</Id>
+        </Rule>
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="250" Y="230" Width="202" Height="79">
+      <Name>###AgentCanvasNode10</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>f5fedc8d-841d-420c-a154-678b1b9eea33</Id>
+        </AssetRef>
+        <AgentName>UserInterfaceDesigner</AgentName>
+        <Overview>
+          <Text>Designs and implements the heads-up displays, menus, and interactive elements to ensure intuitive navigation and clear communication of game state to the player.
+</Text>
+        </Overview>
+        <Rule>
+          <Id>3a1bc8f6-bb48-487c-9329-86fdacd8a985</Id>
+        </Rule>
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="470" Y="230" Width="202" Height="79">
+      <Name>###AgentCanvasNode11</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>f5fedc8d-841d-420c-a154-678b1b9eea33</Id>
+        </AssetRef>
+        <AgentName>UnitTestingEngineer</AgentName>
+        <Overview>
+          <Text>Designs and implements isolated unit tests to validate individual functions, classes, and components, ensuring core logic correctness and preventing regressions at the most granular level. (Add multiple unit testing tasks for better pipeline control)</Text>
+        </Overview>
+        <Rule>
+          <Id>037afc62-c3e8-4952-a610-ec7c6399020e</Id>
+        </Rule>
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+  </Nodes>
+  <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+  <Links>
+    <Item>
+      <FromNode>###AgentCanvasNode08</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>GameDev3Pass</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode02</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode05</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode06</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode08</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode03</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode08</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode07</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode08</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode09</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode08</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode10</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode08</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode04</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode11</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode08</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>

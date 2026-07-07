@@ -63,3 +63,4 @@ Draft the document with the following mandatory sections:
 - Always output your architectural reasoning, planning steps, and module decomposition logic in your reasoning block before generating the documents.
 - Use `CodeWriter` to create **one file per step** (e.g., first create the SRS, then the Tech Spec, then the Development Plan). Do not attempt to write multiple files in a single `CodeWriter` call.
 - Ensure all file paths in your documentation are relative to the workspace root.
+- Default programming language is: TypeScript+Vite

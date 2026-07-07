@@ -54,9 +54,7 @@
   <Skill>
     <Id>9c17ca55-f195-4e0f-88b4-008fff0a7011</Id>
   </Skill>
-  <Rule>
-    <Id>b5af5156-628d-43bb-9b7f-13bcb5026008</Id>
-  </Rule>
+  <Rule />
   <Description>
   </Description>
   <Icon />

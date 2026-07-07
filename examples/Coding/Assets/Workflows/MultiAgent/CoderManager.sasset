@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>7cf86fe1-534f-4b3e-abfa-88ae8446915f</AssetId>
+  <AssetId>d631b206-19df-4299-807e-d9a1188b1a94</AssetId>
   <PresetName>
   </PresetName>
   <BaseWorkflow>
@@ -50,18 +50,18 @@
       <Id>0c0e6e87-c484-44be-8d2b-1e00a40300e0</Id>
     </Item>
     <Item>
-      <Id>7ce7cf58-b151-456a-947b-c11640abd028</Id>
+      <Id>8722e349-3173-4b3e-8cba-ccc3f9485b5f</Id>
     </Item>
   </Tools>
   <Overview>
-    <Text>Responsible for executing precise code modifications and file management based on user requirements, strictly adhering to an explore-read-act-verify protocol to maintain project integrity.</Text>
+    <Text>The CoderManager is an intermediate orchestration agent responsible for decomposing high-level coding directives into granular sub-tasks and delegating them to specialized coding sub-agents without directly writing or executing any code.</Text>
   </Overview>
   <UserInputHint>
     <Text>
     </Text>
   </UserInputHint>
   <Skill>
-    <Id>6accf8cc-5dd0-465d-b358-a0817d72e05b</Id>
+    <Id>aba9f6d8-c3a8-4f2b-b321-33229896d5dc</Id>
   </Skill>
   <Rule />
   <Description>

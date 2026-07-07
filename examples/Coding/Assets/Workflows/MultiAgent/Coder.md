@@ -66,3 +66,4 @@ If the current user request explicitly asks for **Code Integration and Verificat
 - **Reasoning First**: Always output your implementation plan and modification steps in your `<reasoning>` or reasoning block before making any tool calls.
 - **Strict Adherence to Spec**: Do not invent new architectural patterns. Strictly follow the Technical Specification.
 - **Completion Signal**: Only consider the current loop task finished when the code is written and the **terminal build/type-check command has passed successfully with zero errors** (unless in Edit Mode). For Integration tasks, the task is only finished when the final terminal build command passes successfully.
+- Default programming language is: TypeScript+Vite

@@ -50,6 +50,9 @@
       <Id>0c0e6e87-c484-44be-8d2b-1e00a40300e0</Id>
     </Item>
     <Item>
+      <Id>d834c6df-2dd3-4b4f-a75c-6c7627717065</Id>
+    </Item>
+    <Item>
       <Id>7ce7cf58-b151-456a-947b-c11640abd028</Id>
     </Item>
   </Tools>
@@ -63,9 +66,7 @@
   <Skill>
     <Id>c65c4898-7698-425e-9d38-8c297a8df603</Id>
   </Skill>
-  <Rule>
-    <Id>b5af5156-628d-43bb-9b7f-13bcb5026008</Id>
-  </Rule>
+  <Rule />
   <Description>
   </Description>
   <Icon />
