@@ -9,6 +9,7 @@ namespace Suity.Editor.Flows.Nodes;
 /// <summary>
 /// A flow node that trims leading and trailing numeric characters, dots, and underscores from a string.
 /// </summary>
+[SimpleFlowNodeStyle(HasHeader = false)]
 [DisplayText("Trim Numeric Part")]
 public class TrimNumeric : ValueFlowNode
 {
@@ -46,14 +47,16 @@ public class TrimNumeric : ValueFlowNode
 /// <summary>
 /// A flow node that replaces occurrences of a specified pattern in a string, with optional regex support.
 /// </summary>
+[SimpleFlowNodeStyle(HasHeader = false)]
 [DisplayText("Replace String")]
 public class StringReplace : ValueFlowNode
 {
-    private readonly FlowNodeConnector _in;
+    private readonly ConnectorStringProperty _in = new("In");
+    private string _pattern = string.Empty;
+    private readonly ConnectorStringProperty _replace = new("Replace");
+
     private readonly FlowNodeConnector _out;
 
-    private string _pattern = string.Empty;
-    private string _replace = string.Empty;
     private bool _regex = false;
 
     /// <summary>
@@ -61,7 +64,8 @@ public class StringReplace : ValueFlowNode
     /// </summary>
     public StringReplace()
     {
-        _in = AddConnector("In", "*System|String", FlowDirections.Input, FlowConnectorTypes.Data);
+        _in.AddConnector(this);
+        _replace.AddConnector(this);
         _out = AddConnector("Out", "*System|String", FlowDirections.Output, FlowConnectorTypes.Data);
     }
 
@@ -70,8 +74,9 @@ public class StringReplace : ValueFlowNode
     {
         base.OnSync(sync, context);
 
+        _in.Sync(sync);
         _pattern = sync.Sync("Pattern", _pattern, SyncFlag.NotNull) ?? string.Empty;
-        _replace = sync.Sync("Replace", _replace, SyncFlag.NotNull) ?? string.Empty;
+        _replace.Sync(sync);
         _regex = sync.Sync("Regex", _regex);
     }
 
@@ -80,15 +85,18 @@ public class StringReplace : ValueFlowNode
     {
         base.OnSetupView(setup);
 
-        setup.InspectorField(_pattern, new ViewProperty("Pattern", "Match"));
-        setup.InspectorField(_replace, new ViewProperty("Replace", "Replace"));
+        _in.InspectorField(setup, this);
+        setup.InspectorField(_pattern, new ViewProperty("Pattern", "Pattern"));
+        _replace.InspectorField(setup, this);
+
         setup.InspectorField(_regex, new ViewProperty("Regex", "Use Regex"));
     }
 
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        string input = compute.GetValueConvert<string>(_in) ?? string.Empty;
+        string input = _in.GetValue(compute, this);
+        string replace = _replace.GetValue(compute, this);
 
         if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(_pattern))
         {
@@ -100,11 +108,11 @@ public class StringReplace : ValueFlowNode
         string output; 
         if (_regex)
         {
-            output = Regex.Replace(input, _pattern, _replace);
+            output = Regex.Replace(input, _pattern, replace);
         }
         else
         {
-            output = input.Replace(_pattern, _replace);
+            output = input.Replace(_pattern, replace);
         }
         
         compute.SetValue(_out, output);
