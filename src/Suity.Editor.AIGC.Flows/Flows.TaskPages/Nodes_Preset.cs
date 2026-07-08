@@ -31,7 +31,7 @@ public class GetCurrentPresetSkill : TaskPageNode
         var task = compute.Context.GetArgument<IAigcWorkflowPage>();
         var pageAsset = task.GetPageAsset() as SubFlowPresetAsset;
 
-        var skill = (pageAsset.GetPresetDefinition() as SubFlowPresetDocument)?.Skill;
+        var skill = (pageAsset?.GetPresetDefinition() as SubFlowPresetDocument)?.Skill;
 
         compute.SetValue(_skill, skill);
     }

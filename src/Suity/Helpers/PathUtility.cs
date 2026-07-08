@@ -53,9 +53,21 @@ public static class PathUtility
 
     public static string MakeFullPath(this string path, string basePath)
     {
-        if (string.IsNullOrEmpty(basePath))
+        if (string.IsNullOrWhiteSpace(basePath))
         {
             return path;
+        }
+
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return basePath;
+        }
+
+        path = path.Trim();
+
+        if (path.StartsWith("/") || path.StartsWith("\\"))
+        {
+            path = path.TrimStart('/', '\\');
         }
 
         if (!basePath.EndsWith("/") && !basePath.EndsWith("\\"))
