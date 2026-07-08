@@ -52,7 +52,7 @@ public class TrimNumeric : ValueFlowNode
 public class StringReplace : ValueFlowNode
 {
     private readonly ConnectorStringProperty _in = new("In");
-    private string _pattern = string.Empty;
+    private readonly ConnectorStringProperty _find = new("Find");
     private readonly ConnectorStringProperty _replace = new("Replace");
 
     private readonly FlowNodeConnector _out;
@@ -65,6 +65,7 @@ public class StringReplace : ValueFlowNode
     public StringReplace()
     {
         _in.AddConnector(this);
+        _find.AddConnector(this);
         _replace.AddConnector(this);
         _out = AddConnector("Out", "*System|String", FlowDirections.Output, FlowConnectorTypes.Data);
     }
@@ -75,7 +76,7 @@ public class StringReplace : ValueFlowNode
         base.OnSync(sync, context);
 
         _in.Sync(sync);
-        _pattern = sync.Sync("Pattern", _pattern, SyncFlag.NotNull) ?? string.Empty;
+        _find.Sync(sync);
         _replace.Sync(sync);
         _regex = sync.Sync("Regex", _regex);
     }
@@ -86,7 +87,7 @@ public class StringReplace : ValueFlowNode
         base.OnSetupView(setup);
 
         _in.InspectorField(setup, this);
-        setup.InspectorField(_pattern, new ViewProperty("Pattern", "Pattern"));
+        _find.InspectorField(setup, this);
         _replace.InspectorField(setup, this);
 
         setup.InspectorField(_regex, new ViewProperty("Regex", "Use Regex"));
@@ -96,9 +97,10 @@ public class StringReplace : ValueFlowNode
     public override void Compute(IFlowComputation compute)
     {
         string input = _in.GetValue(compute, this);
+        string find = _find.GetValue(compute, this);
         string replace = _replace.GetValue(compute, this);
 
-        if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(_pattern))
+        if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(find))
         {
             compute.SetValue(_out, input);
 
@@ -108,11 +110,11 @@ public class StringReplace : ValueFlowNode
         string output; 
         if (_regex)
         {
-            output = Regex.Replace(input, _pattern, replace);
+            output = Regex.Replace(input, find, replace);
         }
         else
         {
-            output = input.Replace(_pattern, replace);
+            output = input.Replace(find, replace);
         }
         
         compute.SetValue(_out, output);
@@ -121,7 +123,7 @@ public class StringReplace : ValueFlowNode
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{_pattern} > {_replace}";
+        return $"{_find.Text} > {_replace.Text}";
     }
 }
 
