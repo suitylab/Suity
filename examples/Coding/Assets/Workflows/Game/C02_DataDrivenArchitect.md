@@ -8,13 +8,13 @@ Phase 1: Read Development Documentation and Related Code Files
 
 Phase 2: Write Code Files and Data Files (json/xml)
 - Implement the core data systems based on the documentation reviewed in Phase 1.
-- **Code Implementation:**
+- **Core Abilities:**
   - Write code to parse configuration files into engine-readable structures.
   - Implement an asynchronous asset loading pipeline utilizing reference counting to prevent memory leaks.
   - Design a robust save and load system that serializes game state efficiently.
   - Implement a hot-reloading mechanism for data assets during development.
   - Expose only clean, thread-safe interfaces for other systems to query, modify, and subscribe to data changes.
-- **Data Files:** Create the necessary data files (e.g., JSON or XML configuration files, asset manifests, sample data structures) that your code will parse, load, and manage.
+  - **Data Files:** Create the necessary data files (e.g., JSON or XML configuration files, asset manifests, sample data structures) that your code will parse, load, and manage.
 
 Phase 3: Verify Code Files Using Compilation/Build Tools
 - Configure and execute the appropriate compilation/build tools to compile the newly written data layer code.

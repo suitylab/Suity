@@ -302,7 +302,7 @@ public class CanvasDocument : FlowDocument<CanvasAssetBuilder>,
 
     public void ComputeConnections()
     {
-        if (Entry is null)
+        if (Entry is null || Entry.State != DocumentState.Loaded)
         {
             return;
         }

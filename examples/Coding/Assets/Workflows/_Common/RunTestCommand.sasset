@@ -161,6 +161,15 @@
         </DataType>
       </Node>
     </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-200" Y="70" Width="57" Height="39">
+      <Name>###StringReplace01</Name>
+      <Node type="Suity.Editor.Flows.Nodes.StringReplace">
+        <In>Run shell command: `{0}`</In>
+        <Find>{0}</Find>
+        <Replace>
+        </Replace>
+      </Node>
+    </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
   <Links>
@@ -207,12 +216,6 @@
       <ToConnector>PageInstance</ToConnector>
     </Item>
     <Item>
-      <FromNode>Command</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###AppendTaskPage01</ToNode>
-      <ToConnector>TaskPrompt</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###AppendTaskPage01</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###SetTaskScratchPads04</ToNode>
@@ -235,6 +238,18 @@
       <FromConnector>Out</FromConnector>
       <ToNode>###AppendTaskPage01</ToNode>
       <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###StringReplace01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AppendTaskPage01</ToNode>
+      <ToConnector>TaskPrompt</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>Command</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###StringReplace01</ToNode>
+      <ToConnector>Replace</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

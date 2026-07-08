@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="SubFlowPreset">
+  <AssetId>4960bbe7-fc87-4d63-90e4-cf08700d2fa1</AssetId>
+  <PresetName>
+  </PresetName>
+  <BaseWorkflow>
+    <Id>80e3bfe9-08ea-4055-b46f-2b189b74768b</Id>
+  </BaseWorkflow>
+  <Tools>
+    <Item>
+      <Id>3deed8ae-9a3b-4b0e-a771-5408cb14c7e2</Id>
+    </Item>
+    <Item>
+      <Id>72bfd38f-adb1-4e2a-9185-08a558e30272</Id>
+    </Item>
+    <Item>
+      <Id>d9bb5548-e340-4bd3-91ec-76d0f35b1449</Id>
+    </Item>
+    <Item>
+      <Id>4fa5a672-755e-4cfe-97af-79eecb75b4ce</Id>
+    </Item>
+    <Item>
+      <Id>1d7c4267-b004-429b-8070-b74e2710dd69</Id>
+    </Item>
+    <Item>
+      <Id>8fe14aad-8164-4636-94f5-8bc755df34b5</Id>
+    </Item>
+    <Item>
+      <Id>c98801ac-2dd8-46e7-8eb6-e1350fb72fa0</Id>
+    </Item>
+    <Item>
+      <Id>922c7589-8c57-43b2-91c2-3873029a817a</Id>
+    </Item>
+    <Item>
+      <Id>cba2cec1-4bfe-462c-b3d0-324178e57303</Id>
+    </Item>
+    <Item>
+      <Id>ab3c1bdc-698a-4982-84bb-e0366b5ab8e9</Id>
+    </Item>
+    <Item>
+      <Id>c9d4cc11-5bcc-4563-8789-d53c9d97e474</Id>
+    </Item>
+    <Item>
+      <Id>2432214a-f2bd-4104-b212-8c2fe435f77d</Id>
+    </Item>
+  </Tools>
+  <Overview>
+    <Text>Responsible for analyzing requirements and writing comprehensive documentation, including Software Requirements Specifications (SRS), Game Design Document(GDD) and Technical Specification documents.</Text>
+  </Overview>
+  <UserInputHint>
+    <Text>
+    </Text>
+  </UserInputHint>
+  <Skill>
+    <Id>e934f168-b446-474a-8dc8-db4d23157c3e</Id>
+  </Skill>
+  <Rule />
+  <Description>
+  </Description>
+  <Icon />
+  <Page>
+    <__preset__ />
+    <ModelType type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">
+      <Id>7d8cfc15-87ea-4994-b2db-e6e165641a0e</Id>
+    </ModelType>
+  </Page>
+</SuityAsset>
