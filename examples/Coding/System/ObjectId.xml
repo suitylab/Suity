@@ -13,6 +13,10 @@
   <Object id="3173c737-5a5d-4be7-bcee-8f06cb2c995c" name="Workflows/Coding/RequirementDocument.md" />
   <Object id="2ad31242-fa68-4729-8d6a-92efc0a2540b" name="Workflows/Coding/TechSpec.md" />
   <Object id="55a2d6a9-c57d-4639-a70a-b59a96d1c673" name="Workflows/Coding/VerifyCode.md" />
+  <Object id="78935298-5212-4891-93a3-bccfb151d218" name="Workflows/Document/DevelopmentPlan.md" />
+  <Object id="1ad683a7-645c-4cce-aab0-572ed063d035" name="Workflows/Document/DocumentWriter.md" />
+  <Object id="de5274f6-fea7-42e6-a538-908ca3663e47" name="Workflows/Document/IntegrationContract.md" />
+  <Object id="d0b09fe8-faad-441a-b73a-bcd4561cc79b" name="Workflows/Document/RequirementDocument.md" />
   <Object id="4d695227-dc34-427b-aa69-7f84aa473f73" name="Workflows/Game/C01_FoundationArchitect.md" />
   <Object id="97c2c807-b8e5-410a-be2f-8e6e340beab9" name="Workflows/Game/C02_DataDrivenArchitect.md" />
   <Object id="2785629b-2469-44e1-a5c1-1a217299e765" name="Workflows/Game/C03_GameplayLogicEngineer.md" />
@@ -21,6 +25,7 @@
   <Object id="037afc62-c3e8-4952-a610-ec7c6399020e" name="Workflows/Game/C06_CodeTester.md" />
   <Object id="d8106aa4-ee98-4fbe-8e27-6365d5ed7cb0" name="Workflows/Game/C07_IntegrationEngineer.md" />
   <Object id="8e300a0f-7053-4903-9e5a-8c6b857cf146" name="Workflows/Game/GameDesign.md" />
+  <Object id="e934f168-b446-474a-8dc8-db4d23157c3e" name="Workflows/Game/GamePlanner.md" />
   <Object id="c65c4898-7698-425e-9d38-8c297a8df603" name="Workflows/MultiAgent/Coder.md" />
   <Object id="aba9f6d8-c3a8-4f2b-b321-33229896d5dc" name="Workflows/MultiAgent/CoderManager.md" />
   <Object id="6accf8cc-5dd0-465d-b358-a0817d72e05b" name="Workflows/MultiAgent/Editor.md" />
@@ -38,6 +43,7 @@
   <Object id="dfe46840-4a9b-425e-b959-f2dfa8de8999" name="Workflows/Rules/Html_JavaScript.md" />
   <Object id="38ca77a8-d9d2-44e3-b77d-ad8d6baf80bd" name="Workflows/Rules/Html_Simple.md" />
   <Object id="b5af5156-628d-43bb-9b7f-13bcb5026008" name="Workflows/Rules/Html_TypeScript.md" />
+  <Object id="b9c82a0f-1e17-40c5-8efd-0f4a56ee8f9c" name="Workflows/Rules/Integration.md" />
   <Object id="c9d07914-4cf5-4828-8f98-4885848d8d09" name="Workflows/TypeScript/TypeScriptCreator.md" />
   <Object id="dfb27678-d6d0-4ed5-b780-ad7a12f24358" name="Workflows/Workers/Analyzer.md" />
   <Object id="bc29d645-a31e-45f1-9837-44a439f29f1e" name="Workflows/Workers/Builder.md" />

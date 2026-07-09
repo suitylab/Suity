@@ -29,6 +29,9 @@ Notice: must include comments for exact replacement if the origin code contains 
           <Item>
             <Id>1d7c4267-b004-429b-8070-b74e2710dd69</Id>
           </Item>
+          <Item>
+            <Id>4fa5a672-755e-4cfe-97af-79eecb75b4ce</Id>
+          </Item>
         </Tools>
       </Node>
     </Item>
@@ -84,7 +87,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         <Value type="System.Boolean">False</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubflowExtendedDiagramItem" X="-320" Y="280" Width="140" Height="110">
+    <Item type="Suity.Editor.Flows.SubFlows.SubflowExtendedDiagramItem" X="-320" Y="280" Width="140" Height="130">
       <Name>###SubflowBranchNode01</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowExtendedNode">
         <Name>###SubflowBranchNode01</Name>
@@ -222,7 +225,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         <Value type="System.Boolean">True</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-190" Width="107" Height="100">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-190" Width="103" Height="96">
       <Name>###BuildPrompt01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
@@ -239,7 +242,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         <UpdateKeywords>False</UpdateKeywords>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="-220" Width="136" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="-220" Width="136" Height="107">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -249,7 +252,6 @@ Notice: must include comments for exact replacement if the origin code contains 
         <FunctionCall />
         <CombineMessages>True</CombineMessages>
         <InterruptionWords>
-          <Item>- Tool Response -</Item>
           <Item>tool_result</Item>
         </InterruptionWords>
         <InterruptionMode>ReturnPrevious</InterruptionMode>
@@ -266,13 +268,13 @@ Notice: must include comments for exact replacement if the origin code contains 
       <Name>###GetPageToolPagesNode02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="440" Y="-30" Width="191" Height="89">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="440" Y="-30" Width="187" Height="85">
       <Name>###ParseTagToolCallingNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.ParseTagToPageInstance">
         <AttributeName>tool</AttributeName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="440" Y="110" Width="134" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="440" Y="110" Width="130" Height="107">
       <Name>###AddSubTaskPageNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
         <PageTitle>
@@ -299,7 +301,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="110" Y="20" Width="150" Height="89">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="110" Y="20" Width="146" Height="85">
       <Name>###ExtractXmlsTagAction01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagAction">
         <TagNames>
@@ -310,7 +312,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         </TagNames>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="150" Y="140" Width="103" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="150" Y="140" Width="99" Height="52">
       <Name>###ThrowError01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
         <ErrorMessage />
@@ -326,7 +328,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="440" Width="201" Height="67">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="440" Width="197" Height="63">
       <Name>###CreatePageInstanceWithParameter01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
         <ToolDefinition>
@@ -362,7 +364,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="510" Width="131" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="510" Width="127" Height="107">
       <Name>###AppendTaskPage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
         <PageTitle>
@@ -461,10 +463,10 @@ Notice: must include comments for exact replacement if the origin code contains 
       <Name>###GetSpeechLanguage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetSpeechLanguage" />
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-310" Y="350" Width="75" Height="17">
-      <Name>ToolReadComplete</Name>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-310" Y="370" Width="79" Height="17">
+      <Name>BatchReadComplete</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
-        <Name>ToolReadComplete</Name>
+        <Name>BatchReadComplete</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
@@ -510,7 +512,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="850" Y="-50" Width="103" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="850" Y="-50" Width="99" Height="52">
       <Name>###ThrowError03</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
         <ErrorMessage>
@@ -518,7 +520,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         </ErrorMessage>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="850" Y="10" Width="103" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="850" Y="10" Width="99" Height="52">
       <Name>###ThrowError02</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
         <ErrorMessage>
@@ -552,7 +554,7 @@ Notice: must include comments for exact replacement if the origin code contains 
       <Name>###GetCurrentScratchPads01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentScratchPads" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="120" Y="250" Width="146" Height="67">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="120" Y="250" Width="142" Height="63">
       <Name>###SetTaskScratchPads01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.SetTaskScratchPads" />
     </Item>
@@ -594,7 +596,7 @@ Notice: must include comments for exact replacement if the origin code contains 
       <Name>###GetCurrentTask02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTask" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="-90" Width="119" Height="78">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="-90" Width="115" Height="74">
       <Name>###ExtractXmlsTag01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
         <TagNames>
@@ -700,6 +702,17 @@ Notice: must include comments for exact replacement if the origin code contains 
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="490" Y="-120" Width="73" Height="17">
       <Name>###GetXmlTagContentAction02</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContentAction" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-310" Y="350" Width="64" Height="17">
+      <Name>ReadComplete</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
+        <Name>ReadComplete</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
+        <EventType>SubTaskFinished</EventType>
+        <CommitName>ReadFile</CommitName>
+      </Node>
     </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
@@ -939,7 +952,7 @@ Notice: must include comments for exact replacement if the origin code contains 
       <ToConnector>CommitName</ToConnector>
     </Item>
     <Item>
-      <FromNode>ToolReadComplete</FromNode>
+      <FromNode>BatchReadComplete</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###CreatePageInstanceWithParameter01</ToNode>
       <ToConnector>In</ToConnector>
@@ -1158,6 +1171,12 @@ Notice: must include comments for exact replacement if the origin code contains 
       <FromNode>###GetXmlTagContentAction02</FromNode>
       <FromConnector>ContentOut</FromConnector>
       <ToNode>OnFailed</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>ReadComplete</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###CreatePageInstanceWithParameter01</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
   </Links>

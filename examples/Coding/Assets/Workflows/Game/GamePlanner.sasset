@@ -8,7 +8,16 @@
   </BaseWorkflow>
   <Tools>
     <Item>
-      <Id>3deed8ae-9a3b-4b0e-a771-5408cb14c7e2</Id>
+      <Id>0f40a3c5-66ee-41b6-b7ab-7fac84b95ec1</Id>
+    </Item>
+    <Item>
+      <Id>bd53102f-8bf0-488b-b421-87b0dc71eb9e</Id>
+    </Item>
+    <Item>
+      <Id>680aa016-4cd5-4e11-986a-d1ff21116cdd</Id>
+    </Item>
+    <Item>
+      <Id>ab7f1a77-2533-4136-8abf-49a0d4e42b91</Id>
     </Item>
     <Item>
       <Id>72bfd38f-adb1-4e2a-9185-08a558e30272</Id>
@@ -32,9 +41,6 @@
       <Id>922c7589-8c57-43b2-91c2-3873029a817a</Id>
     </Item>
     <Item>
-      <Id>cba2cec1-4bfe-462c-b3d0-324178e57303</Id>
-    </Item>
-    <Item>
       <Id>ab3c1bdc-698a-4982-84bb-e0366b5ab8e9</Id>
     </Item>
     <Item>
@@ -45,7 +51,7 @@
     </Item>
   </Tools>
   <Overview>
-    <Text>Responsible for analyzing requirements and writing comprehensive documentation, including Software Requirements Specifications (SRS), Game Design Document(GDD) and Technical Specification documents.</Text>
+    <Text>Responsible for analyzing requirements and writing comprehensive documentation, including Requirements Spec  (SRS), Game Design Document(GDD), Integration Contract, Tech Spec, Development Plan.</Text>
   </Overview>
   <UserInputHint>
     <Text>

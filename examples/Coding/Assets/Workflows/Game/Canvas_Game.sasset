@@ -30,7 +30,9 @@
         <AgentName>
         </AgentName>
         <Overview />
-        <Rule />
+        <Rule>
+          <Id>b9c82a0f-1e17-40c5-8efd-0f4a56ee8f9c</Id>
+        </Rule>
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
@@ -65,12 +67,12 @@
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.AIGC.Agentic.AgentStartDiagramItem" X="-70" Y="-360" Width="176" Height="38">
+    <Item type="Suity.Editor.AIGC.Agentic.AgentStartDiagramItem" X="-70" Y="-360" Width="211" Height="38">
       <Name>GameDev3Pass</Name>
       <AssetId>8ed9bb70-7aff-4099-9505-05a446a9db7d</AssetId>
       <Node type="Suity.Editor.AIGC.Agentic.AgentStartCanvasNode">
         <Name>GameDev3Pass</Name>
-        <Description>Game Development (3 Pass)</Description>
+        <Description>Game Development (3 Pass + Expert)</Description>
         <Icon>
           <Id>21cb8223-3635-4954-a2d8-e30d0e3ebd8d</Id>
         </Icon>

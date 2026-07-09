@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="AigcFlow">
-  <AssetId>8dd449c3-7044-4619-8d4d-de0df8d31a96</AssetId>
+  <AssetId>ed34bace-bc0b-4b23-bc1b-07e33d4b21c6</AssetId>
   <NameSpace>TaskTaskPage002</NameSpace>
   <Description>
   </Description>
   <Icon />
   <Nodes>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-430" Y="-110" Width="160" Height="130">
-      <Name>CodeWriter</Name>
-      <AssetId>cba2cec1-4bfe-462c-b3d0-324178e57303</AssetId>
+      <Name>DocumentWriter</Name>
+      <AssetId>ab7f1a77-2533-4136-8abf-49a0d4e42b91</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
-        <Name>CodeWriter</Name>
+        <Name>DocumentWriter</Name>
         <Description>
         </Description>
         <Icon>
-          <Id>3df98773-f0da-4039-aa81-ef4af6f8c015</Id>
+          <Id>3b8d3632-d070-4f45-9136-c55ab4c2a2ee</Id>
         </Icon>
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
           <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
@@ -93,12 +93,12 @@
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>e741e0d8-e4f4-4d9d-bbbf-6f5dc5360273</Id>
+          <Id>1ad683a7-645c-4cce-aab0-572ed063d035</Id>
         </PromptTemplate>
         <Keywords>
           <Item>INPUT</Item>
           <Item>FILES</Item>
-          <Item>FRAMEWORK</Item>
+          <Item>GUIDING</Item>
           <Item>SPEECH_LANGUAGE</Item>
         </Keywords>
         <MissingContent>---</MissingContent>
@@ -156,7 +156,7 @@
       <Name>###ExtractXmlsTagAction01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagAction">
         <TagNames>
-          <Item>code</Item>
+          <Item>doc</Item>
         </TagNames>
         <IsArray>True</IsArray>
       </Node>
@@ -175,10 +175,6 @@
       <Node type="Suity.Editor.Flows.AIGC.GetGlobalLLmModel">
         <Type>Coding</Type>
       </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-140" Y="-30" Width="27" Height="17">
-      <Name>###GetCurrentTaskRule01</Name>
-      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskRule" />
     </Item>
     <Item type="Suity.Editor.Flows.SubFlows.PagePromptParameterInputItem" X="-420" Y="-80" Width="45" Height="17">
       <Name>Prompt</Name>
@@ -344,13 +340,17 @@
         <Status>ResourceUse</Status>
       </Node>
     </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-150" Y="-30" Width="44" Height="17">
+      <Name>###GetCurrentPresetSkill01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.GetCurrentPresetSkill" />
+    </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
   <Links>
     <Item>
       <FromNode>MultipleCodeResult</FromNode>
       <FromConnector>Definition</FromConnector>
-      <ToNode>CodeWriter</ToNode>
+      <ToNode>DocumentWriter</ToNode>
       <ToConnector>Result</ToConnector>
     </Item>
     <Item>
@@ -414,12 +414,6 @@
       <ToConnector>DataIn</ToConnector>
     </Item>
     <Item>
-      <FromNode>###ExtractXmlsTagAction01</FromNode>
-      <FromConnector>Tag-code</FromConnector>
-      <ToNode>###DataActionDecompose01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###DataActionDecompose01</FromNode>
       <FromConnector>ActionOut</FromConnector>
       <ToNode>###ForeachArray01</ToNode>
@@ -430,12 +424,6 @@
       <FromConnector>DataOut</FromConnector>
       <ToNode>###ForeachArray01</ToNode>
       <ToConnector>Array</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetCurrentTaskRule01</FromNode>
-      <FromConnector>Rule</FromConnector>
-      <ToNode>###BuildPrompts01</ToNode>
-      <ToConnector>k_FRAMEWORK</ToConnector>
     </Item>
     <Item>
       <FromNode>###GetGlobalLLmModel01</FromNode>
@@ -580,6 +568,18 @@
       <FromConnector>Output</FromConnector>
       <ToNode>###WriteWorkSpaceFile01</ToNode>
       <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTagAction01</FromNode>
+      <FromConnector>Tag-doc</FromConnector>
+      <ToNode>###DataActionDecompose01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetCurrentPresetSkill01</FromNode>
+      <FromConnector>Skill</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_GUIDING</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

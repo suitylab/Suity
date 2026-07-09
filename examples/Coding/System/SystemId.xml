@@ -84,7 +84,10 @@
   <Object id="04fd9a4f-dbc7-4fee-af06-58b10b527112" name="*AIGC|ImageGenAsset" />
   <Object id="6a031e9e-d61e-436a-aad1-b02203721a32" name="*AIGC|KeywordKnowledge" />
   <Object id="d29d3452-8a11-411f-bffd-0a069e012b0a" name="*AIGC|KnowledgeArticleList" />
+  <Object id="d29d3452-8a11-411f-bffd-0a069e012b0a" name="*AIGC|KnowledgeArticleList" />
+  <Object id="d29d3452-8a11-411f-bffd-0a069e012b0a" name="*AIGC|KnowledgeArticleList" />
   <Object id="495047cc-3b56-4d2e-9c58-133918e54d5e" name="*AIGC|KnowledgeBase" />
+  <Object id="2e1c0e46-cba9-40a3-8ef9-aef1549eb0d1" name="*AIGC|LLmCallOptionEx" />
   <Object id="2e1c0e46-cba9-40a3-8ef9-aef1549eb0d1" name="*AIGC|LLmCallOptionEx" />
   <Object id="f906f622-d388-4d2e-8d82-167a0bf134da" name="*AIGC|LLmMessage" />
   <Object id="7dd01d56-8f25-48e5-abf3-bbb6835e8f73" name="*AIGC|LLmModelAsset" />
@@ -232,6 +235,7 @@
   <Object id="6d2a52da-0d81-458e-9c31-f06d46e11f66" name="*Brief|TeminalBrief" />
   <Object id="f7f88797-bbc8-43e5-adae-63f234434514" name="*Brief|TypeNameAndBrief" />
   <Object id="45f04663-f845-4528-b84d-93958120ec50" name="*Core" />
+  <Object id="4560e9f8-28fb-44bc-9b07-d1adb10bc21e" name="*Core|DataContainer" />
   <Object id="4560e9f8-28fb-44bc-9b07-d1adb10bc21e" name="*Core|DataContainer" />
   <Object id="a4d8cc89-ee63-4963-b883-495879a7c877" name="*Core|DataItem" />
   <Object id="0f5e48a8-82e1-48d6-a874-d079f55eb1da" name="*Core|PagedTextAsset" />
@@ -721,6 +725,7 @@
   <Object id="de83a1b8-6a49-4e31-81de-cb9ee4828c8a" name="*SubFlow|ISubFlowAsset" />
   <Object id="93fd979a-77fd-44d8-bf13-b1ce60a75186" name="*SubFlow|ISubFlowDefAsset" />
   <Object id="93fd979a-77fd-44d8-bf13-b1ce60a75186" name="*SubFlow|ISubFlowDefAsset" />
+  <Object id="1101c1c5-41bd-4b67-bb65-8dd95b9c9783" name="*SubFlow|ISubFlowInstance" />
   <Object id="1101c1c5-41bd-4b67-bb65-8dd95b9c9783" name="*SubFlow|ISubFlowInstance" />
   <Object id="1101c1c5-41bd-4b67-bb65-8dd95b9c9783" name="*SubFlow|ISubFlowInstance" />
   <Object id="1101c1c5-41bd-4b67-bb65-8dd95b9c9783" name="*SubFlow|ISubFlowInstance" />

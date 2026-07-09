@@ -34,7 +34,7 @@ internal sealed class FileAssetManagerBK : FileAssetManager
     /// <summary>
     /// Whether to load documents in parallel during scanning.
     /// </summary>
-    internal static bool ParallelDocumentLoad = true;
+    internal static bool ParallelDocumentLoad = false;
 
     private readonly Project _project;
     private EditorFileSystemWatcher _watcher;
@@ -373,9 +373,6 @@ internal sealed class FileAssetManagerBK : FileAssetManager
                         Parallel.ForEach(iteration, file =>
                         {
                             p.UpdateProgess(index, iterations.Count, $"Loading {file.FilePath.Name}", $"Iteration {iteration.Key}");
-
-                            //_collection.Create(file.FullName);
-                            //DocumentManager.Instance.GetOrOpenDocument(file.FullName);
                             _collection.Update(file.FilePath.FullName);
 
                             Interlocked.Increment(ref index);
@@ -404,7 +401,6 @@ internal sealed class FileAssetManagerBK : FileAssetManager
                         foreach (var file in group)
                         {
                             p.UpdateProgess(index, iterations.Count, $"Loading {file.FilePath.Name}", $"Iteration {group.Key}");
-                            //_collection.Create(file.FullName);
                             _collection.Update(file.FilePath.FullName);
 
                             index++;

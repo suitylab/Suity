@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="SubFlowPreset">
+  <AssetId>bd53102f-8bf0-488b-b421-87b0dc71eb9e</AssetId>
+  <PresetName>
+  </PresetName>
+  <BaseWorkflow>
+    <Id>ab7f1a77-2533-4136-8abf-49a0d4e42b91</Id>
+  </BaseWorkflow>
+  <Tools />
+  <Overview>
+    <Text>Creating Integration Contract document.</Text>
+  </Overview>
+  <UserInputHint>
+    <Text>
+    </Text>
+  </UserInputHint>
+  <Skill>
+    <Id>de5274f6-fea7-42e6-a538-908ca3663e47</Id>
+  </Skill>
+  <Rule />
+  <Description>
+  </Description>
+  <Icon />
+  <Page>
+    <__preset__ />
+  </Page>
+</SuityAsset>
