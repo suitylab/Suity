@@ -14,6 +14,7 @@ class ProjectSettingMenuCommand : MenuCommand
 
     public static void OpenProjectSetting()
     {
+        //TODO: May create multiple project setting window.
         new ProjectSettingGui().CreateImGuiDialog("Project Setting", 800, 800, false);
     }
 }
