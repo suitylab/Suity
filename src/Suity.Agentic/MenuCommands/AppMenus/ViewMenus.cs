@@ -66,6 +66,7 @@ public class RefreshLayoutMenuCommand : MenuCommand
     public RefreshLayoutMenuCommand()
         : base("Refresh Layout")
     {
+        HotKey = "F5";
     }
 
     /// <inheritdoc/>

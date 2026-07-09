@@ -113,7 +113,7 @@
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-300" Y="230" Width="202" Height="79">
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-80" Y="230" Width="202" Height="79">
       <Name>###AgentCanvasNode07</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -125,7 +125,7 @@
           <Text>Implements the central game mechanics, rules, AI behaviors, and interactive systems that define the actual player experience and core gameplay loop.</Text>
         </Overview>
         <Rule>
-          <Id>2785629b-2469-44e1-a5c1-1a217299e765</Id>
+          <Id>6c16a48b-a06f-4856-8615-9a3fbe71e23f</Id>
         </Rule>
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
@@ -144,7 +144,7 @@
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-80" Y="230" Width="202" Height="79">
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="140" Y="230" Width="202" Height="79">
       <Name>###AgentCanvasNode09</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -156,12 +156,12 @@
           <Text>Develops the rendering pipelines, shaders, particle systems, and visual effects to create stunning, immersive, and performant graphical presentations.</Text>
         </Overview>
         <Rule>
-          <Id>77116b62-14ea-402c-b686-88f2a1744e3a</Id>
+          <Id>62005ace-2f13-4d20-8b0c-6590c6be3d4c</Id>
         </Rule>
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="140" Y="230" Width="202" Height="79">
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="360" Y="230" Width="202" Height="79">
       <Name>###AgentCanvasNode10</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -174,12 +174,12 @@
 </Text>
         </Overview>
         <Rule>
-          <Id>3a1bc8f6-bb48-487c-9329-86fdacd8a985</Id>
+          <Id>cd800097-509a-49a7-839e-39dedd82b298</Id>
         </Rule>
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="640" Y="230" Width="202" Height="79">
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="580" Y="80" Width="202" Height="79">
       <Name>###AgentCanvasNode11</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -191,12 +191,12 @@
           <Text>Designs and implements isolated unit tests to validate individual functions, classes, and components, ensuring core logic correctness and preventing regressions at the most granular level. (Add multiple unit testing tasks for better pipeline control)</Text>
         </Overview>
         <Rule>
-          <Id>037afc62-c3e8-4952-a610-ec7c6399020e</Id>
+          <Id>bbf0d91a-60ff-4473-b77d-16f3476d5a8e</Id>
         </Rule>
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="360" Y="230" Width="202" Height="79">
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="580" Y="230" Width="202" Height="79">
       <Name>###AgentCanvasNode12</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -209,6 +209,23 @@
         </Overview>
         <Rule>
           <Id>d8106aa4-ee98-4fbe-8e27-6365d5ed7cb0</Id>
+        </Rule>
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-300" Y="230" Width="202" Height="79">
+      <Name>###AgentCanvasNode13</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>f5fedc8d-841d-420c-a154-678b1b9eea33</Id>
+        </AssetRef>
+        <AgentName>ManagementEngineer</AgentName>
+        <Overview>
+          <Text>Engineers the core management modules, operational workflows, and automated decision systems that define administrative efficiency and drive the central business logic.</Text>
+        </Overview>
+        <Rule>
+          <Id>22087384-8e84-48f4-a5ea-078bd1b69415</Id>
         </Rule>
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
@@ -278,6 +295,12 @@
     </Item>
     <Item>
       <FromNode>###AgentCanvasNode12</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###AgentCanvasNode08</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###AgentCanvasNode13</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###AgentCanvasNode08</ToNode>
       <ToConnector>In</ToConnector>

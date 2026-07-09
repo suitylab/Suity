@@ -19,11 +19,12 @@
   <Object id="d0b09fe8-faad-441a-b73a-bcd4561cc79b" name="Workflows/Document/RequirementDocument.md" />
   <Object id="4d695227-dc34-427b-aa69-7f84aa473f73" name="Workflows/Game/C01_FoundationArchitect.md" />
   <Object id="97c2c807-b8e5-410a-be2f-8e6e340beab9" name="Workflows/Game/C02_DataDrivenArchitect.md" />
-  <Object id="2785629b-2469-44e1-a5c1-1a217299e765" name="Workflows/Game/C03_GameplayLogicEngineer.md" />
-  <Object id="77116b62-14ea-402c-b686-88f2a1744e3a" name="Workflows/Game/C04_GraphicsVFXEngineer.md" />
-  <Object id="3a1bc8f6-bb48-487c-9329-86fdacd8a985" name="Workflows/Game/C05_UserInterfaceDesigner.md" />
-  <Object id="037afc62-c3e8-4952-a610-ec7c6399020e" name="Workflows/Game/C06_CodeTester.md" />
+  <Object id="22087384-8e84-48f4-a5ea-078bd1b69415" name="Workflows/Game/C03_ManagementEngineer.md" />
+  <Object id="6c16a48b-a06f-4856-8615-9a3fbe71e23f" name="Workflows/Game/C04_GameplayLogicEngineer.md" />
+  <Object id="62005ace-2f13-4d20-8b0c-6590c6be3d4c" name="Workflows/Game/C05_GraphicsVFXEngineer.md" />
+  <Object id="cd800097-509a-49a7-839e-39dedd82b298" name="Workflows/Game/C06_UserInterfaceDesigner.md" />
   <Object id="d8106aa4-ee98-4fbe-8e27-6365d5ed7cb0" name="Workflows/Game/C07_IntegrationEngineer.md" />
+  <Object id="bbf0d91a-60ff-4473-b77d-16f3476d5a8e" name="Workflows/Game/C08_CodeTester.md" />
   <Object id="8e300a0f-7053-4903-9e5a-8c6b857cf146" name="Workflows/Game/GameDesign.md" />
   <Object id="e934f168-b446-474a-8dc8-db4d23157c3e" name="Workflows/Game/GamePlanner.md" />
   <Object id="c65c4898-7698-425e-9d38-8c297a8df603" name="Workflows/MultiAgent/Coder.md" />

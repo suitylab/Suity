@@ -55,15 +55,6 @@ This is the most critical architectural phase. The Technical Specification must 
 ## Phase 5: System Integration & Runtime Contract (SIRC) Generation
 Explicitly define the integration rules, debuggability standards, and observability contracts to ensure all engine subsystems can be seamlessly integrated, tested, and debugged by AI agents and human developers.
 - **Output SIRC**: Save to `docs/Integration_Contract.md` via `IntegrationContract` tool.
-- **Mandatory SIRC Sections**:
-  - **Unified Logging & Telemetry**: Define the structured log format (e.g., `[Timestamp] [Level] [TraceID] [Module] [EventName] Message | {ContextJSON}`), state change logs, and event bus tracing.
-  - **Module Lifecycle & State Management**: Define standard FSM states (e.g., `Init`, `Loading`, `Running`, `Released`) and mandatory state-transition logging rules (`[Module] [StateChanged] Prev -> New`).
-  - **Event Bus Design**: Define the 1:1 mapping of user actions to events, naming conventions (`Domain.Entity.Action`), and centralized dispatch mechanisms.
-  - **Unified Snapshot Mechanism**: Define the unified `ISnapshotable` interface (using pseudo-code) for core modules and global snapshot directives (`SNAPSHOT.GET`, `SNAPSHOT.GET_GLOBAL`).
-  - **Simulation Directives**: Define interfaces for programmatic input injection (`SIMULATE.INPUT`) to facilitate agent-driven testing, fuzzing, and debugging.
-  - **System Initialization Sequence**: Define the complete bootstrapping flow. Use pseudo-logic or sequence steps to detail dependency resolution, resource loading gates, and the strict order of module FSM transitions (e.g., `Init -> Loading -> Ready -> Running`) before entering the main loop.
-  - **Inter-Module Activation & Triggering Flow**: Define the exact mechanisms for cross-module communication and state triggering. Describe how an event emitted by one module activates, wakes up, or transitions the state of another module via the Event Bus, ensuring zero direct method calls.
-  - **Use Markdown and (pseudo-code) to define schemas. Do NOT write specific code.**
 
 ## Phase 6: Development Plan Document Generation (Game Execution Roadmap)
 Translate the Technical Specification and SIRC into a sequential, version-based Development Plan.

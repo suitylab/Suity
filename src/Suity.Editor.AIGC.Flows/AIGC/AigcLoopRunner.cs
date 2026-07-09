@@ -334,7 +334,7 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
                 else
                 {
                     //return new(TaskCommitStatus.TaskFailed, $"{err.GetType().FullName} ({err.Message})");
-                    throw err;
+                    throw new OperationCanceledException("Task failed with max retry times.", err);
                 }
             }
         }
