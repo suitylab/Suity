@@ -23,11 +23,12 @@
   <Object id="6c16a48b-a06f-4856-8615-9a3fbe71e23f" name="Workflows/Game/C04_GameplayLogicEngineer.md" />
   <Object id="62005ace-2f13-4d20-8b0c-6590c6be3d4c" name="Workflows/Game/C05_GraphicsVFXEngineer.md" />
   <Object id="cd800097-509a-49a7-839e-39dedd82b298" name="Workflows/Game/C06_UserInterfaceDesigner.md" />
-  <Object id="d8106aa4-ee98-4fbe-8e27-6365d5ed7cb0" name="Workflows/Game/C07_IntegrationEngineer.md" />
   <Object id="bbf0d91a-60ff-4473-b77d-16f3476d5a8e" name="Workflows/Game/C08_CodeTester.md" />
   <Object id="8e300a0f-7053-4903-9e5a-8c6b857cf146" name="Workflows/Game/GameDesign.md" />
   <Object id="e934f168-b446-474a-8dc8-db4d23157c3e" name="Workflows/Game/GamePlanner.md" />
+  <Object id="e4d73fc0-7421-4a78-abf9-8cb857a34b92" name="Workflows/Game/IntegrationEngineer.md" />
   <Object id="c65c4898-7698-425e-9d38-8c297a8df603" name="Workflows/MultiAgent/Coder.md" />
+  <Object id="958f77ff-8afd-4e8c-9802-cec35bc4440e" name="Workflows/MultiAgent/CoderManager_Integration.md" />
   <Object id="aba9f6d8-c3a8-4f2b-b321-33229896d5dc" name="Workflows/MultiAgent/CoderManager.md" />
   <Object id="6accf8cc-5dd0-465d-b358-a0817d72e05b" name="Workflows/MultiAgent/Editor.md" />
   <Object id="38ab5363-0fac-4272-8c74-538a4ae9c812" name="Workflows/MultiAgent/Manager_3Pass_Expert.md" />

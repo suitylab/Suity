@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="SubFlowPreset">
+  <AssetId>d6f75822-13f2-4bc7-97e6-69f2e1a8758b</AssetId>
+  <PresetName>
+  </PresetName>
+  <BaseWorkflow>
+    <Id>80e3bfe9-08ea-4055-b46f-2b189b74768b</Id>
+  </BaseWorkflow>
+  <Tools>
+    <Item>
+      <Id>0f40a3c5-66ee-41b6-b7ab-7fac84b95ec1</Id>
+    </Item>
+    <Item>
+      <Id>72bfd38f-adb1-4e2a-9185-08a558e30272</Id>
+    </Item>
+    <Item>
+      <Id>d9bb5548-e340-4bd3-91ec-76d0f35b1449</Id>
+    </Item>
+    <Item>
+      <Id>4fa5a672-755e-4cfe-97af-79eecb75b4ce</Id>
+    </Item>
+    <Item>
+      <Id>1d7c4267-b004-429b-8070-b74e2710dd69</Id>
+    </Item>
+    <Item>
+      <Id>8fe14aad-8164-4636-94f5-8bc755df34b5</Id>
+    </Item>
+    <Item>
+      <Id>c98801ac-2dd8-46e7-8eb6-e1350fb72fa0</Id>
+    </Item>
+    <Item>
+      <Id>922c7589-8c57-43b2-91c2-3873029a817a</Id>
+    </Item>
+    <Item>
+      <Id>cba2cec1-4bfe-462c-b3d0-324178e57303</Id>
+    </Item>
+    <Item>
+      <Id>86a7a172-00ca-4f3d-95e0-95f3244067d8</Id>
+    </Item>
+    <Item>
+      <Id>ab3c1bdc-698a-4982-84bb-e0366b5ab8e9</Id>
+    </Item>
+    <Item>
+      <Id>c9d4cc11-5bcc-4563-8789-d53c9d97e474</Id>
+    </Item>
+    <Item>
+      <Id>2432214a-f2bd-4104-b212-8c2fe435f77d</Id>
+    </Item>
+    <Item>
+      <Id>0c0e6e87-c484-44be-8d2b-1e00a40300e0</Id>
+    </Item>
+    <Item>
+      <Id>d834c6df-2dd3-4b4f-a75c-6c7627717065</Id>
+    </Item>
+    <Item>
+      <Id>7ce7cf58-b151-456a-947b-c11640abd028</Id>
+    </Item>
+  </Tools>
+  <Overview>
+    <Text>The Integration Engineer is an autonomous QA agent that executes headless, contract-driven runtime testing via simulation hooks, verifies system behaviors using log telemetry and state snapshots, and dispatches data-rich fix tickets to orchestrate closed-loop code repair.</Text>
+  </Overview>
+  <UserInputHint>
+    <Text>
+    </Text>
+  </UserInputHint>
+  <Skill>
+    <Id>e4d73fc0-7421-4a78-abf9-8cb857a34b92</Id>
+  </Skill>
+  <Rule />
+  <Description>
+  </Description>
+  <Icon />
+  <Page>
+    <__preset__ />
+    <ModelType type="SEnum" base="0ac6f83c-530d-48aa-b62c-6f276360379f">
+      <Id>7d8cfc15-87ea-4994-b2db-e6e165641a0e</Id>
+    </ModelType>
+  </Page>
+</SuityAsset>

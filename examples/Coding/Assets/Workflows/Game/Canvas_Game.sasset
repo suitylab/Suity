@@ -179,7 +179,7 @@
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="580" Y="80" Width="202" Height="79">
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="590" Y="30" Width="202" Height="79">
       <Name>###AgentCanvasNode11</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -196,7 +196,7 @@
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="580" Y="230" Width="202" Height="79">
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="590" Y="180" Width="202" Height="79">
       <Name>###AgentCanvasNode12</Name>
       <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
         <Expand>True</Expand>
@@ -208,7 +208,7 @@
           <Text>Performs precise static analysis on project code files to identify and resolve potential integration issues across resource loading, game initialization, UI lifecycles, gameplay logic, input handling, and visual effects before final build verification.</Text>
         </Overview>
         <Rule>
-          <Id>d8106aa4-ee98-4fbe-8e27-6365d5ed7cb0</Id>
+          <Id>e4d73fc0-7421-4a78-abf9-8cb857a34b92</Id>
         </Rule>
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
@@ -291,12 +291,6 @@
       <FromNode>###AgentCanvasNode04</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###AgentCanvasNode01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###AgentCanvasNode12</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###AgentCanvasNode08</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
     <Item>

@@ -32,15 +32,6 @@ You have access to specialized coding sub-agents to delegate tasks to via the `C
 - **Task Name Convention**: Create task name with following format: `[Interaction Number-Task Number] Task Title`.  e.g. `[2-1] Core logic`.
 - **Document reading**: Make sure to prompt sub-agent to read documents: `tech spec` and `integration contract`.
 
-### Phase 4: Integration & System Verification (Closed-Loop Test & Repair)
-- **Delegate Integration**: Once all implementation tasks are completed, delegate a comprehensive closed-loop integration task to the `IntegrationEngineer`.
-- **Scope of Integration Prompting**: You must instruct the `IntegrationEngineer` to execute its multi-phase runtime validation loop strictly according to the System Integration & Runtime Contract (SIRC):
-  1. **Document Ingestion**: Read `docs/tech_spec.md` and `docs/integration_contract.md` to establish the baseline contract matrix.
-  2. **Tooling Verification & Synthesis**: Check for missing test managers, harnesses, or simulation tools required by the SIRC, and build/complete them first if absent.
-  3. **Test Case Implementation**: Write the concrete integration test case code or automated scripts designed to drive the simulation input hooks.
-  4. **Runtime Testing & Diagnostics**: Execute the build, inject virtual events via the EventBus, track the `TraceID` causal chains, and monitor live logs. If an assertion fails or times out, invoke `DumpState()` to capture the frozen state snapshot.
-- **Handle Integration Failures (The Repair Loop)**: If the `IntegrationEngineer` encounters a contract violation, it will halt and yield a structured JSON Fix Ticket. You MUST parse this ticket, identify the responsible Coder Agent (e.g., `ComponentCoder` for UI/HUD mismatches, `LogicCoder` for core bus deadlocks), re-delegate the specific bug-fix task, and then re-awaken the `IntegrationEngineer` to run the entire verification cycle from Phase 0 again. Repeat this closed loop until the build passes all integration test cases.
-
 ## Execution Rules & Constraints
 - **Zero Direct Execution**: Never generate code, write documentation, or run commands yourself. Always use `CallSubAgent`.
 - **Strict Sub-Agent Selection**: You must justify your choice of sub-agent for each task based on the task's technical requirements. Do not assign backend logic to `ComponentCoder` or UI tasks to `LogicCoder`.
@@ -54,4 +45,4 @@ You have access to specialized coding sub-agents to delegate tasks to via the `C
 - When using `CallSubAgent`, ensure every loop item contains a clear objective, target files, and mandatory context references (instructing the sub-agent to read relevant files). Ensure implementation loop items explicitly state the single functional module they are targeting.
 - Make sure the target source code directory is : `src/`.
 - **Do NOT initialize project with external tool, create project from scratch**
-- **CRITICAL CONSTRAINT: This workflow strictly prohibits the execution of any isolated unit tests. Testing is strictly focused on end-to-end integration scenario execution via runtime simulation hooks.**
+- **CRITICAL CONSTRAINT: This workflow strictly prohibits the execution of any isolated unit tests.**

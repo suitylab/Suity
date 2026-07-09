@@ -119,6 +119,9 @@ public class EditorSystemService : IEditorSystemService
             StandardErrorEncoding = outputEncoding,
         };
 
+        startInfo.EnvironmentVariables["FORCE_COLOR"] = "1";
+        startInfo.EnvironmentVariables["NPM_CONFIG_COLOR"] = "always";
+
         var outputBuilder = new StringBuilder();
         var errorBuilder = new StringBuilder();
 
