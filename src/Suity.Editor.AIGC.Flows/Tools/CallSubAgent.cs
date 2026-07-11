@@ -23,23 +23,23 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
     [NativeType("CallAgent.LoopItem", CodeBase = "*Suity")]
     public class LoopItem : SObjectController
     {
-        readonly StringProperty _taskName = new("TaskName", "Task Name", null, "Task name (with serial number prefix, e.g. pass/iteration/step)");
+        readonly StringProperty _loopName = new("LoopName", "Loop Name", null, "Loop name (with id prefix)");
         readonly TextBlockProperty _prompt = new("Prompt", "Prompt");
 
-        public string TaskName { get => _taskName.Text; set => _taskName.Text = value; }
+        public string LoopName { get => _loopName.Text; set => _loopName.Text = value; }
         public string Prompt { get => _prompt.Text; set => _prompt.Text = value; }
 
         protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
-            _taskName.Sync(sync);
+            _loopName.Sync(sync);
             _prompt.Sync(sync);
         }
         protected override void OnSetupView(IViewObjectSetup setup)
         {
-            _taskName.InspectorField(setup);
+            _loopName.InspectorField(setup);
             _prompt.InspectorField(setup);
         }
-        public override string ToString() => $"{TaskName}";
+        public override string ToString() => $"{LoopName}";
     }
     #endregion
 
@@ -47,18 +47,18 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
     [NativeType("CallAgent.LoopResult", CodeBase = "*Suity")]
     public class LoopResult : SObjectController
     {
-        readonly StringProperty _taskName = new("TaskName", "Task Name");
+        readonly StringProperty _loopName = new("LoopName", "Loop Name");
         readonly TextBlockProperty _result = new("Result", "Result");
         readonly StringProperty _error = new("Error", "Error");
 
-        public string TaskName { get => _taskName.Text; set => _taskName.Text = value; }
+        public string LoopName { get => _loopName.Text; set => _loopName.Text = value; }
         public string Result { get => _result.Text; set => _result.Text = value; }
         public string Error { get => _error.Text; set => _error.Text = value; }
         public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
         protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
-            _taskName.Sync(sync);
+            _loopName.Sync(sync);
             _result.Sync(sync);
 
             if (sync.IsSetter() || !string.IsNullOrWhiteSpace(_error.Text))
@@ -68,11 +68,11 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
         }
         protected override void OnSetupView(IViewObjectSetup setup)
         {
-            _taskName.InspectorField(setup);
+            _loopName.InspectorField(setup);
             _result.InspectorField(setup);
             _error.InspectorField(setup);
         }
-        public override string ToString() => $"{TaskName}" + (HasError ? $" - Error: {Error}" : "");
+        public override string ToString() => $"{LoopName}" + (HasError ? $" - Error: {Error}" : "");
     }
     #endregion
 
@@ -177,7 +177,7 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
         {
             foreach (var loopItem in _loops.List)
             {
-                var loop = runner.AddLoop(subAgent, loopItem.TaskName, loopItem.Prompt);
+                var loop = runner.AddLoop(subAgent, loopItem.LoopName, loopItem.Prompt);
                 loops.Add(loop);
 
                 toolPage.AddAttribute<SubAgentLoopIdAttribute>(o => o.Id = loop.Id);
@@ -209,16 +209,16 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
 
         context.ToolInstance.Conversation?.AddRunningMessage($"Call agent '{agentName}' with {Loops.Count} loop(s)", msg =>
         {
-            msg.AddCode(string.Join(", ", Loops.Select(l => l.TaskName)));
+            msg.AddCode(string.Join(", ", Loops.Select(l => l.LoopName)));
         });
         context.Conversation?.AddRunningMessage($"Call agent '{agentName}' with {Loops.Count} loop(s)", msg =>
         {
-            msg.AddCode(string.Join(", ", Loops.Select(l => l.TaskName)));
+            msg.AddCode(string.Join(", ", Loops.Select(l => l.LoopName)));
         });
 
         foreach (var loop in loops)
         {
-            var loopResult = new LoopResult { TaskName = loop.Description };
+            var loopResult = new LoopResult { LoopName = loop.Description };
             try
             {
                 var result = await runner.RunLoop(request, subAgent, loop);

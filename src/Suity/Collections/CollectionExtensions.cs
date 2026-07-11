@@ -1694,7 +1694,7 @@ public static class CollectionExtensions
             return null;
         }
 
-        foreach (object o in source.Skip(1))
+        foreach (object o in source.SkipNull().Skip(1))
         {
             Type curType = o.GetType();
             while (commonType != curType && !commonType.IsAssignableFrom(curType))

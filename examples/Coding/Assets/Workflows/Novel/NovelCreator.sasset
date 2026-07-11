@@ -44,7 +44,6 @@
       <Id>2432214a-f2bd-4104-b212-8c2fe435f77d</Id>
     </Item>
   </Tools>
-  <IsStartup>True</IsStartup>
   <Overview>
     <Text>The Plot Workflow skill orchestrates the end-to-end screenwriting process by systematically analyzing narrative requirements, architecting modular scenes, and iteratively refining drafts into production-ready, industry-standard screenplays.</Text>
   </Overview>

@@ -19,18 +19,20 @@ The working environment uses scratch pad to store the lastest files from the loc
 
 # The tools you can call in the next step are: 
 {{TOOLS}}
+- Use `BatchEditInFiles` to edit the file, Never use `EditCode`.
+
 
 # When you are ready to proceed with the next editing step, you MUST strictly follow this output format:
-1. output the review of the previous task: {{PREVIOUS_TASK_ID}}
-<review>
-review of the previous task in one sentence.
-</review>
 
-2. Then, output your step-by-step reasoning process inside `<reasoning>` tags. Analyze the error message, determine which of the two reasons applies, and formulate your precise text-matching strategy:
+1. Output your step-by-step reasoning process inside `<reasoning>` tags. Analyze the error message, determine which of the two reasons applies, and formulate your precise text-matching strategy:
 <reasoning>
-thinking...
+# review the tool result of previous task '{{PREVIOUS_TASK_ID}}':
+... (skip this if this is the initial task)
+# reasoning of current task:
+...
 </reasoning>
 
+2. Output the action plan:
 <plan>
 planning...
 </plan>

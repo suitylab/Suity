@@ -133,6 +133,9 @@
   <data name="LmStudio" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LmStudio.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="mi" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mi.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="OpenAI" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OpenAI.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

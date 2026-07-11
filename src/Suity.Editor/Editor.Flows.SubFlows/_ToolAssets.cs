@@ -322,7 +322,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     public override HistoryText GetTaskCommit(ResolveChatIntents intent)
     {
-        var writer = new XmlNodeWriter("ToolCall", false);
+        var writer = new XmlNodeWriter("ToolResponse", false);
         writer.SetAttribute("name", Tool.Name);
         if (!string.IsNullOrWhiteSpace(_errorMessage.Text))
         {
@@ -341,7 +341,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     public override string GetResponseString(ResolveChatIntents intent)
     {
-        var writer = new JsonNodeWriter("ToolCall");
+        var writer = new JsonNodeWriter("ToolResponse");
         if (_output is { } output)
         {
             Serializer.Serialize(output, writer);

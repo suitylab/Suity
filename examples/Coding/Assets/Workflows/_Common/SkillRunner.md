@@ -34,13 +34,11 @@ You are working in a workspace, The current directory is workspace root director
 
 ## First output the following tags:
 
-(review of previous task: '{{PREVIOUS_TASK_ID}}')
-<review>
-review of previous task in one sentence.
-</review>
-
 <reasoning>
-reasoning of current task.
+# review the tool result of previous task '{{PREVIOUS_TASK_ID}}':
+... (skip this if this is the initial task)
+# reasoning of current task:
+...
 </reasoning>
 
 <plan title='task title'>

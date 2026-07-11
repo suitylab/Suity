@@ -116,7 +116,6 @@
         </Description>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
-        <History>True</History>
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>6d9a5040-b6d7-4daa-b06f-6f2f27f02012</Id>
         </ValueType>
@@ -357,7 +356,7 @@
         <Icon />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-330" Y="100" Width="37" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-330" Y="110" Width="37" Height="17">
       <Name>###InputValue01</Name>
       <Node type="Suity.Editor.Flows.Nodes.SourceValue">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
@@ -667,7 +666,7 @@
       <Name>###GetCurrentTaskPrompt01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentTaskPrompt" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-420" Y="50" Width="122" Height="41">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-420" Y="50" Width="122" Height="52">
       <Name>###AppendSelf01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AppendSelf" />
     </Item>
@@ -708,7 +707,7 @@
         <Icon />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="1090" Y="-200" Width="43" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="970" Y="-210" Width="43" Height="17">
       <Name>review</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
         <Name>review</Name>
@@ -1227,12 +1226,6 @@
       <ToConnector>Task</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetPreviousTaskId01</FromNode>
-      <FromConnector>PreviousTaskId</FromConnector>
-      <ToNode>###BuildPrompt01</ToNode>
-      <ToConnector>k_PREVIOUS_TASK_ID</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetTaskChatHistoryNode01</FromNode>
       <FromConnector>TaskHistory</FromConnector>
       <ToNode>###CallLLm01</ToNode>
@@ -1243,6 +1236,12 @@
       <FromConnector>Message</FromConnector>
       <ToNode>###CallLLm01</ToNode>
       <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetPreviousTaskId01</FromNode>
+      <FromConnector>PreviousTaskId</FromConnector>
+      <ToNode>###BuildPrompt01</ToNode>
+      <ToConnector>k_PREVIOUS_TASK_ID</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

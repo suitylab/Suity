@@ -489,7 +489,11 @@ public class WorkSpaceManagerBK : WorkSpaceManager
         {
             workSpace.SaveConfig(true);
         }
-        _workSpaces.Add(name, workSpace);
+
+        if (!_workSpaces.ContainsKey(name))
+        {
+            _workSpaces.Add(name, workSpace);
+        }
 
         OnWorkSpaceAdded(new WorkSpaceEventArgs(workSpace));
 

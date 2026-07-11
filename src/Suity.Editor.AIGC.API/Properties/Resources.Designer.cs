@@ -113,6 +113,16 @@ namespace Suity.Editor.Properties {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
+        internal static byte[] mi {
+            get {
+                object obj = ResourceManager.GetObject("mi", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
         internal static byte[] OpenAI {
             get {
                 object obj = ResourceManager.GetObject("OpenAI", resourceCulture);

@@ -62,9 +62,9 @@
         <Required>False</Required>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubflowBranchDiagramItem" X="-280" Y="150" Width="100" Height="100">
+    <Item type="Suity.Editor.Flows.SubFlows.SubflowExtendedDiagramItem" X="-280" Y="150" Width="100" Height="100">
       <Name>###SubflowBranchNode01</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubflowBranchNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowExtendedNode">
         <Name>###SubflowBranchNode01</Name>
         <Description>Sub Page</Description>
         <Icon />

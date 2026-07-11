@@ -490,12 +490,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetTaskChatHistory01</FromNode>
-      <FromConnector>ChatHistory</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###DataActionCompose01</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>FileCodeFailed</ToNode>

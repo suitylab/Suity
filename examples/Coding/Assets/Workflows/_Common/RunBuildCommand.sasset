@@ -27,7 +27,7 @@
         <Tools />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="150" Y="-70" Width="140" Height="120">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowResultDiagramItem" X="140" Y="-70" Width="140" Height="120">
       <Name>RunBuildCommand_End</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowResultNode">
         <Name>RunBuildCommand_End</Name>
@@ -66,7 +66,7 @@
         </Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="160" Y="-30" Width="58" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowEndDiagramItem" X="150" Y="-30" Width="58" Height="17">
       <Name>OnComplete</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowEndNode">
         <Name>OnComplete</Name>
@@ -86,7 +86,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="-10" Width="37" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="80" Y="-10" Width="37" Height="17">
       <Name>###SourceValue01</Name>
       <Node type="Suity.Editor.Flows.Nodes.SourceValue">
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
@@ -95,7 +95,7 @@
         <Value type="System.Boolean">True</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="160" Y="-10" Width="44" Height="17">
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="150" Y="-10" Width="44" Height="17">
       <Name>Output</Name>
       <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
         <Name>Output</Name>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>08bcddbb-3cce-4774-bfe4-f35a07632c24</AssetId>
+  <AssetId>f7396268-0fe3-4fc8-86a9-f16f01097ed5</AssetId>
   <PresetName>
   </PresetName>
   <BaseWorkflow>
@@ -29,35 +29,24 @@
       <Id>922c7589-8c57-43b2-91c2-3873029a817a</Id>
     </Item>
     <Item>
-      <Id>cba2cec1-4bfe-462c-b3d0-324178e57303</Id>
-    </Item>
-    <Item>
-      <Id>86a7a172-00ca-4f3d-95e0-95f3244067d8</Id>
-    </Item>
-    <Item />
-    <Item>
-      <Id>dc35e117-c8f5-493b-8bd6-ffb27b18833f</Id>
-    </Item>
-    <Item />
-    <Item>
-      <Id>2432214a-f2bd-4104-b212-8c2fe435f77d</Id>
+      <Id>0c0e6e87-c484-44be-8d2b-1e00a40300e0</Id>
     </Item>
   </Tools>
   <Overview>
-    <Text>I am a Sub-Agent, an episodic creator spawned with a blank-slate context to perform precise code creaction directly on the local filesystem.</Text>
+    <Text>The Investigator is a strict read-only agent that deeply traces project files and analyzes error logs to identify root causes and generate structured diagnostic reports.</Text>
   </Overview>
   <UserInputHint>
     <Text>
     </Text>
   </UserInputHint>
   <Skill>
-    <Id>fd149294-e8c2-4f97-b72e-07e797763714</Id>
+    <Id>f2cd9a07-4341-45ee-8eee-397cc3ce5c46</Id>
   </Skill>
   <Rule />
   <Description>
   </Description>
   <Icon>
-    <Id>742d63f8-1c54-4fe3-a420-526fd210dedd</Id>
+    <Id>c1339c7d-ae08-42ff-aaaf-424f8adeb4ad</Id>
   </Icon>
   <Page>
     <__preset__ />

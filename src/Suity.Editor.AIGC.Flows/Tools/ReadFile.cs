@@ -88,7 +88,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
         if (lastScratchPad?.Type == ScratchPadTypes.FileFullContent)
         {
             output.FilePath = relativePath;
-            output.Message = "read successful. See ScratchPad for full content.";
+            output.Message = "File successfully read into ScratchPad. See ScratchPad for full content.";
             return Task.FromResult(output);
         }
 
@@ -134,7 +134,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
             {
                 //content = string.Join(Environment.NewLine, lines);
                 output.FilePath = fullPath;
-                output.Message = "read successful, see ScratchPad for detail.";
+                output.Message = "File successfully read into ScratchPad, see ScratchPad for detail.";
                 parentPage?.SetScratchPad(ScratchPadTypes.FileFullContent, relativePath);
             }
             else
@@ -172,7 +172,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
                 }
 
                 output.FilePath = fullPath;
-                output.Message = $"read successful. {msg}, see ScratchPad for detail.";
+                output.Message = $"File successfully read into ScratchPad. {msg}, see ScratchPad for detail.";
                 bool merged = lastScratchPad?.Type == ScratchPadTypes.FileSegment && !string.IsNullOrEmpty(lastScratchPad.Content);
                 parentPage?.SetScratchPad(ScratchPadTypes.FileSegment, relativePath, content, merged ? "Contains multiple sections (sections start with: ========== FILE SECTION: ...)" : msg);
             }

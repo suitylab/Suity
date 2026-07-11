@@ -138,7 +138,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                 // we can skip reading the file again, and just return the result with a message to indicate that the content is in the scratch pad.
                 if (lastScratchPad.Type == ScratchPadTypes.FileFullContent)
                 {
-                    result.Message = $"read successful. See ScratchPad for full content.";
+                    result.Message = $"file successfully read into ScratchPad. See ScratchPad section for full content.";
                     output.Results.Add(result);
                     continue;
                 }
@@ -184,7 +184,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                     if (startLine <= 0 && lineCount <= 0)
                     {
                         //content = string.Join(Environment.NewLine, lines);
-                        result.Message = "read successful, see ScratchPad for detail.";
+                        result.Message = "File successfully read into ScratchPad, see ScratchPad for detail.";
                         parentPage?.SetScratchPad(ScratchPadTypes.FileFullContent, relativePath);
                     }
                     else
@@ -203,7 +203,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                         }
                         content = string.Join(Environment.NewLine, linesWithNumbers);
                         string msg = $"start line: {startLine}, line count: {lineCount}";
-                        result.Message = $"read successful. {msg}, see ScratchPad for detail.";
+                        result.Message = $"File successfully read into ScratchPad. {msg}, see ScratchPad for detail.";
 
                         // If there is a previous FileSegment scratch pad,
                         // it means the user has read a segment of the file before,

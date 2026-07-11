@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="SubFlowPreset">
+  <AssetId>ab4f9048-ae55-4d94-a2e3-25f6ff6e912f</AssetId>
+  <PresetName>
+  </PresetName>
+  <BaseWorkflow>
+    <Id>ab7f1a77-2533-4136-8abf-49a0d4e42b91</Id>
+  </BaseWorkflow>
+  <Tools />
+  <Overview>
+    <Text>Creating Symbol Spec document.</Text>
+  </Overview>
+  <UserInputHint>
+    <Text>
+    </Text>
+  </UserInputHint>
+  <Skill>
+    <Id>fa408224-998e-4da9-9a44-522936b29f1f</Id>
+  </Skill>
+  <Rule />
+  <Description>
+  </Description>
+  <Icon />
+  <Page>
+    <__preset__ />
+  </Page>
+</SuityAsset>

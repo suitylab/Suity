@@ -219,9 +219,9 @@
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubflowBranchDiagramItem" X="-410" Y="240" Width="160" Height="120">
+    <Item type="Suity.Editor.Flows.SubFlows.SubflowExtendedDiagramItem" X="-410" Y="240" Width="160" Height="120">
       <Name>SubTask</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubflowBranchNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowExtendedNode">
         <Name>SubTask</Name>
         <Description>
         </Description>
@@ -550,12 +550,6 @@
       <FromConnector>Out</FromConnector>
       <ToNode>SubTaskCall</ToNode>
       <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetTaskChatHistory01</FromNode>
-      <FromConnector>ChatHistory</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
     </Item>
     <Item>
       <FromNode>###CreatePageInstanceWithParameter02</FromNode>

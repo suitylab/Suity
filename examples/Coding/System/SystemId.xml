@@ -136,6 +136,8 @@
   <Object id="ab87546e-e1f4-4a3f-8a7e-520aa6cb1367" name="*AssetLink|Suity.Editor.AIGC.API.DeepSeekLLmModelAsset" />
   <Object id="6ff5175c-4897-40d0-8e90-e391977f40d5" name="*AssetLink|Suity.Editor.AIGC.API.LmStudioImageGenModelAsset" />
   <Object id="b900d1ac-e6fb-4ec1-8542-218942fbb504" name="*AssetLink|Suity.Editor.AIGC.API.LmStudioLLmModelAsset" />
+  <Object id="c13957df-99b3-474b-9d49-e43ed8e09750" name="*AssetLink|Suity.Editor.AIGC.API.MiMoImageGenModelAsset" />
+  <Object id="c9056999-fd5b-42c7-a54a-8b613f3ad13c" name="*AssetLink|Suity.Editor.AIGC.API.MiMoLLmModelAsset" />
   <Object id="d4a74a56-ec0b-4ca0-8ada-c0222d1a2415" name="*AssetLink|Suity.Editor.AIGC.API.OpenAIImageGenModelAsset" />
   <Object id="be59c036-9305-4d53-99e0-ae4853960a31" name="*AssetLink|Suity.Editor.AIGC.API.OpenAILLmModelAsset" />
   <Object id="3d5a09f2-2f74-451b-b4c0-d50a49bb2059" name="*AssetLink|Suity.Editor.AIGC.API.OpenRouterImageGenModelAsset" />
@@ -665,6 +667,8 @@
   <Object id="dc8f6874-307b-4a94-bcca-edb6e317e2c2" name="*Design|ValueTypeStruct" />
   <Object id="9fc0186d-0fee-43d5-9096-060cede5a84b" name="*LmStudioImage" />
   <Object id="5d3c179f-309b-42da-892f-c0b439cf28c9" name="*LmStudioLLm" />
+  <Object id="966ee072-5eac-4af1-aef6-f9a7d8622453" name="*MiMoImage" />
+  <Object id="9d4e0a6d-a64e-4513-aa44-3f5fdc66f9e0" name="*MiMoLLm" />
   <Object id="9ea33676-5473-4fe7-88b2-8eefdc78fe70" name="*OpenAIImage" />
   <Object id="9ebc6c0b-2ec7-46a8-8f00-acb6d263fd3e" name="*OpenAILLm" />
   <Object id="a65e9185-c73b-426c-941a-0a548bf605f0" name="*OpenRouterImage" />
@@ -762,6 +766,7 @@
   <Object id="9f59e8de-b540-409b-bdf2-6b0076201895" name="*Suity.Editor.AIGC.API.DashScopeImageGenModelAsset" />
   <Object id="5ed2593c-f93b-495d-9067-252808130bc3" name="*Suity.Editor.AIGC.API.DeepSeekImageGenModelAsset" />
   <Object id="79b0192c-7e4e-46d0-a964-a3b4979a5034" name="*Suity.Editor.AIGC.API.LmStudioImageGenModelAsset" />
+  <Object id="41835bfd-5938-4bc9-8407-5c598ac16d97" name="*Suity.Editor.AIGC.API.MiMoImageGenModelAsset" />
   <Object id="36d5a3a6-f1f3-4a92-9583-8519b49b508d" name="*Suity.Editor.AIGC.API.OpenAIImageGenModelAsset" />
   <Object id="b84cfa95-3215-4e3f-bcb9-eb83582a3cbf" name="*Suity.Editor.AIGC.API.OpenRouterImageGenModelAsset" />
   <Object id="f19dee4e-7fd5-4583-b43e-979a45aa7ff9" name="*Suity.Editor.AIGC.API.SiliconFlowImageGenModelAsset" />
@@ -853,12 +858,12 @@
   <Object id="36b58eb9-733a-44ef-a1fc-0fb86ea8b8b8" name="*Suity|BatchWriteFile.FileWriteItem.FilePath" />
   <Object id="c30b4a25-23f0-4e12-9779-c9c7d86e09e4" name="*Suity|ByteArray" />
   <Object id="8f06c0c7-a63b-4178-be0e-ffb8e2f6643f" name="*Suity|CallAgent.LoopItem" />
+  <Object id="e9430483-1e8e-49a9-b9fd-90908864eec4" name="*Suity|CallAgent.LoopItem.LoopName" />
   <Object id="ae5a5050-f0c6-406c-9b5b-dca1d73d5b42" name="*Suity|CallAgent.LoopItem.Prompt" />
-  <Object id="4c7f284d-9a4b-4833-be69-6f0fe52ce09d" name="*Suity|CallAgent.LoopItem.TaskName" />
   <Object id="38a236d3-76d2-449d-9eb9-9d732f3bd3f2" name="*Suity|CallAgent.LoopResult" />
   <Object id="6090eac2-084e-41d0-863f-94d71016f0d1" name="*Suity|CallAgent.LoopResult.Error" />
+  <Object id="803d9ad2-237e-4be5-91c0-5ed3fd34f549" name="*Suity|CallAgent.LoopResult.LoopName" />
   <Object id="37be194c-6040-443e-bfa6-df79bb99899f" name="*Suity|CallAgent.LoopResult.Result" />
-  <Object id="447c4421-db59-44db-9b0c-07bba54965e8" name="*Suity|CallAgent.LoopResult.TaskName" />
   <Object id="f3609217-bb0c-401a-a5ff-a044aaad998d" name="*Suity|CallSubAgent" />
   <Object id="0f588e9a-8cb9-4924-a308-ca3132ba37ca" name="*Suity|ClientHandler" />
   <Object id="e9ed07b7-9b14-411c-bdfd-f585e1a5a752" name="*Suity|CreateNewFile" />

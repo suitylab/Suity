@@ -234,9 +234,9 @@
         <Icon />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubflowBranchDiagramItem" X="-420" Y="130" Width="130" Height="90">
+    <Item type="Suity.Editor.Flows.SubFlows.SubflowExtendedDiagramItem" X="-420" Y="130" Width="130" Height="90">
       <Name>###PageSubNode01</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubflowBranchNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowExtendedNode">
         <Name>###PageSubNode01</Name>
         <Description>Sub Page</Description>
         <Icon />

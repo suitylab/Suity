@@ -100,6 +100,9 @@ public class ConversationHandlerImGui :
         }
     }
 
+    [ThreadStatic]
+    readonly static List<DialogItem> _tempItems = [];
+
     /// <inheritdoc/>
     public ImGuiNode OnNodeGui(ImGui gui)
     {
@@ -109,22 +112,30 @@ public class ConversationHandlerImGui :
         .InitChildSpacing(5)
         .OnPartialContent(() =>
         {
+            _tempItems.Clear();
+            lock (_items)
+            {
+                _tempItems.AddRange(_items);
+            }
+
             if (DisableOldMessage)
             {
-                for (int i = 0; i < _items.Count; i++)
+                for (int i = 0; i < _tempItems.Count; i++)
                 {
-                    var item = _items[i];
-                    item?.OnGui(gui, i, i == _items.Count - 1, _menu, this);
+                    var item = _tempItems[i];
+                    item?.OnGui(gui, i, i == _tempItems.Count - 1, _menu, this);
                 }
             }
             else
             {
-                for (int i = 0; i < _items.Count; i++)
+                for (int i = 0; i < _tempItems.Count; i++)
                 {
-                    var item = _items.GetListItemSafe(i);
+                    var item = _tempItems.GetListItemSafe(i);
                     item?.OnGui(gui, i, true, _menu, this);
                 }
             }
+
+            _tempItems.Clear();
         })
         .AutoScrollToBottom();
 
@@ -156,7 +167,11 @@ public class ConversationHandlerImGui :
         ConversationName = name;
 
         _conversation.PickUp()?.StopConversation();
-        _items.Clear();
+        lock (_items)
+        {
+            _items.Clear();
+        }
+        
         _coroutine = null;
         _actionStack.Clear();
 
@@ -498,7 +513,11 @@ public class ConversationHandlerImGui :
     /// <inheritdoc/>
     public void Close()
     {
-        _items.Clear();
+        lock (_items)
+        {
+            _items.Clear();
+        }
+        
         _guiRef.QueueRefresh();
     }
 

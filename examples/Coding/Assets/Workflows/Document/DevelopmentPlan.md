@@ -1,14 +1,16 @@
 Development Plan
 
-## Interation 1
+## Phase 1
 - Define tasks in interation 1.
 
-## Interation 2
+## Phase 2
 - Define tasks in interation 2.
 
 ...
 
-## Interation n
+## Phase n
 - Define tasks in interation n.
 
+
+Notice:
 **Keep the document as concise as possible.**

@@ -332,9 +332,9 @@
         <UseParentArticle>True</UseParentArticle>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.SubflowBranchDiagramItem" X="-570" Y="-140" Width="200" Height="140">
+    <Item type="Suity.Editor.Flows.SubFlows.SubflowExtendedDiagramItem" X="-570" Y="-140" Width="200" Height="140">
       <Name>###PageSubNode01</Name>
-      <Node type="Suity.Editor.Flows.SubFlows.SubflowBranchNode">
+      <Node type="Suity.Editor.Flows.SubFlows.SubflowExtendedNode">
         <Name>###PageSubNode01</Name>
         <Description>Sub Page</Description>
         <Icon />
@@ -729,12 +729,6 @@
       <FromConnector>Out</FromConnector>
       <ToNode>###CreateToolCallingWithParameter01</ToNode>
       <ToConnector>p_Requirement</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetTaskChatHistoryNode01</FromNode>
-      <FromConnector>ChatHistory</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
     </Item>
     <Item>
       <FromNode>###InputValue01</FromNode>

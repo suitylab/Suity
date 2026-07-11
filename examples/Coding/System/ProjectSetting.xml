@@ -134,6 +134,11 @@
     </ApiKey>
     <BaseUrl>http://127.0.0.1:1234</BaseUrl>
   </Plugin>
+  <Plugin name="MiMoPlugin">
+    <ApiKey>
+    </ApiKey>
+    <BaseUrl>https://api.xiaomimimo.com</BaseUrl>
+  </Plugin>
   <Plugin name="OpenAIPlugin">
     <ApiKey>
     </ApiKey>

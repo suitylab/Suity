@@ -3,6 +3,7 @@
   <Object id="aedb5425-5102-4bba-ab72-1b4e095b2749" name="Workflows/_Common/CreateWorkSpace.md" />
   <Object id="c672b445-b91e-42d3-b5b4-df381e185e74" name="Workflows/_Common/EditCodeExpand.md" />
   <Object id="1debf615-6ae3-4e12-877e-5b4390bc9472" name="Workflows/_Common/FixIssue.md" />
+  <Object id="f2cd9a07-4341-45ee-8eee-397cc3ce5c46" name="Workflows/_Common/Investigator.md" />
   <Object id="60e07ca4-90a6-4826-bb70-9a256e2db395" name="Workflows/_Common/QueryTaskHistory.md" />
   <Object id="cb17b70d-9398-4352-8684-c6d0c0bf7c7d" name="Workflows/_Common/SkillRouter.md" />
   <Object id="d51ed5f3-d18e-48cf-a5fc-1f375fdc3fca" name="Workflows/_Common/SkillRunner.md" />
@@ -17,6 +18,7 @@
   <Object id="1ad683a7-645c-4cce-aab0-572ed063d035" name="Workflows/Document/DocumentWriter.md" />
   <Object id="de5274f6-fea7-42e6-a538-908ca3663e47" name="Workflows/Document/IntegrationContract.md" />
   <Object id="d0b09fe8-faad-441a-b73a-bcd4561cc79b" name="Workflows/Document/RequirementDocument.md" />
+  <Object id="fa408224-998e-4da9-9a44-522936b29f1f" name="Workflows/Document/SymbolSpec.md" />
   <Object id="4d695227-dc34-427b-aa69-7f84aa473f73" name="Workflows/Game/C01_FoundationArchitect.md" />
   <Object id="97c2c807-b8e5-410a-be2f-8e6e340beab9" name="Workflows/Game/C02_DataDrivenArchitect.md" />
   <Object id="22087384-8e84-48f4-a5ea-078bd1b69415" name="Workflows/Game/C03_ManagementEngineer.md" />
