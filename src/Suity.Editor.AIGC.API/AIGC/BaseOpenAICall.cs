@@ -4,6 +4,7 @@ using OpenAI_API.ChatFunctions;
 using OpenAI_API.Models;
 using Suity.Editor.AIGC.API;
 using Suity.Views;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -283,6 +284,10 @@ public abstract class BaseOpenAICall : BaseLLmCall
             }
 
             ProcessManualFunctionCall(request.MostRecentApiResult);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
         }
         finally
         {

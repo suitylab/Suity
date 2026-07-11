@@ -355,7 +355,7 @@ public class CallLLm : AigcFlowNode
 
         if (_combineMessages.Value)
         {
-            msgs = [LLmMessage.Combine(msgs, LLmMessageRole.Assistant, null, null)];
+            msgs = [LLmMessage.Combine(msgs, LLmMessageRole.User, null, null)];
         }
 
         int retryCount = _retry.Value;
