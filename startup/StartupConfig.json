@@ -11,28 +11,10 @@
         },
         {
             "Id": "TypeScriptH5_MultiAgent",
-            "Name": "TypeScript HTML5 (Multi-Agent)",
+            "Name": "Coding",
             "TemplateUsage": "Example",
-            "Description": "A example project for TypeScript and HTML5 coding and development multi-agent workflow",
-            "DownloadUrl": "https://storage.suitylab.com/SuityAgentic/Templates/TypeScriptH5.MultiAgent-1.4.suitypackage",
-            "CustomImageFileName": "",
-            "InitialOpenDocument": ""
-        },
-        {
-            "Id": "TypeScriptH5",
-            "Name": "TypeScript HTML5",
-            "TemplateUsage": "Example",
-            "Description": "A example project for TypeScript and HTML5 coding and development workflows",
-            "DownloadUrl": "https://storage.suitylab.com/SuityAgentic/Templates/TypeScriptH5-1.11.suitypackage",
-            "CustomImageFileName": "",
-            "InitialOpenDocument": ""
-        },
-        {
-            "Id": "Novel",
-            "Name": "Novel",
-            "TemplateUsage": "Example",
-            "Description": "A example project for Novel writing workflows",
-            "DownloadUrl": "https://storage.suitylab.com/SuityAgentic/Templates/Novel-1.6.suitypackage",
+            "Description": "An example project for coding and development multi-agent workflow",
+            "DownloadUrl": "https://storage.suitylab.com/SuityAgentic/Templates/Coding-1.0.suitypackage",
             "CustomImageFileName": "",
             "InitialOpenDocument": ""
         }
