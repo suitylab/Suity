@@ -21,6 +21,12 @@ Focus on:
 # PROGRAMMING FRAMEWORK SPECIFICATION
 {{FRAMEWORK}}
 
+# REASONING
+Think before code, planning of the coding content within one paragraph, then output with following format:
+<reasoning>
+...
+</reasoning>
+
 # CODING
 Output multiple code file based on the File Specification, and within `<code>` tags, as follows:
 <code path='file path 1'>

@@ -15,7 +15,7 @@
 - **No Issue Found**: If user request is empty or user reports that no issue found, then end the loop.
 
 ### Phase 2. Deep Dive & Investigate
-- **Read**: Use `GetWorkspaceTree`, `ListDirectory`, `ReadFile`, `BatachReadFiles`, `SearchFiles`, `RunShellCommand` tools to examine the identified files. 
+- **Read**: Use `GetWorkspaceTree`, `ListDirectory`, `BatachReadFiles`, `ReadFile`, `SearchFiles`, `RunShellCommand` tools to examine the identified files. Try to read multiple files at a time.
 - **Iterate**: Repeatly run loop in Phase 2 until all the issues are identified.
 
 ### Phase 3. Synthesis & Reporting

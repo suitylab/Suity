@@ -56,7 +56,6 @@ action planning of current task.
 { "param": "value and 'quoted' value" }
 </tool_action>
 - Ensure JSON format in <tool_action> tag.
-**NewLine and double quote(") is NOT allowed in the json string value**
 
 2. Continuation:
 <next></next>

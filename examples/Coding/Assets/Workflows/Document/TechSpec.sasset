@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="SubFlowPreset">
-  <AssetId>ab4f9048-ae55-4d94-a2e3-25f6ff6e912f</AssetId>
+  <AssetId>bbb99460-65a3-4985-8819-5186a6af1dc6</AssetId>
   <PresetName>
   </PresetName>
   <BaseWorkflow>
@@ -8,14 +8,14 @@
   </BaseWorkflow>
   <Tools />
   <Overview>
-    <Text>Creating Symbol-Spec document.</Text>
+    <Text>Creating Tech-Spec document.</Text>
   </Overview>
   <UserInputHint>
     <Text>
     </Text>
   </UserInputHint>
   <Skill>
-    <Id>fa408224-998e-4da9-9a44-522936b29f1f</Id>
+    <Id>a4a9331a-7fcf-4492-b73f-29df4410fe5b</Id>
   </Skill>
   <Rule />
   <Description>
