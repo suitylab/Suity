@@ -46,6 +46,8 @@ You are working in a workspace, The current directory is workspace root director
 action done of current task.
 [Plan]
 action planning of current task.
+[Action]
+current active action (output tool selection).
 </plan>
 (Output task title in 'title' attribute)
 

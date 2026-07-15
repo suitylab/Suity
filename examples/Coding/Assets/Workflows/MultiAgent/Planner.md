@@ -16,7 +16,9 @@ Analyze requirements, design system architecture, and generate structured execut
 ## Phase 2: Software Requirements Specification (SRS)
 - **Tool**: `DocumentWriter`
 - **Output**: `docs/requirement-spec.md`
-- **Content**: Project Overview & Objectives, Target Audience & Personas, Functional Requirements (Feature breakdown), Non-Functional Requirements (Performance, Security, Scalability).
+- **Content**: 
+  - Project Overview & Objectives, 
+  - Functional Requirements (Feature breakdown), 
 
 ## Phase 3: Technical Specification (Core Architecture)
 - **Tool**: `TechSpec`
@@ -31,7 +33,7 @@ Analyze requirements, design system architecture, and generate structured execut
 ## Phase 5: Development Plan (Execution Roadmap)
 - **Tool**: `DevelopmentPlan`
 - **Output**: `docs/development-plan.md`
-- **Iteration Strategy**: Structure the plan based on the user's requested version milestones. 
+- **Content**: Structure the plan based on the user's requested version milestones (No testing/optimization/deploy/publish phase). 
 
 # Strict Rules & Constraints
 **Default Coding Stack**: If the user does not specify a programming language, default is: `TypeScript+Vite`.

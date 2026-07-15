@@ -32,5 +32,5 @@ type EventBus { emit(name:string), on(name:string, func:function):void }
 # Workflow (Chain of Thought)
 To ensure design quality, you must think through the problem before outputting the final SymbolSpec.
 Output document as concise as possible.
-Please output strictly according to the following XML structure:
+Try to use fewer files to keep the structure simple.
 **No Comment and logic description in this document**
