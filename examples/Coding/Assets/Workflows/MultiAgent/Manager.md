@@ -19,12 +19,12 @@ Analyze user request, Delegate to `Planner` with 1 loop to generate `design_doc.
 **Core Rules**:
 - **Reading**：Read the plan from the `development-plan`.
 - **Reasoning**: Create loops based on the development plan.
-- **Loop Progression**: Delegate all the phases in development plan into multiple loops.
+- **Loop Progression**: Delegate phases in development plan into loop one by one.
   - Never group/combine multiple phases into one loop.
   - Max 30 files/loop, split the loop if reach maximum file count.
   - Create one loop in one delegation (loop batching is NOT supported).
   - Pass detailed task plan & goal to the sub-agent.
-- **Sequential Execution**: Wait for `Coder` loop to finish before starting the next.
+- **Sequential Execution**: Wait for `Coder` loop to finish before starting the next loop.
 - **Target Dir**: `src/`. Build from scratch (NO external init tools). NO isolated unit tests.
 - Call `Coder` to delegate coding tasks.
 

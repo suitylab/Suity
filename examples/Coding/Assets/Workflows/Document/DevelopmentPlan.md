@@ -5,7 +5,7 @@ Act as an expert Software Development Planner.
 Generate a clear Development Plan (development-plan) document for a software system.  
 
 # Planning Priciples:
-Scaffold -> Underlying architecture/framework -> Logical flow/loop -> Content pipeline -> Visual layer -> Integration
+Scaffold -> Underlying architecture/framework -> Logical flow/loop -> Content pipeline -> Visual layer -> Integration -> Finetune
 
 # Output format:
 
