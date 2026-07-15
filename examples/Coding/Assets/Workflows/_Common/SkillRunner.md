@@ -41,7 +41,7 @@ You are working in a workspace, The current directory is workspace root director
 ...
 </reasoning>
 
-<plan title='task title'>
+<plan title='title of current single action'>
 [Done]
 action done of current task.
 [Plan]

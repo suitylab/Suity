@@ -344,6 +344,35 @@
       <Name>###GetCurrentPresetSkill01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentPresetSkill" />
     </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="300" Y="-230" Width="119" Height="56">
+      <Name>###ExtractXmlsTag01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
+        <TagNames>
+          <Item>reasoning</Item>
+        </TagNames>
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="460" Y="-190" Width="28" Height="17">
+      <Name>###GetXmlTagContent01</Name>
+      <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
+    </Item>
+    <Item type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputItem" X="620" Y="170" Width="53" Height="17">
+      <Name>Reasoning</Name>
+      <Node type="Suity.Editor.Flows.SubFlows.SubFlowParameterOutputNode">
+        <Name>Reasoning</Name>
+        <Icon />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <ValueType type="Suity.Editor.Types.TypeDesignSelection">
+          <Id>6d9a5040-b6d7-4daa-b06f-6f2f27f02012</Id>
+        </ValueType>
+        <Value type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
+          <Value type="Suity.Views.TextBlock">
+            <Text>
+            </Text>
+          </Value>
+        </Value>
+      </Node>
+    </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
   <Links>
@@ -400,12 +429,6 @@
       <FromConnector>ContentOut</FromConnector>
       <ToNode>###WriteWorkSpaceFile01</ToNode>
       <ToConnector>Content</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CallLLm01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###ExtractXmlsTagAction01</ToNode>
-      <ToConnector>In</ToConnector>
     </Item>
     <Item>
       <FromNode>###CallLLm01</FromNode>
@@ -580,6 +603,36 @@
       <FromConnector>Skill</FromConnector>
       <ToNode>###BuildPrompts01</ToNode>
       <ToConnector>k_GUIDING</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Result</FromConnector>
+      <ToNode>###ExtractXmlsTag01</ToNode>
+      <ToConnector>DataIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###CallLLm01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ExtractXmlsTag01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTag01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ExtractXmlsTagAction01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ExtractXmlsTag01</FromNode>
+      <FromConnector>Tag-reasoning</FromConnector>
+      <ToNode>###GetXmlTagContent01</ToNode>
+      <ToConnector>TagIn</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagContent01</FromNode>
+      <FromConnector>ContentOut</FromConnector>
+      <ToNode>Reasoning</ToNode>
+      <ToConnector>In</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

@@ -24,7 +24,14 @@ Critical Goal: The generated documents must be directly usable by development te
 {{GUIDING}}
 </guide>
 
-# DOCUMENTATION
+# OUTPUT
+## REASONING
+Think before write, deep planning of the document content, then output with following format:
+<reasoning>
+...
+</reasoning>
+
+## DOCUMENTATION
 Output multiple Markdown files based on the File Specification, and within `<doc>` tags, as follows:
 <doc path='file path 1.md'>
 ...

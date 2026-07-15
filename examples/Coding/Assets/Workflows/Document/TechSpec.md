@@ -24,6 +24,9 @@ Generate a clear Technical Specification (tech-spec) document for a software sys
 5. **Dependency Management Plan:**
    List all required external dependencies, exact versions, and required updates to `package.json`.
 
+# Reasoning
+Think before write, deep planning of the document content, then output with following format:
+
 # Adhere strictly to the following guidelines:  
 - **No language specific coding**: Use pseudo code for syntax-specific implementations.  
 - **No Planning**: No development planning specification.
