@@ -211,7 +211,7 @@ public class ExtractXmlsTagAction : AigcXmlNode
         _textIn = this.AddDataInputConnector("DataIn", "string", "Text Input");
 
         var tagNames = _tagNames.List
-            .Where(s => NamingVerifier.VerifyXmlTagName(s))
+            .Where(NamingVerifier.VerifyXmlTagName)
             .Distinct()
             .ToArray();
 
