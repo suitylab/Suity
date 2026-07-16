@@ -37,3 +37,4 @@ Scaffold -> Underlying architecture/framework -> Logical flow/loop -> Content pi
 **Keep the document as concise as possible.**
 **No Testing/Optimization Phase**: Never create testing/optimization phase here.
 **No Deployment/Publication Phase**: Never create deployment/publication phase here.
+**No Placeholder**: Generate step by step, do NOT generate placeholders prematurely
