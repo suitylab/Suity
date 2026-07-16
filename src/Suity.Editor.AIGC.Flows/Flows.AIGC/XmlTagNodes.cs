@@ -76,7 +76,7 @@ public class ExtractXmlsTag : AigcXmlNode
 
         _out = this.AddActionOutputConnector("Out", "Output");
 
-        var tagNames = _tagNames.List
+        var tagNames = _tagNames.List.ToArray()
             .Where(NamingVerifier.VerifyXmlTagName)
             .Distinct()
             .ToArray();
@@ -98,8 +98,8 @@ public class ExtractXmlsTag : AigcXmlNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var tagNames = _tagNames.List
-            .Where(s => NamingVerifier.VerifyXmlTagName(s))
+        var tagNames = _tagNames.List.ToArray()
+            .Where(NamingVerifier.VerifyXmlTagName)
             .Distinct()
             .ToArray();
 
@@ -210,7 +210,7 @@ public class ExtractXmlsTagAction : AigcXmlNode
         _in = this.AddActionInputConnector("In", "Input");
         _textIn = this.AddDataInputConnector("DataIn", "string", "Text Input");
 
-        var tagNames = _tagNames.List
+        var tagNames = _tagNames.List.ToArray()
             .Where(NamingVerifier.VerifyXmlTagName)
             .Distinct()
             .ToArray();
@@ -232,7 +232,7 @@ public class ExtractXmlsTagAction : AigcXmlNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        var tagNames = _tagNames.List
+        var tagNames = _tagNames.List.ToArray()
             .Where(NamingVerifier.VerifyXmlTagName)
             .Distinct()
             .ToArray();
@@ -337,7 +337,7 @@ public class GetXmlTagAttributes : AigcXmlNode
 
         _tagIn = this.AddDataInputConnector("TagIn", tagType, "Tag Input");
 
-        var attrNames = _attributeNames.List
+        var attrNames = _attributeNames.List.ToArray()
             .Where(s => NamingVerifier.VerifyXmlAttributeName(s))
             .Distinct()
             .ToArray();
@@ -353,7 +353,7 @@ public class GetXmlTagAttributes : AigcXmlNode
     {
         var tag = compute.GetValue<LooseXmlTag>(_tagIn);
 
-        var attrNames = _attributeNames.List
+        var attrNames = _attributeNames.List.ToArray()
             .Where(s => NamingVerifier.VerifyXmlAttributeName(s))
             .Distinct()
             .ToArray();
@@ -434,7 +434,7 @@ public class SetXmlTagAttributes : AigcXmlNode
         var tagType = TypeDefinition.FromNative<LooseXmlTag>();
         _tagIn = this.AddDataInputConnector("TagIn", tagType, "Tag Input");
 
-        var attrNames = _attributeNames.List
+        var attrNames = _attributeNames.List.ToArray()
             .Where(s => NamingVerifier.VerifyXmlAttributeName(s))
             .Distinct()
             .ToArray();
@@ -459,7 +459,7 @@ public class SetXmlTagAttributes : AigcXmlNode
             return;
         }
 
-        var attrNames = _attributeNames.List
+        var attrNames = _attributeNames.List.ToArray()
             .Where(s => NamingVerifier.VerifyXmlAttributeName(s))
             .Distinct()
             .ToArray();

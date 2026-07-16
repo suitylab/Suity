@@ -231,7 +231,7 @@ public class BuildPrompt : AigcFlowNode
     /// <returns>An array of trimmed, non-empty, distinct keyword strings.</returns>
     public string[] GetKeywords()
     {
-        return _keywords.List
+        return _keywords.List.ToArray()
             .Select(s => s?.Trim())
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .Distinct()
@@ -379,7 +379,7 @@ public class ReplaceMultiplePrompts : AigcFlowNode
     /// <returns>An array of trimmed, non-empty, distinct keyword strings.</returns>
     public string[] GetKeywords()
     {
-        return _keywords.List
+        return _keywords.List.ToArray()
             .Select(s => s?.Trim())
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .Distinct()

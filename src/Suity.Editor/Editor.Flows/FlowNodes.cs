@@ -423,7 +423,7 @@ public abstract class JsonFlowNode : FlowNode
     /// <summary>
     /// JSON data type identifier.
     /// </summary>
-    public const string JsonData = "<JsonData>";
+    public static TypeDefinition JsonData = NativeTypes.ObjectType;
 
     /// <summary>
     /// Gets the icon for the node.
@@ -433,11 +433,11 @@ public abstract class JsonFlowNode : FlowNode
     /// <summary>
     /// Converts a JsonContentTypes to a data type string.
     /// </summary>
-    public static string GetJsonDataType(JsonContentTypes contentType) => contentType switch
+    public static TypeDefinition GetJsonDataType(JsonContentTypes contentType) => contentType switch
     {
-        JsonContentTypes.String => "string",
-        JsonContentTypes.Numeric => "float",
-        JsonContentTypes.Boolean => "bool",
+        JsonContentTypes.String => NativeTypes.StringType,
+        JsonContentTypes.Numeric => NativeTypes.SingleType,
+        JsonContentTypes.Boolean => NativeTypes.BooleanType,
         _ => JsonData,
     };
 }

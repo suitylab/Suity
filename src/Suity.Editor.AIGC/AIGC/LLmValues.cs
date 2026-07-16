@@ -205,7 +205,7 @@ public class TextToLLmMessageConverter : TextToTypeConverter<LLmMessage>
 public class LLmModelParameter : IViewObject
 {
     private readonly ValueProperty<int> _maxTokens
-        = new(nameof(MaxTokens), "Max tokens", 65536, "TOOLTIPS_MAXTOKEN");
+        = new(nameof(MaxTokens), "Max tokens", 100000, "TOOLTIPS_MAXTOKEN");
 
     private readonly ValueProperty<double> _temperature
         = new(nameof(Temperature), "Temperature", 0.5, "TOOLTIPS_TEMPERATURE");

@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace Suity.Editor.Flows.Nodes;
 
-/// <summary>
+/*/// <summary>
 /// Represents a custom graph data type for JSON content in flow-based visual scripting.
 /// Configures the visual appearance of JSON data connections with a cyan color scheme.
 /// </summary>
@@ -39,7 +39,7 @@ internal class JsonDataType : CustomGraphDataType
     {
         return "Json Content";
     }
-}
+}*/
 
 #region ExtractJson
 
@@ -49,6 +49,7 @@ internal class JsonDataType : CustomGraphDataType
 /// </summary>
 [DisplayText("Extract Json Content", "*CoreIcon|Json")]
 [ToolTipsText("Try to extract Json object from text. Supports full Json text and the first code block in Markdown text.")]
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 public class ExtractJson : JsonFlowNode
 {
     private readonly FlowNodeConnector _textInput;
@@ -140,6 +141,7 @@ public class ExtractJson : JsonFlowNode
 /// </summary>
 [DisplayText("Convert Json Content", "*CoreIcon|Json")]
 [ToolTipsText("Try to convert Json object to specific type values or objects.")]
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 public class JsonConvert : JsonFlowNode
 {
     private FlowNodeConnector _content;
@@ -222,6 +224,7 @@ public class JsonConvert : JsonFlowNode
 /// </summary>
 [DisplayText("Json to Text", "*CoreIcon|Json")]
 [ToolTipsText("Convert a Json object to plain text.")]
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 public class JsonToString : JsonFlowNode
 {
     private FlowNodeConnector _content;
@@ -257,6 +260,7 @@ public class JsonToString : JsonFlowNode
 [DisplayText("Get Json Field", "*CoreIcon|Json")]
 [ToolTipsText("Get field content from a Json object, and retrieve the specified type value by specifying the field type.")]
 [NativeAlias("Suity.Editor.Flows.Nodes.JsonField")]
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 public class GetJsonField : JsonFlowNode
 {
     private FlowNodeConnector _content;
@@ -365,6 +369,7 @@ public class GetJsonField : JsonFlowNode
 /// </summary>
 [DisplayText("Json to SObject", "*CoreIcon|Json")]
 [ToolTipsText("Parse Json object to editor object.")]
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
 public class JsonToSObject : JsonFlowNode
 {
     private FlowNodeConnector _jsonInput;
@@ -453,6 +458,47 @@ public class JsonToSObject : JsonFlowNode
     public override string ToString()
     {
         return $"Json to {_structType.Target?.ToDisplayText()}";
+    }
+}
+
+#endregion
+
+#region ExtractJson
+
+/// <summary>
+/// A flow node that fix invalid JSON escape sequences in a given text input.
+/// </summary>
+[DisplayText("Fix Invalid Json Escape", "*CoreIcon|Json")]
+[ToolTipsText("Try to fix invalid JSON escape sequences in a given text input.")]
+[SimpleFlowNodeStyle(HasHeader = false, Width = 100, Height = 20)]
+public class FixInvalidJsonEscape : JsonFlowNode
+{
+    private readonly FlowNodeConnector _input;
+    private readonly FlowNodeConnector _fix;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ExtractJson"/> class,
+    /// adding a text input connector and a JSON data output connector.
+    /// </summary>
+    public FixInvalidJsonEscape()
+    {
+        _input = AddDataInputConnector("Input", "string", "Input");
+        _fix = AddDataOutputConnector("Fix", "string", "Fix");
+    }
+
+    /// <inheritdoc/>
+    public override void Compute(IFlowComputation compute)
+    {
+        string s = (compute.GetValue(_input) as string)?.Trim();
+        if (string.IsNullOrWhiteSpace(s))
+        {
+            compute.SetValue(_fix, null);
+            return;
+        }
+
+        string fix = JsonSyntaxFixer.FixInvalidEscapes(s);
+
+        compute.SetValue(_fix, fix);
     }
 }
 
