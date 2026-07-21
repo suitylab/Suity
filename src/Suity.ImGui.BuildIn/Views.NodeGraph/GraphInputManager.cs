@@ -790,5 +790,7 @@ public class GraphInputManager
         Diagram.SelectionBringToFront();
 
         SelectionChanged?.Invoke(this, new GraphSelectionEventArgs(numNodes, numLinks));
+
+        _control.RefreshView();
     }
 }

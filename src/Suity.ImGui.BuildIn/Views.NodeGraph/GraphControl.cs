@@ -324,7 +324,7 @@ public class GraphControl : IGraphicObject
     /// <param name="refreshAll">True to force a full refresh; otherwise, false.</param>
     public void RefreshView(bool refreshAll = false)
     {
-        if (InputManager.EditMode != GraphEditMode.Idle) return;
+        //if (InputManager.EditMode != GraphEditMode.Idle) return;
         OnRefreshView(refreshAll);
     }
 
@@ -334,7 +334,7 @@ public class GraphControl : IGraphicObject
     /// <param name="node">The node to refresh.</param>
     public void RefreshNode(GraphNode node)
     {
-        if (InputManager.EditMode != GraphEditMode.Idle) return;
+        //if (InputManager.EditMode != GraphEditMode.Idle) return;
         OnRefreshNode([node]);
     }
 
@@ -344,7 +344,7 @@ public class GraphControl : IGraphicObject
     /// <param name="nodes">The nodes to refresh.</param>
     public void RefreshNode(IEnumerable<GraphNode> nodes)
     {
-        if (InputManager.EditMode != GraphEditMode.Idle) return;
+        //if (InputManager.EditMode != GraphEditMode.Idle) return;
         OnRefreshNode(nodes);
     }
 

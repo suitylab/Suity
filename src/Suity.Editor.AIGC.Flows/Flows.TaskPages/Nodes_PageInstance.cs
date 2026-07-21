@@ -916,7 +916,9 @@ public class CreatePageInstanceWithParameter : TaskPageNode
         List<CreatePageParameter> list = [];
         HashSet<string> visited = [];
 
-        foreach (var item in _parameters.List.SkipNull())
+        var parameters = _parameters.List.ToArray();
+
+        foreach (var item in parameters.SkipNull())
         {
             string name = item.Name?.Trim() ?? string.Empty;
             if (!visited.Add(name))
