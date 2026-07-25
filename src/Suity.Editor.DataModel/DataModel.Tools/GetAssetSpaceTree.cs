@@ -1,3 +1,4 @@
+﻿using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
@@ -10,13 +11,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.AIGC.Tools;
+namespace Suity.Editor.DataModel.Tools;
 
-[NativeType("GetWorkspaceTree", CodeBase = "*Suity", Category = "WorkSpace Tools")]
-[DisplayText("Get Workspace Tree")]
-[ToolTipsText("Get project folder/file structure tree. Helps Agent quickly establish a global perspective of routing.")]
-[NativeAlias("Suity.Editor.AIGC.GetWorkspaceTree")]
-public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
+[NativeType("GetAssetSpaceTree", CodeBase = "*Suity", Category = "Asset Tools")]
+[DisplayText("Get Asset Space Tree")]
+[ToolTipsText("Get asset folder/file structure tree. Helps Agent quickly establish a global perspective of routing.")]
+public class GetAssetSpaceTree : ToolCommand<GetAssetSpaceTree.Output>
 {
     public class Output : SObjectController
     {
@@ -38,10 +38,10 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
             _tree.InspectorField(setup);
         }
 
-        public override string ToString() => $"Workspace tree: {Tree?.Split('\n').Length ?? 0} entries";
+        public override string ToString() => $"Asset space tree: {Tree?.Split('\n').Length ?? 0} entries";
     }
 
-    readonly StringProperty _path = new("Path", "Path", string.Empty, "The relative path to the directory to scan. If empty, the workspace directory is used.");
+    readonly StringProperty _path = new("Path", "Path", string.Empty, "The relative path to the directory to scan. If empty, the asset directory is used.");
     readonly ValueProperty<int> _maxDepth = new("MaxDepth", "Max Depth", 0, "The maximum depth to scan. 0 means unlimited.");
     readonly StringProperty _ignorePatterns = new("IgnorePatterns", "Ignore Patterns", string.Empty, "Comma or semicolon separated list of patterns to ignore.");
 
@@ -65,18 +65,18 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
 
     public override Task<Output> Run(ToolCallContext context)
     {
-        string workspaceDir = context.RootDirectory;
-        if (string.IsNullOrWhiteSpace(workspaceDir))
+        string assetSpaceDir = Project.Current.AssetDirectory;
+        if (string.IsNullOrWhiteSpace(assetSpaceDir))
         {
-            throw new NullReferenceException("Workspace directory is not set");
+            throw new NullReferenceException("Asset directory is not set");
         }
 
         string relativePath = string.IsNullOrWhiteSpace(Path) ? "" : Path.TrimStart('/', '\\');
-        string fullPath = string.IsNullOrWhiteSpace(relativePath) ? workspaceDir : relativePath;
+        string fullPath = string.IsNullOrWhiteSpace(relativePath) ? assetSpaceDir : relativePath;
 
         if (!string.IsNullOrWhiteSpace(relativePath) && !System.IO.Path.IsPathRooted(relativePath))
         {
-            fullPath = System.IO.Path.Combine(workspaceDir, relativePath);
+            fullPath = System.IO.Path.Combine(assetSpaceDir, relativePath);
         }
 
         if (!Directory.Exists(fullPath))
@@ -96,12 +96,12 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
             }
         }
 
-        string treeDisplay = string.IsNullOrWhiteSpace(relativePath) ? "workspace" : relativePath;
-        context.ToolInstance.Conversation?.AddRunningMessage("Get workspace tree", msg =>
+        string treeDisplay = string.IsNullOrWhiteSpace(relativePath) ? "asset" : relativePath;
+        context.ToolInstance.Conversation?.AddRunningMessage("Get asset space tree", msg =>
         {
             msg.AddCode(treeDisplay);
         });
-        context.Conversation?.AddRunningMessage("Get workspace tree", msg =>
+        context.Conversation?.AddRunningMessage("Get asset space tree", msg =>
         {
             msg.AddCode(treeDisplay);
         });
@@ -157,7 +157,16 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
                 else
                 {
                     var fileInfo = (FileInfo)entry;
-                    lines.Add($"{prefix}{entry.Name} ({TextHelper.GetFileSizeDisplay(fileInfo.Length)})");
+                    var format = DocumentManager.Instance.GetDocumentFormatByPath(fileInfo.FullName);
+
+                    if (format != null)
+                    {
+                        lines.Add($"[{format.FormatName}] {prefix}{entry.Name} ({TextHelper.GetFileSizeDisplay(fileInfo.Length)})");
+                    }
+                    else
+                    {
+                        lines.Add($"{prefix}{entry.Name} ({TextHelper.GetFileSizeDisplay(fileInfo.Length)})");
+                    }
                 }
             }
         }

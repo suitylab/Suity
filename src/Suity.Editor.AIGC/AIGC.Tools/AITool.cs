@@ -1,5 +1,4 @@
 using Suity.Editor.AIGC.Assistants;
-using Suity.Views;
 using System;
 using System.Threading.Tasks;
 
@@ -8,6 +7,7 @@ namespace Suity.Editor.AIGC.Tools;
 /// <summary>
 /// Contains metadata information about an AI tool, including its type, parameter type, and display information.
 /// </summary>
+[Obsolete]
 public sealed record AIToolInfo
 {
     /// <summary>
@@ -39,6 +39,7 @@ public sealed record AIToolInfo
 /// <summary>
 /// Abstract base class for all AI tools that can be invoked with object parameters.
 /// </summary>
+[Obsolete]
 public abstract class AITool
 {
     /// <summary>
@@ -55,6 +56,7 @@ public abstract class AITool
 /// Generic abstract base class for AI tools with a strongly-typed parameter.
 /// </summary>
 /// <typeparam name="T">The type of parameter expected by the tool.</typeparam>
+[Obsolete]
 public abstract class AITool<T> : AITool
 {
     /// <summary>
@@ -91,6 +93,7 @@ public abstract class AITool<T, TTarget> : AITool<T>
 /// Used to mark tool parameters rather than the tool itself, to specify the tool's return type.
 /// </summary>
 [System.AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
+[Obsolete]
 public sealed class ToolReturnTypeAttribute : Attribute
 {
     /// <summary>

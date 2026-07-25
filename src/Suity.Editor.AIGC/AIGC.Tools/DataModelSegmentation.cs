@@ -15,6 +15,10 @@ namespace Suity.Editor.AIGC.Tools;
 /// </summary>
 public class DataModelSegmentation
 {
+    public DataModelSegmentation()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the list of data structures in the segmentation.
     /// </summary>

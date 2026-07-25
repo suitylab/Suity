@@ -1,6 +1,7 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -89,7 +90,7 @@ public class ListDirectory : ToolCommand<ListDirectory.Output>
             .OrderBy(f => f is DirectoryInfo ? 0 : 1)
             .ThenBy(f => f.Name);
 
-        var lines = entries.Select(f => f is DirectoryInfo dir ? $"{dir.Name}/" : $"{f.Name} ({DisplayFormatter.GetFileSizeDisplay(((FileInfo)f).Length)})");
+        var lines = entries.Select(f => f is DirectoryInfo dir ? $"{dir.Name}/" : $"{f.Name} ({TextHelper.GetFileSizeDisplay(((FileInfo)f).Length)})");
 
         return Task.FromResult(new Output
         {
