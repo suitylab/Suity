@@ -16,7 +16,7 @@ public enum DataStructureType
     [Description("represent a struct type")]
     Struct,
 
-    [Description("represent abstract type")]
+    [Description("represent an abstract type")]
     Abstract,
 
     [Description("represent an event type")]

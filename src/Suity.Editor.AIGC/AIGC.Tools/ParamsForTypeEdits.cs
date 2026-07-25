@@ -6,12 +6,12 @@ using System.ComponentModel;
 namespace Suity.Editor.AIGC.Tools;
 
 /// <summary>
-/// Extracts types from an existing document into <see cref="DataModelSpec"/>.
+/// Extracts types from an existing document into <see cref="DataModelSpecification"/>.
 /// </summary>
 /// <summary>
-/// Parameters for extracting types from an existing document into a <see cref="DataModelSpec"/>.
+/// Parameters for extracting types from an existing document into a <see cref="DataModelSpecification"/>.
 /// </summary>
-[ToolReturnType(typeof(DataModelSpec))]
+[ToolReturnType(typeof(DataModelSpecification))]
 public class DataModelSpecFromDocumentParam
 {
     /// <summary>
@@ -62,9 +62,9 @@ public class DataModelTextDocumentParam
 }
 
 /// <summary>
-/// Parameters for extracting types from text content into a <see cref="DataModelSpec"/>.
+/// Parameters for extracting types from text content into a <see cref="DataModelSpecification"/>.
 /// </summary>
-[ToolReturnType(typeof(DataModelSpec))]
+[ToolReturnType(typeof(DataModelSpecification))]
 [Obsolete]
 public class DataModelSpecCreateParam
 {
@@ -75,9 +75,9 @@ public class DataModelSpecCreateParam
 }
 
 /// <summary>
-/// Parameters for extracting types from an array of guiding items into a <see cref="DataModelSpec"/>.
+/// Parameters for extracting types from an array of guiding items into a <see cref="DataModelSpecification"/>.
 /// </summary>
-[ToolReturnType(typeof(DataModelSpec))]
+[ToolReturnType(typeof(DataModelSpecification))]
 [Obsolete]
 public class DataModelSpecCreateSegParam
 {
@@ -88,9 +88,9 @@ public class DataModelSpecCreateSegParam
 }
 
 /// <summary>
-/// Parameters for extracting a specific type from a <see cref="StructureSegment"/> into a <see cref="DataTypeSpec"/>.
+/// Parameters for extracting a specific type from a <see cref="StructureSegment"/> into a <see cref="StructureSpecification"/>.
 /// </summary>
-[ToolReturnType(typeof(DataTypeSpec))]
+[ToolReturnType(typeof(StructureSpecification))]
 [Obsolete]
 public class DataModelSpecCreateOneParam
 {
@@ -142,7 +142,7 @@ public class GenerativeDataModelSpecParam
     /// Gets or sets the specification document used for data modeling.
     /// </summary>
     [Description("Specification document of the data modeling")]
-    public DataModelSpec Specification { get; set; }
+    public DataModelSpecification Specification { get; set; }
 
     /// <summary>
     /// Gets or sets the category name for this specification. Leave empty if not specified.

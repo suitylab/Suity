@@ -468,11 +468,11 @@ public class StructureSegment
             Brief = dCompond.ToolTips
         };
 
-        List<DataFieldSpec> fields = [];
+        List<FieldSpecification> fields = [];
 
         foreach (var field in dCompond.PublicStructFields)
         {
-            var fieldSpec = DataFieldSpec.FromDStructField(field, fullName);
+            var fieldSpec = FieldSpecification.FromDStructField(field, fullName);
             fields.Add(fieldSpec);
         }
 
@@ -497,11 +497,11 @@ public class StructureSegment
             Brief = dEnum.ToolTips,
         };
 
-        List<DataFieldSpec> fields = [];
+        List<FieldSpecification> fields = [];
 
         foreach (var field in dEnum.EnumFields)
         {
-            var fieldSpec = DataFieldSpec.FromDEnumField(field);
+            var fieldSpec = FieldSpecification.FromDEnumField(field);
             fields.Add(fieldSpec);
         }
 
