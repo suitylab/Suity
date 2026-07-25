@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.DataModel.Tools;
 
-[NativeType("GetAssetSpaceTree", CodeBase = "*Suity", Category = "Asset Tools", Icon = "*CoreIcon|Class")]
+[NativeType("GetAssetSpaceTree", CodeBase = "*Suity", Category = "Asset Tools", Icon = "*CoreIcon|Asset")]
 [DisplayText("Get Asset Space Tree")]
 [ToolTipsText("Get asset folder/file structure tree. Helps Agent quickly establish a global perspective of routing.")]
 public class GetAssetSpaceTree : ToolCommand<GetAssetSpaceTree.Output>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.DataModel.Tools;
 
-[NativeType("DeleteAsset", CodeBase = "*Suity", Category = "Asset Tools", Icon = "*CoreIcon|Class")]
+[NativeType("DeleteAsset", CodeBase = "*Suity", Category = "Asset Tools", Icon = "*CoreIcon|Asset")]
 [DisplayText("Delete Asset")]
 [ToolTipsText("Delete an asset file.")]
 [NativeAlias("Suity.Editor.DataModel.DeleteAsset")]

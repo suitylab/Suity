@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.DataModel.Tools;
 
-[NativeType("RenameAsset", CodeBase = "*Suity", Category = "Asset Tools", Icon = "*CoreIcon|Class")]
+[NativeType("RenameAsset", CodeBase = "*Suity", Category = "Asset Tools", Icon = "*CoreIcon|Asset")]
 [DisplayText("Rename Asset")]
 [ToolTipsText("Rename or move an asset file to a new path.")]
 [NativeAlias("Suity.Editor.DataModel.RenameAsset")]

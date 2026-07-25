@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.DataModel.Tools;
 
-[NativeType("BatchDeleteNamedItems", CodeBase = "*Suity", Category = "Asset Tools", Icon = "*CoreIcon|Class")]
+[NativeType("BatchDeleteNamedItems", CodeBase = "*Suity", Category = "Asset Tools", Icon = "*CoreIcon|Asset")]
 [DisplayText("Batch Delete Named Items")]
 [ToolTipsText("Delete multiple named items from a SNamedDocument by name.")]
 [NativeAlias("Suity.Editor.DataModel.BatchDeleteNamedItems")]
