@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DataModel version="1.0" namespace="com.software.core">
+
+	<!-- 1. 枚举定义 -->
+	<Enum name="UserRole">
+		<Tooltip>定义系统用户的权限角色</Tooltip>
+
+		<Item name="Admin">
+			<Tooltip>拥有系统所有控制权</Tooltip>
+		</Item>
+		<Item name="Editor"/>
+		<Item name="Viewer">
+			<Deprecated reason="将在 v2.0 废弃，请使用 Guest" />
+		</Item>
+	</Enum>
+
+	<!-- 2. 结构体定义 -->
+	<Struct name="UserProfile">
+		<Tooltip>用户的核心档案数据模型</Tooltip>
+
+		<!-- 基础字段 + 字符串长度限制 -->
+		<Field name="username" type="string">
+			<Tooltip>用户登录名，必须唯一</Tooltip>
+			<LengthRange min="4" max="20" />
+			<Pattern regex="^[a-zA-Z0-9_]+$" />
+		</Field>
+
+		<!-- 基础字段 + 数值范围验证 + 可选标记 -->
+		<Field name="age" type="int" default="18">
+			<Optional />
+			<ValueRange min="0" max="120" />
+		</Field>
+
+		<!-- 引用枚举类型 + 默认值 -->
+		<Field name="role" type="UserRole" default="Viewer"/>
+
+		<!-- 数组/列表类型定义 -->
+		<Field name="tags" type="string[]">
+			<Tooltip>用户关联的兴趣标签</Tooltip>
+			<Optional />
+			<LengthRange max="10" />
+			<!-- 限制最多 10 个标签 -->
+		</Field>
+	</Struct>
+
+	<!-- 3. 嵌套结构体引用 -->
+	<Struct name="Organization">
+		<Field name="id" type="string" />
+		<Field name="members" type="UserProfile[]" >
+			<Tooltip>该组织下的所有用户列表</Tooltip>
+		</Field>
+	</Struct>
+
+</DataModel>

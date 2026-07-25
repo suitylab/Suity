@@ -160,13 +160,13 @@ public class TypeSpec
     /// Gets or sets the name of the abstract struct this structure derives from. Leave empty if not derived.
     /// </summary>
     [Description("If the data structure is an derived struct, fill in the name of the abstract struct it derived from, otherwise leave it empty")]
-    public string DerivedFrom { get; set; } = string.Empty;
+    public string BaseType { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets a brief introduction of the data structure.
     /// </summary>
     [Description("The brief introduction of the data structure.")]
-    public string Brief { get; set; } = string.Empty;
+    public string Tooltip { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the list of fields (items) in the data structure.
@@ -202,9 +202,9 @@ public class TypeSpec
     public string ToBriefInfo(bool withType = true)
     {
         string usage = Usage != DataUsageMode.None ? $"[{Usage}] " : "";
-        string derived = !string.IsNullOrWhiteSpace(DerivedFrom) ? $" : derived from {DerivedFrom}" : "";
+        string derived = !string.IsNullOrWhiteSpace(BaseType) ? $" : derived from {BaseType}" : "";
 
-        string brief = !string.IsNullOrWhiteSpace(Brief) ? $" - {Brief}" : "";
+        string brief = !string.IsNullOrWhiteSpace(Tooltip) ? $" - {Tooltip}" : "";
 
         if (withType)
         {
@@ -242,7 +242,7 @@ public class TypeSpec
             name = $"{nameSpace}.{name}";
         }
 
-        string derived = !string.IsNullOrWhiteSpace(DerivedFrom) ? $" base='{DerivedFrom}'" : "";
+        string derived = !string.IsNullOrWhiteSpace(BaseType) ? $" base='{BaseType}'" : "";
 
         string usage = Usage != DataUsageMode.None ? $" usage='{Usage}'" : "";
         string driven = DrivenMode != DataDrivenMode.None ? $" driven='{DrivenMode}'" : "";
@@ -250,7 +250,7 @@ public class TypeSpec
         Attributes ??= [];
         string attr = Attributes.Count > 0 ? $" attr='{string.Join(",", Attributes)}'" : "";
 
-        builder.AppendLine($"<type name='{name}' def='{Type}'{derived}{usage}{driven}{attr}>\n{Brief}");
+        builder.AppendLine($"<type name='{name}' def='{Type}'{derived}{usage}{driven}{attr}>\n{Tooltip}");
 
         if (Type == DataStructureType.Enum)
         {
@@ -292,7 +292,7 @@ public class TypeSpec
         return new GenerativeGuidingItem
         {
             Name = Name,
-            Brief = Brief,
+            Brief = Tooltip,
             HtmlColor = string.Empty,
             Prompt = ToFullText()
         };
@@ -312,9 +312,9 @@ public class TypeSpec
         };
 
         builder.Append($"{typeName} : {Name}");
-        if (!string.IsNullOrWhiteSpace(Brief))
+        if (!string.IsNullOrWhiteSpace(Tooltip))
         {
-            builder.Append($" # {Brief}");
+            builder.Append($" # {Tooltip}");
         }
         builder.AppendLine();
 
@@ -334,9 +334,9 @@ public class TypeSpec
         else
         {
             builder.AppendLine("  isAbstract: " + (Type == DataStructureType.Abstract).ToString().ToLower());
-            if (!string.IsNullOrWhiteSpace(DerivedFrom))
+            if (!string.IsNullOrWhiteSpace(BaseType))
             {
-                builder.AppendLine("  derivedFrom: " + DerivedFrom);
+                builder.AppendLine("  derivedFrom: " + BaseType);
             }
             if (Usage != DataUsageMode.None)
             {
@@ -395,8 +395,8 @@ public class TypeSpec
             Type = dCompond is DAbstract ? DataStructureType.Abstract : DataStructureType.Struct,
             Usage = usage,
             DrivenMode = drivenMode,
-            DerivedFrom = fullName ? dCompond.BaseType?.FullTypeName : dCompond.BaseType?.Name,
-            Brief = dCompond.ToolTips
+            BaseType = fullName ? dCompond.BaseType?.FullTypeName : dCompond.BaseType?.Name,
+            Tooltip = dCompond.ToolTips
         };
 
         foreach (var field in dCompond.PublicStructFields)
@@ -426,7 +426,7 @@ public class TypeSpec
             Type = DataStructureType.Enum,
             Usage = DataUsageMode.None,
             DrivenMode = DataDrivenMode.None,
-            Brief = dEnum.ToolTips,
+            Tooltip = dEnum.ToolTips,
         };
 
         foreach (var field in dEnum.EnumFields)
@@ -473,13 +473,19 @@ public class FieldSpec
     /// Gets or sets the description of the field.
     /// </summary>
     [Description("the description of the field")]
-    public string Description { get; set; } = string.Empty;
+    public string Tooltip { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the type of the field, without any symbols (e.g., no angle brackets or array notation).
     /// </summary>
     [Description("The type of the field, without any symbols.")]
     public string FieldType { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the default value of the field.
+    /// </summary>
+    [Description("The default value of the field.")]
+    public string DefaultValue { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets a value indicating whether the field is an array.
@@ -532,9 +538,9 @@ public class FieldSpec
     public string ToFullText()
     {
         string s = ToBriefInfo();
-        if (!string.IsNullOrWhiteSpace(Description))
+        if (!string.IsNullOrWhiteSpace(Tooltip))
         {
-            s += $" # {Description}";
+            s += $" # {Tooltip}";
         }
 
         return s;
@@ -547,9 +553,9 @@ public class FieldSpec
     public void BuildFullText(StringBuilder builder)
     {
         builder.Append(ToBriefInfo());
-        if (!string.IsNullOrWhiteSpace(Description))
+        if (!string.IsNullOrWhiteSpace(Tooltip))
         {
-            builder.Append($" # {Description}");
+            builder.Append($" # {Tooltip}");
         }
     }
 
@@ -567,19 +573,19 @@ public class FieldSpec
         var spec = new FieldSpec
         {
             Name = field.Name,
-            Description = field.ToolTips,
+            Tooltip = field.ToolTips,
             FieldType = fullName ? fieldType.OriginType.GetFullTypeName() : fieldType.OriginType.GetShortTypeName(),
             IsArray = fieldType.IsArray,
         };
 
         if (field.Optional)
         {
-            spec.Attributes.Add(new AttributeSpec("Nullable"));
+            spec.Attributes.Add(new AttributeSpec("Optional"));
         }
 
         if (field.GetAttribute<NumericRangeAttribute>() is { } range)
         {
-            spec.Attributes.Add(new AttributeSpec("NumericRange", new("min", range.Min.ToString()), new("max", range.Max.ToString())));
+            spec.Attributes.Add(new AttributeSpec("ValueRange", new("min", range.Min.ToString()), new("max", range.Max.ToString())));
         }
 
         return spec;
@@ -595,7 +601,7 @@ public class FieldSpec
         var spec = new FieldSpec
         {
             Name = field.Name,
-            Description = field.ToolTips,
+            Tooltip = field.ToolTips,
         };
 
         return spec;
