@@ -2,7 +2,6 @@
 using Suity.Editor.Documents;
 using Suity.Helpers;
 using System;
-using System.Drawing;
 
 namespace Suity.Editor;
 

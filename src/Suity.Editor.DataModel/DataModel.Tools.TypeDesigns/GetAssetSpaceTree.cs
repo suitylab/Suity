@@ -11,7 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.DataModel.Tools;
+namespace Suity.Editor.DataModel.TypeDesigns.Tools;
 
 [NativeType("GetAssetSpaceTree", CodeBase = "*Suity", Category = "Asset Tools")]
 [DisplayText("Get Asset Space Tree")]

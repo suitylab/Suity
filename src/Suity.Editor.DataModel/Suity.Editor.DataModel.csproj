@@ -20,10 +20,16 @@
 		<ProjectReference Include="..\Suity.Editor.AIGC\Suity.Editor.AIGC.csproj" />
 		<ProjectReference Include="..\Suity.Editor.Flows\Suity.Editor.Flows.csproj" />
 		<ProjectReference Include="..\Suity.Editor.ImGui\Suity.Editor.ImGui.csproj" />
+		<ProjectReference Include="..\Suity.Editor.Documents\Suity.Editor.Documents.csproj" />
 		<ProjectReference Include="..\Suity.Editor.Internal\Suity.Editor.Internal.csproj" />
 		<ProjectReference Include="..\Suity.Editor\Suity.Editor.csproj" />
 		<ProjectReference Include="..\Suity.ImGui\Suity.ImGui.csproj" />
 		<ProjectReference Include="..\Suity\Suity.csproj" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="DataModel.Tools\" />
 	</ItemGroup>
 
 
