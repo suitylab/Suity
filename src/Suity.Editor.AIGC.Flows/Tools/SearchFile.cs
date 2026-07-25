@@ -101,10 +101,10 @@ public class SearchFile : ToolCommand<SearchFile.Output>
             throw new DirectoryNotFoundException($"Directory not found: {relativePath}");
         }
 
-        HashSet<string> extensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var extensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         if (!string.IsNullOrWhiteSpace(FileExtension))
         {
-            var exts = FileExtension.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+            var exts = FileExtension.Split([',', ';'], StringSplitOptions.RemoveEmptyEntries);
             foreach (var ext in exts)
             {
                 string trimmed = ext.Trim();

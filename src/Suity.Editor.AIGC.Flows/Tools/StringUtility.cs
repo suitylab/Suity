@@ -93,24 +93,24 @@ internal static class StringUtility
     }
 
     /// <summary>
-    /// 在源文本中从指定索引开始宽松搜索目标模式，忽略所有空白字符差异。
+    /// Performs a loose search for the target pattern in the source text starting from a specified index, ignoring all whitespace character differences.
     /// </summary>
-    /// <param name="source">源文本</param>
-    /// <param name="pattern">要查找的代码段落（可含任意空白）</param>
-    /// <param name="startIndex">起始搜索索引（包含），默认为 0。负数视为 0，超出长度则返回 NotFound</param>
-    /// <returns>匹配结果（包含索引和长度），未找到则返回 NotFound</returns>
+    /// <param name="source">The source text</param>
+    /// <param name="pattern">The code snippet to find (may contain any whitespace)</param>
+    /// <param name="startIndex">The starting search index (inclusive), default is 0. Negative values are treated as 0, returns NotFound if exceeds length</param>
+    /// <returns>Match result (contains index and length), returns NotFound if not found</returns>
     public static MatchResult FuzzyMatch(this string source, string pattern, int startIndex = 0)
     {
         if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(pattern))
             return MatchResult.NotFound;
 
-        // 规范化 startIndex
+        // Normalize startIndex
         if (startIndex < 0)
             startIndex = 0;
         if (startIndex >= source.Length)
             return MatchResult.NotFound;
 
-        // 将 pattern 按连续空白分割成非空 token，并转义正则特殊字符
+        // Split pattern by consecutive whitespace into non-empty tokens and escape regex special characters
         var tokens = Regex.Split(pattern, @"\s+")
                           .Where(t => !string.IsNullOrEmpty(t))
                           .Select(Regex.Escape)
@@ -119,12 +119,12 @@ internal static class StringUtility
         if (tokens.Length == 0)
             return MatchResult.NotFound;
 
-        // 用 \s+ 连接各 token，\s+ 可匹配任意空白（跨行、跨 \r/\n/\r\n）
+        // Join tokens with \s+, which can match any whitespace (across lines, across \r/\n/\r\n)
         string regexPattern = string.Join(@"\s+", tokens);
 
-        // 从 startIndex 开始匹配
+        // Match starting from startIndex
         var match = Regex.Match(source, regexPattern, RegexOptions.None, TimeSpan.FromSeconds(1));
-        // 如果匹配成功但匹配位置小于 startIndex，则继续查找下一个
+        // If match succeeded but position is less than startIndex, continue to find next match
         while (match.Success && match.Index < startIndex)
         {
             match = match.NextMatch();

@@ -53,11 +53,11 @@ public static class DataModelExtensions
     }
 
     /// <summary>
-    /// Validates all structures within a <see cref="DataModelSpecification"/> and collects any problems.
+    /// Validates all structures within a <see cref="DataModelSpec"/> and collects any problems.
     /// </summary>
     /// <param name="specs">The data model specification to validate.</param>
     /// <param name="problems">The list to append validation problems to.</param>
-    public static void Varify(this DataModelSpecification specs, ref List<string> problems)
+    public static void Varify(this DataModelSpec specs, ref List<string> problems)
     {
         if (specs is null)
         {
@@ -74,11 +74,11 @@ public static class DataModelExtensions
     }
 
     /// <summary>
-    /// Validates a <see cref="StructureSpecification"/> and collects any problems.
+    /// Validates a <see cref="DataTypeSpec"/> and collects any problems.
     /// </summary>
     /// <param name="spec">The structure specification to validate.</param>
     /// <param name="problems">The list to append validation problems to.</param>
-    public static void Varify(this StructureSpecification spec, ref List<string> problems)
+    public static void Varify(this DataTypeSpec spec, ref List<string> problems)
     {
         if (spec is null)
         {
@@ -104,12 +104,12 @@ public static class DataModelExtensions
     }
 
     /// <summary>
-    /// Validates a <see cref="FieldSpecification"/> within its parent structure and collects any problems.
+    /// Validates a <see cref="DataFieldSpec"/> within its parent structure and collects any problems.
     /// </summary>
     /// <param name="field">The field specification to validate.</param>
     /// <param name="spec">The parent structure specification.</param>
     /// <param name="problems">The list to append validation problems to.</param>
-    public static void Varify(this FieldSpecification field, StructureSpecification spec, ref List<string> problems)
+    public static void Varify(this DataFieldSpec field, DataTypeSpec spec, ref List<string> problems)
     {
         if (spec is null)
         {
@@ -177,13 +177,13 @@ public static class DataModelExtensions
     }
 
     /// <summary>
-    /// Fixes a <see cref="DataModelSpecification"/> by comparing it against an original specification and applying corrections.
+    /// Fixes a <see cref="DataModelSpec"/> by comparing it against an original specification and applying corrections.
     /// </summary>
     /// <param name="specs">The data model specification to fix.</param>
     /// <param name="originSpecs">The original specification to compare against.</param>
     /// <param name="fixture">The list to record all applied fixes.</param>
     /// <param name="conversation">Optional conversation handler for reporting warnings.</param>
-    public static void Fix(this DataModelSpecification specs, DataModelSpecification originSpecs, List<string> fixture, IConversationHandler conversation)
+    public static void Fix(this DataModelSpec specs, DataModelSpec originSpecs, List<string> fixture, IConversationHandler conversation)
     {
         if (specs is null)
         {
@@ -200,7 +200,7 @@ public static class DataModelExtensions
             throw new ArgumentNullException(nameof(fixture));
         }
 
-        Dictionary<string, StructureSpecification> specDic = [];
+        Dictionary<string, DataTypeSpec> specDic = [];
         foreach (var seg in originSpecs.Structures)
         {
             if (!specDic.ContainsKey(seg.Name))
@@ -217,13 +217,13 @@ public static class DataModelExtensions
     }
 
     /// <summary>
-    /// Fixes a <see cref="DataModelSpecification"/> by aligning it with a <see cref="DataModelSegmentation"/> and applying corrections.
+    /// Fixes a <see cref="DataModelSpec"/> by aligning it with a <see cref="DataModelSegmentation"/> and applying corrections.
     /// </summary>
     /// <param name="specs">The data model specification to fix.</param>
     /// <param name="segs">The data model segmentation to align with.</param>
     /// <param name="fixture">The list to record all applied fixes.</param>
     /// <param name="conversation">Optional conversation handler for reporting warnings.</param>
-    public static void Fix(this DataModelSpecification specs, DataModelSegmentation segs, List<string> fixture, IConversationHandler conversation)
+    public static void Fix(this DataModelSpec specs, DataModelSegmentation segs, List<string> fixture, IConversationHandler conversation)
     {
         if (specs is null)
         {
@@ -262,12 +262,12 @@ public static class DataModelExtensions
     }
 
     /// <summary>
-    /// Fixes all fields in a <see cref="DataModelSpecification"/> using a dictionary of existing specifications.
+    /// Fixes all fields in a <see cref="DataModelSpec"/> using a dictionary of existing specifications.
     /// </summary>
     /// <param name="specs">The data model specification to fix.</param>
     /// <param name="specDic">Dictionary of structure specifications for reference.</param>
     /// <param name="fixture">The list to record all applied fixes.</param>
-    public static void Fix(this DataModelSpecification specs, Dictionary<string, StructureSpecification> specDic, List<string> fixture)
+    public static void Fix(this DataModelSpec specs, Dictionary<string, DataTypeSpec> specDic, List<string> fixture)
     {
         specs.Structures ??= [];
         foreach (var spec in specs.Structures)
@@ -280,12 +280,12 @@ public static class DataModelExtensions
     }
 
     /// <summary>
-    /// Fixes all fields in a <see cref="DataModelSpecification"/> using a dictionary of structure segments.
+    /// Fixes all fields in a <see cref="DataModelSpec"/> using a dictionary of structure segments.
     /// </summary>
     /// <param name="specs">The data model specification to fix.</param>
     /// <param name="segDic">Dictionary of structure segments for reference.</param>
     /// <param name="fixture">The list to record all applied fixes.</param>
-    public static void Fix(this DataModelSpecification specs, Dictionary<string, StructureSegment> segDic, List<string> fixture)
+    public static void Fix(this DataModelSpec specs, Dictionary<string, StructureSegment> segDic, List<string> fixture)
     {
         specs.Structures ??= [];
         foreach (var spec in specs.Structures)
@@ -298,12 +298,12 @@ public static class DataModelExtensions
     }
 
     /// <summary>
-    /// Fixes a <see cref="StructureSpecification"/> by comparing it with another specification and recording differences.
+    /// Fixes a <see cref="DataTypeSpec"/> by comparing it with another specification and recording differences.
     /// </summary>
     /// <param name="spec">The structure specification to fix.</param>
     /// <param name="specDic">Dictionary of structure specifications for reference.</param>
     /// <param name="fixture">The list to record all applied fixes.</param>
-    public static void Fix(this StructureSpecification spec, Dictionary<string, StructureSpecification> specDic, List<string> fixture)
+    public static void Fix(this DataTypeSpec spec, Dictionary<string, DataTypeSpec> specDic, List<string> fixture)
     {
         spec.Fix();
 
@@ -349,12 +349,12 @@ public static class DataModelExtensions
     }
 
     /// <summary>
-    /// Fixes a <see cref="StructureSpecification"/> by comparing it with a structure segment and recording differences.
+    /// Fixes a <see cref="DataTypeSpec"/> by comparing it with a structure segment and recording differences.
     /// </summary>
     /// <param name="spec">The structure specification to fix.</param>
     /// <param name="segDic">Dictionary of structure segments for reference.</param>
     /// <param name="fixture">The list to record all applied fixes.</param>
-    public static void Fix(this StructureSpecification spec, Dictionary<string, StructureSegment> segDic, List<string> fixture)
+    public static void Fix(this DataTypeSpec spec, Dictionary<string, StructureSegment> segDic, List<string> fixture)
     {
         spec.Fix();
 
@@ -403,10 +403,10 @@ public static class DataModelExtensions
     }
 
     /// <summary>
-    /// Applies default fixes to a <see cref="StructureSpecification"/>, trimming and setting fallback values.
+    /// Applies default fixes to a <see cref="DataTypeSpec"/>, trimming and setting fallback values.
     /// </summary>
     /// <param name="spec">The structure specification to fix.</param>
-    public static void Fix(this StructureSpecification spec)
+    public static void Fix(this DataTypeSpec spec)
     {
         spec.Name = spec.Name?.Trim() ?? "???";
         spec.Brief = spec.Brief?.Trim() ?? string.Empty;
@@ -417,13 +417,13 @@ public static class DataModelExtensions
 
 
     /// <summary>
-    /// Fixes a <see cref="FieldSpecification"/> by comparing it with a structure specification.
+    /// Fixes a <see cref="DataFieldSpec"/> by comparing it with a structure specification.
     /// </summary>
     /// <param name="field">The field specification to fix.</param>
     /// <param name="parent">The parent structure specification.</param>
     /// <param name="specDic">Dictionary of structure specifications for reference.</param>
     /// <param name="fixture">The list to record all applied fixes.</param>
-    public static void Fix(this FieldSpecification field, StructureSpecification parent, Dictionary<string, StructureSpecification> specDic, List<string> fixture)
+    public static void Fix(this DataFieldSpec field, DataTypeSpec parent, Dictionary<string, DataTypeSpec> specDic, List<string> fixture)
     {
         field.Fix(parent, fixture);
 
@@ -434,13 +434,13 @@ public static class DataModelExtensions
     }
 
     /// <summary>
-    /// Fixes a <see cref="FieldSpecification"/> by comparing it with a structure segment.
+    /// Fixes a <see cref="DataFieldSpec"/> by comparing it with a structure segment.
     /// </summary>
     /// <param name="field">The field specification to fix.</param>
     /// <param name="parent">The parent structure specification.</param>
     /// <param name="secDic">Dictionary of structure segments for reference.</param>
     /// <param name="fixture">The list to record all applied fixes.</param>
-    public static void Fix(this FieldSpecification field, StructureSpecification parent, Dictionary<string, StructureSegment> secDic, List<string> fixture)
+    public static void Fix(this DataFieldSpec field, DataTypeSpec parent, Dictionary<string, StructureSegment> secDic, List<string> fixture)
     {
         field.Fix(parent, fixture);
 
@@ -450,7 +450,7 @@ public static class DataModelExtensions
         }
     }
 
-    private static void Fix(this FieldSpecification field, StructureSpecification parent, List<string> fixture)
+    private static void Fix(this DataFieldSpec field, DataTypeSpec parent, List<string> fixture)
     {
         field.Name = field.Name?.Trim() ?? "???";
         field.Description = field.Description?.Trim() ?? string.Empty;
@@ -463,27 +463,27 @@ public static class DataModelExtensions
         }
     }
 
-    private static void Fix(this FieldSpecification field, StructureSpecification parent, DataStructureType type, bool isLinked, List<string> fixture)
+    private static void Fix(this DataFieldSpec field, DataTypeSpec parent, DataStructureType type, bool isLinked, List<string> fixture)
     {
     }
 
     #endregion
 
     /// <summary>
-    /// Converts a <see cref="DCompond"/> to a <see cref="StructureSpecification"/>.
+    /// Converts a <see cref="DCompond"/> to a <see cref="DataTypeSpec"/>.
     /// </summary>
     /// <param name="dCompond">The compound type to convert.</param>
-    /// <returns>A new <see cref="StructureSpecification"/> instance.</returns>
-    public static StructureSpecification ToSpecification(this DCompond dCompond) 
-        => StructureSpecification.FromDCompond(dCompond);
+    /// <returns>A new <see cref="DataTypeSpec"/> instance.</returns>
+    public static DataTypeSpec ToSpecification(this DCompond dCompond) 
+        => DataTypeSpec.FromDCompond(dCompond);
 
     /// <summary>
-    /// Converts a <see cref="DEnum"/> to a <see cref="StructureSpecification"/>.
+    /// Converts a <see cref="DEnum"/> to a <see cref="DataTypeSpec"/>.
     /// </summary>
     /// <param name="dEnum">The enum type to convert.</param>
-    /// <returns>A new <see cref="StructureSpecification"/> instance.</returns>
-    public static StructureSpecification ToSpecification(this DEnum dEnum) 
-        => StructureSpecification.FromDEnum(dEnum);
+    /// <returns>A new <see cref="DataTypeSpec"/> instance.</returns>
+    public static DataTypeSpec ToSpecification(this DEnum dEnum) 
+        => DataTypeSpec.FromDEnum(dEnum);
 
     /// <summary>
     /// Converts a <see cref="DCompond"/> to a tag string representation.
@@ -492,7 +492,7 @@ public static class DataModelExtensions
     /// <param name="fullName">Whether to include the full namespace in the tag.</param>
     /// <returns>A tag string representing the compound type.</returns>
     public static string ToTag(this DCompond dCompond, bool fullName = false)
-        => StructureSpecification.FromDCompond(dCompond)?.ToTag(fullName ? dCompond.NameSpace : null) ?? string.Empty;
+        => DataTypeSpec.FromDCompond(dCompond)?.ToTag(fullName ? dCompond.NameSpace : null) ?? string.Empty;
 
     /// <summary>
     /// Converts a <see cref="DEnum"/> to a tag string representation.
@@ -501,7 +501,7 @@ public static class DataModelExtensions
     /// <param name="fullName">Whether to include the full namespace in the tag.</param>
     /// <returns>A tag string representing the enum type.</returns>
     public static string ToTag(this DEnum dEnum, bool fullName = false)
-        => StructureSpecification.FromDEnum(dEnum)?.ToTag(fullName ? dEnum.NameSpace : null) ?? string.Empty;
+        => DataTypeSpec.FromDEnum(dEnum)?.ToTag(fullName ? dEnum.NameSpace : null) ?? string.Empty;
 
     /// <summary>
     /// Determines whether the specified <see cref="DataStructureType"/> is a struct or abstract type.

@@ -14,15 +14,15 @@ namespace Suity.Editor.AIGC.Tools;
 /// Represents a complete data model specification containing multiple structure definitions.
 /// </summary>
 [ToolReturnType(typeof(IEnumerable<TypeDesignItem>))]
-public class DataModelSpecification
+public class DataModelSpec
 {
     /// <summary>
-    /// Delegate for building a <see cref="DataModelSpecification"/> from a type design document.
+    /// Delegate for building a <see cref="DataModelSpec"/> from a type design document.
     /// </summary>
     /// <param name="doc">The type design document.</param>
     /// <param name="names">The names of structures to include.</param>
-    /// <returns>A new <see cref="DataModelSpecification"/> instance.</returns>
-    public delegate DataModelSpecification BuildSpecFunc(ITypeDesignDocument doc, IEnumerable<string> names);
+    /// <returns>A new <see cref="DataModelSpec"/> instance.</returns>
+    public delegate DataModelSpec BuildSpecFunc(ITypeDesignDocument doc, IEnumerable<string> names);
 
     /// <summary>
     /// Gets or sets the function used to build specifications from type design documents.
@@ -33,7 +33,7 @@ public class DataModelSpecification
     /// Gets or sets the list of data structures in the game.
     /// </summary>
     [Description("the data structures of the game")]
-    public List<StructureSpecification> Structures { get; set; } = [];
+    public List<DataTypeSpec> Structures { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the names of structures marked for deletion. This field is for internal use only; leave it empty.
@@ -42,9 +42,9 @@ public class DataModelSpecification
     public List<string> DeletedStructureNames { get; set; } = [];
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DataModelSpecification"/> class.
+    /// Initializes a new instance of the <see cref="DataModelSpec"/> class.
     /// </summary>
-    public DataModelSpecification()
+    public DataModelSpec()
     {
     }
 
@@ -111,7 +111,7 @@ public class DataModelSpecification
     /// Converts the structures to a dictionary keyed by structure name.
     /// </summary>
     /// <returns>A dictionary mapping structure names to their specifications.</returns>
-    public Dictionary<string, StructureSpecification> ToDictionary()
+    public Dictionary<string, DataTypeSpec> ToDictionary()
     {
         return Structures.ToDictionarySafe(x => x.Name, x => x);
     }
@@ -166,12 +166,12 @@ public class DataModelSpecification
 
 
     /// <summary>
-    /// Attempts to parse a text string into a <see cref="DataModelSpecification"/>.
+    /// Attempts to parse a text string into a <see cref="DataModelSpec"/>.
     /// </summary>
     /// <param name="text">The text to parse.</param>
     /// <param name="specs">When this method returns, contains the parsed specification, or <c>null</c> if parsing failed.</param>
     /// <returns><c>true</c> if parsing succeeded; otherwise, <c>false</c>.</returns>
-    public static bool TryParse(string text, out DataModelSpecification specs)
+    public static bool TryParse(string text, out DataModelSpec specs)
     {
         if (DataModelSegmentation.TryParse(text, out var segs))
         {
@@ -183,12 +183,12 @@ public class DataModelSpecification
     }
 
     /// <summary>
-    /// Attempts to parse a <see cref="DataModelSegmentation"/> into a <see cref="DataModelSpecification"/>.
+    /// Attempts to parse a <see cref="DataModelSegmentation"/> into a <see cref="DataModelSpec"/>.
     /// </summary>
     /// <param name="segs">The segmentation to parse.</param>
     /// <param name="specs">When this method returns, contains the parsed specification, or <c>null</c> if parsing failed.</param>
     /// <returns><c>true</c> if parsing succeeded; otherwise, <c>false</c>.</returns>
-    public static bool TryParse(DataModelSegmentation segs, out DataModelSpecification specs)
+    public static bool TryParse(DataModelSegmentation segs, out DataModelSpec specs)
     {
         if (segs is null || segs.Structures is null)
         {
@@ -196,7 +196,7 @@ public class DataModelSpecification
             return false;
         }
 
-        var specsParse = new DataModelSpecification();
+        var specsParse = new DataModelSpec();
         foreach (var seg in segs.Structures)
         {
             if (DataModelService.Instance.TryParseSpecification(seg, out var spec))
@@ -218,7 +218,7 @@ public class DataModelSpecification
 /// <summary>
 /// Represents the specification of a single data structure, including its name, type, fields, and metadata.
 /// </summary>
-public class StructureSpecification
+public class DataTypeSpec
 {
     /// <summary>
     /// Gets or sets the name of the data structure. Must be a valid identifier in PascalCase.
@@ -260,7 +260,7 @@ public class StructureSpecification
     /// Gets or sets the list of fields (items) in the data structure.
     /// </summary>
     [Description("the items of the data structure")]
-    public List<FieldSpecification> Items { get; set; } = [];
+    public List<DataFieldSpec> Items { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the attributes associated with the data structure.
@@ -269,9 +269,9 @@ public class StructureSpecification
     public List<string> Attributes { get; set; } = [];
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="StructureSpecification"/> class.
+    /// Initializes a new instance of the <see cref="DataTypeSpec"/> class.
     /// </summary>
-    public StructureSpecification()
+    public DataTypeSpec()
     {
     }
 
@@ -462,12 +462,12 @@ public class StructureSpecification
     };
 
     /// <summary>
-    /// Creates a <see cref="StructureSpecification"/> from a <see cref="DCompond"/>.
+    /// Creates a <see cref="DataTypeSpec"/> from a <see cref="DCompond"/>.
     /// </summary>
     /// <param name="dCompond">The compound type to convert.</param>
     /// <param name="fullName">Whether to use full type names.</param>
-    /// <returns>A new <see cref="StructureSpecification"/> instance, or <c>null</c> if input is null.</returns>
-    public static StructureSpecification FromDCompond(DCompond dCompond, bool fullName = false)
+    /// <returns>A new <see cref="DataTypeSpec"/> instance, or <c>null</c> if input is null.</returns>
+    public static DataTypeSpec FromDCompond(DCompond dCompond, bool fullName = false)
     {
         if (dCompond is null)
         {
@@ -477,7 +477,7 @@ public class StructureSpecification
         DataUsageMode usage = dCompond.GetDataUsageMode();
         DataDrivenMode drivenMode = dCompond.GetDataDrivenMode();
 
-        var spec = new StructureSpecification
+        var spec = new DataTypeSpec
         {
             Name = fullName ? dCompond.FullTypeName : dCompond.Name,
             Type = dCompond is DAbstract ? DataStructureType.Abstract : DataStructureType.Struct,
@@ -489,7 +489,7 @@ public class StructureSpecification
 
         foreach (var field in dCompond.PublicStructFields)
         {
-            var fieldSpec = FieldSpecification.FromDStructField(field, fullName);
+            var fieldSpec = DataFieldSpec.FromDStructField(field, fullName);
             spec.Items.Add(fieldSpec);
         }
 
@@ -497,18 +497,18 @@ public class StructureSpecification
     }
 
     /// <summary>
-    /// Creates a <see cref="StructureSpecification"/> from a <see cref="DEnum"/>.
+    /// Creates a <see cref="DataTypeSpec"/> from a <see cref="DEnum"/>.
     /// </summary>
     /// <param name="dEnum">The enum type to convert.</param>
-    /// <returns>A new <see cref="StructureSpecification"/> instance, or <c>null</c> if input is null.</returns>
-    public static StructureSpecification FromDEnum(DEnum dEnum)
+    /// <returns>A new <see cref="DataTypeSpec"/> instance, or <c>null</c> if input is null.</returns>
+    public static DataTypeSpec FromDEnum(DEnum dEnum)
     {
         if (dEnum is null)
         {
             return null;
         }
 
-        var spec = new StructureSpecification
+        var spec = new DataTypeSpec
         {
             Name = dEnum.FullTypeName,
             Type = DataStructureType.Enum,
@@ -519,7 +519,7 @@ public class StructureSpecification
 
         foreach (var field in dEnum.EnumFields)
         {
-            var fieldSpec = FieldSpecification.FromDEnumField(field);
+            var fieldSpec = DataFieldSpec.FromDEnumField(field);
             spec.Items.Add(fieldSpec);
         }
 
@@ -531,7 +531,7 @@ public class StructureSpecification
     /// </summary>
     /// <param name="specs">The collection of specifications to convert.</param>
     /// <returns>A string containing the tag representation of all specifications.</returns>
-    public static string ToTags(IEnumerable<StructureSpecification> specs)
+    public static string ToTags(IEnumerable<DataTypeSpec> specs)
     {
         var builder = new StringBuilder();
 
@@ -545,12 +545,12 @@ public class StructureSpecification
     }
 
     /// <summary>
-    /// Attempts to parse a <see cref="StructureSegment"/> into a <see cref="StructureSpecification"/>.
+    /// Attempts to parse a <see cref="StructureSegment"/> into a <see cref="DataTypeSpec"/>.
     /// </summary>
     /// <param name="seg">The structure segment to parse.</param>
     /// <param name="spec">When this method returns, contains the parsed specification, or <c>null</c> if parsing failed.</param>
     /// <returns><c>true</c> if parsing succeeded; otherwise, <c>false</c>.</returns>
-    public static bool TryParse(StructureSegment seg, out StructureSpecification spec)
+    public static bool TryParse(StructureSegment seg, out DataTypeSpec spec)
     {
         return DataModelService.Instance.TryParseSpecification(seg, out spec);
     }
@@ -559,7 +559,7 @@ public class StructureSpecification
 /// <summary>
 /// Represents the specification of a single field within a data structure.
 /// </summary>
-public class FieldSpecification
+public class DataFieldSpec
 {
     /// <summary>
     /// Gets or sets the name of the field. Must be a valid identifier in PascalCase.
@@ -591,9 +591,9 @@ public class FieldSpecification
     public List<string> Attributes { get; set; } = [];
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FieldSpecification"/> class.
+    /// Initializes a new instance of the <see cref="DataFieldSpec"/> class.
     /// </summary>
-    public FieldSpecification()
+    public DataFieldSpec()
     {
     }
 
@@ -653,16 +653,16 @@ public class FieldSpecification
 
 
     /// <summary>
-    /// Creates a <see cref="FieldSpecification"/> from a <see cref="DStructField"/>.
+    /// Creates a <see cref="DataFieldSpec"/> from a <see cref="DStructField"/>.
     /// </summary>
     /// <param name="field">The struct field to convert.</param>
     /// <param name="fullName">Whether to use full type names.</param>
-    /// <returns>A new <see cref="FieldSpecification"/> instance.</returns>
-    public static FieldSpecification FromDStructField(DStructField field, bool fullName = false)
+    /// <returns>A new <see cref="DataFieldSpec"/> instance.</returns>
+    public static DataFieldSpec FromDStructField(DStructField field, bool fullName = false)
     {
         var fieldType = field.FieldType;
 
-        var spec = new FieldSpecification
+        var spec = new DataFieldSpec
         {
             Name = field.Name,
             Description = field.ToolTips,
@@ -684,13 +684,13 @@ public class FieldSpecification
     }
 
     /// <summary>
-    /// Creates a <see cref="FieldSpecification"/> from a <see cref="DEnumField"/>.
+    /// Creates a <see cref="DataFieldSpec"/> from a <see cref="DEnumField"/>.
     /// </summary>
     /// <param name="field">The enum field to convert.</param>
-    /// <returns>A new <see cref="FieldSpecification"/> instance.</returns>
-    public static FieldSpecification FromDEnumField(DEnumField field)
+    /// <returns>A new <see cref="DataFieldSpec"/> instance.</returns>
+    public static DataFieldSpec FromDEnumField(DEnumField field)
     {
-        var spec = new FieldSpecification
+        var spec = new DataFieldSpec
         {
             Name = field.Name,
             Description = field.ToolTips,
