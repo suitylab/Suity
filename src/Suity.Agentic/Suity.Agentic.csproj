@@ -57,6 +57,7 @@
     <ProjectReference Include="..\Suity.Editor.AIGC.Flows\Suity.Editor.AIGC.Flows.csproj" />
     <ProjectReference Include="..\Suity.Editor.AIGC.LLm\Suity.Editor.AIGC.LLm.csproj" />
     <ProjectReference Include="..\Suity.Editor.AIGC\Suity.Editor.AIGC.csproj" />
+    <ProjectReference Include="..\Suity.Editor.DataModel\Suity.Editor.DataModel.csproj" />
     <ProjectReference Include="..\Suity.Editor.Documents\Suity.Editor.Documents.csproj" />
     <ProjectReference Include="..\Suity.Editor.Internal\Suity.Editor.Internal.csproj" />
     <ProjectReference Include="..\Suity.Editor.Packaging\Suity.Editor.Packaging.csproj" />

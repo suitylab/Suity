@@ -1,4 +1,3 @@
-using Suity.Editor.DataModel;
 using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.TypeEdit;
@@ -14,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.DataModel.TypeDesigns.Tools;
 
-[NativeType("BatchReadTypeDesignItems", CodeBase = "*Suity", Category = "DataModel Tools")]
+[NativeType("BatchReadTypeDesignItems", CodeBase = "*Suity", Category = "DataModel Tools", Icon = "*CoreIcon|Class")]
 [DisplayText("Batch Read TypeDesign Items")]
 [ToolTipsText("Read multiple type items from a TypeDesign document and convert them to XML format.")]
 [NativeAlias("Suity.Editor.DataModel.BatchReadTypeDesignItems")]

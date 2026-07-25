@@ -12,6 +12,7 @@ using Dock.Model.Core;
 using Newtonsoft.Json;
 using Suity.Editor.AIGC;
 using Suity.Editor.Analysis;
+using Suity.Editor.DataModel;
 using Suity.Editor.Documents.TypeEdit;
 using Suity.Editor.Flows;
 using Suity.Editor.Packaging;
@@ -662,6 +663,7 @@ namespace Suity.Editor
                 typeof(LLmModelPlugin).Assembly, // Suity.Editor.AIGC.LLm
                 typeof(AigcWorkflowPlugin).Assembly, // Suity.Editor.AIGC.Flows
                 typeof(BaseOpenAICall).Assembly, // Suity.Editor.AIGC.API
+                typeof(DataModelPlugin).Assembly, // Suity.Editor.DataModel
             ];
 
             string extPath = AppContext.BaseDirectory.PathAppend("Extensions");

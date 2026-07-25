@@ -11,9 +11,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Suity.Editor.DataModel.TypeDesigns.Tools;
+namespace Suity.Editor.DataModel.Tools;
 
-[NativeType("GetAssetSpaceTree", CodeBase = "*Suity", Category = "Asset Tools")]
+[NativeType("GetAssetSpaceTree", CodeBase = "*Suity", Category = "Asset Tools", Icon = "*CoreIcon|Class")]
 [DisplayText("Get Asset Space Tree")]
 [ToolTipsText("Get asset folder/file structure tree. Helps Agent quickly establish a global perspective of routing.")]
 public class GetAssetSpaceTree : ToolCommand<GetAssetSpaceTree.Output>

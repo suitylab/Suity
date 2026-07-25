@@ -1,4 +1,3 @@
-using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.DataModel.Actions;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
@@ -12,12 +11,11 @@ using Suity.Views;
 using Suity.Views.Named;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.DataModel.Tools;
 
-[NativeType("BatchDeleteNamedItems", CodeBase = "*Suity", Category = "DataModel Tools")]
+[NativeType("BatchDeleteNamedItems", CodeBase = "*Suity", Category = "Asset Tools", Icon = "*CoreIcon|Class")]
 [DisplayText("Batch Delete Named Items")]
 [ToolTipsText("Delete multiple named items from a SNamedDocument by name.")]
 [NativeAlias("Suity.Editor.DataModel.BatchDeleteNamedItems")]

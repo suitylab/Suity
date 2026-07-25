@@ -1,5 +1,3 @@
-using Suity.Editor.AIGC.Assistants;
-using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
@@ -11,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.DataModel.Tools;
 
-[NativeType("DeleteAsset", CodeBase = "*Suity", Category = "DataModel Tools")]
+[NativeType("DeleteAsset", CodeBase = "*Suity", Category = "Asset Tools", Icon = "*CoreIcon|Class")]
 [DisplayText("Delete Asset")]
 [ToolTipsText("Delete an asset file.")]
 [NativeAlias("Suity.Editor.DataModel.DeleteAsset")]

@@ -28,9 +28,4 @@
 	</ItemGroup>
 
 
-	<ItemGroup>
-	  <Folder Include="DataModel.Tools\" />
-	</ItemGroup>
-
-
 </Project>

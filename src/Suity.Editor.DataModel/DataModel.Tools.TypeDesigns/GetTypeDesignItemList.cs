@@ -8,12 +8,11 @@ using Suity.Synchonizing;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.DataModel.TypeDesigns.Tools;
 
-[NativeType("GetTypeDesignItemList", CodeBase = "*Suity", Category = "DataModel Tools")]
+[NativeType("GetTypeDesignItemList", CodeBase = "*Suity", Category = "DataModel Tools", Icon = "*CoreIcon|Class")]
 [DisplayText("Get TypeDesign Item List")]
 [ToolTipsText("Get the list of type items (Enum, Struct, Abstract) from a TypeDesign document.")]
 [NativeAlias("Suity.Editor.DataModel.GetTypeDesignItemList")]

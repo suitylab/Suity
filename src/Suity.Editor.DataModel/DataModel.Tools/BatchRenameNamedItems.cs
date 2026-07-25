@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.DataModel.Tools;
 
-[NativeType("BatchRenameNamedItems", CodeBase = "*Suity", Category = "DataModel Tools")]
+[NativeType("BatchRenameNamedItems", CodeBase = "*Suity", Category = "Asset Tools", Icon = "*CoreIcon|Class")]
 [DisplayText("Batch Rename Named Items")]
 [ToolTipsText("Rename multiple named items in a SNamedDocument.")]
 [NativeAlias("Suity.Editor.DataModel.BatchRenameNamedItems")]

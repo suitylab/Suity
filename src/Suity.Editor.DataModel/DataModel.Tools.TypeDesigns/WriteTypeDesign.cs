@@ -1,5 +1,3 @@
-using Suity.Editor.AIGC.Assistants;
-using Suity.Editor.DataModel;
 using Suity.Editor.DataModel.Actions;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.TypeEdit;
@@ -12,12 +10,11 @@ using Suity.UndoRedos;
 using Suity.Views;
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.DataModel.TypeDesigns.Tools;
 
-[NativeType("WriteTypeDesign", CodeBase = "*Suity", Category = "DataModel Tools")]
+[NativeType("WriteTypeDesign", CodeBase = "*Suity", Category = "DataModel Tools", Icon = "*CoreIcon|Class")]
 [DisplayText("Write Type Design")]
 [ToolTipsText("Parse XML content and write it to a TypeDesign document. Creates a new document if it doesn't exist, or updates an existing one.")]
 [NativeAlias("Suity.Editor.DataModel.WriteTypeDesign")]
