@@ -94,25 +94,23 @@ public abstract class BaseObjectNode : VirtualNode, ISyncContext
     /// <inheritdoc/>
     protected override string GetText()
     {
-        bool editable = DisplayedValue is ITextEdit edit && edit.CanEditText;
-
-        var obj = DisplayedValue;
+        var v = DisplayedValue;
         string result;
 
-        if (editable)
+        if (v is ITextEdit edit)
         {
             // If editable, display as raw text
-            result = (obj as ITextDisplay)?.DisplayText ?? PropertyName;
+            result = edit.GetTextEdit();
         }
         else
         {
             // If not editable, display as localized text
-            result = obj?.ToDisplayTextL(PropertyName);
+            result = v?.ToDisplayTextL(PropertyName);
         }
 
-        if (result is null && obj != null)
+        if (result is null && v != null)
         {
-            result = obj.ToString();
+            result = v.ToString();
         }
 
         return result;

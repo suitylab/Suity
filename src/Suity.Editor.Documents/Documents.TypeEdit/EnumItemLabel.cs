@@ -39,6 +39,8 @@ public class EnumItemLabel : EnumItemBase
     /// <inheritdoc/>
     protected override bool OnCanEditText() => true;
 
+    protected override string OnGetTextEdit() => Description;
+
     /// <inheritdoc/>
     protected override void OnSetTextEdit(string text, ISyncContext setup, bool showNotice)
     {

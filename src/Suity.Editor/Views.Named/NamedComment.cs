@@ -64,6 +64,8 @@ public class NamedComment : NamedItem
     /// </summary>
     protected override string OnGetDisplayText() => Comment;
 
+    protected override string OnGetTextEdit() => Comment;
+
     /// <summary>
     /// Sets the comment text through the view service.
     /// </summary>

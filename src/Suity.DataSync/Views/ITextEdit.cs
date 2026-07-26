@@ -2,9 +2,12 @@
 
 namespace Suity.Views;
 
-public interface ITextEdit : ITextDisplay
+public interface ITextEdit
 {
     bool CanEditText { get; }
+
+
+    string GetTextEdit();
 
     void SetTextEdit(string text, ISyncContext setup);
 }

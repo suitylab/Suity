@@ -56,6 +56,8 @@ public abstract class NamedGroup : NamedNode
     /// </summary>
     protected override string OnGetDisplayText() => GroupName;
 
+    protected override string OnGetTextEdit() => GroupName;
+
     /// <summary>
     /// Sets the group name through the view service.
     /// </summary>

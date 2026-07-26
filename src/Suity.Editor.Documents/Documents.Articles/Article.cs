@@ -415,6 +415,8 @@ public class Article : DesignNode<ArticleAssetBuilder>, IArticle,
     /// <inheritdoc/>
     protected override string OnGetDisplayText() => Title;
 
+    protected override string OnGetTextEdit() => Title;
+
     /// <inheritdoc/>
     protected override void OnSetTextEdit(string text, ISyncContext setup, bool showNotice)
     {

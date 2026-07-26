@@ -26,7 +26,7 @@ public abstract class VirtualNodeAdapter : MarshalByRefObject, ISyncContext
 
     public T GetParentValue<T>()
     {
-        VirtualNode parent = _owner?.Parent;
+        var parent = _owner?.Parent;
         object value = parent?.DisplayedValue;
 
         return value is T tValue ? tValue : default;
@@ -36,7 +36,7 @@ public abstract class VirtualNodeAdapter : MarshalByRefObject, ISyncContext
     {
         get
         {
-            VirtualNode parent = _owner?.Parent;
+            var parent = _owner?.Parent;
 
             return parent?.DisplayedValue;
         }
@@ -83,8 +83,8 @@ public abstract class VirtualNodeAdapter : MarshalByRefObject, ISyncContext
     {
         get
         {
-            ITextDisplay ext = GetValue() as ITextDisplay;
-            return ext?.DisplayText;
+            var value = GetValue();
+            return (value as ITextEdit)?.GetTextEdit() ?? (value as ITextDisplay)?.DisplayText;
         }
         set
         {
@@ -97,7 +97,7 @@ public abstract class VirtualNodeAdapter : MarshalByRefObject, ISyncContext
     {
         get
         {
-            IDescriptionDisplay ext = GetValue() as IDescriptionDisplay;
+            var ext = GetValue() as IDescriptionDisplay;
 
             return ext?.Description;
         }
@@ -107,13 +107,13 @@ public abstract class VirtualNodeAdapter : MarshalByRefObject, ISyncContext
     {
         get
         {
-            IPreviewDisplay ext = GetValue() as IPreviewDisplay;
+            var ext = GetValue() as IPreviewDisplay;
 
             return ext?.PreviewText;
         }
         set
         {
-            IPreviewEdit ext = GetValue() as IPreviewEdit;
+            var ext = GetValue() as IPreviewEdit;
             ext?.SetPreviewText(value, this);
         }
     }
@@ -140,7 +140,7 @@ public abstract class VirtualNodeAdapter : MarshalByRefObject, ISyncContext
     {
         get
         {
-            ITextEdit ext = GetValue() as ITextEdit;
+            var ext = GetValue() as ITextEdit;
 
             return ext?.CanEditText ?? false;
         }
@@ -150,7 +150,7 @@ public abstract class VirtualNodeAdapter : MarshalByRefObject, ISyncContext
     {
         get
         {
-            IPreviewEdit ext = GetValue() as IPreviewEdit;
+            var ext = GetValue() as IPreviewEdit;
 
             return ext?.CanEditPreviewText ?? false;
         }
@@ -160,7 +160,7 @@ public abstract class VirtualNodeAdapter : MarshalByRefObject, ISyncContext
     {
         get
         {
-            ITextDisplay ext = GetValue() as ITextDisplay;
+            var ext = GetValue() as ITextDisplay;
 
             return ext?.DisplayStatus ?? TextStatus.Normal;
         }

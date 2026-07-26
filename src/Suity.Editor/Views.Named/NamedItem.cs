@@ -222,10 +222,9 @@ public class NamedItem :
 
     bool ITextEdit.CanEditText => OnCanEditText();
 
-    void ITextEdit.SetTextEdit(string text, ISyncContext setup)
-    {
-        OnSetTextEdit(text, setup, true);
-    }
+    string ITextEdit.GetTextEdit() => OnGetTextEdit();
+
+    void ITextEdit.SetTextEdit(string text, ISyncContext setup) => OnSetTextEdit(text, setup, true);
 
     #endregion
 
@@ -365,6 +364,8 @@ public class NamedItem :
     /// Gets the display text for this item.
     /// </summary>
     protected virtual string OnGetDisplayText() => Name;
+
+    protected virtual string OnGetTextEdit() => Name;
 
     /// <summary>
     /// Sets the text of this item.

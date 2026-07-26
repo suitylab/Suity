@@ -3,7 +3,6 @@ using Suity.Editor;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Synchonizing.Core;
-using System.Drawing;
 
 namespace Suity.Views.Named;
 
@@ -13,6 +12,7 @@ namespace Suity.Views.Named;
 public abstract class NamedField :
     INamed,
     IViewObject,
+    ITextDisplay,
     ITextEdit,
     ISyncPathObject,
     IValidate
@@ -127,12 +127,11 @@ public abstract class NamedField :
 
     string ITextDisplay.DisplayText => OnGetDisplayText();
     TextStatus ITextDisplay.DisplayStatus => OnGetTextStatus();
+
+
     bool ITextEdit.CanEditText => OnCanEditText();
-
-
-
-    void ITextEdit.SetTextEdit(string text, ISyncContext setup) 
-        => OnSetTextEdit(text, setup, true);
+    string ITextEdit.GetTextEdit() => OnGetTextEdit();
+    void ITextEdit.SetTextEdit(string text, ISyncContext setup) => OnSetTextEdit(text, setup, true);
 
     #endregion
 
@@ -212,6 +211,8 @@ public abstract class NamedField :
     /// Gets a value indicating whether the text of this field can be edited.
     /// </summary>
     protected virtual bool OnCanEditText() => true;
+
+    protected virtual string OnGetTextEdit() => _name;
 
     /// <summary>
     /// Sets the text of this field.
