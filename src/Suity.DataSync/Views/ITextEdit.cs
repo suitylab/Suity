@@ -6,5 +6,5 @@ public interface ITextEdit : ITextDisplay
 {
     bool CanEditText { get; }
 
-    void SetText(string text, ISyncContext setup);
+    void SetTextEdit(string text, ISyncContext setup);
 }

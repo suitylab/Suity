@@ -62,7 +62,7 @@ public abstract class NamedGroup : NamedNode
     /// <param name="text">The new group name.</param>
     /// <param name="setup">The sync context.</param>
     /// <param name="showNotice">Whether to show a notice.</param>
-    protected override void OnSetText(string text, ISyncContext setup, bool showNotice)
+    protected override void OnSetTextEdit(string text, ISyncContext setup, bool showNotice)
     {
         if (GroupName == text)
         {

@@ -40,7 +40,7 @@ public class ToStringNode : VirtualNode
     {
         if (_value is ITextEdit edit && edit.CanEditText)
         {
-            edit.SetText(value, null);
+            edit.SetTextEdit(value, null);
         }
     }
 

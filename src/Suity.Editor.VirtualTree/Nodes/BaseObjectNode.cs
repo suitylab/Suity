@@ -123,7 +123,7 @@ public abstract class BaseObjectNode : VirtualNode, ISyncContext
     {
         if (DisplayedValue is ITextEdit edit && edit.CanEditText)
         {
-            edit.SetText(value, this);
+            edit.SetTextEdit(value, this);
         }
     }
 

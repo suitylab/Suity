@@ -129,8 +129,10 @@ public abstract class NamedField :
     TextStatus ITextDisplay.DisplayStatus => OnGetTextStatus();
     bool ITextEdit.CanEditText => OnCanEditText();
 
-    void ITextEdit.SetText(string text, ISyncContext setup) 
-        => OnSetText(text, setup, true);
+
+
+    void ITextEdit.SetTextEdit(string text, ISyncContext setup) 
+        => OnSetTextEdit(text, setup, true);
 
     #endregion
 
@@ -217,7 +219,7 @@ public abstract class NamedField :
     /// <param name="text">The new text value.</param>
     /// <param name="setup">The sync context.</param>
     /// <param name="showNotice">Whether to show a notice.</param>
-    protected virtual void OnSetText(string text, ISyncContext setup, bool showNotice)
+    protected virtual void OnSetTextEdit(string text, ISyncContext setup, bool showNotice)
         => NamedExternal._external.SetText(this, text, setup, showNotice);
 
     /// <summary>

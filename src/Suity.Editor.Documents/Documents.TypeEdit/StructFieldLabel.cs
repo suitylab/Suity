@@ -40,7 +40,7 @@ public class StructFieldLabel : StructFieldItem
     protected override bool OnCanEditText() => true;
 
     /// <inheritdoc/>
-    protected override void OnSetText(string text, ISyncContext setup, bool showNotice)
+    protected override void OnSetTextEdit(string text, ISyncContext setup, bool showNotice)
     {
         if (Description == text)
         {

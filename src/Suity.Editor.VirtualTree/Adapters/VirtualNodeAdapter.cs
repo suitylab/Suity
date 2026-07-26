@@ -89,7 +89,7 @@ public abstract class VirtualNodeAdapter : MarshalByRefObject, ISyncContext
         set
         {
             ITextEdit ext = GetValue() as ITextEdit;
-            ext?.SetText(value, this);
+            ext?.SetTextEdit(value, this);
         }
     }
 
