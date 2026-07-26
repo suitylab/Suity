@@ -284,7 +284,15 @@ public class PropertyTargetBK : PropertyTarget
             return t;
         }, out bool created);
 
-        target.PresetType = editedType ?? throw new ArgumentNullException(nameof(editedType));
+        if (editedType is null)
+        {
+            Logs.LogWarning($"PropertyTarget {name} has null edited type");
+            target.EditedType = null;
+        }
+        else
+        {
+            target.EditedType = editedType;
+        }
 
         ConfigChildTarget(target);
 

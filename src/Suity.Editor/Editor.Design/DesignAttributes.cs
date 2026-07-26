@@ -137,11 +137,12 @@ public sealed class DataUsageAttribute : DesignAttribute, ITextDisplay
     /// </summary>
     public DataUsageMode Usage
     {
-        get => _usage.Value; set => _usage.Value = value; }
+        get => _usage.Value; set => _usage.Value = value;
+    }
 
-#region IViewObject
+    #region IViewObject
 
-protected override void OnSync(IPropertySync sync, ISyncContext context)
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
     {
         base.OnSync(sync, context);
 
@@ -155,7 +156,7 @@ protected override void OnSync(IPropertySync sync, ISyncContext context)
         _usage.InspectorField(setup);
     }
 
-        #endregion
+    #endregion
 
     #region ITextDisplay
 

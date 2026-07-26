@@ -433,6 +433,12 @@ internal class DataModelApplyAction : AIGenerativeApplyAction
             return null;
         }
 
+        if (name.StartsWith("@"))
+        {
+            isLinkedData = true;
+            name = name.Substring(1);
+        }
+
         string typeString = name;
 
         do

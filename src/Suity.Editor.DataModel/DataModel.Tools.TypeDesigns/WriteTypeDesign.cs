@@ -48,7 +48,7 @@ public class WriteTypeDesign : ToolCommand<WriteTypeDesign.Output>
     }
 
     readonly StringProperty _filePath = new("FilePath", "FilePath", string.Empty, "The relative path for the TypeDesign document (e.g., 'Data/Models/mymodel.sasset').");
-    readonly TextBlockProperty _xmlContent = new("XmlContent", "XML Content", "The XML content to parse and apply to the TypeDesign document.");
+    readonly TextBlockProperty _xmlContent = new("XmlContent", "XML Content", string.Empty, "The XML content to parse and apply to the TypeDesign document.");
 
     public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
     public string XmlContent { get => _xmlContent.Text; set => _xmlContent.Text = value; }
@@ -116,7 +116,7 @@ public class WriteTypeDesign : ToolCommand<WriteTypeDesign.Output>
         }
 
         // Get or create TypeDesign document
-        var docEntry = DocumentManager.Instance.GetDocument(fullPath);
+        var docEntry = DocumentManager.Instance.OpenDocument(fullPath);
         TypeDesignDocument doc;
 
         if (docEntry != null)

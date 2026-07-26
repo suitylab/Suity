@@ -323,9 +323,15 @@ public class FieldTypeDesign : ITypeDesign, ISyncObject, IViewObject, INavigable
         bool isLinked = false;
 
         var dataUsage = target.GetAttribute<DataUsageAttribute>();
-        if (dataUsage != null && ((target is DStruct || target is DAbstract)))
+        if (dataUsage != null && (target is DStruct || target is DAbstract))
         {
             isLinked = dataUsage.Usage.GetIsLinked();
+        }
+
+        if (_lateTypeString.StartsWith("@"))
+        {
+            isLinked = true;
+            _lateTypeString = _lateTypeString.Substring(1);
         }
 
         // Handle TreeFlow special case. In TreeFlow, structure groups and referenced structures in groups must remain non-linked.

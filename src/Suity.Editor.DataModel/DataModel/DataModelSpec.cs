@@ -1,12 +1,8 @@
 ﻿using Suity.Collections;
-using Suity.Editor.AIGC;
-using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
 using Suity.Editor.Types;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Linq;
 
 namespace Suity.Editor.DataModel;
@@ -49,80 +45,12 @@ public class DataModelSpec
     }
 
     /// <summary>
-    /// Converts the entire specification to a full text representation.
-    /// </summary>
-    /// <returns>A string containing the full text of all structures.</returns>
-    public string ToFullText()
-    {
-        var builder = new StringBuilder();
-        BuildFullText(builder);
-
-        return builder.ToString();
-    }
-
-    /// <summary>
-    /// Appends the full text representation of all structures to the specified builder.
-    /// </summary>
-    /// <param name="builder">The string builder to append to.</param>
-    public void BuildFullText(StringBuilder builder)
-    {
-        foreach (var structure in Structures)
-        {
-            structure.BuildFullText(builder);
-            builder.AppendLine();
-        }
-    }
-
-    /// <summary>
-    /// Converts the specification to a tag-based string representation.
-    /// </summary>
-    /// <returns>A string containing the tag representation of all structures.</returns>
-    public string ToTag()
-    {
-        var builder = new StringBuilder();
-        BuildTag(builder);
-
-        return builder.ToString();
-    }
-
-    /// <summary>
-    /// Appends the tag representation of all structures to the specified builder.
-    /// </summary>
-    /// <param name="builder">The string builder to append to.</param>
-    public void BuildTag(StringBuilder builder)
-    {
-        foreach (var structure in Structures)
-        {
-            structure.BuildTag(builder);
-            builder.AppendLine();
-        }
-    }
-
-    /// <summary>
-    /// Gets a brief text summary of all structures in the specification.
-    /// </summary>
-    /// <returns>A string containing brief info for each structure.</returns>
-    public string ToBriefInfo()
-    {
-        return string.Join("\n", Structures.Select(x => x.ToBriefInfo()));
-    }
-
-    /// <summary>
     /// Converts the structures to a dictionary keyed by structure name.
     /// </summary>
     /// <returns>A dictionary mapping structure names to their specifications.</returns>
     public Dictionary<string, TypeSpec> ToDictionary()
     {
         return Structures.ToDictionarySafe(x => x.Name, x => x);
-    }
-
-    /// <summary>
-    /// Converts all structures to an array of guiding items for AI generation.
-    /// </summary>
-    /// <returns>An array of <see cref="GenerativeGuidingItem"/> instances.</returns>
-    public GenerativeGuidingItem[] ToGuidingItems()
-    {
-        return Structures.Select(x => x.ToGuidingItem()).ToArray();
     }
 
 }
@@ -192,186 +120,8 @@ public class TypeSpec
     /// Returns a brief text representation of this structure.
     /// </summary>
     /// <returns>A string containing the brief info.</returns>
-    public override string ToString() => ToBriefInfo();
+    public override string ToString() => Name;
 
-    /// <summary>
-    /// Gets a brief text representation of this structure.
-    /// </summary>
-    /// <param name="withType">Whether to include the type name in the output.</param>
-    /// <returns>A string containing the brief info.</returns>
-    public string ToBriefInfo(bool withType = true)
-    {
-        string usage = Usage != DataUsageMode.None ? $"[{Usage}] " : "";
-        string derived = !string.IsNullOrWhiteSpace(BaseType) ? $" : derived from {BaseType}" : "";
-
-        string brief = !string.IsNullOrWhiteSpace(Tooltip) ? $" - {Tooltip}" : "";
-
-        if (withType)
-        {
-            return $"{usage}{GetTypeName()} {Name}{derived}{brief}";
-        }
-        else
-        {
-            return $"{usage}{Name}{derived}{brief}";
-        }
-    }
-
-    /// <summary>
-    /// Converts this structure to a tag-based string representation.
-    /// </summary>
-    /// <param name="nameSpace">Optional namespace to prefix the structure name.</param>
-    /// <returns>A string containing the tag representation.</returns>
-    public string ToTag(string nameSpace = null)
-    {
-        var builder = new StringBuilder();
-        BuildTag(builder, nameSpace);
-
-        return builder.ToString();
-    }
-
-    /// <summary>
-    /// Appends the tag representation of this structure to the specified builder.
-    /// </summary>
-    /// <param name="builder">The string builder to append to.</param>
-    /// <param name="nameSpace">Optional namespace to prefix the structure name.</param>
-    public void BuildTag(StringBuilder builder, string nameSpace = null)
-    {
-        string name = Name;
-        if (!string.IsNullOrWhiteSpace(nameSpace))
-        {
-            name = $"{nameSpace}.{name}";
-        }
-
-        string derived = !string.IsNullOrWhiteSpace(BaseType) ? $" base='{BaseType}'" : "";
-
-        string usage = Usage != DataUsageMode.None ? $" usage='{Usage}'" : "";
-        string driven = DrivenMode != DataDrivenMode.None ? $" driven='{DrivenMode}'" : "";
-
-        Attributes ??= [];
-        string attr = Attributes.Count > 0 ? $" attr='{string.Join(",", Attributes)}'" : "";
-
-        builder.AppendLine($"<type name='{name}' def='{Type}'{derived}{usage}{driven}{attr}>\n{Tooltip}");
-
-        if (Type == DataStructureType.Enum)
-        {
-            builder.Append("Value: ");
-            builder.AppendLine(string.Join(", ", Items.Select(o => o.Name)));
-        }
-        else
-        {
-            builder.AppendLine("Fields:");
-            foreach (var item in Items)
-            {
-                builder.Append("- ");
-                item.BuildFullText(builder);
-                builder.AppendLine();
-            }
-        }
-
-        builder.AppendLine("</type>");
-    }
-
-    /// <summary>
-    /// Converts this structure to a full text representation.
-    /// </summary>
-    /// <returns>A string containing the full text of the structure.</returns>
-    public string ToFullText()
-    {
-        var builder = new StringBuilder();
-        BuildFullText(builder);
-
-        return builder.ToString();
-    }
-
-    /// <summary>
-    /// Converts this structure to a <see cref="GenerativeGuidingItem"/> for AI generation.
-    /// </summary>
-    /// <returns>A new <see cref="GenerativeGuidingItem"/> instance.</returns>
-    public GenerativeGuidingItem ToGuidingItem()
-    {
-        return new GenerativeGuidingItem
-        {
-            Name = Name,
-            Brief = Tooltip,
-            HtmlColor = string.Empty,
-            Prompt = ToFullText()
-        };
-    }
-
-    /// <summary>
-    /// Appends the full text representation of this structure to the specified builder.
-    /// </summary>
-    /// <param name="builder">The string builder to append to.</param>
-    public void BuildFullText(StringBuilder builder)
-    {
-        string typeName = Type switch
-        {
-            DataStructureType.Struct or DataStructureType.Abstract => "struct",
-            DataStructureType.Enum => "enum",
-            _ => "unknown"
-        };
-
-        builder.Append($"{typeName} : {Name}");
-        if (!string.IsNullOrWhiteSpace(Tooltip))
-        {
-            builder.Append($" # {Tooltip}");
-        }
-        builder.AppendLine();
-
-        builder.AppendLine("{");
-
-        if (Type == DataStructureType.Enum)
-        {
-            foreach (var item in Items)
-            {
-                builder.Append(' ', 2);
-                item.BuildFullText(builder);
-                builder.AppendLine();
-            }
-
-            builder.AppendLine("}");
-        }
-        else
-        {
-            builder.AppendLine("  isAbstract: " + (Type == DataStructureType.Abstract).ToString().ToLower());
-            if (!string.IsNullOrWhiteSpace(BaseType))
-            {
-                builder.AppendLine("  derivedFrom: " + BaseType);
-            }
-            if (Usage != DataUsageMode.None)
-            {
-                builder.AppendLine("  usage: " + Usage.ToString());
-            }
-            if (DrivenMode != DataDrivenMode.None)
-            {
-                builder.AppendLine("  driven: " + DrivenMode.ToString());
-            }
-            builder.AppendLine("  fields: {");
-            foreach (var item in Items)
-            {
-                builder.Append(' ', 4);
-                item.BuildFullText(builder);
-                builder.AppendLine();
-            }
-            builder.AppendLine("  }");
-
-            builder.AppendLine("}");
-        }
-    }
-
-    /// <summary>
-    /// Gets the display name of the structure type.
-    /// </summary>
-    /// <returns>A string representing the type name.</returns>
-    /// <exception cref="AigcException">Thrown when the structure type is unknown.</exception>
-    public string GetTypeName() => Type switch
-    {
-        DataStructureType.Struct => "Struct",
-        DataStructureType.Enum => "Enum",
-        DataStructureType.Abstract => "Abstract Struct",
-        DataStructureType.Event => "Event",
-        _ => throw new AigcException("Unknown data structure type : " + Type)
-    };
 
     /// <summary>
     /// Creates a <see cref="TypeSpec"/> from a <see cref="DCompond"/>.
@@ -438,24 +188,6 @@ public class TypeSpec
         return spec;
     }
 
-    /// <summary>
-    /// Converts a collection of structure specifications to a concatenated tag string.
-    /// </summary>
-    /// <param name="specs">The collection of specifications to convert.</param>
-    /// <returns>A string containing the tag representation of all specifications.</returns>
-    public static string ToTags(IEnumerable<TypeSpec> specs)
-    {
-        var builder = new StringBuilder();
-
-        foreach (var spec in specs)
-        {
-            spec.BuildTag(builder);
-            builder.AppendLine();
-        }
-
-        return builder.ToString();
-    }
-
 }
 
 /// <summary>
@@ -509,55 +241,7 @@ public class FieldSpec
     /// Returns a brief text representation of this field.
     /// </summary>
     /// <returns>A string containing the brief info.</returns>
-    public override string ToString() => ToBriefInfo();
-
-    /// <summary>
-    /// Gets a brief text representation of this field.
-    /// </summary>
-    /// <returns>A string containing the field name and type.</returns>
-    public string ToBriefInfo()
-    {
-        if (string.IsNullOrWhiteSpace(FieldType))
-        {
-            return Name;
-        }
-
-        string type = FieldType;
-        if (IsArray)
-        {
-            type += "[]";
-        }
-
-        return $"{Name}: {type}";
-    }
-
-    /// <summary>
-    /// Gets a full text representation of this field, including the description if available.
-    /// </summary>
-    /// <returns>A string containing the full text of the field.</returns>
-    public string ToFullText()
-    {
-        string s = ToBriefInfo();
-        if (!string.IsNullOrWhiteSpace(Tooltip))
-        {
-            s += $" # {Tooltip}";
-        }
-
-        return s;
-    }
-
-    /// <summary>
-    /// Appends the full text representation of this field to the specified builder.
-    /// </summary>
-    /// <param name="builder">The string builder to append to.</param>
-    public void BuildFullText(StringBuilder builder)
-    {
-        builder.Append(ToBriefInfo());
-        if (!string.IsNullOrWhiteSpace(Tooltip))
-        {
-            builder.Append($" # {Tooltip}");
-        }
-    }
+    public override string ToString() => Name;
 
 
     /// <summary>
