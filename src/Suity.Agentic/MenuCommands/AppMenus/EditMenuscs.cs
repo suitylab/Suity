@@ -159,7 +159,7 @@ class CopyMenuCommand : ActiveDocumentMenuCommand<IViewClipboard>
     public CopyMenuCommand()
         : base("Copy", CoreIconCache.Copy)
     {
-        HotKey = "Ctrl+C";
+        HotKey = "?Ctrl+C";
     }
 
     protected override void OnPopUpNotFound()
@@ -211,7 +211,7 @@ class CutMenuCommand : ActiveDocumentMenuCommand<IViewClipboard>
     public CutMenuCommand()
         : base("Cut", CoreIconCache.Cut)
     {
-        HotKey = "Ctrl+X";
+        HotKey = "?Ctrl+X";
     }
 
     protected override void OnPopUpNotFound()
@@ -263,7 +263,7 @@ class PasteMenuCommand : ActiveDocumentMenuCommand<IViewClipboard>
     public PasteMenuCommand()
         : base("Paste", CoreIconCache.Paste)
     {
-        HotKey = "Ctrl+V";
+        HotKey = "?Ctrl+V";
     }
 
     protected override void OnPopUpNotFound()

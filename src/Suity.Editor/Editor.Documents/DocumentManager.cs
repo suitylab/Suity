@@ -85,11 +85,18 @@ public abstract class DocumentManager
     public abstract DocumentFormat GetDocumentFormatByExtension(string ext);
 
     /// <summary>
-    /// Gets a document format by file path.
+    /// Gets a document format by file path. Will not resolve the `sasset` potential format, only the actual file extension is used to determine the format.
     /// </summary>
     /// <param name="path">The file path.</param>
     /// <returns>The document format, or null if not found.</returns>
     public abstract DocumentFormat GetDocumentFormatByPath(string path);
+
+    /// <summary>
+    /// Resolves the document format from a file path. Will resolve the `sasset` potential format if applicable, otherwise the actual file extension is used to determine the format.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <returns>The resolved document format.</returns>
+    public abstract DocumentFormat ResolveDocumentFormatByPath(string path);
 
     /// <summary>
     /// Resolves the document format from a stream based on extension.

@@ -47,7 +47,7 @@ public class BatchReadTypeDesignItems : ToolCommand<BatchReadTypeDesignItems.Rea
         public override string ToString() => $"XML: {XmlContent?.Length ?? 0} chars, Not Found: {ItemsNotFound.Count}";
     }
 
-    readonly StringProperty _filePath = new("FilePath", "FilePath", string.Empty, "The relative path to the TypeDesign document (e.g., 'Data/Models/mymodel.stype').");
+    readonly StringProperty _filePath = new("FilePath", "FilePath", string.Empty, "The relative path to the TypeDesign document (e.g., 'Data/Models/mymodel.sasset').");
     readonly ListProperty<string> _names = new("Names", "Names", "List of type item names to read.");
 
     public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
@@ -78,9 +78,9 @@ public class BatchReadTypeDesignItems : ToolCommand<BatchReadTypeDesignItems.Rea
         }
 
         string relativePath = FilePath.TrimStart('/', '\\');
-        if (!relativePath.EndsWith(".stype", StringComparison.OrdinalIgnoreCase))
+        if (!relativePath.EndsWith(".sasset", StringComparison.OrdinalIgnoreCase))
         {
-            relativePath += ".stype";
+            relativePath += ".sasset";
         }
 
         string assetSpaceDir = Project.Current?.AssetDirectory;

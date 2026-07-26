@@ -47,7 +47,7 @@ public class WriteTypeDesign : ToolCommand<WriteTypeDesign.Output>
         public override string ToString() => $"{FilePath} '{Message}'";
     }
 
-    readonly StringProperty _filePath = new("FilePath", "FilePath", string.Empty, "The relative path for the TypeDesign document (e.g., 'Data/Models/mymodel.stype').");
+    readonly StringProperty _filePath = new("FilePath", "FilePath", string.Empty, "The relative path for the TypeDesign document (e.g., 'Data/Models/mymodel.sasset').");
     readonly TextBlockProperty _xmlContent = new("XmlContent", "XML Content", "The XML content to parse and apply to the TypeDesign document.");
 
     public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }

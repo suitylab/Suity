@@ -157,11 +157,11 @@ public class GetAssetSpaceTree : ToolCommand<GetAssetSpaceTree.Output>
                 else
                 {
                     var fileInfo = (FileInfo)entry;
-                    var format = DocumentManager.Instance.GetDocumentFormatByPath(fileInfo.FullName);
+                    var format = DocumentManager.Instance.ResolveDocumentFormatByPath(fileInfo.FullName);
 
                     if (format != null)
                     {
-                        lines.Add($"[{format.FormatName}] {prefix}{entry.Name} ({TextHelper.GetFileSizeDisplay(fileInfo.Length)})");
+                        lines.Add($"{prefix}[{format.FormatName}] {entry.Name} ({TextHelper.GetFileSizeDisplay(fileInfo.Length)})");
                     }
                     else
                     {

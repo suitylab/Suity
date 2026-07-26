@@ -90,9 +90,19 @@ public class AvaMenuItemView : IMenuItemView
             {
                 if (!string.IsNullOrWhiteSpace(value))
                 {
-                    var gesture = KeyGesture.Parse(value);
-                    _menuItem?.HotKey = gesture;
-                    _menuItem?.InputGesture = gesture;
+                    if (value.StartsWith('?'))
+                    {
+                        value = value.Substring(1);
+                        var gesture = KeyGesture.Parse(value);
+                        _menuItem?.HotKey = null;
+                        _menuItem?.InputGesture = gesture;
+                    }
+                    else
+                    {
+                        var gesture = KeyGesture.Parse(value);
+                        _menuItem?.HotKey = gesture;
+                        _menuItem?.InputGesture = gesture;
+                    }
                 }
                 else
                 {

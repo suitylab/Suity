@@ -213,6 +213,17 @@ internal sealed class DocumentManagerBK : DocumentManager
         return GetDocumentFormatByExtension(ext);
     }
 
+    public override DocumentFormat ResolveDocumentFormatByPath(string path)
+    {
+        var doc = GetDocument(path);
+        if (doc != null)
+        {
+            return doc.Format;
+        }
+
+        return ResolveInFileFormat(path)?.Format;
+    }
+
     /// <inheritdoc/>
     public override IDocumentResolveResult ResolveInFileFormat(string ext, Stream stream)
     {

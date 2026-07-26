@@ -73,7 +73,7 @@ public class GetTypeDesignItemList : ToolCommand<GetTypeDesignItemList.Output>
         public override string ToString() => $"Found {Items.Count} type items";
     }
 
-    readonly StringProperty _filePath = new("FilePath", "FilePath", string.Empty, "The relative path to the TypeDesign document (e.g., 'Data/Models/mymodel.stype').");
+    readonly StringProperty _filePath = new("FilePath", "FilePath", string.Empty, "The relative path to the TypeDesign document (e.g., 'Data/Models/mymodel.sasset').");
 
     public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
 
@@ -95,9 +95,9 @@ public class GetTypeDesignItemList : ToolCommand<GetTypeDesignItemList.Output>
         }
 
         string relativePath = FilePath.TrimStart('/', '\\');
-        if (!relativePath.EndsWith(".stype", StringComparison.OrdinalIgnoreCase))
+        if (!relativePath.EndsWith(".sasset", StringComparison.OrdinalIgnoreCase))
         {
-            relativePath += ".stype";
+            relativePath += ".sasset";
         }
 
         string assetSpaceDir = Project.Current?.AssetDirectory;
