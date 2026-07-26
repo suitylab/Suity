@@ -1,6 +1,11 @@
-using System;
-using System.Xml.Linq;
 using Suity.Editor.Design;
+using Suity.Editor.Documents.TypeEdit;
+using Suity.Editor.Types;
+using Suity.Editor.Documents.Linked;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Suity.Editor.DataModel;
 
@@ -219,4 +224,154 @@ public static class DataModelParser
             ?? throw new InvalidOperationException(
                 $"Missing required attribute '{name}' on <{element.Name.LocalName}> element.");
     }
+
+    #region Build
+
+    public static DataModelSpec BuildSpec(this ITypeDesignDocument document, IEnumerable<string> names = null)
+    {
+        var modelSpec = new DataModelSpec();
+
+        if (names?.Any() == true)
+        {
+            foreach (var name in names)
+            {
+                var designItem = document.GetMember(name) as TypeDesignItem;
+                if (designItem is null)
+                {
+                    //request.Conversation.AddWarningMessage(L($"Document {L(document.ToDisplayText())} member {name} not found."));
+                    continue;
+                }
+
+                var spec = designItem.ToSpec();
+                if (spec != null)
+                {
+                    modelSpec.Structures.Add(spec);
+                }
+            }
+        }
+        else
+        {
+            // If no types are specified, iterate all types
+            foreach (var designItem in document.TypeItems)
+            {
+                var spec = designItem.ToSpec();
+                if (spec != null)
+                {
+                    modelSpec.Structures.Add(spec);
+                }
+            }
+        }
+
+        return modelSpec;
+    }
+
+    public static TypeSpec ToSpec(this TypeDesignItem designItem)
+    {
+        switch (designItem)
+        {
+            case EnumType enumItem:
+                return enumItem.ToSpec();
+
+            case StructType structType:
+                return structType.ToSpec();
+
+            case AbstractType abstractType:
+                return abstractType.ToSpec();
+
+            default:
+                //request.Conversation.AddWarningMessage($"Unsupported data type: {designItem.GetType().Name}");
+                return null;
+        }
+    }
+
+    public static TypeSpec ToSpec(this EnumType enumType)
+    {
+        var spec = new TypeSpec
+        {
+            Name = enumType.Name,
+            Type = DataStructureType.Enum,
+            Tooltip = enumType.Attributes.GetAttribute<ToolTipsAttribute>()?.ToolTips
+        };
+
+        foreach (var item in enumType.Fields)
+        {
+            var itemSpec = new FieldSpec
+            {
+                Name = item.Name,
+                Tooltip = item.Attributes.GetAttribute<ToolTipsAttribute>()?.ToolTips,
+            };
+
+            spec.Items.Add(itemSpec);
+        }
+
+        return spec;
+    }
+
+    public static TypeSpec ToSpec(this StructType structType)
+    {
+        var spec = structType.ToSpecBase();
+        spec.Type = DataStructureType.Struct;
+
+        return spec;
+    }
+
+    public static TypeSpec ToSpec(this AbstractType abstractType)
+    {
+        var spec = abstractType.ToSpecBase();
+        spec.Type = DataStructureType.Abstract;
+
+        return spec;
+    }
+
+    public static TypeSpec ToSpecBase(this StructTypeBase structType)
+    {
+        var usage = structType.GetDataUsageMode();
+        var driven = structType.GetDataDrivenMode();
+
+        var spec = new TypeSpec
+        {
+            Name = structType.Name,
+            Tooltip = structType.Attributes.GetAttribute<ToolTipsAttribute>()?.ToolTips,
+            BaseType = structType.BaseTypeTarget?.Name,
+            Usage = usage,
+            DrivenMode = driven,
+        };
+        var doc = structType.GetDocument();
+
+        foreach (var item in structType.Fields)
+        {
+            var typeDesign = item.FieldType;
+            var typeDef = typeDesign.BaseType?.GetTypeDefinition() ?? TypeDefinition.Empty;
+
+            var fieldType = typeDef.OriginType?.Target;
+            var fieldTypeDoc = fieldType?.GetDocument(true);
+            bool inSameDoc = fieldTypeDoc != null && fieldTypeDoc == doc;
+            bool useSimpleName = inSameDoc || fieldType?.IsPrimitive == true;
+
+            string fieldTypeName = useSimpleName ? fieldType?.Name : fieldType?.FullTypeName;
+            if (string.IsNullOrWhiteSpace(fieldTypeName))
+            {
+                fieldTypeName = "???";
+            }
+
+            if (typeDef.IsPrimitive)
+            {
+                fieldTypeName = NativeTypes.GetNativeTypeAlias(fieldTypeName);
+            }
+
+            var itemSpec = new FieldSpec
+            {
+                Name = item.Name,
+                Tooltip = item.Attributes.GetAttribute<ToolTipsAttribute>()?.ToolTips,
+                FieldType = fieldTypeName,
+                IsArray = typeDesign.IsArray,
+            };
+
+            spec.Items.Add(itemSpec);
+        }
+
+        return spec;
+    }
+
+    #endregion
 }

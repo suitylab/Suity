@@ -140,7 +140,7 @@ public class BatchReadTypeDesignItems : ToolCommand<BatchReadTypeDesignItems.Rea
                 continue;
             }
 
-            var typeSpec = ConvertToTypeSpec(item);
+            var typeSpec = item.ToSpec();
             if (typeSpec != null)
             {
                 spec.Structures.Add(typeSpec);
@@ -159,69 +159,4 @@ public class BatchReadTypeDesignItems : ToolCommand<BatchReadTypeDesignItems.Rea
         return Task.FromResult(result);
     }
 
-    private TypeSpec ConvertToTypeSpec(TypeDesignItem item)
-    {
-        DataStructureType type = item switch
-        {
-            EnumType => DataStructureType.Enum,
-            AbstractType => DataStructureType.Abstract,
-            StructType => DataStructureType.Struct,
-            _ => DataStructureType.Struct,
-        };
-
-        var spec = new TypeSpec
-        {
-            Name = item.Name,
-            Type = type,
-            Tooltip = item.Description,
-        };
-
-        switch (item)
-        {
-            case StructTypeBase structType:
-                ConvertStructFields(structType, spec);
-                break;
-
-            case EnumType enumType:
-                ConvertEnumFields(enumType, spec);
-                break;
-        }
-
-        return spec;
-    }
-
-    private void ConvertStructFields(StructTypeBase structType, TypeSpec spec)
-    {
-        foreach (var field in structType.Fields)
-        {
-            var fieldSpec = new FieldSpec
-            {
-                Name = field.Name,
-                Tooltip = field.Description,
-                FieldType = field.FieldType.TypeString,
-                IsArray = field.FieldType.IsArray,
-            };
-
-            if (field.Optional)
-            {
-                fieldSpec.Attributes.Add(new AttributeSpec("Optional"));
-            }
-
-            spec.Items.Add(fieldSpec);
-        }
-    }
-
-    private void ConvertEnumFields(EnumType enumType, TypeSpec spec)
-    {
-        foreach (var field in enumType.Fields)
-        {
-            var fieldSpec = new FieldSpec
-            {
-                Name = field.Name,
-                Tooltip = field.Description,
-            };
-
-            spec.Items.Add(fieldSpec);
-        }
-    }
 }
