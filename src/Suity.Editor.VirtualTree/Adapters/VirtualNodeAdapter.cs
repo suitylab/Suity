@@ -84,12 +84,26 @@ public abstract class VirtualNodeAdapter : MarshalByRefObject, ISyncContext
         get
         {
             var value = GetValue();
-            return (value as ITextEdit)?.GetTextEdit() ?? (value as ITextDisplay)?.DisplayText;
+            if (value is ITextEdit textEdit && textEdit.CanEditText)
+            {
+                return textEdit.GetTextEdit();
+            }
+            else if (value is ITextDisplay textDisplay)
+            {
+                return textDisplay.DisplayText;
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
         set
         {
             ITextEdit ext = GetValue() as ITextEdit;
-            ext?.SetTextEdit(value, this);
+            if (ext?.CanEditText == true)
+            {
+                ext.SetTextEdit(value, this);
+            }
         }
     }
 

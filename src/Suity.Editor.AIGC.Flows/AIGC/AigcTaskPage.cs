@@ -196,12 +196,11 @@ public abstract class AigcTaskPage : DesignNode,
 
     #endregion
 
-        #region Virtual (Other)
+    #region Virtual (Other)
 
-
-        /// <summary>
-        /// Handle <see cref="IViewDoubleClickAction"/> interface
-        /// </summary>
+    /// <summary>
+    /// Handle <see cref="IViewDoubleClickAction"/> interface
+    /// </summary>
     protected virtual void OnDoubleClick()
     {
     }

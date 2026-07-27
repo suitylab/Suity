@@ -35,6 +35,8 @@ public class AigcNoticePage : AigcTaskPage
     {
         return Task.FromResult(true);
     }
+
+    public override string DisplayText => _instance.NoticeType.ToDisplayTextL();
 }
 
 public enum NoticeTypes
