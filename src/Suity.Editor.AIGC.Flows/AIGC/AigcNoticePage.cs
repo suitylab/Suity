@@ -53,7 +53,7 @@ public enum NoticeTypes
     [DisplayText("New Objective")]
     NewObjective,
 
-    [DisplayText("Value Duplicated")]
+    [DisplayText("Task Duplicated")]
     TaskDuplicated,
 
     [DisplayText("Value Missing")]
