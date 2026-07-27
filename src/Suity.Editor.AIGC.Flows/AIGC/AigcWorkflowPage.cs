@@ -834,14 +834,17 @@ public class AigcWorkflowPage : AigcTaskPage,
         {
             for (int i = index; i >= 0; i--)
             {
-                if (ParentList.GetItemAt(i) is AigcWorkflowPage task && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
+                var task = ParentList.GetItemAt(i) as AigcTaskPage;
+                if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
                 {
-                    var msg = task.CreateTaskMessage();
-                    list.AddFirst(msg);
-                    if (maxHistory > 0 && list.Count > maxHistory)
-                    {
-                        return;
-                    }
+                    continue;
+                }
+
+                var msg = task.CreateTaskMessage();
+                list.AddFirst(msg);
+                if (maxHistory > 0 && list.Count > maxHistory)
+                {
+                    return;
                 }
             }
         }
@@ -919,7 +922,7 @@ public class AigcWorkflowPage : AigcTaskPage,
         if (duplicated)
         {
             string msg = "This task executed the exact same result as the previous task, which may lead to an infinite loop issue. Please avoid repeating the previous operation.";
-            this.ParentList.Add(new AigcNoticePage(NoticeTypes.ValueDuplicated, msg));
+            this.ParentList.Add(new AigcNoticePage(NoticeTypes.TaskDuplicated, msg));
         }
 
         return duplicated;

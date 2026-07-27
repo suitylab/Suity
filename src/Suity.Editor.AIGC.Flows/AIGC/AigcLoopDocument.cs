@@ -547,7 +547,7 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
             }
         }
 
-        AddTask(new AigcNoticePage(NoticeTypes.NewUserRequirement, "The user initiated a new request here."));
+        AddTask(new AigcNoticePage(NoticeTypes.NewObjective, "The user initiated a new objective here."));
         AddTask(startupWorkflow);
         MarkDirtyAndSaveDelayed(this);
 

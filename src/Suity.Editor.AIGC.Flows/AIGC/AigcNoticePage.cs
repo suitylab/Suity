@@ -26,7 +26,8 @@ public class AigcNoticePage : AigcTaskPage
 
     public override LLmMessage[] GetChatMessages(bool input, bool output)
     {
-        return null;
+        string commit = _instance.GetTaskCommit(ResolveChatIntents.Preview)?.Text ?? string.Empty;
+        return [new LLmMessage { Role = LLmMessageRole.Assistant, Message = commit }];
     }
 
     public override IPageAsset GetPageAsset()
@@ -49,11 +50,11 @@ public enum NoticeTypes
     [DisplayText("Custom")]
     Custom,
 
-    [DisplayText("New User Requirement")]
-    NewUserRequirement,
+    [DisplayText("New Objective")]
+    NewObjective,
 
     [DisplayText("Value Duplicated")]
-    ValueDuplicated,
+    TaskDuplicated,
 
     [DisplayText("Value Missing")]
     ValueMissing,
