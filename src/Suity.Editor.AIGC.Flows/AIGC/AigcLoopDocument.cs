@@ -51,6 +51,7 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
 
         ItemCollection.AddItemType<AigcWorkflowPage>("Workflow");
         ItemCollection.AddItemType<AigcToolPage>("Tool");
+        ItemCollection.AddItemType<AigcNoticePage>("Notice");
     }
 
     #region Startup

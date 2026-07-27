@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AIGC\AigcNoticePage.cs~RFdc2bae8.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
     <PackageReference Include="LiteDB" Version="5.0.17" />
 	<PackageReference Include="Markdig" Version="1.1.2" />

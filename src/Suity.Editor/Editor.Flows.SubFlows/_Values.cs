@@ -245,6 +245,7 @@ public enum ScratchPadTypes
 
 [NativeType(CodeBase = "SubFlow", Icon = "*CoreIcon|Scratch", Color = FlowColors.Task)]
 [DisplayText("Scratch Pad")]
+[ToolTipsText("Attach the scratch pad to the current task.")]
 public class ScratchPad : DesignAttribute, ITextDisplay
 {
     private readonly StringProperty _path = new(nameof(Path), "Path", null, "Path of the scratch pad item");
@@ -420,6 +421,17 @@ public class ScratchPad : DesignAttribute, ITextDisplay
 
 [NativeType(CodeBase = "SubFlow", Icon = "*CoreIcon|Scratch")]
 [DisplayText("Commit Scratch Pad")]
+[ToolTipsText("When the task is finished, copy all scratch pad records to the parent task.")]
 public class CommitScratchPad : DesignAttribute
 {
+}
+
+[NativeType(CodeBase = "SubFlow", Icon = "*CoreIcon|Loop")]
+[DisplayText("Duplicate Value Check")]
+[ToolTipsText("Check if this task has duplicate property values with the previous task. This attribute is used to prevent repetitive loop operations.")]
+public class DuplicateValueCheck : DesignAttribute
+{
+    public DuplicateValueCheck()
+    {
+    }
 }

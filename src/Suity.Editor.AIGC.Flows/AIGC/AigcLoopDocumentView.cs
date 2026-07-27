@@ -641,10 +641,18 @@ public class AigcLoopDocumentView : IDocumentView,
                     {
                         OnToolPageGui(gui, tool);
                     }
+                    else if (first is AigcNoticePage notice)
+                    {
+                        OnNoticePageGui(gui, notice);
+                    }
+                    else
+                    {
+                        OnBlankPageGui(gui);
+                    }
                 }
                 else
                 {
-                    OnBlackPageGui(gui);
+                    OnBlankPageGui(gui);
                 }
             }
             else if (_document != null)
@@ -885,7 +893,7 @@ public class AigcLoopDocumentView : IDocumentView,
                         break;
 
                     case PageViewCategory.Context:
-                        ContextGui(gui, workflow);
+                        WorkflowContextGui(gui, workflow);
                         break;
                 }
             });
@@ -921,25 +929,6 @@ public class AigcLoopDocumentView : IDocumentView,
                 NaviButton(gui, PageViewCategory.Page, CoreIconCache.Task, "Page view");
                 NaviButton(gui, PageViewCategory.Chat, CoreIconCache.Chat, "LLm chat view");
                 NaviButton(gui, PageViewCategory.Context, CoreIconCache.Text, "Chat history context");
-
-                //TaskTitleGui(gui, page);
-
-                gui.VerticalLine("#spacing01")
-                .OnInitialize(n =>
-                {
-                    //n.InitOverrideMargin(0, 0, 10, 10);
-                    n.InitHeight(40);
-                    n.InitWidth(20);
-                    n.InitOverrideBorder(1, Color.White.MultiplyAlpha(0.2f));
-                });
-
-                gui.Button("#workflowBtn", "Workflow", CoreIconCache.Workflow)
-                .InitClass("naviBtn")
-                .InitToolTips("Go to workflow")
-                .OnClick(() =>
-                {
-                    HandleGotoWorkflow();
-                });
             });
 
             gui.VerticalLayout("#content")
@@ -957,14 +946,62 @@ public class AigcLoopDocumentView : IDocumentView,
                         break;
 
                     case PageViewCategory.Context:
-                        ContextGui(gui, tool);
+                        ToolContextGui(gui, tool);
                         break;
                 }
             });
         });
     }
 
-    private void OnBlackPageGui(ImGui gui)
+    private void OnNoticePageGui(ImGui gui, AigcNoticePage notice)
+    {
+        gui.VerticalLayout("#tool_page-" + notice.Name)
+        .OnInitialize(n =>
+        {
+            n.InitTheme(_theme);
+            n.InitFullHeight();
+            n.InitWidthRest();
+        })
+        .OnContent(() =>
+        {
+            _guiNaviContainerRef.Node = gui.HorizontalFrame("title")
+            .InitFullWidth()
+            //.InitHeight(80)
+            .InitFitVertical()
+            .OnContent(() =>
+            {
+                //_guiNaviContainerRef.Node = gui.HorizontalLayout("#left")
+                //.InitWidthRest(64)
+                //.InitPadding(0)
+                ////.InitVerticalAlignment(GuiAlignment.Center)
+                //.OnContent(() =>
+                //{
+
+                //});
+
+                NaviButton(gui, PageViewCategory.Page, CoreIconCache.Task, "Page view");
+                NaviButton(gui, PageViewCategory.Context, CoreIconCache.Text, "Chat history context");
+            });
+
+            gui.VerticalLayout("#content")
+            .InitSizeRest()
+            .OnContent(() =>
+            {
+                switch (_pageCategory)
+                {
+                    case PageViewCategory.Page:
+                        _propGrid.OnGui(gui);
+                        break;
+
+                    case PageViewCategory.Context:
+                        NoticeContextGui(gui, notice);
+                        break;
+                }
+            });
+        });
+    }
+
+    private void OnBlankPageGui(ImGui gui)
     {
         gui.VerticalLayout("#blank")
         .InitFullHeight()
@@ -1054,7 +1091,7 @@ public class AigcLoopDocumentView : IDocumentView,
         _scratchPads = null;
     }
 
-    private void ContextGui(ImGui gui, AigcWorkflowPage page)
+    private void WorkflowContextGui(ImGui gui, AigcWorkflowPage page)
     {
         _cachedInput ??= page.Instance?.GetInputChatHistory(ResolveChatIntents.Preview);
         _cachedOutput ??= page.Instance?.GetOutputChatHistory(ResolveChatIntents.Preview);
@@ -1135,7 +1172,31 @@ public class AigcLoopDocumentView : IDocumentView,
         });
     }
 
-    private void ContextGui(ImGui gui, AigcToolPage page)
+    private void ToolContextGui(ImGui gui, AigcToolPage page)
+    {
+        gui.ScrollableFrame("#chat-history-" + page.Name, GuiOrientation.Vertical)
+        .InitFullSize()
+        .OnContent(() =>
+        {
+            gui.HorizontalLayout("#commit-title")
+            .InitFullWidth()
+            .InitFitVertical()
+            .OnContent(() =>
+            {
+                gui.Image("icon", CoreIconCache.Complete).InitClass("titleIcon");
+                gui.Text("commit", "Commit to parent task")
+                .InitClass("titleText")
+                .InitCenter();
+            });
+
+            gui.TextAreaInput("#commit", null, page.GetPageInstance()?.GetTaskCommit(ResolveChatIntents.Preview))
+            .InitFullWidth()
+            .InitFitVertical()
+            .InitReadonly(true);
+        });
+    }
+
+    private void NoticeContextGui(ImGui gui, AigcNoticePage page)
     {
         gui.ScrollableFrame("#chat-history-" + page.Name, GuiOrientation.Vertical)
         .InitFullSize()
