@@ -426,12 +426,12 @@ public class CommitScratchPad : DesignAttribute
 {
 }
 
-[NativeType(CodeBase = "SubFlow", Icon = "*CoreIcon|Loop")]
-[DisplayText("Duplicate Value Check")]
-[ToolTipsText("Check if this task has duplicate property values with the previous task. This attribute is used to prevent repetitive loop operations.")]
-public class DuplicateValueCheck : DesignAttribute
+[NativeType(CodeBase = "SubFlow", Icon = "*CoreIcon|Duplicated")]
+[DisplayText("Duplicate Task Check")]
+[ToolTipsText("Check if this task has duplicate values with the previous task. This attribute is used to prevent repetitive loop operations.")]
+public class DuplicatedTaskCheck : DesignAttribute
 {
-    public DuplicateValueCheck()
+    public DuplicatedTaskCheck()
     {
     }
 }

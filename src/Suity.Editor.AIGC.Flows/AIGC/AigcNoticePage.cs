@@ -19,6 +19,11 @@ public class AigcNoticePage : AigcTaskPage
         _instance = new(this);
     }
 
+    public AigcNoticePage(NoticeTypes noticeType, string message)
+    {
+        _instance = new(this, noticeType, message);
+    }
+
     public override LLmMessage[] GetChatMessages(bool input, bool output)
     {
         return null;

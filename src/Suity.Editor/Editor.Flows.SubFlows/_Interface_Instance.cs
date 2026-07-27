@@ -118,6 +118,8 @@ public interface ISubFlowElement : INamed
     /// Gets whether history output is available in the specified direction.
     /// </summary>
     bool GetCanOutputHistory(FlowDirections diraction);
+
+    T GetAttribute<T>() where T : class;
 }
 
 

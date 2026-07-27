@@ -198,42 +198,6 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         return type;
     }
 
-    private static bool CollectField(List<SimpleField> fields, IPageValueElement parameter)
-    {
-        var fieldType = parameter.ParameterType;
-        if (TypeDefinition.IsNullOrEmpty(fieldType))
-        {
-            return false;
-        }
-
-        if (parameter is IPageMessage)
-        {
-            return false;
-        }
-
-        if (fieldType == NativeTypes.TextBlockType)
-        {
-            fieldType = NativeTypes.StringType;
-        }
-
-        var node = (parameter as SubFlowElement)?.DiagramItem?.Node as DesignFlowNode;
-        var range = node?.GetAttribute<NumericRangeAttribute>();
-        var selection = node?.GetAttribute<SelectionDesignAttribute>();
-        var tooltips = node?.GetAttribute<ToolTipsAttribute>();
-
-        var field = new SimpleField
-        {
-            Name = parameter.Name,
-            Description = parameter.ToDisplayTextL(),
-            Tooltips = tooltips?.ToolTips,
-            Type = fieldType,
-            Range = range,
-            Selection = selection,
-        };
-
-        fields.Add(field);
-        return true;
-    }
 
     /// <inheritdoc/>
     public object GetParameter(string name)
@@ -1320,4 +1284,42 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         }
     }
     #endregion
+
+    private static bool CollectField(List<SimpleField> fields, IPageValueElement parameter)
+    {
+        var fieldType = parameter.ParameterType;
+        if (TypeDefinition.IsNullOrEmpty(fieldType))
+        {
+            return false;
+        }
+
+        if (parameter is IPageMessage)
+        {
+            return false;
+        }
+
+        if (fieldType == NativeTypes.TextBlockType)
+        {
+            fieldType = NativeTypes.StringType;
+        }
+
+        var node = (parameter as SubFlowElement)?.DiagramItem?.Node as DesignFlowNode;
+        var range = node?.GetAttribute<NumericRangeAttribute>();
+        var selection = node?.GetAttribute<SelectionDesignAttribute>();
+        var tooltips = node?.GetAttribute<ToolTipsAttribute>();
+
+        var field = new SimpleField
+        {
+            Name = parameter.Name,
+            Description = parameter.ToDisplayTextL(),
+            Tooltips = tooltips?.ToolTips,
+            Type = fieldType,
+            Range = range,
+            Selection = selection,
+        };
+
+        fields.Add(field);
+        return true;
+    }
+
 }

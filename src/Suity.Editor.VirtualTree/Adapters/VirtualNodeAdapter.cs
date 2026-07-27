@@ -2,7 +2,6 @@
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
-using System.Drawing;
 
 namespace Suity.Editor.VirtualTree.Adapters;
 

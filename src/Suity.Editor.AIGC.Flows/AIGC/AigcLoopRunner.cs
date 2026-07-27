@@ -6,7 +6,6 @@ using Suity.Helpers;
 using Suity.Views;
 using System;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Suity.Editor.AIGC;
 
@@ -407,6 +406,7 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
         bool? isDone = task.GetPageInstance()?.GetIsDone();
         if (isDone.IsTrueOrEmpty())
         {
+            // Implicit commit.
             return new(end.EndType, end.Value);
         }
 

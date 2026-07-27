@@ -229,6 +229,22 @@ public abstract class SubFlowElement : IViewObject, ISubFlowElement
     /// <inheritdoc/>
     public virtual bool? GetIsDone() => false;
 
+    /// <inheritdoc/>
+    public virtual bool GetCanOutputHistory(FlowDirections diraction)
+    {
+        var isDone = GetIsDone();
+
+        return !isDone.HasValue || isDone.Value == true;
+    }
+
+    public virtual T GetAttribute<T>() where T : class
+    {
+        return (this.Node as IAttributeGetter)?.GetAttribute<T>();
+    }
+
+
+    #endregion
+
     /// <summary>
     /// Gets the text status representing the completion state of this element.
     /// </summary>
@@ -337,18 +353,6 @@ public abstract class SubFlowElement : IViewObject, ISubFlowElement
                 }
         }
     }
-
-    /// <summary>
-    /// Gets whether this element can output history in the specified direction.
-    /// </summary>
-    /// <param name="diraction">The flow direction to check.</param>
-    public virtual bool GetCanOutputHistory(FlowDirections diraction)
-    {
-        var isDone = GetIsDone();
-
-        return !isDone.HasValue || isDone.Value == true;
-    }
-    #endregion
 
     /// <summary>
     /// Finds the nearest parent element matching the specified predicate.

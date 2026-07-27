@@ -468,15 +468,17 @@ public class AigcWorkflowPage : AigcTaskPage,
             return null;
         }
 
+        CheckValueDupliacated();
+
         // If a task does not have a task prompt set, it will automatically transfer the prompt from the previous task to ensure continuity of the task chain.
         // Clear the previous task's prompt to prevent repeated use and save storage space.
         // Without transferring the prompt, there would be additional overhead of searching upward for task prompts.
-/*        if (string.IsNullOrWhiteSpace(taskPrompt))
-        {
-            var lastTask = GetParentLastSubTask() as AigcTaskPage;
-            taskPrompt = lastTask?.TaskPrompt ?? string.Empty;
-            lastTask?.TaskPrompt = string.Empty;
-        }*/
+        /*        if (string.IsNullOrWhiteSpace(taskPrompt))
+                {
+                    var lastTask = GetParentLastSubTask() as AigcTaskPage;
+                    taskPrompt = lastTask?.TaskPrompt ?? string.Empty;
+                    lastTask?.TaskPrompt = string.Empty;
+                }*/
 
         var task = CreateTaskPage(asset, title, taskPrompt, rule, commitName);
         if (task is not NamedItem item)
@@ -509,12 +511,14 @@ public class AigcWorkflowPage : AigcTaskPage,
             return null;
         }
 
-/*        if (string.IsNullOrWhiteSpace(taskPrompt))
-        {
-            var lastTask = GetParentLastSubTask() as AigcTaskPage;
-            taskPrompt = lastTask?.TaskPrompt ?? string.Empty;
-            lastTask?.TaskPrompt = string.Empty;
-        }*/
+        CheckValueDupliacated();
+
+        /*        if (string.IsNullOrWhiteSpace(taskPrompt))
+                {
+                    var lastTask = GetParentLastSubTask() as AigcTaskPage;
+                    taskPrompt = lastTask?.TaskPrompt ?? string.Empty;
+                    lastTask?.TaskPrompt = string.Empty;
+                }*/
 
         var task = CreateTaskPage(pageInstance, title, taskPrompt, rule, commitName);
         if (task is not NamedItem item)
@@ -869,6 +873,53 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
 
         return tools.Distinct().ToArray();
+    }
+
+    private bool CheckValueDupliacated()
+    {
+        int index = this.GetIndex();
+        if (index <= 0)
+        {
+            return false;
+        }
+
+        var dupAttr = (this.Workflow?.GetBaseDefinition() as IAttributeGetter)?.GetAttribute<DuplicatedTaskCheck>();
+        if (dupAttr is null)
+        {
+            return false;
+        }
+
+        var workflowPrev = ParentList?.GetItemAt(index - 1) as AigcWorkflowPage;
+        if (workflowPrev is null)
+        {
+            return false;
+        }
+
+        if (workflowPrev.Workflow != this.Workflow)
+        {
+            return false;
+        }
+
+        var instance = this.GetSubFlowInstance();
+        if (instance is null)
+        {
+            return false;
+        }
+
+        var instancePrev = workflowPrev.GetSubFlowInstance();
+        if (instancePrev is null)
+        {
+            return false;
+        }
+
+        bool duplicated = instance.GetTaskCommit(ResolveChatIntents.Preview) == instancePrev.GetTaskCommit(ResolveChatIntents.Preview);
+        if (duplicated)
+        {
+            string msg = "This task executed the exact same result as the previous task, which may lead to an infinite loop issue. Please avoid repeating the previous operation.";
+            this.ParentList.Add(new AigcNoticePage(NoticeTypes.ValueDuplicated, msg));
+        }
+
+        return duplicated;
     }
 
     #endregion
