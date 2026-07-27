@@ -912,7 +912,10 @@ public class AigcWorkflowPage : AigcTaskPage,
             return false;
         }
 
-        bool duplicated = instance.GetTaskCommit(ResolveChatIntents.Preview) == instancePrev.GetTaskCommit(ResolveChatIntents.Preview);
+        string commit = instance.GetTaskCommit(ResolveChatIntents.Preview)?.Text ?? string.Empty;
+        string commitPrev = instancePrev.GetTaskCommit(ResolveChatIntents.Preview)?.Text ?? string.Empty;
+
+        bool duplicated = commit == commitPrev;
         if (duplicated)
         {
             string msg = "This task executed the exact same result as the previous task, which may lead to an infinite loop issue. Please avoid repeating the previous operation.";

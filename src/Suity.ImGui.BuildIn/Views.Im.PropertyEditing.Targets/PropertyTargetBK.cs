@@ -40,8 +40,8 @@ public class PropertyTargetBK : PropertyTarget
     /// Initializes a new instance of the <see cref="PropertyTargetBK"/> class with the specified name and edited type.
     /// </summary>
     /// <param name="name">The name of the property.</param>
-    /// <param name="editedType">The type being edited, or null to use object.</param>
-    public PropertyTargetBK(string name, Type? editedType)
+    /// <param name="presetType">The preset type being edited, or null to use object.</param>
+    public PropertyTargetBK(string name, Type? presetType)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -49,7 +49,7 @@ public class PropertyTargetBK : PropertyTarget
         }
 
         _id = _propName = name;
-        PresetType = editedType ?? typeof(object);
+        PresetType = presetType ?? typeof(object);
     }
 
     /// <inheritdoc/>
@@ -270,7 +270,7 @@ public class PropertyTargetBK : PropertyTarget
     {
         var target = GetOrCreateField(name, () =>
         {
-            var t = new PropertyTargetBK(name)
+            var t = new PropertyTargetBK(name, editedType)
             {
                 Getter = CreateFieldGetter(getter),
                 Setter = setter != null ? CreateFieldSetter(setter) : null,
