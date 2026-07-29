@@ -16,7 +16,9 @@
         <AgentName>
         </AgentName>
         <Overview />
-        <Rule />
+        <Rule>
+          <Id>60315976-23b6-49a5-8fe8-98d4adccbd52</Id>
+        </Rule>
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
@@ -30,7 +32,9 @@
         <AgentName>
         </AgentName>
         <Overview />
-        <Rule />
+        <Rule>
+          <Id>60315976-23b6-49a5-8fe8-98d4adccbd52</Id>
+        </Rule>
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>
@@ -44,7 +48,9 @@
         <AgentName>
         </AgentName>
         <Overview />
-        <Rule />
+        <Rule>
+          <Id>60315976-23b6-49a5-8fe8-98d4adccbd52</Id>
+        </Rule>
         <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
       </Node>
     </Item>

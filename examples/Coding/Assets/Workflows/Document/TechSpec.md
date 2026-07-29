@@ -1,33 +1,38 @@
 # Role  
-Act as an expert Software Architect and Technical Writer.  
+Act as an expert Software Architect and Technical Writer for a Multi-Agent Development Pipeline.  
 
 # Task  
-Generate a clear Technical Specification (tech-spec) document for a software system.  
+Generate a clear, concise Technical Specification (`tech-spec.md`) document establishing the static technical foundation, global patterns, and infrastructure strategy.  
 
-# Structure the document with the following sections:  
+# Document Structure:  
 
-1. **System Architecture & Layered Design:**
-   Define the multi-layered architecture and explicitly define the boundaries for different system concerns.
+1. **Technology Stack & Frameworks:**
+   - Define the core framework (e.g., Vite, TypeScript, UI frameworks, rendering engines).
+   - Specify build tools, target environment constraints, and compilation strategies (e.g., loose type-checking).
 
-2. **Data Models & Schema Definitions:**
-   Define main structural types, interfaces, and data models using **property names and type signatures**. Specify their exact file locations.
-   
-3. **Core Utility Pipelines:**
-   Design helper functions and core utility pipelines using **method signatures and pseudo-logic** (e.g., `formatCurrency(amount: number): string // pseudo: apply locale formatting`). Do not write actual function bodies.
-   Detail how the UI components will consume the Business Logic and Data Models using **pseudo-logic flows** rather than actual JSX or framework-specific syntax.
-     
-4. **Directory & File Structure Plan:**
-   Provide a complete tree view of the proposed file and folder structure. Detail the purpose of each modular component.
-   Try to use fewer files to keep the structure simple.
-   Include scaffolding startup file list of current coding stack (e.g., `.gitignore`, `tsconfig.json`, `vite.config.ts`, `package.json`).  
-   
+2. **Global Architectural Patterns (Supporting Vertical Slices):**
+   - Define the high-level patterns used to build the software (e.g., Component-based architecture, Event-driven communication, Object Pooling for memory optimization).
+   - **CRITICAL:** Do NOT enforce horizontal "Layered Design" (like MVC where views and logic are entirely decoupled in execution). The architecture must support **Incremental Vertical Slicing** where data, logic, and UI are built feature-by-feature.
+
+3. **Core Infrastructure & Utility Pipelines:**
+   - Design global infrastructure such as asset loaders, logging systems, or base render loops.
+   - Use method signatures and pseudo-logic (e.g., `loadAssets(manifest): Promise<void> // pseudo: fetch and cache`). Do not write actual function bodies.
+   - *Note: Specific business data models, interfaces, and state schemas MUST be deferred to `ARCHITECTURE.md`. Do not define them here.*
+
+4. **Feature-Based Directory Structure (Agent-Friendly):**
+   - Provide a complete tree view of the proposed file and folder structure.
+   - **CRITICAL FOLDER STRATEGY:** Group files by **Feature / Domain** (e.g., `src/features/combat/`, `src/features/hangar/`), NOT by horizontal types (e.g., avoid global `src/components/` or `src/controllers/` unless strictly shared). This minimizes context-switching for subsequent coding agents.
+   - Include scaffolding startup file list (e.g., `.gitignore`, `tsconfig.json`, `vite.config.ts`, `package.json`).
+   - Keep the structure as flat and simple as possible.
+
 5. **Dependency Management Plan:**
-   List all required external dependencies, exact versions, and required updates to `package.json`.
+   - List all required external dependencies, exact versions, and required updates to `package.json`.
 
 # Reasoning
-Think before write, deep planning of the document content, then output with following format:
+Think step-by-step before writing. Ensure the technical design strictly supports step-by-step, runnable feature delivery.
 
 # Adhere strictly to the following guidelines:  
-- **No language specific coding**: Use pseudo code for syntax-specific implementations.  
-- **No Planning**: No development planning specification.
-- **No Testing**: No testing specification.
+- **No Split-Brain:** Never define dynamic schemas, specific data contracts, or API models here (they belong in `ARCHITECTURE.md`).
+- **No language-specific coding**: Use pseudo-code for syntax-specific implementations.  
+- **No Planning**: Do not output development plans or roadmaps.
+- **No Testing/Deployment**: No testing or deployment specifications.

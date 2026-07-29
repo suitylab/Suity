@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="SubFlowPreset">
+  <AssetId>db6abb3c-b42a-4416-ab3e-dcf9e242a2e2</AssetId>
+  <PresetName>
+  </PresetName>
+  <BaseWorkflow>
+    <Id>ab7f1a77-2533-4136-8abf-49a0d4e42b91</Id>
+  </BaseWorkflow>
+  <Tools />
+  <Overview>
+    <Text>Creating Architecture document.</Text>
+  </Overview>
+  <UserInputHint>
+    <Text>
+    </Text>
+  </UserInputHint>
+  <Skill>
+    <Id>91380d77-15fd-4cc8-8597-e59216996caa</Id>
+  </Skill>
+  <Rule />
+  <Description>
+  </Description>
+  <Icon />
+  <Page>
+    <__preset__ />
+  </Page>
+</SuityAsset>

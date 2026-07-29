@@ -14,7 +14,9 @@
         <Icon>
           <Id>dafeca44-4004-4457-9eaa-d7f4011d9e7f</Id>
         </Icon>
-        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
+          <Item type="SObject" struct="9c192358-5a7c-4c67-9444-baeae0501685" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62" />
+        </Attributes>
         <Tools />
       </Node>
     </Item>

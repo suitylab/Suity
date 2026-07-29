@@ -84,10 +84,7 @@
   <Object id="04fd9a4f-dbc7-4fee-af06-58b10b527112" name="*AIGC|ImageGenAsset" />
   <Object id="6a031e9e-d61e-436a-aad1-b02203721a32" name="*AIGC|KeywordKnowledge" />
   <Object id="d29d3452-8a11-411f-bffd-0a069e012b0a" name="*AIGC|KnowledgeArticleList" />
-  <Object id="d29d3452-8a11-411f-bffd-0a069e012b0a" name="*AIGC|KnowledgeArticleList" />
-  <Object id="d29d3452-8a11-411f-bffd-0a069e012b0a" name="*AIGC|KnowledgeArticleList" />
   <Object id="495047cc-3b56-4d2e-9c58-133918e54d5e" name="*AIGC|KnowledgeBase" />
-  <Object id="2e1c0e46-cba9-40a3-8ef9-aef1549eb0d1" name="*AIGC|LLmCallOptionEx" />
   <Object id="2e1c0e46-cba9-40a3-8ef9-aef1549eb0d1" name="*AIGC|LLmCallOptionEx" />
   <Object id="f906f622-d388-4d2e-8d82-167a0bf134da" name="*AIGC|LLmMessage" />
   <Object id="7dd01d56-8f25-48e5-abf3-bbb6835e8f73" name="*AIGC|LLmModelAsset" />
@@ -164,7 +161,6 @@
   <Object id="d8bd1266-9e18-40d4-9609-0e857075cf6d" name="*AssetLink|Suity.Editor.AIGC.ThirdPartyImageGenAsset" />
   <Object id="199422fd-cdec-423c-a065-8c90395589c5" name="*AssetLink|Suity.Editor.AIGC.ThirdPartyLLmEmbeddingAsset" />
   <Object id="5286dde0-667f-4cb8-a375-0df317c46d06" name="*AssetLink|Suity.Editor.AIGC.ThirdPartyLLmModelAsset" />
-  <Object id="1338918f-1ec1-4b3b-864c-0d55b0d08d20" name="*AssetLink|Suity.Editor.AIGC.ToolCommandAsset`2" />
   <Object id="6654a55e-ef96-4437-b516-31ae3d6b5d92" name="*AssetLink|Suity.Editor.AssemblyAsset" />
   <Object id="ad0c49f1-9204-414f-af0d-dcaa052952c9" name="*AssetLink|Suity.Editor.CodeRender.Material" />
   <Object id="0d9b2cde-2c29-43db-9e38-e81e3c68431a" name="*AssetLink|Suity.Editor.CodeRender.RenderType" />
@@ -214,6 +210,7 @@
   <Object id="f444c779-80e8-4e77-977c-903eb143ed6a" name="*AssetLink|Suity.Editor.StandaloneAsset" />
   <Object id="cf5ce6a3-3504-40af-a6ba-4f1010cd2cba" name="*AssetLink|Suity.Editor.StandaloneAsset`1" />
   <Object id="61aa4398-b961-457e-8119-89a45a469f75" name="*AssetLink|Suity.Editor.TextAsset" />
+  <Object id="fb29bfd4-3511-4d70-a7eb-3559f072f9e5" name="*AssetLink|Suity.Editor.ToolCommandAsset`2" />
   <Object id="878421a0-a0b0-470d-ad9b-7455c9b78f3c" name="*AssetLink|Suity.Editor.Types.DAssetKey" />
   <Object id="6755ef5a-723d-4752-bf28-b20547bc894f" name="*AssetLink|Suity.Editor.Types.DCompond" />
   <Object id="fb0d3b76-868a-4a39-a760-cf716d015ef7" name="*AssetLink|Suity.Editor.Types.DEventArgument" />
@@ -237,7 +234,6 @@
   <Object id="6d2a52da-0d81-458e-9c31-f06d46e11f66" name="*Brief|TeminalBrief" />
   <Object id="f7f88797-bbc8-43e5-adae-63f234434514" name="*Brief|TypeNameAndBrief" />
   <Object id="45f04663-f845-4528-b84d-93958120ec50" name="*Core" />
-  <Object id="4560e9f8-28fb-44bc-9b07-d1adb10bc21e" name="*Core|DataContainer" />
   <Object id="4560e9f8-28fb-44bc-9b07-d1adb10bc21e" name="*Core|DataContainer" />
   <Object id="a4d8cc89-ee63-4963-b883-495879a7c877" name="*Core|DataItem" />
   <Object id="0f5e48a8-82e1-48d6-a874-d079f55eb1da" name="*Core|PagedTextAsset" />
@@ -677,23 +673,31 @@
   <Object id="f3884b05-3c4e-4b25-9723-7a896e255b8d" name="*PageTool|Suity|BatchApplyDiffPatches" />
   <Object id="2432214a-f2bd-4104-b212-8c2fe435f77d" name="*PageTool|Suity|BatchCreateDirectory" />
   <Object id="d6d8c762-a2ca-4386-826d-cd05801a3636" name="*PageTool|Suity|BatchDeleteFiles" />
+  <Object id="9b2213f4-0749-4f36-b0b5-422c46f9c6c0" name="*PageTool|Suity|BatchDeleteNamedItems" />
   <Object id="0ef171eb-766a-4aaf-966a-0cbfc6052687" name="*PageTool|Suity|BatchEditInFiles" />
   <Object id="1d7c4267-b004-429b-8070-b74e2710dd69" name="*PageTool|Suity|BatchReadFile" />
+  <Object id="253927cb-ff1d-4b6f-99b3-a6d29799385a" name="*PageTool|Suity|BatchReadTypeDesignItems" />
   <Object id="07d8f308-0fe6-4e09-bfc0-2510b8297135" name="*PageTool|Suity|BatchRenameFiles" />
+  <Object id="de1b3d7e-c676-480a-bb37-3d338bea7dce" name="*PageTool|Suity|BatchRenameNamedItems" />
   <Object id="bf224512-e826-4d71-a19d-95b47fed695a" name="*PageTool|Suity|BatchWriteFile" />
   <Object id="8722e349-3173-4b3e-8cba-ccc3f9485b5f" name="*PageTool|Suity|CallSubAgent" />
   <Object id="02c01430-74d8-4e59-a7b5-6094cb171ec3" name="*PageTool|Suity|CreateNewFile" />
+  <Object id="dcc9ed34-7ed2-49eb-9d9e-f6dba1a5e010" name="*PageTool|Suity|DeleteAsset" />
   <Object id="2c1e3f5e-c326-4260-a4dd-dc404aaaef0b" name="*PageTool|Suity|EditInFile" />
   <Object id="c9d4cc11-5bcc-4563-8789-d53c9d97e474" name="*PageTool|Suity|FindAndReplaceInFile" />
+  <Object id="69b2893b-68d0-4044-9640-6ae827b538f0" name="*PageTool|Suity|GetAssetSpaceTree" />
   <Object id="922c7589-8c57-43b2-91c2-3873029a817a" name="*PageTool|Suity|GetFileMetadata" />
   <Object id="bbcd6818-134a-4a69-b631-721484e35682" name="*PageTool|Suity|GetTaskHistory" />
+  <Object id="68cc810d-80da-4021-b351-844e26211b2a" name="*PageTool|Suity|GetTypeDesignItemList" />
   <Object id="72bfd38f-adb1-4e2a-9185-08a558e30272" name="*PageTool|Suity|GetWorkspaceTree" />
   <Object id="d9bb5548-e340-4bd3-91ec-76d0f35b1449" name="*PageTool|Suity|ListDirectory" />
   <Object id="4fa5a672-755e-4cfe-97af-79eecb75b4ce" name="*PageTool|Suity|ReadFile" />
+  <Object id="5a0d1a6c-d5fb-4cab-909e-e8e88d5d95ff" name="*PageTool|Suity|RenameAsset" />
   <Object id="dc35e117-c8f5-493b-8bd6-ffb27b18833f" name="*PageTool|Suity|RewriteEntireFile" />
   <Object id="0c0e6e87-c484-44be-8d2b-1e00a40300e0" name="*PageTool|Suity|RunShellCommand" />
   <Object id="8fe14aad-8164-4636-94f5-8bc755df34b5" name="*PageTool|Suity|SearchFile" />
   <Object id="c98801ac-2dd8-46e7-8eb6-e1350fb72fa0" name="*PageTool|Suity|SearchFileRegex" />
+  <Object id="965bee74-efb5-4559-b981-12382c845b5d" name="*PageTool|Suity|WriteTypeDesign" />
   <Object id="d6b9951a-8505-422b-a6ea-83eff9cc1d45" name="*RenderType" />
   <Object id="89d19efa-d824-4d81-b6c0-c0485518726a" name="*RenderType|Abstract" />
   <Object id="f0051c81-d8b4-4067-af85-773a17e015c6" name="*RenderType|Binary" />
@@ -714,6 +718,7 @@
   <Object id="4f7ed151-b5b6-4ce0-9f3c-ec2a4ea67c8c" name="*SiliconFlowLLm" />
   <Object id="0d7fe790-7370-4374-9178-6870246c699f" name="*SubFlow" />
   <Object id="32e8e801-1176-4ee9-a765-84f5ab782d97" name="*SubFlow|CommitScratchPad" />
+  <Object id="9c192358-5a7c-4c67-9444-baeae0501685" name="*SubFlow|DuplicatedTaskCheck" />
   <Object id="fc26ad23-d56e-4557-8b2e-99d20bba6b95" name="*SubFlow|HistoryText" />
   <Object id="fc26ad23-d56e-4557-8b2e-99d20bba6b95" name="*SubFlow|HistoryText" />
   <Object id="3ac40d65-d15b-4021-b18e-d0408fcb29c7" name="*SubFlow|IBranchConnection" />
@@ -729,7 +734,6 @@
   <Object id="de83a1b8-6a49-4e31-81de-cb9ee4828c8a" name="*SubFlow|ISubFlowAsset" />
   <Object id="93fd979a-77fd-44d8-bf13-b1ce60a75186" name="*SubFlow|ISubFlowDefAsset" />
   <Object id="93fd979a-77fd-44d8-bf13-b1ce60a75186" name="*SubFlow|ISubFlowDefAsset" />
-  <Object id="1101c1c5-41bd-4b67-bb65-8dd95b9c9783" name="*SubFlow|ISubFlowInstance" />
   <Object id="1101c1c5-41bd-4b67-bb65-8dd95b9c9783" name="*SubFlow|ISubFlowInstance" />
   <Object id="1101c1c5-41bd-4b67-bb65-8dd95b9c9783" name="*SubFlow|ISubFlowInstance" />
   <Object id="1101c1c5-41bd-4b67-bb65-8dd95b9c9783" name="*SubFlow|ISubFlowInstance" />
@@ -817,6 +821,11 @@
   <Object id="1d657765-3803-43a6-8e0d-4199b87692ba" name="*Suity|BatchDeleteFiles.DeleteResult" />
   <Object id="21c47059-8757-4257-9e9b-28f215622f35" name="*Suity|BatchDeleteFiles.DeleteResult.Error" />
   <Object id="acea2a04-dcfd-4c56-9e5a-91525efffb23" name="*Suity|BatchDeleteFiles.DeleteResult.FilePath" />
+  <Object id="ab0552a0-c6ae-481b-91c2-2f3a52ffe1a6" name="*Suity|BatchDeleteNamedItems" />
+  <Object id="ab0552a0-c6ae-481b-91c2-2f3a52ffe1a6" name="*Suity|BatchDeleteNamedItems" />
+  <Object id="4ab7e1d5-1bcc-44ce-bb95-1dab3e73f450" name="*Suity|BatchDeleteNamedItems.DeleteResult" />
+  <Object id="791f361e-8058-4ca2-8b35-7d8eb080e8fa" name="*Suity|BatchDeleteNamedItems.DeleteResult.DeletedItems" />
+  <Object id="2acc2c6b-9e64-45b4-b5a8-b207d2439612" name="*Suity|BatchDeleteNamedItems.DeleteResult.ItemsNotFound" />
   <Object id="62c1e4b5-1e65-422b-836a-3859f0bd143d" name="*Suity|BatchEditInFiles" />
   <Object id="62c1e4b5-1e65-422b-836a-3859f0bd143d" name="*Suity|BatchEditInFiles" />
   <Object id="62c1e4b5-1e65-422b-836a-3859f0bd143d" name="*Suity|BatchEditInFiles" />
@@ -826,7 +835,8 @@
   <Object id="edacd677-2c54-4e2e-8148-0f4cf7032486" name="*Suity|BatchEditInFiles.FileEditItem.OldExactString" />
   <Object id="1a12310c-ed53-4ef4-b669-16ebf141c6fb" name="*Suity|BatchEditInFiles.FileResult" />
   <Object id="43735fe0-885e-43a6-880f-ed38ebf84363" name="*Suity|BatchEditInFiles.FileResult.FilePath" />
-  <Object id="dc6312a3-c1e9-480c-8c20-dd770a7b9dcc" name="*Suity|BatchEditInFiles.FileResult.ReplacementsMade" />
+  <Object id="85b1b32d-3544-43d9-96c5-f7519fc26392" name="*Suity|BatchEditInFiles.FileResult.NewString" />
+  <Object id="1d209022-3b88-44a4-a255-ab8836e374ad" name="*Suity|BatchEditInFiles.FileResult.OldExactString" />
   <Object id="9874fb60-d9e0-4b06-899d-6a0ed4e9f7bd" name="*Suity|BatchEditInFiles.FileResult.Status" />
   <Object id="1b5f8cb2-9564-4dd8-9be5-136c833f3a96" name="*Suity|BatchReadFile" />
   <Object id="1b5f8cb2-9564-4dd8-9be5-136c833f3a96" name="*Suity|BatchReadFile" />
@@ -837,6 +847,11 @@
   <Object id="c9bccf22-fbb6-4d35-b1a3-a618b177e57c" name="*Suity|BatchReadFiles.FileResult" />
   <Object id="e91824c9-a8cb-4de0-8269-ad2c53406db2" name="*Suity|BatchReadFiles.FileResult.FilePath" />
   <Object id="165b19cb-ce35-49d6-a8a7-2259a9f01dd3" name="*Suity|BatchReadFiles.FileResult.Message" />
+  <Object id="ba9d9124-d0f2-488e-b46b-860b14e0ffbe" name="*Suity|BatchReadTypeDesignItems" />
+  <Object id="ba9d9124-d0f2-488e-b46b-860b14e0ffbe" name="*Suity|BatchReadTypeDesignItems" />
+  <Object id="30c6ce2c-7916-4d67-8381-f63bd30b5ded" name="*Suity|BatchReadTypeDesignItems.ReadResult" />
+  <Object id="8a3988fe-2a4a-425e-b199-759f88c4d86b" name="*Suity|BatchReadTypeDesignItems.ReadResult.ItemsNotFound" />
+  <Object id="b2e08e93-bc69-491b-9f64-3e97d331a5e8" name="*Suity|BatchReadTypeDesignItems.ReadResult.XmlContent" />
   <Object id="62ca154b-5580-4070-b4fc-5164859969d0" name="*Suity|BatchRenameFiles" />
   <Object id="62ca154b-5580-4070-b4fc-5164859969d0" name="*Suity|BatchRenameFiles" />
   <Object id="cef1f7b6-27ba-4e5b-9441-b1557f90ebae" name="*Suity|BatchRenameFiles.RenameItem" />
@@ -846,6 +861,14 @@
   <Object id="78a69b90-1039-4f79-bb56-4b48f84b92a8" name="*Suity|BatchRenameFiles.RenameResult.Error" />
   <Object id="c1e855a7-e330-4455-be0c-0298e2ba821e" name="*Suity|BatchRenameFiles.RenameResult.SourcePath" />
   <Object id="b15d965d-a644-4366-9705-9dc6ac5cae36" name="*Suity|BatchRenameFiles.RenameResult.TargetPath" />
+  <Object id="9f29f533-a77d-4644-bbcc-1de7bce76e87" name="*Suity|BatchRenameNamedItems" />
+  <Object id="9f29f533-a77d-4644-bbcc-1de7bce76e87" name="*Suity|BatchRenameNamedItems" />
+  <Object id="461db476-11d0-4d90-9145-5761fa3c3a7b" name="*Suity|BatchRenameNamedItems.RenameItem" />
+  <Object id="8b1ff498-6b99-4c4d-93ca-cc1399cd5d27" name="*Suity|BatchRenameNamedItems.RenameItem.NewName" />
+  <Object id="168b9105-2072-4d1b-881e-196cfe6f7a41" name="*Suity|BatchRenameNamedItems.RenameItem.OldName" />
+  <Object id="9263c95d-2d7e-4641-a925-2af46399bd90" name="*Suity|BatchRenameNamedItems.RenameResult" />
+  <Object id="581633b5-0e6d-42fb-a847-116986f6bee4" name="*Suity|BatchRenameNamedItems.RenameResult.ItemsNotFound" />
+  <Object id="ac1d448d-5b83-490f-9e27-a26256d2f9d3" name="*Suity|BatchRenameNamedItems.RenameResult.RenamedItems" />
   <Object id="ce07b337-3c42-47c3-959f-7d55145e3848" name="*Suity|BatchWriteFile" />
   <Object id="ce07b337-3c42-47c3-959f-7d55145e3848" name="*Suity|BatchWriteFile" />
   <Object id="ce07b337-3c42-47c3-959f-7d55145e3848" name="*Suity|BatchWriteFile" />
@@ -869,6 +892,10 @@
   <Object id="e9ed07b7-9b14-411c-bdfd-f585e1a5a752" name="*Suity|CreateNewFile" />
   <Object id="e9ed07b7-9b14-411c-bdfd-f585e1a5a752" name="*Suity|CreateNewFile" />
   <Object id="275c2aaf-be2d-4d2b-b36e-0fd8c1fc1917" name="*Suity|DefaultHandler" />
+  <Object id="25ace348-12c5-4f10-a36f-aad13bfb4370" name="*Suity|DeleteAsset" />
+  <Object id="25ace348-12c5-4f10-a36f-aad13bfb4370" name="*Suity|DeleteAsset" />
+  <Object id="415fe656-065f-4827-87fa-1d35d4e13bbb" name="*Suity|DeleteAsset.DeleteResult" />
+  <Object id="d9bd4fe2-36d8-4777-b805-e3284c563598" name="*Suity|DeleteAsset.DeleteResult.DeletedPath" />
   <Object id="9abba293-d430-434e-996f-6603ac3bb59f" name="*Suity|DTypeFamily" />
   <Object id="193ec128-40d1-4d5c-a842-b4a0d7ae7267" name="*Suity|EditInFile" />
   <Object id="193ec128-40d1-4d5c-a842-b4a0d7ae7267" name="*Suity|EditInFile" />
@@ -889,9 +916,15 @@
   <Object id="563d596d-e0b7-4116-83b7-435d32541c46" name="*Suity|FindAndReplaceInFile.ReplaceResult.Message" />
   <Object id="def9e5c4-433c-44ad-848c-112442cb818d" name="*Suity|FindAndReplaceInFile.ReplaceResult.NewString" />
   <Object id="c270f09d-4496-443f-8d80-bd3cc843c653" name="*Suity|FindAndReplaceInFile.ReplaceResult.OldString" />
+  <Object id="12552283-5f2e-4bdb-95e0-ecd3a3cf57c2" name="*Suity|GetAssetSpaceTree" />
   <Object id="181a1c7d-5a14-4502-ba71-eb24fcb93b57" name="*Suity|GetFileMetadata" />
   <Object id="181a1c7d-5a14-4502-ba71-eb24fcb93b57" name="*Suity|GetFileMetadata" />
   <Object id="c7c4179d-7e36-46db-9408-a1c9eb816461" name="*Suity|GetTaskHistory" />
+  <Object id="400bfbd8-7863-4a18-9d8c-080bf34357a4" name="*Suity|GetTypeDesignItemList" />
+  <Object id="400bfbd8-7863-4a18-9d8c-080bf34357a4" name="*Suity|GetTypeDesignItemList" />
+  <Object id="486c3c23-78d8-42aa-923b-cbdc27a02800" name="*Suity|GetTypeDesignItemList.TypeDesignItemInfo" />
+  <Object id="6f8a2a32-04ee-4006-a7dc-3b98d385c052" name="*Suity|GetTypeDesignItemList.TypeDesignItemInfo.Description" />
+  <Object id="0aaa2d11-45c3-496f-8e18-e298502a9700" name="*Suity|GetTypeDesignItemList.TypeDesignItemInfo.Name" />
   <Object id="54b6a3ee-c60b-4076-b3fc-9bcbed8be2ec" name="*Suity|GetWorkspaceTree" />
   <Object id="54b6a3ee-c60b-4076-b3fc-9bcbed8be2ec" name="*Suity|GetWorkspaceTree" />
   <Object id="7dbb0e76-8fd4-44ae-9c3d-ec283e58f49a" name="*Suity|Handler" />
@@ -911,6 +944,11 @@
   <Object id="79ac1ee2-6f42-4556-8418-bfc538627a6b" name="*Suity|ObjectPrototype" />
   <Object id="b94c1f57-a82a-4c9c-b0ce-bc1787217baf" name="*Suity|ReadFile" />
   <Object id="b94c1f57-a82a-4c9c-b0ce-bc1787217baf" name="*Suity|ReadFile" />
+  <Object id="68bb2001-40b0-4e49-ac25-103fe86b91c4" name="*Suity|RenameAsset" />
+  <Object id="68bb2001-40b0-4e49-ac25-103fe86b91c4" name="*Suity|RenameAsset" />
+  <Object id="84709657-6c7b-4ab1-84f0-10fef87b65f3" name="*Suity|RenameAsset.MoveResult" />
+  <Object id="8c8f1e6f-9c85-4593-a765-bf38cbd80309" name="*Suity|RenameAsset.MoveResult.NewPath" />
+  <Object id="295acbda-632e-4577-ae70-3a2c25ee1ac6" name="*Suity|RenameAsset.MoveResult.OldPath" />
   <Object id="aecef0de-02d2-4fce-bb78-f0d16e67c00b" name="*Suity|RewriteEntireFile" />
   <Object id="aecef0de-02d2-4fce-bb78-f0d16e67c00b" name="*Suity|RewriteEntireFile" />
   <Object id="a2ae2d74-8890-4463-ab7a-b20fb3c1a5dd" name="*Suity|RunShellCommand" />
@@ -921,6 +959,8 @@
   <Object id="2ba34c45-cb3e-496a-8fe9-9e7c15eeeee4" name="*Suity|SearchFileRegex" />
   <Object id="3e20bc9e-0ca6-4679-a013-801011fba045" name="*Suity|ServerHandler" />
   <Object id="76592d70-6b2f-41e0-a483-15991ffc9678" name="*Suity|SKey" />
+  <Object id="8b7f3cc8-ea8b-4c4d-989f-805f86e3ba84" name="*Suity|WriteTypeDesign" />
+  <Object id="8b7f3cc8-ea8b-4c4d-989f-805f86e3ba84" name="*Suity|WriteTypeDesign" />
   <Object id="0d9786f0-7e11-42e1-8f87-03e76da974b0" name="*System" />
   <Object id="6b171e8b-0c65-4e0a-988b-ee085e546d1e" name="*System|Action" />
   <Object id="2c44eb3c-bf52-419c-b320-ce1864cd4c0d" name="*System|Boolean" />

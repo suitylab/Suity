@@ -415,6 +415,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
         }
 
         var items = doc.ItemCollection.AllItems
+            .ToArray()
             .OfType<FlowDiagramItem>()
             .Where(o => o.Node is not ISubFlow)
             .Where(o => o.Bound.IntersectsWith(page.Bound))

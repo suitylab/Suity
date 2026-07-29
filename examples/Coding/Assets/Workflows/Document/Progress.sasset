@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="SubFlowPreset">
+  <AssetId>789a1cad-417a-4659-b7c0-2cf989b447cd</AssetId>
+  <PresetName>
+  </PresetName>
+  <BaseWorkflow>
+    <Id>ab7f1a77-2533-4136-8abf-49a0d4e42b91</Id>
+  </BaseWorkflow>
+  <Tools />
+  <Overview>
+    <Text>Creating Progress document.</Text>
+  </Overview>
+  <UserInputHint>
+    <Text>
+    </Text>
+  </UserInputHint>
+  <Skill>
+    <Id>bbc4adda-0386-4fce-9c81-de6b1d8dd86a</Id>
+  </Skill>
+  <Rule />
+  <Description>
+  </Description>
+  <Icon />
+  <Page>
+    <__preset__ />
+  </Page>
+</SuityAsset>
