@@ -18,7 +18,7 @@ namespace Suity.Editor.Flows.SubFlows;
 
 #region ToolCallContext
 
-public record ToolCallContext
+public class ToolCallContext
 {
     public IToolInstance ToolInstance { get; init; }
     public WorkSpace WorkSpace { get; init; }
@@ -26,6 +26,8 @@ public record ToolCallContext
     public FunctionContext FuncContext { get; init; }
     public IConversationHandler Conversation { get; init; }
     public CancellationToken Cancellation { get; init; }
+
+    public Exception Error { get; set; }
 }
 #endregion
 
@@ -175,12 +177,26 @@ public abstract class ToolAsset<TInput, TOutput> : ToolAsset, IHasCategory, IPre
             var output = await RunTask(myInstance.Input, context);
             if (output != null)
             {
-                myInstance.SetOutput(output);
+                if (context.Error != null)
+                {
+                    myInstance.SetOutput(output, context.Error);
+                }
+                else
+                {
+                    myInstance.SetOutput(output);
+                }
                 return true;
             }
             else
             {
-                myInstance.SetError(new NullReferenceException("Output is null"));
+                if (context.Error != null)
+                {
+                    myInstance.SetError(context.Error);
+                }
+                else
+                {
+                    myInstance.SetError(new NullReferenceException("Output is null"));
+                }
                 return true;
             }
         }
@@ -403,33 +419,18 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         _errorMessage.Text = null;
     }
 
+    public void SetOutput(TOutput output, Exception error)
+    {
+        _output = output;
+        _lastError = error;
+        _errorMessage.Text = _lastError?.ToString();
+    }
+    
     public void SetError(Exception error)
     {
         _lastError = error ?? new Exception("Unknown error");
         _errorMessage.Text = _lastError.ToString() ?? "Unknown error";
         _output = null;
-    }
-
-    private string ResolveElementXmlAttr(object value, SimpleField field)
-    {
-        if (value is null)
-        {
-            return string.Empty;
-        }
-
-        string tooltips = field.Tooltips;
-        if (string.IsNullOrWhiteSpace(tooltips))
-        {
-            tooltips = field.Description;
-        }
-
-        string desc = string.Empty;
-        if (!string.IsNullOrWhiteSpace(tooltips))
-        {
-            desc = $" description='{tooltips}'";
-        }
-
-        return desc;
     }
 }
 

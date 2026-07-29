@@ -121,6 +121,8 @@ public class EditorSystemService : IEditorSystemService
 
         startInfo.EnvironmentVariables["FORCE_COLOR"] = "1";
         startInfo.EnvironmentVariables["NPM_CONFIG_COLOR"] = "always";
+        startInfo.EnvironmentVariables["CI"] = "true";
+        startInfo.EnvironmentVariables["NONINTERACTIVE"] = "1";
 
         var outputBuilder = new StringBuilder();
         var errorBuilder = new StringBuilder();

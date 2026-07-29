@@ -19,8 +19,7 @@ namespace Suity.Editor.AIGC.Tools;
 [NativeAlias("Suity.Editor.AIGC.Tools.BatchReplaceStringInFiles")]
 public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 {
-    record FileMod(string FullPath, string RelativePath, string NewContent, int Replacements, IEnumerable<FileEditItem> Mods);
-    record ErrorInfo(int Index, string FilePath, string Message);
+    record FileMod(string FullPath, string RelativePath, string NewContent, int Replacements, IEnumerable<FileEditItem> Mods, List<string> Errors);
 
     [NativeType("BatchEditInFiles.FileEditItem", CodeBase = "*Suity")]
     public class FileEditItem : SObjectController
@@ -58,20 +57,23 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
     public class FileResult : SObjectController
     {
         readonly StringProperty _filePath = new("FilePath", "File Path");
-        readonly StringProperty _status = new("Status", "Status");
-        readonly ValueProperty<int> _replacementsMade = new("ReplacementsMade", "Replacements Made");
+        readonly TextBlockProperty _oldExactString = new("OldExactString", "Old Exact String");
+        readonly TextBlockProperty _newString = new("NewString", "New String");
+        readonly TextBlockProperty _status = new("Status", "Status");
 
         public string FilePath { get => _filePath.Text; set => _filePath.Text = value; }
+        public string OldExactString { get => _oldExactString.Text; set => _oldExactString.Text = value; }
+        public string NewString { get => _newString.Text; set => _newString.Text = value; }
         public string Status { get => _status.Text; set => _status.Text = value; }
-        public int ReplacementsMade { get => _replacementsMade.Value; set => _replacementsMade.Value = value; }
 
         protected override void OnSync(IPropertySync sync, ISyncContext context)
         {
             base.OnSync(sync, context);
 
             _filePath.Sync(sync);
+            _oldExactString.Sync(sync);
+            _newString.Sync(sync);
             _status.Sync(sync);
-            _replacementsMade.Sync(sync);
         }
 
         protected override void OnSetupView(IViewObjectSetup setup)
@@ -79,11 +81,12 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
             base.OnSetupView(setup);
 
             _filePath.InspectorField(setup);
+            _oldExactString.InspectorField(setup);
+            _newString.InspectorField(setup);
             _status.InspectorField(setup);
-            _replacementsMade.InspectorField(setup);
         }
 
-        public override string ToString() => $"{FilePath} [{Status}] Replacements: {ReplacementsMade}";
+        public override string ToString() => $"{FilePath} [{Status}]";
     }
 
     public class Output : SObjectController
@@ -143,7 +146,7 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 
         var output = new Output();
         int successCount = 0;
-        var errors = new List<ErrorInfo>();
+        int failCount = 0;
         var fileResults = new List<FileMod>();
 
         var fileGroups = Modifications.GroupBy(m => m.FilePath).ToList();
@@ -161,7 +164,17 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 
             if (!File.Exists(fullPath))
             {
-                errors.Add(new(Modifications.IndexOf(group.First()), relativePath, "File not found"));
+                foreach (var mod in group)
+                {
+                    output.Results.Add(new FileResult
+                    {
+                        FilePath = relativePath,
+                        OldExactString = mod.OldExactString,
+                        NewString = mod.NewString,
+                        Status = "File not found"
+                    });
+                    failCount++;
+                }
                 continue;
             }
 
@@ -172,10 +185,16 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 
             foreach (var mod in fileMods)
             {
-                int modIndex = Modifications.IndexOf(mod);
-
                 if (string.IsNullOrWhiteSpace(mod.OldExactString))
                 {
+                    output.Results.Add(new FileResult
+                    {
+                        FilePath = relativePath,
+                        OldExactString = mod.OldExactString,
+                        NewString = mod.NewString,
+                        Status = "OldExactString is empty"
+                    });
+                    failCount++;
                     continue;
                 }
 
@@ -194,34 +213,47 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 
                 if (matchCount == 0)
                 {
-                    errors.Add(new(modIndex, relativePath, $"Old Exact String not found: {mod.OldExactString.Substring(0, Math.Min(50, mod.OldExactString.Length))}..."));
-                    newContent = null;
+                    output.Results.Add(new FileResult
+                    {
+                        FilePath = relativePath,
+                        OldExactString = mod.OldExactString,
+                        NewString = mod.NewString,
+                        Status = "Old Exact String not found"
+                    });
+                    failCount++;
                     continue;
                 }
 
                 if (matchCount >= 2)
                 {
-                    errors.Add(new(modIndex, relativePath, $"Multiple matches found, could not locate precisely: {mod.OldExactString.Substring(0, Math.Min(50, mod.OldExactString.Length))}..."));
-                    newContent = null;
+                    output.Results.Add(new FileResult
+                    {
+                        FilePath = relativePath,
+                        OldExactString = mod.OldExactString,
+                        NewString = mod.NewString,
+                        Status = "Multiple matches found, could not locate precisely"
+                    });
+                    failCount++;
                     continue;
                 }
 
                 newContent = StringUtility.ReplaceContent(newContent, matchFinal.Index, matchFinal.Length, mod.NewString);
                 replacementsInFile++;
+
+                output.Results.Add(new FileResult
+                {
+                    FilePath = relativePath,
+                    OldExactString = mod.OldExactString,
+                    NewString = mod.NewString,
+                    Status = "Successfully modified"
+                });
+                successCount++;
             }
 
-            if (newContent == null)
+            if (replacementsInFile > 0)
             {
-                continue;
+                fileResults.Add(new FileMod(fullPath, relativePath, newContent, replacementsInFile, fileMods, new List<string>()));
             }
-
-            fileResults.Add(new FileMod(fullPath, relativePath, newContent, replacementsInFile, fileMods));
-        }
-
-        if (errors.Count > 0)
-        {
-            var errorMessages = errors.Select(e => $"[Modification index:{e.Index}] {e.FilePath}: {e.Message}");
-            throw new AggregateException($"BatchEditInFiles failed with {errors.Count} error(s):\n" + string.Join("\n", errorMessages));
         }
 
         var fileNames = string.Join(", ", fileResults.Select(f => f.RelativePath));
@@ -237,31 +269,18 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
         foreach (var file in fileResults)
         {
             File.WriteAllText(file.FullPath, file.NewContent);
-
-            var result = new FileResult
-            {
-                FilePath = file.RelativePath,
-                Status = file.Replacements > 0 ? "Modified" : "No Changes",
-                ReplacementsMade = file.Replacements
-            };
-
-            if (file.Replacements > 0)
-            {
-                var replacementSummary = string.Join("\n", file.Mods.Select(m =>
-                    $"---------------- Before ----------------\n{m.OldExactString}\n---------------- After ----------------\n{m.NewString}"));
-                parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, file.RelativePath, replacementSummary, $"replaced {file.Replacements} place(s), use ReadFile to get full content");
-                successCount++;
-            }
-            else
-            {
-                successCount++;
-            }
-
-            output.Results.Add(result);
+            parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, file.RelativePath, $"replaced {file.Replacements} place(s)", $"replaced {file.Replacements} place(s), use ReadFile to get full content");
         }
 
         output.SuccessCount = successCount;
-        output.FailCount = 0;
+        output.FailCount = failCount;
+
+        if (successCount == 0 && failCount > 0)
+        {
+            var errorMessages = output.Results
+                .Select(r => $"[{r.FilePath}] {r.Status}\n  OldExactString: {r.OldExactString}\n  NewString: {r.NewString}");
+            throw new AggregateException($"BatchEditInFiles failed with {failCount} error(s):\n" + string.Join("\n", errorMessages));
+        }
 
         return Task.FromResult(output);
     }

@@ -378,7 +378,9 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
         }
         catch (Exception err)
         {
-            err.LogError();
+            //err.LogError();
+
+            EditorUtility.ShowError(err.Message, err);
             return null;
         }
     }
