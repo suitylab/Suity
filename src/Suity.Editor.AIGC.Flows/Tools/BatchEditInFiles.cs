@@ -275,11 +275,12 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
         output.SuccessCount = successCount;
         output.FailCount = failCount;
 
-        if (successCount == 0 && failCount > 0)
+        if (failCount > 0)
         {
             var errorMessages = output.Results
+                .Where(r => r.Status != "Successfully modified")
                 .Select(r => $"[{r.FilePath}] {r.Status}\n  OldExactString: {r.OldExactString}\n  NewString: {r.NewString}");
-            throw new AggregateException($"BatchEditInFiles failed with {failCount} error(s):\n" + string.Join("\n", errorMessages));
+            context.Error = new AggregateException($"BatchEditInFiles completed with {failCount} error(s):\n" + string.Join("\n", errorMessages));
         }
 
         return Task.FromResult(output);

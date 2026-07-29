@@ -170,7 +170,22 @@ public class AigcWorkflowPage : AigcTaskPage,
     {
         if (inHierarchy)
         {
-            return this.Rule ?? (this.ParentNode as AigcWorkflowPage)?.GetRule(true);
+            if (this.Rule is { } rule)
+            {
+                return rule;
+            }
+
+            if (this.ParentNode is AigcWorkflowPage parent)
+            {
+                return parent.GetRule(true);
+            }
+
+            if (this.TaskPageDocument is { } doc)
+            {
+                return doc.Rule;
+            }
+
+            return null;
         }
         else
         {
