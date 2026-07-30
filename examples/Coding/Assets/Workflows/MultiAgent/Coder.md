@@ -50,6 +50,7 @@
   2. Read affected code files.
   3. Fix errors via `EditCode` or `CodeWriter`.
   4. Re-run `RunBuildCommand` until 100% build pass without errors.
+  **Notice** Fix all errors listed in the report before perform next verification.
 
 ### Step 2: Verification Goal Validation
 - Validate that the specific **`Verification Goal`** stated in `development-plan.md` for this Phase is achieved.

@@ -24,6 +24,14 @@ public class AigcNoticePage : AigcTaskPage
         _instance = new(this, noticeType, message);
     }
 
+    protected override void OnSync(IPropertySync sync, ISyncContext context)
+    {
+        base.OnSync(sync, context);
+
+        sync.Sync("Page", _instance, SyncFlag.GetOnly);
+    }
+
+
     public override LLmMessage[] GetChatMessages(bool input, bool output)
     {
         string commit = _instance.GetTaskCommit(ResolveChatIntents.Preview)?.Text ?? string.Empty;
