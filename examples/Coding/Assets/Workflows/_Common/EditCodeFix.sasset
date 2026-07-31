@@ -1,17 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="AigcFlow">
-  <AssetId>5e1655c5-b67b-46c4-a6b4-541018b6956a</AssetId>
+  <AssetId>caa5a2bf-655f-477a-8c4f-157204ad97ec</AssetId>
   <NameSpace>TestRelease005</NameSpace>
   <Description>
   </Description>
   <Icon />
   <Nodes>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-380" Y="-80" Width="140" Height="120">
-      <Name>EditCodeExpand</Name>
-      <AssetId>489f157f-ff0a-4b15-bc7f-44a89bde14a1</AssetId>
+      <Name>EditCodeFix</Name>
+      <AssetId>6d561904-e9d3-4370-bbfe-b2d6ad626839</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
-        <Name>EditCodeExpand</Name>
-        <Icon />
+        <Name>EditCodeFix</Name>
+        <Icon>
+          <Id>0a926bbd-7017-402a-9e1a-b55741314298</Id>
+        </Icon>
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
           <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
             <ToolTips type="STextBlock" base="6d9a5040-b6d7-4daa-b06f-6f2f27f02012">
@@ -63,6 +65,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         <Name>Modifications</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <Required>False</Required>
         <ValueType type="Suity.Editor.Types.TypeDesignSelection">
           <Id>451a1bd9-46aa-40b8-8d80-81c921fb3fbf</Id>
         </ValueType>
@@ -99,7 +102,7 @@ Notice: must include comments for exact replacement if the origin code contains 
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
         <Page>
-          <Id>489f157f-ff0a-4b15-bc7f-44a89bde14a1</Id>
+          <Id>6d561904-e9d3-4370-bbfe-b2d6ad626839</Id>
         </Page>
       </Node>
     </Item>
@@ -233,7 +236,7 @@ Notice: must include comments for exact replacement if the origin code contains 
       <Name>###BuildPrompt01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>c672b445-b91e-42d3-b5b4-df381e185e74</Id>
+          <Id>e2fd5de7-f016-4eea-a846-37dcd6a95823</Id>
         </PromptTemplate>
         <Keywords>
           <Item>MESSAGE_INPUT</Item>
@@ -336,7 +339,7 @@ Notice: must include comments for exact replacement if the origin code contains 
       <Name>###CreatePageInstanceWithParameter01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
         <ToolDefinition>
-          <Id>489f157f-ff0a-4b15-bc7f-44a89bde14a1</Id>
+          <Id>6d561904-e9d3-4370-bbfe-b2d6ad626839</Id>
         </ToolDefinition>
         <Parameters>
           <Item>
@@ -769,7 +772,7 @@ Notice: must include comments for exact replacement if the origin code contains 
     <Item>
       <FromNode>EditCode_End</FromNode>
       <FromConnector>Definition</FromConnector>
-      <ToNode>EditCodeExpand</ToNode>
+      <ToNode>EditCodeFix</ToNode>
       <ToConnector>Result</ToConnector>
     </Item>
     <Item>

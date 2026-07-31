@@ -22,9 +22,26 @@ Focus on:
 {{FRAMEWORK}}
 
 # REASONING
-Think before code, planning of the coding content within one paragraph, then output with following format:
+Before outputting code, perform a structured technical dry-run inside the `<reasoning>` block. Systematically verify the code design across the following three core pillars:
+
+1. **Architecture, Data Structures & Display Hierarchy**:
+   - Define data schemas, type contracts, interfaces, and component structures required for the feature.
+   - **Display & Composition Layering**: Explicitly verify the z-index, scene graph, or DOM/container adding order (e.g., render/add background and terrain layers FIRST, followed by game objects, interactive entities, and UI overlays LAST) to prevent unintended visual occlusion.
+   - Clarify module boundaries and dependency flows to ensure seamless integration with the existing codebase.
+
+2. **Core Algorithms, Workflows & Execution Sequence**:
+   - **Step-by-Step Execution Sequence**: Map out the strict procedural order of code execution and initialization (e.g., instantiating engine dependencies before entities, creating display nodes before referencing them, binding event listeners after elements exist).
+   - Map out core business logic, data transformations, coordinate/unit systems, or mathematical formulas.
+   - Perform explicit sanity checks on vector directions, arithmetic signs ($+$ vs $-$), offsets, and boundary constraints.
+   - Address edge cases rigorously: null/undefined states, zero division, empty collections, NaN propagation, and value clamping.
+
+3. **State Transitions & Lifecycle Management**:
+   - Trace legal state transitions, triggers, and invariant rules within the system flow.
+   - Enforce symmetric lifecycle protocols: ensure every resource, listener, handle, overlay, or interval created during an entry/setup phase is explicitly cleaned up, unhooked, or disposed of during exit/teardown transitions to prevent side effects, residual visual artifacts, and memory leaks.
+
+Output format:
 <reasoning>
-...
+[Structured technical dry-run covering: 1. Architecture, Data Structures & Display Hierarchy, 2. Core Algorithms, Workflows & Execution Sequence, 3. State Transitions & Lifecycle Management]
 </reasoning>
 
 # CODING

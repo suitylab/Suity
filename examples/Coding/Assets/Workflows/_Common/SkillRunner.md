@@ -37,17 +37,22 @@ You are working in a workspace, The current directory is workspace root director
 <reasoning>
 # review the tool result of previous task '{{PREVIOUS_TASK_ID}}':
 ... (skip this if this is the initial task)
-# reasoning of current task:
+# reasoning of current task to meet the user objective:
 ...
+# reasoning of next action:
+...
+(optional) # additional thinking in skill/rule description.
 </reasoning>
 
 <plan title='title of current single action'>
-[Done]
-action done of current task.
-[Plan]
-action planning of current task.
-[Action]
-current active action (output tool selection).
+# Summary of the reasoning result:
+...
+# [Done]
+...
+# [Planned]
+...
+# Next Action:
+...
 </plan>
 (Output task title in 'title' attribute)
 

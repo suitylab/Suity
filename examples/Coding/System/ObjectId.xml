@@ -2,6 +2,8 @@
 <ObjectId>
   <Object id="aedb5425-5102-4bba-ab72-1b4e095b2749" name="Workflows/_Common/CreateWorkSpace.md" />
   <Object id="c672b445-b91e-42d3-b5b4-df381e185e74" name="Workflows/_Common/EditCodeExpand.md" />
+  <Object id="e2fd5de7-f016-4eea-a846-37dcd6a95823" name="Workflows/_Common/EditCodeFix.md" />
+  <Object id="e7896c7b-9e90-4596-828d-7285c698832f" name="Workflows/_Common/EditCodeThinking.md" />
   <Object id="1debf615-6ae3-4e12-877e-5b4390bc9472" name="Workflows/_Common/FixIssue.md" />
   <Object id="f2cd9a07-4341-45ee-8eee-397cc3ce5c46" name="Workflows/_Common/Investigator.md" />
   <Object id="60e07ca4-90a6-4826-bb70-9a256e2db395" name="Workflows/_Common/QueryTaskHistory.md" />
@@ -14,9 +16,12 @@
   <Object id="3173c737-5a5d-4be7-bcee-8f06cb2c995c" name="Workflows/Coding/RequirementDocument.md" />
   <Object id="2ad31242-fa68-4729-8d6a-92efc0a2540b" name="Workflows/Coding/TechSpec.md" />
   <Object id="55a2d6a9-c57d-4639-a70a-b59a96d1c673" name="Workflows/Coding/VerifyCode.md" />
+  <Object id="19ab7172-8ede-476c-b100-507aa60b6809" name="Workflows/Document/Architecture.md" />
+  <Object id="91380d77-15fd-4cc8-8597-e59216996caa" name="Workflows/Document/DesignDocument.md" />
   <Object id="78935298-5212-4891-93a3-bccfb151d218" name="Workflows/Document/DevelopmentPlan.md" />
   <Object id="1ad683a7-645c-4cce-aab0-572ed063d035" name="Workflows/Document/DocumentWriter.md" />
   <Object id="de5274f6-fea7-42e6-a538-908ca3663e47" name="Workflows/Document/IntegrationContract.md" />
+  <Object id="bbc4adda-0386-4fce-9c81-de6b1d8dd86a" name="Workflows/Document/Progress.md" />
   <Object id="d0b09fe8-faad-441a-b73a-bcd4561cc79b" name="Workflows/Document/RequirementDocument.md" />
   <Object id="fa408224-998e-4da9-9a44-522936b29f1f" name="Workflows/Document/SymbolSpec.md" />
   <Object id="a4a9331a-7fcf-4492-b73f-29df4410fe5b" name="Workflows/Document/TechSpec.md" />
@@ -30,6 +35,7 @@
   <Object id="8e300a0f-7053-4903-9e5a-8c6b857cf146" name="Workflows/Game/GameDesign.md" />
   <Object id="e934f168-b446-474a-8dc8-db4d23157c3e" name="Workflows/Game/GamePlanner.md" />
   <Object id="e4d73fc0-7421-4a78-abf9-8cb857a34b92" name="Workflows/Game/IntegrationEngineer.md" />
+  <Object id="60315976-23b6-49a5-8fe8-98d4adccbd52" name="Workflows/MultiAgent/AdditionalRule.md" />
   <Object id="c65c4898-7698-425e-9d38-8c297a8df603" name="Workflows/MultiAgent/Coder.md" />
   <Object id="958f77ff-8afd-4e8c-9802-cec35bc4440e" name="Workflows/MultiAgent/CoderManager_Integration.md" />
   <Object id="aba9f6d8-c3a8-4f2b-b321-33229896d5dc" name="Workflows/MultiAgent/CoderManager.md" />
