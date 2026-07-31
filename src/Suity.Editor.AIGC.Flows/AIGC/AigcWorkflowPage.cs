@@ -870,7 +870,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             return;
         }
 
-        if (hierarchyLevel > 0 && ParentNode is AigcWorkflowPage parent)
+        if (hierarchyLevel != 0 && ParentNode is AigcWorkflowPage parent)
         {
             parent.CollectChatHistory(list, maxHistory, true, hierarchyLevel - 1);
         }
@@ -1038,7 +1038,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
     private void CollectScratchPads(Dictionary<string, ScratchPad> dic, int hierarchyLevel)
     {
-        if (hierarchyLevel > 0 && ParentNode is AigcWorkflowPage parent)
+        if (hierarchyLevel != 0 && ParentNode is AigcWorkflowPage parent)
         {
             parent.CollectScratchPads(dic, hierarchyLevel - 1);
         }

@@ -18,8 +18,8 @@ Focus on:
 # OUTPUT FILES
 {{FILES}}
 
-# PROGRAMMING FRAMEWORK SPECIFICATION
-{{FRAMEWORK}}
+# PROJECT CONTEXT & ARCHITECTURE
+{{CONTEXT}}
 
 # REASONING
 Before outputting code, perform a structured technical dry-run inside the `<reasoning>` block. Systematically verify the code design across the following three core pillars:

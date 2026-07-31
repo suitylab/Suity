@@ -11,7 +11,7 @@
       <AssetId>cb29e90f-faba-448e-9f7a-be763dfe0343</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
         <Name>EditCodeDirect</Name>
-        <Description>Edit Code Direct</Description>
+        <Description>Edit Code - Direct</Description>
         <Icon>
           <Id>0a926bbd-7017-402a-9e1a-b55741314298</Id>
         </Icon>

@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SuityAsset version="1.0" format="AigcFlow">
-  <AssetId>8dd449c3-7044-4619-8d4d-de0df8d31a96</AssetId>
+  <AssetId>775428ee-6b97-45a9-96bd-ff635d5cbd72</AssetId>
   <NameSpace>TaskTaskPage002</NameSpace>
   <Description>
   </Description>
   <Icon />
   <Nodes>
     <Item type="Suity.Editor.Flows.SubFlows.SubFlowDefinitionDiagramItem" X="-430" Y="-110" Width="160" Height="130">
-      <Name>CodeWriter</Name>
-      <AssetId>cba2cec1-4bfe-462c-b3d0-324178e57303</AssetId>
+      <Name>CodeRewriter</Name>
+      <AssetId>2f83f19d-96cc-48d3-bff5-7d29818af091</AssetId>
       <Node type="Suity.Editor.Flows.SubFlows.SubflowDefinitionNode">
-        <Name>CodeWriter</Name>
-        <Description>Code Writer</Description>
+        <Name>CodeRewriter</Name>
+        <Description>Code Rewriter</Description>
         <Icon>
-          <Id>3df98773-f0da-4039-aa81-ef4af6f8c015</Id>
+          <Id>0a926bbd-7017-402a-9e1a-b55741314298</Id>
         </Icon>
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]">
           <Item type="SObject" struct="0a90fcf4-dbc8-44da-9726-5f64d4bb9d92" base="438f92d9-bfef-496c-b0b0-439bb7cb9b62">
@@ -92,7 +92,7 @@
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
-          <Id>e741e0d8-e4f4-4d9d-bbbf-6f5dc5360273</Id>
+          <Id>d82181b9-178a-4594-80c0-ab690968a406</Id>
         </PromptTemplate>
         <Keywords>
           <Item>INPUT</Item>
@@ -169,7 +169,7 @@
         <IsArray>True</IsArray>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="60" Y="-170" Width="84" Height="28">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="100" Y="-170" Width="84" Height="28">
       <Name>###GetGlobalLLmModel01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetGlobalLLmModel">
         <Type>Coding</Type>
@@ -202,7 +202,7 @@
         <Separator>\r\n</Separator>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="-160" Width="48" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-70" Y="-160" Width="48" Height="17">
       <Name>###GetTaskChatHistory01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentChatHistory">
         <InHierarchy>True</InHierarchy>
@@ -275,7 +275,7 @@
         <IsArray>True</IsArray>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-210" Y="-140" Width="47" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-170" Y="-140" Width="47" Height="17">
       <Name>###GetTaskScratchPad01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentScratchPads">
         <InHierarchy>True</InHierarchy>
@@ -293,7 +293,7 @@
         <IsArray>True</IsArray>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-150" Y="-140" Width="91" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-110" Y="-140" Width="91" Height="17">
       <Name>###GetScratchPadMessage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetScratchPadMessage" />
     </Item>
@@ -311,7 +311,7 @@
         <ErrorMessage />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-50" Y="-140" Width="64" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-140" Width="64" Height="17">
       <Name>###CombineLLmMessage02</Name>
       <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
         <Prefix>=========== Scratch Pad Begin ===========</Prefix>
@@ -322,7 +322,7 @@
         </ItemSuffix>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-50" Y="-160" Width="64" Height="17">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-160" Width="64" Height="17">
       <Name>###CombineLLmMessage01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
         <Prefix>=========== Task History Begin ===========</Prefix>
@@ -373,13 +373,21 @@
         </Value>
       </Node>
     </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-90" Y="-250" Width="90" Height="17">
+      <Name>###ReadFilesToScratchPads01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.ReadFilesToScratchPads" />
+    </Item>
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-90" Y="-230" Width="160" Height="56">
+      <Name>###SetCurrentScratchPads01</Name>
+      <Node type="Suity.Editor.Flows.TaskPages.SetCurrentScratchPads" />
+    </Item>
   </Nodes>
   <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
   <Links>
     <Item>
       <FromNode>MultipleCodeResult</FromNode>
       <FromConnector>Definition</FromConnector>
-      <ToNode>CodeWriter</ToNode>
+      <ToNode>CodeRewriter</ToNode>
       <ToConnector>Result</ToConnector>
     </Item>
     <Item>
@@ -470,18 +478,6 @@
       <FromNode>FilePaths</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###JoinString01</ToNode>
-      <ToConnector>In</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###JoinString01</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###BuildPrompts01</ToNode>
-      <ToConnector>k_FILES</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>TaskStart</FromNode>
-      <FromConnector>Out</FromConnector>
-      <ToNode>###BuildPrompts01</ToNode>
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
@@ -629,10 +625,40 @@
       <ToConnector>DataIn</ToConnector>
     </Item>
     <Item>
+      <FromNode>###JoinString01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>k_FILES</ToConnector>
+    </Item>
+    <Item>
       <FromNode>###GetCurrentTaskRule01</FromNode>
       <FromConnector>Rule</FromConnector>
       <ToNode>###BuildPrompts01</ToNode>
       <ToConnector>k_CONTEXT</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>FilePaths</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###ReadFilesToScratchPads01</ToNode>
+      <ToConnector>FileNames</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###ReadFilesToScratchPads01</FromNode>
+      <FromConnector>ScratchPads</FromConnector>
+      <ToNode>###SetCurrentScratchPads01</ToNode>
+      <ToConnector>ScratchPad</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>TaskStart</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###SetCurrentScratchPads01</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###SetCurrentScratchPads01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>###BuildPrompts01</ToNode>
+      <ToConnector>In</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

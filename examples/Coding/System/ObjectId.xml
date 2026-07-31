@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ObjectId>
   <Object id="aedb5425-5102-4bba-ab72-1b4e095b2749" name="Workflows/_Common/CreateWorkSpace.md" />
-  <Object id="c672b445-b91e-42d3-b5b4-df381e185e74" name="Workflows/_Common/EditCodeExpand.md" />
   <Object id="e2fd5de7-f016-4eea-a846-37dcd6a95823" name="Workflows/_Common/EditCodeFix.md" />
   <Object id="e7896c7b-9e90-4596-828d-7285c698832f" name="Workflows/_Common/EditCodeThinking.md" />
   <Object id="1debf615-6ae3-4e12-877e-5b4390bc9472" name="Workflows/_Common/FixIssue.md" />
@@ -9,6 +8,7 @@
   <Object id="60e07ca4-90a6-4826-bb70-9a256e2db395" name="Workflows/_Common/QueryTaskHistory.md" />
   <Object id="cb17b70d-9398-4352-8684-c6d0c0bf7c7d" name="Workflows/_Common/SkillRouter.md" />
   <Object id="d51ed5f3-d18e-48cf-a5fc-1f375fdc3fca" name="Workflows/_Common/SkillRunner.md" />
+  <Object id="d82181b9-178a-4594-80c0-ab690968a406" name="Workflows/Coding/CodeRewriter.md" />
   <Object id="e741e0d8-e4f4-4d9d-bbbf-6f5dc5360273" name="Workflows/Coding/CodeWriter.md" />
   <Object id="7ecdb907-dfd4-4d21-b74e-05d994154a69" name="Workflows/Coding/FullProjectCode.md" />
   <Object id="0fef4b38-fc48-4381-ad56-baa6158d40b1" name="Workflows/Coding/FullProjectCodeBatch.md" />
