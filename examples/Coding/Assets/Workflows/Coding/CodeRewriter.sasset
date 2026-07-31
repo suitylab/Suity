@@ -206,6 +206,7 @@
       <Name>###GetTaskChatHistory01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentChatHistory">
         <InHierarchy>True</InHierarchy>
+        <HierarchyLimit>2</HierarchyLimit>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.SubFlows.PageCommitDiagramItem" X="650" Y="170" Width="63" Height="17">
@@ -279,6 +280,7 @@
       <Name>###GetTaskScratchPad01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentScratchPads">
         <InHierarchy>True</InHierarchy>
+        <HierarchyLimit>2</HierarchyLimit>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.SubFlows.PageFileOutputItem" X="650" Y="190" Width="56" Height="17">
