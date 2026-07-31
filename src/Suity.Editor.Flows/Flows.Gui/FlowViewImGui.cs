@@ -197,17 +197,23 @@ public abstract class FlowViewImGui :
 
         theme.UpdateBrushesAndPens();
 
-        this._graphControl.NodeCreateRequesting += GraphPanel_NodeCreateRequesting;
-        this._graphControl.GroupCreateRequesting += GraphPanel_GroupCreateRequesting;
-        this._graphControl.SelectionChanging += GraphPanel_SelectionChanging;
-        this._graphControl.SelectionChanged += GraphPanel_SelectionChanged;
-        this._graphControl.SelectionDeleting += GraphPanel_SelectionDeleting;
-        this._graphControl.SelectionDeleted += GraphPanel_SelectionDeleted;
-        this._graphControl.SelectionMoved += GraphPanel_SelectionMoved;
-        this._graphControl.SelectionResized += GraphPanel_SelectionResized;
-        this._graphControl.LinkCreated += GraphPanel_LinkCreated;
-        this._graphControl.LinkDestroyed += GraphPanel_LinkDestroyed;
-        this._graphControl.ContextMenuShowing += GraphPanel_ContextMenuShowing;
+        var inputManager = this._graphControl.InputManager;
+
+        inputManager.NodeCreateRequesting += GraphPanel_NodeCreateRequesting;
+        inputManager.GroupCreateRequesting += GraphPanel_GroupCreateRequesting;
+        inputManager.SelectionChanging += GraphPanel_SelectionChanging;
+        inputManager.SelectionChanged += GraphPanel_SelectionChanged;
+        inputManager.SelectionDeleting += GraphPanel_SelectionDeleting;
+        inputManager.SelectionDeleted += GraphPanel_SelectionDeleted;
+        inputManager.SelectionMoved += GraphPanel_SelectionMoved;
+        inputManager.SelectionResized += GraphPanel_SelectionResized;
+        inputManager.LinkCreated += GraphPanel_LinkCreated;
+        inputManager.LinkDestroyed += GraphPanel_LinkDestroyed;
+        inputManager.ContextMenuShowing += GraphPanel_ContextMenuShowing;
+
+        inputManager.CopyRequesting += (s, e) => ClipboardCopy();
+        inputManager.CutRequesting += (s, e) => ClipboardCut();
+        inputManager.PasteRequesting += (s, e) => ClipboardPaste();
 
         this._graphControl.Diagram.DataTypeProvider = this;
     }
@@ -1600,8 +1606,8 @@ public abstract class FlowViewImGui :
             return;
         }
 
-        int minX = items.Select(o => o.X).Min();
-        int minY = items.Select(o => o.Y).Min();
+        int minX = items.Min(o => o.X);
+        int minY = items.Min(o => o.Y);
 
         int offsetX = _graphControl.InputManager.ViewSpaceCursorLocation.X - minX;
         int offsetY = _graphControl.InputManager.ViewSpaceCursorLocation.Y - minY;

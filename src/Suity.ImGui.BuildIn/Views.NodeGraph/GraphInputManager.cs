@@ -1,4 +1,5 @@
 using Suity.Views.Graphics;
+using Suity.Views.Im;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -125,6 +126,18 @@ public class GraphInputManager
     /// Occurs when the context menu is about to be shown.
     /// </summary>
     public event EventHandler<GraphicContextEventArgs>? ContextMenuShowing;
+    /// <summary>
+    /// Occurs when a copy operation is requested.
+    /// </summary>
+    public event EventHandler? CopyRequesting;
+    /// <summary>
+    /// Occurs when a cut operation is requested.
+    /// </summary>
+    public event EventHandler? CutRequesting;
+    /// <summary>
+    /// Occurs when a paste operation is requested.
+    /// </summary>
+    public event EventHandler? PasteRequesting;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GraphInputManager"/> class.
@@ -668,6 +681,21 @@ public class GraphInputManager
                 }
                 break;
 
+            case "C" when input.GetOnlyControlKey():
+                CopyRequesting?.Invoke(_control, EventArgs.Empty);
+                input.Handled = true;
+                break;
+
+            case "X" when input.GetOnlyControlKey():
+                CutRequesting?.Invoke(_control, EventArgs.Empty);
+                input.Handled = true;
+                break;
+
+            case "V" when input.GetOnlyControlKey():
+                PasteRequesting?.Invoke(_control, EventArgs.Empty);
+                input.Handled = true;
+                break;
+
             case "G" when input.GetOnlyControlKey():
                 if (Diagram.SelectedNodes.Count > 0)
                 {
@@ -793,4 +821,29 @@ public class GraphInputManager
 
         _control.RefreshView();
     }
+
+
+    #region Internal Raise
+
+    internal void RaiseSelectionChanged(GraphSelectionEventArgs e)
+    {
+        SelectionChanged?.Invoke(this, e);
+    }
+
+    internal void RaiseSelectionDeleting(GraphSelectionEventArgs e)
+    {
+        SelectionDeleting?.Invoke(this, e);
+    }
+
+    internal void RaiseSelectionDeleted(GraphSelectionEventArgs e)
+    {
+        SelectionDeleted?.Invoke(this, e);
+    }
+
+    internal void RaiseLinkDestroyed(GraphLinkEventArgs e)
+    {
+        LinkDestroyed?.Invoke(this, e);
+    }
+
+    #endregion
 }

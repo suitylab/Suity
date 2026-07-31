@@ -154,17 +154,17 @@ public abstract class ImGuiVirtualTreeView : ImGuiTreeView<VirtualNode>,
                 }
                 return GuiInputState.Render;
 
-            case "C" when input.ControlKey:
+            case "C" when input.GetOnlyControlKey():
                 this.HandleArraySetClipboard(true);
                 input.Handled = true;
                 return GuiInputState.Render;
 
-            case "X" when input.ControlKey:
+            case "X" when input.GetOnlyControlKey():
                 this.HandleArraySetClipboard(false);
                 input.Handled = true;
                 return GuiInputState.Render;
 
-            case "V" when input.ControlKey:
+            case "V" when input.GetOnlyControlKey():
                 this.HandleArrayPaste();
                 input.Handled = true;
                 return GuiInputState.Render;

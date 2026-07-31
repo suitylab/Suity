@@ -37,6 +37,7 @@ public class SubflowDefinitionNode : SubflowDefNode, IGroupFlowNode, ISubFlow
     public SubflowDefinitionNode()
         : base()
     {
+        _tools.Property.WithExpand();
         UpdateConnector();
     }
 

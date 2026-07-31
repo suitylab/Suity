@@ -55,22 +55,6 @@ public class GraphControl : IGraphicObject
     public GraphDrawer Drawer { get; }
 
 
-    #region Events
-
-    public event EventHandler? NodeCreateRequesting;
-    public event EventHandler? GroupCreateRequesting;
-    public event GraphSelectionEventHandler? SelectionChanging;
-    public event GraphSelectionEventHandler? SelectionChanged;
-    public event GraphSelectionEventHandler? SelectionDeleting;
-    public event GraphSelectionEventHandler? SelectionDeleted;
-    public event GraphNodeMoveEventHandler? SelectionMoved;
-    public event GraphNodeResizeEventHandler? SelectionResized;
-    public event GraphLinkEventHandler? LinkCreated;
-    public event GraphLinkEventHandler? LinkDestroyed;
-    public event EventHandler<GraphicContextEventArgs>? ContextMenuShowing;
-
-    #endregion
-
     /// <summary>
     /// Initializes a new instance of the <see cref="GraphControl"/> class, creating all sub-components.
     /// </summary>
@@ -83,25 +67,13 @@ public class GraphControl : IGraphicObject
         SelectionManager = CreateSelectionManager() ?? throw new InvalidOperationException("CreateSelectionManager returned null.");
         LinkManager = CreateLinkManager() ?? throw new InvalidOperationException("CreateLinkManager returned null.");
         Drawer = CreateDrawer() ?? throw new InvalidOperationException("CreateDrawer returned null.");
-        
+
         if (Diagram.ParentControl != this) throw new InvalidOperationException("Diagram's parent control is not set to this instance.");
         if (Viewport.ParentControl != this) throw new InvalidOperationException("Viewport's parent control is not set to this instance.");
         if (InputManager.ParentControl != this) throw new InvalidOperationException("InputManager's parent control is not set to this instance.");
         if (SelectionManager.ParentControl != this) throw new InvalidOperationException("SelectionManager's parent control is not set to this instance.");
         if (LinkManager.ParentControl != this) throw new InvalidOperationException("LinkManager's parent control is not set to this instance.");
         if (Drawer.ParentControl != this) throw new InvalidOperationException("Drawer's parent control is not set to this instance.");
-
-        InputManager.SelectionChanging += (s, e) => SelectionChanging?.Invoke(this, e);
-        InputManager.SelectionChanged += (s, e) => SelectionChanged?.Invoke(this, e);
-        InputManager.SelectionDeleting += (s, e) => SelectionDeleting?.Invoke(this, e);
-        InputManager.SelectionDeleted += (s, e) => SelectionDeleted?.Invoke(this, e);
-        InputManager.SelectionMoved += (s, e) => SelectionMoved?.Invoke(this, e);
-        InputManager.SelectionResized += (s, e) => SelectionResized?.Invoke(this, e);
-        InputManager.LinkCreated += (s, e) => LinkCreated?.Invoke(this, e);
-        InputManager.LinkDestroyed += (s, e) => LinkDestroyed?.Invoke(this, e);
-        InputManager.NodeCreateRequesting += (s, e) => NodeCreateRequesting?.Invoke(this, e);
-        InputManager.GroupCreateRequesting += (s, e) => GroupCreateRequesting?.Invoke(this, e);
-        InputManager.ContextMenuShowing += (s, e) => ContextMenuShowing?.Invoke(this, e);
     }
 
     #region IGraphicObject
@@ -177,7 +149,7 @@ public class GraphControl : IGraphicObject
             return;
         }
 
-        SelectionDeleting?.Invoke(this, GraphSelectionEventArgs.Empty);
+        InputManager.RaiseSelectionDeleting(GraphSelectionEventArgs.Empty);
 
         foreach (var node in Diagram.SelectedNodes)
         {
@@ -187,7 +159,7 @@ public class GraphControl : IGraphicObject
             {
                 foreach (GraphConnector c in connector.ToArray())
                 {
-                    LinkManager.DeleteLinkConnectors(c, links => LinkDestroyed?.Invoke(this, new GraphLinkEventArgs(links.ToList())));
+                    LinkManager.DeleteLinkConnectors(c, links => InputManager.RaiseLinkDestroyed(new GraphLinkEventArgs(links.ToList())));
                 }
             }
 
@@ -200,7 +172,7 @@ public class GraphControl : IGraphicObject
             Diagram.Links.Remove(link);
         }
 
-        SelectionDeleted?.Invoke(this, GraphSelectionEventArgs.Empty);
+        InputManager.RaiseSelectionDeleted(GraphSelectionEventArgs.Empty);
         
         Diagram.SelectedNodes.Clear();
         Diagram.SelectedLinks.Clear();
@@ -290,7 +262,7 @@ public class GraphControl : IGraphicObject
 
         foreach (var c in node.Connectors)
         {
-            LinkManager.DeleteLinkConnectors(c, links => LinkDestroyed?.Invoke(this, new GraphLinkEventArgs(links.ToList())));
+            LinkManager.DeleteLinkConnectors(c, links => InputManager.RaiseLinkDestroyed(new GraphLinkEventArgs(links.ToList())));
         }
 
         Diagram.RemoveNode(node);
@@ -443,7 +415,7 @@ public class GraphControl : IGraphicObject
     /// <param name="count">The number of selected nodes.</param>
     protected virtual void OnSelectionChanged(int nodeCount, int linkCount)
     {
-        SelectionChanged?.Invoke(this, new GraphSelectionEventArgs(nodeCount, linkCount));
+        InputManager.RaiseSelectionChanged(new GraphSelectionEventArgs(nodeCount, linkCount));
     }
 
     /// <summary>
