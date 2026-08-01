@@ -52,6 +52,9 @@
     <Item>
       <Id>0c0e6e87-c484-44be-8d2b-1e00a40300e0</Id>
     </Item>
+    <Item>
+      <Id>f7396268-0fe3-4fc8-86a9-f16f01097ed5</Id>
+    </Item>
   </Tools>
   <Overview>
     <Text>Responsible for implementing concrete code based on the technical specifications and performing self-review during the coding process.</Text>

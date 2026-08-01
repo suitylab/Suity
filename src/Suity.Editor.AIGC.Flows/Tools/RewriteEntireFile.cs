@@ -12,7 +12,7 @@ namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("RewriteEntireFile", CodeBase = "*Suity", Category = "WorkSpace Tools")]
 [DisplayText("Rewrite Entire File")]
-[ToolTipsText("Completely overwrite an existing file with new content. Use as fallback when Diff or Replace operations fail.")]
+[ToolTipsText("Completely overwrite a file with new content. Creates the file and its directory if they don't exist. Use as fallback when Diff or Replace operations fail.")]
 [NativeAlias("Suity.Editor.AIGC.RewriteEntireFile")]
 public class RewriteEntireFile : ToolCommand<RewriteEntireFile.Output>
 {
@@ -84,9 +84,10 @@ public class RewriteEntireFile : ToolCommand<RewriteEntireFile.Output>
             fullPath = Path.Combine(workspaceDir, relativePath);
         }
 
-        if (!File.Exists(fullPath))
+        string directory = Path.GetDirectoryName(fullPath);
+        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
         {
-            throw new FileNotFoundException($"File not found: {relativePath}");
+            Directory.CreateDirectory(directory);
         }
 
         context.ToolInstance.Conversation?.AddRunningMessage("Rewrite file", msg =>

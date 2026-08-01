@@ -11,6 +11,7 @@ Generate a clear, incremental Development Plan (`development-plan.md`) document 
 4. **Explicit Rewiring & Replacement:** When a new phase introduces dynamic features or UI, it MUST explicitly mandate adjusting, replacing, or wiring up prior hardcoded logic from earlier phases.
 5. **Continuous Integration:** Integration happens continuously in every phase. Every phase builds upon the running skeleton of the previous phase. Never leave integration to a final standalone phase.
 6. **Hardcode to Dynamic:** Build features using hardcoded data/mock data first to verify the loop, then introduce dynamic UI/configurations in later phases to replace hardcoded setups.
+7. **Micro-Pacing & Atomic Granularity:** Keep step sizes small, focused, and granular (typically resulting in 8 to 12+ total phases for standard applications). Never bundle multiple entity variations (e.g., more than 1–2 variants per phase) or complex multi-system refactors into a single phase, preventing downstream execution context drift.
 
 ---
 
@@ -60,5 +61,7 @@ Generate a clear, incremental Development Plan (`development-plan.md`) document 
 - **MUST Mandate Prior Code Modifications:** Never create a phase that builds a feature in isolation. Always specify how it hooks into or modifies code from previous phases.
 - **NO Delayed Integration:** System initialization and main loop setup MUST happen in Phase 1. Never create an "Integration Phase" at the end.
 - **Always Runnable:** The project MUST be in a functional, bug-free, and runnable state at the completion of *every* phase. 
+- **Micro-Phase Budgeting:** Prevent phase overloading. Stagger entity expansions, multiple variations, complex UI flows, or secondary features across separate micro-phases rather than compressing them into large single steps.
 - **Keep the document concise while retaining rich feature descriptions.**
 - **No Standalone Testing/Optimization or Deployment Phases.**
+- **Atomic Decomposition Limit (STRICT):** Every single feature slice MUST be decomposed to its finest, most atomic level where no further functional division is possible without violating the standalone runnable vertical slice integrity.
