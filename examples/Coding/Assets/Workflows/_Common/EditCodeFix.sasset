@@ -756,15 +756,15 @@ Notice: must include comments for exact replacement if the origin code contains 
         <TaskCommit>True</TaskCommit>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-310" Y="330" Width="80" Height="17">
-      <Name>CodeWriterComplete</Name>
+    <Item type="Suity.Editor.Flows.SubFlows.PageEventDiagramItem" X="-310" Y="330" Width="86" Height="17">
+      <Name>CodeRewriterComplete</Name>
       <Node type="Suity.Editor.Flows.SubFlows.PageEventNode">
-        <Name>CodeWriterComplete</Name>
+        <Name>CodeRewriterComplete</Name>
         <Icon />
         <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
         <ValueType type="Suity.Editor.Types.TypeDesignSelection" />
         <EventType>SubTaskFinished</EventType>
-        <CommitName>CodeWriter</CommitName>
+        <CommitName>CodeRewriter</CommitName>
       </Node>
     </Item>
   </Nodes>
@@ -1245,7 +1245,7 @@ Notice: must include comments for exact replacement if the origin code contains 
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>CodeWriterComplete</FromNode>
+      <FromNode>CodeRewriterComplete</FromNode>
       <FromConnector>Out</FromConnector>
       <ToNode>###SetTaskScratchPads01</ToNode>
       <ToConnector>In</ToConnector>

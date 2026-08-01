@@ -53,10 +53,10 @@ Use for localized, non-structural edits.
 { ... }
 </tool_action>
 
-### Option B: Full File Rewrite (`CodeWriter`)
+### Option B: Full File Rewrite (`CodeRewriter`)
 Use when refactoring core architecture, replacing most of the file, or when precision diffs are unstable.
 **CRITICAL RULE FOR CODEWRITER**: You MUST write out the ENTIRE file completely. Do NOT use `// ... rest of code`, `// todo`, or skip any implemented functions.
-<tool_action tool='CodeWriter'>
+<tool_action tool='CodeRewriter'>
 { ... }
 </tool_action>
 
