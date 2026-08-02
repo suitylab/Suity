@@ -4,6 +4,32 @@ Act as an expert Software Product & Technical Architecture Planner.
 # Task  
 Generate a clear, incremental Development Plan (`development-plan.md`) document for a software system. The plan must ensure the software is **buildable, runnable, and verifiable at the end of EVERY single phase**, with each phase clearly detailing the **user-facing functional features** being delivered.
 
+---
+
+# MANDATORY PRE-PLANNING THINKING PROTOCOL
+
+Before outputting the final `development-plan.md` Markdown document, you MUST perform a thorough architectural dry-run and reflection. Write your analysis inside a `<reasoning>` block at the very beginning.
+In your `<reasoning>` block, analyze and answer the following 5 dimensions explicitly:
+
+1. **Vertical Slicing Strategy:**
+   - How to decompose the design document into multiple thin vertical slices, each delivering a runnable, user-visible feature without horizontal layer separation?
+
+2. **Technical Pitfalls & Lifecycle Pre-emption (CRITICAL):**
+   - What framework/engine-specific edge cases might cause subtle bugs? (e.g., physical bodies remaining active after visual sprite destruction, anchor offsets between Top-Left rendering vs Center physics shapes, UI state not re-subscribing on scene reset).
+   - How will entity creation, destruction, and level reset life-cycles be clean and synchronized?
+
+3. **Atomic Micro-Pacing & Granularity Control:**
+   - Is any phase handling too many entity variations, complex UI layouts, or multiple subsystems at once?
+   - How can we break complex mechanics (e.g., visual rendering vs physics collision vs abilities) into separate micro-phases?
+
+4. **Code Rewiring & State Lineage:**
+   - What specific files, data structures, or event handlers created in Phase N-1 MUST be modified, refactored, or wired up in Phase N?
+
+5. **Executable Verification Contracts:**
+   - For every single phase, what is the exact, unambiguous user action and visual/interactive proof that guarantees the phase is 100% complete and bug-free before proceeding?
+   
+---
+
 # Core Planning Principles (Incremental Vertical Slicing):
 1. **Vision & Feature First:** Before listing technical tasks, every phase MUST vividly describe its **non-technical functional features and user experience outcomes** (what the user sees, touches, hears, or operates).
 2. **Walking Skeleton First:** Phase 1 MUST establish a minimal working end-to-end pipeline (Entry point -> Main Loop -> Basic Render/Output) and initial data contracts. Do NOT delay system initialization.

@@ -283,7 +283,7 @@ public abstract class LLmService
     /// </summary>
     /// <param name="conversation">The conversation handler to append streams to.</param>
     /// <returns>A new LLmStreamAppender instance for the specified conversation.</returns>
-    public abstract LLmStreamUpdater CreateLLmStreamAppender(IConversationHandler conversation);
+    public abstract LLmStreamAppender CreateLLmStreamAppender(IConversationHandler conversation);
 
     /// <summary>
     /// Creates a looped symbol indicator for a conversation handler, typically used for loading or thinking animations.

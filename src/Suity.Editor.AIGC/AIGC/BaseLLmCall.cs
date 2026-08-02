@@ -131,7 +131,7 @@ Export pure json code using the function schema without any '//' comments.
     /// <summary>
     /// Gets the stream appender for streaming LLM responses.
     /// </summary>
-    public LLmStreamUpdater Appender { get; protected set; }
+    public LLmStreamAppender Appender { get; protected set; }
 
     /// <summary>
     /// Gets a value indicating whether logging is enabled.

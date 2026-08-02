@@ -15,7 +15,7 @@ public class Paragraph
     public string? TagText { get; }
 
     /// <summary>Internal buffer for accumulating paragraph content.</summary>
-    internal StringBuilder Content { get; } = new StringBuilder();
+    internal StringBuilder Content { get; } = new();
     /// <summary>Gets a value indicating whether this paragraph has been completed.</summary>
     public bool IsCompleted { get; internal set; }
     /// <summary>Gets the complete text content of this paragraph.</summary>
@@ -47,9 +47,14 @@ public class TextSegmenter
     private ParseState _state = ParseState.Normal;
 
     // Dual-buffer design: _tagBuffer stores the full tag, _nameBuffer stores only the tag name
-    private readonly StringBuilder _tagBuffer = new StringBuilder();
-    private readonly StringBuilder _nameBuffer = new StringBuilder();
+    private readonly StringBuilder _tagBuffer = new();
+    private readonly StringBuilder _nameBuffer = new();
     private bool _isExtractingName = false;
+
+    /// <summary>Gets or sets the maximum character count for the current paragraph.
+    /// When set to a positive value, characters will be removed from the beginning when exceeded.
+    /// Default is <= 0 (no limit).</summary>
+    public int MaxCharacterCount { get; set; } = 0;
 
     /// <summary>Gets the paragraph currently being accumulated.</summary>
     public Paragraph CurrentParagraph { get; private set; } = null!;
@@ -91,6 +96,7 @@ public class TextSegmenter
                 else
                 {
                     CurrentParagraph.Content.Append(c);
+                    TrimParagraphIfNeeded();
                 }
             }
             else // InPotentialTag
@@ -130,11 +136,26 @@ public class TextSegmenter
                     {
                         // Tag is invalid or does not meet segmentation criteria, fall back to plain text
                         CurrentParagraph.Content.Append(fullTag);
+                        TrimParagraphIfNeeded();
                         _state = ParseState.Normal;
                     }
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Trims the current paragraph's content from the beginning if it exceeds MaxCharacterCount.
+    /// </summary>
+    private void TrimParagraphIfNeeded()
+    {
+        if (MaxCharacterCount <= 0) return;
+
+        var content = CurrentParagraph.Content;
+        if (content.Length <= MaxCharacterCount) return;
+
+        int excess = content.Length - MaxCharacterCount;
+        content.Remove(0, excess);
     }
 
     /// <summary>
@@ -147,7 +168,7 @@ public class TextSegmenter
     {
         if (string.IsNullOrWhiteSpace(tagName)) return false;
         // Basic security validation
-        if (tagName.IndexOfAny(new[] { '<', '>' }) >= 0) return false;
+        if (tagName.IndexOfAny(['<', '>']) >= 0) return false;
 
         bool isClosing = fullTag.Length >= 3 && fullTag[1] == '/';
 

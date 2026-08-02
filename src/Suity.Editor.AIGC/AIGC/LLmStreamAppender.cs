@@ -10,7 +10,7 @@ namespace Suity.Editor.AIGC;
 /// <remarks>LLmStreamAppender is intended for use with conversational AI scenarios where text is received
 /// incrementally and needs to be appended to a conversation handler. Derived classes can override behavior to customize
 /// how conversation updates are handled. This class is not thread-safe.</remarks>
-public abstract class LLmStreamUpdater : IDisposable
+public abstract class LLmStreamAppender : IDisposable
 {
     /// <summary>
     /// Gets or sets the conversation handler used to manage conversational interactions.

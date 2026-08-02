@@ -45,7 +45,7 @@ internal class LLmServiceBK : LLmService
 
     private void ScanAssemblies()
     {
-        foreach (Type appenderType in typeof(LLmStreamUpdater).GetAvailableClassTypes())
+        foreach (Type appenderType in typeof(LLmStreamAppender).GetAvailableClassTypes())
         {
             _appenderTypes.Add(appenderType);
         }
@@ -739,13 +739,13 @@ The last generation is as follows:
     }
 
     /// <inheritdoc/>
-    public override LLmStreamUpdater CreateLLmStreamAppender(IConversationHandler conversation)
+    public override LLmStreamAppender CreateLLmStreamAppender(IConversationHandler conversation)
     {
         if (_appenderTypes.FirstOrDefault() is { } appenderType)
         {
             try
             {
-                var appender = Activator.CreateInstance(appenderType) as LLmStreamUpdater;
+                var appender = Activator.CreateInstance(appenderType) as LLmStreamAppender;
                 if (appender != null)
                 {
                     appender.Conversation = conversation;
@@ -808,7 +808,7 @@ The last generation is as follows:
 /// <summary>
 /// A counter-based LLM stream appender that displays the current text length as a system message.
 /// </summary>
-internal class CounterLLmStreamAppender : LLmStreamUpdater
+internal class CounterLLmStreamAppender : LLmStreamAppender
 {
     private DisposableDialogItem _msg;
 

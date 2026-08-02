@@ -7,8 +7,14 @@ namespace Suity.Editor.AIGC.StreamUpdaters;
 /// A stream updater that processes LLM output by segmenting it into paragraphs based on XML tags,
 /// and updates the conversation UI accordingly.
 /// </summary>
-public class XmlTagStreamUpdater : LLmStreamUpdater
+public class XmlTagStreamAppender : LLmStreamAppender
 {
+    /// <summary>
+    /// Maximum number of characters to display in the conversation.
+    /// When exceeded, characters are removed from the beginning.
+    /// </summary>
+    public static int MaxDisplayCharacters { get; set; } = 2000;
+
     /// <summary>
     /// Gets or sets a value indicating whether to display the full text content in code blocks.
     /// When false, only the text length is shown.
@@ -29,11 +35,13 @@ public class XmlTagStreamUpdater : LLmStreamUpdater
     public override bool DisplayingFullResult => true;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="XmlTagStreamUpdater"/> class
+    /// Initializes a new instance of the <see cref="XmlTagStreamAppender"/> class
     /// and subscribes to paragraph segmentation events.
     /// </summary>
-    public XmlTagStreamUpdater()
+    public XmlTagStreamAppender()
     {
+        _paragraphBuffer.MaxCharacterCount = MaxDisplayCharacters;
+
         _paragraphBuffer.OnParagraphCompleted += paragraph =>
         {
             UpdateMessageBox(Conversation, paragraph);

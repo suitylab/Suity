@@ -4,7 +4,7 @@ using System.Text;
 namespace Suity.Editor.AIGC.StreamUpdaters;
 
 [NotAvailable]
-public class SimpleStreamUpdater : LLmStreamUpdater
+public class SimpleStreamAppender : LLmStreamAppender
 {
 
     DisposableDialogItem _msg;

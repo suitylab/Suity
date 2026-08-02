@@ -183,7 +183,7 @@ public interface ILLmCall : IDisposable
     /// <summary>
     /// Gets the stream appender used for streaming output.
     /// </summary>
-    LLmStreamUpdater Appender { get; }
+    LLmStreamAppender Appender { get; }
 
     /// <summary>
     /// Resets the call to a new message state.

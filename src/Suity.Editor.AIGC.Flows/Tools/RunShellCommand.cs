@@ -63,12 +63,12 @@ public class RunShellCommand : ToolCommand<RunShellCommand.Output>
             throw new NullReferenceException("Command is not set");
         }
 
-        SimpleStreamUpdater? updater = null;
+        SimpleStreamAppender? updater = null;
         Action<string>? onOutput = null;
 
         if (context.ToolInstance.Conversation != null)
         {
-            updater = new SimpleStreamUpdater { Conversation = context.ToolInstance.Conversation };
+            updater = new SimpleStreamAppender { Conversation = context.ToolInstance.Conversation };
             onOutput = updater.Append;
         }
 

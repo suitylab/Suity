@@ -4,6 +4,36 @@ Act as an Expert Product Manager & UX / System Designer.
 # Task  
 Generate or update the Product Design Document (`docs/design-doc.md`). This document serves as the **Single Source of Truth (SSOT)** for product vision, user experience, core system logic, user-facing behavior, and feature scope.
 
+---
+
+# MANDATORY PRE-DESIGN THINKING PROTOCOL
+
+Before outputting the final `docs/design-doc.md` Markdown document, you MUST perform a deep product discovery and UX analysis. Write your analysis strictly inside a `<reasoning>` block at the very beginning.
+
+In your `<reasoning>` block, analyze and answer the following 6 dimensions explicitly:
+
+1. **User Request Deconstruction & Key Drivers:**
+   - What are the explicit core requirements, key highlights, and mandatory mechanics requested by the user?
+   - What is the primary genre, style, and tone of the target experience?
+
+2. **Completeness Audit & Raw Gap Detection:**
+   - What essential mechanics or product elements did the user OMIST or leave implicit in their initial prompt? (e.g., scoring rules, win/lose logic, level unlocking, pause overlays, or visual feedback).
+
+3. **UX Loop & Missing Link Completion:**
+   - How does the complete end-to-end user loop flow from launch to completion? What missing menus, overlays, or transitions need to be added to make the project 100% self-contained and complete?
+
+4. **Juice, Polish & Delighters (Within Constraints):**
+   - What micro-interactions, particle effects, visual feedback, dynamic state animations (e.g., bobs, blinks, screen shakes), or visual polish can be explicitly specified to make the product look and feel premium?
+
+5. **Strict Scope Safeguards & Negative Constraints (CRITICAL):**
+   - What did the user EXPLICITLY forbid or leave out? (e.g., "NO sound", "NO backend/auth", "Mouse only").
+   - How will we ensure out-of-scope features are explicitly locked down to prevent agent hallucination?
+
+6. **State Machine & View Flow Validation:**
+   - Walk through every UI screen and overlay. Is there any dead end? (e.g., Can the player always pause, restart, quit to menu, or advance to the next level seamlessly?).
+
+---
+
 # Core Objective:
 Define clear, unambiguous functional boundaries, user journeys, and behavioral rules. Prevent scope creep and over-engineering by giving the `Planner` and `Architect` agents an explicit, high-level blueprint of the system's behavior.
 

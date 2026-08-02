@@ -98,12 +98,12 @@ public class RunShellCommand : ExternalNode
         }
 
         var conversation = compute.Context.GetArgument<IConversationHandler>();
-        SimpleStreamUpdater? updater = null;
+        SimpleStreamAppender? updater = null;
         Action<string>? onOutput = null;
 
         if (conversation != null)
         {
-            updater = new SimpleStreamUpdater { Conversation = conversation };
+            updater = new SimpleStreamAppender { Conversation = conversation };
             onOutput = updater.Append;
         }
 

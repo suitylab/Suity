@@ -1,5 +1,6 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
+using Suity.Editor.AIGC.StreamUpdaters;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.AIGC;
 using Suity.Editor.Flows.SubFlows;
@@ -118,6 +119,10 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
     private readonly ValueProperty<RetryConfig> _retry
         = new("Retry", "Retry", new(), "Retry when failed.");
 
+    private readonly ValueProperty<int> _tagAppenderMaxLength
+        = new("tagAppenderMaxLangth", "Tag Appender Max Length", 2000, "Tag appender max length in AI conversation.");
+
+
     private readonly StringProperty _fixedWorkSpaceName
         = new("FixedWorkSpaceName", "Fixed WorkSpace Name", "", "Fixed workspace name for testing, leave blank for automatic creation based on user input.");
 
@@ -139,6 +144,11 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
         _minimalToolSchema.ValueChanged += (s, e) =>
         {
             IPageAssetToTextConverter.MinimalFormat = _minimalToolSchema.Value;
+        };
+
+        _tagAppenderMaxLength.ValueChanged += (s, e) =>
+        {
+            XmlTagStreamAppender.MaxDisplayCharacters = _tagAppenderMaxLength.Value;
         };
 
         _retry.Property.WithOptional().WithExpand();
@@ -202,6 +212,7 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
         _maxChatHistory.Sync(sync);
         _maxScratchPad.Sync(sync);
         _retry.Sync(sync);
+        _tagAppenderMaxLength.Sync(sync);
 
         _fixedWorkSpaceName.Sync(sync);
         _promptWorkSpace.Sync(sync);
@@ -215,6 +226,7 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
         _maxChatHistory.InspectorField(setup);
         _maxScratchPad.InspectorField(setup);
         _retry.InspectorField(setup);
+        _tagAppenderMaxLength.InspectorField(setup);
 
         setup.LabelWithIcon("Prompt", CoreIconCache.Prompt);
         _fixedWorkSpaceName.InspectorField(setup);

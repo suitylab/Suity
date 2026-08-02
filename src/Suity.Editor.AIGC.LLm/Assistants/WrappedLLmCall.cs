@@ -70,7 +70,7 @@ internal class WrappedLLmCall : ILLmCall
     public string LastFunctionOutput => _call.LastFunctionOutput;
 
     /// <inheritdoc/>
-    public LLmStreamUpdater Appender => _call.Appender;
+    public LLmStreamAppender Appender => _call.Appender;
 
     /// <inheritdoc/>
     public void AddFunction(string name, object type, string description)

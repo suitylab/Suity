@@ -9,6 +9,13 @@
 
 ---
 
+### Demo
+
+- **Demo Game Project**: [DroneGameDemo](https://github.com/suitylab/DroneGameDemo)
+- **Demo Game URL**: [drone-game-demo.suitylab.com](https://drone-game-demo.suitylab.com)
+
+---
+
 ## Screenshots
 
 ### Landing Page

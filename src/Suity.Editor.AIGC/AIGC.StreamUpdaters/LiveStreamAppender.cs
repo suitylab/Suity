@@ -1,4 +1,3 @@
-using Suity.Editor.AIGC;
 using Suity.Views;
 using System.Text;
 
@@ -8,7 +7,7 @@ namespace Suity.Editor.AIGC.StreamUpdaters;
 /// Stream Updater class, inherits from LLmStreamUpdater, used to handle streaming output display
 /// </summary>
 [NotAvailable]
-public class LiveStreamUpdater : LLmStreamUpdater
+public class LiveStreamAppender : LLmStreamAppender
 {
     private const int MaxParagraphLength = 5000;
 

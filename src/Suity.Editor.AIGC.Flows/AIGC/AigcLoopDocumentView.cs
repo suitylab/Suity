@@ -86,7 +86,7 @@ public class AigcLoopDocumentView : IDocumentView,
         var option = new HeaderlessTreeOptions
         {
             ShowDisplayText = true,
-            StatusIconAtTheEnd = true,
+            StatusIconAtTheEnd = false,
         };
         _treeView = EditorUtility.CreateSimpleTreeImGui(option);
 
