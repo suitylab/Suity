@@ -178,6 +178,8 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
     {
         if ((task.GetPageInstance()?.GetIsDoneInputs()).IsFalse())
         {
+            // Set task to failed state.
+            task.CommitStatus = TaskCommitStatus.TaskFailed;
             return (flowControl: false, value: AICallResult.FromFailed("Task input is missing, it may be stuck. Task canceled."));
         }
 
