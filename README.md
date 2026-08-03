@@ -9,11 +9,16 @@
 
 ---
 
-### Demo
+### Drone Game Demo
 
-- **Demo Game Project**: [DroneGameDemo](https://github.com/suitylab/DroneGameDemo)
-- **Demo Game URL**: [drone-game-demo.suitylab.com](https://drone-game-demo.suitylab.com)
+- **Project**: [DroneGameDemo](https://github.com/suitylab/DroneGameDemo)
+- **Demo URL**: [drone-game-demo.suitylab.com](https://drone-game-demo.suitylab.com)
 
+### Alien City Demo
+
+- **Project**: [AlienCityDemo](https://github.com/suitylab/AlienCityDemo)
+- **Demo URL**: [drone-game-demo.suitylab.com](https://alien-city-demo.suitylab.com)
+- 
 ---
 
 ## Screenshots
