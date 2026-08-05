@@ -180,7 +180,8 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
         {
             // Set task to failed state.
             task.CommitStatus = TaskCommitStatus.TaskFailed;
-            return (flowControl: false, value: AICallResult.FromFailed("Task input is missing, it may be stuck. Task canceled."));
+            task.Notice = "Some task input parameters are missing.";
+            return (flowControl: true, value: AICallResult.FromFailed(task.Notice));
         }
 
         TaskCommitStatus status = task.GetCommitStatus();
@@ -189,15 +190,18 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
         {
             if (status == TaskCommitStatus.TaskDisabled)
             {
-                return (flowControl: false, value: AICallResult.FromFailed("Task is disabled. Task canceled."));
+                task.Notice = "Task is disabled.";
+                return (flowControl: true, value: AICallResult.FromFailed(task.Notice));
             }
             else if (status != TaskCommitStatus.None)
             {
-                return (flowControl: false, value: AICallResult.Success);
+                return (flowControl: true, value: AICallResult.Success);
             }
             else
             {
-                return (flowControl: false, value: AICallResult.FromFailed("Task is not completed, it may be stuck. Task canceled."));
+                task.CommitStatus = TaskCommitStatus.TaskFailed;
+                task.Notice = "Some task out parameters are not completed.";
+                return (flowControl: true, value: AICallResult.FromFailed(task.Notice));
             }
         }
 

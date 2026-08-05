@@ -83,7 +83,17 @@ public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPagePara
         {
             var subTask = GetLastSubTask();
             string content = subTask?.GetPageInstance()?.GetTaskCommit(intent) ?? HistoryText.Empty;
-            return new HistoryTag(content, [new("tool", ToolName)]);
+            string notice = subTask?.Notice;
+            notice = notice?.Trim();
+            if (!string.IsNullOrWhiteSpace(notice))
+            {
+                notice = notice.Replace('\r', ' ').Replace('\n', ' ').Replace('\t', ' ').Replace('\'', '`');
+                return new HistoryTag(content, [new("tool", ToolName), new("notice", notice)]);
+            }
+            else
+            {
+                return new HistoryTag(content, [new("tool", ToolName)]);
+            }
         }
     }
 

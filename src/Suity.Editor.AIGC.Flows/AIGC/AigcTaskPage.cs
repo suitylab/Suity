@@ -19,6 +19,7 @@ public abstract class AigcTaskPage : DesignNode,
 {
     readonly StringProperty _commitName = new("CommitName", "Commit Name", string.Empty, "Name used when committing to parent task.");
     readonly ValueProperty<TaskCommitStatus> _commitStatus = new("CommitStatus", "Commit Status", TaskCommitStatus.None, "Explicitly defines the status of the task commit. ‘None’ indicates that the status depends on the parameter completion");
+    readonly StringProperty _notice = new("Notice", "Notice", string.Empty, "");
 
     protected AigcTaskPage()
     {
@@ -71,6 +72,24 @@ public abstract class AigcTaskPage : DesignNode,
         }
     }
 
+    public string Notice
+    {
+        get => _notice.Text ?? string.Empty;
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                value = string.Empty;
+            }
+
+            if (_notice.Text != value)
+            {
+                _notice.Text = value;
+                this.TaskPageDocument?.MarkDirtyAndSaveDelayed(this);
+            }
+        }
+    }
+
     #endregion
 
     #region Virtual / Override
@@ -106,6 +125,7 @@ public abstract class AigcTaskPage : DesignNode,
         sync.Sync("TaskId", TaskId, SyncFlag.GetOnly);
         _commitName.Sync(sync);
         _commitStatus.Sync(sync);
+        _notice.Sync(sync);
     }
 
     /// <inheritdoc/>
@@ -130,6 +150,8 @@ public abstract class AigcTaskPage : DesignNode,
 
         _commitStatus.Property.WithIcon(_commitStatus.Value.ToCheckedStatus().ToStatusIcon());
         _commitStatus.InspectorField(setup);
+
+        _notice.InspectorField(setup);
     }
 
     #endregion

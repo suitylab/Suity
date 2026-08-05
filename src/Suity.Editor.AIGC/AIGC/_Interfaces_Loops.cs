@@ -153,6 +153,11 @@ public interface IAigcTaskPage : INamed, ITextDisplay, IAttributeGetter
     string CommitName { get; }
 
     /// <summary>
+    /// Gets the task notice, which is used to provide information or warnings about the task.
+    /// </summary>
+    string Notice { get; }
+
+    /// <summary>
     /// Gets the task status.
     /// </summary>
     TaskCommitStatus GetCommitStatus();
