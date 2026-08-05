@@ -24,6 +24,11 @@
 - **Project**: [MineCraftClone](https://github.com/suitylab/MineCraftClone)
 - **Demo URL**: [minecraft-clone.suitylab.com](https://minecraft-clone.suitylab.com)
 
+### Neon Racer Demo
+
+- **Project**: [NeonRacerDemo](https://github.com/suitylab/NeonRacerDemo)
+- **Demo URL**: [neon-racer-demo.suitylab.com](https://neon-racer-demo.suitylab.com)
+
 ---
 
 ## Screenshots
