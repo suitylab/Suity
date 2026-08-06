@@ -9,12 +9,22 @@
 
 ---
 
-### Drone Game Demo
+### Racer + Infinite Road Generation Demo
+
+- **Project**: [FPSStrike](https://github.com/suitylab/FpsStrikerDemo)
+- **Demo URL**: [fps-striker-demo.suitylab.com](https://fps-striker-demo.suitylab.com)
+
+### First Person Shooter + Survival Demo
+
+- **Project**: [NeonRacerDemo](https://github.com/suitylab/NeonRacerDemo)
+- **Demo URL**: [neon-racer-demo.suitylab.com](https://neon-racer-demo.suitylab.com)
+
+### Top-Down Shooter + Dungeon Generation Demo
 
 - **Project**: [DroneGameDemo](https://github.com/suitylab/DroneGameDemo)
 - **Demo URL**: [drone-game-demo.suitylab.com](https://drone-game-demo.suitylab.com)
 
-### Alien City Demo
+### Alien City 3D Navigation Demo
 
 - **Project**: [AlienCityDemo](https://github.com/suitylab/AlienCityDemo)
 - **Demo URL**: [drone-game-demo.suitylab.com](https://alien-city-demo.suitylab.com)
@@ -23,11 +33,6 @@
 
 - **Project**: [MineCraftClone](https://github.com/suitylab/MineCraftClone)
 - **Demo URL**: [minecraft-clone.suitylab.com](https://minecraft-clone.suitylab.com)
-
-### Neon Racer Demo
-
-- **Project**: [NeonRacerDemo](https://github.com/suitylab/NeonRacerDemo)
-- **Demo URL**: [neon-racer-demo.suitylab.com](https://neon-racer-demo.suitylab.com)
 
 ---
 
