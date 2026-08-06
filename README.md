@@ -24,15 +24,15 @@
 - **Project**: [DroneGameDemo](https://github.com/suitylab/DroneGameDemo)
 - **Demo URL**: [drone-game-demo.suitylab.com](https://drone-game-demo.suitylab.com)
 
-### Alien City 3D Navigation Demo
-
-- **Project**: [AlienCityDemo](https://github.com/suitylab/AlienCityDemo)
-- **Demo URL**: [drone-game-demo.suitylab.com](https://alien-city-demo.suitylab.com)
-
 ### MineCraft Clone Demo
 
 - **Project**: [MineCraftClone](https://github.com/suitylab/MineCraftClone)
 - **Demo URL**: [minecraft-clone.suitylab.com](https://minecraft-clone.suitylab.com)
+
+### Alien City 3D Navigation Demo
+
+- **Project**: [AlienCityDemo](https://github.com/suitylab/AlienCityDemo)
+- **Demo URL**: [drone-game-demo.suitylab.com](https://alien-city-demo.suitylab.com)
 
 ---
 
