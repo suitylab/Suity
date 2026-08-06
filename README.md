@@ -9,15 +9,15 @@
 
 ---
 
-### Racer + Infinite Road Generation Demo
-
-- **Project**: [FPSStrike](https://github.com/suitylab/FpsStrikerDemo)
-- **Demo URL**: [fps-striker-demo.suitylab.com](https://fps-striker-demo.suitylab.com)
-
 ### First Person Shooter + Survival Demo
 
 - **Project**: [NeonRacerDemo](https://github.com/suitylab/NeonRacerDemo)
 - **Demo URL**: [neon-racer-demo.suitylab.com](https://neon-racer-demo.suitylab.com)
+
+### Racer + Infinite Road Generation Demo
+
+- **Project**: [FPSStrike](https://github.com/suitylab/FpsStrikerDemo)
+- **Demo URL**: [fps-striker-demo.suitylab.com](https://fps-striker-demo.suitylab.com)
 
 ### Top-Down Shooter + Dungeon Generation Demo
 
