@@ -9,7 +9,7 @@
 
 ---
 
-### Mario Kart Remake + Race Demo
+### Mario Kart Remake
 
 - **Project**: [MarioKartRemake](https://github.com/suitylab/MineCraftClone)
 - **Demo URL**: [mario-kart-remake.suitylab.com](https://mario-kart-remake.suitylab.com)
