@@ -9,6 +9,11 @@
 
 ---
 
+### Mario Kart Remake + Race Demo
+
+- **Project**: [MarioKartRemake](https://github.com/suitylab/MineCraftClone)
+- **Demo URL**: [mario-kart-remake.suitylab.com](https://mario-kart-remake.suitylab.com)
+  
 ### First Person Shooter + Survival Demo
 
 - **Project**: [FPSStrike](https://github.com/suitylab/FpsStrikerDemo)
@@ -33,28 +38,6 @@
 
 - **Project**: [AlienCityDemo](https://github.com/suitylab/AlienCityDemo)
 - **Demo URL**: [drone-game-demo.suitylab.com](https://alien-city-demo.suitylab.com)
-
----
-
-## Screenshots
-
-### Landing Page
-![Landing Page](screenshots/LandingPage.gif)
-
-### First Person Shooter
-![First Person Shooter](screenshots/FirstPersonShooter.gif)
-
-### Minecraft Clone
-![Minecraft Clone](screenshots/MineCraftClone.gif)
-
-### Racing 3D
-![Racing 3D](screenshots/Racing3D.gif)
-
-### Space Shooter 2D
-![Space Shooter 2D](screenshots/SpaceShooter2D.gif)
-
-### Tank 3D
-![Tank 3D](screenshots/Tank3D.gif)
 
 ---
 
