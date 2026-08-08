@@ -11,7 +11,7 @@
 
 ### Mario Kart Remake
 
-- **Project**: [MarioKartRemake](https://github.com/suitylab/MineCraftClone)
+- **Project**: [MarioKartRemake](https://github.com/suitylab/MarioKartRemake)
 - **Demo URL**: [mario-kart-remake.suitylab.com](https://mario-kart-remake.suitylab.com)
   
 ### First Person Shooter + Survival Demo
