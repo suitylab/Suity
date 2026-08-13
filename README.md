@@ -8,7 +8,11 @@
 **Suity** is a next-generation, professional-grade Agentic IDE designed for architecting and executing complex, industrial-scale autonomous AI systems. Moving beyond fragile static prompt chains and the chaotic unpredictability of open "Agent Teams," Suity pioneers the **DSAL (Deterministic Skeleton with Autonomous Loops)** paradigm. By combining high-performance node-based orchestration, strict hierarchical delegation, and atomic self-healing micro-loops, Suity turns unpredictable AI behaviors into reliable, production-ready software engineering workflows.
 
 ---
+### Star Strike Demo
 
+- **Project**: [StarForgeStrike](https://github.com/suitylab/StarForgeStrike)
+- **Demo URL**: [star-forge-strike.suitylab.com](https://star-forge-strike.suitylab.com)
+- 
 ### Mario Kart Remake
 
 - **Project**: [MarioKartRemake](https://github.com/suitylab/MarioKartRemake)
