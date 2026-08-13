@@ -12,7 +12,7 @@
 
 - **Project**: [StarForgeStrike](https://github.com/suitylab/StarForgeStrike)
 - **Demo URL**: [star-forge-strike.suitylab.com](https://star-forge-strike.suitylab.com)
-- 
+
 ### Mario Kart Remake
 
 - **Project**: [MarioKartRemake](https://github.com/suitylab/MarioKartRemake)
