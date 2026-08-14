@@ -64,7 +64,7 @@ public class BackupWorkspace : ToolCommand<BackupWorkspace.Output>
         }
 
         string backupName = BackupName?.Trim();
-        workspace.BackupWorkspace(IgnorePatterns, string.IsNullOrWhiteSpace(backupName) ? null : backupName);
+        workspace.BackupWorkspace(string.IsNullOrWhiteSpace(backupName) ? null : backupName, IgnorePatterns);
 
         return Task.FromResult(new Output
         {

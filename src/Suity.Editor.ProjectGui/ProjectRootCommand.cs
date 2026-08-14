@@ -28,6 +28,7 @@ internal class ProjectRootCommand : RootMenuCommand
         AddCommand(new CreateWorkSpaceGroupCommand());
         AddCommand(new ChangeWorkSpaceGroupCommand());
         AddCommand(new WorkSpaceConfigCommand());
+        AddCommand(new WorkSpaceBackupGroupCommand());
 
         // Code render related commands.
         /*AddCommand(new AddWsRefRenderableCommnand());

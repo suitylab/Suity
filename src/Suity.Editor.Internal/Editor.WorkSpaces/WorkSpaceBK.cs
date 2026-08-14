@@ -1465,7 +1465,7 @@ public class WorkSpaceBK : WorkSpace,
         set => _backupIgnorePatterns.Text = value;
     }
 
-    public override void BackupWorkspace(string ignorePatterns = null, string backupName = null)
+    public override void BackupWorkspace(string backupName = null, string ignorePatterns = null)
     {
         string basePatterns = BackupIgnorePatterns;
         List<string> patterns;
@@ -1485,17 +1485,13 @@ public class WorkSpaceBK : WorkSpace,
             MarkConfigDirty();
         }
 
-        var ignoreSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-        {
-            "Backup",
-            Temp,
-        };
+        var ignoreSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var pattern in patterns)
         {
             ignoreSet.Add(pattern);
         }
 
-        string workspaceDir = MasterDirectory;
+        string workspaceDir = BaseDirectory;
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
             throw new NullReferenceException("Workspace directory is not set");
@@ -1514,21 +1510,30 @@ public class WorkSpaceBK : WorkSpace,
         string backupDir = workspaceDir.PathAppend("Backup");
         Directory.CreateDirectory(backupDir);
 
-        string id = IdGenerator.GenerateId(12);
-        string backupFileName = $"Backup_{DateTime.Now:yyyyMMdd_HHmmss}_{id}";
+        string backupFileName;
         string trimmedName = backupName?.Trim();
         if (!string.IsNullOrWhiteSpace(trimmedName))
         {
-            backupFileName = backupFileName + "_" + trimmedName;
+            backupFileName = trimmedName;
         }
+        else
+        {
+            string id = IdGenerator.GenerateId(12);
+            backupFileName = $"Backup_{DateTime.Now:yyyyMMdd_HHmmss}_{id}";
+        }
+
         string backupPath = backupDir.PathAppend(backupFileName + ".zip");
+        if (File.Exists(backupPath))
+        {
+            throw new IOException($"Backup file already exists: {backupPath}");
+        }
 
         int fileCount;
         using (var fileStream = File.Create(backupPath))
         {
             using var zipStream = new ZipOutputStream(fileStream);
             zipStream.SetLevel(6);
-            fileCount = AddDirectoryToZip(zipStream, workspaceDir, string.Empty, ignoreSet);
+            fileCount = AddDirectoryToZip(zipStream, MasterDirectory, string.Empty, ignoreSet);
         }
 
         Logs.LogInfo($"Backup completed: {backupFileName}.zip ({fileCount} files).");
@@ -1554,6 +1559,7 @@ public class WorkSpaceBK : WorkSpace,
         var directories = new DirectoryInfo(sourceDir).GetDirectories()
             .Where(d => !ignoreSet.Contains(d.Name))
             .OrderBy(d => d.Name, StringComparer.OrdinalIgnoreCase);
+
         foreach (var dir in directories)
         {
             string dirEntryName = relativePath + dir.Name + "/";
@@ -1565,6 +1571,7 @@ public class WorkSpaceBK : WorkSpace,
         var files = new DirectoryInfo(sourceDir).GetFiles()
             .Where(f => !ignoreSet.Contains(f.Name))
             .OrderBy(f => f.Name, StringComparer.OrdinalIgnoreCase);
+
         foreach (var file in files)
         {
             var entry = new ZipEntry(relativePath + file.Name)

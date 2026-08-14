@@ -769,9 +769,9 @@ public abstract class WorkSpace : IRenderHost, IHasId
     /// <summary>
     /// Backs up the workspace
     /// </summary>
-    /// <param name="ignorePatterns">Optional ignore patterns that append to the workspace backup ignore patterns</param>
     /// <param name="backupName">Optional backup name in standard folder naming format. Leave empty to use a default generated name.</param>
-    public abstract void BackupWorkspace(string ignorePatterns = null, string backupName = null);
+    /// <param name="ignorePatterns">Optional ignore patterns that append to the workspace backup ignore patterns</param>
+    public abstract void BackupWorkspace(string backupName = null, string ignorePatterns = null);
 
 /// <summary>
     /// Restores the workspace from a backup file.
