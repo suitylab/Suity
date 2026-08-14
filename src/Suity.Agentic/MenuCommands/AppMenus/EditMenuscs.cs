@@ -55,10 +55,34 @@ class UndoMenuCommand : ActiveDocumentMenuCommand<IViewUndo>
 
     protected override void DoCommandFound(DocumentEntry doc, IViewUndo viewUndo)
     {
+        if (HandleGlobalTextUndo())
+        {
+            return;
+        }
+
         if (viewUndo.CanUndo)
         {
             viewUndo.Undo();
         }
+    }
+
+    public static bool HandleGlobalTextUndo()
+    {
+        if (SuityApp.Instance.Window is { } mainWindow)
+        {
+            // Get the currently focused control
+            var focusManager = TopLevel.GetTopLevel(mainWindow)?.FocusManager;
+            var focusedElement = focusManager?.GetFocusedElement();
+
+            if (focusedElement is TextBox textBox)
+            {
+                // Manually call TextBox undo function
+                textBox.Undo();
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 #endregion
@@ -93,10 +117,34 @@ class RedoMenuCommand : ActiveDocumentMenuCommand<IViewUndo>
 
     protected override void DoCommandFound(DocumentEntry doc, IViewUndo viewUndo)
     {
+        if (HandleGlobalTextRedo())
+        {
+            return;
+        }
+
         if (viewUndo.CanRedo)
         {
             viewUndo.Redo();
         }
+    }
+
+    public static bool HandleGlobalTextRedo()
+    {
+        if (SuityApp.Instance.Window is { } mainWindow)
+        {
+            // Get the currently focused control
+            var focusManager = TopLevel.GetTopLevel(mainWindow)?.FocusManager;
+            var focusedElement = focusManager?.GetFocusedElement();
+
+            if (focusedElement is TextBox textBox)
+            {
+                // Manually call TextBox redo function
+                textBox.Redo();
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 
