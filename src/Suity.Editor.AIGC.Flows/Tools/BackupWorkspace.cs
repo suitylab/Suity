@@ -1,14 +1,9 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
-using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
-using ICSharpCode.SharpZipLib.Zip;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
@@ -68,92 +63,12 @@ public class BackupWorkspace : ToolCommand<BackupWorkspace.Output>
             throw new NullReferenceException("Workspace is null.");
         }
 
-        string workspaceDir = workspace.MasterDirectory;
-        if (string.IsNullOrWhiteSpace(workspaceDir))
-        {
-            throw new NullReferenceException("Workspace directory is not set");
-        }
-
-        string backupDir = workspaceDir.PathAppend("Backup");
-
-        if (!string.IsNullOrWhiteSpace(BackupName))
-        {
-            var invalidChars = System.IO.Path.GetInvalidFileNameChars();
-            if (BackupName.Any(c => invalidChars.Contains(c))
-                || BackupName.EndsWith(".") || BackupName.EndsWith(" ") || BackupName.EndsWith("\t"))
-            {
-                throw new ArgumentException($"Invalid backup name: {BackupName}");
-            }
-        }
-
-        string id = IdGenerator.GenerateId(12);
-        string backupFileName = $"Backup_{DateTime.Now:yyyyMMdd_HHmmss}_{id}";
         string backupName = BackupName?.Trim();
-        if (!string.IsNullOrWhiteSpace(backupName))
-        {
-            backupFileName = backupFileName + "_" + backupName;
-        }
-        string backupPath = backupDir.PathAppend(backupFileName + ".zip");
-
-        var ignoreSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-        {
-            "Backup",
-        };
-        foreach (var pattern in IgnorePatterns.Split([',', ';'], StringSplitOptions.RemoveEmptyEntries))
-        {
-            ignoreSet.Add(pattern.Trim());
-        }
-
-        Directory.CreateDirectory(backupDir);
-
-        int fileCount;
-        using (var fileStream = File.Create(backupPath))
-        {
-            using var zipStream = new ZipOutputStream(fileStream);
-            zipStream.SetLevel(6);
-            fileCount = AddDirectoryToZip(zipStream, workspaceDir, string.Empty, ignoreSet);
-        }
+        workspace.BackupWorkspace(IgnorePatterns, string.IsNullOrWhiteSpace(backupName) ? null : backupName);
 
         return Task.FromResult(new Output
         {
-            Message = $"Backup completed: {backupFileName}.zip ({fileCount} files).",
+            Message = "Backup completed.",
         });
-    }
-
-    private int AddDirectoryToZip(ZipOutputStream zipStream, string sourceDir, string relativePath, HashSet<string> ignoreSet)
-    {
-        int fileCount = 0;
-
-        var directories = new DirectoryInfo(sourceDir).GetDirectories()
-            .Where(d => !ignoreSet.Contains(d.Name))
-            .OrderBy(d => d.Name, StringComparer.OrdinalIgnoreCase);
-        foreach (var dir in directories)
-        {
-            string dirEntryName = relativePath + dir.Name + "/";
-            zipStream.PutNextEntry(new ZipEntry(dirEntryName) { DateTime = dir.LastWriteTime });
-            zipStream.CloseEntry();
-            fileCount += AddDirectoryToZip(zipStream, dir.FullName, dirEntryName, ignoreSet);
-        }
-
-        var files = new DirectoryInfo(sourceDir).GetFiles()
-            .Where(f => !ignoreSet.Contains(f.Name))
-            .OrderBy(f => f.Name, StringComparer.OrdinalIgnoreCase);
-        foreach (var file in files)
-        {
-            var entry = new ZipEntry(relativePath + file.Name)
-            {
-                DateTime = file.LastWriteTime,
-                Size = file.Length,
-            };
-            zipStream.PutNextEntry(entry);
-            using (var input = file.OpenRead())
-            {
-                input.CopyTo(zipStream);
-            }
-            zipStream.CloseEntry();
-            fileCount++;
-        }
-
-        return fileCount;
     }
 }

@@ -19,7 +19,6 @@
     <PackageReference Include="MarkedNet" Version="2.1.4" />
     <PackageReference Include="Microsoft.Bing.Search.WebSearch" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="SharpZipLib" Version="1.4.2" />
     <PackageReference Include="Pathoschild.Http.FluentClient" Version="4.4.2" />
     <PackageReference Include="PolySharp" Version="1.15.0">
       <PrivateAssets>all</PrivateAssets>

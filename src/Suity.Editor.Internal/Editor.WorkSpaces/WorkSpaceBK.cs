@@ -8,6 +8,7 @@ using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Synchonizing.Core;
 using Suity.Views;
+using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -1464,9 +1465,123 @@ public class WorkSpaceBK : WorkSpace,
         set => _backupIgnorePatterns.Text = value;
     }
 
-    public override void BackupWorkspace(string ignorePatterns = null)
+    public override void BackupWorkspace(string ignorePatterns = null, string backupName = null)
     {
-        throw new NotImplementedException();
+        string basePatterns = BackupIgnorePatterns;
+        List<string> patterns;
+
+        if (string.IsNullOrWhiteSpace(ignorePatterns))
+        {
+            patterns = SplitBackupPatterns(basePatterns);
+        }
+        else
+        {
+            patterns = SplitBackupPatterns(basePatterns)
+                .Concat(SplitBackupPatterns(ignorePatterns))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            BackupIgnorePatterns = string.Join(",", patterns);
+            MarkConfigDirty();
+        }
+
+        var ignoreSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "Backup",
+            Temp,
+        };
+        foreach (var pattern in patterns)
+        {
+            ignoreSet.Add(pattern);
+        }
+
+        string workspaceDir = MasterDirectory;
+        if (string.IsNullOrWhiteSpace(workspaceDir))
+        {
+            throw new NullReferenceException("Workspace directory is not set");
+        }
+
+        if (!string.IsNullOrWhiteSpace(backupName))
+        {
+            var invalidChars = System.IO.Path.GetInvalidFileNameChars();
+            if (backupName.Any(c => invalidChars.Contains(c))
+                || backupName.EndsWith(".") || backupName.EndsWith(" ") || backupName.EndsWith("\t"))
+            {
+                throw new ArgumentException($"Invalid backup name: {backupName}");
+            }
+        }
+
+        string backupDir = workspaceDir.PathAppend("Backup");
+        Directory.CreateDirectory(backupDir);
+
+        string id = IdGenerator.GenerateId(12);
+        string backupFileName = $"Backup_{DateTime.Now:yyyyMMdd_HHmmss}_{id}";
+        string trimmedName = backupName?.Trim();
+        if (!string.IsNullOrWhiteSpace(trimmedName))
+        {
+            backupFileName = backupFileName + "_" + trimmedName;
+        }
+        string backupPath = backupDir.PathAppend(backupFileName + ".zip");
+
+        int fileCount;
+        using (var fileStream = File.Create(backupPath))
+        {
+            using var zipStream = new ZipOutputStream(fileStream);
+            zipStream.SetLevel(6);
+            fileCount = AddDirectoryToZip(zipStream, workspaceDir, string.Empty, ignoreSet);
+        }
+
+        Logs.LogInfo($"Backup completed: {backupFileName}.zip ({fileCount} files).");
+    }
+
+    private static List<string> SplitBackupPatterns(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return [];
+        }
+
+        return value.Split([',', ';'], StringSplitOptions.RemoveEmptyEntries)
+            .Select(p => p.Trim())
+            .Where(p => p.Length > 0)
+            .ToList();
+    }
+
+    private static int AddDirectoryToZip(ZipOutputStream zipStream, string sourceDir, string relativePath, HashSet<string> ignoreSet)
+    {
+        int fileCount = 0;
+
+        var directories = new DirectoryInfo(sourceDir).GetDirectories()
+            .Where(d => !ignoreSet.Contains(d.Name))
+            .OrderBy(d => d.Name, StringComparer.OrdinalIgnoreCase);
+        foreach (var dir in directories)
+        {
+            string dirEntryName = relativePath + dir.Name + "/";
+            zipStream.PutNextEntry(new ZipEntry(dirEntryName) { DateTime = dir.LastWriteTime });
+            zipStream.CloseEntry();
+            fileCount += AddDirectoryToZip(zipStream, dir.FullName, dirEntryName, ignoreSet);
+        }
+
+        var files = new DirectoryInfo(sourceDir).GetFiles()
+            .Where(f => !ignoreSet.Contains(f.Name))
+            .OrderBy(f => f.Name, StringComparer.OrdinalIgnoreCase);
+        foreach (var file in files)
+        {
+            var entry = new ZipEntry(relativePath + file.Name)
+            {
+                DateTime = file.LastWriteTime,
+                Size = file.Length,
+            };
+            zipStream.PutNextEntry(entry);
+            using (var input = file.OpenRead())
+            {
+                input.CopyTo(zipStream);
+            }
+            zipStream.CloseEntry();
+            fileCount++;
+        }
+
+        return fileCount;
     }
 
     public override void RestoreWorkspace()
