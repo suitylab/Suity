@@ -43,7 +43,7 @@ internal abstract class AvaGraphicBaseContext :
     private readonly AvaGraphicInput _input;
     private readonly AvaGraphicOutput _output;
     private readonly AvaSKGraphicControl _control;
-    private AvaContextMenuBinder _contextMenuBinder;
+    
     private IGraphicObject? _graphicObject;
 
     private bool _repaintAll = true;
@@ -333,7 +333,7 @@ internal abstract class AvaGraphicBaseContext :
             return;
         }
 
-        var binder = _contextMenuBinder ??= new();
+        var binder = AvaContextMenuBinder.Default;
         binder.EnsureContextMenu(m);
     }
 
@@ -350,7 +350,7 @@ internal abstract class AvaGraphicBaseContext :
             return;
         }
 
-        var binder = _contextMenuBinder ??= new();
+        var binder = AvaContextMenuBinder.Default;
         var menu = binder.PrepareContextMenu(m, selectedItems);
         if (menu is null)
         {
