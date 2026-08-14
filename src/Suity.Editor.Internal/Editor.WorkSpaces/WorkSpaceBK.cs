@@ -1584,9 +1584,121 @@ public class WorkSpaceBK : WorkSpace,
         return fileCount;
     }
 
-    public override void RestoreWorkspace()
+    public override bool RestoreWorkspace(string backupName = null)
     {
-        throw new NotImplementedException();
+        string workspaceDir = MasterDirectory;
+        if (string.IsNullOrWhiteSpace(workspaceDir))
+        {
+            throw new NullReferenceException("Workspace directory is not set");
+        }
+
+        string backupDir = workspaceDir.PathAppend("Backup");
+        if (!Directory.Exists(backupDir))
+        {
+            return false;
+        }
+
+        var backupFiles = Directory.GetFiles(backupDir, "*.zip", System.IO.SearchOption.TopDirectoryOnly)
+            .OrderByDescending(f => File.GetLastWriteTime(f))
+            .ThenByDescending(f => Path.GetFileName(f))
+            .ToList();
+        if (backupFiles.Count == 0)
+        {
+            return false;
+        }
+
+        string targetName = backupName?.Trim();
+        string backupPath;
+        if (string.IsNullOrWhiteSpace(targetName))
+        {
+            backupPath = backupFiles[0];
+        }
+        else
+        {
+            backupPath = backupFiles.FirstOrDefault(f =>
+                Path.GetFileNameWithoutExtension(f).Equals(targetName, StringComparison.OrdinalIgnoreCase)
+                || Path.GetFileName(f).EndsWith("_" + targetName + ".zip", StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (backupPath is null)
+        {
+            Logs.LogWarning($"No backup file found in {backupDir} for '{backupName}'.");
+            return false;
+        }
+
+        var ignoreSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "Backup",
+            Temp,
+        };
+        foreach (var pattern in SplitBackupPatterns(BackupIgnorePatterns))
+        {
+            ignoreSet.Add(pattern);
+        }
+
+        bool restored = false;
+        FileUnwatchedAction.Do(() =>
+        {
+            foreach (var dir in Directory.GetDirectories(workspaceDir))
+            {
+                var dirInfo = new DirectoryInfo(dir);
+                if (ignoreSet.Contains(dirInfo.Name))
+                {
+                    continue;
+                }
+                Directory.Delete(dir, true);
+            }
+
+            foreach (var file in Directory.GetFiles(workspaceDir))
+            {
+                var fileInfo = new FileInfo(file);
+                if (ignoreSet.Contains(fileInfo.Name))
+                {
+                    continue;
+                }
+                fileInfo.Delete();
+            }
+
+            using (Stream fs = File.OpenRead(backupPath))
+            using (var zf = new ZipFile(fs))
+            {
+                string fullWorkspacePath = Path.GetFullPath(workspaceDir);
+                foreach (ZipEntry zipEntry in zf)
+                {
+                    if (!zipEntry.IsFile)
+                    {
+                        continue;
+                    }
+
+                    string fullPath = Path.GetFullPath(Path.Combine(workspaceDir, zipEntry.Name));
+                    if (!fullPath.StartsWith(fullWorkspacePath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    string directoryName = Path.GetDirectoryName(fullPath);
+                    if (!string.IsNullOrEmpty(directoryName))
+                    {
+                        Directory.CreateDirectory(directoryName);
+                    }
+
+                    using (var input = zf.GetInputStream(zipEntry))
+                    using (var output = File.Create(fullPath))
+                    {
+                        input.CopyTo(output);
+                    }
+                }
+            }
+
+            restored = true;
+        });
+
+        if (restored)
+        {
+            Logs.LogInfo($"Workspace restored from: {Path.GetFileName(backupPath)}");
+        }
+
+        return restored;
     }
 
     #endregion

@@ -9,7 +9,7 @@ namespace Suity.Synchonizing.Core;
 /// </summary>
 public static class Validator
 {
-    public static IEnumerable<SyncPathReportItem> Find(object owner, object target, string findStr, SearchOption findOption, VisitFlag flag = VisitFlag.None)
+    public static IEnumerable<SyncPathReportItem> Find(object owner, object target, string findStr, SearchOptions findOption, VisitFlag flag = VisitFlag.None)
     {
         List<SyncPathReportItem> reports = [];
         var context = new ValidationContext();
@@ -65,20 +65,20 @@ public static class Validator
         return reports;
     }
 
-    public static bool Compare(string source, string find, SearchOption findOption)
+    public static bool Compare(string source, string find, SearchOptions findOption)
     {
         if (string.IsNullOrEmpty(source))
         {
             return false;
         }
 
-        if ((findOption & SearchOption.MatchCase) == 0)
+        if ((findOption & SearchOptions.MatchCase) == 0)
         {
             source = source.ToLowerInvariant();
             find = find.ToLowerInvariant();
         }
 
-        if ((findOption & SearchOption.MatchWholeWord) != 0)
+        if ((findOption & SearchOptions.MatchWholeWord) != 0)
         {
             //return source == find;
             string pattern = String.Format(@"\b{0}\b", find);
@@ -100,16 +100,16 @@ public static class Validator
         }
     }
 
-    public static string ReplaceString(string input, string oldValue, string newValue, SearchOption option)
+    public static string ReplaceString(string input, string oldValue, string newValue, SearchOptions option)
     {
         RegexOptions options = RegexOptions.None;
 
-        if (!option.HasFlag(SearchOption.MatchCase))
+        if (!option.HasFlag(SearchOptions.MatchCase))
         {
             options |= RegexOptions.IgnoreCase;
         }
 
-        if (option.HasFlag(SearchOption.MatchWholeWord))
+        if (option.HasFlag(SearchOptions.MatchWholeWord))
         {
             oldValue = "\\b" + oldValue + "\\b";
         }

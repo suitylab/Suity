@@ -128,7 +128,7 @@ public abstract class BaseTextDocument : AssetDocument
     /// <param name="context">The validation context.</param>
     /// <param name="findStr">The search string.</param>
     /// <param name="findOption">The search option.</param>
-    public override void Find(ValidationContext context, string findStr, SearchOption findOption)
+    public override void Find(ValidationContext context, string findStr, SearchOptions findOption)
     {
         base.Find(context, findStr, findOption);
 

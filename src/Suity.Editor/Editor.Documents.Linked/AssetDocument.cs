@@ -258,7 +258,7 @@ public abstract class AssetDocument : Document,
     /// <param name="context">The validation context.</param>
     /// <param name="findStr">The search string.</param>
     /// <param name="findOption">The search option.</param>
-    public virtual void Find(ValidationContext context, string findStr, SearchOption findOption)
+    public virtual void Find(ValidationContext context, string findStr, SearchOptions findOption)
     {
         if (Validator.Compare(_nameSpace, findStr, findOption))
         {

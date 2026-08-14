@@ -13,14 +13,14 @@ public static class TextHelper
     /// <param name="searchText">The text pattern to search for.</param>
     /// <param name="option">Search options to control matching behavior.</param>
     /// <returns>An array of TextSearchResult containing all match positions with line content; returns empty array if no matches found.</returns>
-    public static TextSearchResult[] SearchText(string fullText, string searchText, SearchOption option)
+    public static TextSearchResult[] SearchText(string fullText, string searchText, SearchOptions option)
     {
         // Parameter validation
         if (string.IsNullOrEmpty(fullText) || string.IsNullOrEmpty(searchText))
             return Array.Empty<TextSearchResult>();
 
         // Configure string comparison mode
-        StringComparison comparison = (option & SearchOption.MatchCase) == SearchOption.MatchCase
+        StringComparison comparison = (option & SearchOptions.MatchCase) == SearchOptions.MatchCase
             ? StringComparison.Ordinal
             : StringComparison.OrdinalIgnoreCase;
 
@@ -42,7 +42,7 @@ public static class TextHelper
                     break; // No more matches in this line
 
                 // If whole word matching is enabled, validate word boundaries
-                if ((option & SearchOption.MatchWholeWord) == SearchOption.MatchWholeWord)
+                if ((option & SearchOptions.MatchWholeWord) == SearchOptions.MatchWholeWord)
                 {
                     bool isWordStart = matchIndex == 0 || !char.IsLetterOrDigit(currentLine[matchIndex - 1]);
                     bool isWordEnd = matchIndex + searchText.Length == currentLine.Length ||

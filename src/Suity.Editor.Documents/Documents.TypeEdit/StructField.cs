@@ -345,7 +345,7 @@ public class StructField : StructFieldItem,
     #endregion
 
     /// <inheritdoc/>
-    public override void Find(ValidationContext context, string findStr, SearchOption findOption)
+    public override void Find(ValidationContext context, string findStr, SearchOptions findOption)
     {
         base.Find(context, findStr, findOption);
 

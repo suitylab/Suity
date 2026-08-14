@@ -831,7 +831,7 @@ public static class Navigator
     /// <param name="findStr">The search string to look for.</param>
     /// <param name="findOption">The search options to apply during the search.</param>
     /// <returns>True if the search was initiated; otherwise, false.</returns>
-    public static bool GlobalSearch(string findStr, SearchOption findOption)
+    public static bool GlobalSearch(string findStr, SearchOptions findOption)
     {
         var project = Project.Current;
 

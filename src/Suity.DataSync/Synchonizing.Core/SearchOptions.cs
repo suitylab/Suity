@@ -3,7 +3,7 @@ namespace Suity.Synchonizing.Core;
 /// <summary>
 /// Options for searching operations
 /// </summary>
-public enum SearchOption
+public enum SearchOptions
 {
     None = 0x0,
     MatchCase = 0x1,

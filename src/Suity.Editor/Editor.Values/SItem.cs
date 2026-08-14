@@ -309,7 +309,7 @@ public abstract class SItem :
     /// <param name="contex">The validation context.</param>
     /// <param name="find">The search string.</param>
     /// <param name="findOption">The search option.</param>
-    public virtual void Find(ValidationContext contex, string find, SearchOption findOption)
+    public virtual void Find(ValidationContext contex, string find, SearchOptions findOption)
     { }
 
     /// <summary>

@@ -227,15 +227,15 @@ class SearchDialogImGui : IDrawImGui
             return;
         }
 
-        SearchOption option = SearchOption.None;
+        SearchOptions option = SearchOptions.None;
         if (_matchCase)
         {
-            option |= SearchOption.MatchCase;
+            option |= SearchOptions.MatchCase;
         }
 
         if (_matchWholeWorld)
         {
-            option |= SearchOption.MatchWholeWord;
+            option |= SearchOptions.MatchWholeWord;
         }
 
         EditorRexes.GlobalSearch.Invoke(findStr, option);

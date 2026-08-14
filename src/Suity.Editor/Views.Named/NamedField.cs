@@ -152,7 +152,7 @@ public abstract class NamedField :
     /// <param name="context">The validation context to report findings.</param>
     /// <param name="findStr">The string to search for.</param>
     /// <param name="findOption">The search options to use.</param>
-    public virtual void Find(ValidationContext context, string findStr, SearchOption findOption)
+    public virtual void Find(ValidationContext context, string findStr, SearchOptions findOption)
     {
         if (Validator.Compare(_name, findStr, findOption))
         {

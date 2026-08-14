@@ -67,7 +67,7 @@ public static class EditorRexes
     public static readonly RexAction<object> GotoDefinition = new(Tree, nameof(GotoDefinition));
     public static readonly RexAction<object> FindReference = new(Tree, nameof(FindReference));
     public static readonly RexAction<object> FindImplement = new(Tree, nameof(FindImplement));
-    public static readonly RexAction<string, SearchOption> GlobalSearch = new(Tree, nameof(GlobalSearch));
+    public static readonly RexAction<string, SearchOptions> GlobalSearch = new(Tree, nameof(GlobalSearch));
     public static readonly RexAction DebugPrintReferencer = new(Tree, nameof(DebugPrintReferencer));
 
     public static readonly RexAction HeartBeat = new(Tree, nameof(HeartBeat));

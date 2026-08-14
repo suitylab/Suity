@@ -773,10 +773,12 @@ public abstract class WorkSpace : IRenderHost, IHasId
     /// <param name="backupName">Optional backup name in standard folder naming format. Leave empty to use a default generated name.</param>
     public abstract void BackupWorkspace(string ignorePatterns = null, string backupName = null);
 
-    /// <summary>
-    /// Restores the workspace
+/// <summary>
+    /// Restores the workspace from a backup file.
     /// </summary>
-    public abstract void RestoreWorkspace();
+    /// <param name="backupName">Optional backup name. Leave empty to use the latest backup file.</param>
+    /// <returns>True if the backup was found and restored successfully, otherwise false.</returns>
+    public abstract bool RestoreWorkspace(string backupName = null);
 
     #endregion
 

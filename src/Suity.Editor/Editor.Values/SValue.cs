@@ -196,7 +196,7 @@ public abstract class SValue : SItem, ISyncObject
     protected virtual void OnValueChanged()
     { }
 
-    public override void Find(ValidationContext context, string find, SearchOption findOption)
+    public override void Find(ValidationContext context, string find, SearchOptions findOption)
     {
         if (_value != null)
         {

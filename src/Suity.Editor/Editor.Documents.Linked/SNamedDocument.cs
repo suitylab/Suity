@@ -504,7 +504,7 @@ public abstract class SNamedDocument : SAssetDocument,
     /// <param name="context">The validation context.</param>
     /// <param name="findStr">The search string.</param>
     /// <param name="findOption">The search option.</param>
-    public override void Find(ValidationContext context, string findStr, Synchonizing.Core.SearchOption findOption)
+    public override void Find(ValidationContext context, string findStr, Synchonizing.Core.SearchOptions findOption)
     {
         base.Find(context, findStr, findOption);
 

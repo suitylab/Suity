@@ -122,15 +122,15 @@ internal class ReplaceStringImGui : IDrawImGui
     /// <param name="target">The property target containing string values.</param>
     private void HandleReplace_String(PropertyTarget target)
     {
-        SearchOption option = SearchOption.None;
+        SearchOptions option = SearchOptions.None;
         if (_caseSensitive)
         {
-            option |= SearchOption.MatchCase;
+            option |= SearchOptions.MatchCase;
         }
 
         if (_fullMatch)
         {
-            option |= SearchOption.MatchWholeWord;
+            option |= SearchOptions.MatchWholeWord;
         }
 
         string?[] strs = target.GetValues().As<string>().ToArray();
@@ -173,15 +173,15 @@ internal class ReplaceStringImGui : IDrawImGui
     /// <param name="target">The property target containing SString values.</param>
     private void HandleReplace_SString(PropertyTarget target)
     {
-        SearchOption option = SearchOption.None;
+        SearchOptions option = SearchOptions.None;
         if (_caseSensitive)
         {
-            option |= SearchOption.MatchCase;
+            option |= SearchOptions.MatchCase;
         }
 
         if (_fullMatch)
         {
-            option |= SearchOption.MatchWholeWord;
+            option |= SearchOptions.MatchWholeWord;
         }
 
         SString?[] strs = target.GetValues().As<SString>().ToArray();

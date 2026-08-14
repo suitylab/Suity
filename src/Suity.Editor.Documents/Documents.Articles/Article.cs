@@ -429,7 +429,7 @@ public class Article : DesignNode<ArticleAssetBuilder>, IArticle,
     }
 
     /// <inheritdoc/>
-    public override void Find(ValidationContext context, string findStr, Synchonizing.Core.SearchOption findOption)
+    public override void Find(ValidationContext context, string findStr, Synchonizing.Core.SearchOptions findOption)
     {
         base.Find(context, findStr, findOption);
 
