@@ -8,7 +8,6 @@ using Suity.Views.Graphics;
 using System;
 using System.Drawing;
 using System.Linq;
-using System.Xml.Linq;
 using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Views.Im.PropertyEditing;
@@ -36,6 +35,11 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
     /// <inheritdoc/>
     public override ImGuiNode? PropertyField(ImGui gui, PropertyTarget target, PropertyRowAction? rowAction = null)
     {
+        if (!target.GetValues().Any())
+        {
+            return null;
+        }
+
         Type? commonType = target.GetValues().SkipNull().GetCommonType() ?? target.PresetType;
         if (commonType is null)
         {
@@ -90,7 +94,10 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
 
             } while (false);
 
-            target.RowFunction ??= UnknownPropertyField;
+            if (target.RowFunction is null)
+            {
+                target.RowFunction = UnknownPropertyField;
+            }
         }
 
         ImGuiNode? node = null;
@@ -143,7 +150,7 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
                     var first = values.First();
                     if (first != null)
                     {
-                        string str = values.First()?.ToString() ?? "(null)";
+                        string str = values.First()?.ToString() ?? "(empty)";
                         string shortcut = EditorUtility.ToShortcut(str);
                         gui.Text("text-shortcut", shortcut);
                     }

@@ -181,7 +181,7 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             // Set task to failed state.
             task.CommitStatus = TaskCommitStatus.TaskFailed;
             task.Notice = "Some task input parameters are missing.";
-            return (flowControl: true, value: AICallResult.FromFailed(task.Notice));
+           return (flowControl: true, value: AICallResult.FromFailed(task.Notice));
         }
 
         TaskCommitStatus status = task.GetCommitStatus();

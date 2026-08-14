@@ -1,3 +1,5 @@
+using Suity.Synchonizing;
+using Suity.Views;
 using System.IO;
 
 namespace Suity.Helpers;
@@ -5,7 +7,7 @@ namespace Suity.Helpers;
 /// <summary>
 /// Represents a file with its file path and associated format name.
 /// </summary>
-public class CommonFileInfo
+public class CommonFileInfo : IViewObject
 {
     private readonly string _filePath;
     private readonly string _formatName;
@@ -42,4 +44,20 @@ public class CommonFileInfo
     /// </summary>
     /// <returns>The file name extracted from the file path.</returns>
     public override string ToString() => Path.GetFileName(FilePath);
+
+    #region IViewObject
+
+    public void Sync(IPropertySync sync, ISyncContext context)
+    {
+        sync.Sync(nameof(FilePath), _filePath, SyncFlag.GetOnly);
+        sync.Sync(nameof(FormatName), _formatName, SyncFlag.GetOnly);
+    }
+
+    public void SetupView(IViewObjectSetup setup)
+    {
+        setup.InspectorField(_filePath, new ViewProperty(nameof(FilePath)).WithReadOnly());
+        setup.InspectorField(_formatName, new ViewProperty(nameof(FormatName)).WithReadOnly());
+    }
+
+    #endregion
 }

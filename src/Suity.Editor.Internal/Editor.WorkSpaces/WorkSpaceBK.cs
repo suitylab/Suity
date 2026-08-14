@@ -1079,18 +1079,16 @@ public class WorkSpaceBK : WorkSpace,
     /// <inheritdoc/>
     void IViewObject.SetupView(IViewObjectSetup setup)
     {
-        if (Controller is not IViewObject ctrl)
-        {
-            return;
-        }
-
         setup.InspectorField(_baseNameSpace, new ViewProperty("BaseNameSpace", "Default Namespace"));
         setup.InspectorField(_conditions, new ViewProperty("Conditions", "Condition"));
 
         // Disable Id - temporarily not used
         // setup.InspectorField(DisableId, new ViewProperty("DisableId", "DisableId"));
 
-        setup.InspectorField(ctrl, new ViewProperty("ControllerConfig", ControllerInfo.DisplayName) { Expand = true });
+        if (Controller is IViewObject ctrl)
+        {
+            setup.InspectorField(ctrl, new ViewProperty("ControllerConfig", ControllerInfo.DisplayName) { Expand = true });
+        }
     }
 
     #endregion
@@ -1435,10 +1433,10 @@ public class WorkSpaceBK : WorkSpace,
 
     object IViewRedirect.GetRedirectedObject(int viewId)
     {
-        if (ServiceInternals._license.LicenseType != LicenseTypes.Professional)
-        {
-            return null;
-        }
+        //if (ServiceInternals._license.LicenseType != LicenseTypes.Professional)
+        //{
+        //    return null;
+        //}
 
         if (viewId == ViewIds.DetailTreeView)
         {
