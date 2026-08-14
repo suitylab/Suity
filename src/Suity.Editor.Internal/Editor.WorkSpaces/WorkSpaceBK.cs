@@ -35,18 +35,6 @@ public class WorkSpaceBK : WorkSpace,
     public static bool LogDebug = false;
     private static readonly HashSet<Guid> ValidateIgnoreIds = [];
 
-    private readonly WatchableList<WorkSpaceRefItem> _references = [];
-    private readonly List<IAssemblyReferenceItem> _assemblyRefs = [];
-    private readonly WatchableList<string> _conditions = [];
-
-    private RenderTargetPage _renderPage;
-    private readonly object _pageSync = new();
-
-    private readonly RenderRecordCollectionBK _renderRecord;
-    private readonly List<RenderFileRecordBK> _renderedFilesConfig = [];
-
-    private readonly ConcurrentHashSet<Guid> _dirtyRefs = [];
-
     private readonly WorkSpaceManager _manager;
     private bool _analyzed;
     private string _baseNameSpace = string.Empty;
@@ -55,6 +43,20 @@ public class WorkSpaceBK : WorkSpace,
     private bool _released;
     private Guid _guid;
     private bool _debug;
+
+
+    private readonly WatchableList<WorkSpaceRefItem> _references = [];
+    private readonly List<IAssemblyReferenceItem> _assemblyRefs = [];
+    private readonly WatchableList<string> _conditions = [];
+    private readonly StringProperty _backupIgnorePatterns = new("BackupIgnorePatterns", "Backup Ignore Patterns", string.Empty, "Comma or semicolon separated list of patterns to ignore.");
+
+    private RenderTargetPage _renderPage;
+    private readonly object _pageSync = new();
+
+    private readonly RenderRecordCollectionBK _renderRecord;
+    private readonly List<RenderFileRecordBK> _renderedFilesConfig = [];
+
+    private readonly ConcurrentHashSet<Guid> _dirtyRefs = [];
 
     private WorkSpaceAsset _asset;
 
@@ -1065,6 +1067,8 @@ public class WorkSpaceBK : WorkSpace,
             _references.Sort((a, b) => a.CompareTo(b));
         }
 
+        _backupIgnorePatterns.Sync(sync);
+
         if (Controller != null)
         {
             sync.Sync("ControllerConfig", Controller, SyncFlag.GetOnly);
@@ -1085,8 +1089,12 @@ public class WorkSpaceBK : WorkSpace,
         // Disable Id - temporarily not used
         // setup.InspectorField(DisableId, new ViewProperty("DisableId", "DisableId"));
 
+        setup.Label("Backup");
+        _backupIgnorePatterns.InspectorField(setup);
+
         if (Controller is IViewObject ctrl)
         {
+            setup.Label("Controller");
             setup.InspectorField(ctrl, new ViewProperty("ControllerConfig", ControllerInfo.DisplayName) { Expand = true });
         }
     }
@@ -1444,6 +1452,26 @@ public class WorkSpaceBK : WorkSpace,
         }
 
         return this;
+    }
+
+    #endregion
+
+    #region Backup
+
+    public override string BackupIgnorePatterns 
+    {
+        get => _backupIgnorePatterns.Text;
+        set => _backupIgnorePatterns.Text = value;
+    }
+
+    public override void BackupWorkspace(string ignorePatterns = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void RestoreWorkspace()
+    {
+        throw new NotImplementedException();
     }
 
     #endregion

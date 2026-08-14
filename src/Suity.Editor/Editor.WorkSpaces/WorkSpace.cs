@@ -759,6 +759,26 @@ public abstract class WorkSpace : IRenderHost, IHasId
 
     #endregion
 
+    #region Backup
+
+    /// <summary>
+    /// Gets or set comma or semicolon separated list of patterns to ignore.
+    /// </summary>
+    public abstract string BackupIgnorePatterns { get; set; }
+
+    /// <summary>
+    /// Backs up the workspace
+    /// </summary>
+    /// <param name="ignorePatterns">Optional ignore patterns that append to the workspace backup ignore patterns</param>
+    public abstract void BackupWorkspace(string ignorePatterns = null);
+
+    /// <summary>
+    /// Restores the workspace
+    /// </summary>
+    public abstract void RestoreWorkspace();
+
+    #endregion
+
     #region Misc
 
     /// <summary>
