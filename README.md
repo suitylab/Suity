@@ -8,43 +8,40 @@
 **Suity** is a next-generation, professional-grade Agentic IDE designed for architecting and executing complex, industrial-scale autonomous AI systems. Moving beyond fragile static prompt chains and the chaotic unpredictability of open "Agent Teams," Suity pioneers the **DSAL (Deterministic Skeleton with Autonomous Loops)** paradigm. By combining high-performance node-based orchestration, strict hierarchical delegation, and atomic self-healing micro-loops, Suity turns unpredictable AI behaviors into reliable, production-ready software engineering workflows.
 
 ---
+### Star Strike Demo
 
-### Drone Game Demo
+- **Project**: [StarForgeStrike](https://github.com/suitylab/StarForgeStrike)
+- **Demo URL**: [star-forge-strike.suitylab.com](https://star-forge-strike.suitylab.com)
+
+### Mario Kart Remake
+
+- **Project**: [MarioKartRemake](https://github.com/suitylab/MarioKartRemake)
+- **Demo URL**: [mario-kart-remake.suitylab.com](https://mario-kart-remake.suitylab.com)
+  
+### First Person Shooter + Survival Demo
+
+- **Project**: [FPSStrike](https://github.com/suitylab/FpsStrikerDemo)
+- **Demo URL**: [fps-striker-demo.suitylab.com](https://fps-striker-demo.suitylab.com)
+
+### Racer + Infinite Road Generation Demo
+
+- **Project**: [NeonRacerDemo](https://github.com/suitylab/NeonRacerDemo)
+- **Demo URL**: [neon-racer-demo.suitylab.com](https://neon-racer-demo.suitylab.com)
+
+### Top-Down Shooter + Dungeon Generation Demo
 
 - **Project**: [DroneGameDemo](https://github.com/suitylab/DroneGameDemo)
 - **Demo URL**: [drone-game-demo.suitylab.com](https://drone-game-demo.suitylab.com)
-
-### Alien City Demo
-
-- **Project**: [AlienCityDemo](https://github.com/suitylab/AlienCityDemo)
-- **Demo URL**: [drone-game-demo.suitylab.com](https://alien-city-demo.suitylab.com)
 
 ### MineCraft Clone Demo
 
 - **Project**: [MineCraftClone](https://github.com/suitylab/MineCraftClone)
 - **Demo URL**: [minecraft-clone.suitylab.com](https://minecraft-clone.suitylab.com)
 
----
+### Alien City 3D Navigation Demo
 
-## Screenshots
-
-### Landing Page
-![Landing Page](screenshots/LandingPage.gif)
-
-### First Person Shooter
-![First Person Shooter](screenshots/FirstPersonShooter.gif)
-
-### Minecraft Clone
-![Minecraft Clone](screenshots/MineCraftClone.gif)
-
-### Racing 3D
-![Racing 3D](screenshots/Racing3D.gif)
-
-### Space Shooter 2D
-![Space Shooter 2D](screenshots/SpaceShooter2D.gif)
-
-### Tank 3D
-![Tank 3D](screenshots/Tank3D.gif)
+- **Project**: [AlienCityDemo](https://github.com/suitylab/AlienCityDemo)
+- **Demo URL**: [drone-game-demo.suitylab.com](https://alien-city-demo.suitylab.com)
 
 ---
 
