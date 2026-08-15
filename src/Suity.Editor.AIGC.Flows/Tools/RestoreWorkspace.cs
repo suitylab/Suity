@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Tools;
 
-[NativeType("BackupWorkspace", CodeBase = "*Suity", Category = "WorkSpace Tools")]
-[DisplayText("Backup Workspace")]
-[ToolTipsText("Backup project folder/files. Returns the backup execution result message.")]
-[NativeAlias("Suity.Editor.AIGC.BackupWorkspace")]
-public class BackupWorkspace : ToolCommand<BackupWorkspace.Output>
+[NativeType("RestoreWorkspace", CodeBase = "*Suity", Category = "WorkSpace Tools")]
+[DisplayText("Restore Workspace")]
+[ToolTipsText("Restore workspace from a backup file. Returns the restore execution result message.")]
+[NativeAlias("Suity.Editor.AIGC.RestoreWorkspace")]
+public class RestoreWorkspace : ToolCommand<RestoreWorkspace.Output>
 {
     public class Output : SObjectController
     {
@@ -34,25 +34,21 @@ public class BackupWorkspace : ToolCommand<BackupWorkspace.Output>
             _message.InspectorField(setup);
         }
 
-        public override string ToString() => $"Backup result: {Message}";
+        public override string ToString() => $"Restore result: {Message}";
     }
 
-    readonly StringProperty _backupName = new("BackupName", "Backup Name", string.Empty, "The backup file name. Use PascalCase format. Leave empty to use a default generated name.");
-    readonly StringProperty _ignorePatterns = new("IgnorePatterns", "Ignore Patterns", string.Empty, "Comma or semicolon separated list of patterns to ignore.");
+    readonly StringProperty _backupName = new("BackupName", "Backup Name", string.Empty, "The backup file name to restore. Leave empty to use the latest backup file.");
 
     public string BackupName { get => _backupName.Text; set => _backupName.Text = value; }
-    public string IgnorePatterns { get => _ignorePatterns.Text; set => _ignorePatterns.Text = value; }
 
     public override void Sync(IPropertySync sync, ISyncContext context)
     {
         _backupName.Sync(sync);
-        _ignorePatterns.Sync(sync);
     }
 
     public override void SetupView(IViewObjectSetup setup)
     {
         _backupName.InspectorField(setup);
-        _ignorePatterns.InspectorField(setup);
     }
 
     public override Task<Output> Run(ToolCallContext context)
@@ -63,22 +59,34 @@ public class BackupWorkspace : ToolCommand<BackupWorkspace.Output>
             throw new NullReferenceException("Workspace is null.");
         }
 
+        if (string.IsNullOrWhiteSpace(BackupName))
+        {
+            var backupNames = workspace.GetBackupNames();
+            if (backupNames == null || backupNames.Length == 0)
+            {
+                return Task.FromResult(new Output
+                {
+                    Message = "Restore failed. No backup file found.",
+                });
+            }
+        }
+
         string backupName = BackupName?.Trim();
         try
         {
-            workspace.BackupWorkspace(string.IsNullOrWhiteSpace(backupName) ? null : backupName, IgnorePatterns);
+            bool success = workspace.RestoreWorkspace(string.IsNullOrWhiteSpace(backupName) ? null : backupName);
+
+            return Task.FromResult(new Output
+            {
+                Message = success ? $"Restore completed: {backupName ?? "latest"}" : "Restore failed. Backup file not found.",
+            });
         }
         catch (Exception ex)
         {
             return Task.FromResult(new Output
             {
-                Message = $"Backup failed: {ex.Message}",
+                Message = $"Restore failed: {ex.Message}",
             });
         }
-
-        return Task.FromResult(new Output
-        {
-            Message = "Backup completed.",
-        });
     }
 }
