@@ -55,8 +55,8 @@ public class AigcNoticePage : AigcTaskPage
 
 public enum NoticeTypes
 {
-    [DisplayText("Custom")]
-    Custom,
+    [DisplayText("User Feedback")]
+    UserFeedback,
 
     [DisplayText("New Objective")]
     NewObjective,
@@ -64,32 +64,14 @@ public enum NoticeTypes
     [DisplayText("Task Duplicated")]
     TaskDuplicated,
 
-    [DisplayText("Value Missing")]
-    ValueMissing,
-
-    [DisplayText("Value Invalid")]
-    ValueInvalid,
-
-    [DisplayText("Value Out Of Range")]
-    ValueOutOfRange,
-
-    [DisplayText("Value Not Supported")]
-    ValueNotSupported,
-
-    [DisplayText("Value Not Match")]
-    ValueNotMatch,
-
-    [DisplayText("Value Not Expected")]
-    ValueNotExpected,
-
-    [DisplayText("Value Not Found")]
-    ValueNotFound,
+    [DisplayText("Custom")]
+    Custom,
 }
 
 public class NoticeInstance : IPageInstance, IViewObject
 {
     readonly AigcNoticePage _owner;
-    readonly ValueProperty<NoticeTypes> _noticeType = new("NoticeType", "Notice Type", NoticeTypes.Custom, "The type of notice.");
+    readonly ValueProperty<NoticeTypes> _noticeType = new("NoticeType", "Notice Type", NoticeTypes.UserFeedback, "The type of notice.");
     readonly TextBlockProperty _message = new("Message", "Notice Message", string.Empty, "The message to be displayed in the notice.");
 
     public NoticeInstance(AigcNoticePage owner)
