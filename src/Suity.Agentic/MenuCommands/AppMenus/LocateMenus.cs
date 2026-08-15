@@ -35,7 +35,7 @@ class NavigateMenuCommand : MenuCommand
                 Icon = CoreIconCache.Select
             });
 
-        if (!result.IsSuccess)
+        if (!result.Successful)
         {
             return;
         }

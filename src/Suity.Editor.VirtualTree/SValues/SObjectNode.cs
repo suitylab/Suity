@@ -211,7 +211,7 @@ public class SObjectNode : BaseObjectNode<SObject>,
             if (selList != null)
             {
                 var result = await selList.ShowSelectionGUIAsync(string.Empty, new SelectionOption { SelectedKey = obj.ObjectType.TypeCode });
-                if (result.IsSuccess && result.SelectedKey != obj.ObjectType.TypeCode)
+                if (result.Successful && result.SelectedKey != obj.ObjectType.TypeCode)
                 {
                     if (AssetManager.Instance.GetAsset(result.SelectedKey, obj.GetAssetFilter()) is DCompond s)
                     {
@@ -495,7 +495,7 @@ public class SObjectNode : BaseObjectNode<SObject>,
         //var filter = myObj.GetAssetFilter();
 
         var result = await myObj.GetSelectionList().ShowSelectionGUIAsync("Redirect");
-        if (result.IsSuccess && !string.IsNullOrEmpty(result.SelectedKey))
+        if (result.Successful && !string.IsNullOrEmpty(result.SelectedKey))
         {
             var newObj = Cloner.Clone(myObj);
             newObj.ObjectType = TypeDefinition.Resolve(result.SelectedKey);

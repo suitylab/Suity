@@ -294,7 +294,7 @@ public class ReplaceMultiplePrompts : AigcFlowNode
     {
         var list = new AssetSelectionList<PromptAsset>();
         var result = await list.ShowSelectionGUIAsync("Select prompt to parse");
-        if (result?.IsSuccess == true && result.Item is PromptAsset asset && asset.GetText() is { } text)
+        if (result?.Successful == true && result.Item is PromptAsset asset && asset.GetText() is { } text)
         {
             var keywords = PromptBuilder.ExtractKeywords(text);
 

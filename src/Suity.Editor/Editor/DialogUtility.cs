@@ -592,7 +592,7 @@ public static class DialogUtility
         if (service != null)
         {
             SelectionResult result = await service.ShowSelectionGUIAsync(selection.GetSelectionList(), title, option);
-            if (result?.IsSuccess == true)
+            if (result?.Successful == true)
             {
                 selection.SelectedKey = result.SelectedKey;
                 return true;

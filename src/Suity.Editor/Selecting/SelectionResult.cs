@@ -20,7 +20,7 @@ public class SelectionResult
     /// <summary>
     /// Gets a value indicating whether the selection was successful.
     /// </summary>
-    public bool IsSuccess { get; }
+    public bool Successful { get; }
     /// <summary>
     /// Gets the key of the selected item.
     /// </summary>
@@ -43,7 +43,7 @@ public class SelectionResult
     /// <param name="text">The text associated with the result.</param>
     public SelectionResult(bool isSuccess, string key, ISelectionItem item = null, string text = null)
     {
-        IsSuccess = isSuccess;
+        Successful = isSuccess;
         SelectedKey = key;
         Item = item;
         Text = text;

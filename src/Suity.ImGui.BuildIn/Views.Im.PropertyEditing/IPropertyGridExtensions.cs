@@ -244,7 +244,7 @@ public static class IPropertyGridExtensions
         var filter = firstObj.GetAssetFilter();
 
         var result = await firstObj.GetSelectionList(filter).ShowSelectionGUIAsync("Redirect");
-        if (!result.IsSuccess || string.IsNullOrEmpty(result.SelectedKey))
+        if (!result.Successful || string.IsNullOrEmpty(result.SelectedKey))
         {
             return;
         }
@@ -658,7 +658,7 @@ public static class IPropertyGridExtensions
 
         var selection = new SKeySelection(sobj.ObjectType);
         var result = await selection.GetSelectionList().ShowSelectionGUIAsync("Select data source");
-        if (result is null || !result.IsSuccess)
+        if (result is null || !result.Successful)
         {
             return;
         }

@@ -421,7 +421,7 @@ public static class Navigator
                 }
 
                 var result = await list.ShowSelectionGUIAsync("Resolve Conflict", new SelectionOption { SelectedKey = obj.FullName });
-                if (!result.IsSuccess)
+                if (!result.Successful)
                 {
                     return;
                 }

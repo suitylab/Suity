@@ -205,7 +205,7 @@ public class AssetSelectionTreeList<TAsset, TValue> : IViewList, IHasObjectCreat
 
         var result = await selList.ShowSelectionGUIAsync(null);
 
-        if (result?.IsSuccess == true)
+        if (result?.Successful == true)
         {
             if (!Contains(result.SelectedKey))
             {

@@ -780,6 +780,12 @@ public abstract class WorkSpace : IRenderHost, IHasId
     /// <returns>True if the backup was found and restored successfully, otherwise false.</returns>
     public abstract bool RestoreWorkspace(string backupName = null);
 
+    /// <summary>
+    /// Gets the names of all available backup files for this workspace.
+    /// </summary>
+    /// <returns>Array of backup names.</returns>
+    public abstract string[] GetBackupNames();
+
     #endregion
 
     #region Misc

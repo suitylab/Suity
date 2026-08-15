@@ -1425,7 +1425,7 @@ internal sealed class SValueExternalBK : SValueExternal
             result = await type.GetImplementationList(filter).ShowSelectionGUIAsync(title);
         }
 
-        if (!result.IsSuccess)
+        if (!result.Successful)
         {
             return null;
         }
@@ -1471,7 +1471,7 @@ internal sealed class SValueExternalBK : SValueExternal
 
         ISelectionList selList = type.GetSelectionList(filter);
         var result = await selList.ShowSelectionGUIAsync(null);
-        if (result.IsSuccess)
+        if (result.Successful)
         {
             if (AssetManager.Instance.GetAsset(result.SelectedKey, filter) is DCompond s)
             {

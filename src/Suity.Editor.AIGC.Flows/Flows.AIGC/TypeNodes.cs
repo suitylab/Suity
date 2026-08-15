@@ -300,7 +300,7 @@ public class ManualSelectAsset : AigcFlowNode
         {
             var list = AssetManager.Instance.GetAssetSelectionList(assetType);
             var result = list.ShowSelectionGUI("Please select a plan");
-            if (!result.IsSuccess)
+            if (!result.Successful)
             {
                 goto label_dialog_01;
             }

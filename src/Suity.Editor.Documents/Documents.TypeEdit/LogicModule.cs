@@ -42,7 +42,7 @@ public class LogicModuleParameterList : SNamedFieldList<LogicModuleComponent>, I
     protected override async Task<NamedField> OnGuiCreateItemAsync(Type typeHint)
     {
         var result = await DTypeManager.Instance.GetTypes<DStruct>().WithFilter(AssetFilters.Default).ShowSelectionGUIAsync("Select Component");
-        if (!result.IsSuccess)
+        if (!result.Successful)
         {
             return null;
         }
@@ -147,7 +147,7 @@ public class LogicModule : TypeDesignItem<DLogicModuleBuilder>,
     private async Task<LogicModuleComponent> CreateComponent()
     {
         var result = await DTypeManager.Instance.GetTypes<DStruct>().WithFilter(AssetFilters.Default).ShowSelectionGUIAsync("Select Component");
-        if (!result.IsSuccess)
+        if (!result.Successful)
         {
             return null;
         }

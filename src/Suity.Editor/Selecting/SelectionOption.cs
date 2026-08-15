@@ -1,6 +1,5 @@
 ﻿using Suity.Drawing;
 using System;
-using System.Drawing;
 
 namespace Suity.Selecting;
 

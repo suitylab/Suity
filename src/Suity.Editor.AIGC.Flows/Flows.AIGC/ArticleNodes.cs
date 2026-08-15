@@ -1246,7 +1246,7 @@ public class ManualSelectArticle : AigcArticleNode
         {
             var list = new ArticleDocumentSelectionNode();
             var result = list.ShowSelectionGUI("Please select an article", new SelectionOption { AllowSelectList = true });
-            if (!result.IsSuccess)
+            if (!result.Successful)
             {
                 goto label_dialog_01;
             }

@@ -383,7 +383,7 @@ internal class SValueEditorExternalBK : SValueEditorExternal
                     e.DisplayText,
                     new SelectionOption { Icon = e.Icon, SelectedKey = val.Value, HideEmptySelection = true });
 
-                if (result.IsSuccess && !string.IsNullOrEmpty(result.SelectedKey))
+                if (result.Successful && !string.IsNullOrEmpty(result.SelectedKey))
                 {
                     if (e.GetPublicField(result.SelectedKey) is DEnumField field)
                     {

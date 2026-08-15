@@ -765,7 +765,7 @@ internal class EditorTemplateExternalBK : EditorTemplateExternal
                     InitialHideItems = target.Styles?.GetInitialHidden() == true,
                 });
 
-            if (result.IsSuccess)
+            if (result.Successful)
             {
                 ApplyKey(result.SelectedKey);
             }

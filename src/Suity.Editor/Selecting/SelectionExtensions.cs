@@ -151,7 +151,7 @@ public static class SelectionExtensions
 
         var result = await selectionList.ShowSelectionGUIAsync(title);
 
-        if (!result.IsSuccess)
+        if (!result.Successful)
         {
             return (false, null);
         }

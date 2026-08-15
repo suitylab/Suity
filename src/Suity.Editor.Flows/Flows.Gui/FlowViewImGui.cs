@@ -1435,7 +1435,7 @@ public abstract class FlowViewImGui :
         }
 
         var result = await nodeList.ShowSelectionGUIAsync("Select Node", new SelectionOption { HideEmptySelection = true });
-        if (!result.IsSuccess)
+        if (!result.Successful)
         {
             return;
         }

@@ -1491,10 +1491,10 @@ public class WorkSpaceBK : WorkSpace,
             ignoreSet.Add(pattern);
         }
 
-        string workspaceDir = BaseDirectory;
-        if (string.IsNullOrWhiteSpace(workspaceDir))
+        string baseDir = BaseDirectory;
+        if (string.IsNullOrWhiteSpace(baseDir))
         {
-            throw new NullReferenceException("Workspace directory is not set");
+            throw new NullReferenceException("Workspace base directory is not set");
         }
 
         if (!string.IsNullOrWhiteSpace(backupName))
@@ -1507,19 +1507,15 @@ public class WorkSpaceBK : WorkSpace,
             }
         }
 
-        string backupDir = workspaceDir.PathAppend("Backup");
+        string backupDir = baseDir.PathAppend("Backup");
         Directory.CreateDirectory(backupDir);
 
-        string backupFileName;
+        string id = IdGenerator.GenerateId(12);
+        string backupFileName = $"Backup_{DateTime.Now:yyyyMMdd_HHmmss}_{id}";
         string trimmedName = backupName?.Trim();
         if (!string.IsNullOrWhiteSpace(trimmedName))
         {
-            backupFileName = trimmedName;
-        }
-        else
-        {
-            string id = IdGenerator.GenerateId(12);
-            backupFileName = $"Backup_{DateTime.Now:yyyyMMdd_HHmmss}_{id}";
+            backupFileName = backupFileName + "_" + trimmedName;
         }
 
         string backupPath = backupDir.PathAppend(backupFileName + ".zip");
@@ -1593,22 +1589,29 @@ public class WorkSpaceBK : WorkSpace,
 
     public override bool RestoreWorkspace(string backupName = null)
     {
+        string baseDir = BaseDirectory;
         string workspaceDir = MasterDirectory;
+
+        if (string.IsNullOrWhiteSpace(baseDir))
+        {
+            throw new NullReferenceException("Workspace base directory is not set");
+        }
         if (string.IsNullOrWhiteSpace(workspaceDir))
         {
             throw new NullReferenceException("Workspace directory is not set");
         }
 
-        string backupDir = workspaceDir.PathAppend("Backup");
+        string backupDir = baseDir.PathAppend("Backup");
         if (!Directory.Exists(backupDir))
         {
             return false;
         }
 
-        var backupFiles = Directory.GetFiles(backupDir, "*.zip", System.IO.SearchOption.TopDirectoryOnly)
+        var backupFiles = Directory.GetFiles(backupDir, "*.zip", SearchOption.TopDirectoryOnly)
             .OrderByDescending(f => File.GetLastWriteTime(f))
             .ThenByDescending(f => Path.GetFileName(f))
             .ToList();
+
         if (backupFiles.Count == 0)
         {
             return false;
@@ -1633,11 +1636,7 @@ public class WorkSpaceBK : WorkSpace,
             return false;
         }
 
-        var ignoreSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-        {
-            "Backup",
-            Temp,
-        };
+        var ignoreSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var pattern in SplitBackupPatterns(BackupIgnorePatterns))
         {
             ignoreSet.Add(pattern);
@@ -1706,6 +1705,26 @@ public class WorkSpaceBK : WorkSpace,
         }
 
         return restored;
+    }
+
+    public override string[] GetBackupNames()
+    {
+        string baseDir = BaseDirectory;
+        if (string.IsNullOrWhiteSpace(baseDir))
+        {
+            return [];
+        }
+
+        string backupDir = baseDir.PathAppend("Backup");
+        if (!Directory.Exists(backupDir))
+        {
+            return [];
+        }
+
+        return Directory.GetFiles(backupDir, "*.zip", SearchOption.TopDirectoryOnly)
+            .Select(f => Path.GetFileNameWithoutExtension(f))
+            .OrderBy(name => name, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
     }
 
     #endregion
