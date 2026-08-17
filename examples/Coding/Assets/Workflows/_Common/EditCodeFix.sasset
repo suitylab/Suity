@@ -258,7 +258,6 @@ Notice: must include comments for exact replacement if the origin code contains 
         <Model />
         <Functions />
         <FunctionCall />
-        <CombineMessages>True</CombineMessages>
         <InterruptionWords>
           <Item>tool_result</Item>
         </InterruptionWords>
@@ -570,28 +569,6 @@ Notice: must include comments for exact replacement if the origin code contains 
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="30" Y="290" Width="46" Height="17">
       <Name>###GetParentTask01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetParentTask" />
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="0" Y="-210" Width="64" Height="17">
-      <Name>###CombineLLmMessage02</Name>
-      <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
-        <Prefix>=========== Scratch Pad Begin ===========</Prefix>
-        <Suffix>=========== Scratch Pady End ===========</Suffix>
-        <ItemPrefix>
-        </ItemPrefix>
-        <ItemSuffix>
-        </ItemSuffix>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="0" Y="-230" Width="64" Height="17">
-      <Name>###CombineLLmMessage01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
-        <Prefix>=========== Task History Begin ===========</Prefix>
-        <Suffix>=========== Task History End ===========</Suffix>
-        <ItemPrefix>
-        </ItemPrefix>
-        <ItemSuffix>
-        </ItemSuffix>
-      </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="130" Y="-260" Width="84" Height="28">
       <Name>###GetGlobalLLmModel02</Name>
@@ -1101,30 +1078,6 @@ Notice: must include comments for exact replacement if the origin code contains 
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetScratchPadMessage01</FromNode>
-      <FromConnector>Message</FromConnector>
-      <ToNode>###CombineLLmMessage02</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CombineLLmMessage02</FromNode>
-      <FromConnector>Output</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetTaskChatHistoryNode01</FromNode>
-      <FromConnector>TaskHistory</FromConnector>
-      <ToNode>###CombineLLmMessage01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CombineLLmMessage01</FromNode>
-      <FromConnector>Output</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetGlobalLLmModel02</FromNode>
       <FromConnector>LlmModel</FromConnector>
       <ToNode>###CallLLm01</ToNode>
@@ -1249,6 +1202,18 @@ Notice: must include comments for exact replacement if the origin code contains 
       <FromConnector>Out</FromConnector>
       <ToNode>###SetTaskScratchPads01</ToNode>
       <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskChatHistoryNode01</FromNode>
+      <FromConnector>TaskHistory</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetScratchPadMessage01</FromNode>
+      <FromConnector>Message</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

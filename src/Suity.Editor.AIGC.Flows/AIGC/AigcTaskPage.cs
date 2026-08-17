@@ -423,10 +423,31 @@ public abstract class AigcTaskPage : DesignNode,
 
         return Items.OfType<AigcTaskPage>().All(o => o.GetCommitStatus() != TaskCommitStatus.None);
     }
-    
+
 
     #endregion
 
+    #region View
+
+    public void SelectTaskInView()
+    {
+        if (this.TaskPageDocument is { } doc)
+        {
+            try
+            {
+                if (doc.ShowView()?.GetService<IViewSelectable>() is { } sel)
+                {
+                    sel.SetSelection(new ViewSelection(this));
+                }
+            }
+            catch (Exception err)
+            {
+                err.LogError();
+            }
+        }
+    }
+
+    #endregion
 
 
     /// <summary>

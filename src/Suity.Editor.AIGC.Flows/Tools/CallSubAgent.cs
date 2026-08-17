@@ -207,17 +207,20 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
         int successCount = 0;
         int failCount = 0;
 
-        context.ToolInstance.Conversation?.AddRunningMessage($"Call agent '{agentName}' with {Loops.Count} loop(s)", msg =>
-        {
-            msg.AddCode(string.Join(", ", Loops.Select(l => l.LoopName)));
-        });
-        context.Conversation?.AddRunningMessage($"Call agent '{agentName}' with {Loops.Count} loop(s)", msg =>
-        {
-            msg.AddCode(string.Join(", ", Loops.Select(l => l.LoopName)));
-        });
-
         foreach (var loop in loops)
         {
+            context.AddRunningMessage($"Call agent '{agentName}' with loop: `{loop.Description}`", msg =>
+            {
+                msg.AddCode(loop.Description);
+                if (loop?.LoopAsset?.GetLoop() is AigcLoopDocument loopDoc)
+                {
+                    msg.AddButton("Open Target", () =>
+                    {
+                        loopDoc.ShowView();
+                    });
+                }
+            });
+
             var loopResult = new LoopResult { LoopName = loop.Description };
             try
             {

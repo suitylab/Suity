@@ -271,8 +271,9 @@ internal class DialogElement_Code(string text) : DialogElement
     public override ImGuiNode OnGui(ImGui gui, int index, RootMenuCommand menu, IConversationHost host)
     {
         return gui.TextAreaInput($"msg#{index}", Code, Code)
-            .InitFullWidth()
-            .InitReadonly(true);
+        .InitFullWidth()
+        .InitReadonly(true);
+
         //.InitInputMouseUp((n, btn) =>
         //{
         //    if (btn == GuiMouseButtons.Right)
@@ -322,7 +323,7 @@ internal class DialogElement_Button : DialogElement
     {
         return gui.Button($"btn#{Key}_{index}", Text)
         .InitClass("simpleBtn")
-        .InitCenter()
+        .InitHorizontalAlignment(GuiAlignment.Far)
         .OnClick(() => 
         {
             if (Clicked != null)
@@ -365,7 +366,7 @@ internal class DialogElement_ButtonGroup : DialogElement
         {
             gui.HorizontalLayout("horizontal")
             .InitFit(GuiOrientation.Both)
-            .InitHorizontalAlignment(GuiAlignment.Center)
+            .InitHorizontalAlignment(GuiAlignment.Far)
             .OnContent(() =>
             {
                 if (!string.IsNullOrWhiteSpace(_title))

@@ -50,7 +50,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="-110" Width="136" Height="111">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="90" Y="-110" Width="136" Height="107">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -58,7 +58,6 @@
         <Model />
         <Functions />
         <FunctionCall />
-        <CombineMessages>True</CombineMessages>
         <InterruptionWords />
       </Node>
     </Item>
@@ -88,7 +87,7 @@
         <Value type="SArray" base="28e873c3-25bc-4001-ac6c-e185033f7056[]" />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="-100" Width="107" Height="89">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-60" Y="-100" Width="103" Height="85">
       <Name>###BuildPrompts01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
@@ -118,7 +117,7 @@
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="660" Y="-40" Width="144" Height="78">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="660" Y="-40" Width="140" Height="74">
       <Name>###WriteWorkSpaceFile01</Name>
       <Node type="Suity.Editor.Flows.WorkSpaces.WriteWorkSpaceFile">
         <WorkSpace />
@@ -131,7 +130,7 @@
       <Name>###GetTaskWorkSpace02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetTaskWorkSpace" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-40" Width="143" Height="89">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-40" Width="139" Height="85">
       <Name>###ForeachArray01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ForeachArray">
         <OutputValueType type="Suity.Editor.Types.TypeDesignSelection">
@@ -151,7 +150,7 @@
       <Name>###GetXmlTagContentNode01</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetXmlTagContent" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-150" Width="150" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="280" Y="-150" Width="146" Height="52">
       <Name>###ExtractXmlsTagAction01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagAction">
         <TagNames>
@@ -305,35 +304,13 @@
         </ValueType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-140" Width="103" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="480" Y="-140" Width="99" Height="52">
       <Name>###ThrowError01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
         <ErrorMessage />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-50" Y="-140" Width="64" Height="17">
-      <Name>###CombineLLmMessage02</Name>
-      <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
-        <Prefix>=========== Scratch Pad Begin ===========</Prefix>
-        <Suffix>=========== Scratch Pady End ===========</Suffix>
-        <ItemPrefix>
-        </ItemPrefix>
-        <ItemSuffix>
-        </ItemSuffix>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-50" Y="-160" Width="64" Height="17">
-      <Name>###CombineLLmMessage01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
-        <Prefix>=========== Task History Begin ===========</Prefix>
-        <Suffix>=========== Task History End ===========</Suffix>
-        <ItemPrefix>
-        </ItemPrefix>
-        <ItemSuffix>
-        </ItemSuffix>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="470" Y="-70" Width="135" Height="67">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="470" Y="-70" Width="131" Height="63">
       <Name>###OutputGlobalChat01</Name>
       <Node type="Suity.Editor.Flows.Nodes.OutputGlobalChat">
         <Message>
@@ -343,7 +320,7 @@
         <Status>ResourceUse</Status>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="290" Y="-220" Width="119" Height="56">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="290" Y="-220" Width="115" Height="52">
       <Name>###ExtractXmlsTag01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
         <TagNames>
@@ -557,30 +534,6 @@
       <ToConnector>Input</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetScratchPadMessage01</FromNode>
-      <FromConnector>Message</FromConnector>
-      <ToNode>###CombineLLmMessage02</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CombineLLmMessage02</FromNode>
-      <FromConnector>Output</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetTaskChatHistory01</FromNode>
-      <FromConnector>TaskHistory</FromConnector>
-      <ToNode>###CombineLLmMessage01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CombineLLmMessage01</FromNode>
-      <FromConnector>Output</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetXmlTagAttributesNode01</FromNode>
       <FromConnector>Attr-path</FromConnector>
       <ToNode>###OutputGlobalChat01</ToNode>
@@ -633,6 +586,18 @@
       <FromConnector>Rule</FromConnector>
       <ToNode>###BuildPrompts01</ToNode>
       <ToConnector>k_CONTEXT</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskChatHistory01</FromNode>
+      <FromConnector>TaskHistory</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetScratchPadMessage01</FromNode>
+      <FromConnector>Message</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

@@ -48,7 +48,6 @@
         <Model />
         <Functions />
         <FunctionCall />
-        <CombineMessages>True</CombineMessages>
         <InterruptionWords>
           <Item>- Tool Response -</Item>
           <Item>tool_result</Item>

@@ -125,6 +125,11 @@ After Coder finishes, verify implementation by inspecting workspace/logs:
 
 If failed: Delegate a focused repair loop to `Coder` or `Editor`. Do NOT move to the next Phase until passed.
 
+### D. Backup Workspace
+After the verification passes, use the `BackupWorkspace` tool to backup the current workspace files:
+- Backup name format example: `Slice01-SliceName`.
+- IgnorePattern: Exclude system folders, e.g., `node_modules`, `.git`, `bin`, `obj`, etc.
+
 ---
 
 ## Phase 3: Final Validation & Delivery

@@ -58,7 +58,6 @@
         <Model />
         <Functions />
         <FunctionCall />
-        <CombineMessages>True</CombineMessages>
         <InterruptionWords />
       </Node>
     </Item>
@@ -313,28 +312,6 @@
         <ErrorMessage />
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-140" Width="64" Height="17">
-      <Name>###CombineLLmMessage02</Name>
-      <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
-        <Prefix>=========== Scratch Pad Begin ===========</Prefix>
-        <Suffix>=========== Scratch Pady End ===========</Suffix>
-        <ItemPrefix>
-        </ItemPrefix>
-        <ItemSuffix>
-        </ItemSuffix>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-10" Y="-160" Width="64" Height="17">
-      <Name>###CombineLLmMessage01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
-        <Prefix>=========== Task History Begin ===========</Prefix>
-        <Suffix>=========== Task History End ===========</Suffix>
-        <ItemPrefix>
-        </ItemPrefix>
-        <ItemSuffix>
-        </ItemSuffix>
-      </Node>
-    </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="470" Y="-70" Width="135" Height="67">
       <Name>###OutputGlobalChat01</Name>
       <Node type="Suity.Editor.Flows.Nodes.OutputGlobalChat">
@@ -555,30 +532,6 @@
       <ToConnector>Input</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetScratchPadMessage01</FromNode>
-      <FromConnector>Message</FromConnector>
-      <ToNode>###CombineLLmMessage02</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CombineLLmMessage02</FromNode>
-      <FromConnector>Output</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetTaskChatHistory01</FromNode>
-      <FromConnector>TaskHistory</FromConnector>
-      <ToNode>###CombineLLmMessage01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CombineLLmMessage01</FromNode>
-      <FromConnector>Output</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetXmlTagAttributesNode01</FromNode>
       <FromConnector>Attr-path</FromConnector>
       <ToNode>###OutputGlobalChat01</ToNode>
@@ -661,6 +614,18 @@
       <FromConnector>Out</FromConnector>
       <ToNode>###BuildPrompts01</ToNode>
       <ToConnector>In</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskChatHistory01</FromNode>
+      <FromConnector>TaskHistory</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetScratchPadMessage01</FromNode>
+      <FromConnector>Message</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

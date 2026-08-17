@@ -74,12 +74,7 @@ public class RunShellCommand : ToolCommand<RunShellCommand.Output>
 
         try
         {
-            context.ToolInstance.Conversation?.AddRunningMessage("Run command", msg => 
-            {
-                msg.AddCode(command);
-            });
-
-            context.Conversation?.AddRunningMessage("Run command", msg =>
+            context?.AddRunningMessage("Run command", msg => 
             {
                 msg.AddCode(command);
             });

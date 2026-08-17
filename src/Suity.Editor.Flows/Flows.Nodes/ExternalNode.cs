@@ -106,7 +106,7 @@ public class RunShellCommand : ExternalNode
             updater = new SimpleStreamAppender { Conversation = conversation };
             onOutput = updater.Append;
         }
-
+        
         try
         {
             // Merge external cancellaTtion token with timeout token

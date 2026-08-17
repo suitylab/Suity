@@ -364,7 +364,7 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
         bool autoSelect = task.TaskPageDocument?.AutoFocusRunningTask == true;
         if (autoSelect)
         {
-            SelectTask(task);
+            task.SelectTaskInView();
         }
 
         string name = task.Name;
@@ -417,27 +417,6 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
         }
 
         return new(TaskCommitStatus.None, "Task is not done.");
-    }
-
-    private void SelectTask(AigcTaskPage task)
-    {
-        if (task is null)
-        {
-            return;
-        }
-
-        try
-        {
-            if (_document.View?.GetService<IViewSelectable>() is { } sel)
-            {
-                _document.ShowView();
-                sel.SetSelection(new ViewSelection(task));
-            }
-        }
-        catch (Exception err)
-        {
-            err.LogError();
-        }
     }
 
     /// <summary>

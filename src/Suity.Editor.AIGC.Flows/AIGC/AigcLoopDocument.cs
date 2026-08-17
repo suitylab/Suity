@@ -611,9 +611,10 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
     }
 
     IAigcTaskPage IAigcLoop.GetTaskToRun() => GetTaskToRun();
-    
+
 
     #endregion
+
 
     /// <summary>
     /// Generates a unique task ID that does not conflict with existing task names.

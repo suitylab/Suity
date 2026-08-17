@@ -52,6 +52,12 @@
     <Item>
       <Id>8722e349-3173-4b3e-8cba-ccc3f9485b5f</Id>
     </Item>
+    <Item>
+      <Id>12d042d3-b53e-4f02-a019-4ecbedde12ee</Id>
+    </Item>
+    <Item>
+      <Id>30d3825a-4b6d-4c7f-b75e-1bcc138aaf1f</Id>
+    </Item>
   </Tools>
   <Overview>
     <Text>I am a Coding Agent, an episodic creator spawned with a blank-slate context to perform precise code creaction directly on the local filesystem.</Text>

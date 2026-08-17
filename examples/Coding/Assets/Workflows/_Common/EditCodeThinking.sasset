@@ -256,7 +256,7 @@
         <Value type="System.Boolean">True</Value>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-527" Y="-302" Width="103" Height="74">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-527" Y="-302" Width="107" Height="78">
       <Name>###BuildPrompt01</Name>
       <Node type="Suity.Editor.Flows.AIGC.BuildPrompt">
         <PromptTemplate>
@@ -271,7 +271,7 @@
         <UpdateKeywords>False</UpdateKeywords>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-387" Y="-332" Width="136" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-387" Y="-332" Width="136" Height="111">
       <Name>###CallLLm01</Name>
       <Node type="Suity.Editor.Flows.AIGC.CallLLm">
         <DialogName>
@@ -279,7 +279,6 @@
         <Model />
         <Functions />
         <FunctionCall />
-        <CombineMessages>True</CombineMessages>
         <InterruptionWords>
           <Item>tool_result</Item>
         </InterruptionWords>
@@ -290,13 +289,13 @@
       <Name>###GetPageToolPagesNode02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetCurrentToolList" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-77" Y="-142" Width="187" Height="85">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-77" Y="-142" Width="191" Height="89">
       <Name>###ParseTagToolCallingNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.ParseTagToPageInstance">
         <AttributeName>tool</AttributeName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-77" Y="-2" Width="130" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-77" Y="-2" Width="134" Height="111">
       <Name>###AddSubTaskPageNode01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AddSubTaskPage">
         <PageTitle>
@@ -323,7 +322,7 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-407" Y="-92" Width="146" Height="85">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-407" Y="-92" Width="150" Height="89">
       <Name>###ExtractXmlsTagAction01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTagAction">
         <TagNames>
@@ -334,7 +333,7 @@
         </TagNames>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-367" Y="28" Width="99" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-367" Y="28" Width="103" Height="56">
       <Name>###ThrowError01</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
         <ErrorMessage />
@@ -350,7 +349,7 @@
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-440" Y="540" Width="197" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-440" Y="540" Width="201" Height="56">
       <Name>###CreatePageInstanceWithParameter01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
         <ToolDefinition>
@@ -379,7 +378,7 @@
         <CommitType>TaskFinished</CommitType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-440" Y="600" Width="127" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-440" Y="600" Width="131" Height="111">
       <Name>###AppendTaskPage01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
         <PageTitle>
@@ -480,7 +479,7 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="333" Y="-162" Width="99" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="333" Y="-162" Width="103" Height="56">
       <Name>###ThrowError03</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
         <ErrorMessage>
@@ -510,7 +509,7 @@
         </DataType>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-397" Y="138" Width="142" Height="63">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-397" Y="138" Width="146" Height="67">
       <Name>###SetTaskScratchPads01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.SetTaskScratchPads" />
     </Item>
@@ -518,33 +517,11 @@
       <Name>###GetParentTask01</Name>
       <Node type="Suity.Editor.Flows.TaskPages.GetParentTask" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-517" Y="-322" Width="64" Height="17">
-      <Name>###CombineLLmMessage02</Name>
-      <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
-        <Prefix>=========== Scratch Pad Begin ===========</Prefix>
-        <Suffix>=========== Scratch Pady End ===========</Suffix>
-        <ItemPrefix>
-        </ItemPrefix>
-        <ItemSuffix>
-        </ItemSuffix>
-      </Node>
-    </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-517" Y="-342" Width="64" Height="17">
-      <Name>###CombineLLmMessage01</Name>
-      <Node type="Suity.Editor.Flows.AIGC.CombineLLmMessage">
-        <Prefix>=========== Task History Begin ===========</Prefix>
-        <Suffix>=========== Task History End ===========</Suffix>
-        <ItemPrefix>
-        </ItemPrefix>
-        <ItemSuffix>
-        </ItemSuffix>
-      </Node>
-    </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-387" Y="-372" Width="84" Height="28">
       <Name>###GetGlobalLLmModel02</Name>
       <Node type="Suity.Editor.Flows.AIGC.GetGlobalLLmModel" />
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-387" Y="-202" Width="115" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-387" Y="-202" Width="119" Height="56">
       <Name>###ExtractXmlsTag01</Name>
       <Node type="Suity.Editor.Flows.AIGC.ExtractXmlsTag">
         <TagNames>
@@ -665,7 +642,7 @@
         <CommitName>CodeRewriter</CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="333" Y="-102" Width="99" Height="52">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="333" Y="-102" Width="103" Height="56">
       <Name>###ThrowError02</Name>
       <Node type="Suity.Editor.Flows.Nodes.ThrowError">
         <ErrorMessage>
@@ -673,7 +650,7 @@
         </ErrorMessage>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-440" Y="410" Width="127" Height="107">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-440" Y="410" Width="131" Height="111">
       <Name>###AppendTaskPage02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.AppendTaskPage">
         <PageTitle>
@@ -684,7 +661,7 @@
         </CommitName>
       </Node>
     </Item>
-    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-440" Y="340" Width="197" Height="63">
+    <Item type="Suity.Editor.Flows.FlowDiagramItem" X="-440" Y="340" Width="201" Height="67">
       <Name>###CreatePageInstanceWithParameter02</Name>
       <Node type="Suity.Editor.Flows.TaskPages.CreatePageInstanceWithParameter">
         <ToolDefinition>
@@ -832,18 +809,6 @@
       <FromConnector>Result</FromConnector>
       <ToNode>###ExtractXmlsTagAction01</ToNode>
       <ToConnector>DataIn</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CombineLLmMessage02</FromNode>
-      <FromConnector>Output</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###CombineLLmMessage01</FromNode>
-      <FromConnector>Output</FromConnector>
-      <ToNode>###CallLLm01</ToNode>
-      <ToConnector>Messages</ToConnector>
     </Item>
     <Item>
       <FromNode>###GetGlobalLLmModel02</FromNode>
@@ -1026,22 +991,10 @@
       <ToConnector>PageInstance</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetTaskChatHistoryNode01</FromNode>
-      <FromConnector>TaskHistory</FromConnector>
-      <ToNode>###CombineLLmMessage01</ToNode>
-      <ToConnector>Messages</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###GetTaskScratchPad01</FromNode>
       <FromConnector>ScratchPad</FromConnector>
       <ToNode>###GetScratchPadMessage01</ToNode>
       <ToConnector>ScratchPad</ToConnector>
-    </Item>
-    <Item>
-      <FromNode>###GetScratchPadMessage01</FromNode>
-      <FromConnector>Message</FromConnector>
-      <ToNode>###CombineLLmMessage02</ToNode>
-      <ToConnector>Messages</ToConnector>
     </Item>
     <Item>
       <FromNode>###PassValue04</FromNode>
@@ -1144,6 +1097,18 @@
       <FromConnector>ErrorMessage</FromConnector>
       <ToNode>###CreatePageInstanceWithParameter02</ToNode>
       <ToConnector>p_ErrorMessage</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetTaskChatHistoryNode01</FromNode>
+      <FromConnector>TaskHistory</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetScratchPadMessage01</FromNode>
+      <FromConnector>Message</FromConnector>
+      <ToNode>###CallLLm01</ToNode>
+      <ToConnector>Messages</ToConnector>
     </Item>
   </Links>
 </SuityAsset>
