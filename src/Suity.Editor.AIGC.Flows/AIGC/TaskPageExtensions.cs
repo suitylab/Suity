@@ -1,4 +1,5 @@
-﻿using Suity.Editor.Flows.SubFlows;
+﻿using Suity.Editor.AIGC.Assistants;
+using Suity.Editor.Flows.SubFlows;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
@@ -7,19 +8,53 @@ namespace Suity.Editor.AIGC;
 
 public static class TaskPageExtensions
 {
-    public static IDisposable AddMessage(this ToolCallContext context, string content, Action<IDialogMessage> config = null)
-    {
-        return new ToolCallDialogMessage(context, content, TextStatus.Normal, config);
-    }
-
     public static IDisposable AddToolMessage(this ToolCallContext context, string content, Action<IDialogMessage> config = null)
     {
-        return new ToolCallDialogMessage(context, content, TextStatus.ResourceUse, config);
+        return new ToolCallDialogMessage(context, content, TextStatus.Info, config);
     }
 
-    public static IDisposable AddMessage(this ToolCallContext context, string content, TextStatus status, Action<IDialogMessage> config = null)
+    public static IDisposable AddToolMessage(this ToolCallContext context, string content, TextStatus status, Action<IDialogMessage> config = null)
     {
         return new ToolCallDialogMessage(context, content, status, config);
+    }
+
+    public static DisposableDialogItem AddRunningMessage(this AigcWorkflowPage page, AIRequest request, string content)
+    {
+        return request.Conversation.AddRunningMessage(content, msg =>
+        {
+            msg.AddButtons(string.Empty, [
+                new()
+                {
+                    Key = "Feedback",
+                    Text = "Feedback",
+                    CallBack = () => AppendFeedBack(page)
+                },
+                new()
+                {
+                    Key = "Open",
+                    Text = "Open",
+                    CallBack = () => page.SelectTaskInView()
+                },
+            ]);
+        });
+    }
+
+    private static AigcNoticePage AppendFeedBack(this AigcWorkflowPage page)
+    {
+        if (page.GetDocument() is not AigcLoopDocument doc)
+        {
+            return null;
+        }
+
+        var item = new AigcNoticePage(NoticeTypes.UserFeedback, string.Empty);
+
+        page.ParentList?.Add(item);
+
+        doc.MarkDirtyAndSaveDelayed(page);
+        doc.View?.RefreshView();
+        item.SelectTaskInView();
+
+        return item;
     }
 }
 

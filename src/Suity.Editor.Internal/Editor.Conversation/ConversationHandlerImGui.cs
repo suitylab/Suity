@@ -60,6 +60,8 @@ public class ConversationHandlerImGui :
         _guiRef.Node?.SetScrollRateY(1);
 
         _scrollToButtom = true;
+
+        _guiRef.QueueRefresh();
     }
 
     /// <summary>
@@ -381,7 +383,9 @@ public class ConversationHandlerImGui :
         }
 
         ScrollToBottom();
-        _guiRef.QueueRefresh();
+        //_guiRef.QueueRefresh();
+
+        QueuedAction.Do(() => ScrollToBottom());
 
         return item;
     }

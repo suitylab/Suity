@@ -289,13 +289,13 @@ public class AigcWorkflowPage : AigcTaskPage,
             if (eventType == TaskEventTypes.TaskBegin)
             {
                 msgItem?.Dispose();
-                msgItem = AddRunningMessage(request, $"Run workflow ({begin.Name}): {DisplayText}");
+                msgItem = this.AddRunningMessage(request, $"Run workflow ({begin.Name}): {DisplayText}");
             }
 
             if (parentDefPage.GetIsDone().IsTrueOrEmpty())
             {
                 msgItem?.Dispose();
-                msgItem = AddRunningMessage(request, "Run workflow: " + DisplayText);
+                msgItem = this.AddRunningMessage(request, "Run workflow: " + DisplayText);
                 continue;
             }
 
@@ -304,18 +304,10 @@ public class AigcWorkflowPage : AigcTaskPage,
         }
 
         // Update task title
-        msgItem?.Dispose();
-        msgItem = AddRunningMessage(request, "Run workflow: " + DisplayText);
+        //msgItem?.Dispose();
+        //msgItem = this.AddRunningMessage(request, "Run workflow: " + DisplayText);
 
         return true;
-    }
-
-    private DisposableDialogItem AddRunningMessage(AIRequest request, string content)
-    {
-        return request.Conversation.AddSystemMessage(content, msg =>
-        {
-            msg.AddButton("Open", () => SelectTaskInView());
-        });
     }
 
     private bool MatchBeginElement(SubFlowBeginElement begin, TaskEventTypes eventType, string commitName)
@@ -562,7 +554,6 @@ public class AigcWorkflowPage : AigcTaskPage,
         this.ParentList?.Add(item);
 
         doc.MarkDirtyAndSaveDelayed(this);
-
         doc.View?.RefreshView();
 
         return task;
