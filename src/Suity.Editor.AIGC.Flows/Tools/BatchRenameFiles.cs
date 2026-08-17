@@ -121,11 +121,7 @@ public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
         var output = new Output();
 
         var renameSummary = string.Join(", ", RenameItems.Select(i => $"{i.SourcePath} -> {i.TargetPath}"));
-        context.ToolInstance.Conversation?.AddRunningMessage($"Rename {RenameItems.Count} file(s)", msg =>
-        {
-            msg.AddCode(renameSummary);
-        });
-        context.Conversation?.AddRunningMessage($"Rename {RenameItems.Count} file(s)", msg =>
+        context?.AddToolMessage($"Rename {RenameItems.Count} file(s)", msg =>
         {
             msg.AddCode(renameSummary);
         });

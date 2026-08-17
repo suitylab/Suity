@@ -367,25 +367,28 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             task.SelectTaskInView();
         }
 
-        string name = task.Name;
-        if (!string.IsNullOrWhiteSpace(task.Description))
-        {
-            name = $"{task.Description} ({name})";
-        }
+        DisposableDialogItem msgItem = null;
 
-/*        string message = "Run Task: ";
-        if (eventType != TaskEventTypes.None)
+        if (eventType == TaskEventTypes.TaskBegin && task is AigcWorkflowPage)
         {
-            message = $"Handle event: {eventType}";
+            msgItem = request.Conversation.AddSystemMessage("Run Workflow: " + task.DisplayText, msg =>
+            {
+                msg.AddButton("Open", () => task.SelectTaskInView());
+            });
         }
-
-        request.Conversation.AddSystemMessage(message, msg =>
-        {
-            msg.AddCode(name);
-            msg.AddButton("Locate", () => SelectTask(task));
-        });*/
 
         bool handled = await task.RunTask(request, eventType, commitName, parameter);
+
+        if (msgItem != null)
+        {
+            // Update task title
+            msgItem.Dispose();
+            msgItem = request.Conversation.AddSystemMessage("Run Workflow: " + task.DisplayText, msg =>
+            {
+                msg.AddButton("Open", () => task.SelectTaskInView());
+            });
+        }
+
         if (request.Cancellation.IsCancellationRequested)
         {
             return new(TaskCommitStatus.None, "Task is cancelled.");

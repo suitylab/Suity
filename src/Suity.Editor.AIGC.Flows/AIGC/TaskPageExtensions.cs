@@ -12,9 +12,9 @@ public static class TaskPageExtensions
         return new ToolCallDialogMessage(context, content, TextStatus.Normal, config);
     }
 
-    public static IDisposable AddRunningMessage(this ToolCallContext context, string content, Action<IDialogMessage> config = null)
+    public static IDisposable AddToolMessage(this ToolCallContext context, string content, Action<IDialogMessage> config = null)
     {
-        return new ToolCallDialogMessage(context, content, TextStatus.ResourceUse, config);
+        return new ToolCallDialogMessage(context, content, TextStatus.Normal, config);
     }
 
     public static IDisposable AddMessage(this ToolCallContext context, string content, TextStatus status, Action<IDialogMessage> config = null)

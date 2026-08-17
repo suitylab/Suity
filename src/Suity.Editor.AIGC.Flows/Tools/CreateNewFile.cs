@@ -95,11 +95,7 @@ public class CreateNewFile : ToolCommand<CreateNewFile.Output>
             Directory.CreateDirectory(dir);
         }
 
-        context.ToolInstance.Conversation?.AddRunningMessage("Create file", msg =>
-        {
-            msg.AddCode(relativePath);
-        });
-        context.Conversation?.AddRunningMessage("Create file", msg =>
+        context?.AddToolMessage("Create file", msg =>
         {
             msg.AddCode(relativePath);
         });

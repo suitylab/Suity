@@ -117,11 +117,7 @@ public class SearchFile : ToolCommand<SearchFile.Output>
         string searchQuery = CaseSensitive ? Query : Query.ToLowerInvariant();
 
         string searchInfo = string.IsNullOrWhiteSpace(DirPath) ? $"keyword: {Query}" : $"keyword: {Query}, dir: {relativePath}";
-        context.ToolInstance.Conversation?.AddRunningMessage("Search file", msg =>
-        {
-            msg.AddCode(searchInfo);
-        });
-        context.Conversation?.AddRunningMessage("Search file", msg =>
+        context?.AddToolMessage("Search file", msg =>
         {
             msg.AddCode(searchInfo);
         });

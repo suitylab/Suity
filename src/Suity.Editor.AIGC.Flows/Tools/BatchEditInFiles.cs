@@ -257,11 +257,7 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
         }
 
         var fileNames = string.Join(", ", fileResults.Select(f => f.RelativePath));
-        context.ToolInstance.Conversation?.AddRunningMessage($"Batch edit {fileResults.Count} file(s)", msg =>
-        {
-            msg.AddCode(fileNames);
-        });
-        context.Conversation?.AddRunningMessage($"Batch edit {fileResults.Count} file(s)", msg =>
+        context?.AddToolMessage($"Batch edit {fileResults.Count} file(s)", msg =>
         {
             msg.AddCode(fileNames);
         });

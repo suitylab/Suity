@@ -76,11 +76,7 @@ public class ListDirectory : ToolCommand<ListDirectory.Output>
         }
 
         string dirDisplay = string.IsNullOrWhiteSpace(relativePath) ? "workspace" : relativePath;
-        context.ToolInstance.Conversation?.AddRunningMessage("List directory", msg =>
-        {
-            msg.AddCode(dirDisplay);
-        });
-        context.Conversation?.AddRunningMessage("List directory", msg =>
+        context?.AddToolMessage("List directory", msg =>
         {
             msg.AddCode(dirDisplay);
         });

@@ -136,11 +136,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
         int failCount = 0;
 
         var writeFileNames = string.Join(", ", Files.Select(f => f.FilePath));
-        context.ToolInstance.Conversation?.AddRunningMessage($"Write {Files.Count} file(s)", msg =>
-        {
-            msg.AddCode(writeFileNames);
-        });
-        context.Conversation?.AddRunningMessage($"Write {Files.Count} file(s)", msg =>
+        context?.AddToolMessage($"Write {Files.Count} file(s)", msg =>
         {
             msg.AddCode(writeFileNames);
         });

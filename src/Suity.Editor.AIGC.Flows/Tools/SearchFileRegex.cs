@@ -118,11 +118,7 @@ public class SearchFileRegex : ToolCommand<SearchFileRegex.Output>
         }
 
         string searchInfo = string.IsNullOrWhiteSpace(DirPath) ? $"pattern: {QueryRegex}" : $"pattern: {QueryRegex}, dir: {relativePath}";
-        context.ToolInstance.Conversation?.AddRunningMessage("Search file (regex)", msg =>
-        {
-            msg.AddCode(searchInfo);
-        });
-        context.Conversation?.AddRunningMessage("Search file (regex)", msg =>
+        context?.AddToolMessage("Search file (regex)", msg =>
         {
             msg.AddCode(searchInfo);
         });

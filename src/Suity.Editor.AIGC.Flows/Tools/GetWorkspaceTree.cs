@@ -97,11 +97,7 @@ public class GetWorkspaceTree : ToolCommand<GetWorkspaceTree.Output>
         }
 
         string treeDisplay = string.IsNullOrWhiteSpace(relativePath) ? "workspace" : relativePath;
-        context.ToolInstance.Conversation?.AddRunningMessage("Get workspace tree", msg =>
-        {
-            msg.AddCode(treeDisplay);
-        });
-        context.Conversation?.AddRunningMessage("Get workspace tree", msg =>
+        context?.AddToolMessage("Get workspace tree", msg =>
         {
             msg.AddCode(treeDisplay);
         });

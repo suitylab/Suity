@@ -117,11 +117,7 @@ public class BatchDeleteFiles : ToolCommand<BatchDeleteFiles.Output>
         var output = new Output();
 
         var deleteFileNames = string.Join(", ", DeleteItems.Select(d => d.FilePath));
-        context.ToolInstance.Conversation?.AddRunningMessage($"Delete {DeleteItems.Count} file(s)", msg =>
-        {
-            msg.AddCode(deleteFileNames);
-        });
-        context.Conversation?.AddRunningMessage($"Delete {DeleteItems.Count} file(s)", msg =>
+        context?.AddToolMessage($"Delete {DeleteItems.Count} file(s)", msg =>
         {
             msg.AddCode(deleteFileNames);
         });

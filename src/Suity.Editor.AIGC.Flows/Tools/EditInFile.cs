@@ -128,11 +128,7 @@ public class EditInFile : ToolCommand<EditInFile.Output>
 
         content = StringUtility.ReplaceContent(content, matchFinal.Index, matchFinal.Length, NewString);
 
-        context.ToolInstance.Conversation?.AddRunningMessage("Edit file", msg =>
-        {
-            msg.AddCode(relativePath);
-        });
-        context.Conversation?.AddRunningMessage("Edit file", msg =>
+        context?.AddToolMessage("Edit file", msg =>
         {
             msg.AddCode(relativePath);
         });

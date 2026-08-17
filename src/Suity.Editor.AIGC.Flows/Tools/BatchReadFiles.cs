@@ -115,11 +115,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
         }
 
         var readFileNames = string.Join(", ", FileItems.Where(i => i != null).Select(i => i.FilePath));
-        context.ToolInstance.Conversation?.AddRunningMessage($"Batch read {FileItems.Count} file(s)", msg =>
-        {
-            msg.AddCode(readFileNames);
-        });
-        context.Conversation?.AddRunningMessage($"Batch read {FileItems.Count} file(s)", msg =>
+        context?.AddToolMessage($"Batch read {FileItems.Count} file(s)", msg =>
         {
             msg.AddCode(readFileNames);
         });
@@ -156,11 +152,7 @@ public class BatchReadFiles : ToolCommand<BatchReadFiles.Output>
                 if (item.StartLine > 0 || item.LineCount > 0)
                 {
                     string lineInfo = $"{relativePath} (startLine: {item.StartLine}, lineCount: {item.LineCount})";
-                    context.ToolInstance.Conversation?.AddRunningMessage("Read file", msg =>
-                    {
-                        msg.AddCode(lineInfo);
-                    });
-                    context.Conversation?.AddRunningMessage("Read file", msg =>
+                    context?.AddToolMessage("Read file", msg =>
                     {
                         msg.AddCode(lineInfo);
                     });

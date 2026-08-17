@@ -105,11 +105,7 @@ public class ReadFile : ToolCommand<ReadFile.Output>
             readInfo += $" (startLine: {StartLine}, lineCount: {LineCount})";
         }
 
-        context.ToolInstance.Conversation?.AddRunningMessage("Read file", msg =>
-        {
-            msg.AddCode(readInfo);
-        });
-        context.Conversation?.AddRunningMessage("Read file", msg =>
+        context?.AddToolMessage("Read file", msg =>
         {
             msg.AddCode(readInfo);
         });

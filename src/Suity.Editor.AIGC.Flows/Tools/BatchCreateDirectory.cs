@@ -124,11 +124,7 @@ public class BatchCreateDirectory : ToolCommand<BatchCreateDirectory.Output>
         int failCount = 0;
 
         var dirNames = string.Join(", ", Directories.Select(d => d.DirectoryPath));
-        context.ToolInstance.Conversation?.AddRunningMessage($"Create {Directories.Count} directory(ies)", msg =>
-        {
-            msg.AddCode(dirNames);
-        });
-        context.Conversation?.AddRunningMessage($"Create {Directories.Count} directory(ies)", msg =>
+        context?.AddToolMessage($"Create {Directories.Count} directory(ies)", msg =>
         {
             msg.AddCode(dirNames);
         });

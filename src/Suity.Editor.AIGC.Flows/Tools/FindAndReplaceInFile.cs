@@ -184,11 +184,7 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
             output.Results.Add(result);
         }
 
-        context.ToolInstance.Conversation?.AddRunningMessage("Find and replace in file", msg =>
-        {
-            msg.AddCode(relativePath);
-        });
-        context.Conversation?.AddRunningMessage("Find and replace in file", msg =>
+        context?.AddToolMessage("Find and replace in file", msg =>
         {
             msg.AddCode(relativePath);
         });

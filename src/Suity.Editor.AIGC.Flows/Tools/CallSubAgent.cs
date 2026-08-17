@@ -209,7 +209,7 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
 
         foreach (var loop in loops)
         {
-            context.AddRunningMessage($"Call agent '{agentName}' with loop: `{loop.Description}`", msg =>
+            context.AddToolMessage($"Call agent '{agentName}' with loop: `{loop.Description}`", msg =>
             {
                 msg.AddCode(loop.Description);
                 if (loop?.LoopAsset?.GetLoop() is AigcLoopDocument loopDoc)

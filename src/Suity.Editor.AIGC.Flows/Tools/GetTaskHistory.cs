@@ -55,11 +55,7 @@ public class GetTaskHistory : ToolCommand<GetTaskHistory.Output>
         var myTask = context.ToolInstance?.Owner as IAigcTaskPage
             ?? throw new NullReferenceException($"The tool instance's owner is not a {nameof(IAigcTaskPage)}.");
 
-        context.ToolInstance.Conversation?.AddRunningMessage("Get task history", msg =>
-        {
-            msg.AddCode(TaskId);
-        });
-        context.Conversation?.AddRunningMessage("Get task history", msg =>
+        context?.AddToolMessage("Get task history", msg =>
         {
             msg.AddCode(TaskId);
         });

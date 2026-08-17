@@ -90,11 +90,7 @@ public class RewriteEntireFile : ToolCommand<RewriteEntireFile.Output>
             Directory.CreateDirectory(directory);
         }
 
-        context.ToolInstance.Conversation?.AddRunningMessage("Rewrite file", msg =>
-        {
-            msg.AddCode(relativePath);
-        });
-        context.Conversation?.AddRunningMessage("Rewrite file", msg =>
+        context?.AddToolMessage("Rewrite file", msg =>
         {
             msg.AddCode(relativePath);
         });

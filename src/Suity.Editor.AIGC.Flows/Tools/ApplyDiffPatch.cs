@@ -137,11 +137,7 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
             hunksApplied++;
         }
 
-        context.ToolInstance.Conversation?.AddRunningMessage("Apply diff patch", msg =>
-        {
-            msg.AddCode(relativePath);
-        });
-        context.Conversation?.AddRunningMessage("Apply diff patch", msg =>
+        context?.AddToolMessage("Apply diff patch", msg =>
         {
             msg.AddCode(relativePath);
         });

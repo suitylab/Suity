@@ -102,11 +102,7 @@ public class GetFileMetadata : ToolCommand<GetFileMetadata.Output>
             throw new FileNotFoundException($"File not found: {relativePath}");
         }
 
-        context.ToolInstance.Conversation?.AddRunningMessage("Get file metadata", msg =>
-        {
-            msg.AddCode(relativePath);
-        });
-        context.Conversation?.AddRunningMessage("Get file metadata", msg =>
+        context?.AddToolMessage("Get file metadata", msg =>
         {
             msg.AddCode(relativePath);
         });
