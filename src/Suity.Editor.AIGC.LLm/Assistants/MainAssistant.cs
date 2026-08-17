@@ -40,7 +40,7 @@ public class MainAssistant : AIAssistant
                 {
                     InnerAssistant = assistant;
 
-                    request.Conversation?.AddRunningMessage(L("Assistant Start"), msg => 
+                    request.Conversation?.AddInfoMessage(L("Assistant Start"), msg => 
                     {
                         msg.AddCode(assistant.ToDisplayTextL());
                     });
@@ -73,7 +73,7 @@ public class MainAssistant : AIAssistant
             var assistant = InnerAssistant;
             InnerAssistant = null;
 
-            request.Conversation?.AddRunningMessage(L("Assistant End"), msg =>
+            request.Conversation?.AddInfoMessage(L("Assistant End"), msg =>
             {
                 if (assistant != null)
                 {

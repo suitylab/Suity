@@ -125,7 +125,7 @@ internal class WrappedLLmCall : ILLmCall
         {
             if (_conversation is not null)
             {
-                msgItem = _conversation.AddRunningMessage(msg, m =>
+                msgItem = _conversation.AddSystemMessage(msg, m =>
                 {
                     m.AddCode(code);
                 });

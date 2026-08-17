@@ -276,6 +276,8 @@ public class AigcWorkflowPage : AigcTaskPage,
             return false;
         }
 
+        DisposableDialogItem msgItem = null;
+
         foreach (var begin in begins)
         {
             var parentDefPage = begin.FindParentDefPage();
@@ -284,12 +286,16 @@ public class AigcWorkflowPage : AigcTaskPage,
                 continue;
             }
 
+            if (eventType == TaskEventTypes.TaskBegin)
+            {
+                msgItem?.Dispose();
+                msgItem = AddRunningMessage(request, $"Run workflow ({begin.Name}): {DisplayText}");
+            }
+
             if (parentDefPage.GetIsDone().IsTrueOrEmpty())
             {
-                request.Conversation.AddDisabledMessage("Skip completed event: " + eventType, msg =>
-                {
-                    msg.AddCode(begin.Name);
-                });
+                msgItem?.Dispose();
+                msgItem = AddRunningMessage(request, "Run workflow: " + DisplayText);
                 continue;
             }
 
@@ -297,7 +303,19 @@ public class AigcWorkflowPage : AigcTaskPage,
             await instance.HandleBeginTask(request, begin);
         }
 
+        // Update task title
+        msgItem?.Dispose();
+        msgItem = AddRunningMessage(request, "Run workflow: " + DisplayText);
+
         return true;
+    }
+
+    private DisposableDialogItem AddRunningMessage(AIRequest request, string content)
+    {
+        return request.Conversation.AddSystemMessage(content, msg =>
+        {
+            msg.AddButton("Open", () => SelectTaskInView());
+        });
     }
 
     private bool MatchBeginElement(SubFlowBeginElement begin, TaskEventTypes eventType, string commitName)

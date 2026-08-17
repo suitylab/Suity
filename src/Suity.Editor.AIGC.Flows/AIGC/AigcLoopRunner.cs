@@ -367,27 +367,7 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             task.SelectTaskInView();
         }
 
-        DisposableDialogItem msgItem = null;
-
-        if (eventType == TaskEventTypes.TaskBegin && task is AigcWorkflowPage)
-        {
-            msgItem = request.Conversation.AddSystemMessage("Run Workflow: " + task.DisplayText, msg =>
-            {
-                msg.AddButton("Open", () => task.SelectTaskInView());
-            });
-        }
-
         bool handled = await task.RunTask(request, eventType, commitName, parameter);
-
-        if (msgItem != null)
-        {
-            // Update task title
-            msgItem.Dispose();
-            msgItem = request.Conversation.AddSystemMessage("Run Workflow: " + task.DisplayText, msg =>
-            {
-                msg.AddButton("Open", () => task.SelectTaskInView());
-            });
-        }
 
         if (request.Cancellation.IsCancellationRequested)
         {

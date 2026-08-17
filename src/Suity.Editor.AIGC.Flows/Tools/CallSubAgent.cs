@@ -1,6 +1,7 @@
 using Suity.Editor.AIGC.Agentic;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
+using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Types;
@@ -214,9 +215,12 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
                 msg.AddCode(loop.Description);
                 if (loop?.LoopAsset?.GetLoop() is AigcLoopDocument loopDoc)
                 {
+                    var location = loopDoc.FileName;
+
                     msg.AddButton("Open Target", () =>
                     {
-                        loopDoc.ShowView();
+                        var reOpen = DocumentManager.Instance.OpenDocument(location);
+                        reOpen.ShowView();
                     });
                 }
             });

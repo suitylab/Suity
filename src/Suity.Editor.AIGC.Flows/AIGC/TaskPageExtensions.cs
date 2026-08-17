@@ -14,7 +14,7 @@ public static class TaskPageExtensions
 
     public static IDisposable AddToolMessage(this ToolCallContext context, string content, Action<IDialogMessage> config = null)
     {
-        return new ToolCallDialogMessage(context, content, TextStatus.Normal, config);
+        return new ToolCallDialogMessage(context, content, TextStatus.ResourceUse, config);
     }
 
     public static IDisposable AddMessage(this ToolCallContext context, string content, TextStatus status, Action<IDialogMessage> config = null)
@@ -37,8 +37,10 @@ class ToolCallDialogMessage : IDialogMessage, IDisposable
         Message = content;
         _config = config;
 
-        _localMessage = context.ToolInstance?.Conversation?.AddMessage(content, Status, _config);
-        _globalMessage = context.Conversation?.AddMessage(content, Status, msg =>
+        string toolContent = "Run tool: " + content;
+
+        _localMessage = context.ToolInstance?.Conversation?.AddMessage(toolContent, Status, _config);
+        _globalMessage = context.Conversation?.AddMessage(toolContent, Status, msg =>
         {
             if (context.ToolInstance?.Owner is AigcTaskPage taskPage)
             {

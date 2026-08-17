@@ -124,7 +124,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
             return null;
         }
 
-        _conversation.AddRunningMessage(L("Resuming agent execution..."));
+        _conversation.AddInfoMessage(L("Resuming agent execution..."));
 
         var request = new AIRequest
         {

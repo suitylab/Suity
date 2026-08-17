@@ -1,6 +1,7 @@
 ﻿using Suity.Drawing;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Design;
+using Suity.Editor.Documents;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Helpers;
 using Suity.Synchonizing;
@@ -429,15 +430,16 @@ public abstract class AigcTaskPage : DesignNode,
 
     #region View
 
-    public void SelectTaskInView()
+    public bool SelectTaskInView()
     {
-        if (this.TaskPageDocument is { } doc)
+        if (this.TaskPageDocument is { } doc && doc.Entry?.State == DocumentState.Loaded)
         {
             try
             {
                 if (doc.ShowView()?.GetService<IViewSelectable>() is { } sel)
                 {
                     sel.SetSelection(new ViewSelection(this));
+                    return true;
                 }
             }
             catch (Exception err)
@@ -445,6 +447,8 @@ public abstract class AigcTaskPage : DesignNode,
                 err.LogError();
             }
         }
+
+        return false;
     }
 
     #endregion

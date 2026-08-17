@@ -195,11 +195,11 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
         UpdateIcon();
         UpdateTitle();
 
-        Dispatcher.UIThread.Post(() =>
-        {
+        //Dispatcher.UIThread.Post(() =>
+        //{
             // Delay to avoid double execution updates with View.GetDataFromDocument().
             _docInstance.View.StartView(_docInstance.Document.Content, this);
-        });
+        //});
     }
 
     [JsonIgnore]

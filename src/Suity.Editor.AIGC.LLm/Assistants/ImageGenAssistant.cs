@@ -37,7 +37,7 @@ public class ImageGenAssistant : AIAssistant
 
 
         string msg = L("Calling model: ") + imgModel.ModelId;
-        var msgItem = request.Conversation?.AddRunningMessage(msg);
+        var msgItem = request.Conversation?.AddInfoMessage(msg);
 
         try
         {

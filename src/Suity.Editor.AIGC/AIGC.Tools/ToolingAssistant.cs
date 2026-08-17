@@ -73,7 +73,7 @@ public abstract class ToolingAssistant : AICanvasAssistant
 
         //resolveMsg?.Dispose();
 
-        using var callingMsg = request.Conversation.AddRunningMessage(L($"Executing tool: {tool.ToDisplayText()}..."));
+        using var callingMsg = request.Conversation.AddInfoMessage(L($"Executing tool: {tool.ToDisplayText()}..."));
 
         var result = await tool.CallObject(request, this.Context, toolParam);
 
