@@ -10,7 +10,7 @@ public static class TaskPageExtensions
 {
     public static IDisposable AddToolMessage(this ToolCallContext context, string content, Action<IDialogMessage> config = null)
     {
-        return new ToolCallDialogMessage(context, content, TextStatus.Info, config);
+        return new ToolCallDialogMessage(context, content, TextStatus.Normal, config);
     }
 
     public static IDisposable AddToolMessage(this ToolCallContext context, string content, TextStatus status, Action<IDialogMessage> config = null)
@@ -20,7 +20,7 @@ public static class TaskPageExtensions
 
     public static DisposableDialogItem AddRunningMessage(this AigcWorkflowPage page, AIRequest request, string content)
     {
-        return request.Conversation.AddRunningMessage(content, msg =>
+        return request.Conversation.AddSystemMessage(content, msg =>
         {
             msg.AddButtons(string.Empty, [
                 new()

@@ -1051,7 +1051,7 @@ public class AigcLoopDocumentView : IDocumentView,
         .InitHeightRest(30)
         .InitFullWidth()
         .InitInputFunctionChain(TextInput)
-        .SetHintTextL("Input message...")
+        .SetHintTextL("Input task message...")
         .Text;
 
         gui.HorizontalReverseLayout("input_bar")

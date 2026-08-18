@@ -60,18 +60,17 @@ public class ManualReply : ToolCommand<ManualReply.Output>
             msg.AddCode(question);
         });
 
-        IConversationHandler conversation = context?.ToolInstance?.Conversation;
-        if (conversation == null)
+        IConversationHandler conversation = context?.Conversation; 
+        if (conversation is null)
         {
-            conversation = context?.Conversation;
+            conversation = context?.ToolInstance?.Conversation;
         }
-        if (conversation == null)
+        if (conversation is null)
         {
             throw new NullReferenceException("Conversation is not found");
         }
 
-        context?.ToolInstance?.Conversation?.AddSystemMessage("Please enter your reply message in the input field at the bottom.");
-
+        conversation.AddInfoMessage("Please enter your reply message in the input field at the bottom.");
         string result = await conversation.WaitForTextInput(context.Cancellation);
 
         return new Output
