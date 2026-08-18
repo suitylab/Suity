@@ -11,12 +11,12 @@ namespace Suity.Editor.AIGC.Tools;
 
 [NativeType("ManualTest", CodeBase = "*Suity", Icon = "*CoreIcon|System", Category = "WorkSpace Tools")]
 [DisplayText("Manual test")]
-[ToolTipsText("Do not run the test command in the editor. Pause and wait for manual test of the provided question, the test command is executed in an external console window via the Run Test button, then output the reply result.")]
+[ToolTipsText("Do not run the test command in the editor. Pause and wait for manual test of the provided test content, the test command is executed in an external console window via the Run Test button, then output the reply result.")]
 public class ManualTest : ToolCommand<ManualTest.Output>
 {
     public class Output : SObjectController
     {
-        readonly TextBlockProperty _result = new("Result");
+        readonly TextBlockProperty _result = new("Result", toolTips: "The reply result of the manual test.");
 
         public string Result { get => _result.Text; set => _result.Text = value; }
 
@@ -35,31 +35,31 @@ public class ManualTest : ToolCommand<ManualTest.Output>
         }
     }
 
-    readonly TextBlockProperty _question = new("Question");
+    readonly TextBlockProperty _testContent = new("TestContent", toolTips: "The test content that needs to be manually tested.");
 
-    public string Question { get => _question.Text; set => _question.Text = value; }
+    public string TestContent { get => _testContent.Text; set => _testContent.Text = value; }
 
-    readonly TextBlockProperty _shellCommand = new("ShellCommand");
+    readonly TextBlockProperty _shellCommand = new("ShellCommand", toolTips: "The shell command to execute in an external console window for testing.");
 
     public string ShellCommand { get => _shellCommand.Text; set => _shellCommand.Text = value; }
 
     public override void Sync(IPropertySync sync, ISyncContext context)
     {
-        _question.Sync(sync);
+        _testContent.Sync(sync);
         _shellCommand.Sync(sync);
     }
     public override void SetupView(IViewObjectSetup setup)
     {
-        _question.InspectorField(setup);
+        _testContent.InspectorField(setup);
         _shellCommand.InspectorField(setup);
     }
 
     public override async Task<Output> Run(ToolCallContext context)
     {
-        string question = this.Question;
-        if (string.IsNullOrWhiteSpace(question))
+        string testContent = this.TestContent;
+        if (string.IsNullOrWhiteSpace(testContent))
         {
-            throw new NullReferenceException("Question is not set");
+            throw new NullReferenceException("TestContent is not set");
         }
 
         string shellCommand = this.ShellCommand;
@@ -70,7 +70,7 @@ public class ManualTest : ToolCommand<ManualTest.Output>
 
         context?.AddToolMessage("Manual test", msg =>
         {
-            msg.AddCode(question);
+            msg.AddCode(testContent);
             msg.AddCode(shellCommand);
             msg.AddButton("Run Test", () => RunTest(context, shellCommand));
         });
