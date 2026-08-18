@@ -1,0 +1,119 @@
+using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Types;
+using Suity.Editor.Values;
+using Suity.Synchonizing;
+using Suity.Views;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
+
+namespace Suity.Editor.AIGC.Tools;
+
+[NativeType("ManualTest", CodeBase = "*Suity", Icon = "*CoreIcon|System", Category = "WorkSpace Tools")]
+[DisplayText("Manual test")]
+[ToolTipsText("Do not run the test command in the editor. Pause and wait for manual test of the provided question, the test command is executed in an external console window via the Run Test button, then output the reply result.")]
+public class ManualTest : ToolCommand<ManualTest.Output>
+{
+    public class Output : SObjectController
+    {
+        readonly TextBlockProperty _result = new("Result");
+
+        public string Result { get => _result.Text; set => _result.Text = value; }
+
+        protected override void OnSync(IPropertySync sync, ISyncContext context)
+        {
+            base.OnSync(sync, context);
+
+            _result.Sync(sync);
+        }
+
+        protected override void OnSetupView(IViewObjectSetup setup)
+        {
+            base.OnSetupView(setup);
+
+            _result.InspectorField(setup);
+        }
+    }
+
+    readonly TextBlockProperty _question = new("Question");
+
+    public string Question { get => _question.Text; set => _question.Text = value; }
+
+    readonly TextBlockProperty _shellCommand = new("ShellCommand");
+
+    public string ShellCommand { get => _shellCommand.Text; set => _shellCommand.Text = value; }
+
+    public override void Sync(IPropertySync sync, ISyncContext context)
+    {
+        _question.Sync(sync);
+        _shellCommand.Sync(sync);
+    }
+    public override void SetupView(IViewObjectSetup setup)
+    {
+        _question.InspectorField(setup);
+        _shellCommand.InspectorField(setup);
+    }
+
+    public override async Task<Output> Run(ToolCallContext context)
+    {
+        string question = this.Question;
+        if (string.IsNullOrWhiteSpace(question))
+        {
+            throw new NullReferenceException("Question is not set");
+        }
+
+        string shellCommand = this.ShellCommand;
+        if (string.IsNullOrWhiteSpace(shellCommand))
+        {
+            throw new NullReferenceException("ShellCommand is not set");
+        }
+
+        context?.AddToolMessage("Manual test", msg =>
+        {
+            msg.AddCode(question);
+            msg.AddCode(shellCommand);
+            msg.AddButton("Run Test", () => RunTest(context, shellCommand));
+        });
+
+        IConversationHandler conversation = context?.Conversation;
+        if (conversation is null)
+        {
+            conversation = context?.ToolInstance?.Conversation;
+        }
+        if (conversation is null)
+        {
+            throw new NullReferenceException("Conversation is not found");
+        }
+
+        conversation.AddInfoMessage("Please enter your reply message in the input field at the bottom.");
+        string result = await conversation.WaitForTextInput(context.Cancellation);
+
+        return new Output
+        {
+            Result = result,
+        };
+    }
+
+    void RunTest(ToolCallContext context, string command)
+    {
+        string directory = context?.RootDirectory;
+        if (string.IsNullOrWhiteSpace(directory))
+        {
+            throw new NullReferenceException("Workspace directory is not set");
+        }
+
+        bool isWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
+        string shell = isWindows ? "cmd.exe" : "/bin/bash";
+        string arguments = isWindows ? $"/K {command}" : $"-c \"{command.Replace("\"", "\\\"")}\"";
+
+        var startInfo = new ProcessStartInfo
+        {
+            FileName = shell,
+            Arguments = arguments,
+            WorkingDirectory = directory,
+            UseShellExecute = true,
+        };
+
+        Process.Start(startInfo);
+    }
+}

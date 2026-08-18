@@ -676,6 +676,7 @@
       <Node type="Suity.Editor.Flows.Nodes.OutputGlobalChat">
         <Message />
         <Inner />
+        <Status>ResourceUse</Status>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="50" Y="-210" Width="64" Height="17">
@@ -1155,12 +1156,6 @@
       <ToConnector>In</ToConnector>
     </Item>
     <Item>
-      <FromNode>###GetXmlTagAttributesNode01</FromNode>
-      <FromConnector>Attr-title</FromConnector>
-      <ToNode>###OutputGlobalChat01</ToNode>
-      <ToConnector>Message</ToConnector>
-    </Item>
-    <Item>
       <FromNode>###FirstNotEmpty01</FromNode>
       <FromConnector>NotEmpty</FromConnector>
       <ToNode>###CombineLLmMessage03</ToNode>
@@ -1243,6 +1238,12 @@
       <FromConnector>PreviousTaskId</FromConnector>
       <ToNode>###BuildPrompt01</ToNode>
       <ToConnector>k_PREVIOUS_TASK_ID</ToConnector>
+    </Item>
+    <Item>
+      <FromNode>###GetXmlTagAttributesNode01</FromNode>
+      <FromConnector>Attr-title</FromConnector>
+      <ToNode>###OutputGlobalChat01</ToNode>
+      <ToConnector>Message</ToConnector>
     </Item>
   </Links>
 </SuityAsset>

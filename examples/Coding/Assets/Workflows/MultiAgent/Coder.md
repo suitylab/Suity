@@ -47,6 +47,8 @@
    - Run minimal smoke test scripts or command-line checks if headless execution is needed.
 3. **Regression Prevention**:
    - Ensure app entry points, core update loops, state transitions, and features from previous phases remain unbroken and functional.
+4. **Manual Review and Confirmation**
+   - A final human review of this task is requested, run `ManualReply` tool to request a manual review for this task.
 
 ---
 

@@ -317,7 +317,6 @@
           <Text>Write file</Text>
         </Message>
         <Inner />
-        <Status>ResourceUse</Status>
       </Node>
     </Item>
     <Item type="Suity.Editor.Flows.FlowDiagramItem" X="290" Y="-220" Width="115" Height="52">
