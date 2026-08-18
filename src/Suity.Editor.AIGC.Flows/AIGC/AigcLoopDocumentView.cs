@@ -1067,7 +1067,7 @@ public class AigcLoopDocumentView : IDocumentView,
             .SetToolTipsL("Send")
             .OnClick(() =>
             {
-                if (IsRunning && !string.IsNullOrWhiteSpace(_msgInput))
+                if (/*IsRunning && */!string.IsNullOrWhiteSpace(_msgInput))
                 {
                     if (page.GetPageInstance()?.Conversation is { } conversation && conversation is IConversationHost host)
                     {

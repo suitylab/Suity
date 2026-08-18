@@ -47,8 +47,9 @@ public static class TaskPageExtensions
         }
 
         var item = new AigcNoticePage(NoticeTypes.UserFeedback, string.Empty);
+        int index = page.GetIndex();
 
-        page.ParentList?.Add(item);
+        page.ParentList?.Insert(index + 1, item);
 
         doc.MarkDirtyAndSaveDelayed(page);
         doc.View?.RefreshView();
