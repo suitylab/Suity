@@ -86,7 +86,7 @@ public class ManualTest : ToolCommand<ManualTest.Output>
             throw new NullReferenceException("Conversation is not found");
         }
 
-        conversation.AddInfoMessage("Please enter your reply message in the input field at the bottom.");
+        conversation.AddInfoMessage("Please enter your test result in the input field at the bottom.");
         string result = await conversation.WaitForTextInput(context.Cancellation);
 
         return new Output
