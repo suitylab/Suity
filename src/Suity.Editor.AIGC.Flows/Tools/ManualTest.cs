@@ -71,6 +71,7 @@ public class ManualTest : ToolCommand<ManualTest.Output>
         context?.AddToolMessage("Manual test", msg =>
         {
             msg.AddCode(testContent);
+            msg.AddText("Test command:");
             msg.AddCode(shellCommand);
             msg.AddButton("Run Test", () => RunTest(context, shellCommand));
         });
