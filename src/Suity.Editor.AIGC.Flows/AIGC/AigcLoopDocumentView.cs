@@ -30,14 +30,14 @@ namespace Suity.Editor.AIGC;
     public enum PageViewCategory
     {
         /// <summary>
-        /// Displays the page properties view.
-        /// </summary>
-        Page,
-
-        /// <summary>
         /// Displays the chat/LLM interaction view.
         /// </summary>
         Chat,
+
+        /// <summary>
+        /// Displays the page properties view.
+        /// </summary>
+        Page,
 
         /// <summary>
         /// Displays the chat history context view.
@@ -401,7 +401,7 @@ public class AigcLoopDocumentView : IDocumentView,
         var result = await LLmService.Instance.InputMainChat(msg, runner);
 
         _currentRunner = null;
-        SetCurrentCategory(PageViewCategory.Page);
+        //SetCurrentCategory(PageViewCategory.Chat);
 
         return result;
     }
@@ -854,8 +854,8 @@ public class AigcLoopDocumentView : IDocumentView,
 
                 //});
 
-                NaviButton(gui, PageViewCategory.Page, CoreIconCache.Task, "Page view");
                 NaviButton(gui, PageViewCategory.Chat, CoreIconCache.Chat, "LLm chat view");
+                NaviButton(gui, PageViewCategory.Page, CoreIconCache.Task, "Page view");
                 NaviButton(gui, PageViewCategory.Context, CoreIconCache.Text, "Chat history context");
 
                 //TaskTitleGui(gui, page);
@@ -884,12 +884,12 @@ public class AigcLoopDocumentView : IDocumentView,
             {
                 switch (_pageCategory)
                 {
-                    case PageViewCategory.Page:
-                        _propGrid.OnGui(gui);
-                        break;
-
                     case PageViewCategory.Chat:
                         ChatGui(gui, workflow);
+                        break;
+
+                    case PageViewCategory.Page:
+                        _propGrid.OnGui(gui);
                         break;
 
                     case PageViewCategory.Context:
@@ -926,8 +926,8 @@ public class AigcLoopDocumentView : IDocumentView,
 
                 //});
 
-                NaviButton(gui, PageViewCategory.Page, CoreIconCache.Task, "Page view");
                 NaviButton(gui, PageViewCategory.Chat, CoreIconCache.Chat, "LLm chat view");
+                NaviButton(gui, PageViewCategory.Page, CoreIconCache.Task, "Page view");
                 NaviButton(gui, PageViewCategory.Context, CoreIconCache.Text, "Chat history context");
             });
 
@@ -937,12 +937,12 @@ public class AigcLoopDocumentView : IDocumentView,
             {
                 switch (_pageCategory)
                 {
-                    case PageViewCategory.Page:
-                        _propGrid.OnGui(gui);
-                        break;
-
                     case PageViewCategory.Chat:
                         ChatGui(gui, tool);
+                        break;
+
+                    case PageViewCategory.Page:
+                        _propGrid.OnGui(gui);
                         break;
 
                     case PageViewCategory.Context:
