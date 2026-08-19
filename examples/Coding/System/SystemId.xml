@@ -693,6 +693,7 @@
   <Object id="72bfd38f-adb1-4e2a-9185-08a558e30272" name="*PageTool|Suity|GetWorkspaceTree" />
   <Object id="d9bb5548-e340-4bd3-91ec-76d0f35b1449" name="*PageTool|Suity|ListDirectory" />
   <Object id="33895b88-b012-498e-a6f3-6cecb0cca491" name="*PageTool|Suity|ManualReply" />
+  <Object id="89a21ecc-39b4-44dc-90c5-27bfd6e68c51" name="*PageTool|Suity|ManualTest" />
   <Object id="4fa5a672-755e-4cfe-97af-79eecb75b4ce" name="*PageTool|Suity|ReadFile" />
   <Object id="5a0d1a6c-d5fb-4cab-909e-e8e88d5d95ff" name="*PageTool|Suity|RenameAsset" />
   <Object id="30d3825a-4b6d-4c7f-b75e-1bcc138aaf1f" name="*PageTool|Suity|RestoreWorkspace" />
@@ -947,6 +948,7 @@
   <Object id="d004b6c6-88be-4da1-ad7b-ce0a4001729f" name="*Suity|ListDirectory" />
   <Object id="d004b6c6-88be-4da1-ad7b-ce0a4001729f" name="*Suity|ListDirectory" />
   <Object id="84adccb2-d799-40fa-9f6c-0de625439eeb" name="*Suity|ManualReply" />
+  <Object id="805f2d5b-ef6c-4843-94ca-b3425c931aa0" name="*Suity|ManualTest" />
   <Object id="79ac1ee2-6f42-4556-8418-bfc538627a6b" name="*Suity|ObjectPrototype" />
   <Object id="b94c1f57-a82a-4c9c-b0ce-bc1787217baf" name="*Suity|ReadFile" />
   <Object id="b94c1f57-a82a-4c9c-b0ce-bc1787217baf" name="*Suity|ReadFile" />
