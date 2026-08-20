@@ -27,6 +27,8 @@ public partial class StartupWindow : Window, IDrawImGui
         ImGuiControl.BackgroundColor = theme.Colors.GetColor(ColorStyle.Background);
 
         ImGuiControl.DrawImGui = this;
+
+        this.Title = "Suity Agentic - " + SuityApp.VersionCode;
     }
 
     public void OnGui(ImGui gui)
