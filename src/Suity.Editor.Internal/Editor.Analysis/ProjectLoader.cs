@@ -231,10 +231,13 @@ public class ProjectLoader
         EditorServices.SystemLog.AddLog($"ProjectBuilder (6) Setup project...");
         EditorServices.SystemLog.PushIndent();
 
+        await EditorUtility.WaitForQueuedAction();
+
         // 4) Finally open the project
         await StartProject(_project);
 
-        await EditorUtility.WaitForNextQueuedAction();
+        await EditorUtility.WaitForQueuedAction();
+        
 
         PostStartProject(_project);
 
@@ -307,7 +310,7 @@ public class ProjectLoader
         }
 
         //EditorRexes.PushQueuedActions.Invoke();
-        await EditorUtility.WaitForNextQueuedAction();
+        await EditorUtility.WaitForQueuedAction();
 
         Project.Current = project;
         EditorRexes.ProjectOpened?.Invoke(project);
@@ -346,7 +349,7 @@ public class ProjectLoader
         await project.ScanProjectDirectory();
 
         //await Task.Delay(100);
-        await EditorUtility.WaitForNextQueuedAction();
+        await EditorUtility.WaitForQueuedAction();
 
         for (int i = 0; i < 10; i++)
         {

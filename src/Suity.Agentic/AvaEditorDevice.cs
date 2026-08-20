@@ -12,8 +12,11 @@ using Suity.Synchonizing.Core;
 using Suity.Views.Graphics;
 using Suity.Views.Named;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Suity.Editor;
 
@@ -28,6 +31,9 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
     readonly List<IServiceProvider> _providers = [];
     readonly Dictionary<Type, object> _services = [];
     readonly Dictionary<Type, object> _fallBackServices = [];
+
+    readonly ConcurrentQueue<Action> _actionQueue = [];
+    int _actionQueueSuspended = 0;
 
     private AvaEditorDevice()
     {
@@ -184,8 +190,70 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
     }
     public override void QueueAction(Action action)
     {
-        Dispatcher.UIThread.Post(action);
+        if (_actionQueueSuspended == 0)
+        {
+            Dispatcher.UIThread.Post(action);
+        }
+        else
+        {
+            _actionQueue.Enqueue(action);
+        }
     }
+
+    public override void DoSuspendedAction(Action action)
+    {
+        try
+        {
+            int n = Interlocked.Increment(ref _actionQueueSuspended);
+
+            action();
+        }
+        finally
+        {
+            int n = Interlocked.Decrement(ref _actionQueueSuspended);
+            if (n == 0)
+            {
+                FlushQueuedActions();
+            }
+        }
+    }
+
+    public override async Task DoSuspendedAction(Func<Task> action)
+    {
+        try
+        {
+            int n = Interlocked.Increment(ref _actionQueueSuspended);
+
+            await action();
+        }
+        finally
+        {
+            int n = Interlocked.Decrement(ref _actionQueueSuspended);
+            if (n == 0)
+            {
+                FlushQueuedActions();
+            }
+        }
+    }
+
+    public override void FlushQueuedActions()
+    {
+        while (_actionQueue.TryDequeue(out var queuedAction))
+        {
+            try
+            {
+                //Dispatcher.UIThread.Post(queuedAction);
+                queuedAction();
+            }
+            catch (Exception err)
+            {
+                err.LogError();
+            }
+        }
+    }
+
+    public override bool IsQueueSuspended => _actionQueueSuspended > 0;
+
     #endregion
 
     #region IEditorLog

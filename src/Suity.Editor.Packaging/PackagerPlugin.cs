@@ -197,7 +197,7 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
         if (entries.Length > 0)
         {
             var importer = new PackageImporter();
-            await importer.Import(fileName, entries, packageFullName);
+            await QueuedAction.DoSuspendedAction(() => importer.Import(fileName, entries, packageFullName));
 
             EditorUtility.RefreshProjectView();
 
@@ -223,8 +223,8 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
     public async Task ImportPackage(string fileName, string packageFullName = null)
     {
         var importer = new PackageImporter();
-        await importer.Import(fileName, null, packageFullName);
+        await QueuedAction.DoSuspendedAction(() => importer.Import(fileName, null, packageFullName));
 
-        await EditorUtility.WaitForNextQueuedAction();
+        await EditorUtility.WaitForQueuedAction();
     }
 }

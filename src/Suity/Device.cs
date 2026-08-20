@@ -2,6 +2,7 @@ using Suity.Networking;
 using System;
 using System.Diagnostics;
 using System.Security;
+using System.Threading.Tasks;
 
 namespace Suity;
 
@@ -61,8 +62,31 @@ public abstract class Device : IServiceProvider
     /// <summary>
     /// Queues an action to be executed.
     /// </summary>
-    /// <param name="action">The action to queue.</param>
-    public abstract void QueueAction(Action action);
+    /// <param name="queuedAction">The action to queue.</param>
+    public abstract void QueueAction(Action queuedAction);
+
+    /// <summary>
+    /// Executes an action while temporarily suspending the action queue operations.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
+    public abstract void DoSuspendedAction(Action action);
+
+    /// <summary>
+    /// Executes an action while temporarily suspending the action queue operations.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public abstract Task DoSuspendedAction(Func<Task> action);
+
+    /// <summary>
+    /// Flushes the queued actions.
+    /// </summary>
+    public abstract void FlushQueuedActions();
+
+    /// <summary>
+    /// Gets a value indicating whether the action queue is currently suspended.
+    /// </summary>
+    public abstract bool IsQueueSuspended { get; }
 
     /// <summary>
     /// Adds a log message.
@@ -165,6 +189,18 @@ internal sealed class DefaultDevice : Device
 
     /// <inheritdoc />
     public override void QueueAction(Action action) => action?.Invoke();
+
+    /// <inheritdoc />
+    public override void DoSuspendedAction(Action action) => action?.Invoke();
+
+    /// <inheritdoc />
+    public override Task DoSuspendedAction(Func<Task> action) => action?.Invoke() ?? Task.CompletedTask;
+
+    /// <inheritdoc />
+    public override void FlushQueuedActions() { }
+
+    /// <inheritdoc />
+    public override bool IsQueueSuspended => false;
 
     /// <inheritdoc />
     public override void AddLog(LogMessageType type, object message)

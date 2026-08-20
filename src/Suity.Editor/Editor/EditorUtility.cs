@@ -324,10 +324,16 @@ public static class EditorUtility
     /// Waits for the next queued action to be processed.
     /// </summary>
     /// <returns>A Task that completes when the next queued action is processed.</returns>
-    public static Task WaitForNextQueuedAction()
+    public static Task WaitForQueuedAction()
     {
-        TaskCompletionSource<bool> tcs = new();
+        // If the queue is suspended, waiting for the next action is not necessary, so we flush the queued actions and return a completed task.
+        if (QueuedAction.IsQueueSuspended)
+        {
+            QueuedAction.FlushQueuedActions();
+            return Task.CompletedTask;
+        }
 
+        TaskCompletionSource<bool> tcs = new();
         QueuedAction.Do(() => 
         {
             tcs.SetResult(true);

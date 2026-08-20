@@ -61,6 +61,7 @@ public static class EditorRexes
     #region System
 
     public static readonly RexAction EnsureInMainThread = new(Tree, nameof(EnsureInMainThread));
+    [Obsolete]
     public static readonly RexAction PushQueuedActions = new(Tree, nameof(PushQueuedActions));
     public static readonly RexAction<string, Exception> ShowError = new(Tree, nameof(ShowError));
     public static readonly RexAction<string> SendToRecycleBin = new(Tree, nameof(SendToRecycleBin));

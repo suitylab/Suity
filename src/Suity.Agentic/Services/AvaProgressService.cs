@@ -1,3 +1,4 @@
+using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,8 @@ internal class AvaProgressService : IProgressService
 
         var completion = new TaskCompletionSource<bool>();
 
-        QueuedAction.Do(() =>
+        // Do NOT use QueuedAction.Do
+        Dispatcher.UIThread.Post(() =>
         {
             ProgressItem item;
             if (SuityApp.Instance.Window is SplashWindow || SuityApp.Instance.Window is null || AlwaysSplashForm)
@@ -60,7 +62,8 @@ internal class AvaProgressService : IProgressService
             completions[i] = new TaskCompletionSource<bool>();
         }
 
-        QueuedAction.Do(() =>
+        // // Do NOT use QueuedAction.Do
+        Dispatcher.UIThread.Post(() =>
         {
             ProgressItem[] items;
 

@@ -426,7 +426,7 @@ namespace Suity.Editor
             };
 
             // Load project
-            await _projectLoader.OpenProject(fileName, projectGuid);
+            await QueuedAction.DoSuspendedAction(() => _projectLoader.OpenProject(fileName, projectGuid));
 
             EditorServices.SystemLog.PopIndent();
             EditorServices.SystemLog.AddLog("SuityApp project opened.");
