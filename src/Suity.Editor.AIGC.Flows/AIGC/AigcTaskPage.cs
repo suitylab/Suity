@@ -108,7 +108,7 @@ public abstract class AigcTaskPage : DesignNode,
     }
 
     /// <inheritdoc/>
-    protected override TextStatus OnGetTextStatus() => GetCommitStatus().ToCheckedStatus();
+    protected override TextStatus OnGetTextStatus() => GetFinalCommitStatus().ToCheckedStatus();
 
 
     /// <inheritdoc/>
@@ -162,7 +162,7 @@ public abstract class AigcTaskPage : DesignNode,
     /// <inheritdoc/>
     public IAigcLoop ParentLoop => this.GetDocument() as AigcLoopDocument;
 
-    public virtual TaskCommitStatus GetCommitStatus()
+    public virtual TaskCommitStatus GetFinalCommitStatus()
     {
         var status = CommitStatus;
         if (status != TaskCommitStatus.None)
@@ -299,7 +299,7 @@ public abstract class AigcTaskPage : DesignNode,
         for (int i = c - 1; i >= 0; i--)
         {
             var task = GetTaskAt(i);
-            if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+            if (task is null || task.GetFinalCommitStatus() == TaskCommitStatus.TaskDisabled)
             {
                 continue;
             }
@@ -331,7 +331,7 @@ public abstract class AigcTaskPage : DesignNode,
         }
 
         var task = GetTaskToRun();
-        if (task != null && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
+        if (task != null && task.GetFinalCommitStatus() != TaskCommitStatus.TaskDisabled)
         {
             return task.GetTaskToRunDeep() ?? task;
         }
@@ -384,7 +384,16 @@ public abstract class AigcTaskPage : DesignNode,
         AddItem(task);
     }
 
+    public bool GetDone()
+    {
+        var status = this.GetFinalCommitStatus();
+        if (status == TaskCommitStatus.None || status == TaskCommitStatus.Delegating)
+        {
+            return false;
+        }
 
+        return true;
+    }
 
     /// <summary>
     /// Gets a value indicating whether the task is done, and with all sub-tasks also done.
@@ -392,7 +401,7 @@ public abstract class AigcTaskPage : DesignNode,
     /// <returns>True if this task and all sub-tasks are done, false if any is not done.</returns>
     public bool GetAllDone()
     {
-        var status = this.GetCommitStatus();
+        var status = this.GetFinalCommitStatus();
         if (status == TaskCommitStatus.None || status == TaskCommitStatus.Delegating)
         {
             return false;
@@ -422,7 +431,7 @@ public abstract class AigcTaskPage : DesignNode,
             return null;
         }
 
-        return Items.OfType<AigcTaskPage>().All(o => o.GetCommitStatus() != TaskCommitStatus.None);
+        return Items.OfType<AigcTaskPage>().All(o => o.GetFinalCommitStatus() != TaskCommitStatus.None);
     }
 
 

@@ -138,11 +138,11 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
 
             // Get task for running, if the last task is not completed, continue to run it; otherwise get the next task to run.
             var task = _document.GetTaskToRunDeep();
-            if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+            if (task is null || task.GetFinalCommitStatus() == TaskCommitStatus.TaskDisabled)
             {
                 if (_document.GetLastCompletedTask() is { } completedTask)
                 {
-                    var status = completedTask.GetCommitStatus();
+                    var status = completedTask.GetFinalCommitStatus();
                     string response = completedTask.GetPageInstance().GetResponseString(ResolveChatIntents.Normal);
 
                     switch (status)
@@ -184,7 +184,7 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
            return (flowControl: true, value: AICallResult.FromFailed(task.Notice));
         }
 
-        TaskCommitStatus status = task.GetCommitStatus();
+        TaskCommitStatus status = task.GetFinalCommitStatus();
 
         if (task == _lastTask)
         {
@@ -235,7 +235,7 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
                 CheckCommitScratchPad(task, lastTask);
 
                 // Task commit.
-                var eventType = lastTask.GetCommitStatus().ToEventType();
+                var eventType = lastTask.GetFinalCommitStatus().ToEventType();
 
                 var commitResult = await RunTaskWithRetry(request, task, eventType, lastTask.CommitName, null);
                 _document.MarkDirtyAndSaveDelayed(this);
@@ -290,7 +290,7 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
 
     private async Task<TaskRunResult> RunTaskWithRetry(AIRequest request, AigcTaskPage task, TaskEventTypes eventType, string commitName, object parameter)
     {
-        if (task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+        if (task.GetFinalCommitStatus() == TaskCommitStatus.TaskDisabled)
         {
             return new(TaskCommitStatus.TaskDisabled, "Task is disabled.");
         }
@@ -356,7 +356,7 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
     /// <returns>A <see cref="TaskRunResult"/> containing the end type and result parameter.</returns>
     private async Task<TaskRunResult> RunTask(AIRequest request, AigcTaskPage task, TaskEventTypes eventType, string commitName, object parameter)
     {
-        if (task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+        if (task.GetFinalCommitStatus() == TaskCommitStatus.TaskDisabled)
         {
             return new(TaskCommitStatus.TaskDisabled, "Task is disabled.");
         }

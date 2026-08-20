@@ -256,7 +256,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <inheritdoc/>
     public override async Task<bool> RunTask(AIRequest request, TaskEventTypes eventType, string commitName, object parameter)
     {
-        if (GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+        if (GetFinalCommitStatus() == TaskCommitStatus.TaskDisabled)
         {
             return false;
         }
@@ -734,7 +734,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             while (index >= 0)
             {
                 var page = GetItemAt(Count - 1) as IAigcTaskPage;
-                if (page != null && page.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
+                if (page != null && page.GetFinalCommitStatus() != TaskCommitStatus.TaskDisabled)
                 {
                     return page;
                 }
@@ -749,7 +749,7 @@ public class AigcWorkflowPage : AigcTaskPage,
     {
         return Items.OfType<IAigcTaskPage>()
             .SkipNull()
-            .Where(o => o.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
+            .Where(o => o.GetFinalCommitStatus() != TaskCommitStatus.TaskDisabled)
             .ToArray();
     }
 
@@ -859,7 +859,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             for (int i = index; i >= 0; i--)
             {
                 var task = ParentList.GetItemAt(i) as AigcTaskPage;
-                if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+                if (task is null || task.GetFinalCommitStatus() == TaskCommitStatus.TaskDisabled)
                 {
                     continue;
                 }
@@ -1060,7 +1060,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         for (int i = 0; i <= index; i++)
         {
-            if (ParentList.GetItemAt(i) is AigcWorkflowPage task && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
+            if (ParentList.GetItemAt(i) is AigcWorkflowPage task && task.GetFinalCommitStatus() != TaskCommitStatus.TaskDisabled)
             {
                 var scratchPads = task.Attributes.GetAttributes<ScratchPad>();
 

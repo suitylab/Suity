@@ -894,7 +894,7 @@ public class GetTaskCommit : TaskPageNode
 
         if (diagram.GetIsLinked(_commitStatus))
         {
-            compute.SetValue(_commitStatus, task.GetCommitStatus());
+            compute.SetValue(_commitStatus, task.GetFinalCommitStatus());
         }
     }
 }

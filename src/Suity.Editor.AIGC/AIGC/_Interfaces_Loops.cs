@@ -160,7 +160,7 @@ public interface IAigcTaskPage : INamed, ITextDisplay, IAttributeGetter
     /// <summary>
     /// Gets the task status.
     /// </summary>
-    TaskCommitStatus GetCommitStatus();
+    TaskCommitStatus GetFinalCommitStatus();
 
     /// <summary>
     /// Gets the page asset associated with this task.

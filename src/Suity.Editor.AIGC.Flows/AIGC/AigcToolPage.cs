@@ -88,7 +88,7 @@ public class AigcToolPage : AigcTaskPage, IAigcToolPage
             return false;
         }
 
-        if (GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+        if (GetFinalCommitStatus() == TaskCommitStatus.TaskDisabled)
         {
             return false;
         }

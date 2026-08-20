@@ -166,7 +166,7 @@ public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPagePara
                 }
                 else
                 {
-                    int numCompleted = tasks.Count(o => o.GetCommitStatus() != TaskCommitStatus.None);
+                    int numCompleted = tasks.Count(o => o.GetFinalCommitStatus() != TaskCommitStatus.None);
                     _subTaskCommit.Text = $"{numCompleted}/{tasks.Length} tasks completed";
                 }
                 
@@ -235,7 +235,7 @@ public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPagePara
                 return false;
             }
 
-            isDone = tasks.All(o => o.GetCommitStatus() != TaskCommitStatus.None);
+            isDone = tasks.All(o => o.GetFinalCommitStatus() != TaskCommitStatus.None);
         }
         else
         {
@@ -245,7 +245,7 @@ public class SubFlowTaskOutput : SubFlowElement, IPageParameterOutput, IPagePara
                 return false;
             }
 
-            isDone = task.GetCommitStatus() != TaskCommitStatus.None;
+            isDone = task.GetFinalCommitStatus() != TaskCommitStatus.None;
         }
 
         return isDone;

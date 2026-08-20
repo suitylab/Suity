@@ -177,12 +177,12 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
         for (int i = c - 1; i >= 0; i--)
         {
             var task = GetTaskAt(i);
-            if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+            if (task is null || task.GetFinalCommitStatus() == TaskCommitStatus.TaskDisabled)
             {
                 continue;
             }
 
-            var allDone = task.GetAllDone();
+            var allDone = task.GetDone();
             if (!allDone)
             {
                 working = task;
@@ -208,7 +208,7 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
         for (int i = c - 1; i >= 0; i--)
         {
             var task = GetTaskAt(i);
-            if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+            if (task is null || task.GetFinalCommitStatus() == TaskCommitStatus.TaskDisabled)
             {
                 continue;
             }
@@ -237,7 +237,7 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
         for (int i = c - 1; i >= 0; i--)
         {
             var task = GetTaskAt(i);
-            if (task is null || task.GetCommitStatus() == TaskCommitStatus.TaskDisabled)
+            if (task is null || task.GetFinalCommitStatus() == TaskCommitStatus.TaskDisabled)
             {
                 continue;
             }
@@ -264,7 +264,7 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
         }
 
         var task = GetTaskToRun();
-        if (task != null && task.GetCommitStatus() != TaskCommitStatus.TaskDisabled)
+        if (task != null && task.GetFinalCommitStatus() != TaskCommitStatus.TaskDisabled)
         {
             return task.GetTaskToRunDeep() ?? task;
         }
@@ -599,12 +599,12 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
 
         if (GetTaskToRunDeep() is { } task)
         {
-            return task.GetCommitStatus();
+            return task.GetFinalCommitStatus();
         }
 
         if (GetLastCompletedTask() is { } completedTask)
         {
-            return completedTask.GetCommitStatus();
+            return completedTask.GetFinalCommitStatus();
         }
 
         return TaskCommitStatus.None;
