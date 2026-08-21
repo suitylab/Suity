@@ -38,7 +38,7 @@ namespace Suity.Editor
     public partial class SuityApp : Application
     {
         public const string ProjectName = "Suity Agentic";
-        public const string VersionCode = "2026.05.06";
+        public const string VersionCode = "2026.05.07";
         public const string GithubPage = "https://github.com/suitylab/Suity";
 
         private const string ConfigFileName = "EditorConfig.json";
