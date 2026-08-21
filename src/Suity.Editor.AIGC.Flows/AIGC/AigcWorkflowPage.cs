@@ -408,6 +408,16 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <param name="prompt">The prompt text to set.</param>
     public void SetPrompt(string prompt)
     {
+        if (string.IsNullOrWhiteSpace(prompt))
+        {
+            prompt = string.Empty;
+        }
+
+        if (this.TaskPrompt == prompt)
+        {
+            return;
+        }
+
         this.TaskPrompt = prompt;
 
         if (this.GetDocument() is { } doc)

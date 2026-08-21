@@ -351,12 +351,6 @@ public class ProjectLoader
         //await Task.Delay(100);
         await EditorUtility.WaitForQueuedAction();
 
-        for (int i = 0; i < 10; i++)
-        {
-            EditorUtility.FlushDelayedActions();
-            //EditorRexes.PushQueuedActions.Invoke();
-        }
-
         foreach (var workSpace in WorkSpaceManager.Current.WorkSpaces)
         {
             workSpace.Controller?.TryWriteProjectFile();

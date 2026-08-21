@@ -282,7 +282,7 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         var element = EnsureSubFlowInstance();
         sync.Sync("Page", element, SyncFlag.GetOnly | SyncFlag.AffectsParent);
 
-        if (sync.IsSetter())
+        if (sync.IsSetter() && sync.Intent != SyncIntent.Serialize)
         {
             this.MarkDirtyAndSaveDelayed(this);
         }
