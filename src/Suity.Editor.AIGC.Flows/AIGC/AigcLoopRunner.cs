@@ -48,11 +48,12 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
         }
 
         var usageToken = new DocumentUsageToken(nameof(AigcLoopRunner));
+        var docEntry = _document.Entry;
 
         try
         {
             // Prevent the document from being closed while a task is running.
-            _document.Entry.MarkUsage(usageToken);
+            docEntry?.MarkUsage(usageToken);
 
             _lastRequest = request;
             request.FuncContext?.SetArgument(this);
@@ -69,7 +70,7 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
         }
         finally
         {
-            _document.Entry.UnmarkUsage(usageToken);
+            docEntry?.UnmarkUsage(usageToken);
             usageToken.Dispose();
 
             _lastRequest = null;

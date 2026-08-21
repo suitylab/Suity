@@ -43,8 +43,13 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
             return AICallResult.FromFailed(errorMsg);
         }
 
+        var usageToken = new DocumentUsageToken(nameof(AgentGraphRunner));
+        var docEntry = (CanvasDocument as Document)?.Entry;
+
         try
         {
+            docEntry?.MarkUsage(usageToken);
+
             CanvasDocument.ComputeConnections();
 
             QueuedAction.Do(QueueRefreshView);
@@ -80,6 +85,9 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         }
         finally
         {
+            docEntry?.UnmarkUsage(usageToken);
+            usageToken.Dispose();
+
             QueueRefreshView();
         }
     }
