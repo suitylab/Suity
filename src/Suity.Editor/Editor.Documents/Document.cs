@@ -81,13 +81,11 @@ public abstract class Document : IViewListener, ICommit
     /// <param name="marker">The object that caused the dirty state.</param>
     public void MarkDirtyAndSaveDelayed(object marker)
     {
-        if (_entry is null || _entry.State != DocumentState.Loaded)
+        if (_entry is { } entry && entry.State == DocumentState.Loaded)
         {
-            return;
+            entry.MarkDirty(marker);
+            entry.SaveDelayed();
         }
-
-        _entry?.MarkDirty(marker);
-        _entry?.SaveDelayed();
     }
 
     /// <summary>
