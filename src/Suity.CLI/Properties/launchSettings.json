@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Suity.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "help"
+    }
+  }
+}

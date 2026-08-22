@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Suity.DataSync\Suity.DataSync.csproj" />
+    <ProjectReference Include="..\Suity.Editor.AIGC.API\Suity.Editor.AIGC.API.csproj" />
+    <ProjectReference Include="..\Suity.Editor.AIGC.Flows\Suity.Editor.AIGC.Flows.csproj" />
+    <ProjectReference Include="..\Suity.Editor.AIGC.LLm\Suity.Editor.AIGC.LLm.csproj" />
+    <ProjectReference Include="..\Suity.Editor.AIGC\Suity.Editor.AIGC.csproj" />
+    <ProjectReference Include="..\Suity.Editor.DataModel\Suity.Editor.DataModel.csproj" />
+    <ProjectReference Include="..\Suity.Editor.Documents\Suity.Editor.Documents.csproj" />
+    <ProjectReference Include="..\Suity.Editor.Internal\Suity.Editor.Internal.csproj" />
+    <ProjectReference Include="..\Suity.Editor\Suity.Editor.csproj" />
+    <ProjectReference Include="..\Suity.Graphics\Suity.Graphics.csproj" />
+    <ProjectReference Include="..\Suity.ImGui.BuildIn\Suity.ImGui.BuildIn.csproj" />
+    <ProjectReference Include="..\Suity.ImGui\Suity.ImGui.csproj" />
+    <ProjectReference Include="..\Suity\Suity.csproj" />
+  </ItemGroup>
+
+</Project>
