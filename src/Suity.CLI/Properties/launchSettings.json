@@ -2,7 +2,7 @@
   "profiles": {
     "Suity.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "help"
+      "commandLineArgs": "project aa"
     }
   }
 }

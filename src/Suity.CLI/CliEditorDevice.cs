@@ -1,9 +1,7 @@
-using Avalonia.Threading;
-using Suity.Collections;
+﻿using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
-using Suity.Editor.MenuCommands.AppMenus;
 using Suity.Editor.Services;
 using Suity.Networking;
 using Suity.Rex;
@@ -20,12 +18,12 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor;
 
-sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateVReq>, IRexHandler<LocateInCanvasVReq>
+sealed class CliEditorDevice : Device, IRexResolver, ISystemLog
 {
     public static readonly bool StandaloneMode = true;
 
-    private static Lazy<AvaEditorDevice> _instance { get; } = new(() => new());
-    public static AvaEditorDevice Instance => _instance.Value;
+    private static Lazy<CliEditorDevice> _instance { get; } = new(() => new());
+    public static CliEditorDevice Instance => _instance.Value;
 
     bool _init = false;
     readonly DateTime _startTime = DateTime.Now;
@@ -36,8 +34,8 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
     readonly ConcurrentQueue<Action> _actionQueue = [];
     int _actionQueueSuspended = 0;
 
-    private AvaEditorDevice()
-    {
+    public CliEditorDevice()
+    {   
     }
 
     internal void Initialize()
@@ -51,55 +49,42 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
         EditorServices.SystemLog.AddLog("AvaEditorDevice initializing...");
         EditorServices.SystemLog.PushIndent();
 
-        ServiceInternals._license = AvaLicenseService.Instance;
+        ServiceInternals._license = CliLicenseService.Instance;
 
         // ObjectType.RegisterTypeInfoResolver(SValueTypeInfoResolver.Instance);
         RexGlobalResolve.Current = this;
         SyncTypes.InitializeGlobalResolver(EditorSyncTypeResolver.Instance);
-        SyncTypes.SetValueResolver(typeof(Color), 
-            s => ColorTranslators.FromHtmlSafe(s), 
+        SyncTypes.SetValueResolver(typeof(Color),
+            s => ColorTranslators.FromHtmlSafe(s),
             o => o is Color c ? ColorTranslators.ToHtml(c) : string.Empty);
 
         NamedExternalBK.Instance._globalResolver = EditorSyncTypeResolver.Instance;
 
-        EditorRexes.EnsureInMainThread.AddActionListener(EnsureInMainThread);
-        EditorRexes.PushQueuedActions.AddActionListener(PushAsyncQueue);
+        EditorRexes.EnsureInMainThread.AddActionListener(() => EnsureInMainThread());
+        EditorRexes.PushQueuedActions.AddActionListener(() => PushAsyncQueue());
         EditorRexes.SendToRecycleBin.AddActionListener(fileName => PlatformOS.Current.SendToRecycleBin(fileName));
         EditorRexes.GotoDefinition.AddActionListener(o => Navigator.GuiGotoDefinition(o));
         EditorRexes.FindReference.AddActionListener(o => Navigator.FindReference(o));
         EditorRexes.FindImplement.AddActionListener(o => Navigator.FindImplement(o));
         EditorRexes.GlobalSearch.AddActionListener((str, option) => Navigator.GlobalSearch(str, option));
-        EditorRexes.ShowProjectSetting.AddActionListener(ProjectSettingMenuCommand.OpenProjectSetting);
-        EditorCommands.Mapper.ProvideHandler<NavigateVReq>(this);
-        EditorCommands.Mapper.ProvideHandler<LocateInCanvasVReq>(this);
+        
 
         AddService<ISystemLog>(this);
         AddService<IEditorSystemService>(EditorSystemService.Instance);
-        AddService<IPlatformService>(AvaPlatformService.Instance);
-        AddService<IToolWindowService>(AvaToolWindowService.Instance);
+        AddService<IPlatformService>(CliPlatformService.Instance);
         AddService<IMenuService>(MenuService.Instance);
-        AddService<IImGuiService>(AvaImGuiService.Instance);
         AddService<IColorConfig>(ColorConfigBK.Instance);
         AddService<IEditorColorConfig>(ColorConfigBK.Instance);
-        AddService<IIconService>(AvaIconService.Instance);
         AddService<FileUpdateService>(FileUpdateServiceBK.Instance);
         AddService<NavigationService>(NavigationServiceBK.Instance);
         AddService<StorageManager>(StorageManagerBK.Instance);
-        AddService<IProgressService>(AvaProgressService.Instance);
         AddService<IJsonResourceService>(JsonResourceService.Instance);
-        AddService<DocumentViewManager>(AvaDocumentViewManager.Instance);
-        AddService<IDrawingService>(AvaDrawingService.Instance);
 
-        AddService<IDialogService>(AvaDialogService.Instance);
-        AddService<IDialogExService>(AvaDialogService.Instance);
         AddService<IFileNameService>(FileNameServiceBK.Instance);
-        AddService<IDialogServiceAsync>(AvaDialogServiceAsync.Instance);
 
         AddService<DocumentViewResolver>(DocumentViewResolver.Instance);
         AddService<DrawExpandedImGuiResolver>(DrawExpandedImGuiResolver.Instance);
-        AddService<ISelectionService>(AvaSelectionService.Instance);
-        AddService<ISystemClipboard>(AvaClipboardService.Instance);
-        AddService<IAppConfig>(AppConfiguration.Instance);
+        //AddService<IAppConfig>(AppConfiguration.Instance);
 
         // Must be registered first, needed for startup process
         AddService<IPluginService>(PluginManager.Instance);
@@ -115,7 +100,7 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
 
         // ================================
         EditorServices.SystemLog.AddLog("Initialize environment device...");
-        Device.InitializeDevice(AvaEditorDevice.Instance);
+        Device.InitializeDevice(CliEditorDevice.Instance);
         ImGuiServices.Initialize();
 
 
@@ -125,7 +110,7 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
 
 
     #region Override
-    public override string Location => "Suity.Agentic";
+    public override string Location => "Suity.CLI";
     public override float Time => (float)(DateTime.Now - _startTime).TotalSeconds;
     public override void AddLog(LogMessageType type, object message)
     {
@@ -198,14 +183,14 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
     }
     public override void QueueAction(Action action)
     {
-        if (_actionQueueSuspended == 0)
-        {
-            Dispatcher.UIThread.Post(action);
-        }
-        else
-        {
+        //if (_actionQueueSuspended == 0)
+        //{
+        //    Dispatcher.UIThread.Post(action);
+        //}
+        //else
+        //{
             _actionQueue.Enqueue(action);
-        }
+        //}
     }
 
     public override void DoSuspendedAction(Action action)
@@ -301,36 +286,6 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
     }
     #endregion
 
-    #region IRexHandler<NavigateVo>
-    bool IRexHandler<NavigateVReq>.Handle(NavigateVReq value)
-    {
-        if (value != null)
-        {
-            value.Successful = Navigator.Navigate(value.Target);
-            return true;
-        }
-
-        return false;
-    }
-
-    bool IRexHandler<LocateInCanvasVReq>.Handle(LocateInCanvasVReq value)
-    {
-        if (value != null && EditorObjectManager.Instance.GetObject(value.Id) is { } obj)
-        {
-            value.Successful = obj.LocateInCanvas();
-            if (!value.Successful)
-            {
-                value.Successful = obj.ShowDocumentView() != null;
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    #endregion
-
     #region IRexResolver
 
     public string[] GetPropertyNames(object obj) => [];
@@ -349,6 +304,7 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
     public void DoQueuedAction(Action action) => QueueAction(action);
 
     #endregion
+
 
     internal void AddService(Type type, object service)
     {
@@ -389,29 +345,8 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
 
     internal void EnsureInMainThread()
     {
-        //if (MainThread != Thread.CurrentThread)
-        //{
-        //    throw new InvalidOperationException("Invalid thread access.");
-        //}
     }
     internal void PushAsyncQueue()
     {
-        //if (Thread.CurrentThread != MainThread)
-        //{
-        //    return;
-        //}
-
-        //while (_actionQueue.TryDequeue(out Action action))
-        //{
-        //    try
-        //    {
-        //        action.Invoke();
-        //    }
-        //    catch (Exception err)
-        //    {
-        //        err.LogError();
-        //    }
-        //}
     }
-
 }

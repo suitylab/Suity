@@ -188,6 +188,17 @@ public static class EditorServices
 
     #endregion
 
+    #region IPlatformService
+
+    private static readonly ServiceStore<IPlatformService> _platformService = new();
+
+    /// <summary>
+    /// Platform service
+    /// </summary>
+    public static IPlatformService PlatformService => _platformService.Get();
+
+    #endregion
+
     #region IFileNameService
 
     private static readonly ServiceStore<IFileNameService> _fileNameService = new();

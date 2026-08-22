@@ -1,17 +1,17 @@
 using System.Reflection;
 
-namespace Suity.CLI;
+namespace Suity.Editor;
 
-public class ConsoleCommandRouter
+public class CliCommandRouter
 {
-    private static readonly Lazy<ConsoleCommandRouter> _instance = new(() => new ConsoleCommandRouter());
-    public static ConsoleCommandRouter Instance => _instance.Value;
+    private static readonly Lazy<CliCommandRouter> _instance = new(() => new CliCommandRouter());
+    public static CliCommandRouter Instance => _instance.Value;
 
-    private readonly Dictionary<string, ConsoleCommand> _commands = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, CliCommand> _commands = new(StringComparer.OrdinalIgnoreCase);
 
-    public IReadOnlyDictionary<string, ConsoleCommand> Commands => _commands;
+    public IReadOnlyDictionary<string, CliCommand> Commands => _commands;
 
-    private ConsoleCommandRouter()
+    private CliCommandRouter()
     {
         RegisterCommandsFromAssembly(Assembly.GetEntryAssembly()!);
         RegisterCommandsFromAssembly(Assembly.GetExecutingAssembly());
@@ -20,14 +20,14 @@ public class ConsoleCommandRouter
     private void RegisterCommandsFromAssembly(Assembly assembly)
     {
         var commandTypes = assembly.GetTypes()
-            .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(ConsoleCommand)));
+            .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(CliCommand)));
 
         foreach (var type in commandTypes)
         {
-            var attr = type.GetCustomAttribute<ConsoleCommandKeyAttribute>();
+            var attr = type.GetCustomAttribute<CliCommandKeyAttribute>();
             if (attr == null) continue;
 
-            if (Activator.CreateInstance(type) is ConsoleCommand command)
+            if (Activator.CreateInstance(type) is CliCommand command)
             {
                 _commands[attr.Key] = command;
             }
@@ -43,7 +43,7 @@ public class ConsoleCommandRouter
         }
 
         string commandKey = args[0];
-        var commandArgs = new ConsoleArguments(commandKey, args.Length > 1 ? args[1..] : Array.Empty<string>());
+        var commandArgs = new CliArguments(commandKey, args.Length > 1 ? args[1..] : Array.Empty<string>());
 
         if (_commands.TryGetValue(commandKey, out var command))
         {

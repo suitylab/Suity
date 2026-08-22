@@ -1,15 +1,15 @@
-namespace Suity.CLI.Commands;
+namespace Suity.Editor.Commands;
 
-[ConsoleCommandKey("help")]
-public class HelpCommand : ConsoleCommand
+[CliCommandKey("help")]
+public class HelpCommand : CliCommand
 {
     public override string Description => "Show all available commands";
 
     public override string Usage => "help [command]";
 
-    public override void DoCommand(ConsoleArguments args)
+    public override void DoCommand(ICliArguments args)
     {
-        var router = ConsoleCommandRouter.Instance;
+        var router = CliCommandRouter.Instance;
 
         if (args.Count > 0)
         {

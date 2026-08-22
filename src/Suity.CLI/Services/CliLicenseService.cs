@@ -1,15 +1,15 @@
 ﻿namespace Suity.Editor.Services;
 
-class AvaLicenseService : LicenseService
+class CliLicenseService : LicenseService
 {
-    public static readonly AvaLicenseService Instance = new();
+    public static readonly CliLicenseService Instance = new();
 
-    private AvaLicenseService()
+    private CliLicenseService()
     { }
 
-    public override string ProductName => SuityApp.ProductName;
+    public override string ProductName => SuityCLI.ProductName;
 
-    public override string ProductVersion => SuityApp.VersionCode;
+    public override string ProductVersion => SuityCLI.VersionCode;
 
     public override string UserId => string.Empty;
 

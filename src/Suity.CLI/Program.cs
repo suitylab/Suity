@@ -1,3 +1,3 @@
-﻿using Suity.CLI;
+﻿using Suity.Editor;
 
-return ConsoleCommandRouter.Instance.Route(args);
+return CliCommandRouter.Instance.Route(args);

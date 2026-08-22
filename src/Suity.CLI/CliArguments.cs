@@ -1,6 +1,6 @@
-namespace Suity.CLI;
+namespace Suity.Editor;
 
-public class ConsoleArguments
+public class CliArguments : ICliArguments
 {
     private readonly List<string> _positionalArgs = new();
     private readonly Dictionary<string, string> _options = new(StringComparer.OrdinalIgnoreCase);
@@ -10,7 +10,7 @@ public class ConsoleArguments
     public IReadOnlyDictionary<string, string> Options => _options;
     public int Count => _positionalArgs.Count;
 
-    public ConsoleArguments(string commandKey, string[] args)
+    public CliArguments(string commandKey, string[] args)
     {
         CommandKey = commandKey;
         RawArgs = args;

@@ -1,7 +1,7 @@
-namespace Suity.CLI;
+namespace Suity.Editor;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class ConsoleCommandKeyAttribute(string key) : Attribute
+public class CliCommandKeyAttribute(string key) : Attribute
 {
     public string Key { get; } = key;
 }

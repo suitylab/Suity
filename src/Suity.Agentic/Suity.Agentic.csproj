@@ -67,6 +67,7 @@
     <ProjectReference Include="..\Suity.ImGui.Avalonia\Suity.ImGui.Avalonia.csproj" />
     <ProjectReference Include="..\Suity.ImGui.BuildIn\Suity.ImGui.BuildIn.csproj" />
     <ProjectReference Include="..\Suity.ImGui\Suity.ImGui.csproj" />
+    <ProjectReference Include="..\Suity.Platform\Suity.Platform.csproj" />
     <ProjectReference Include="..\Suity\Suity.csproj" />
   </ItemGroup>
 

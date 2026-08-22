@@ -3,6 +3,7 @@
 [assembly: InternalsVisibleTo("Suity.Editor.WinformGui")]
 [assembly: InternalsVisibleTo("Suity.Editor.AvaloniaGui")]
 [assembly: InternalsVisibleTo("Suity.Agentic")]
+[assembly: InternalsVisibleTo("Suity.CLI")]
 
 [assembly: InternalsVisibleTo("Suity.Editor.Solutions")]
 [assembly: InternalsVisibleTo("Suity.Editor.ProjectView")]

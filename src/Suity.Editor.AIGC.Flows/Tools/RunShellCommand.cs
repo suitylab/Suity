@@ -79,7 +79,7 @@ public class RunShellCommand : ToolCommand<RunShellCommand.Output>
                 msg.AddCode(command);
             });
 
-            string output = await EditorServices.EditorSystem.ExecuteCommandAsync(command, directory, onOutput, context.Cancellation);
+            string output = await EditorServices.PlatformService.ExecuteCommandAsync(command, directory, onOutput, context.Cancellation);
             return new Output
             {
                 Result = output,

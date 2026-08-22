@@ -116,7 +116,7 @@ public class RunShellCommand : ExternalNode
                 cts.CancelAfter(timeoutMs);
             }
 
-            string output = await EditorServices.EditorSystem.ExecuteCommandAsync(command, workingDirectory, onOutput, cts.Token);
+            string output = await EditorServices.PlatformService.ExecuteCommandAsync(command, workingDirectory, onOutput, cts.Token);
             compute.SetValue(_result, output);
         }
         catch (OperationCanceledException)
