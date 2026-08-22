@@ -32,6 +32,7 @@ internal class ExportImGui : IDrawImGui
     public ExportImGui()
     {
         _packageTypes = new GuiDropDownValue("Package", "Library");
+        _packageTypes.SelectedItem = _packageTypes.Items.FirstOrDefault();
 
         _previewGui = new PackagePreviewImGui();
 
@@ -354,8 +355,7 @@ internal class ExportImGui : IDrawImGui
 
                         OkClose();
                     });
-                    gui.DropDownButton("mode", "Package")
-                    .InitValue(_packageTypes)
+                    gui.DropDownButton("mode", _packageTypes)
                     .InitClass("mainBtn")
                     .InitWidth(120)
                     .OnEdited(n =>
@@ -363,11 +363,11 @@ internal class ExportImGui : IDrawImGui
                         switch (_packageTypes.SelectedValue?.ToString())
                         {
                             case "Package":
-                                _previewGui.PackageType = PackageTypes.SuityPackage;
+                                _previewGui.PackageType = PackageTypes.Package;
                                 break;
 
                             case "Library":
-                                _previewGui.PackageType = PackageTypes.SuityLibrary;
+                                _previewGui.PackageType = PackageTypes.Library;
                                 break;
 
                             default:

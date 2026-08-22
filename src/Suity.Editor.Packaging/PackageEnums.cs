@@ -22,14 +22,14 @@ public enum PackageDirection
 public enum PackageTypes
 {
     /// <summary>
-    /// A standard Suity package containing assets and workspace files.
+    /// A standard package containing assets and workspace files.
     /// </summary>
-    SuityPackage,
+    Package,
 
     /// <summary>
-    /// A Suity library package with restricted content and manifest.
+    /// An independnt library package with restricted content and manifest.
     /// </summary>
-    SuityLibrary,
+    Library,
 }
 
 /// <summary>

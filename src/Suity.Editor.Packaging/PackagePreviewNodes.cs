@@ -751,7 +751,7 @@ public class PackagePreviewItemNode : PathNode, IPackagePreviewNode
                     }
                     if (!GetCanExportToLibrary())
                     {
-                        return "This file does not support export";
+                        return "Exporting to library is not supported";
                     }
                 }
                 else
@@ -800,7 +800,7 @@ public class PackagePreviewItemNode : PathNode, IPackagePreviewNode
     /// <returns>True if the file can be exported to a library; otherwise, false.</returns>
     private bool GetCanExportToLibrary()
     {
-        if (_packageType == PackageTypes.SuityLibrary)
+        if (_packageType == PackageTypes.Library)
         {
             if (Location == FileLocations.WorkSpace)
             {

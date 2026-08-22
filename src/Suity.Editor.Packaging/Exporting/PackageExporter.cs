@@ -91,7 +91,7 @@ internal class PackageExporter
                 foreach (var fileName in fileNames)
                 {
                     p.UpdateProgess(0, L($"Exporting {fileName}..."), string.Empty);
-                    ExportAssetFile(fileName, tempAssetDir, PackageTypes.SuityPackage);
+                    ExportAssetFile(fileName, tempAssetDir, PackageTypes.Package);
                 }
 
                 foreach (var workspaceFile in workSpaceFiles)
@@ -177,7 +177,7 @@ internal class PackageExporter
                 foreach (var fileName in fileNames)
                 {
                     p.UpdateProgess(0, L($"Exporting {fileName}..."), string.Empty);
-                    ExportAssetFile(fileName, tempAssetDir, PackageTypes.SuityLibrary);
+                    ExportAssetFile(fileName, tempAssetDir, PackageTypes.Library);
                 }
 
                 p.UpdateProgess(0, L($"Exporting: {"manifest"}..."), string.Empty);
@@ -255,7 +255,7 @@ internal class PackageExporter
         DocumentEntry doc = DocumentManager.Instance.OpenDocument(fileName);
         if (doc?.Content != null)
         {
-            if (packageType == PackageTypes.SuityLibrary && doc.GetAsset() is IFileBunch fileBunch)
+            if (packageType == PackageTypes.Library && doc.GetAsset() is IFileBunch fileBunch)
             {
                 return ExportFileBunch(fileBunch, exportFileName, tempAssetDir);
             }
@@ -264,7 +264,7 @@ internal class PackageExporter
                 doc.Export(exportFileName);
             }
 
-            if (doc.View == null)
+            if (doc.View is null)
             {
                 DocumentManager.Instance.CloseDocument(doc);
             }
@@ -310,7 +310,7 @@ internal class PackageExporter
     private bool ExportWorkspaceFile(WorkSpaceFile file, string tempWorkspaceDir)
     {
         var workSpace = WorkSpaceManager.Current.GetWorkSpace(file.WorkSpace);
-        if (workSpace == null)
+        if (workSpace is null)
         {
             Logs.LogWarning(L("Workspace does not exist") + ": " + file);
             return false;

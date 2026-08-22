@@ -112,7 +112,7 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
         var exporter = new PackageExporter();
         switch (exportForm.PackageType)
         {
-            case PackageTypes.SuityPackage:
+            case PackageTypes.Package:
                 await exporter.ExportPackage(exportFiles, exportWorkspaceFiles, packageFileName);
                 QueuedAction.Do(() =>
                 {
@@ -121,7 +121,7 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
                 });
                 break;
 
-            case PackageTypes.SuityLibrary:
+            case PackageTypes.Library:
                 await exporter.ExportLibrary(exportFiles, packageFileName);
                 QueuedAction.Do(() =>
                 {
@@ -145,11 +145,11 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
         string ext = string.Empty;
         switch (packageType)
         {
-            case PackageTypes.SuityPackage:
+            case PackageTypes.Package:
                 ext = ".suitypackage";
                 break;
 
-            case PackageTypes.SuityLibrary:
+            case PackageTypes.Library:
                 ext = ".suitylibrary";
                 break;
         }

@@ -18,7 +18,7 @@ internal class PackagePreviewImGui : IDrawImGui
 {
     private readonly ColumnPathTreeView _treeView;
 
-    private PackageTypes _packageType = PackageTypes.SuityPackage;
+    private PackageTypes _packageType = PackageTypes.Package;
 
     private readonly PackagePathTreeModel _model = new();
     private PackagePreviewDirectoryNode _rootAssetNode;

@@ -433,6 +433,8 @@ public class CanvasAsset : GroupAsset
     /// Gets the default icon for canvas assets.
     /// </summary>
     public override ImageDef DefaultIcon => CoreIconCache.Canvas;
+
+    public override bool CanExportToLibrary => true;
 }
 
 /// <summary>

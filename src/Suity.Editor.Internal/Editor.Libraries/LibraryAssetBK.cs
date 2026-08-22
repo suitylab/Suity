@@ -22,7 +22,8 @@ public class LibraryAssetBK : LibraryAsset
     /// <summary>
     /// The encryption password for library archives.
     /// </summary>
-    internal const string _xx = "Suity.Library.{240CC6F3-0B53-4A8C-85EB-7EF525BD2B15}.{8321EB1B-D989-4788-8BC9-3F6559470360}";
+    //internal const string _xx = "Suity.Library.{240CC6F3-0B53-4A8C-85EB-7EF525BD2B15}.{8321EB1B-D989-4788-8BC9-3F6559470360}";
+    internal const string _xx = null;
 
     private string _libraryName;
     private string _libraryVersion;
