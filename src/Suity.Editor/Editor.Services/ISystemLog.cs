@@ -1,9 +1,9 @@
-using static Suity.Helpers.GlobalLocalizer;
 using Suity.Views;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.Services;
 
@@ -72,18 +72,18 @@ public class EmptySystemLog : ISystemLog
 }
 
 /// <summary>
-/// System log implementation that writes to the debug output.
+/// System log implementation that writes to the console output.
 /// </summary>
-public class TraceSystemLog : ISystemLog
+public class ConsleSystemLog : ISystemLog
 {
     /// <summary>
     /// Gets the singleton instance of the TraceSystemLog.
     /// </summary>
-    public static TraceSystemLog Instance { get; } = new();
+    public static ConsleSystemLog Instance { get; } = new();
 
     private int _indent;
 
-    private TraceSystemLog()
+    private ConsleSystemLog()
     {
         
     }
@@ -96,7 +96,7 @@ public class TraceSystemLog : ISystemLog
             message = $"{new string(' ', _indent * 4)}{message}";
         }
 
-        // Debug.WriteLine(message);
+        Console.WriteLine(message);
     }
 
     /// <inheritdoc/>

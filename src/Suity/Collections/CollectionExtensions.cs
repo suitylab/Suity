@@ -767,6 +767,30 @@ public static class CollectionExtensions
     }
 
     /// <summary>
+    /// Safely retrieves a value from the dictionary by key, returning a specified default value if the key is not found.
+    /// </summary>
+    /// <param name="dictionary">The dictionary from which to retrieve the value.</param>
+    /// <param name="key">The key of the value to retrieve.</param>
+    /// <param name="defalutValue">The default value to return if the key is not found.</param>
+    /// <returns>The value associated with the key, or the specified default value if the key is not found.</returns>
+    public static TValue GetValueSafe<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defalutValue)
+    {
+        if (key == null)
+        {
+            return default;
+        }
+
+        if (dictionary.TryGetValue(key, out TValue value))
+        {
+            return value;
+        }
+        else
+        {
+            return defalutValue;
+        }
+    }
+
+    /// <summary>
     /// Converts an enumerable to a dictionary, handling invalid keys.
     /// </summary>
     /// <param name="source">The source enumerable to convert.</param>
@@ -803,29 +827,6 @@ public static class CollectionExtensions
         return dic;
     }
 
-    /// <summary>
-    /// Safely retrieves a value from the dictionary by key, returning a specified default value if the key is not found.
-    /// </summary>
-    /// <param name="dictionary">The dictionary from which to retrieve the value.</param>
-    /// <param name="key">The key of the value to retrieve.</param>
-    /// <param name="defalutValue">The default value to return if the key is not found.</param>
-    /// <returns>The value associated with the key, or the specified default value if the key is not found.</returns>
-    public static TValue GetValueSafe<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defalutValue)
-    {
-        if (key == null)
-        {
-            return default;
-        }
-
-        if (dictionary.TryGetValue(key, out TValue value))
-        {
-            return value;
-        }
-        else
-        {
-            return defalutValue;
-        }
-    }
 
     [Obsolete]
     /// <summary>

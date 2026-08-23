@@ -120,7 +120,7 @@ namespace Suity.Editor
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            AvaEditorDevice.Instance.Initialize();
+            Device.InitializeDevice(AvaDevice.Instance);
             LoadAppConfig();
 
             //CreateTestDockWindow(desktop);
@@ -394,11 +394,9 @@ namespace Suity.Editor
             this.Window = null;
             EditorServices.ProgressService.ShowProgressWindow();
 
-            await Task.Delay(500);
-
             InitialOpenDocument = initialOpenDocument;
 
-            EditorServices.SystemLog.AddLog("SuityApp opening project...");
+            EditorServices.SystemLog.AddLog("Suity.Agentic opening project...");
             EditorServices.SystemLog.PushIndent();
 
             ServiceInternals.InitializeInternalSystems();
@@ -422,14 +420,15 @@ namespace Suity.Editor
             _projectLoader.ProjectStart += (s, e) => HandleProjectStart(fileName);
             _projectLoader.ServiceProviderAdded += (s, e) =>
             {
-                AvaEditorDevice.Instance.AddServiceProvider(e);
+                AvaDevice.Instance.AddServiceProvider(e);
             };
 
             // Load project
+            await Task.Delay(100);
             await QueuedAction.DoSuspendedAction(() => _projectLoader.OpenProject(fileName, projectGuid));
 
             EditorServices.SystemLog.PopIndent();
-            EditorServices.SystemLog.AddLog("SuityApp project opened.");
+            EditorServices.SystemLog.AddLog("Suity.Agentic project opened.");
 
             // Save project open record
             AppConfig.AddProjectRecord(_projectLoader.ActiveProject.ProjectSettingFile);
@@ -508,7 +507,7 @@ namespace Suity.Editor
                 return;
             }
 
-            EditorServices.SystemLog.AddLog("SuityApp closing project...");
+            EditorServices.SystemLog.AddLog("Suity.Agentic closing project...");
             EditorServices.SystemLog.PushIndent();
 
             //EditorObjectManager.Instance._watchingDisabled = true;
@@ -518,7 +517,7 @@ namespace Suity.Editor
             });
 
             EditorServices.SystemLog.PopIndent();
-            EditorServices.SystemLog.AddLog("SuityApp project closed.");
+            EditorServices.SystemLog.AddLog("Suity.Agentic project closed.");
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {

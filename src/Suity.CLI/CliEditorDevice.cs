@@ -34,11 +34,13 @@ sealed class CliEditorDevice : Device, IRexResolver, ISystemLog
     readonly ConcurrentQueue<Action> _actionQueue = [];
     int _actionQueueSuspended = 0;
 
+    int _indent = 0;
+
     public CliEditorDevice()
     {   
     }
 
-    internal void Initialize()
+    public override void Initialize()
     {
         if (_init)
         {
@@ -46,7 +48,7 @@ sealed class CliEditorDevice : Device, IRexResolver, ISystemLog
         }
         _init = true;
 
-        EditorServices.SystemLog.AddLog("AvaEditorDevice initializing...");
+        EditorServices.SystemLog.AddLog("Suity Agentic - CLI Device initializing...");
         EditorServices.SystemLog.PushIndent();
 
         ServiceInternals._license = CliLicenseService.Instance;
@@ -99,13 +101,11 @@ sealed class CliEditorDevice : Device, IRexResolver, ISystemLog
         AddFallBackService<IMonitorService>(EmptyMonitorService.Empty);
 
         // ================================
-        EditorServices.SystemLog.AddLog("Initialize environment device...");
-        Device.InitializeDevice(CliEditorDevice.Instance);
         ImGuiServices.Initialize();
 
 
         EditorServices.SystemLog.PopIndent();
-        EditorServices.SystemLog.AddLog("EditorDevice initialized.");
+        EditorServices.SystemLog.AddLog("Device initialized.");
     }
 
 
@@ -277,12 +277,15 @@ sealed class CliEditorDevice : Device, IRexResolver, ISystemLog
 
     public void PushIndent(EditorLogCategory category)
     {
-        LogCache.PushIndent();
+        _indent++;
     }
 
     public void PopIndent(EditorLogCategory category)
     {
-        LogCache.PopIndent();
+        if (_indent > 0)
+        {
+            _indent--;
+        }
     }
     #endregion
 

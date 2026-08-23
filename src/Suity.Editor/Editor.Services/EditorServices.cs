@@ -85,7 +85,7 @@ public static class EditorServices
 
     #region ISystemLog
 
-    private static ISystemLog _systemLog = TraceSystemLog.Instance;
+    private static ISystemLog _systemLog = ConsleSystemLog.Instance;
 
     /// <summary>
     /// Property to get or set the system log instance
@@ -96,7 +96,7 @@ public static class EditorServices
         get => _systemLog;
         set
         {
-            _systemLog = value ?? TraceSystemLog.Instance;
+            _systemLog = value ?? ConsleSystemLog.Instance;
         }
     }
 

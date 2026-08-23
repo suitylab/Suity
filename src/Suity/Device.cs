@@ -35,6 +35,8 @@ public abstract class Device : IServiceProvider
         }
 
         _current = device;
+
+        _current.Initialize();
     }
 
     /// <summary>
@@ -52,6 +54,11 @@ public abstract class Device : IServiceProvider
     /// Current running time of the device
     /// </summary>
     public abstract float Time { get; }
+
+    /// <summary>
+    /// Initializes the device. This method is called once when the device is first created.
+    /// </summary>
+    public abstract void Initialize();
 
     /// <summary>
     /// Called when an object is created.
@@ -181,6 +188,11 @@ internal sealed class DefaultDevice : Device
 
     /// <inheritdoc />
     public override float Time => (float)(DateTime.UtcNow - _startTime).TotalSeconds;
+
+    /// <inheritdoc />
+    public override void Initialize()
+    {
+    }
 
     /// <inheritdoc />
     public override void ObjectCreate(Object obj)

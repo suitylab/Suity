@@ -2,7 +2,7 @@
   "profiles": {
     "Suity.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "project aa"
+      "commandLineArgs": "project -path D:\\Core\\Test\\TestCLI01"
     }
   }
 }

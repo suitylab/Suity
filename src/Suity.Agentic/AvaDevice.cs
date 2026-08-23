@@ -20,12 +20,12 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor;
 
-sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateVReq>, IRexHandler<LocateInCanvasVReq>
+sealed class AvaDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateVReq>, IRexHandler<LocateInCanvasVReq>
 {
     public static readonly bool StandaloneMode = true;
 
-    private static Lazy<AvaEditorDevice> _instance { get; } = new(() => new());
-    public static AvaEditorDevice Instance => _instance.Value;
+    private static Lazy<AvaDevice> _instance { get; } = new(() => new());
+    public static AvaDevice Instance => _instance.Value;
 
     bool _init = false;
     readonly DateTime _startTime = DateTime.Now;
@@ -36,11 +36,11 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
     readonly ConcurrentQueue<Action> _actionQueue = [];
     int _actionQueueSuspended = 0;
 
-    private AvaEditorDevice()
+    private AvaDevice()
     {
     }
 
-    internal void Initialize()
+    public override void Initialize()
     {
         if (_init)
         {
@@ -48,7 +48,7 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
         }
         _init = true;
 
-        EditorServices.SystemLog.AddLog("AvaEditorDevice initializing...");
+        EditorServices.SystemLog.AddLog("Suity Agentic - Avalonia Device initializing...");
         EditorServices.SystemLog.PushIndent();
 
         ServiceInternals._license = AvaLicenseService.Instance;
@@ -114,13 +114,12 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
         AddFallBackService<IMonitorService>(EmptyMonitorService.Empty);
 
         // ================================
-        EditorServices.SystemLog.AddLog("Initialize environment device...");
-        Device.InitializeDevice(AvaEditorDevice.Instance);
+        EditorServices.SystemLog.AddLog("Initialize ImGuiServices...");
         ImGuiServices.Initialize();
 
 
         EditorServices.SystemLog.PopIndent();
-        EditorServices.SystemLog.AddLog("EditorDevice initialized.");
+        EditorServices.SystemLog.AddLog("Device initialized.");
     }
 
 
@@ -266,7 +265,8 @@ sealed class AvaEditorDevice : Device, IRexResolver, ISystemLog, IRexHandler<Nav
 
     #region ISystemLog
 
-    void ISystemLog.AddLog(object message) => AddLog(EditorLogCategory.Core, LogMessageType.Debug, message);
+    void ISystemLog.AddLog(object message) 
+        => AddLog(EditorLogCategory.Core, LogMessageType.Debug, message);
 
     void ISystemLog.PushIndent() => PushIndent(EditorLogCategory.Core);
 
