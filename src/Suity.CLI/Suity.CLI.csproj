@@ -25,5 +25,9 @@
     <ProjectReference Include="..\Suity.Platform\Suity.Platform.csproj" />
     <ProjectReference Include="..\Suity\Suity.csproj" />
   </ItemGroup>
-
+	
+  <ItemGroup>
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+	
 </Project>

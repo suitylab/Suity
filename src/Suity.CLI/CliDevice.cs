@@ -1,29 +1,23 @@
 ﻿using Suity.Collections;
 using Suity.Drawing;
 using Suity.Editor.Documents;
-using Suity.Editor.Documents.Linked;
 using Suity.Editor.Services;
 using Suity.Networking;
 using Suity.Rex;
-using Suity.Rex.Mapping;
 using Suity.Synchonizing.Core;
 using Suity.Views.Graphics;
 using Suity.Views.Named;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Suity.Editor;
 
-sealed class CliEditorDevice : Device, IRexResolver, ISystemLog
+sealed class CliDevice : Device, IRexResolver, ISystemLog
 {
     public static readonly bool StandaloneMode = true;
 
-    private static Lazy<CliEditorDevice> _instance { get; } = new(() => new());
-    public static CliEditorDevice Instance => _instance.Value;
+    private static Lazy<CliDevice> _instance { get; } = new(() => new());
+    public static CliDevice Instance => _instance.Value;
 
     bool _init = false;
     readonly DateTime _startTime = DateTime.Now;
@@ -36,7 +30,7 @@ sealed class CliEditorDevice : Device, IRexResolver, ISystemLog
 
     int _indent = 0;
 
-    public CliEditorDevice()
+    public CliDevice()
     {   
     }
 
@@ -74,12 +68,15 @@ sealed class CliEditorDevice : Device, IRexResolver, ISystemLog
         AddService<ISystemLog>(this);
         AddService<IEditorSystemService>(EditorSystemService.Instance);
         AddService<IPlatformService>(CliPlatformService.Instance);
+        AddService<IToolWindowService>(ToolWindowService.Instance);
         AddService<IMenuService>(MenuService.Instance);
+        AddService<IImGuiService>(CliImGuiService.Instance);
         AddService<IColorConfig>(ColorConfigBK.Instance);
         AddService<IEditorColorConfig>(ColorConfigBK.Instance);
         AddService<FileUpdateService>(FileUpdateServiceBK.Instance);
         AddService<NavigationService>(NavigationServiceBK.Instance);
         AddService<StorageManager>(StorageManagerBK.Instance);
+        AddService<IProgressService>(CliProgressService.Instance);
         AddService<IJsonResourceService>(JsonResourceService.Instance);
 
         AddService<IFileNameService>(FileNameServiceBK.Instance);

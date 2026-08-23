@@ -15,7 +15,7 @@ namespace Suity.Editor.Services;
 
 internal class AvaImGuiService : IImGuiService
 {
-    public static readonly AvaImGuiService Instance = new();
+    public static AvaImGuiService Instance { get; } = new();
 
     readonly List<IDrawItemImGui> _itemImGuis = [];
     readonly UniqueMultiDictionary<Type, IDrawItemImGui> _itemImGuiDict = new();

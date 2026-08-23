@@ -76,7 +76,7 @@ sealed class AvaDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateV
         AddService<ISystemLog>(this);
         AddService<IEditorSystemService>(EditorSystemService.Instance);
         AddService<IPlatformService>(AvaPlatformService.Instance);
-        AddService<IToolWindowService>(AvaToolWindowService.Instance);
+        AddService<IToolWindowService>(ToolWindowService.Instance);
         AddService<IMenuService>(MenuService.Instance);
         AddService<IImGuiService>(AvaImGuiService.Instance);
         AddService<IColorConfig>(ColorConfigBK.Instance);

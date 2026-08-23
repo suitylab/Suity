@@ -40,8 +40,8 @@ namespace Suity.Editor
         public const string ProductName = "Suity Agentic";
         public const string VersionCode = "2026.05.10";
         public const string GithubPage = "https://github.com/suitylab/Suity";
+        public const string ConfigFileName = "EditorConfig.json";
 
-        private const string ConfigFileName = "EditorConfig.json";
 
         public static SuityApp Instance { get; private set; }
 
@@ -384,11 +384,11 @@ namespace Suity.Editor
 
         private static ProjectLoader? _projectLoader;
 
-        public async void OpenProject(string fileName, Guid? projectGuid = null, string? templateFileName = null, string? initialOpenDocument = null)
+        public async Task OpenProject(string fileName, Guid? projectGuid = null, string? templateFileName = null, string? initialOpenDocument = null)
         {
             if (_projectLoader != null)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("Project is already being loaded.");
             }
 
             this.Window = null;
@@ -400,16 +400,9 @@ namespace Suity.Editor
             EditorServices.SystemLog.PushIndent();
 
             ServiceInternals.InitializeInternalSystems();
-
             typeof(IInternalEditorInitialize).GetDerivedTypes();
 
-            //EditorObjectManager.Instance._watchingDisabled = true;
-            string configFileName = AppContext.BaseDirectory.PathAppend(ProjectLoader.ConfigFileName);
-
-            EditorServices.SystemLog.AddLog($"Load EditorConfig : {configFileName}");
-
             var asms = CollectCoreAssemblies();
-
             _projectLoader = new ProjectLoader
             {
                 PluginAssemblies = asms,
@@ -424,7 +417,7 @@ namespace Suity.Editor
             };
 
             // Load project
-            await Task.Delay(100);
+            await Task.Delay(500);
             await QueuedAction.DoSuspendedAction(() => _projectLoader.OpenProject(fileName, projectGuid));
 
             EditorServices.SystemLog.PopIndent();
@@ -441,10 +434,7 @@ namespace Suity.Editor
             EditorServices.SystemLog.PushIndent();
             try
             {
-                EditorObjectManager.Instance.DoUnwatchedAction(() =>
-                {
-                    EditorRexes.EditorBeforeAwake.Invoke();
-                });
+                EditorObjectManager.Instance.DoUnwatchedAction(EditorRexes.EditorBeforeAwake.Invoke);
             }
             catch (Exception err)
             {
@@ -457,10 +447,7 @@ namespace Suity.Editor
             EditorServices.SystemLog.PushIndent();
             try
             {
-                EditorObjectManager.Instance.DoUnwatchedAction(() =>
-                {
-                    EditorRexes.EditorAwake.Invoke();
-                });
+                EditorObjectManager.Instance.DoUnwatchedAction(EditorRexes.EditorAwake.Invoke);
             }
             catch (Exception err)
             {
@@ -473,10 +460,7 @@ namespace Suity.Editor
             EditorServices.SystemLog.PushIndent();
             try
             {
-                EditorObjectManager.Instance.DoUnwatchedAction(() =>
-                {
-                    EditorRexes.EditorStart.Invoke();
-                });
+                EditorObjectManager.Instance.DoUnwatchedAction(EditorRexes.EditorStart.Invoke);
             }
             catch (Exception err)
             {
@@ -650,7 +634,7 @@ namespace Suity.Editor
             HashSet<Assembly> asms =
             [
                 typeof(Asset).Assembly, // Suity.Editor
-                typeof(SuityApp).Assembly, // Suity.Editor.WinformGui
+                typeof(SuityApp).Assembly, // Suity.Agentic
                 typeof(PropertyTarget).Assembly,  // Suity.Editor.ImGui
                 typeof(ProjectViewPlugin).Assembly,
                 typeof(VirtualNode).Assembly,

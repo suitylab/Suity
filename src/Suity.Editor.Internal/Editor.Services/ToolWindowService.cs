@@ -6,16 +6,16 @@ using Suity.Helpers;
 
 namespace Suity.Editor.Services;
 
-internal class AvaToolWindowService : IToolWindowService
+internal class ToolWindowService : IToolWindowService
 {
-    public static readonly AvaToolWindowService Instance = new();
+    public static ToolWindowService Instance { get; } = new();
 
     private readonly Dictionary<string, IToolWindow> _toolWindows = [];
     private readonly Dictionary<Type, IToolWindow> _toolWindowsByType = [];
 
     private bool _init;
 
-    private AvaToolWindowService()
+    private ToolWindowService()
     {
         // Need to execute various scanning in Start, Awake
         EditorRexes.EditorStart.AddActionListener(Initialize);

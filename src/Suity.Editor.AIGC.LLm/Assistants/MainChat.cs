@@ -90,16 +90,20 @@ internal class MainChat : ILLmChat
     {
         conversation ??= EditorServices.ImGuiService.CreateConversationImGui(nameof(MainChat), false);
 
-        _conversation = conversation ?? throw new ArgumentNullException(nameof(conversation));
+        _conversation = conversation; // ?? throw new ArgumentNullException(nameof(conversation));
 
         _chatAssetTarget = PropertyTargetUtility.CreatePropertyTarget(_chatAssetSel, "Select workflow");
         _chatAssetSel.Target = MainAssistantChatProvider.Instance;
 
         _context = new();
         _context.SetArgument<ILLmChat>(this);
-        _context.SetArgument<IConversationHandler>(_conversation);
-        _context.SetArgument<IConversationHost>(_conversation as IConversationHost);
-        _context.SetArgument<IConversationHostAsync>(_conversation as IConversationHostAsync);
+
+        if (_conversation != null)
+        {
+            _context.SetArgument<IConversationHandler>(_conversation);
+            _context.SetArgument<IConversationHost>(_conversation as IConversationHost);
+            _context.SetArgument<IConversationHostAsync>(_conversation as IConversationHostAsync);
+        }
     }
 
     #region ILLmChat
@@ -266,7 +270,7 @@ internal class MainChat : ILLmChat
         }
         catch (Exception err)
         {
-            _conversation.AddException(err);
+            _conversation?.AddException(err);
 
             return null;
         }

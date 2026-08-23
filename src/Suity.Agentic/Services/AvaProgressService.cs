@@ -10,8 +10,9 @@ internal class AvaProgressService : IProgressService
 {
     public const bool AlwaysSplashForm = false;
 
-    public static readonly AvaProgressService Instance = new();
+    public static AvaProgressService Instance { get; } = new();
 
+    #region IProgressService
     public bool ProgressRunning => SplashWindow.CurrentForm?.ProgressCount > 0 || StatusBarProgress.ProgressCount > 0;
 
     public void ShowProgressWindow()
@@ -51,7 +52,6 @@ internal class AvaProgressService : IProgressService
 
         return completion.Task;
     }
-        
 
     public Task[] DoProgress(ProgressRequest[] requests)
     {
@@ -83,7 +83,8 @@ internal class AvaProgressService : IProgressService
         });
 
         return completions.Select(o => o.Task).ToArray();
-    }
+    } 
+    #endregion
 
     private void MakeCompletionResult(ProgressRequest request, TaskCompletionSource<bool> completion, ProgressItem item)
     {
