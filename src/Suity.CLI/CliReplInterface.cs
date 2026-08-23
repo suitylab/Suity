@@ -6,7 +6,7 @@ public class CliReplInterface
 
     public async Task StartInteractiveLoopAsync(CancellationToken token)
     {
-        Console.WriteLine("CLI Environment Ready. Type 'help' for available commands, '/exit' to quit.");
+        Console.WriteLine("CLI Environment Ready. Type 'help' for available commands, 'exit' to quit.");
 
         while (!token.IsCancellationRequested)
         {
@@ -24,15 +24,6 @@ public class CliReplInterface
 
             if (string.IsNullOrWhiteSpace(input))
                 continue;
-
-            if (input.Trim().Equals("/exit", StringComparison.OrdinalIgnoreCase))
-                break;
-
-            if (input.Trim().Equals("/help", StringComparison.OrdinalIgnoreCase))
-            {
-                _router.Route("help");
-                continue;
-            }
 
             try
             {

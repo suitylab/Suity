@@ -152,6 +152,11 @@ public class SuityCLI
             return;
         }
 
+        if (Project.Current is null)
+        {
+            return;
+        }
+
         EditorServices.SystemLog.AddLog("Suity.CLI closing project...");
         EditorServices.SystemLog.PushIndent();
 
