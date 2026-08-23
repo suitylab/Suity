@@ -73,11 +73,14 @@ sealed class CliDevice : Device, IRexResolver, ISystemLog
         AddService<IImGuiService>(CliImGuiService.Instance);
         AddService<IColorConfig>(ColorConfigBK.Instance);
         AddService<IEditorColorConfig>(ColorConfigBK.Instance);
+        AddService<IIconService>(IconService.Instance);
         AddService<FileUpdateService>(FileUpdateServiceBK.Instance);
         AddService<NavigationService>(NavigationServiceBK.Instance);
         AddService<StorageManager>(StorageManagerBK.Instance);
         AddService<IProgressService>(CliProgressService.Instance);
         AddService<IJsonResourceService>(JsonResourceService.Instance);
+        AddService<DocumentViewManager>(CliDocumentViewManager.Instance);
+        AddService<IDrawingService>(CliDrawingService.Instance);
 
         AddService<IFileNameService>(FileNameServiceBK.Instance);
 
@@ -111,8 +114,30 @@ sealed class CliDevice : Device, IRexResolver, ISystemLog
     public override float Time => (float)(DateTime.Now - _startTime).TotalSeconds;
     public override void AddLog(LogMessageType type, object message)
     {
-        //LogCache.AddLog(type, message);
-        Console.WriteLine($"[{type}] {message}");
+        if (message is ExceptionLogItem ex)
+        {
+            Console.WriteLine($"[{type}] {ex.Message}");
+            if (ex.Exception != null)
+            {
+                Console.WriteLine($"[{type}] {ex.Exception}");
+            }
+            if (ex.Object != null)
+            {
+                Console.WriteLine($"[{type}] {ex.Object}");
+            }
+        }
+        else if (message is ObjectLogItem logItem)
+        {
+            Console.WriteLine($"[{type}] {logItem.Message}");
+            if (logItem.Object != null)
+            {
+                Console.WriteLine($"[{type}] {logItem.Object}");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"[{type}] {message}");
+        }
     }
     public override void AddNetworkLog(LogMessageType type, NetworkDirection direction, string sessionId, string channelId, object message)
     {

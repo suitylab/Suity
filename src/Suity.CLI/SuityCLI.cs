@@ -4,6 +4,7 @@ using Suity.Editor.Analysis;
 using Suity.Editor.DataModel;
 using Suity.Editor.Documents.TypeEdit;
 using Suity.Editor.Flows;
+using Suity.Editor.ProjectGui;
 using Suity.Editor.Services;
 using Suity.Editor.VirtualTree;
 using Suity.Helpers;
@@ -303,18 +304,19 @@ public class SuityCLI
         HashSet<Assembly> asms =
         [
             typeof(Asset).Assembly, // Suity.Editor
-                typeof(SuityCLI).Assembly, // Suity.CLI
-                typeof(PropertyTarget).Assembly,  // Suity.Editor.ImGui
-                typeof(VirtualNode).Assembly,
-                typeof(TypeDesignDocument).Assembly,
-                typeof(CorePlugin).Assembly,
-                typeof(FlowPlugin).Assembly, // Suity.Editor.Flows
-                typeof(BaseLLmCall).Assembly, // Suity.Editor.AIGC
-                typeof(LLmModelPlugin).Assembly, // Suity.Editor.AIGC.LLm
-                typeof(AigcWorkflowPlugin).Assembly, // Suity.Editor.AIGC.Flows
-                typeof(BaseOpenAICall).Assembly, // Suity.Editor.AIGC.API
-                typeof(DataModelPlugin).Assembly, // Suity.Editor.DataModel
-            ];
+            typeof(SuityCLI).Assembly, // Suity.CLI
+            typeof(PropertyTarget).Assembly,  // Suity.Editor.ImGui
+            typeof(ProjectViewPlugin).Assembly,
+            typeof(VirtualNode).Assembly,
+            typeof(TypeDesignDocument).Assembly,
+            typeof(CorePlugin).Assembly,
+            typeof(FlowPlugin).Assembly, // Suity.Editor.Flows
+            typeof(BaseLLmCall).Assembly, // Suity.Editor.AIGC
+            typeof(LLmModelPlugin).Assembly, // Suity.Editor.AIGC.LLm
+            typeof(AigcWorkflowPlugin).Assembly, // Suity.Editor.AIGC.Flows
+            typeof(BaseOpenAICall).Assembly, // Suity.Editor.AIGC.API
+            typeof(DataModelPlugin).Assembly, // Suity.Editor.DataModel
+        ];
 
         string extPath = AppContext.BaseDirectory.PathAppend("Extensions");
         if (!Directory.Exists(extPath))

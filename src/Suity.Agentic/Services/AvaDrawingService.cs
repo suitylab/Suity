@@ -7,7 +7,7 @@ namespace Suity.Editor.Services;
 
 internal class AvaDrawingService : IDrawingService
 {
-    public static readonly AvaDrawingService Instance = new();
+    public static AvaDrawingService Instance { get; } = new();
 
     private AvaDrawingService()
     {

@@ -18,6 +18,8 @@
     <ProjectReference Include="..\Suity.Editor.DataModel\Suity.Editor.DataModel.csproj" />
     <ProjectReference Include="..\Suity.Editor.Documents\Suity.Editor.Documents.csproj" />
     <ProjectReference Include="..\Suity.Editor.Internal\Suity.Editor.Internal.csproj" />
+    <ProjectReference Include="..\Suity.Editor.Packaging\Suity.Editor.Packaging.csproj" />
+    <ProjectReference Include="..\Suity.Editor.ProjectGui\Suity.Editor.ProjectGui.csproj" />
     <ProjectReference Include="..\Suity.Editor\Suity.Editor.csproj" />
     <ProjectReference Include="..\Suity.Graphics\Suity.Graphics.csproj" />
     <ProjectReference Include="..\Suity.ImGui.BuildIn\Suity.ImGui.BuildIn.csproj" />

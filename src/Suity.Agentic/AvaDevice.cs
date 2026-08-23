@@ -81,7 +81,7 @@ sealed class AvaDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateV
         AddService<IImGuiService>(AvaImGuiService.Instance);
         AddService<IColorConfig>(ColorConfigBK.Instance);
         AddService<IEditorColorConfig>(ColorConfigBK.Instance);
-        AddService<IIconService>(AvaIconService.Instance);
+        AddService<IIconService>(IconService.Instance);
         AddService<FileUpdateService>(FileUpdateServiceBK.Instance);
         AddService<NavigationService>(NavigationServiceBK.Instance);
         AddService<StorageManager>(StorageManagerBK.Instance);

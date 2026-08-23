@@ -6,9 +6,9 @@ using System.IO;
 
 namespace Suity.Editor.Services;
 
-internal class AvaIconService : IIconService
+internal class IconService : IIconService
 {
-    public static readonly AvaIconService Instance = new();
+    public static IconService Instance { get; } = new();
 
     public ImageDef? GetIconById(Guid id)
     {
