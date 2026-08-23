@@ -9,6 +9,12 @@ public class OpenCommand : CliCommand
 
     public override void DoCommand(ICliArguments args)
     {
+        if (Project.Current != null)
+        {
+            Console.Error.WriteLine("Error: a project is already open.");
+            return;
+        }
+
         string? fileName = args[0];
 
         if (string.IsNullOrWhiteSpace(fileName))
@@ -39,5 +45,19 @@ public class OpenCommand : CliCommand
         Console.WriteLine($"Opening project '{fileName}'...");
 
         SuityCLI.Instance.OpenProject(fileName).Wait();
+
+        Console.WriteLine($"Project '{fileName}' opened.");
+
+        using var cts = new CancellationTokenSource();
+        Console.CancelKeyPress += (_, e) =>
+        {
+            e.Cancel = true;
+            cts.Cancel();
+        };
+
+        var repl = new CliReplInterface();
+        repl.StartInteractiveLoopAsync(cts.Token).GetAwaiter().GetResult();
     }
 }
+
+

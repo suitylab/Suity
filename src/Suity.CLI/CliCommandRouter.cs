@@ -34,7 +34,7 @@ public class CliCommandRouter
         }
     }
 
-    public int Route(string[] args)
+    public int Route(params string[] args)
     {
         if (args.Length == 0 || string.IsNullOrWhiteSpace(args[0]))
         {
@@ -47,6 +47,12 @@ public class CliCommandRouter
 
         if (_commands.TryGetValue(commandKey, out var command))
         {
+            if (commandArgs.HasFlag("help"))
+            {
+                command.ShowHelp();
+                return 0;
+            }
+
             try
             {
                 command.DoCommand(commandArgs);
@@ -54,12 +60,16 @@ public class CliCommandRouter
             }
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.Error.WriteLine($"Command '{commandKey}' failed: {ex.Message}");
+                Console.ResetColor();
                 return 1;
             }
         }
 
+        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.Error.WriteLine($"Unknown command: '{commandKey}'");
+        Console.ResetColor();
         Console.Error.WriteLine();
         ShowHelp();
         return 1;

@@ -16,11 +16,7 @@ public class HelpCommand : CliCommand
             string? specificCommand = args[0];
             if (specificCommand != null && router.Commands.TryGetValue(specificCommand, out var command))
             {
-                Console.WriteLine($"{specificCommand} - {command.Description}");
-                if (!string.IsNullOrEmpty(command.Usage))
-                {
-                    Console.WriteLine($"Usage: {command.Usage}");
-                }
+                command.ShowHelp();
                 return;
             }
 
