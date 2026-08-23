@@ -74,6 +74,11 @@ public class SuityCLI
         typeof(IInternalEditorInitialize).GetDerivedTypes();
 
         var asms = CollectCoreAssemblies();
+        foreach (var asm in asms)
+        {
+            CliCommandRouter.Instance.RegisterCommandsFromAssembly(asm);
+        }
+
         _projectLoader = new ProjectLoader
         {
             PluginAssemblies = asms,

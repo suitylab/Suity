@@ -17,7 +17,7 @@ public class CliCommandRouter
         RegisterCommandsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    private void RegisterCommandsFromAssembly(Assembly assembly)
+    public void RegisterCommandsFromAssembly(Assembly assembly)
     {
         var commandTypes = assembly.GetTypes()
             .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(CliCommand)));
