@@ -111,8 +111,8 @@ sealed class CliDevice : Device, IRexResolver, ISystemLog
     public override float Time => (float)(DateTime.Now - _startTime).TotalSeconds;
     public override void AddLog(LogMessageType type, object message)
     {
-        LogCache.AddLog(type, message);
-
+        //LogCache.AddLog(type, message);
+        Console.WriteLine($"[{type}] {message}");
     }
     public override void AddNetworkLog(LogMessageType type, NetworkDirection direction, string sessionId, string channelId, object message)
     {

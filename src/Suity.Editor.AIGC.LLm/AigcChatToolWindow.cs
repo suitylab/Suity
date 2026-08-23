@@ -159,14 +159,6 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
             .InitHeight(32)
             .OnContent(() =>
             {
-                //gui.DropDownButton("model_select", _modelSelect)
-                //.InitWidth(200)
-                //.InitClass("propInput")
-                //.OnEdited(n =>
-                //{
-                //    _currentChat = _modelSelect.SelectedValue as IChatConversation;
-                //});
-
                 if (_currentChat != null)
                 {
                     if (_currentChat.State == LLmChatStates.Started)
