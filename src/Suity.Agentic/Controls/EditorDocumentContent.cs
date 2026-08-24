@@ -262,7 +262,7 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
     {
         if (_docInstance?.Document is { } doc)
         {
-            string? rPath = doc.FileName.FullPath?.MakeRalativePath(Project.Current.ProjectBasePath);
+            string? rPath = doc.FileName.FullPath?.MakeRelativePath(Project.Current.ProjectBasePath);
             return $":{rPath}";
         }
         else if (_toolWindow is { } toolWindow)

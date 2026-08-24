@@ -58,7 +58,7 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
         //exportForm.AddProjectFiles(false);
         //exportForm.AddProjectWorkspaces(false);
 
-        exportForm.AddFiles(files, true);
+        exportForm.AddAssetFiles(files, true);
 
         foreach (var workSpaceName in workSpaces)
         {
@@ -69,6 +69,8 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
             }
         }
 
+        exportForm.AddSystemDirectory(false);
+
         await EditorUtility.CreateImGuiDialog(exportForm, "Export", 883, 827);
 
         if (!exportForm.IsSuccess)
@@ -76,10 +78,11 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
             return;
         }
 
-        string[] exportFiles = [.. exportForm.GetFiles()];
+        string[] exportAssetFiles = [.. exportForm.GetAssetFiles()];
         WorkSpaceFile[] exportWorkspaceFiles = [.. exportForm.GetWorkspaceFiles()];
+        string[] exportSystemFiles = [.. exportForm.GetSystemFiles()];
 
-        if (exportFiles.Length == 0 && exportWorkspaceFiles.Length == 0)
+        if (exportAssetFiles.Length == 0 && exportWorkspaceFiles.Length == 0 && exportSystemFiles.Length == 0)
         {
             await DialogUtility.ShowMessageBoxAsyncL("No files selected");
 
@@ -93,9 +96,9 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
         }
         else
         {
-            if (exportFiles.Length == 1)
+            if (exportAssetFiles.Length == 1)
             {
-                suggestedName = Path.GetFileNameWithoutExtension(exportFiles[0]);
+                suggestedName = Path.GetFileNameWithoutExtension(exportAssetFiles[0]);
             }
             else
             {
@@ -113,7 +116,7 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
         switch (exportForm.PackageType)
         {
             case PackageTypes.Package:
-                await exporter.ExportPackage(exportFiles, exportWorkspaceFiles, packageFileName);
+                await exporter.ExportPackage(packageFileName, exportAssetFiles, exportWorkspaceFiles, exportSystemFiles);
                 QueuedAction.Do(() =>
                 {
                     EditorUtility.LocateInPublishView(packageFileName);
@@ -122,7 +125,7 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
                 break;
 
             case PackageTypes.Library:
-                await exporter.ExportLibrary(exportFiles, packageFileName);
+                await exporter.ExportLibrary(packageFileName, exportAssetFiles);
                 QueuedAction.Do(() =>
                 {
                     EditorUtility.LocateInPublishView(packageFileName);
@@ -192,7 +195,7 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
         Project project = Project.Current;
 
         string[] entries = importForm.GetFiles().Concat(importForm.GetWorkspaceFiles())
-            .Select(s => s.MakeRalativePath(project.ProjectBasePath)).ToArray();
+            .Select(s => s.MakeRelativePath(project.ProjectBasePath)).ToArray();
 
         if (entries.Length > 0)
         {

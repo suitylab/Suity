@@ -428,7 +428,7 @@ public class AssetRootNode : RootDirectoryNode, IProjectAssetRootNode, IDropTarg
     /// <param name="renderingFiles">The dictionary to populate with rendering files.</param>
     private static void CollectBunchFiles(WorkSpace workSpace, string fullName, Dictionary<string, FileBunchUpdate> files, Dictionary<string, FileBunchUpdate> renderingFiles)
     {
-        string rFileName = fullName.MakeRalativePath(workSpace.MasterDirectory);
+        string rFileName = fullName.MakeRelativePath(workSpace.MasterDirectory);
         string lowId = rFileName.GetPathLowId();
         if (files.ContainsKey(lowId) || renderingFiles.ContainsKey(lowId))
         {

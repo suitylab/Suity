@@ -71,7 +71,7 @@ internal class ImportImGui : IDrawImGui
     /// <returns>A collection of enabled asset file paths.</returns>
     public IEnumerable<string> GetFiles()
     {
-        return _previewGui.GetFiles();
+        return _previewGui.GetAssetFiles();
     }
 
     /// <summary>
@@ -167,11 +167,17 @@ internal class ImportImGui : IDrawImGui
             {
                 _previewGui.AddAssetFile(entryFileName, true);
             }
-            else if (zipEntry.Name.StartsWith("WorkSpaces"))
+            else if (zipEntry.Name.StartsWith("WorkSpaces/") || zipEntry.Name.StartsWith("WorkSpaces\\"))
             {
                 string rFileName = zipEntry.Name.RemoveFromFirst(11);
 
                 _previewGui.AddWorkSpaceFile(rFileName, true);
+            }
+            else if (zipEntry.Name.StartsWith("System/") || zipEntry.Name.StartsWith("System\\"))
+            {
+                string rFileName = zipEntry.Name.RemoveFromFirst(7);
+
+                _previewGui.AddSystemFile(rFileName, true);
             }
         }
     }

@@ -269,7 +269,7 @@ public class PackagePreviewDirectoryNode : PopulatePathNode, IPackagePreviewNode
     /// <returns>A dot-separated path string representing the suggested asset location.</returns>
     public string GetSuggestedAssetPath()
     {
-        if (_items?.Values.Where(o => o.Enabled).Any() == true)
+        if (_items?.Values.Any(o => o.Enabled) == true)
         {
             return Terminal;
         }
@@ -802,7 +802,7 @@ public class PackagePreviewItemNode : PathNode, IPackagePreviewNode
     {
         if (_packageType == PackageTypes.Library)
         {
-            if (Location == FileLocations.WorkSpace)
+            if (Location == FileLocations.WorkSpace || Location == FileLocations.System)
             {
                 return false;
             }

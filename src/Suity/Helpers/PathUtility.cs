@@ -10,7 +10,7 @@ public static class PathUtility
 {
     private static readonly char[] Slashes = ['\\', '/'];
 
-    public static string MakeRalativePath(this string path, string basePath)
+    public static string MakeRelativePath(this string path, string basePath)
     {
         if (string.IsNullOrEmpty(path))
         {

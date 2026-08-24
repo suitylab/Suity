@@ -513,7 +513,7 @@ public class WorkSpaceManagerBK : WorkSpaceManager
     /// <inheritdoc/>
     public override string MakeRelativePath(string fullPath)
     {
-        return fullPath.MakeRalativePath(BasePath);
+        return fullPath.MakeRelativePath(BasePath);
     }
 
     #endregion
@@ -529,7 +529,7 @@ public class WorkSpaceManagerBK : WorkSpaceManager
         //}
         QueuedAction.Do(() =>
         {
-            string rPath = fullPath.MakeRalativePath(BasePath);
+            string rPath = fullPath.MakeRelativePath(BasePath);
             if (rPath.GetPathTerminal() == rPath && Directory.Exists(fullPath))
             {
                 EnsureWorkSpace(rPath, false, out bool added);
@@ -545,7 +545,7 @@ public class WorkSpaceManagerBK : WorkSpaceManager
     {
         QueuedAction.Do(() =>
         {
-            string rPath = fullPath.MakeRalativePath(BasePath);
+            string rPath = fullPath.MakeRelativePath(BasePath);
             if (rPath.GetPathTerminal() == rPath)
             {
                 DeleteWorkSpace(rPath);
@@ -561,8 +561,8 @@ public class WorkSpaceManagerBK : WorkSpaceManager
     {
         QueuedAction.Do(() =>
         {
-            string rPathOld = oldFullPath.MakeRalativePath(BasePath);
-            string rPathNew = fullPath.MakeRalativePath(BasePath);
+            string rPathOld = oldFullPath.MakeRelativePath(BasePath);
+            string rPathNew = fullPath.MakeRelativePath(BasePath);
 
             InternalRenameWorkSpace(rPathOld, rPathNew, false);
         });

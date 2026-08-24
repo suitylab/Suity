@@ -1733,7 +1733,7 @@ public class WorkSpaceBK : WorkSpace,
 
     public override bool SetExternalMasterPath(string masterFullPath)
     {
-        string rPath = masterFullPath.MakeRalativePath(BaseDirectory);
+        string rPath = masterFullPath.MakeRelativePath(BaseDirectory);
 
         if (rPath == _externalRPath)
         {

@@ -838,7 +838,7 @@ public abstract class WorkSpace : IRenderHost, IHasId
     /// <returns>Relative path</returns>
     public string GetRalativePath(string fileName)
     {
-        return fileName.MakeRalativePath(fileName);
+        return fileName.MakeRelativePath(fileName);
     }
 
     #endregion
@@ -857,7 +857,7 @@ public abstract class WorkSpace : IRenderHost, IHasId
             return string.Empty;
         }
 
-        return fullPath.MakeRalativePath(BaseDirectory);
+        return fullPath.MakeRelativePath(BaseDirectory);
     }
 
     /// <summary>
@@ -887,7 +887,7 @@ public abstract class WorkSpace : IRenderHost, IHasId
             return string.Empty;
         }
 
-        return fullPath.MakeRalativePath(MasterDirectory);
+        return fullPath.MakeRelativePath(MasterDirectory);
     }
 
     /// <summary>

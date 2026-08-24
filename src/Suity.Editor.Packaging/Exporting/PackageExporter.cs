@@ -47,11 +47,11 @@ internal class PackageExporter
     /// <summary>
     /// Exports the specified asset and workspace files into a Suity package archive.
     /// </summary>
-    /// <param name="fileNames">The asset file paths to export.</param>
+    /// <param name="assetFiles">The asset file paths to export.</param>
     /// <param name="workSpaceFiles">The workspace file entries to export.</param>
     /// <param name="packageFileName">The destination path for the package archive.</param>
     /// <returns>A task representing the asynchronous export operation.</returns>
-    public Task ExportPackage(IEnumerable<string> fileNames, IEnumerable<WorkSpaceFile> workSpaceFiles, string packageFileName)
+    public Task ExportPackage(string packageFileName, string[] assetFiles, WorkSpaceFile[] workSpaceFiles, string[] systemFiles)
     {
         //if (!ServiceInternals._license.GetCapability(EditorCapabilities.Export))
         //{
@@ -88,7 +88,13 @@ internal class PackageExporter
                     Directory.CreateDirectory(tempWorkspaceDir);
                 }
 
-                foreach (var fileName in fileNames)
+                string tempSystemDir = tempDir.PathAppend("System");
+                if (!Directory.Exists(tempSystemDir))
+                {
+                    Directory.CreateDirectory(tempSystemDir);
+                }
+
+                foreach (var fileName in assetFiles)
                 {
                     p.UpdateProgess(0, L($"Exporting {fileName}..."), string.Empty);
                     ExportAssetFile(fileName, tempAssetDir, PackageTypes.Package);
@@ -98,6 +104,12 @@ internal class PackageExporter
                 {
                     p.UpdateProgess(0, L($"Exporting: {workspaceFile.FileName}..."), string.Empty);
                     ExportWorkspaceFile(workspaceFile, tempWorkspaceDir);
+                }
+
+                foreach (var fileName in systemFiles)
+                {
+                    p.UpdateProgess(0, L($"Exporting {fileName}..."), string.Empty);
+                    ExportSystemFile(fileName, tempSystemDir, PackageTypes.Package);
                 }
 
                 p.UpdateProgess(0, L("Exporting configuration..."), string.Empty);
@@ -134,10 +146,10 @@ internal class PackageExporter
     /// <summary>
     /// Exports the specified asset files into a Suity library archive with a manifest.
     /// </summary>
-    /// <param name="fileNames">The asset file paths to export.</param>
     /// <param name="libraryFileName">The destination path for the library archive.</param>
+    /// <param name="fileNames">The asset file paths to export.</param>
     /// <returns>A task representing the asynchronous export operation.</returns>
-    public Task ExportLibrary(IEnumerable<string> fileNames, string libraryFileName)
+    public Task ExportLibrary(string libraryFileName, IEnumerable<string> fileNames)
     {
         //if (!ServiceInternals._license.GetCapability(EditorCapabilities.Export))
         //{
@@ -368,6 +380,30 @@ internal class PackageExporter
             }
         }
 
+        return true;
+    }
+
+    private bool ExportSystemFile(string fileName, string tempSystemDir, PackageTypes packageType)
+    {
+        var file = new FileInfo(fileName);
+        if (!file.Exists)
+        {
+            Logs.LogWarning(L("File does not exist") + ": " + file.FullName);
+            return false;
+        }
+        string rFileName = fileName.MakeRelativePath(Project.Current.SystemDirectory);
+        if (string.IsNullOrEmpty(rFileName))
+        {
+            Logs.LogWarning(L("File is not in the system directory") + ": " + file.FullName);
+            return false;
+        }
+        string exportFileName = tempSystemDir.PathAppend(rFileName);
+        string exportDir = Path.GetDirectoryName(exportFileName);
+        if (!Directory.Exists(exportDir))
+        {
+            Directory.CreateDirectory(exportDir);
+        }
+        File.Copy(fileName, exportFileName);
         return true;
     }
 

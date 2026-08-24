@@ -316,26 +316,26 @@ public class WorkSpaceRootNode : RootDirectoryNode, IWorkSpaceRootNode, IDropTar
     /// <inheritdoc/>
     protected internal override void OnFileSystemChanged(string fullPath)
     {
-        WorkSpace.MarkFileAsModified(fullPath.MakeRalativePath(WorkSpace.MasterDirectory));
+        WorkSpace.MarkFileAsModified(fullPath.MakeRelativePath(WorkSpace.MasterDirectory));
     }
 
     /// <inheritdoc/>
     protected internal override void OnFileSystemCreated(string fullPath)
     {
-        WorkSpace.MarkFileAsModified(fullPath.MakeRalativePath(WorkSpace.MasterDirectory));
+        WorkSpace.MarkFileAsModified(fullPath.MakeRelativePath(WorkSpace.MasterDirectory));
     }
 
     /// <inheritdoc/>
     protected internal override void OnFileSystemDeleted(string fullPath)
     {
-        WorkSpace.MarkFileAsModified(fullPath.MakeRalativePath(WorkSpace.MasterDirectory));
+        WorkSpace.MarkFileAsModified(fullPath.MakeRelativePath(WorkSpace.MasterDirectory));
     }
 
     /// <inheritdoc/>
     protected internal override void OnFileSystemRenamed(string fullPath, string oldFullPath)
     {
-        WorkSpace.MarkFileAsModified(fullPath.MakeRalativePath(WorkSpace.MasterDirectory));
-        WorkSpace.MarkFileAsModified(oldFullPath.MakeRalativePath(WorkSpace.MasterDirectory));
+        WorkSpace.MarkFileAsModified(fullPath.MakeRelativePath(WorkSpace.MasterDirectory));
+        WorkSpace.MarkFileAsModified(oldFullPath.MakeRelativePath(WorkSpace.MasterDirectory));
     }
 
     /// <inheritdoc/>
@@ -570,7 +570,7 @@ public class WorkSpaceDirectoryNode : DirectoryNode, IWorkSpaceDirectoryNode, ID
             var space = FindWorkSpace();
             if (space != null)
             {
-                string rPath = NodePath.MakeRalativePath(space.MasterDirectory);
+                string rPath = NodePath.MakeRelativePath(space.MasterDirectory);
                 return space.ContainsRenderDirectory(rPath);
             }
 
@@ -631,7 +631,7 @@ public class WorkSpaceDirectoryNode : DirectoryNode, IWorkSpaceDirectoryNode, ID
         WorkSpace space = FindWorkSpace();
         if (space != null)
         {
-            string rPath = NodePath.MakeRalativePath(space.MasterDirectory);
+            string rPath = NodePath.MakeRelativePath(space.MasterDirectory);
             return space.GetRenderTargetsByDirectory(rPath).Any() || space.GetRenderDirectoryByDirectory(rPath).Any();
         }
 
@@ -677,7 +677,7 @@ public class WorkSpaceDirectoryNode : DirectoryNode, IWorkSpaceDirectoryNode, ID
 
         if (space != null)
         {
-            string rPath = NodePath.MakeRalativePath(space.MasterDirectory);
+            string rPath = NodePath.MakeRelativePath(space.MasterDirectory);
 
             // Yield render directories that don't physically exist yet
             foreach (var dir in space.GetRenderDirectoryByDirectory(rPath))
@@ -744,7 +744,7 @@ public class WorkSpaceDirectoryNode : DirectoryNode, IWorkSpaceDirectoryNode, ID
         var space = FindWorkSpace();
         if (space != null)
         {
-            string rPath = NodePath.MakeRalativePath(space.MasterDirectory);
+            string rPath = NodePath.MakeRelativePath(space.MasterDirectory);
             FileState state = space.GetDirectoryStatus(rPath);
             return WorkSpaceFileNode.GetIconByFileState(state);
         }
@@ -825,7 +825,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
             var space = FindWorkSpace();
             if (space != null)
             {
-                string rPath = NodePath.MakeRalativePath(space.MasterDirectory);
+                string rPath = NodePath.MakeRelativePath(space.MasterDirectory);
                 return space.GetRenderTargets(rPath).Any();
             }
             return false;
@@ -844,7 +844,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
             return null;
         }
 
-        string rPath = NodePath.MakeRalativePath(space.MasterDirectory);
+        string rPath = NodePath.MakeRelativePath(space.MasterDirectory);
 
         return space.GetRenderTargets(rPath).ToArray();
     }
@@ -861,7 +861,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
             return null;
         }
 
-        string rPath = NodePath.MakeRalativePath(space.MasterDirectory);
+        string rPath = NodePath.MakeRelativePath(space.MasterDirectory);
 
         return space.GetRenderTargets(rPath).FirstOrDefault();
     }
@@ -882,7 +882,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
             var space = FindWorkSpace();
             if (space != null)
             {
-                string rPath = NodePath.MakeRalativePath(space.MasterDirectory);
+                string rPath = NodePath.MakeRelativePath(space.MasterDirectory);
 
                 return space.GetFileStatus(rPath);
             }
@@ -918,7 +918,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
         var space = FindWorkSpace();
         if (space != null)
         {
-            string rPath = NodePath.MakeRalativePath(space.MasterDirectory);
+            string rPath = NodePath.MakeRelativePath(space.MasterDirectory);
             space.BindRenderFile(rPath);
         }
     }
@@ -958,7 +958,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
         var space = FindWorkSpace();
         if (space != null)
         {
-            string rPath = NodePath.MakeRalativePath(space.MasterDirectory);
+            string rPath = NodePath.MakeRelativePath(space.MasterDirectory);
             space.UnbindRenderFile(rPath);
         }
     }
@@ -1055,7 +1055,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
         var space = FindWorkSpace();
         if (space != null)
         {
-            string rPath = NodePath.MakeRalativePath(space.MasterDirectory);
+            string rPath = NodePath.MakeRelativePath(space.MasterDirectory);
             FileState state = space.GetFileStatus(rPath);
 
             if (state == FileState.Exist)
@@ -1089,7 +1089,7 @@ public class WorkSpaceFileNode : FileNode, IWorkSpaceFileNode
         var space = FindWorkSpace();
         if (space != null)
         {
-            string rPath = NodePath.MakeRalativePath(space.MasterDirectory);
+            string rPath = NodePath.MakeRelativePath(space.MasterDirectory);
             var target = space.GetRenderTargets(rPath).FirstOrDefault();
             if (target != null)
             {

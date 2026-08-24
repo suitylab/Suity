@@ -39,7 +39,7 @@ internal class WsCfg_SetExternalPathCommand : MenuCommand
             return;
         }
 
-        string rPath = result.MakeRalativePath(node.WorkSpace.BaseDirectory);
+        string rPath = result.MakeRelativePath(node.WorkSpace.BaseDirectory);
         bool changed = false;
 
         if (rPath.StartsWith("../") || WorkSpaceManager.AbsoluteExternalMasterPath)

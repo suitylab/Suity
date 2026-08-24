@@ -46,4 +46,9 @@ public enum FileLocations
     /// File resides in a workspace directory.
     /// </summary>
     WorkSpace,
+
+    /// <summary>
+    /// File resides in the system directory.
+    /// </summary>
+    System,
 }

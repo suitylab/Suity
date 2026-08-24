@@ -176,7 +176,7 @@ public class FileSelectionEditorAttribute : DesignAttribute, IViewObject, IImGui
                     {
                         if (_relative)
                         {
-                            result = PathUtility.MakeRalativePath(result, EditorServices.CurrentProject.ProjectBasePath);
+                            result = PathUtility.MakeRelativePath(result, EditorServices.CurrentProject.ProjectBasePath);
                         }
 
                         Apply(result);

@@ -827,7 +827,7 @@ internal sealed class FileAssetManagerBK : FileAssetManager
             {
                 foreach (FileInfo file in files)
                 {
-                    string fileRelativePath = file.FullName.MakeRalativePath(fullPath);
+                    string fileRelativePath = file.FullName.MakeRelativePath(fullPath);
                     string fileOldFullPath = fileRelativePath.MakeFullPath(oldFullPath);
                     PreExternalRename(file.FullName, fileOldFullPath);
                 }
@@ -835,7 +835,7 @@ internal sealed class FileAssetManagerBK : FileAssetManager
 
             foreach (FileInfo file in files)
             {
-                string fileRelativePath = file.FullName.MakeRalativePath(fullPath);
+                string fileRelativePath = file.FullName.MakeRelativePath(fullPath);
                 string fileOldFullPath = fileRelativePath.MakeFullPath(oldFullPath);
                 PostExternalRename(file.FullName, fileOldFullPath);
             }

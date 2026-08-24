@@ -214,7 +214,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
         description = description?.Trim() ?? string.Empty;
 
         string currentFullPath = Path.GetDirectoryName(fileName?.PhysicFileName);
-        string currentPath = PathUtility.MakeRalativePath(currentFullPath, EditorServices.CurrentProject.AssetDirectory);
+        string currentPath = PathUtility.MakeRelativePath(currentFullPath, EditorServices.CurrentProject.AssetDirectory);
 
         string subDir = ResolveDirectoryName(agent.AgentName);
         currentPath = currentPath.PathAppend(subDir);

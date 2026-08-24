@@ -26,7 +26,7 @@ public static class AssetDocumentExtensions
         if (entry.FileName.PhysicFileName is { } fileName)
         {
             string assetDir = EditorServices.CurrentProject.AssetDirectory;
-            return fileName.MakeRalativePath(assetDir);
+            return fileName.MakeRelativePath(assetDir);
         }
         else
         {
@@ -45,7 +45,7 @@ public static class AssetDocumentExtensions
         {
             string dir = Path.GetDirectoryName(fileName);
             string assetDir = EditorServices.CurrentProject.AssetDirectory;
-            return dir.MakeRalativePath(assetDir);
+            return dir.MakeRelativePath(assetDir);
         }
         else
         {

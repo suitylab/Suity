@@ -147,7 +147,7 @@ public static class EditorUtility
         var project = Project.Current;
         if (project != null)
         {
-            return fullPath.MakeRalativePath(project.ProjectBasePath);
+            return fullPath.MakeRelativePath(project.ProjectBasePath);
         }
         else
         {
@@ -1330,7 +1330,7 @@ public static class EditorUtility
     /// <returns>Relative path ID for the file bunch</returns>
     public static string MakeFileBunchFileId(this WorkSpace workSpace, string fullName)
     {
-        return fullName.MakeRalativePath(workSpace.MasterDirectory);
+        return fullName.MakeRelativePath(workSpace.MasterDirectory);
     }
 
     /// <summary>

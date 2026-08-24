@@ -4,6 +4,7 @@ using Suity.Helpers;
 using Suity.Views.Im;
 using Suity.Views.Im.TreeEditing;
 using Suity.Views.PathTree;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +24,7 @@ internal class PackagePreviewImGui : IDrawImGui
     private readonly PackagePathTreeModel _model = new();
     private PackagePreviewDirectoryNode _rootAssetNode;
     private PackagePreviewDirectoryNode _rootWorkspaceNode;
+    private PackagePreviewDirectoryNode _systemDirNode;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PackagePreviewImGui"/> class with a configured tree view.
@@ -152,15 +154,9 @@ internal class PackagePreviewImGui : IDrawImGui
             }
 
             _packageType = value;
-            if (_rootAssetNode != null)
-            {
-                _rootAssetNode.PackageType = _packageType;
-            }
-
-            if (_rootWorkspaceNode != null)
-            {
-                _rootWorkspaceNode.PackageType = _packageType;
-            }
+            _rootAssetNode?.PackageType = _packageType;
+            _rootWorkspaceNode?.PackageType = _packageType;
+            _systemDirNode?.PackageType = _packageType;
 
             _treeView.QueueRefresh();
         }
@@ -193,6 +189,12 @@ internal class PackagePreviewImGui : IDrawImGui
             PackageType = _packageType,
         };
         _model.Add(_rootWorkspaceNode);
+
+        _systemDirNode = new PackagePreviewDirectoryNode(Project.Current.SystemDirectory, direction, FileLocations.System)
+        {
+            PackageType = _packageType,
+        };
+        _model.Add(_systemDirNode);
     }
 
     /// <summary>
@@ -218,13 +220,39 @@ internal class PackagePreviewImGui : IDrawImGui
     /// Adds all project workspace directories to the preview tree.
     /// </summary>
     /// <param name="enabled">Whether the workspaces should be initially enabled.</param>
-    public void AddProjectWorkspaces(bool enabled)
+    public void AddWorkspaces(bool enabled)
     {
         //Project project = Project.CurrentProject;
 
         foreach (var workspace in WorkSpaceManager.Current.WorkSpaces)
         {
             _rootWorkspaceNode.AddItem(workspace.Name, enabled);
+        }
+
+        //TODO: treeViewAdv1.ExpandAll(_workspaceManagerNode);
+    }
+
+    /// <summary>
+    /// Adds all system directory files to the preview tree.
+    /// </summary>
+    /// <param name="enabled">Whether the files should be initially enabled.</param>
+    public void AddSystemDirectory(bool enabled)
+    {
+        //Project project = Project.CurrentProject;
+
+        var dir = new DirectoryInfo(Project.Current.SystemDirectory);
+        foreach (var file in dir.EnumerateFiles("*.*", SearchOption.AllDirectories))
+        {
+            string rFileName = file.FullName.MakeRelativePath(Project.Current.SystemDirectory);
+
+            var node = _systemDirNode.AddItem(rFileName, enabled);
+
+            if (string.Equals(rFileName, "ObjectId.xml", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(rFileName, "SystemId.xml", StringComparison.OrdinalIgnoreCase))
+            {
+                node.ExportDisabled = true;
+                node.Enabled = false;
+            }
         }
 
         //TODO: treeViewAdv1.ExpandAll(_workspaceManagerNode);
@@ -353,6 +381,11 @@ internal class PackagePreviewImGui : IDrawImGui
         return fileNode;
     }
 
+    public void AddSystemFile(string rFileName, bool enabled)
+    {
+        _systemDirNode.AddItem(rFileName, enabled);
+    }
+
     /// <summary>
     /// Adds a workspace master file to the preview tree with explicit master status.
     /// </summary>
@@ -421,12 +454,15 @@ internal class PackagePreviewImGui : IDrawImGui
 
         _rootAssetNode.PopulateUpdateDeep();
         _rootWorkspaceNode.PopulateUpdateDeep();
+        _systemDirNode.PopulateUpdateDeep();
 
         _rootAssetNode.UpdateEnableStateDeep();
         _rootWorkspaceNode.UpdateEnableStateDeep();
+        _systemDirNode.UpdateEnableStateDeep();
 
         _rootAssetNode.ExpandDeep();
         _rootWorkspaceNode.ExpandDeep();
+        _systemDirNode.ExpandDeep();
     }
 
     /// <summary>
@@ -459,6 +495,11 @@ internal class PackagePreviewImGui : IDrawImGui
             return true;
         }
 
+        if (_systemDirNode?.ContainsError() == true)
+        {
+            return true;
+        }
+
         return false;
     }
 
@@ -466,18 +507,16 @@ internal class PackagePreviewImGui : IDrawImGui
     /// Gets the paths of all enabled asset files.
     /// </summary>
     /// <returns>A collection of enabled asset file paths.</returns>
-    public IEnumerable<string> GetFiles()
+    public IEnumerable<string> GetAssetFiles()
     {
         if (_rootAssetNode is null)
         {
             return [];
         }
-        else
-        {
-            List<PackagePreviewItemNode> list = [];
-            _rootAssetNode.CollectEnabledItemsDeep(list);
-            return list.Select(o => o.NodePath);
-        }
+
+        List<PackagePreviewItemNode> list = [];
+        _rootAssetNode.CollectEnabledItemsDeep(list);
+        return list.Select(o => o.NodePath);
     }
 
     /// <summary>
@@ -490,13 +529,11 @@ internal class PackagePreviewImGui : IDrawImGui
         {
             return [];
         }
-        else
-        {
-            List<PackagePreviewDirectoryNode> list = [];
-            _rootWorkspaceNode.CollectEnabledDirectories(list);
 
-            return list.Select(o => o.Terminal);
-        }
+        List<PackagePreviewDirectoryNode> list = [];
+        _rootWorkspaceNode.CollectEnabledDirectories(list);
+
+        return list.Select(o => o.Terminal);
     }
 
     /// <summary>
@@ -536,6 +573,18 @@ internal class PackagePreviewImGui : IDrawImGui
         List<PackagePreviewItemNode> list = [];
         _rootWorkspaceNode.CollectEnabledItemsDeep(list);
 
+        return list.Select(o => o.NodePath);
+    }
+
+    public IEnumerable<string> GetSystemFiles()
+    {
+        if (_systemDirNode is null)
+        {
+            return [];
+        }
+
+        List<PackagePreviewItemNode> list = [];
+        _systemDirNode.CollectEnabledItemsDeep(list);
         return list.Select(o => o.NodePath);
     }
 

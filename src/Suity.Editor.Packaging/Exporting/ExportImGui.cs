@@ -64,9 +64,18 @@ internal class ExportImGui : IDrawImGui
     /// Adds all project workspace directories to the preview tree.
     /// </summary>
     /// <param name="enabled">Whether the workspaces should be initially enabled.</param>
-    public void AddProjectWorkspaces(bool enabled)
+    public void AddWorkspaces(bool enabled)
     {
-        _previewGui.AddProjectWorkspaces(enabled);
+        _previewGui.AddWorkspaces(enabled);
+    }
+
+    /// <summary>
+    /// Adds the system directory to the preview tree.
+    /// </summary>
+    /// <param name="enabled">Whether the system directory should be initially enabled.</param>
+    public void AddSystemDirectory(bool enabled)
+    {
+        _previewGui.AddSystemDirectory(enabled);
     }
 
     /// <summary>
@@ -74,7 +83,7 @@ internal class ExportImGui : IDrawImGui
     /// </summary>
     /// <param name="fileNames">The file paths to add.</param>
     /// <param name="enabled">Whether the files should be initially enabled.</param>
-    public void AddFiles(IEnumerable<string> fileNames, bool enabled)
+    public void AddAssetFiles(IEnumerable<string> fileNames, bool enabled)
     {
         _previewGui.AddAssetFiles(fileNames, enabled);
     }
@@ -131,7 +140,7 @@ internal class ExportImGui : IDrawImGui
                 continue;
             }
 
-            string rPath = fileName.MakeRalativePath(workSpace.MasterDirectory);
+            string rPath = fileName.MakeRelativePath(workSpace.MasterDirectory);
             bool hasRenderTarget = workSpace.GetRenderTargets(rPath).Any();
             if (hasRenderTarget)
             {
@@ -152,41 +161,36 @@ internal class ExportImGui : IDrawImGui
         }
     }
 
+
     /// <summary>
     /// Gets a suggested asset path derived from the enabled items in the preview tree.
     /// </summary>
     /// <returns>A suggested asset path string.</returns>
-    public string GetSuggestedAssetPath()
-    {
-        return _previewGui.GetSuggestedAssetPath();
-    }
+    public string GetSuggestedAssetPath() => _previewGui.GetSuggestedAssetPath();
 
     /// <summary>
     /// Gets the paths of all enabled asset files.
     /// </summary>
     /// <returns>A collection of enabled asset file paths.</returns>
-    public IEnumerable<string> GetFiles()
-    {
-        return _previewGui.GetFiles();
-    }
+    public IEnumerable<string> GetAssetFiles() => _previewGui.GetAssetFiles();
 
     /// <summary>
     /// Gets the names of all enabled workspace directories.
     /// </summary>
     /// <returns>A collection of enabled workspace names.</returns>
-    public IEnumerable<string> GetWorkspaces()
-    {
-        return _previewGui.GetWorkspaces();
-    }
+    public IEnumerable<string> GetWorkspaces() => _previewGui.GetWorkspaces();
 
     /// <summary>
     /// Gets the details of all enabled workspace files.
     /// </summary>
     /// <returns>A collection of <see cref="WorkSpaceFile"/> entries for enabled workspace files.</returns>
-    public IEnumerable<WorkSpaceFile> GetWorkspaceFiles()
-    {
-        return _previewGui.GetWorkspaceFiles();
-    }
+    public IEnumerable<WorkSpaceFile> GetWorkspaceFiles() => _previewGui.GetWorkspaceFiles();
+
+    /// <summary>
+    /// Gets the paths of all system files.
+    /// </summary>
+    /// <returns>A collection of system file paths.</returns>
+    public IEnumerable<string> GetSystemFiles() => _previewGui.GetSystemFiles();
 
     /// <summary>
     /// Recursively collects all dependency files for a given asset file, including transitive dependencies, meta files, and user code files.
@@ -317,7 +321,7 @@ internal class ExportImGui : IDrawImGui
 
                         HashSet<string> depFiles = [];
 
-                        foreach (var file in GetFiles())
+                        foreach (var file in GetAssetFiles())
                         {
                             CollectDependency(file, depFiles);
                         }

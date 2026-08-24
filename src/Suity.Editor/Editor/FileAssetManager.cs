@@ -63,7 +63,7 @@ public abstract class FileAssetManager
     /// <returns>Return the relative path</returns>
     public string MakeRelativePath(string fullPath)
     {
-        return fullPath.MakeRalativePath(DirectoryBasePath);
+        return fullPath.MakeRelativePath(DirectoryBasePath);
     }
 
     /// <summary>

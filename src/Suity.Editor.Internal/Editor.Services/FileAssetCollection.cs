@@ -414,7 +414,7 @@ internal class FileAssetCollection
     {
         try
         {
-            string rPath = fullPath.MakeRalativePath(_basePath).GetPathId();
+            string rPath = fullPath.MakeRelativePath(_basePath).GetPathId();
             if (rPath.StartsWith("../"))
             {
                 return null;

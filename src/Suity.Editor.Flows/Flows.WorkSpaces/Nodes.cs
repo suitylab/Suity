@@ -73,7 +73,7 @@ public class ListWorkSpaceFiles : WorkSpaceNode
         var fileInfos = rootDir.GetFiles(filter, SearchOption.AllDirectories);
 
         string[] filePaths = fileInfos
-            .Select(o => PathUtility.MakeRalativePath(o.FullName, rootDir.FullName))
+            .Select(o => PathUtility.MakeRelativePath(o.FullName, rootDir.FullName))
             .ToArray();
 
         compute.SetValue(_workSpaceFiles, filePaths);

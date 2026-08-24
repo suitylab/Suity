@@ -312,7 +312,7 @@ internal class RootDirectoryNodeExBK(RootDirectoryNode node) : RootDirectoryNode
     /// <inheritdoc/>
     public override PathNode FindNodeByFullPath(string fullPath)
     {
-        string pathId = fullPath.MakeRalativePath(_node.NodePath)?.Replace('/', '\\') ?? string.Empty;
+        string pathId = fullPath.MakeRelativePath(_node.NodePath)?.Replace('/', '\\') ?? string.Empty;
 
         return FindNode(pathId);
     }

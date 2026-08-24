@@ -83,7 +83,7 @@ internal class GotoDefinitionCommand : MenuCommand
         groupNode.Expanded = true;
 
         List<PathNode> nodes = [];
-        string rFileName = node.NodePath.MakeRalativePath(rootNode.WorkSpace.MasterDirectory);
+        string rFileName = node.NodePath.MakeRelativePath(rootNode.WorkSpace.MasterDirectory);
         //foreach (Asset asset in rootNode.WorkSpace.GetDependency(rFileName).OfType<Asset>())
         //{
         //    PathNode refNode = groupNode.Nodes.OfType<WorkSpaceReferenceNode>().FirstOrDefault(o => o.Id == asset.Id);
