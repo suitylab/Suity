@@ -1,13 +1,18 @@
 using ICSharpCode.SharpZipLib.Zip;
+using Suity.Collections;
 using Suity.Editor.CodeRender;
 using Suity.Editor.CodeRender.Replacing;
 using Suity.Editor.Documents;
 using Suity.Editor.Documents.Linked;
 using Suity.Editor.Libraries;
+using Suity.Editor.Services;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Json;
 using Suity.NodeQuery;
+using Suity.Synchonizing;
+using Suity.Synchonizing.Core;
+using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -290,6 +295,7 @@ internal class PackageExporter
         {
             File.Copy(fileName, exportFileName);
         }
+
         return true;
     }
 
@@ -403,7 +409,16 @@ internal class PackageExporter
         {
             Directory.CreateDirectory(exportDir);
         }
-        File.Copy(fileName, exportFileName);
+
+        if (string.Equals(rFileName, "ProjectSetting.xml", StringComparison.OrdinalIgnoreCase))
+        {
+            Project.Current.ExportSetting(exportFileName);
+        }
+        else
+        {
+            File.Copy(fileName, exportFileName);
+        }
+
         return true;
     }
 

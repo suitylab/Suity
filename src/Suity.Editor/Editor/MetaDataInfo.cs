@@ -74,7 +74,7 @@ public sealed class MetaDataInfo : IViewObject
     /// <param name="fileName">The file path to save to.</param>
     public static void Save(MetaDataInfo info, string fileName)
     {
-        XmlNodeWriter writer = new XmlNodeWriter("SuityMeta");
+        var writer = new XmlNodeWriter("SuityMeta");
         writer.SetAttribute("version", "1.0");
 
         Serializer.Serialize(info, writer, null, null);
@@ -88,7 +88,7 @@ public sealed class MetaDataInfo : IViewObject
     /// <param name="fileName">The file path to export to.</param>
     public static void Export(MetaDataInfo info, string fileName)
     {
-        XmlNodeWriter writer = new XmlNodeWriter("SuityMeta");
+        var writer = new XmlNodeWriter("SuityMeta");
         writer.SetAttribute("version", "1.0");
 
         Serializer.Serialize(info, writer, null, null, SyncIntent.DataExport);

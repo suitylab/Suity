@@ -141,6 +141,12 @@ public abstract class Project
     /// </summary>
     internal abstract void SaveSetting();
 
+    /// <summary>
+    /// Exports plugin settings to the specified file.
+    /// </summary>
+    /// <param name="exportFileName">The name of the file to export to.</param>
+    internal abstract void ExportSetting(string exportFileName);
+
     internal abstract void UpdateProject();
 
     /// <summary>

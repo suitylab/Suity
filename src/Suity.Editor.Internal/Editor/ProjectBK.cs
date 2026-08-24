@@ -3,6 +3,7 @@ using Suity.Editor.Services;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.NodeQuery;
+using Suity.Synchonizing;
 using Suity.Synchonizing.Core;
 using Suity.Views;
 using System;
@@ -360,6 +361,44 @@ internal class ProjectBK : Project
             string fileName = SystemDirectory.PathAppend("ProjectSetting.xml");
 
             writer.SaveToFile(fileName);
+        }
+        catch (Exception err)
+        {
+            err.LogError("Save project setting failed.");
+        }
+    }
+
+    internal override void ExportSetting(string exportFileName)
+    {
+        try
+        {
+            var pluginManager = PluginManager.Instance;
+            var writer = new XmlNodeWriter("ProjectSetting");
+
+            foreach (var plugin in pluginManager.Plugins)
+            {
+                var viewObj = plugin.Plugin as IViewObject;
+                if (viewObj is null)
+                {
+                    continue;
+                }
+
+                writer.SetElement("Plugin", pluginWriter =>
+                {
+                    pluginWriter.SetAttribute("name", plugin.Name);
+
+                    try
+                    {
+                        Serializer.Serialize(viewObj, pluginWriter, null, null, SyncIntent.DataExport);
+                    }
+                    catch (Exception err2)
+                    {
+                        err2.LogError($"Save plugin setting failed : {plugin.Name}");
+                    }
+                });
+            }
+
+            writer.SaveToFile(exportFileName);
         }
         catch (Exception err)
         {
