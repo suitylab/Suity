@@ -5,7 +5,7 @@ public class NewCommand : CliCommand
 {
     public override string Description => "Create a new project in the specified folder";
 
-    public override string Usage => "new <project-folder>";
+    public override string Usage => "new <project-folder> [--template <template-file>]";
 
     public override void DoCommand(ICliArguments args)
     {
@@ -16,12 +16,22 @@ public class NewCommand : CliCommand
         }
 
         string? folderPath = args[0];
+        string? templateFile = args.Options["template"];
 
         if (string.IsNullOrWhiteSpace(folderPath))
         {
             Console.Error.WriteLine("Error: project folder path is required.");
             Console.Error.WriteLine($"Usage: {Usage}");
             return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(templateFile))
+        {
+            if (!File.Exists(templateFile))
+            {
+                Console.Error.WriteLine($"Error: template file '{templateFile}' does not exist.");
+                return;
+            }
         }
 
         folderPath = Path.GetFullPath(folderPath);
@@ -43,8 +53,12 @@ public class NewCommand : CliCommand
         string fileName = Path.Combine(folderPath, $"{folderName}.suity");
 
         Console.WriteLine($"Creating project '{fileName}'...");
+        if (!string.IsNullOrWhiteSpace(templateFile))
+        {
+            Console.WriteLine($"Using template '{templateFile}'...");
+        }
 
-        SuityCLI.Instance.OpenProject(fileName).Wait();
+        SuityCLI.Instance.OpenProject(fileName, null, templateFile).Wait();
 
         Console.WriteLine($"Project '{fileName}' created.");
 
