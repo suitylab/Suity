@@ -128,6 +128,17 @@ public abstract class BaseOpenAIPlugin<TLLm, TImage> : BaseOpenAIPlugin, IViewOb
         }
     }
 
+    protected override void UpdateProject()
+    {
+        base.UpdateProject();
+
+        var list = OkGoDoItHelper.LoadModelList(ManufacturerId);
+        if (list != null)
+        {
+            UpdateModelList(list);
+        }
+    }
+
     private void UpdateModelList(List<Model> list)
     {
         if (list is null)

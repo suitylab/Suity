@@ -8,6 +8,7 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Suity.Editor;
@@ -269,9 +270,7 @@ internal class ProjectBK : Project
 
     #region Setting
 
-    /// <summary>
-    /// Loads plugin settings from the project settings XML file.
-    /// </summary>
+    /// <inheritdoc/>
     internal override void LoadSetting()
     {
         string fileName = SystemDirectory.PathAppend("ProjectSetting.xml");
@@ -327,9 +326,7 @@ internal class ProjectBK : Project
         }
     }
 
-    /// <summary>
-    /// Saves plugin settings to the project settings XML file.
-    /// </summary>
+    /// <inheritdoc/>
     internal override void SaveSetting()
     {
         try
@@ -367,6 +364,23 @@ internal class ProjectBK : Project
         catch (Exception err)
         {
             err.LogError("Save project setting failed.");
+        }
+    }
+
+    /// <inheritdoc/>
+    internal override void UpdateProject()
+    {
+        var pluginManager = PluginManager.Instance;
+        foreach (var plugin in pluginManager.Plugins.Select(o => o.Plugin).SkipNull())
+        {
+            try
+            {
+                EditorObjectManager.Instance.DoUnwatchedAction(plugin.UpdateProject);
+            }
+            catch (Exception err)
+            {
+                err.LogError($"Update plugin failed : {plugin.Name}");
+            }
         }
     }
 

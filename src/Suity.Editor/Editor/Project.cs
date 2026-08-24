@@ -132,15 +132,16 @@ public abstract class Project
 
 
     /// <summary>
-    /// Loads the project settings.
+    /// Loads plugin settings from the project settings XML file.
     /// </summary>
     internal abstract void LoadSetting();
 
     /// <summary>
-    /// Saves the project settings.
+    /// Saves plugin settings to the project settings XML file.
     /// </summary>
     internal abstract void SaveSetting();
 
+    internal abstract void UpdateProject();
 
     /// <summary>
     /// Gets the project GUID.

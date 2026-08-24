@@ -59,7 +59,12 @@ public abstract class Plugin : IServiceProvider
 
     internal protected virtual void SaveProject()
     {
-    } 
+    }
+
+    internal protected virtual void UpdateProject()
+    {
+    }
+
 
     #endregion
 

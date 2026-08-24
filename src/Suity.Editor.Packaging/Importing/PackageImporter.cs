@@ -209,6 +209,7 @@ internal class PackageImporter
                         if (string.Equals(fileName, "ProjectSetting.xml", StringComparison.OrdinalIgnoreCase))
                         {
                             Project.Current.LoadSetting();
+                            Project.Current.UpdateProject();
                         }
                     }
                 }
