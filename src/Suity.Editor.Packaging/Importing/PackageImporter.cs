@@ -208,7 +208,7 @@ internal class PackageImporter
                         string fileName = systemFile.MakeRelativePath(Project.Current.SystemDirectory);
                         if (string.Equals(fileName, "ProjectSetting.xml", StringComparison.OrdinalIgnoreCase))
                         {
-
+                            Project.Current.LoadSetting();
                         }
                     }
                 }
