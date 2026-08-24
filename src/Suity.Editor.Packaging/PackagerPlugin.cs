@@ -194,8 +194,9 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
 
         Project project = Project.Current;
 
-        string[] entries = importForm.GetFiles().Concat(importForm.GetWorkspaceFiles())
-            .Select(s => s.MakeRelativePath(project.ProjectBasePath)).ToArray();
+        string[] entries = importForm.GetAssetFiles().Concat(importForm.GetWorkspaceFiles()).Concat(importForm.GetSystemFiles())
+            .Select(s => s.MakeRelativePath(project.ProjectBasePath))
+            .ToArray();
 
         if (entries.Length > 0)
         {

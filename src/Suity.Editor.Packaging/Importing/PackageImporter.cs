@@ -36,6 +36,7 @@ internal class PackageImporter
     private readonly Dictionary<string, RenderFile> _renderFiles = [];
     private readonly List<List<string>> _assetFileNames = [];
     private readonly List<string> _workspaceNames = [];
+    private readonly List<string> _systemFileNames = [];
 
     // 4K is optimum
     private readonly byte[] _buffer = new byte[4096];
@@ -201,6 +202,15 @@ internal class PackageImporter
                             }
                         }
                     }
+
+                    foreach (var systemFile in _systemFileNames)
+                    {
+                        string fileName = systemFile.MakeRelativePath(Project.Current.SystemDirectory);
+                        if (string.Equals(fileName, "ProjectSetting.xml", StringComparison.OrdinalIgnoreCase))
+                        {
+
+                        }
+                    }
                 }
                 catch (Exception err)
                 {
@@ -310,8 +320,9 @@ internal class PackageImporter
             });
         }
 
-        bool isWorkSpaceFile = zipEntry.Name.StartsWith("WorkSpaces/");
         bool isAssetFile = zipEntry.Name.StartsWith("Assets/");
+        bool isWorkSpaceFile = zipEntry.Name.StartsWith("WorkSpaces/");
+        bool isSystemFile = zipEntry.Name.StartsWith("System/");
 
         string workSpaceName = null;
         WorkSpace workSpace = null;
@@ -359,6 +370,11 @@ internal class PackageImporter
                     StreamUtils.Copy(zipStream, fsOutput, _buffer);
                 }
             }
+            else if (isSystemFile)
+            {
+                using Stream fsOutput = File.Create(targetFileName);
+                StreamUtils.Copy(zipStream, fsOutput, _buffer);
+            }
         }
 
         // Update Workspace Config file
@@ -372,6 +388,10 @@ internal class PackageImporter
             int index = (int)itr;
             _assetFileNames.EnsureListSize(index + 1, () => []);
             _assetFileNames[index].Add(targetFileName);
+        }
+        else if (isSystemFile)
+        {
+            _systemFileNames.Add(targetFileName);
         }
     }
 

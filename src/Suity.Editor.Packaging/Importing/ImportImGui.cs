@@ -69,7 +69,7 @@ internal class ImportImGui : IDrawImGui
     /// Gets the paths of all enabled asset files selected for import.
     /// </summary>
     /// <returns>A collection of enabled asset file paths.</returns>
-    public IEnumerable<string> GetFiles()
+    public IEnumerable<string> GetAssetFiles()
     {
         return _previewGui.GetAssetFiles();
     }
@@ -81,6 +81,15 @@ internal class ImportImGui : IDrawImGui
     public IEnumerable<string> GetWorkspaceFiles()
     {
         return _previewGui.GetWorkspaceFileNames();
+    }
+
+    /// <summary>
+    /// Gets the paths of all enabled system files selected for import.
+    /// </summary>
+    /// <returns>A collection of enabled system file paths.</returns>
+    public IEnumerable<string> GetSystemFiles()
+    {
+        return _previewGui.GetSystemFiles();
     }
 
     /// <inheritdoc/>
