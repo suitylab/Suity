@@ -47,7 +47,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     private string _presetFullName;
 
 
-    private readonly IConversationImGui _conversation;
+    private readonly IConversationHost _conversation;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SubFlowInstance"/> class.
@@ -65,7 +65,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
         _preset.Target = preset;
 
-        _conversation = EditorServices.ImGuiService.CreateConversationImGui(pageDefinition.Name, false);
+        _conversation = EditorServices.PlatformService.CreateConversation(pageDefinition.Name, false);
 
         Build();
     }

@@ -227,7 +227,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
     where TInput : class, IViewObject
     where TOutput : class, IViewObject
 {
-    private readonly IConversationImGui _conversation;
+    private readonly IConversationHandler _conversation;
 
     private readonly TInput _input;
     private readonly SimpleType _inputType;
@@ -247,7 +247,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         _errorMessage.Text = null;
         _errorMessage.Property.WithOptional();
 
-        _conversation = EditorServices.ImGuiService.CreateConversationImGui(typeof(TInput).Name, false);
+        _conversation = EditorServices.PlatformService.CreateConversation(typeof(TInput).Name, false);
     }
 
     public TInput Input => _input;

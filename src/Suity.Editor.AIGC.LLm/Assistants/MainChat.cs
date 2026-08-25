@@ -46,7 +46,7 @@ internal class MainChat : ILLmChat
     /// </summary>
     protected LLmChatStates _state;
 
-    private readonly IConversationImGui _conversation;
+    private readonly IConversationHandler _conversation;
     private readonly FunctionContext _context;
 
     /// <summary>
@@ -86,9 +86,9 @@ internal class MainChat : ILLmChat
     /// Initializes a new instance of the <see cref="MainChat"/> class with the specified conversation.
     /// </summary>
     /// <param name="conversation">The conversation UI handler. If null, a default one is created.</param>
-    public MainChat(IConversationImGui conversation)
+    public MainChat(IConversationHandler conversation)
     {
-        conversation ??= EditorServices.ImGuiService.CreateConversationImGui(nameof(MainChat), false);
+        conversation ??= EditorServices.PlatformService.CreateConversation(nameof(MainChat), false);
 
         _conversation = conversation; // ?? throw new ArgumentNullException(nameof(conversation));
 

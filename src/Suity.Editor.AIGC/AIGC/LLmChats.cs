@@ -19,7 +19,7 @@ public abstract class BaseLLmChat : ILLmChat,
     private readonly string _text;
     private LLmChatStates _state;
 
-    protected readonly IConversationImGui _conversation;
+    protected readonly IConversationHost _conversation;
 
     protected readonly FunctionContext _context;
 
@@ -39,8 +39,8 @@ public abstract class BaseLLmChat : ILLmChat,
         _text = text;
         _context = context ?? new FunctionContext();
 
-        _conversation = EditorServices.ImGuiService.CreateConversationImGui(name, false);
-        (_conversation as IConversationHost)?.StartConversation(this);
+        _conversation = EditorServices.PlatformService.CreateConversation(name, false);
+        _conversation?.StartConversation(this);
 
         _context.SetArgument<ILLmChat>(this);
         _context.SetArgument<IConversationHandler>(_conversation);
@@ -282,7 +282,7 @@ public abstract class BaseLLmChat : ILLmChat,
     {
         bool first = _guiRef.Node is null;
 
-        var node = _conversation?.OnNodeGui(gui);
+        var node = (_conversation as IConversationImGui)?.OnNodeGui(gui);
         _guiRef.Node = node;
 
         if (first)
