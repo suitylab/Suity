@@ -20,11 +20,22 @@ public enum ConversationRole
 }
 #endregion
 
+#region ConversationLevels
+
+public enum ConversationLevels
+{
+    Main,
+    Sub,
+}
+
+#endregion
+
 #region ConversationOptions
 
 public class ConversationOptions
 {
     public bool DisableOldMessage { get; set; } = true;
+    public ConversationLevels Level { get; set; } = ConversationLevels.Main;
 }
 
 #endregion

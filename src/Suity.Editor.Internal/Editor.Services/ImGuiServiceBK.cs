@@ -21,7 +21,13 @@ internal class ImGuiServiceBK : IImGuiService
     public ImGui CreateImGui(IGraphicContext context, ImGuiConfig config) => ImGuiServices.CreateImGui(context, config);
 
     public IConversationImGui CreateConversationImGui(string id, ConversationOptions option)
-        => new ConversationImGui(id) { DisableOldMessage = option.DisableOldMessage };
+    {
+        return new ConversationImGui(id)
+        {
+            DisableOldMessage = option.DisableOldMessage,
+            Level = option.Level,
+        };
+    }
 
     public IDrawExpandedImGui CreateExpandedView(Type objectType)
         => DrawExpandedImGuiResolver.Instance.CreateView(objectType);

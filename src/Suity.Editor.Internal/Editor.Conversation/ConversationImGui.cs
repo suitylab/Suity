@@ -52,6 +52,8 @@ public class ConversationImGui :
     /// </summary>
     public bool DisableOldMessage { get; set; } = true;
 
+    public ConversationLevels Level { get; set; } = ConversationLevels.Main;
+
     /// <summary>
     /// Scrolls the conversation view to the bottom.
     /// </summary>
