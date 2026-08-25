@@ -39,7 +39,11 @@ public abstract class BaseLLmChat : ILLmChat,
         _text = text;
         _context = context ?? new FunctionContext();
 
-        _conversation = EditorServices.PlatformService.CreateConversation(name, false);
+        var cOption = new ConversationOptions
+        {
+            DisableOldMessage = false
+        };
+        _conversation = EditorServices.PlatformService.CreateConversation(name, cOption);
         _conversation?.StartConversation(this);
 
         _context.SetArgument<ILLmChat>(this);

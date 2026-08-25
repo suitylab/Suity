@@ -157,7 +157,7 @@ public interface IImGuiService
     /// <param name="id">The conversation identifier.</param>
     /// <param name="disableOldMessage">Whether to disable old messages.</param>
     /// <returns>A conversation ImGui instance.</returns>
-    IConversationImGui CreateConversationImGui(string id, bool disableOldMessage = true);
+    IConversationImGui CreateConversationImGui(string id, ConversationOptions option);
 
     /// <summary>
     /// Gets the editor theme.

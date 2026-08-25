@@ -1,6 +1,7 @@
 ﻿using Suity.Collections;
 using Suity.Editor.Conversation;
 using Suity.Editor.Gui.TreeGui;
+using Suity.Views;
 using Suity.Views.Graphics;
 using Suity.Views.Im;
 using Suity.Views.Im.PropertyEditing;
@@ -19,8 +20,8 @@ internal class ImGuiServiceBK : IImGuiService
 
     public ImGui CreateImGui(IGraphicContext context, ImGuiConfig config) => ImGuiServices.CreateImGui(context, config);
 
-    public IConversationImGui CreateConversationImGui(string id, bool disableOldMessage)
-        => new ConversationImGui(id) { DisableOldMessage = disableOldMessage };
+    public IConversationImGui CreateConversationImGui(string id, ConversationOptions option)
+        => new ConversationImGui(id) { DisableOldMessage = option.DisableOldMessage };
 
     public IDrawExpandedImGui CreateExpandedView(Type objectType)
         => DrawExpandedImGuiResolver.Instance.CreateView(objectType);

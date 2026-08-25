@@ -14,6 +14,6 @@ public class AvaPlatformService : IPlatformService
     public Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token) 
         => ShellCommandHelper.ExecuteCommandAsync(command, workingDirectory, onOutput, token);
 
-    public IConversationHost CreateConversation(string id, bool disableOldMessage = true)
-        => new ConversationImGui(id) { DisableOldMessage = disableOldMessage };
+    public IConversationHost CreateConversation(string id, ConversationOptions option)
+        => new ConversationImGui(id) { DisableOldMessage = option.DisableOldMessage };
 }

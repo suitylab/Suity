@@ -88,7 +88,11 @@ internal class MainChat : ILLmChat
     /// <param name="conversation">The conversation UI handler. If null, a default one is created.</param>
     public MainChat(IConversationHandler conversation)
     {
-        conversation ??= EditorServices.PlatformService.CreateConversation(nameof(MainChat), false);
+        var cOption = new ConversationOptions
+        {
+            DisableOldMessage = false
+        };
+        conversation ??= EditorServices.PlatformService.CreateConversation(nameof(MainChat), cOption);
 
         _conversation = conversation; // ?? throw new ArgumentNullException(nameof(conversation));
 

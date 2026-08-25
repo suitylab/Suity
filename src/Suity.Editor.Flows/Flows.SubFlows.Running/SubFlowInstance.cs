@@ -65,7 +65,11 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
         _preset.Target = preset;
 
-        _conversation = EditorServices.PlatformService.CreateConversation(pageDefinition.Name, false);
+        var cOption = new ConversationOptions
+        {
+            DisableOldMessage = false
+        };
+        _conversation = EditorServices.PlatformService.CreateConversation(pageDefinition.Name, cOption);
 
         Build();
     }

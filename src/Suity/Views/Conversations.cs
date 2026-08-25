@@ -20,6 +20,15 @@ public enum ConversationRole
 }
 #endregion
 
+#region ConversationOptions
+
+public class ConversationOptions
+{
+    public bool DisableOldMessage { get; set; } = true;
+}
+
+#endregion
+
 #region IConversationHandler
 /// <summary>
 /// Defines an interface for handling conversations.

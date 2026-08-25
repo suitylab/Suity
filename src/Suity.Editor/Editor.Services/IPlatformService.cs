@@ -23,5 +23,5 @@ public interface IPlatformService
     /// <param name="id">The conversation identifier.</param>
     /// <param name="disableOldMessage">Whether to disable old messages.</param>
     /// <returns>A conversation host instance.</returns>
-    IConversationHost CreateConversation(string id, bool disableOldMessage = true);
+    IConversationHost CreateConversation(string id, ConversationOptions option);
 }

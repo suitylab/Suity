@@ -247,7 +247,11 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
         _errorMessage.Text = null;
         _errorMessage.Property.WithOptional();
 
-        _conversation = EditorServices.PlatformService.CreateConversation(typeof(TInput).Name, false);
+        var cOption = new ConversationOptions
+        {
+            DisableOldMessage = false
+        };
+        _conversation = EditorServices.PlatformService.CreateConversation(typeof(TInput).Name, cOption);
     }
 
     public TInput Input => _input;
