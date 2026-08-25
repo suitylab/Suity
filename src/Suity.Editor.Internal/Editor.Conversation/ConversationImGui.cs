@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,9 +16,9 @@ namespace Suity.Editor.Conversation;
 /// Handles conversation UI rendering using ImGui and manages conversation lifecycle, input handling, and message display.
 /// </summary>
 public class ConversationImGui :
-    IConversation,
     IConversationHost,
     IConversationHostAsync,
+    IConversation,
     IDrawImGuiNode,
     IConversationImGui
 {
@@ -25,7 +26,7 @@ public class ConversationImGui :
 
     private readonly ImGuiNodeRef _guiRef = new();
 
-    private readonly ValueStore<IConversationClient> _conversation = new();
+    private readonly ValueStore<IConversationClient> _client = new();
     private readonly Stack<Action> _actionStack = new();
     private IEnumerator _coroutine;
     private DisposeCollector _contentListeners;
@@ -131,7 +132,7 @@ public class ConversationImGui :
 
         ConversationName = name;
 
-        _conversation.PickUp()?.StopConversation();
+        _client.PickUp()?.StopConversation();
         lock (_items)
         {
             _items.Clear();
@@ -140,13 +141,13 @@ public class ConversationImGui :
         _coroutine = null;
         _actionStack.Clear();
 
-        _conversation.Set(conversation);
+        _client.Set(conversation);
 
         Title = title ?? name;
 
         QueuedAction.Do(() =>
         {
-            _conversation.Get().StartConversation(this);
+            _client.Get().StartConversation(this);
 
             _guiRef.QueueRefresh();
         });
@@ -157,7 +158,7 @@ public class ConversationImGui :
     {
         try
         {
-            _conversation.PickUp()?.StopConversation();
+            _client.PickUp()?.StopConversation();
         }
         catch (Exception err)
         {
@@ -218,7 +219,7 @@ public class ConversationImGui :
         {
             try
             {
-                var c = _conversation.Get();
+                var c = _client.Get();
                 c?.HandleInput();
             }
             catch (Exception err)
@@ -285,7 +286,7 @@ public class ConversationImGui :
         {
             try
             {
-                var c = _conversation.Get();
+                var c = _client.Get();
                 if (c is IConversationAsync cAsync)
                 {
                     return cAsync.HandleInputAsync(cancel);
@@ -307,7 +308,7 @@ public class ConversationImGui :
 
     #endregion
 
-    #region IConversationHandler
+    #region IConversation
 
     /// <inheritdoc/>
     public string ConversationName { get; private set; }
@@ -348,7 +349,9 @@ public class ConversationImGui :
         ScrollToBottom();
         //_guiRef.QueueRefresh();
 
-        QueuedAction.Do(() => ScrollToBottom());
+        QueuedAction.Do(ScrollToBottom);
+
+        OnMessageAdded(item);
 
         return item;
     }
@@ -373,28 +376,53 @@ public class ConversationImGui :
         if (removed)
         {
             _guiRef.QueueRefresh();
+
+            OnMessageRemoved(item);
         }
     }
 
     /// <inheritdoc/>
     public void RemoveMessages(Predicate<IDIalogItem> predicate)
     {
+        DialogItem[] items = null;
+
         lock (_items)
         {
+            items = _items.Where(v => predicate(v)).ToArray();
             _items.RemoveAll(predicate);
         }
+
         _guiRef.QueueRefresh();
+
+        if (items?.Length > 0)
+        {
+            foreach (var item in items)
+            {
+                OnMessageRemoved(item);
+            }
+        }
     }
 
     /// <inheritdoc/>
     public void RemoveDebugMessages()
     {
+        DialogItem[] items = null;
+
         lock (_items)
         {
+            items = _items.Where(o => o.Role == ConversationRole.Debug).ToArray();
             _items.RemoveAll(o => o.Role == ConversationRole.Debug);
         }
 
         _guiRef.QueueRefresh();
+
+        if (items?.Length > 0)
+        {
+            foreach (var item in items)
+            {
+                OnMessageRemoved(item);
+            }
+        }
     }
 
     /// <inheritdoc/>
@@ -529,5 +557,17 @@ public class ConversationImGui :
 
         return node;
     }
+    #endregion
+
+    #region Virtual
+
+    protected virtual void OnMessageAdded(IDIalogItem item)
+    {
+    }
+
+    protected virtual void OnMessageRemoved(IDIalogItem item)
+    {
+    }
+
     #endregion
 }

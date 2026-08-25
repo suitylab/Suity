@@ -36,6 +36,8 @@ public class CliReplInterface
                 Console.Error.WriteLine($"Error: {ex.Message}");
                 Console.ResetColor();
             }
+
+            QueuedAction.FlushQueuedActions();
         }
     }
 
