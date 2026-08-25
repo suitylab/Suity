@@ -14,7 +14,7 @@ namespace Suity.Editor.Conversation;
 /// <summary>
 /// Handles conversation UI rendering using ImGui and manages conversation lifecycle, input handling, and message display.
 /// </summary>
-public class ConversationHandlerImGui :
+public class ConversationImGui :
     IConversationImGui,
     IConversationHandler,
     IConversationHost,
@@ -39,10 +39,10 @@ public class ConversationHandlerImGui :
     private long _idAlloc;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ConversationHandlerImGui"/> class.
+    /// Initializes a new instance of the <see cref="ConversationImGui"/> class.
     /// </summary>
     /// <param name="id">Unique identifier for this conversation handler.</param>
-    public ConversationHandlerImGui(string id)
+    public ConversationImGui(string id)
     {
         _id = id;
     }
