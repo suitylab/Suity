@@ -377,7 +377,7 @@ public class ConversationImGui :
         {
             _guiRef.QueueRefresh();
 
-            OnMessageRemoved(item);
+            OnMessageRemoved((DialogItem)item);
         }
     }
 
@@ -561,11 +561,11 @@ public class ConversationImGui :
 
     #region Virtual
 
-    protected virtual void OnMessageAdded(IDIalogItem item)
+    protected virtual void OnMessageAdded(DialogItem item)
     {
     }
 
-    protected virtual void OnMessageRemoved(IDIalogItem item)
+    protected virtual void OnMessageRemoved(DialogItem item)
     {
     }
 

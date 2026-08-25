@@ -16,7 +16,7 @@ internal class CliConversation : ConversationImGui
     {
     }
 
-    protected override void OnMessageAdded(IDIalogItem item)
+    protected override void OnMessageAdded(DialogItem item)
     {
     }
 }

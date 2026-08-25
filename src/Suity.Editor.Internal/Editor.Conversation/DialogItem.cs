@@ -35,7 +35,7 @@ internal class DialogMenuRootCommand : RootMenuCommand
 /// <summary>
 /// Represents a single dialog item (message) in a conversation, supporting text, code, buttons, progress bars, and other elements.
 /// </summary>
-internal class DialogItem : IDialogMessage
+public class DialogItem : IDialogMessage
 {
     private static readonly Color ColorUser = EditorColorScheme.Default.EditorBG;  //ColorTranslator.FromHtml("#3F8ABF");
     private static readonly Color ColorRemote = EditorColorScheme.Default.EditorBG;
@@ -209,12 +209,17 @@ internal class DialogItem : IDialogMessage
             });
         });
     }
+
+    public void WriteConsole()
+    {
+
+    }
 }
 
 /// <summary>
 /// Base class for interactive elements within a conversation dialog item.
 /// </summary>
-internal abstract class DialogElement
+public abstract class DialogElement
 {
     /// <summary>
     /// Renders this element in the ImGui interface.
@@ -231,7 +236,7 @@ internal abstract class DialogElement
 /// A text element displayed in a conversation dialog.
 /// </summary>
 /// <param name="text">The text content.</param>
-internal class DialogElement_Text(string text) : DialogElement
+public class DialogElement_Text(string text) : DialogElement
 {
     /// <summary>
     /// Gets the text content.
@@ -260,7 +265,7 @@ internal class DialogElement_Text(string text) : DialogElement
 /// A code block element displayed in a conversation dialog.
 /// </summary>
 /// <param name="text">The code content.</param>
-internal class DialogElement_Code(string text) : DialogElement
+public class DialogElement_Code(string text) : DialogElement
 {
     /// <summary>
     /// Gets the code content.
@@ -290,7 +295,7 @@ internal class DialogElement_Code(string text) : DialogElement
 /// <summary>
 /// A button element displayed in a conversation dialog.
 /// </summary>
-internal class DialogElement_Button : DialogElement
+public class DialogElement_Button : DialogElement
 {
     /// <summary>
     /// Gets the button key used for identification.
@@ -341,7 +346,7 @@ internal class DialogElement_Button : DialogElement
 /// <summary>
 /// A group of buttons displayed in a conversation dialog.
 /// </summary>
-internal class DialogElement_ButtonGroup : DialogElement
+public class DialogElement_ButtonGroup : DialogElement
 {
     private readonly string _title;
     private readonly ConversationButton[] _buttons;
@@ -400,7 +405,7 @@ internal class DialogElement_ButtonGroup : DialogElement
 /// <summary>
 /// A horizontal line separator element displayed in a conversation dialog.
 /// </summary>
-internal class DialogElement_Line : DialogElement
+public class DialogElement_Line : DialogElement
 {
     /// <inheritdoc/>
     public override ImGuiNode OnGui(ImGui gui, int index, RootMenuCommand menu, IConversationHost host)
@@ -412,7 +417,7 @@ internal class DialogElement_Line : DialogElement
 /// <summary>
 /// A progress bar element displayed in a conversation dialog.
 /// </summary>
-internal class DialogElement_ProgressBar : DialogElement
+public class DialogElement_ProgressBar : DialogElement
 {
     private readonly float _progress;
     private readonly float _max;
