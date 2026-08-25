@@ -212,7 +212,17 @@ public class DialogItem : IDialogMessage
 
     public void WriteConsole()
     {
+        var statusStr = Status != TextStatus.Normal ? $" [{Status}]" : "";
+        Console.WriteLine($"[{Role}]{statusStr}: {Message}");
 
+        if (_elements != null)
+        {
+            for (int i = 0; i < _elements.Count; i++)
+            {
+                Console.Write("  - ");
+                _elements[i].WriteConsole();
+            }
+        }
     }
 }
 
@@ -230,6 +240,8 @@ public abstract class DialogElement
     /// <param name="host">The conversation host.</param>
     /// <returns>The rendered ImGui node.</returns>
     public abstract ImGuiNode OnGui(ImGui gui, int index, RootMenuCommand menu, IConversationHost host);
+
+    public abstract void WriteConsole();
 }
 
 /// <summary>
@@ -258,6 +270,11 @@ public class DialogElement_Text(string text) : DialogElement
 
             return GuiInputState.None;
         });
+    }
+
+    public override void WriteConsole()
+    {
+        Console.WriteLine($"Text: {Text}");
     }
 }
 
@@ -289,6 +306,11 @@ public class DialogElement_Code(string text) : DialogElement
 
         //    return GuiState.None;
         //});
+    }
+
+    public override void WriteConsole()
+    {
+        Console.WriteLine($"Code: {Code}");
     }
 }
 
@@ -340,6 +362,11 @@ public class DialogElement_Button : DialogElement
                 host?.HandleButtonClick(Key);
             }
         });
+    }
+
+    public override void WriteConsole()
+    {
+        Console.WriteLine($"Button[{Key}]: {Text}");
     }
 }
 
@@ -400,6 +427,12 @@ public class DialogElement_ButtonGroup : DialogElement
             });
         });
     }
+
+    public override void WriteConsole()
+    {
+        var btnTexts = string.Join(", ", Array.ConvertAll(_buttons, b => b.Text));
+        Console.WriteLine($"Buttons[{_title}]: {btnTexts}");
+    }
 }
 
 /// <summary>
@@ -411,6 +444,11 @@ public class DialogElement_Line : DialogElement
     public override ImGuiNode OnGui(ImGui gui, int index, RootMenuCommand menu, IConversationHost host)
     {
         return gui.HorizontalLine($"line#{index}").InitFullWidth();
+    }
+
+    public override void WriteConsole()
+    {
+        Console.WriteLine("──────────");
     }
 }
 
@@ -453,5 +491,10 @@ public class DialogElement_ProgressBar : DialogElement
         node.Text = $"{_progress} / {_max}";
 
         return node;
+    }
+
+    public override void WriteConsole()
+    {
+        Console.WriteLine($"Progress: {_progress} / {_max}");
     }
 }

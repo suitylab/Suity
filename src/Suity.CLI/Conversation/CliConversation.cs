@@ -18,5 +18,11 @@ internal class CliConversation : ConversationImGui
 
     protected override void OnMessageAdded(DialogItem item)
     {
+        if (base.Level != ConversationLevels.Main)
+        {
+            return;
+        }
+
+        item.WriteConsole();
     }
 }

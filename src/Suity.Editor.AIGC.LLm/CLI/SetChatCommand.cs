@@ -26,7 +26,6 @@ public class SetChatCommand : CliCommand
         }
 
         AigcChatToolWindow.Instance.SelectedChatProvider = provider;
-
         Console.WriteLine("chat is set to " + assetKey);
     }
 }

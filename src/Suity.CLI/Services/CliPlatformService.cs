@@ -13,7 +13,7 @@ public class CliPlatformService : IPlatformService
 
     public IConversationHost CreateConversation(string id, ConversationOptions option)
     {
-        return new ConversationImGui(id)
+        return new CliConversation(id)
         {
             DisableOldMessage = option.DisableOldMessage,
             Level = option.Level,

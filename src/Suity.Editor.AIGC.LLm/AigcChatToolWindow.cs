@@ -260,7 +260,7 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
         });
     }
 
-    private void HandleStart()
+    internal void HandleStart()
     {
         //if (!ServiceInternals._license.GetCapability(EditorCapabilities.AigcWorkflow))
         //{
@@ -277,7 +277,7 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
         StartCurrentChat().GetAwaiter().OnCompleted(() => { });
     }
 
-    private void HandleStop()
+    internal void HandleStop()
     {
         try
         {
