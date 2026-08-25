@@ -78,7 +78,7 @@ sealed class AvaDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateV
         AddService<IPlatformService>(AvaPlatformService.Instance);
         AddService<IToolWindowService>(ToolWindowService.Instance);
         AddService<IMenuService>(MenuService.Instance);
-        AddService<IImGuiService>(AvaImGuiService.Instance);
+        AddService<IImGuiService>(ImGuiServiceBK.Instance);
         AddService<IColorConfig>(ColorConfigBK.Instance);
         AddService<IEditorColorConfig>(ColorConfigBK.Instance);
         AddService<IIconService>(IconService.Instance);
@@ -92,8 +92,8 @@ sealed class AvaDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateV
 
         AddService<IDialogService>(AvaDialogService.Instance);
         AddService<IDialogExService>(AvaDialogService.Instance);
-        AddService<IFileNameService>(FileNameServiceBK.Instance);
         AddService<IDialogServiceAsync>(AvaDialogServiceAsync.Instance);
+        AddService<IFileNameService>(FileNameServiceBK.Instance);
 
         AddService<DocumentViewResolver>(DocumentViewResolver.Instance);
         AddService<DrawExpandedImGuiResolver>(DrawExpandedImGuiResolver.Instance);

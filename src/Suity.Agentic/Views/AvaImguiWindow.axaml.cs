@@ -13,7 +13,7 @@ public partial class AvaImguiWindow : Window, IDrawImGui
     {
         InitializeComponent();
 
-        var theme = AvaImGuiService.Instance.GetEditorTheme(false);
+        var theme = ImGuiServiceBK.Instance.GetEditorTheme(false);
         ImGuiControl.GuiTheme = theme;
         ImGuiControl.BackgroundColor = theme.Colors.GetColor(ColorStyle.Background);
         ImGuiControl.DrawImGui = this;

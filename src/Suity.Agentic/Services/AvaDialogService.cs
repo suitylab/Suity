@@ -14,7 +14,7 @@ namespace Suity.Editor.Services;
 
 internal class AvaDialogService : IDialogService, IDialogExService
 {
-    public static readonly AvaDialogService Instance = new();
+    public static AvaDialogService Instance { get; } = new();
 
     public static Window? GetMainWindow()
     {

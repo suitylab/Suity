@@ -91,7 +91,7 @@ public partial class SelectionWindow : Window, IDrawImGui
     {
         base.OnLoaded(e);
 
-        var theme = AvaImGuiService.Instance.GetEditorTheme(false);
+        var theme = ImGuiServiceBK.Instance.GetEditorTheme(false);
 
         ImGuiControl.GuiTheme = theme;
         ImGuiControl.BackgroundColor = theme.Colors.GetColor(ColorStyle.Background);

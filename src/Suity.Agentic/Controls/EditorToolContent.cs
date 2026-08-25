@@ -160,7 +160,7 @@ public class EditorToolContent : UserControl
     {
         var control = new AvaImGuiControl();
 
-        var theme = AvaImGuiService.Instance.GetEditorTheme(false);
+        var theme = ImGuiServiceBK.Instance.GetEditorTheme(false);
         control.GuiTheme = theme;
         control.BackgroundColor = theme.Colors.GetColor(ColorStyle.Background);
         control.DrawImGui = drawImGui;
@@ -172,7 +172,7 @@ public class EditorToolContent : UserControl
     {
         var control = new AvaImGuiControl();
 
-        var theme = AvaImGuiService.Instance.GetEditorTheme(false);
+        var theme = ImGuiServiceBK.Instance.GetEditorTheme(false);
         control.GuiTheme = theme;
         control.BackgroundColor = theme.Colors.GetColor(ColorStyle.Background);
         control.GraphicObject = graphicObject;

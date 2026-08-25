@@ -124,14 +124,6 @@ public interface IImGuiService
     ImGui CreateImGui(IGraphicContext context, ImGuiConfig config);
 
     /// <summary>
-    /// Creates a dialog with the specified ImGui content.
-    /// </summary>
-    /// <param name="imGui">The ImGui content to display.</param>
-    /// <param name="option">The dialog options.</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    Task CreateImGuiDialog(IDrawImGui imGui, DialogOptions option);
-
-    /// <summary>
     /// Creates an ImGui control wrapper for the specified ImGui content.
     /// </summary>
     /// <param name="imGui">The ImGui content to wrap.</param>

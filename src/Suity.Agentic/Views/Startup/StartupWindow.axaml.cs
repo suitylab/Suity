@@ -21,7 +21,7 @@ public partial class StartupWindow : Window, IDrawImGui
 
         _projectGui ??= new();
 
-        var theme = AvaImGuiService.Instance.GetEditorTheme(false);
+        var theme = ImGuiServiceBK.Instance.GetEditorTheme(false);
 
         ImGuiControl.GuiTheme = theme;
         ImGuiControl.BackgroundColor = theme.Colors.GetColor(ColorStyle.Background);

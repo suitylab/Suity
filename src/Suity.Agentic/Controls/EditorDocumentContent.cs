@@ -281,7 +281,7 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
     {
         var control = new AvaImGuiControl();
 
-        var theme = AvaImGuiService.Instance.GetEditorTheme(false);
+        var theme = ImGuiServiceBK.Instance.GetEditorTheme(false);
         control.GuiTheme = theme;
         control.BackgroundColor = theme.Colors.GetColor(ColorStyle.Background);
         control.DrawImGui = drawImGui;
@@ -293,7 +293,7 @@ public class EditorDocumentContent : UserControl, IDocumentViewHost
     {
         var control = new AvaImGuiControl();
 
-        var theme = AvaImGuiService.Instance.GetEditorTheme(false);
+        var theme = ImGuiServiceBK.Instance.GetEditorTheme(false);
         control.GuiTheme = theme;
         control.BackgroundColor = theme.Colors.GetColor(ColorStyle.Background);
         control.GraphicObject = graphicObject;

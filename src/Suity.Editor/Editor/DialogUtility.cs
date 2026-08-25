@@ -3,6 +3,7 @@ using Suity.Editor.Selecting;
 using Suity.Editor.Services;
 using Suity.Helpers;
 using Suity.Selecting;
+using Suity.Views.Im;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -642,6 +643,40 @@ public static class DialogUtility
             return null;
         }
     }
+
+    #endregion
+
+    #region ImGui Async
+
+    /// <summary>
+    /// Creates an ImGui dialog with the specified parameters.
+    /// </summary>
+    /// <param name="drawImGui">The interface for drawing ImGui content</param>
+    /// <param name="title">The title of the dialog</param>
+    /// <param name="width">The width of the dialog</param>
+    /// <param name="height">The height of the dialog</param>
+    /// <param name="isDialog">Flag indicating whether to create as a dialog (default: true)</param>
+    /// <returns>An object representing the created ImGui dialog</returns>
+    public static Task CreateImGuiDialog(this IDrawImGui drawImGui, string title, int width, int height, bool isDialog = true, bool fixedSize = false)
+        => EditorServices.DialogServiceAsync.CreateImGuiDialog(drawImGui, new DialogOptions { Title = title, Width = width, Height = height, IsDialog = isDialog, FixedSize = fixedSize });
+
+    public static Task CreateImGuiDialog(this IDrawImGui drawImGui, DialogOptions option)
+        => EditorServices.DialogServiceAsync.CreateImGuiDialog(drawImGui, option);
+
+    /// <summary>
+    /// Creates an ImGui dialog with the specified parameters, wrapping the DrawImGui implementation.
+    /// </summary>
+    /// <param name="drawImGui">The implementation for drawing ImGui content</param>
+    /// <param name="title">The title of the dialog</param>
+    /// <param name="width">The width of the dialog</param>
+    /// <param name="height">The height of the dialog</param>
+    /// <param name="isDialog">Flag indicating whether to create as a dialog (default: true)</param>
+    /// <returns>An object representing the created ImGui dialog</returns>
+    public static Task CreateImGuiDialog(this DrawImGui drawImGui, string title, int width, int height, bool isDialog = true, bool fixedSize = false)
+        => EditorServices.DialogServiceAsync.CreateImGuiDialog(new DrawImguiWrapper(drawImGui), new DialogOptions { Title = title, Width = width, Height = height, IsDialog = isDialog, FixedSize = fixedSize });
+
+    public static Task CreateImGuiDialog(this DrawImGui drawImGui, DialogOptions option)
+        => EditorServices.DialogServiceAsync.CreateImGuiDialog(new DrawImguiWrapper(drawImGui), option);
 
     #endregion
 }

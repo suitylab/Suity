@@ -1,4 +1,5 @@
 using Suity.Drawing;
+using Suity.Views.Im;
 using System;
 using System.Threading.Tasks;
 
@@ -189,4 +190,12 @@ public interface IDialogServiceAsync
     /// <param name="exception">The exception to display.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     Task ShowExceptionAsync(Exception exception);
+
+    /// <summary>
+    /// Creates a dialog with the specified ImGui content.
+    /// </summary>
+    /// <param name="imGui">The ImGui content to display.</param>
+    /// <param name="option">The dialog options.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    Task CreateImGuiDialog(IDrawImGui imGui, DialogOptions option);
 }

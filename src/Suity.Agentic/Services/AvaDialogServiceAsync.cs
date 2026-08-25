@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Layout;
 using Avalonia.Media;
@@ -9,6 +10,9 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Dto;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia.Models;
+using Suity.Editor.Views;
+using Suity.Helpers;
+using Suity.Views.Im;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -447,7 +451,42 @@ internal class AvaDialogServiceAsync : IDialogServiceAsync
         return result?.TryGetLocalPath();
     }
 
+    public Task CreateImGuiDialog(IDrawImGui imGui, DialogOptions option)
+    {
+        var mainWindow = SuityApp.Instance.Window;
+        if (mainWindow is null)
+        {
+            return Task.CompletedTask;
+        }
 
+        var imGuiWindow = new AvaImguiWindow(imGui);
+        imGuiWindow.Width = option.Width;
+        imGuiWindow.Height = option.Height;
+        imGuiWindow.Title = option.Title ?? string.Empty;
+        imGuiWindow.CanResize = !option.FixedSize;
+        if (option.Icon is { } icon)
+        {
+            imGuiWindow.Icon = new Avalonia.Controls.WindowIcon(icon.ToAvaloniaBitmapCached());
+        }
+
+        if (option.IsDialog)
+        {
+            imGuiWindow.KeyDown += (s, e) =>
+            {
+                if (e.Key == Key.Escape)
+                {
+                    imGuiWindow.Close();
+                }
+            };
+
+            return imGuiWindow.ShowDialog(mainWindow);
+        }
+        else
+        {
+            imGuiWindow.Show(mainWindow);
+            return Task.CompletedTask;
+        }
+    }
 
     /// <summary>
     /// Convert WinForms style filter to Avalonia's FilePickerFileType list

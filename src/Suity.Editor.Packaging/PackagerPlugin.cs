@@ -71,7 +71,7 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
 
         exportForm.AddSystemDirectory(false);
 
-        await EditorUtility.CreateImGuiDialog(exportForm, "Export", 883, 827);
+        await DialogUtility.CreateImGuiDialog(exportForm, "Export", 883, 827);
 
         if (!exportForm.IsSuccess)
         {
@@ -185,7 +185,7 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
         var importForm = new ImportImGui();
         importForm.AddPackageFile(fileName, packageFullName);
         string title = $"Import {Path.GetFileNameWithoutExtension(fileName)}";
-        await EditorUtility.CreateImGuiDialog(importForm, title, 883, 827);
+        await DialogUtility.CreateImGuiDialog(importForm, title, 883, 827);
 
         if (!importForm.IsSuccess)
         {

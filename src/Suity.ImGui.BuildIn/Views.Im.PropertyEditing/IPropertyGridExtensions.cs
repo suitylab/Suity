@@ -622,7 +622,7 @@ public static class IPropertyGridExtensions
         var first = target.GetValues().FirstOrDefault();
         if (first is string || first is SString)
         {
-            EditorUtility.CreateImGuiDialog(new ReplaceStringImGui(grid), "Replace String", 600, 300);
+            DialogUtility.CreateImGuiDialog(new ReplaceStringImGui(grid), "Replace String", 600, 300);
         }
         else
         {

@@ -70,7 +70,7 @@ sealed class CliDevice : Device, IRexResolver, ISystemLog
         AddService<IPlatformService>(CliPlatformService.Instance);
         AddService<IToolWindowService>(ToolWindowService.Instance);
         AddService<IMenuService>(MenuService.Instance);
-        AddService<IImGuiService>(CliImGuiService.Instance);
+        AddService<IImGuiService>(ImGuiServiceBK.Instance);
         AddService<IColorConfig>(ColorConfigBK.Instance);
         AddService<IEditorColorConfig>(ColorConfigBK.Instance);
         AddService<IIconService>(IconService.Instance);
@@ -82,6 +82,9 @@ sealed class CliDevice : Device, IRexResolver, ISystemLog
         AddService<DocumentViewManager>(CliDocumentViewManager.Instance);
         AddService<IDrawingService>(CliDrawingService.Instance);
 
+        AddService<IDialogService>(CliDialogService.Instance);
+        AddService<IDialogExService>(CliDialogService.Instance);
+        AddService<IDialogServiceAsync>(CliDialogService.Instance);
         AddService<IFileNameService>(FileNameServiceBK.Instance);
 
         AddService<DocumentViewResolver>(DocumentViewResolver.Instance);
