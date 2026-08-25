@@ -24,7 +24,7 @@ public class ToolCallContext
     public WorkSpace WorkSpace { get; init; }
     public string RootDirectory { get; init; }
     public FunctionContext FuncContext { get; init; }
-    public IConversationHandler Conversation { get; init; }
+    public IConversation Conversation { get; init; }
     public CancellationToken Cancellation { get; init; }
 
     public Exception Error { get; set; }
@@ -98,7 +98,7 @@ public abstract class ToolInstance : IToolInstance, IViewObject
     public abstract IViewObject InputObject { get; }
     public abstract IViewObject OutputObject { get; }
     public abstract Exception ErrorInfo { get; }
-    public abstract IConversationHandler Conversation { get; }
+    public abstract IConversation Conversation { get; }
 
     public abstract SimpleType ToSimpleType(FlowDirections direction);
 
@@ -227,7 +227,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
     where TInput : class, IViewObject
     where TOutput : class, IViewObject
 {
-    private readonly IConversationHandler _conversation;
+    private readonly IConversation _conversation;
 
     private readonly TInput _input;
     private readonly SimpleType _inputType;
@@ -265,7 +265,7 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
     public override Exception ErrorInfo => _lastError;
 
-    public override IConversationHandler Conversation => _conversation;
+    public override IConversation Conversation => _conversation;
 
 
     public override SimpleType ToSimpleType(FlowDirections direction)

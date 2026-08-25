@@ -227,7 +227,7 @@ public static class AIAssistantExtensions
     /// <param name="conversation">The conversation handler, or null.</param>
     /// <param name="context">The function context, or null.</param>
     /// <returns>An LLM call instance.</returns>
-    public static ILLmCall CreateLLmCall(this LLmModelPreset presetType, AigcModelLevel level = AigcModelLevel.Default, IConversationHandler conversation = null, FunctionContext context = null)
+    public static ILLmCall CreateLLmCall(this LLmModelPreset presetType, AigcModelLevel level = AigcModelLevel.Default, IConversation conversation = null, FunctionContext context = null)
         => AIAssistantService.Instance.CreateLLmCall(presetType, level, conversation, context);
 
     /// <summary>

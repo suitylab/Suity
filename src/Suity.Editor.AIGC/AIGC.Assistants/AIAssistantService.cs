@@ -41,7 +41,7 @@ public abstract class AIAssistantService
     /// <param name="conversation">Optional conversation handler.</param>
     /// <param name="context">Optional function context.</param>
     /// <returns>A new LLM call instance.</returns>
-    public abstract ILLmCall CreateLLmCall(ILLmModel model, LLmModelParameter config = null, IConversationHandler conversation = null, FunctionContext context = null);
+    public abstract ILLmCall CreateLLmCall(ILLmModel model, LLmModelParameter config = null, IConversation conversation = null, FunctionContext context = null);
 
     /// <summary>
     /// Creates an LLM call using a preset model type and level.
@@ -51,7 +51,7 @@ public abstract class AIAssistantService
     /// <param name="conversation">Optional conversation handler.</param>
     /// <param name="context">Optional function context.</param>
     /// <returns>A new LLM call instance.</returns>
-    public abstract ILLmCall CreateLLmCall(LLmModelPreset presetType, AigcModelLevel level = AigcModelLevel.Default, IConversationHandler conversation = null, FunctionContext context = null);
+    public abstract ILLmCall CreateLLmCall(LLmModelPreset presetType, AigcModelLevel level = AigcModelLevel.Default, IConversation conversation = null, FunctionContext context = null);
 
     /// <summary>
     /// Creates an LLM call with a prompt builder and specified model.
@@ -62,7 +62,7 @@ public abstract class AIAssistantService
     /// <param name="conversation">Optional conversation handler.</param>
     /// <param name="context">Optional function context.</param>
     /// <returns>A new LLM call instance.</returns>
-    public abstract ILLmCall CreateLLmCall(PromptBuilder builder, ILLmModel model, LLmModelParameter config = null, IConversationHandler conversation = null, FunctionContext context = null);
+    public abstract ILLmCall CreateLLmCall(PromptBuilder builder, ILLmModel model, LLmModelParameter config = null, IConversation conversation = null, FunctionContext context = null);
 
     /// <summary>
     /// Creates an LLM call with a prompt builder using the default model.
@@ -71,7 +71,7 @@ public abstract class AIAssistantService
     /// <param name="conversation">Optional conversation handler.</param>
     /// <param name="context">Optional function context.</param>
     /// <returns>A new LLM call instance.</returns>
-    public abstract ILLmCall CreateLLmCall(PromptBuilder builder, IConversationHandler conversation = null, FunctionContext context = null);
+    public abstract ILLmCall CreateLLmCall(PromptBuilder builder, IConversation conversation = null, FunctionContext context = null);
 
     /// <summary>
     /// Creates an assistant chat session for the specified AI assistant.
@@ -394,7 +394,7 @@ public abstract class AIAssistantService
     /// <param name="cancel">Optional cancellation token.</param>
     /// <returns>The result from the task execution.</returns>
     public abstract Task<T> DoRetryAction<T>(string title, Func<Task<T>> task, bool acceptNull = false, int? retry = null, 
-        IConversationHandler conversation = null, CancellationToken cancel = default) where T : class;
+        IConversation conversation = null, CancellationToken cancel = default) where T : class;
 
     /// <summary>
     /// Executes a retry action using configuration from an AI request.

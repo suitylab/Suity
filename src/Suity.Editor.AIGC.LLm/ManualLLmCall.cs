@@ -73,7 +73,7 @@ internal class ManualLLmCall : BaseLLmCall
     public override async Task<string> Call(CancellationToken cancel, LLmModelParameter config, LLmCallOption option = null, string title = null)
     {
         var c = GetConversation()
-            ?? throw new NullReferenceException($"{nameof(IConversationHandler)} not found.");
+            ?? throw new NullReferenceException($"{nameof(IConversation)} not found.");
 
         if (_msgs.Count == 0)
         {

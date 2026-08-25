@@ -205,7 +205,7 @@ internal class LLmServiceBK : LLmService
 
         if (r > 1)
         {
-            var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversationHandler>();
+            var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversation>();
 
             return AIAssistantService.Instance.DoRetryAction(callRequest.Title ?? L("Attempting to call LLM"), async () =>
             {
@@ -230,7 +230,7 @@ internal class LLmServiceBK : LLmService
 
         if (r > 1)
         {
-            var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversationHandler>();
+            var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversation>();
 
             return AIAssistantService.Instance.DoRetryAction(callRequest.Title ?? L("Attempting to call LLM"), async () =>
             {
@@ -258,7 +258,7 @@ internal class LLmServiceBK : LLmService
 
         if (r > 1)
         {
-            var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversationHandler>();
+            var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversation>();
 
             return AIAssistantService.Instance.DoRetryAction(callRequest.Title ?? L("Attempting to call LLM"), async () =>
             {
@@ -286,7 +286,7 @@ internal class LLmServiceBK : LLmService
 
         if (r > 1)
         {
-            var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversationHandler>();
+            var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversation>();
 
             return AIAssistantService.Instance.DoRetryAction(callRequest.Title ?? L("Attempting to call LLM"), async () =>
             {
@@ -318,7 +318,7 @@ The last generation is as follows:
     public override async Task<TConvert> CallConvert<TConvert>(ILLmCall call, LLmCallRequest callRequest, Func<LLmCallRequest, string, TConvert> converter) where TConvert : class
     {
         int r = callRequest.RetryCount ?? AIAssistantService.Config.RetryCount;
-        var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversationHandler>();
+        var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversation>();
 
         string lastResult = null;
         List<string> lastProblems = null;
@@ -393,7 +393,7 @@ The last generation is as follows:
     public override Task<T> CallFunction<T>(ILLmCall call, LLmCallRequest callRequest, Predicate<T> verifier = null) where T : class
     {
         int r = callRequest.RetryCount ?? AIAssistantService.Config.RetryCount;
-        var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversationHandler>();
+        var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversation>();
 
         return AIAssistantService.Instance.DoRetryAction(callRequest.Title ?? L("Call LLM with format return"), async () =>
         {
@@ -475,7 +475,7 @@ The last generation is as follows:
     public override async Task<TConvert> CallFunctionConvert<T, TConvert>(ILLmCall call, LLmCallRequest callRequest, Func<LLmCallRequest, T, TConvert> converter)
     {
         int r = callRequest.RetryCount ?? AIAssistantService.Config.RetryCount;
-        var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversationHandler>();
+        var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversation>();
 
         string lastResult = null;
         List<string> lastProblems = null;
@@ -598,7 +598,7 @@ The last generation is as follows:
     public override Task<object> CallFunction(ILLmCall call, LLmCallRequest callRequest, Type[] types, Predicate<object> verifier = null)
     {
         int r = callRequest.RetryCount ?? AIAssistantService.Config.RetryCount;
-        var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversationHandler>();
+        var conversation = callRequest.Conversation ?? call.Context?.GetArgument<IConversation>();
 
         return AIAssistantService.Instance.DoRetryAction(callRequest.Title ?? L("Call LLM with format return"), async () =>
         {
@@ -730,7 +730,7 @@ The last generation is as follows:
         }
         catch (Exception err)
         {
-            var c = call.Context?.GetArgument<IConversationHandler>();
+            var c = call.Context?.GetArgument<IConversation>();
             c?.AddErrorMessage(L("Function parsing failed: ") + name);
             //err.LogError($"Function parsing failed: {funcCall.Name}");
 
@@ -739,7 +739,7 @@ The last generation is as follows:
     }
 
     /// <inheritdoc/>
-    public override LLmStreamAppender CreateLLmStreamAppender(IConversationHandler conversation)
+    public override LLmStreamAppender CreateLLmStreamAppender(IConversation conversation)
     {
         if (_appenderTypes.FirstOrDefault() is { } appenderType)
         {
@@ -765,7 +765,7 @@ The last generation is as follows:
     }
 
     /// <inheritdoc/>
-    public override IDisposable CreateLoopedSymbol(IConversationHandler conversation)
+    public override IDisposable CreateLoopedSymbol(IConversation conversation)
     {
         if (conversation is null)
         {
@@ -813,7 +813,7 @@ internal class CounterLLmStreamAppender : LLmStreamAppender
     private DisposableDialogItem _msg;
 
     /// <inheritdoc/>
-    protected override void UpdateConversation(IConversationHandler conversation, string text, StringBuilder fullText)
+    protected override void UpdateConversation(IConversation conversation, string text, StringBuilder fullText)
     {
         _msg?.Dispose();
         _msg = conversation.AddSystemMessage(fullText.Length.ToString());

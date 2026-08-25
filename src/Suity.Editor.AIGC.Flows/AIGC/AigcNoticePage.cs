@@ -123,7 +123,7 @@ public class NoticeInstance : IPageInstance, IViewObject
 
     public ImageDef Icon => CoreIconCache.Notice;
 
-    public IConversationHandler Conversation => null;
+    public IConversation Conversation => null;
 
 
 

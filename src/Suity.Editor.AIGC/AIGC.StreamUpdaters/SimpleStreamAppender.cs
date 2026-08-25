@@ -11,7 +11,7 @@ public class SimpleStreamAppender : LLmStreamAppender
 
     public override bool DisplayingFullResult => true;
 
-    protected override void UpdateConversation(IConversationHandler conversation, string text, StringBuilder fullText)
+    protected override void UpdateConversation(IConversation conversation, string text, StringBuilder fullText)
     {
         _msg?.Dispose();
         string msg = string.Empty;

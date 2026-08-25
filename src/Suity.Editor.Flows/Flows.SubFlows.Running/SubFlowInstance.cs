@@ -138,7 +138,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
     /// <summary>
     /// Gets the conversation interface for this page instance.
     /// </summary>
-    public IConversationHandler Conversation => _conversation;
+    public IConversation Conversation => _conversation;
 
     public override ImageDef Icon => _preset?.TargetAsset?.Icon ?? base.Icon;
 
@@ -1003,7 +1003,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             return;
         }
 
-        if (computation.Context.GetArgument<IConversationHandler>() is { } conversation)
+        if (computation.Context.GetArgument<IConversation>() is { } conversation)
         {
             conversation.AddSystemMessage("Workflow started", msg => 
             {
@@ -1076,7 +1076,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
             return;
         }
 
-        if (computation.Context.GetArgument<IConversationHandler>() is { } conversation)
+        if (computation.Context.GetArgument<IConversation>() is { } conversation)
         {
             conversation.AddSystemMessage("Workflow ended", msg => 
             {
@@ -1275,7 +1275,7 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
         var view = context.GetArgument<IFlowView>();
         context.SetArgument<IFlowCallerContext>(this);
-        context.SetArgument<IConversationHandler>(_conversation);
+        context.SetArgument<IConversation>(_conversation);
         context.SetArgument<IConversationHost>(_conversation as IConversationHost);
         context.SetArgument<IConversationHostAsync>(_conversation as IConversationHostAsync);
 

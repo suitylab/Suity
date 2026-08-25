@@ -209,8 +209,8 @@ public class ManualSelectAsset : AigcFlowNode
     /// <inheritdoc/>
     public override async Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)
     {
-        var conversation = compute.Context.GetArgument<IConversationHandler>()
-            ?? throw new NullReferenceException($"{nameof(IConversationHandler)} not found.");
+        var conversation = compute.Context.GetArgument<IConversation>()
+            ?? throw new NullReferenceException($"{nameof(IConversation)} not found.");
 
         var assetLink = _typeSelection.SelectedItem as DAssetLink;
         var type = (assetLink?.AssetType)
@@ -260,7 +260,7 @@ public class ManualSelectAsset : AigcFlowNode
     /// <param name="assetType">The type of asset to select.</param>
     /// <param name="msg">The message to display.</param>
     /// <param name="setter">Action to set the result.</param>
-    private IEnumerator DialogCoroutine(IConversationHandler conversation, Type assetType, string msg, Action<object, bool> setter)
+    private IEnumerator DialogCoroutine(IConversation conversation, Type assetType, string msg, Action<object, bool> setter)
     {
         var dialogItem = conversation.AddDebugMessage(msg, o =>
         {

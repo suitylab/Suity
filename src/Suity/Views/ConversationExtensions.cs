@@ -12,99 +12,99 @@ namespace Suity.Views;
 /// </summary>
 public static class ConversationExtensions
 {
-    public static DisposableDialogItem AddMessage(this IConversationHandler handler, string content, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.Remote, TextStatus.Info, config);
         return new DisposableDialogItem(handler, msg);
     }
 
-    public static DisposableDialogItem AddMessage(this IConversationHandler handler, string content, TextStatus status, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddMessage(this IConversation handler, string content, TextStatus status, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.Remote, status, config);
         return new DisposableDialogItem(handler, msg);
     }
 
-    public static DisposableDialogItem AddSystemMessage(this IConversationHandler handler, string content, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddSystemMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.System, TextStatus.Normal, config);
         return new DisposableDialogItem(handler, msg);
     }
 
 
-    public static DisposableDialogItem AddSystemMessage(this IConversationHandler handler, string content, TextStatus status, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddSystemMessage(this IConversation handler, string content, TextStatus status, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.System, status, config);
         return new DisposableDialogItem(handler, msg);
     }
 
-    public static DisposableDialogItem AddInfoMessage(this IConversationHandler handler, string content, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddInfoMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.System, TextStatus.Info, config);
         return new DisposableDialogItem(handler, msg);
     }
 
-    public static DisposableDialogItem AddRunningMessage(this IConversationHandler handler, string content, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddRunningMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.System, TextStatus.ResourceUse, config);
         return new DisposableDialogItem(handler, msg);
     }
 
-    public static DisposableDialogItem AddDisabledMessage(this IConversationHandler handler, string content, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddDisabledMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.System, TextStatus.Disabled, config);
         return new DisposableDialogItem(handler, msg);
     }
 
-    public static DisposableDialogItem AddTitleMessage(this IConversationHandler handler, string content, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddTitleMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.System, TextStatus.Tag, config);
         return new DisposableDialogItem(handler, msg);
     }
 
-    public static DisposableDialogItem AddWarningMessage(this IConversationHandler handler, string content, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddWarningMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.System, TextStatus.Warning, config);
         return new DisposableDialogItem(handler, msg);
     }
 
 
-    public static DisposableDialogItem AddErrorMessage(this IConversationHandler handler, string content, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddErrorMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.System, TextStatus.Error, config);
         return new DisposableDialogItem(handler, msg);
     }
 
-    public static DisposableDialogItem AddDebugMessage(this IConversationHandler handler, string content, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddDebugMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.Debug, TextStatus.Normal, config);
         return new DisposableDialogItem(handler, msg);
     }
 
-    public static DisposableDialogItem AddDebugMessage(this IConversationHandler handler, string content, TextStatus status, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddDebugMessage(this IConversation handler, string content, TextStatus status, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.Debug, status, config);
         return new DisposableDialogItem(handler, msg);
     }
 
-    public static void RemoveDebugMessages(this IConversationHandler handler)
+    public static void RemoveDebugMessages(this IConversation handler)
     {
         handler.RemoveMessages(o => o is IDialogMessage { Role: ConversationRole.Debug });
     }
 
-    public static DisposableDialogItem AddMyMessage(this IConversationHandler handler, string content, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddMyMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.User, TextStatus.Normal, config);
         return new DisposableDialogItem(handler, msg);
     }
 
-    public static DisposableDialogItem AddUserMessage(this IConversationHandler handler, string content, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddUserMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.User, TextStatus.Normal, config);
         return new DisposableDialogItem(handler, msg);
     }
 
 
-    public static DisposableDialogItem AddException(this IConversationHandler handler, Exception err, string message = null, bool showInner = true, bool addLog = true)
+    public static DisposableDialogItem AddException(this IConversation handler, Exception err, string message = null, bool showInner = true, bool addLog = true)
     {
         if (err is OperationCanceledException)
         {
@@ -151,7 +151,7 @@ public static class ConversationExtensions
         config.AddButtons(title, buttons);
     }
 
-    public static Task<string> WaitForTextInput(this IConversationHandler conversation, CancellationToken cancel)
+    public static Task<string> WaitForTextInput(this IConversation conversation, CancellationToken cancel)
     {
         if (conversation is null)
         {
@@ -181,7 +181,7 @@ public static class ConversationExtensions
         return source.Task;
     }
 
-    public static Task<string> WaitForButtonInput(this IConversationHandler conversation, CancellationToken cancel)
+    public static Task<string> WaitForButtonInput(this IConversation conversation, CancellationToken cancel)
     {
         if (conversation is null)
         {
@@ -211,7 +211,7 @@ public static class ConversationExtensions
         return source.Task;
     }
 
-    public static Task<string> WaitForTextOrButtonInput(this IConversationHandler conversation, CancellationToken cancel)
+    public static Task<string> WaitForTextOrButtonInput(this IConversation conversation, CancellationToken cancel)
     {
         if (conversation is null)
         {
@@ -249,7 +249,7 @@ public static class ConversationExtensions
         return source.Task;
     }
 
-    public static Task<string> WaitForButtonInput(this IConversationHandler conversation, string[] buttons, CancellationToken cancel)
+    public static Task<string> WaitForButtonInput(this IConversation conversation, string[] buttons, CancellationToken cancel)
     {
         if (conversation is null)
         {

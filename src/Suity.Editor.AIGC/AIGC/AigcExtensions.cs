@@ -29,7 +29,7 @@ public static class AigcExtensions
     /// <param name="exportType">The export content type for appending specific instructions.</param>
     /// <param name="display">Whether to display the message in the UI.</param>
     /// <returns>The full message string including attachments and instructions.</returns>
-    public static string AddUserMessage(this IConversationHandler handler, string msg, AttachmentSet[] attachments, AigcExportContentTypes exportType = AigcExportContentTypes.None, bool display = true)
+    public static string AddUserMessage(this IConversation handler, string msg, AttachmentSet[] attachments, AigcExportContentTypes exportType = AigcExportContentTypes.None, bool display = true)
     {
         var builder = new StringBuilder(msg);
 

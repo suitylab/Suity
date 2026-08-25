@@ -258,7 +258,7 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
         var cancel = request.Cancellation;
 
         var ctx = request.FuncContext != null ? new FunctionContext(request.FuncContext) : new FunctionContext();
-        ctx.SetArgument<IConversationHandler>(conversation);
+        ctx.SetArgument<IConversation>(conversation);
 
         var runner = new RunnerFlowComputation(conversation, ctx);
 

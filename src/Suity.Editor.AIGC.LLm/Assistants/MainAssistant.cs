@@ -84,7 +84,7 @@ public class MainAssistant : AIAssistant
     }
 
     /// <inheritdoc/>
-    public override void HandleConversation(IConversationHandler conversasion)
+    public override void HandleConversation(IConversation conversasion)
     {
         if (InnerAssistant is { } assistant)
         {

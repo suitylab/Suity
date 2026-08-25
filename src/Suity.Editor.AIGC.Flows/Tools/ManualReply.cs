@@ -60,7 +60,7 @@ public class ManualReply : ToolCommand<ManualReply.Output>
             msg.AddCode(question);
         });
 
-        IConversationHandler conversation = context?.Conversation; 
+        IConversation conversation = context?.Conversation; 
         if (conversation is null)
         {
             conversation = context?.ToolInstance?.Conversation;

@@ -40,11 +40,11 @@ public class ConversationOptions
 
 #endregion
 
-#region IConversationHandler
+#region IConversation
 /// <summary>
 /// Defines an interface for handling conversations.
 /// </summary>
-public interface IConversationHandler
+public interface IConversation
 {
     string ConversationName { get; }
     string Title { get; set; }
@@ -82,10 +82,10 @@ public interface IConversationHandler
 /// <summary>
 /// Defines an interface for hosting conversations.
 /// </summary>
-public interface IConversationHost : IConversationHandler
+public interface IConversationHost : IConversation
 {
-    void StartConversation(IConversation conversation);
-    void StartConversation(string name, IConversation conversation);
+    void StartConversation(IConversationClient conversation);
+    void StartConversation(string name, IConversationClient conversation);
     void StopCurrentConversation();
     void HandleMessageInput(string message);
     void HandleButtonClick(string button);
@@ -105,13 +105,13 @@ public interface IConversationHostAsync : IConversationHost
 }
 #endregion
 
-#region IConversation
+#region IConversationClient
 /// <summary>
 /// Defines an interface for a conversation.
 /// </summary>
-public interface IConversation
+public interface IConversationClient
 {
-    void StartConversation(IConversationHandler handler);
+    void StartConversation(IConversation conversation);
 
     void StopConversation();
 
@@ -123,7 +123,7 @@ public interface IConversation
 /// <summary>
 /// Defines an async interface for a conversation.
 /// </summary>
-public interface IConversationAsync : IConversation
+public interface IConversationAsync : IConversationClient
 {
     Task<object> HandleInputAsync(CancellationToken cancel);
 }
@@ -154,10 +154,10 @@ public class EmptyDialogItem : IDIalogItem
 /// </summary>
 public class DisposableDialogItem : IDisposable
 {
-    public IConversationHandler Handler { get; }
+    public IConversation Handler { get; }
     public IDIalogItem DialogItem { get; }
 
-    public DisposableDialogItem(IConversationHandler handler, IDIalogItem dialogItem)
+    public DisposableDialogItem(IConversation handler, IDIalogItem dialogItem)
     {
         Handler = handler;
         DialogItem = dialogItem;

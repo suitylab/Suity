@@ -59,7 +59,7 @@ public class XmlTagStreamAppender : LLmStreamAppender
     /// <param name="conversation">The conversation handler interface.</param>
     /// <param name="text">The newly received text chunk.</param>
     /// <param name="fullText">The accumulated full text (unused in this implementation).</param>
-    protected override void UpdateConversation(IConversationHandler conversation, string text, StringBuilder fullText)
+    protected override void UpdateConversation(IConversation conversation, string text, StringBuilder fullText)
     {
         _paragraphBuffer.InputText(text);
         if (_paragraphBuffer.CurrentParagraph is { } paragraph)
@@ -73,7 +73,7 @@ public class XmlTagStreamAppender : LLmStreamAppender
     /// </summary>
     /// <param name="conversation">The conversation handler interface.</param>
     /// <param name="msg">The text content to display.</param>
-    private void UpdateMessageBox(IConversationHandler conversation, string msg)
+    private void UpdateMessageBox(IConversation conversation, string msg)
     {
         _msg?.Dispose();
         if (string.IsNullOrWhiteSpace(msg))
@@ -89,7 +89,7 @@ public class XmlTagStreamAppender : LLmStreamAppender
     /// </summary>
     /// <param name="conversation">The conversation handler interface.</param>
     /// <param name="paragraph">The paragraph object containing tag and text information.</param>
-    private void UpdateMessageBox(IConversationHandler conversation, Paragraph paragraph)
+    private void UpdateMessageBox(IConversation conversation, Paragraph paragraph)
     {
         if (paragraph is null || string.IsNullOrWhiteSpace(paragraph.Text))
         {

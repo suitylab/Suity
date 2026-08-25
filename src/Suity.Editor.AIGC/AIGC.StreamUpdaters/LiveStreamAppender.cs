@@ -26,7 +26,7 @@ public class LiveStreamAppender : LLmStreamAppender
     /// <param name="conversation">Conversation handler interface</param>
     /// <param name="text">Currently received text</param>
     /// <param name="fullText">Accumulated full text</param>
-    protected override void UpdateConversation(IConversationHandler conversation, string text, StringBuilder fullText)
+    protected override void UpdateConversation(IConversation conversation, string text, StringBuilder fullText)
     {
         while (true)
         {
@@ -54,7 +54,7 @@ public class LiveStreamAppender : LLmStreamAppender
         }
     }
 
-    private void UpdateMessageBox(IConversationHandler conversation, string msg)
+    private void UpdateMessageBox(IConversation conversation, string msg)
     {
         _msg?.Dispose();
         _msg = conversation.AddSystemMessage(msg);

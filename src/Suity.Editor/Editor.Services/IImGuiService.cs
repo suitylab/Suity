@@ -106,7 +106,7 @@ public class DialogOptions
 /// <summary>
 /// Interface for conversation ImGui components.
 /// </summary>
-public interface IConversationImGui : IConversationHandler, IDrawImGuiNode
+public interface IConversationImGui : IConversation, IDrawImGuiNode
 {
 }
 

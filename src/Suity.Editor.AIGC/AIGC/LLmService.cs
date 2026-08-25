@@ -283,14 +283,14 @@ public abstract class LLmService
     /// </summary>
     /// <param name="conversation">The conversation handler to append streams to.</param>
     /// <returns>A new LLmStreamAppender instance for the specified conversation.</returns>
-    public abstract LLmStreamAppender CreateLLmStreamAppender(IConversationHandler conversation);
+    public abstract LLmStreamAppender CreateLLmStreamAppender(IConversation conversation);
 
     /// <summary>
     /// Creates a looped symbol indicator for a conversation handler, typically used for loading or thinking animations.
     /// </summary>
     /// <param name="conversation">The conversation handler to display the symbol for.</param>
     /// <returns>A disposable object that controls the lifecycle of the looped symbol.</returns>
-    public abstract IDisposable CreateLoopedSymbol(IConversationHandler conversation);
+    public abstract IDisposable CreateLoopedSymbol(IConversation conversation);
 
     /// <summary>
     /// Gets the localized speech language code for text-to-speech or speech-to-text operations.

@@ -60,10 +60,10 @@ public class WorkflowLog : AigcFlowNode
     /// <inheritdoc/>
     public override async Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)
     {
-        var conversation = compute.Context.GetArgument<IConversationHandler>();
+        var conversation = compute.Context.GetArgument<IConversation>();
         if (conversation is null)
         {
-            throw new NullReferenceException($"{nameof(IConversationHandler)} not found.");
+            throw new NullReferenceException($"{nameof(IConversation)} not found.");
         }
 
         var agent = compute.Context.GetArgument<IWorkflowSetup>();

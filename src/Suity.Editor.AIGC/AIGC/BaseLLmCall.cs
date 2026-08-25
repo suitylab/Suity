@@ -258,7 +258,7 @@ Export pure json code using the function schema without any '//' comments.
     /// Gets the conversation handler from the function context.
     /// </summary>
     /// <returns>The conversation handler, or null if not available.</returns>
-    protected IConversationHandler GetConversation() => _context.GetArgument<IConversationHandler>();
+    protected IConversation GetConversation() => _context.GetArgument<IConversation>();
 
     /// <summary>
     /// Writes the request and response to log files.

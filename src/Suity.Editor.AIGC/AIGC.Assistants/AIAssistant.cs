@@ -50,7 +50,7 @@ public abstract class AIAssistant
     /// Handles a conversation interaction.
     /// </summary>
     /// <param name="conversasion">The conversation handler to interact with.</param>
-    public virtual void HandleConversation(IConversationHandler conversasion) { }
+    public virtual void HandleConversation(IConversation conversasion) { }
 
     /// <summary>
     /// Gets the introduction text for this assistant. By default, returns the tooltip text or a generated display string.

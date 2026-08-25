@@ -218,7 +218,7 @@ public abstract class RAGService
     /// <param name="conversation">Optional conversation handler</param>
     /// <returns>The matched object, or null if not found</returns>
     public abstract object GetItemBySourceTag(Document document, string sourceTag, string sourceHash, out bool hashChanged,
-        IConversationHandler conversation = null);
+        IConversation conversation = null);
 
     #endregion
 }

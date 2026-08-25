@@ -14,7 +14,7 @@ internal class WrappedLLmCall : ILLmCall
 {
     private readonly ILLmCall _call;
     private readonly LLmModelPreset _presetType;
-    private readonly IConversationHandler _conversation;
+    private readonly IConversation _conversation;
     private readonly string _promptId;
 
     private int _textLength;
@@ -28,7 +28,7 @@ internal class WrappedLLmCall : ILLmCall
     /// <param name="presetType">The model preset type.</param>
     /// <param name="conversation">Optional conversation handler for displaying messages.</param>
     /// <param name="promptId">Optional prompt identifier.</param>
-    public WrappedLLmCall(ILLmCall call, LLmModelPreset presetType, IConversationHandler conversation = null, string promptId = null)
+    public WrappedLLmCall(ILLmCall call, LLmModelPreset presetType, IConversation conversation = null, string promptId = null)
     {
         _call = call ?? throw new ArgumentNullException(nameof(call));
         _presetType = presetType;
@@ -228,7 +228,7 @@ internal class LoopedSymbol : IDisposable
         ];
 
     private readonly DateTime _startTime;
-    private readonly IConversationHandler _conversation;
+    private readonly IConversation _conversation;
     private CancellationTokenSource _cancelSource;
     private IDisposable _currentMsg;
     private int _currentIndex = 0;
@@ -237,7 +237,7 @@ internal class LoopedSymbol : IDisposable
     /// Initializes a new instance of the <see cref="LoopedSymbol"/> class and starts the animation loop.
     /// </summary>
     /// <param name="conversation">The conversation handler to display the animation in.</param>
-    public LoopedSymbol(IConversationHandler conversation)
+    public LoopedSymbol(IConversation conversation)
     {
         _conversation = conversation;
         _cancelSource = new CancellationTokenSource();

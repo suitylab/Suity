@@ -135,7 +135,7 @@ public class LLmClassifier : AigcFlowNode
 
         compute.InvalidateOutputs(this);
 
-        var c = compute.Context.GetArgument<IConversationHandler>();
+        var c = compute.Context.GetArgument<IConversation>();
 
         string msg = compute.GetValue<string>(_prompt);
         if (string.IsNullOrWhiteSpace(msg))

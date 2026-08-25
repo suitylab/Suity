@@ -174,7 +174,7 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
     }
 
 
-    protected override void HandleConversation(IConversationHandler handler)
+    protected override void HandleConversation(IConversation handler)
     {
     }
 

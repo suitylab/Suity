@@ -335,7 +335,7 @@ public class CallLLm : AigcFlowNode
         //    throw new InvalidOperationException($"Model asset must inherit from {nameof(LLmModelAsset)}");
         //}
 
-        var c = compute.Context.GetArgument<IConversationHandler>();
+        var c = compute.Context.GetArgument<IConversation>();
 
         var parameter = _parameter.GetValue(compute, this);
         var call = model.CreateCall(parameter, compute.Context)

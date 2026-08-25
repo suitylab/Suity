@@ -47,7 +47,7 @@ public abstract class BaseLLmChat : ILLmChat,
         _conversation?.StartConversation(this);
 
         _context.SetArgument<ILLmChat>(this);
-        _context.SetArgument<IConversationHandler>(_conversation);
+        _context.SetArgument<IConversation>(_conversation);
         _context.SetArgument<IConversationHost>(_conversation as IConversationHost);
         _context.SetArgument<IConversationHostAsync>(_conversation as IConversationHostAsync);
     }
@@ -59,7 +59,7 @@ public abstract class BaseLLmChat : ILLmChat,
     /// <param name="name">The name of the chat session.</param>
     /// <param name="text">Optional display text for the chat.</param>
     /// <param name="context">Optional function context for the chat.</param>
-    protected BaseLLmChat(IConversationHandler conversation, string name, string text = null, FunctionContext context = null)
+    protected BaseLLmChat(IConversation conversation, string name, string text = null, FunctionContext context = null)
     {
         
     }
@@ -311,15 +311,15 @@ public abstract class BaseLLmChat : ILLmChat,
 
     #region IConversationAsync
 
-    void IConversation.StartConversation(IConversationHandler handler)
+    void IConversationClient.StartConversation(IConversation conversation)
     {
     }
 
-    void IConversation.StopConversation()
+    void IConversationClient.StopConversation()
     {
     }
 
-    void IConversation.HandleInput()
+    void IConversationClient.HandleInput()
     {
         HandleConversation(_conversation);
     }
@@ -344,7 +344,7 @@ public abstract class BaseLLmChat : ILLmChat,
     /// Handles conversation input. Override to implement custom conversation logic.
     /// </summary>
     /// <param name="handler">The conversation handler to interact with.</param>
-    protected abstract void HandleConversation(IConversationHandler handler);
+    protected abstract void HandleConversation(IConversation handler);
 
     #endregion
 
@@ -376,7 +376,7 @@ public sealed class EmptyLLmChat : BaseLLmChat
         return Task.FromResult<object>(null);
     }
 
-    protected override void HandleConversation(IConversationHandler handler)
+    protected override void HandleConversation(IConversation handler)
     {
     }
 }
@@ -445,7 +445,7 @@ public class ManualLLmChat : BaseLLmChat
         return null;
     }
 
-    protected override void HandleConversation(IConversationHandler handler)
+    protected override void HandleConversation(IConversation handler)
     {
     }
 

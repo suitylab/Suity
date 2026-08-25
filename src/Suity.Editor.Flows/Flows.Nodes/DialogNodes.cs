@@ -58,10 +58,10 @@ public class OkDialog : DialogFlowNode
     {
         var source = new TaskCompletionSource<object>();
 
-        var conversation = compute.Context.GetArgument<IConversationHandler>();
+        var conversation = compute.Context.GetArgument<IConversation>();
         if (conversation is null)
         {
-            source.SetException(new NullReferenceException($"{nameof(IConversationHandler)} not found."));
+            source.SetException(new NullReferenceException($"{nameof(IConversation)} not found."));
             return source.Task;
         }
 
@@ -159,10 +159,10 @@ public class YesNoDialog : DialogFlowNode
     {
         var source = new TaskCompletionSource<object>();
 
-        var conversation = compute.Context.GetArgument<IConversationHandler>();
+        var conversation = compute.Context.GetArgument<IConversation>();
         if (conversation is null)
         {
-            source.SetException(new NullReferenceException($"{nameof(IConversationHandler)} not found."));
+            source.SetException(new NullReferenceException($"{nameof(IConversation)} not found."));
             return source.Task;
         }
 
@@ -363,8 +363,8 @@ public class CopyMessage : DialogFlowNode
     /// <inheritdoc/>
     public override async Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)
     {
-        var conversation = compute.Context.GetArgument<IConversationHandler>()
-            ?? throw new NullReferenceException($"{nameof(IConversationHandler)} not found.");
+        var conversation = compute.Context.GetArgument<IConversation>()
+            ?? throw new NullReferenceException($"{nameof(IConversation)} not found.");
 
         string msg = _message.GetText(compute, this) ?? string.Empty;
         string text = _textInput.GetText(compute, this) ?? string.Empty;
@@ -437,8 +437,8 @@ public class ManualTextInput : DialogFlowNode
     /// <inheritdoc/>
     public override async Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)
     {
-        var conversation = compute.Context.GetArgument<IConversationHandler>() 
-            ?? throw new NullReferenceException($"{nameof(IConversationHandler)} not found.");
+        var conversation = compute.Context.GetArgument<IConversation>() 
+            ?? throw new NullReferenceException($"{nameof(IConversation)} not found.");
 
         string message = _message.GetText(compute, this);
         if (!string.IsNullOrWhiteSpace(message))

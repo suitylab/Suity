@@ -15,17 +15,17 @@ namespace Suity.Editor.Conversation;
 /// Handles conversation UI rendering using ImGui and manages conversation lifecycle, input handling, and message display.
 /// </summary>
 public class ConversationImGui :
-    IConversationImGui,
-    IConversationHandler,
+    IConversation,
     IConversationHost,
     IConversationHostAsync,
-    IDrawImGuiNode
+    IDrawImGuiNode,
+    IConversationImGui
 {
     private readonly string _id;
 
     private readonly ImGuiNodeRef _guiRef = new();
 
-    private readonly ValueStore<IConversation> _conversation = new();
+    private readonly ValueStore<IConversationClient> _conversation = new();
     private readonly Stack<Action> _actionStack = new();
     private IEnumerator _coroutine;
     private DisposeCollector _contentListeners;
@@ -107,61 +107,22 @@ public class ConversationImGui :
     [ThreadStatic]
     readonly static List<DialogItem> _tempItems = [];
 
-    /// <inheritdoc/>
-    public ImGuiNode OnNodeGui(ImGui gui)
-    {
-        var node =_guiRef.Node = gui.ScrollableFrame($"#conversation_{_id}", GuiOrientation.Vertical)
-        .InitFullWidth()
-        .InitHeightRest()
-        .InitChildSpacing(5)
-        .OnPartialContent(() =>
-        {
-            _tempItems.Clear();
-            lock (_items)
-            {
-                _tempItems.AddRange(_items);
-            }
-
-            if (DisableOldMessage)
-            {
-                for (int i = 0; i < _tempItems.Count; i++)
-                {
-                    var item = _tempItems[i];
-                    item?.OnGui(gui, i, i == _tempItems.Count - 1, _menu, this);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < _tempItems.Count; i++)
-                {
-                    var item = _tempItems.GetListItemSafe(i);
-                    item?.OnGui(gui, i, true, _menu, this);
-                }
-            }
-
-            _tempItems.Clear();
-        })
-        .AutoScrollToBottom();
-
-        return node;
-    }
-
     #region IConversationHost
 
     /// <inheritdoc/>
-    public void StartConversation(IConversation conversation)
+    public void StartConversation(IConversationClient conversation)
     {
         StartConversation(null, conversation);
     }
 
     /// <inheritdoc/>
-    public void StartConversation(string name, IConversation conversation)
+    public void StartConversation(string name, IConversationClient conversation)
     {
         StartConversation(name, name, conversation);
     }
 
     /// <inheritdoc/>
-    public void StartConversation(string name, string title, IConversation conversation)
+    public void StartConversation(string name, string title, IConversationClient conversation)
     {
         if (conversation is null)
         {
@@ -437,7 +398,7 @@ public class ConversationImGui :
     }
 
     /// <inheritdoc/>
-    void IConversationHandler.StartCoroutine(IEnumerator coroutine)
+    void IConversation.StartCoroutine(IEnumerator coroutine)
     {
         _coroutine = coroutine ?? throw new ArgumentNullException(nameof(coroutine));
 
@@ -445,7 +406,7 @@ public class ConversationImGui :
     }
 
     /// <inheritdoc/>
-    void IConversationHandler.StopCoroutine(IEnumerator coroutine)
+    void IConversation.StopCoroutine(IEnumerator coroutine)
     {
         if (Equals(coroutine, _coroutine))
         {
@@ -454,7 +415,7 @@ public class ConversationImGui :
     }
 
     /// <inheritdoc/>
-    void IConversationHandler.PushAction(Action action)
+    void IConversation.PushAction(Action action)
     {
         if (action is null)
         {
@@ -467,7 +428,7 @@ public class ConversationImGui :
     }
 
     /// <inheritdoc/>
-    void IConversationHandler.PushAction<T>(Action<T> action, T value)
+    void IConversation.PushAction<T>(Action<T> action, T value)
     {
         if (action is null)
         {
@@ -482,19 +443,19 @@ public class ConversationImGui :
     }
 
     /// <inheritdoc/>
-    void IConversationHandler.PushCoroutine(IEnumerator coroutine)
+    void IConversation.PushCoroutine(IEnumerator coroutine)
     {
         _coroutine = coroutine ?? throw new ArgumentNullException(nameof(coroutine));
 
-        void act() => (this as IConversationHandler).StartCoroutine(coroutine);
+        void act() => (this as IConversation).StartCoroutine(coroutine);
 
         _actionStack.Push(act);
 
-        (this as IConversationHandler).StartCoroutine(coroutine);
+        (this as IConversation).StartCoroutine(coroutine);
     }
 
     /// <inheritdoc/>
-    void IConversationHandler.PopAction(bool redoAction)
+    void IConversation.PopAction(bool redoAction)
     {
         if (_actionStack.Count > 0)
         {
@@ -508,7 +469,7 @@ public class ConversationImGui :
     }
 
     /// <inheritdoc/>
-    void IConversationHandler.PeekAction()
+    void IConversation.PeekAction()
     {
         if (_actionStack.Count > 0)
         {
@@ -527,5 +488,46 @@ public class ConversationImGui :
         _guiRef.QueueRefresh();
     }
 
+    #endregion
+
+    #region IDrawImGuiNode
+    /// <inheritdoc/>
+    public ImGuiNode OnNodeGui(ImGui gui)
+    {
+        var node = _guiRef.Node = gui.ScrollableFrame($"#conversation_{_id}", GuiOrientation.Vertical)
+        .InitFullWidth()
+        .InitHeightRest()
+        .InitChildSpacing(5)
+        .OnPartialContent(() =>
+        {
+            _tempItems.Clear();
+            lock (_items)
+            {
+                _tempItems.AddRange(_items);
+            }
+
+            if (DisableOldMessage)
+            {
+                for (int i = 0; i < _tempItems.Count; i++)
+                {
+                    var item = _tempItems[i];
+                    item?.OnGui(gui, i, i == _tempItems.Count - 1, _menu, this);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < _tempItems.Count; i++)
+                {
+                    var item = _tempItems.GetListItemSafe(i);
+                    item?.OnGui(gui, i, true, _menu, this);
+                }
+            }
+
+            _tempItems.Clear();
+        })
+        .AutoScrollToBottom();
+
+        return node;
+    }
     #endregion
 }

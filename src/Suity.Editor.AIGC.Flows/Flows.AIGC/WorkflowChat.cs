@@ -74,7 +74,7 @@ internal class WorkflowChat : BaseFlowChat
         return flowNode;
     }
 
-    protected override void HandleConversation(IConversationHandler handler)
+    protected override void HandleConversation(IConversation handler)
     {
     }
 }

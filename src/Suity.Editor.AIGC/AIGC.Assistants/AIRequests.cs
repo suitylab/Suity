@@ -50,7 +50,7 @@ public class AIRequest
     /// <summary>
     /// Conversation
     /// </summary>
-    public IConversationHandler Conversation { get; init; }
+    public IConversation Conversation { get; init; }
 
     /// <summary>
     /// Cancellation token

@@ -21,10 +21,10 @@ public static class ComputationHelper
     /// <returns>A task that completes with true if the user clicked OK, false otherwise.</returns>
     public static Task<bool> PauseDialog(this IFlowComputationAsync compute, string text, CancellationToken cancel)
     {
-        var conversation = compute.Context.GetArgument<IConversationHandler>();
+        var conversation = compute.Context.GetArgument<IConversation>();
         if (conversation is null)
         {
-            throw new NullReferenceException($"{nameof(IConversationHandler)} not found.");
+            throw new NullReferenceException($"{nameof(IConversation)} not found.");
         }
 
         var source = new TaskCompletionSource<bool>();

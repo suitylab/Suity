@@ -641,7 +641,7 @@ public class LLmCallRequest
     /// <summary>
     /// Gets or sets the conversation handler for managing ongoing dialogue state.
     /// </summary>
-    public IConversationHandler Conversation { get; set; }
+    public IConversation Conversation { get; set; }
     /// <summary>
     /// Gets or sets the cancellation token used to cancel the language model call.
     /// </summary>

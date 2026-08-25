@@ -50,7 +50,7 @@ internal class AIAssistantServiceBK : AIAssistantService
     #region LLm
 
     /// <inheritdoc/>
-    public override ILLmCall CreateLLmCall(ILLmModel model, LLmModelParameter config = null, IConversationHandler conversation = null, FunctionContext context = null)
+    public override ILLmCall CreateLLmCall(ILLmModel model, LLmModelParameter config = null, IConversation conversation = null, FunctionContext context = null)
     {
         if (model is null)
         {
@@ -70,7 +70,7 @@ internal class AIAssistantServiceBK : AIAssistantService
     }
 
     /// <inheritdoc/>
-    public override ILLmCall CreateLLmCall(LLmModelPreset preset, AigcModelLevel level = AigcModelLevel.Default, IConversationHandler conversation = null, FunctionContext context = null)
+    public override ILLmCall CreateLLmCall(LLmModelPreset preset, AigcModelLevel level = AigcModelLevel.Default, IConversation conversation = null, FunctionContext context = null)
     {
         var call = AIAssistantPlugin.Instance.CreatePresetCall(preset, level, context)
             ?? throw new AigcException(L("Model not configured: ") + preset.ToDisplayText());
@@ -87,7 +87,7 @@ internal class AIAssistantServiceBK : AIAssistantService
     }
 
     /// <inheritdoc/>
-    public override ILLmCall CreateLLmCall(PromptBuilder builder, ILLmModel model, LLmModelParameter config = null, IConversationHandler conversation = null, FunctionContext context = null)
+    public override ILLmCall CreateLLmCall(PromptBuilder builder, ILLmModel model, LLmModelParameter config = null, IConversation conversation = null, FunctionContext context = null)
     {
         if (model is null)
         {
@@ -108,7 +108,7 @@ internal class AIAssistantServiceBK : AIAssistantService
     }
 
     /// <inheritdoc/>
-    public override ILLmCall CreateLLmCall(PromptBuilder builder, IConversationHandler conversation = null, FunctionContext context = null)
+    public override ILLmCall CreateLLmCall(PromptBuilder builder, IConversation conversation = null, FunctionContext context = null)
     {
         var record = builder.GetPromptRecord()
             ?? throw new AigcException(L($"Failed to get prompt config from {nameof(PromptBuilder)}."));
@@ -909,7 +909,7 @@ Please export the updated brief summary in a concise and clear manner.
 
     /// <inheritdoc/>
     public override Task<T> DoRetryAction<T>(string title, Func<Task<T>> task, bool acceptNull = false, int? retry = null,
-        IConversationHandler conversation = null, CancellationToken cancel = default) where T : class
+        IConversation conversation = null, CancellationToken cancel = default) where T : class
     {
         return RetryHelper.DoRetryAction(title, task, acceptNull, retry, conversation, cancel);
     }

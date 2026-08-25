@@ -14,14 +14,14 @@ public class RunnerFlowComputation : FlowComputationAsync, IFlowNodeRunner
     /// <summary>
     /// Gets the conversation handler for this computation.
     /// </summary>
-    public IConversationHandler Conversation { get; }
+    public IConversation Conversation { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RunnerFlowComputation"/> class.
     /// </summary>
     /// <param name="conversation">The conversation handler.</param>
     /// <param name="context">Optional function context.</param>
-    public RunnerFlowComputation(IConversationHandler conversation, FunctionContext context = null)
+    public RunnerFlowComputation(IConversation conversation, FunctionContext context = null)
         : base(context)
     {
         Conversation = conversation ?? throw new ArgumentNullException(nameof(conversation));

@@ -32,7 +32,7 @@ public interface IPageInstance : INamed
     /// <summary>
     /// Gets the conversation interface for this page instance.
     /// </summary>
-    public IConversationHandler Conversation { get; }
+    public IConversation Conversation { get; }
 
     /// <summary>
     /// Converts this page instance to a <see cref="SimpleType"/> representation.

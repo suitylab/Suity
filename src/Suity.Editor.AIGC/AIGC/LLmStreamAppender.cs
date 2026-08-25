@@ -15,7 +15,7 @@ public abstract class LLmStreamAppender : IDisposable
     /// <summary>
     /// Gets or sets the conversation handler used to manage conversational interactions.
     /// </summary>
-    public IConversationHandler Conversation { get; set; }
+    public IConversation Conversation { get; set; }
 
     /// <summary>
     /// Gets the complete text content as a mutable string builder.
@@ -46,7 +46,7 @@ public abstract class LLmStreamAppender : IDisposable
         }
     }
 
-    protected virtual void UpdateConversation(IConversationHandler conversation, string text, StringBuilder fullText)
+    protected virtual void UpdateConversation(IConversation conversation, string text, StringBuilder fullText)
     {
 
     }

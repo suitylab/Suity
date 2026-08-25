@@ -12,7 +12,7 @@ public class ProgressCounter : IDisposable
     /// <summary>
     /// Gets the conversation handler used to display progress messages.
     /// </summary>
-    public IConversationHandler Conversation { get; }
+    public IConversation Conversation { get; }
 
     /// <summary>
     /// Gets the name of the task being tracked.
@@ -52,7 +52,7 @@ public class ProgressCounter : IDisposable
     /// <param name="conversation">The conversation handler to use for displaying progress.</param>
     /// <param name="count">The total number of items to process.</param>
     /// <param name="taskName">Optional name for the task being tracked.</param>
-    public ProgressCounter(IConversationHandler conversation, int count, string taskName = null)
+    public ProgressCounter(IConversation conversation, int count, string taskName = null)
     {
         Conversation = conversation;
         TaskName = taskName;

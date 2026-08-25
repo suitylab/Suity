@@ -58,7 +58,7 @@ public class AssistantChat : BaseLLmChat
     }
 
     /// <inheritdoc/>
-    protected override void HandleConversation(IConversationHandler conversation)
+    protected override void HandleConversation(IConversation conversation)
     {
         try
         {

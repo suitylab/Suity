@@ -97,7 +97,7 @@ public class RunShellCommand : ExternalNode
             workingDirectory = null;
         }
 
-        var conversation = compute.Context.GetArgument<IConversationHandler>();
+        var conversation = compute.Context.GetArgument<IConversation>();
         SimpleStreamAppender? updater = null;
         Action<string>? onOutput = null;
 

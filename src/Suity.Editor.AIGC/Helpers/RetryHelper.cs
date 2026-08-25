@@ -23,7 +23,7 @@ public static class RetryHelper
     /// <param name="cancel">Cancellation token to abort the operation.</param>
     /// <returns>The result of the operation, or null if all attempts fail.</returns>
     public static async Task<T> DoRetryAction<T>(string title, Func<Task<T>> task, bool acceptNull = false, int? retry = null,
-        IConversationHandler conversation = null, CancellationToken cancel = default) where T : class
+        IConversation conversation = null, CancellationToken cancel = default) where T : class
     {
         DisposableDialogItem msgItem = null;
 

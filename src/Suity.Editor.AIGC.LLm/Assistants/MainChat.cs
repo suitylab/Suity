@@ -46,7 +46,7 @@ internal class MainChat : ILLmChat
     /// </summary>
     protected LLmChatStates _state;
 
-    private readonly IConversationHandler _conversation;
+    private readonly IConversation _conversation;
     private readonly FunctionContext _context;
 
     /// <summary>
@@ -86,7 +86,7 @@ internal class MainChat : ILLmChat
     /// Initializes a new instance of the <see cref="MainChat"/> class with the specified conversation.
     /// </summary>
     /// <param name="conversation">The conversation UI handler. If null, a default one is created.</param>
-    public MainChat(IConversationHandler conversation)
+    public MainChat(IConversation conversation)
     {
         var cOption = new ConversationOptions
         {
@@ -104,7 +104,7 @@ internal class MainChat : ILLmChat
 
         if (_conversation != null)
         {
-            _context.SetArgument<IConversationHandler>(_conversation);
+            _context.SetArgument<IConversation>(_conversation);
             _context.SetArgument<IConversationHost>(_conversation as IConversationHost);
             _context.SetArgument<IConversationHostAsync>(_conversation as IConversationHostAsync);
         }

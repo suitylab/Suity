@@ -7,14 +7,14 @@ namespace Suity.Editor.AIGC;
 
 internal class DelayCountDown : IDisposable
 {
-    private readonly IConversationHandler _conversation;
+    private readonly IConversation _conversation;
     private CancellationTokenSource _cancelSource;
     private IDisposable _currentMsg;
 
     private int _secondTotal;
     private int _secondCurrent;
 
-    public DelayCountDown(IConversationHandler conversation)
+    public DelayCountDown(IConversation conversation)
     {
         _conversation = conversation;
         _cancelSource = new CancellationTokenSource();

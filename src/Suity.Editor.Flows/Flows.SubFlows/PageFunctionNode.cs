@@ -242,7 +242,7 @@ public class PageFunctionNode : AssetRefFlowNode<SubFlowDefinitionAsset>, IFlowN
             return null;
         }
 
-        var conversation = compute.Context.GetArgument<IConversationHandler>();
+        var conversation = compute.Context.GetArgument<IConversation>();
         var context = new FunctionContext(compute.Context);
 
         // Create internal computation

@@ -1151,10 +1151,10 @@ public class ManualSelectArticle : AigcArticleNode
     /// <inheritdoc/>
     public override async Task<object> ComputeAsync(IFlowComputationAsync compute, CancellationToken cancel)
     {
-        var conversation = compute.Context.GetArgument<IConversationHandler>();
+        var conversation = compute.Context.GetArgument<IConversation>();
         if (conversation is null)
         {
-            throw new NullReferenceException($"{nameof(IConversationHandler)} not found.");
+            throw new NullReferenceException($"{nameof(IConversation)} not found.");
         }
 
         if (!_openEnabled.Value && !_createEnabled.Value)
@@ -1206,7 +1206,7 @@ public class ManualSelectArticle : AigcArticleNode
     /// <param name="conversation">The conversation handler.</param>
     /// <param name="msg">The message to display.</param>
     /// <param name="setter">Action to set the result.</param>
-    private IEnumerator DialogCoroutine(IConversationHandler conversation, string msg, Action<IArticle, bool> setter)
+    private IEnumerator DialogCoroutine(IConversation conversation, string msg, Action<IArticle, bool> setter)
     {
         var dialogItem = conversation.AddDebugMessage(msg, o =>
         {

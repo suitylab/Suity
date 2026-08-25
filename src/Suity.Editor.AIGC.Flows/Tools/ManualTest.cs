@@ -76,7 +76,7 @@ public class ManualTest : ToolCommand<ManualTest.Output>
             msg.AddButton("Run Test", () => RunTest(context, shellCommand));
         });
 
-        IConversationHandler conversation = context?.Conversation;
+        IConversation conversation = context?.Conversation;
         if (conversation is null)
         {
             conversation = context?.ToolInstance?.Conversation;

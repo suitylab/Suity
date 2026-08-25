@@ -183,7 +183,7 @@ public static class DataModelExtensions
     /// <param name="originSpecs">The original specification to compare against.</param>
     /// <param name="fixture">The list to record all applied fixes.</param>
     /// <param name="conversation">Optional conversation handler for reporting warnings.</param>
-    public static void Fix(this DataModelSpecification specs, DataModelSpecification originSpecs, List<string> fixture, IConversationHandler conversation)
+    public static void Fix(this DataModelSpecification specs, DataModelSpecification originSpecs, List<string> fixture, IConversation conversation)
     {
         if (specs is null)
         {
@@ -223,7 +223,7 @@ public static class DataModelExtensions
     /// <param name="segs">The data model segmentation to align with.</param>
     /// <param name="fixture">The list to record all applied fixes.</param>
     /// <param name="conversation">Optional conversation handler for reporting warnings.</param>
-    public static void Fix(this DataModelSpecification specs, DataModelSegmentation segs, List<string> fixture, IConversationHandler conversation)
+    public static void Fix(this DataModelSpecification specs, DataModelSegmentation segs, List<string> fixture, IConversation conversation)
     {
         if (specs is null)
         {
