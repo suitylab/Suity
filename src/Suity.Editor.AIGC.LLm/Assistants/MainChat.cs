@@ -92,7 +92,8 @@ internal class MainChat : ILLmChat
     {
         var cOption = new ConversationOptions
         {
-            DisableOldMessage = false
+            DisableOldMessage = false,
+            Level = ConversationLevels.Main,
         };
         conversation ??= EditorServices.PlatformService.CreateConversation(nameof(MainChat), cOption);
 

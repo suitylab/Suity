@@ -249,7 +249,8 @@ public class ToolInstance<TInput, TOutput> : ToolInstance
 
         var cOption = new ConversationOptions
         {
-            DisableOldMessage = false
+            DisableOldMessage = false,
+            Level = ConversationLevels.Detail,
         };
         _conversation = EditorServices.PlatformService.CreateConversation(typeof(TInput).Name, cOption);
     }

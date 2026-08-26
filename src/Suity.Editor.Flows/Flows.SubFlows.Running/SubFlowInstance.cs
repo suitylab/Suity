@@ -67,7 +67,8 @@ public class SubFlowInstance : SubFlowElement, IFlowCallerContext, ISubFlowInsta
 
         var cOption = new ConversationOptions
         {
-            DisableOldMessage = false
+            DisableOldMessage = false,
+            Level = ConversationLevels.Detail,
         };
         _conversation = EditorServices.PlatformService.CreateConversation(pageDefinition.Name, cOption);
 

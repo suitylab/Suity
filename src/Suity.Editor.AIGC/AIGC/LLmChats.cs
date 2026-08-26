@@ -43,7 +43,8 @@ public abstract class BaseLLmChat : ILLmChat,
 
         var cOption = new ConversationOptions
         {
-            DisableOldMessage = false
+            DisableOldMessage = false,
+            Level = ConversationLevels.Main,
         };
         _conversation = EditorServices.PlatformService.CreateConversation(name, cOption);
         _conversation?.StartConversation(this);

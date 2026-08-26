@@ -25,7 +25,7 @@ public enum ConversationRole
 public enum ConversationLevels
 {
     Main,
-    Sub,
+    Detail,
 }
 
 #endregion
