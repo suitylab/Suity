@@ -115,12 +115,16 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             return AICallResult.FromFailed(err.Message);
         }
 
-        return await HandleRun(request);
+        var result = await HandleRun(request);
+        QueuedAction.FlushQueuedActions();
+        return result;
     }
 
     private Task<AICallResult> HandleResume(AIRequest request)
     {
-        return HandleRun(request);
+        var result =  HandleRun(request);
+        QueuedAction.FlushQueuedActions();
+        return result;
     }
 
     private async Task<AICallResult> HandleRun(AIRequest request)
@@ -172,6 +176,8 @@ internal class AigcLoopRunner : AIAssistant, IAigcLoopRunner
             {
                 return value;
             }
+
+            QueuedAction.FlushQueuedActions();
         }
     }
 

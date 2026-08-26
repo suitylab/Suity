@@ -32,15 +32,14 @@ public class StartChatCommand : CliCommand
             return;
         }
 
-        AigcChatToolWindow.Instance.HandleStart();
-
-        Console.WriteLine("Enter /exit or /quit to exit chat");
-
         RunChatLoopAsync().GetAwaiter().GetResult();
     }
 
     private async Task RunChatLoopAsync()
     {
+        await AigcChatToolWindow.Instance.HandleStartChat();
+        Console.WriteLine("Chat started, enter /exit or /quit to exit chat");
+
         while (true)
         {
             Console.Write("chat> ");
@@ -64,21 +63,41 @@ public class StartChatCommand : CliCommand
 
                 if (input.Equals("/exit", StringComparison.OrdinalIgnoreCase) ||
                     input.Equals("/quit", StringComparison.OrdinalIgnoreCase))
+                {
+                    AigcChatToolWindow.Instance.HandleStopChat();
                     break;
+                }
+                else
+                {
+                    try
+                    {
+                        await AigcChatToolWindow.Instance.HandleButtonClick(input);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Error.WriteLine($"Error: {ex.Message}");
+                        Console.ResetColor();
+                    }
+                }
             }
-
-            try
+            else
             {
-                await AigcChatToolWindow.Instance.HandleInput(input);
-            }
-            catch (Exception ex)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Error.WriteLine($"Error: {ex.Message}");
-                Console.ResetColor();
+                try
+                {
+                    await AigcChatToolWindow.Instance.HandleInput(input);
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Error.WriteLine($"Error: {ex.Message}");
+                    Console.ResetColor();
+                }
             }
 
             QueuedAction.FlushQueuedActions();
         }
+
+        QueuedAction.FlushQueuedActions();
     }
 }

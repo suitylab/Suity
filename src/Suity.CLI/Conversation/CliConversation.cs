@@ -2,7 +2,7 @@
 
 namespace Suity.Editor.Conversation;
 
-internal class CliConversation : ConversationImGui
+internal class CliConversation : ConversationHost
 {
     public CliConversation(string id) : base(id)
     {

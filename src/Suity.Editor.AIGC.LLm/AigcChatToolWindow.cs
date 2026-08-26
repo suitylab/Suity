@@ -167,14 +167,14 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
                         gui.Button("stop", CoreIconCache.Stop)
                         .InitClass("toolBtn")
                         .SetToolTipsL("Stop")
-                        .OnClick(HandleStop);
+                        .OnClick(HandleStopChat);
                     }
                     else
                     {
                         gui.Button("start", CoreIconCache.Start)
                         .InitClass("toolBtn")
                         .SetToolTipsL("Start")
-                        .OnClick(HandleStart)
+                        .OnClick(HandleStartChat)
                         .SetEnabled(_currentChat.State == LLmChatStates.Stopped);
                     }
 
@@ -261,7 +261,7 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
         });
     }
 
-    internal void HandleStart()
+    internal Task HandleStartChat()
     {
         //if (!ServiceInternals._license.GetCapability(EditorCapabilities.AigcWorkflow))
         //{
@@ -275,10 +275,10 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
         //    return;
         //}
 
-        StartCurrentChat().GetAwaiter().OnCompleted(() => { });
+        return StartCurrentChat();
     }
 
-    internal void HandleStop()
+    internal void HandleStopChat()
     {
         try
         {
