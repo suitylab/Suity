@@ -294,6 +294,13 @@ public interface ILLmChat : IDrawImGuiNode, IDisposable
     Task<object> Send(string msg, object attachments = null, object option = null);
 
     /// <summary>
+    /// Handles a button click event.
+    /// </summary>
+    /// <param name="key">The key of the button that was clicked.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the output of the button click.</returns>
+    Task<object> HandleButtonClick(string key);
+
+    /// <summary>
     /// Renders the chat settings GUI.
     /// </summary>
     /// <param name="gui">The ImGui instance to use for rendering.</param>

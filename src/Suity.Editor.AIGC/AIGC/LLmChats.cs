@@ -1,7 +1,9 @@
+using MarkedNet;
 using Suity.Editor.Services;
 using Suity.Views;
 using Suity.Views.Im;
 using System;
+using System.Net.Mail;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -224,21 +226,7 @@ public abstract class BaseLLmChat : ILLmChat,
             return null;
         }
 
-        if (_cancelSource != null)
-        {
-            _conversation.AddUserMessage(msg, attachments as AttachmentSet[]);
-            //_conversation.AddErrorMessage($"A task is currently being processed and cannot accept new information.");
-
-            if (_conversation is IConversationHostAsync hostAsync)
-            {
-                return await hostAsync.HandleMessageInputAsync(msg, _cancelSource.Token);
-            }
-            else
-            {
-                return null;
-            }
-        }
-        else
+        if (_cancelSource is null)
         {
             if (_state != LLmChatStates.Started)
             {
@@ -247,8 +235,42 @@ public abstract class BaseLLmChat : ILLmChat,
 
             return await Start(msg, attachments, option);
         }
+
+
+        _conversation.AddUserMessage(msg, attachments as AttachmentSet[]);
+        //_conversation.AddErrorMessage($"A task is currently being processed and cannot accept new information.");
+
+        if (_conversation is IConversationHostAsync hostAsync)
+        {
+            return await hostAsync.HandleMessageInputAsync(msg, _cancelSource.Token);
+        }
+        else
+        {
+            return null;
+        }
     }
 
+    public virtual async Task<object> HandleButtonClick(string key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return null;
+        }
+
+        if (_cancelSource is null)
+        {
+            throw new InvalidOperationException($"Conversation is not started.");
+        }
+
+        if (_conversation is IConversationHostAsync hostAsync)
+        {
+            return await hostAsync.HandleButtonClickAsync(key, _cancelSource.Token);
+        }
+        else
+        {
+            return null;
+        }
+    }
 
     /// <summary>
     /// Called when the chat session is starting. Override to perform initialization logic.

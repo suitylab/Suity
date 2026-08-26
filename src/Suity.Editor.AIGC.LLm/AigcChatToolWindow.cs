@@ -12,6 +12,7 @@ using Suity.Views.Im;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
@@ -382,37 +383,29 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
         return ProcessInput();
     }
 
-    private async Task<object> ProcessInput()
+    public Task<object> HandleInput(string msg, IEnumerable<AttachmentSet> attachments = null)
     {
-        //if (string.IsNullOrWhiteSpace(_msgInput))
-        //{
-        //    return null;
-        //}
+        SetInput(msg, attachments);
 
-        string msg = _msgInput;
-        var attachments = _attachments.Values.ToArray();
+        return ProcessInput();
+    }
 
-        _msgInput = string.Empty;
-        _attachments.Clear();
+    public async Task<object> HandleButtonClick(string key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return null;
+        }
 
         _guiRef.QueueRefresh();
 
         try
         {
-            if (!string.IsNullOrWhiteSpace(msg))
-            {
-                return await _currentChat?.Send(msg, attachments, _msgOption);
-            }
-            else
-            {
-                return await _currentChat?.Start(msg, attachments, _msgOption);
-            }
+            return await _currentChat?.HandleButtonClick(key);
         }
         catch (Exception err)
         {
             err.LogErrorL("Error executing AI chat.");
-            _msgInput = msg;
-
             return null;
         }
         finally
@@ -468,6 +461,41 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
         _attachments.Clear();
 
         _guiRef.QueueRefresh();
+    }
+
+
+    private async Task<object> ProcessInput()
+    {
+        string msg = _msgInput;
+        var attachments = _attachments.Values.ToArray();
+
+        _msgInput = string.Empty;
+        _attachments.Clear();
+
+        _guiRef.QueueRefresh();
+
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(msg))
+            {
+                return await _currentChat?.Send(msg, attachments, _msgOption);
+            }
+            else
+            {
+                return await _currentChat?.Start(msg, attachments, _msgOption);
+            }
+        }
+        catch (Exception err)
+        {
+            err.LogErrorL("Error executing AI chat.");
+            _msgInput = msg;
+
+            return null;
+        }
+        finally
+        {
+            _guiRef.QueueRefresh();
+        }
     }
 
     #endregion

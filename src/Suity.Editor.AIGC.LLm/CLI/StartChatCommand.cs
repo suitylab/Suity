@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.LLm.CLI;
 
@@ -32,5 +33,52 @@ public class StartChatCommand : CliCommand
         }
 
         AigcChatToolWindow.Instance.HandleStart();
+
+        Console.WriteLine("Enter /exit or /quit to exit chat");
+
+        RunChatLoopAsync().GetAwaiter().GetResult();
+    }
+
+    private async Task RunChatLoopAsync()
+    {
+        while (true)
+        {
+            Console.Write("chat> ");
+
+            string? input;
+            try
+            {
+                input = await Console.In.ReadLineAsync();
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+
+            if (string.IsNullOrWhiteSpace(input))
+                continue;
+
+            if (input.StartsWith("/"))
+            {
+                input = input[1..];
+
+                if (input.Equals("/exit", StringComparison.OrdinalIgnoreCase) ||
+                    input.Equals("/quit", StringComparison.OrdinalIgnoreCase))
+                    break;
+            }
+
+            try
+            {
+                await AigcChatToolWindow.Instance.HandleInput(input);
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Error.WriteLine($"Error: {ex.Message}");
+                Console.ResetColor();
+            }
+
+            QueuedAction.FlushQueuedActions();
+        }
     }
 }

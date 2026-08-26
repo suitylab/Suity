@@ -1,3 +1,4 @@
+using MarkedNet;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
@@ -6,6 +7,7 @@ using Suity.Views.Im;
 using Suity.Views.Im.PropertyEditing;
 using System;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
 
@@ -285,6 +287,46 @@ internal class MainChat : ILLmChat
                 this.Stop();
             }
             
+            this._guiRef.QueueRefresh();
+        }
+    }
+
+    public virtual async Task<object> HandleButtonClick(string key)
+    {
+        if (_state != LLmChatStates.Started)
+        {
+            throw new InvalidOperationException($"Conversation is not started.");
+        }
+
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return null;
+        }
+
+        // Start process already includes GetOrCreateChat(), no need to call again
+        var chat = _innerChat; // GetOrCreateChat();
+        if (chat is null)
+        {
+            throw new AigcException(L("No workflow selected."));
+        }
+
+        try
+        {
+            return await chat.HandleButtonClick(key);
+        }
+        catch (Exception err)
+        {
+            _conversation?.AddException(err);
+
+            return null;
+        }
+        finally
+        {
+            if (chat.State == LLmChatStates.Stopped)
+            {
+                this.Stop();
+            }
+
             this._guiRef.QueueRefresh();
         }
     }
