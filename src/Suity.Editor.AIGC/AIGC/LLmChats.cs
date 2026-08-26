@@ -445,7 +445,7 @@ public class ManualLLmChat : BaseLLmChat
 
         _conversation.AddDebugMessage("Please copy external conversation result, and click [Paste] button to input to this conversation.", config =>
         {
-            config.AddButton("Paste", () =>
+            config.AddButton("Paste", "Paste", () =>
             {
                 EditorUtility.GetSystemClipboardText().ContinueWith(t => 
                 {

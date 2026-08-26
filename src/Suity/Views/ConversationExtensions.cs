@@ -130,7 +130,7 @@ public static class ConversationExtensions
                 }
             }
 
-            m.AddButton(L("Show error"), () => err.LogError(message));
+            m.AddButton("ShowError", L("Show Error"), () => err.LogError(message));
         });
 
         //if (addLog)
@@ -149,6 +149,35 @@ public static class ConversationExtensions
     public static void AddButtons(this IDialogMessage config, string title, params ConversationButton[] buttons)
     {
         config.AddButtons(title, buttons);
+    }
+
+    public static Task<IConversation> WaitForInput(this IConversation conversation, CancellationToken cancel)
+    {
+        if (conversation is null)
+        {
+            throw new ArgumentNullException(nameof(conversation));
+        }
+
+        var source = new TaskCompletionSource<IConversation>();
+
+        IEnumerator chatCoroutine()
+        {
+            yield return null;
+
+            source.SetResult(conversation);
+        }
+
+        var coroutine = chatCoroutine();
+        conversation.PushCoroutine(coroutine);
+
+        cancel.Register(() =>
+        {
+            conversation.StopCoroutine(coroutine);
+            conversation.PopAction();
+            source.TrySetCanceled();
+        });
+
+        return source.Task;
     }
 
     public static Task<string> WaitForTextInput(this IConversation conversation, CancellationToken cancel)

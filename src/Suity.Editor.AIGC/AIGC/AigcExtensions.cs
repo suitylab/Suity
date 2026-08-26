@@ -219,7 +219,7 @@ public static class AigcExtensions
         }
 
         config.AddLine();
-        config.AddButton("Copy Original", () =>
+        config.AddButton("CopyOriginal", "Copy Original", () =>
         {
             EditorUtility.SetSystemClipboardText(msg).ContinueWith(t => 
             {
@@ -249,7 +249,7 @@ public static class AigcExtensions
         config.ProcessMarkdigBlocks(result);
 
         config.AddLine();
-        config.AddButton("Copy Original", () =>
+        config.AddButton("CopyOriginal", "Copy Original", () =>
         {
             EditorUtility.SetSystemClipboardText(msg).ContinueWith(t => 
             {

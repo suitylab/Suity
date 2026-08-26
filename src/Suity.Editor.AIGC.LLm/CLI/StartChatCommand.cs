@@ -32,17 +32,17 @@ public class StartChatCommand : CliCommand
             return;
         }
 
+        AigcChatToolWindow.Instance.HandleStartChat();
+        Console.WriteLine("Chat started, enter /exit or /quit to exit chat, enter /<button-key> to click a button.");
+
         RunChatLoopAsync().GetAwaiter().GetResult();
     }
 
     private async Task RunChatLoopAsync()
     {
-        await AigcChatToolWindow.Instance.HandleStartChat();
-        Console.WriteLine("Chat started, enter /exit or /quit to exit chat");
-
         while (true)
         {
-            Console.Write("chat> ");
+            //Console.Write("chat> ");
 
             string? input;
             try
@@ -54,6 +54,8 @@ public class StartChatCommand : CliCommand
                 break;
             }
 
+            input = input?.Trim() ?? string.Empty;
+
             if (string.IsNullOrWhiteSpace(input))
                 continue;
 
@@ -61,8 +63,8 @@ public class StartChatCommand : CliCommand
             {
                 input = input[1..];
 
-                if (input.Equals("/exit", StringComparison.OrdinalIgnoreCase) ||
-                    input.Equals("/quit", StringComparison.OrdinalIgnoreCase))
+                if (input.Equals("exit", StringComparison.OrdinalIgnoreCase) ||
+                    input.Equals("quit", StringComparison.OrdinalIgnoreCase))
                 {
                     AigcChatToolWindow.Instance.HandleStopChat();
                     break;

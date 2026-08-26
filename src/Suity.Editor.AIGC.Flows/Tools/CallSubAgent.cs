@@ -217,7 +217,7 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
                 {
                     var location = loopDoc.FileName;
 
-                    msg.AddButton("Open Target", () =>
+                    msg.AddButton("OpenTarget", "Open Target", () =>
                     {
                         var reOpen = DocumentManager.Instance.OpenDocument(location);
                         reOpen.ShowView();

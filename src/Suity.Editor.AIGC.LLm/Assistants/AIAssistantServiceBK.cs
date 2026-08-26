@@ -969,7 +969,7 @@ Attempt to fix these defects, and output the repaired JSON document.
 
         request.Conversation?.AddErrorMessage(L("Unable to fix this json document."), finishDialog =>
         {
-            finishDialog.AddButton(L("Copy Json"), () =>
+            finishDialog.AddButton("CopyJson", L("Copy Json"), () =>
             {   
                 EditorUtility.SetSystemClipboardText(json);
             });
@@ -988,7 +988,7 @@ Attempt to fix these defects, and output the repaired JSON document.
 
         var finishMsg = request.Conversation?.AddSystemMessage(L("Generation completed and will be applied to document..."), finishDialog =>
         {
-            finishDialog.AddButton(L("Copy Json"), () =>
+            finishDialog.AddButton("CopyJson", L("Copy Json"), () =>
             {
                 EditorUtility.SetSystemClipboardText(json?.ToString() ?? string.Empty);
             });

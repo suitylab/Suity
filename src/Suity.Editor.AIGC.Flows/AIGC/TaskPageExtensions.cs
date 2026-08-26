@@ -80,7 +80,7 @@ class ToolCallDialogMessage : IDialogMessage, IDisposable
         {
             if (context.ToolInstance?.Owner is AigcTaskPage taskPage)
             {
-                msg.AddButton("Open", () =>
+                msg.AddButton("Open", "Open", () =>
                 {
                     taskPage.SelectTaskInView();
                 });

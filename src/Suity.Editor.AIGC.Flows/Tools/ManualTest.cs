@@ -73,7 +73,7 @@ public class ManualTest : ToolCommand<ManualTest.Output>
             msg.AddCode(testContent);
             msg.AddText("Test command:");
             msg.AddCode(shellCommand);
-            msg.AddButton("Run Test", () => RunTest(context, shellCommand));
+            msg.AddButton("RunTest", "Run Test");
         });
 
         IConversation conversation = context?.Conversation;
@@ -87,12 +87,21 @@ public class ManualTest : ToolCommand<ManualTest.Output>
         }
 
         conversation.AddInfoMessage("Please enter your test result in the input field at the bottom.");
-        string result = await conversation.WaitForTextInput(context.Cancellation);
-
-        return new Output
+        while (true)
         {
-            Result = result,
-        };
+            await conversation.WaitForInput(context.Cancellation);
+            if (conversation.InputMessage is { } result && !string.IsNullOrWhiteSpace(result))
+            {
+                return new Output
+                {
+                    Result = result,
+                };
+            }
+            else if (conversation.InputButton == "RunTest")
+            {
+                RunTest(context, shellCommand);
+            }
+        }
     }
 
     void RunTest(ToolCallContext context, string command)
