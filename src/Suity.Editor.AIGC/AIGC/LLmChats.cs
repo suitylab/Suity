@@ -474,7 +474,7 @@ public class ManualLLmChat : BaseLLmChat
 
     private void ProcessMarkdown(string msg)
     {
-        _conversation.AddMessage(string.Empty, ConversationRole.Remote, TextStatus.Normal, config =>
+        _conversation.AddMessage(string.Empty, ConversationRole.System, TextStatus.Normal, config =>
         {
             config.AddMarkdigMessage(msg);
         });

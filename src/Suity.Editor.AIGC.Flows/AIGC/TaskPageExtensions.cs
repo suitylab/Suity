@@ -75,8 +75,8 @@ class ToolCallDialogMessage : IDialogMessage, IDisposable
 
         string toolContent = "Run tool: " + content;
 
-        _localMessage = context.ToolInstance?.Conversation?.AddMessage(toolContent, Status, _config);
-        _globalMessage = context.Conversation?.AddMessage(toolContent, Status, msg =>
+        _localMessage = context.ToolInstance?.Conversation?.AddSystemMessage(toolContent, Status, _config);
+        _globalMessage = context.Conversation?.AddSystemMessage(toolContent, Status, msg =>
         {
             if (context.ToolInstance?.Owner is AigcTaskPage taskPage)
             {

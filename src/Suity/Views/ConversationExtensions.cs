@@ -12,13 +12,13 @@ namespace Suity.Views;
 /// </summary>
 public static class ConversationExtensions
 {
-    public static DisposableDialogItem AddMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddRemoteMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.Remote, TextStatus.Info, config);
         return new DisposableDialogItem(handler, msg);
     }
 
-    public static DisposableDialogItem AddMessage(this IConversation handler, string content, TextStatus status, Action<IDialogMessage> config = null)
+    public static DisposableDialogItem AddRemoteMessage(this IConversation handler, string content, TextStatus status, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.Remote, status, config);
         return new DisposableDialogItem(handler, msg);
@@ -116,7 +116,7 @@ public static class ConversationExtensions
             message = L("An error occurred.");
         }
 
-        var item = handler.AddMessage(message, TextStatus.Error, m =>
+        var item = handler.AddSystemMessage(message, TextStatus.Error, m =>
         {
             m.AddCode($"{err.GetType().Name}\n{err.Message}");
 

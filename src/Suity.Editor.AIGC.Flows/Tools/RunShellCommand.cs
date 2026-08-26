@@ -85,6 +85,14 @@ public class RunShellCommand : ToolCommand<RunShellCommand.Output>
                 Result = output,
             };
         }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception e)
+        {
+            throw;
+        }
         finally
         {
             updater?.Dispose();

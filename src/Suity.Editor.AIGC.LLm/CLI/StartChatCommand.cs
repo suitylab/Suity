@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.LLm.CLI;
@@ -33,7 +34,7 @@ public class StartChatCommand : CliCommand
         }
 
         AigcChatToolWindow.Instance.HandleStartChat();
-        Console.WriteLine("Chat started, enter /exit or /quit to exit chat, enter /<button-key> to click a button.");
+        Console.WriteLine("Chat started, enter /exit or /quit to exit chat, Esc to stop.");
 
         RunChatLoopAsync().GetAwaiter().GetResult();
     }
@@ -42,19 +43,48 @@ public class StartChatCommand : CliCommand
     {
         while (true)
         {
-            //Console.Write("chat> ");
+            var inputBuilder = new StringBuilder();
 
-            string? input;
-            try
+            while (true)
             {
-                input = await Console.In.ReadLineAsync();
-            }
-            catch (OperationCanceledException)
-            {
-                break;
+                if (Console.KeyAvailable)
+                {
+                    var key = Console.ReadKey(intercept: true);
+
+                    if (key.Key == ConsoleKey.Escape)
+                    {
+                        Console.WriteLine("[Cancelled]");
+                        AigcChatToolWindow.Instance.HandleStopChat();
+                        return;
+                    }
+
+                    if (key.Key == ConsoleKey.Enter)
+                    {
+                        Console.WriteLine();
+                        break;
+                    }
+
+                    if (key.Key == ConsoleKey.Backspace)
+                    {
+                        if (inputBuilder.Length > 0)
+                        {
+                            inputBuilder.Remove(inputBuilder.Length - 1, 1);
+                            Console.Write("\b \b");
+                        }
+                    }
+                    else if (key.KeyChar != '\0')
+                    {
+                        inputBuilder.Append(key.KeyChar);
+                        Console.Write(key.KeyChar);
+                    }
+                }
+                else
+                {
+                    await Task.Delay(10);
+                }
             }
 
-            input = input?.Trim() ?? string.Empty;
+            var input = inputBuilder.ToString().Trim();
 
             if (string.IsNullOrWhiteSpace(input))
                 continue;

@@ -41,6 +41,7 @@ public class DialogItem : IDialogMessage
     private static readonly Color ColorRemote = EditorColorScheme.Default.EditorBG;
     private static readonly Color ColorSystem = EditorColorScheme.Default.EditorBG;
     private static readonly Color ColorDebug = ColorTranslators.FromHtml("#963FBF");
+    private static readonly Dictionary<Color, ConsoleColor> _consoleColorCache = [];
 
     private List<DialogElement> _elements;
 
@@ -212,8 +213,10 @@ public class DialogItem : IDialogMessage
 
     public void WriteConsole()
     {
-        var statusStr = Status != TextStatus.Normal ? $" [{Status}]" : "";
-        Console.WriteLine($"[{Role}]{statusStr}: {Message}");
+        var color = EditorServices.ColorConfig.GetStatusColor(Status);
+        var prevColor = Console.ForegroundColor;
+        Console.ForegroundColor = ToConsoleColor(color);
+        Console.WriteLine(Message);
 
         if (_elements != null)
         {
@@ -223,6 +226,36 @@ public class DialogItem : IDialogMessage
                 _elements[i].WriteConsole();
             }
         }
+
+        Console.ForegroundColor = prevColor;
+    }
+
+    private static ConsoleColor ToConsoleColor(Color color)
+    {
+        if (_consoleColorCache.TryGetValue(color, out var cached))
+            return cached;
+
+        int r = color.R, g = color.G, b = color.B;
+        ConsoleColor result;
+        if (r < 64 && g < 64 && b < 64) result = ConsoleColor.Black;
+        else if (r > 192 && g > 192 && b > 192) result = ConsoleColor.White;
+        else if (r > 192 && g < 64 && b < 64) result = ConsoleColor.Red;
+        else if (r < 64 && g > 192 && b < 64) result = ConsoleColor.Green;
+        else if (r < 64 && g < 64 && b > 192) result = ConsoleColor.Blue;
+        else if (r > 192 && g > 192 && b < 64) result = ConsoleColor.Yellow;
+        else if (r < 64 && g > 192 && b > 192) result = ConsoleColor.Cyan;
+        else if (r > 192 && g < 64 && b > 192) result = ConsoleColor.Magenta;
+        else if (r > 128 && g < 64) result = ConsoleColor.DarkRed;
+        else if (g > 128 && r < 64) result = ConsoleColor.DarkGreen;
+        else if (b > 128 && r < 64) result = ConsoleColor.DarkBlue;
+        else if (r > 128 && g > 64 && b < 64) result = ConsoleColor.DarkYellow;
+        else if (r < 64 && g > 128 && b > 128) result = ConsoleColor.DarkCyan;
+        else if (r > 128 && g < 64 && b > 128) result = ConsoleColor.DarkMagenta;
+        else if (r > 128 && g > 128 && b > 128) result = ConsoleColor.Gray;
+        else result = ConsoleColor.White;
+
+        _consoleColorCache[color] = result;
+        return result;
     }
 }
 
@@ -274,7 +307,7 @@ public class DialogElement_Text(string text) : DialogElement
 
     public override void WriteConsole()
     {
-        Console.WriteLine($"Text: {Text}");
+        Console.WriteLine(Text ?? string.Empty);
     }
 }
 
@@ -310,7 +343,9 @@ public class DialogElement_Code(string text) : DialogElement
 
     public override void WriteConsole()
     {
-        Console.WriteLine($"Code: {Code}");
+        Console.WriteLine("```");
+        Console.WriteLine(Code ?? string.Empty);
+        Console.WriteLine("```");
     }
 }
 
@@ -366,7 +401,7 @@ public class DialogElement_Button : DialogElement
 
     public override void WriteConsole()
     {
-        Console.WriteLine($"Button[{Key}]: {Text}");
+        Console.WriteLine($"Button [/{Key}: {Text}]");
     }
 }
 
@@ -430,8 +465,8 @@ public class DialogElement_ButtonGroup : DialogElement
 
     public override void WriteConsole()
     {
-        var btnTexts = string.Join(", ", Array.ConvertAll(_buttons, b => b.Text));
-        Console.WriteLine($"Buttons[{_title}]: {btnTexts}");
+        var btnTexts = string.Join(", ", Array.ConvertAll(_buttons, b => $"[/{b.Key}: {b.Text}]"));
+        Console.WriteLine($"Buttons {_title}{btnTexts}");
     }
 }
 

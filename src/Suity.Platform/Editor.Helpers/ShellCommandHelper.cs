@@ -6,6 +6,20 @@ namespace Suity.Editor.Helpers;
 
 public static class ShellCommandHelper
 {
+    private static bool _codePagesRegistered;
+    private static readonly object _lock = new();
+
+    private static void EnsureCodePagesRegistered()
+    {
+        if (_codePagesRegistered) return;
+        lock (_lock)
+        {
+            if (_codePagesRegistered) return;
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            _codePagesRegistered = true;
+        }
+    }
+
     public static async Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token)
     {
         bool isWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
@@ -15,6 +29,7 @@ public static class ShellCommandHelper
         Encoding outputEncoding;
         if (isWindows)
         {
+            EnsureCodePagesRegistered();
             int consoleCodePage = GetConsoleCodePage();
             outputEncoding = Encoding.GetEncoding(consoleCodePage);
         }
