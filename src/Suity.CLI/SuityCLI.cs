@@ -4,6 +4,7 @@ using Suity.Editor.Analysis;
 using Suity.Editor.DataModel;
 using Suity.Editor.Documents.TypeEdit;
 using Suity.Editor.Flows;
+using Suity.Editor.Packaging;
 using Suity.Editor.ProjectGui;
 using Suity.Editor.Services;
 using Suity.Editor.VirtualTree;
@@ -315,6 +316,7 @@ public class SuityCLI
             typeof(VirtualNode).Assembly,
             typeof(TypeDesignDocument).Assembly,
             typeof(CorePlugin).Assembly,
+            typeof(PackagerPlugin).Assembly,
             typeof(FlowPlugin).Assembly, // Suity.Editor.Flows
             typeof(BaseLLmCall).Assembly, // Suity.Editor.AIGC
             typeof(LLmModelPlugin).Assembly, // Suity.Editor.AIGC.LLm

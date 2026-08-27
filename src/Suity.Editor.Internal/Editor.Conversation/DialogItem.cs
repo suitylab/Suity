@@ -10,6 +10,7 @@ using System.Drawing;
 
 namespace Suity.Editor.Conversation;
 
+#region DialogMenuRootCommand
 /// <summary>
 /// Root menu command for conversation dialog context menu.
 /// </summary>
@@ -31,7 +32,9 @@ internal class DialogMenuRootCommand : RootMenuCommand
         });
     }
 }
+#endregion
 
+#region DialogItem
 /// <summary>
 /// Represents a single dialog item (message) in a conversation, supporting text, code, buttons, progress bars, and other elements.
 /// </summary>
@@ -230,6 +233,21 @@ public class DialogItem : IDialogMessage
         Console.ForegroundColor = prevColor;
     }
 
+    public void WriteData(IDataWriter writer)
+    {
+        writer.Node("@type").WriteString("DialogItem");
+        writer.Node("Content").WriteString(Message);
+        writer.Node("Status").WriteString(Status.ToString());
+
+        if (_elements != null)
+        {
+            foreach (var element in _elements)
+            {
+                element.WriteData(writer);
+            }
+        }
+    }
+
     private static ConsoleColor ToConsoleColor(Color color)
     {
         if (_consoleColorCache.TryGetValue(color, out var cached))
@@ -258,7 +276,9 @@ public class DialogItem : IDialogMessage
         return result;
     }
 }
+#endregion
 
+#region DialogElement
 /// <summary>
 /// Base class for interactive elements within a conversation dialog item.
 /// </summary>
@@ -275,8 +295,12 @@ public abstract class DialogElement
     public abstract ImGuiNode OnGui(ImGui gui, int index, RootMenuCommand menu, IConversationHost host);
 
     public abstract void WriteConsole();
-}
 
+    public abstract void WriteData(IDataWriter writer);
+}
+#endregion
+
+#region DialogElement_Text
 /// <summary>
 /// A text element displayed in a conversation dialog.
 /// </summary>
@@ -309,8 +333,16 @@ public class DialogElement_Text(string text) : DialogElement
     {
         Console.WriteLine(Text ?? string.Empty);
     }
-}
 
+    public override void WriteData(IDataWriter writer)
+    {
+        writer.Node("@type").WriteString("Text");
+        writer.Node("Text").WriteString(Text);
+    }
+}
+#endregion
+
+#region DialogElement_Code
 /// <summary>
 /// A code block element displayed in a conversation dialog.
 /// </summary>
@@ -347,8 +379,16 @@ public class DialogElement_Code(string text) : DialogElement
         Console.WriteLine(Code ?? string.Empty);
         Console.WriteLine("```");
     }
-}
 
+    public override void WriteData(IDataWriter writer)
+    {
+        writer.Node("@type").WriteString("Code");
+        writer.Node("Code").WriteString(Code);
+    }
+}
+#endregion
+
+#region DialogElement_Button
 /// <summary>
 /// A button element displayed in a conversation dialog.
 /// </summary>
@@ -386,7 +426,7 @@ public class DialogElement_Button : DialogElement
         return gui.Button($"btn#{Key}_{index}", Text)
         .InitClass("simpleBtn")
         .InitHorizontalAlignment(GuiAlignment.Far)
-        .OnClick(() => 
+        .OnClick(() =>
         {
             if (Clicked != null)
             {
@@ -403,8 +443,17 @@ public class DialogElement_Button : DialogElement
     {
         Console.WriteLine($"Button [/{Key}: {Text}]");
     }
-}
 
+    public override void WriteData(IDataWriter writer)
+    {
+        writer.Node("@type").WriteString("Button");
+        writer.Node("Key").WriteString(Key);
+        writer.Node("Text").WriteString(Text);
+    }
+}
+#endregion
+
+#region DialogElement_ButtonGroup
 /// <summary>
 /// A group of buttons displayed in a conversation dialog.
 /// </summary>
@@ -429,7 +478,7 @@ public class DialogElement_ButtonGroup : DialogElement
     {
         return gui.VerticalLayout($"btn_group#{index}")
         .InitFullWidth()
-        .OnContent(() => 
+        .OnContent(() =>
         {
             gui.HorizontalLayout("horizontal")
             .InitFit(GuiOrientation.Both)
@@ -468,8 +517,25 @@ public class DialogElement_ButtonGroup : DialogElement
         var btnTexts = string.Join(", ", Array.ConvertAll(_buttons, b => $"[/{b.Key}: {b.Text}]"));
         Console.WriteLine($"Buttons {_title}{btnTexts}");
     }
-}
 
+    public override void WriteData(IDataWriter writer)
+    {
+        writer.Node("@type").WriteString("ButtonGroup");
+        writer.Node("Title").WriteString(_title);
+
+        var aryWriter = writer.Nodes("Buttons", _buttons.Length);
+        foreach (var button in _buttons)
+        {
+            var btnWriter = aryWriter.Item();
+            btnWriter.Node("Key").WriteString(button.Key);
+            btnWriter.Node("Text").WriteString(button.Text);
+        }
+        aryWriter.Finish();
+    }
+}
+#endregion
+
+#region DialogElement_Line
 /// <summary>
 /// A horizontal line separator element displayed in a conversation dialog.
 /// </summary>
@@ -485,8 +551,15 @@ public class DialogElement_Line : DialogElement
     {
         Console.WriteLine("──────────");
     }
-}
 
+    public override void WriteData(IDataWriter writer)
+    {
+        writer.Node("@type").WriteString("Line");
+    }
+}
+#endregion
+
+#region DialogElement_ProgressBar
 /// <summary>
 /// A progress bar element displayed in a conversation dialog.
 /// </summary>
@@ -532,4 +605,12 @@ public class DialogElement_ProgressBar : DialogElement
     {
         Console.WriteLine($"Progress: {_progress} / {_max}");
     }
-}
+
+    public override void WriteData(IDataWriter writer)
+    {
+        writer.Node("@type").WriteString("ProgressBar");
+        writer.Node("Progress").WriteSingle(_progress);
+        writer.Node("Max").WriteSingle(_max);
+    }
+} 
+#endregion
