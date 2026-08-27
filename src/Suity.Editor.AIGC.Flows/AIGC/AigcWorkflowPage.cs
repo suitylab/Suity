@@ -1203,16 +1203,16 @@ public class AigcWorkflowPage : AigcTaskPage,
     /// <returns>The built page instance, or null if no definition is available.</returns>
     private SubFlowInstance BuildInstance()
     {
-        SubFlowInstance instance = null;
+        SubFlowInstance current = null;
 
         if (Workflow is { } workflowAsset)
         {
-            var page = GetDefinitionItem();
+            var defItem = GetDefinitionItem();
 
-            instance = Instance;
-            if (instance != null && instance.IsInDiagram && instance.DiagramItem == page)
+            current = Instance;
+            if (current != null && current.IsInDiagram && current.DiagramItem == defItem)
             {
-                instance.Build();
+                current.Build();
             }
             else
             {
@@ -1222,14 +1222,16 @@ public class AigcWorkflowPage : AigcTaskPage,
                     Owner = this,
                 };
 
-                Instance = workflowAsset.CreatePageInstance(option) as SubFlowInstance;
-                if (instance != null)
+                var created = workflowAsset.CreatePageInstance(option) as SubFlowInstance;
+                if (current != null)
                 {
-                    Instance?.UpdateFromOther(instance);
+                    created?.UpdateFromOther(current);
                 }
+
+                Instance = current = created;
             }
 
-            if (Instance != null)
+            if (current != null)
             {
                 this.TaskPageDocument?.View?.DoServiceAction<IViewRefresh>(o => o.QueueRefreshView());
             }
@@ -1239,7 +1241,7 @@ public class AigcWorkflowPage : AigcTaskPage,
             Instance = null;
         }
 
-        return instance;
+        return current;
     }
 
 
