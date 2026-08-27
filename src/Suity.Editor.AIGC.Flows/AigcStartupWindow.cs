@@ -80,10 +80,22 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
         {
             if (value == Guid.Empty)
             {
-                value = (_startupAssetSel.GetSelectionList()?.GetItems()?.FirstOrDefault() as Asset)?.Id ?? Guid.Empty;
+                value = (GetDefaultStartup() as Asset)?.Id ?? Guid.Empty;
             }
 
             _startupAssetSel.Id = value;
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the selected chat asset.
+    /// </summary>
+    public IAigcStartup SelectChat
+    {
+        get => _startupAssetSel.Target;
+        set
+        {
+            _startupAssetSel.Target = value ?? GetDefaultStartup();
         }
     }
 
@@ -128,10 +140,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
     /// <inheritdoc/>
     public void NotifyShow()
     {
-        _startupAssetSel.Target = _startupAssetSel.GetSelectionList()
-        ?.ToEnumerable()
-        .OfType<IAigcStartup>()
-        .FirstOrDefault();
+        AutoSelectDefaultStartup();
 
         _guiRef.QueueRefresh(true);
     }
@@ -267,6 +276,19 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
     #endregion
 
+    public void AutoSelectDefaultStartup()
+    {
+        _startupAssetSel.Target ??= GetDefaultStartup();
+    }
+
+    public IAigcStartup GetDefaultStartup()
+    {
+        return _startupAssetSel.GetSelectionList()
+            ?.ToEnumerable()
+            .OfType<IAigcStartup>()
+            .FirstOrDefault();
+    }
+
     public async void ProcessInput()
     {
         if (!await LLmService.Instance.CheckCurrentModelConfig())
@@ -384,5 +406,4 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
             return null;
         }
     }
-
 }

@@ -26,8 +26,8 @@ public class OpenCommand : CliCommand
 
         if (Directory.Exists(fileName))
         {
-            string dirName = Path.GetDirectoryName(fileName)!;
-            fileName = Path.Combine(dirName, $"{dirName}.suity");
+            string dirName = Path.GetFileName(fileName)!;
+            fileName = Path.Combine(fileName, $"{dirName}.suity");
         }
 
         if (!fileName.EndsWith(".suity", StringComparison.OrdinalIgnoreCase))
