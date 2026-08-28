@@ -8,12 +8,12 @@ using System.Reflection;
 
 namespace Suity.Editor.Services;
 
-public class EditorSystemService : IEditorSystemService
+public class EditorCommonService : IEditorCommonService
 {
-    public static EditorSystemService Instance { get; } = new();
+    public static EditorCommonService Instance { get; } = new();
 
 
-    public EditorSystemService()
+    public EditorCommonService()
     {
     }
 

@@ -66,7 +66,7 @@ sealed class CliDevice : Device, IRexResolver, ISystemLog
         
 
         AddService<ISystemLog>(this);
-        AddService<IEditorSystemService>(EditorSystemService.Instance);
+        AddService<IEditorCommonService>(EditorCommonService.Instance);
         AddService<IPlatformService>(CliPlatformService.Instance);
         AddService<IToolWindowService>(ToolWindowService.Instance);
         AddService<IMenuService>(MenuService.Instance);

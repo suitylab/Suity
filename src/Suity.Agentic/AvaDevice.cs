@@ -74,7 +74,7 @@ sealed class AvaDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateV
         EditorCommands.Mapper.ProvideHandler<LocateInCanvasVReq>(this);
 
         AddService<ISystemLog>(this);
-        AddService<IEditorSystemService>(EditorSystemService.Instance);
+        AddService<IEditorCommonService>(EditorCommonService.Instance);
         AddService<IPlatformService>(AvaPlatformService.Instance);
         AddService<IToolWindowService>(ToolWindowService.Instance);
         AddService<IMenuService>(MenuService.Instance);

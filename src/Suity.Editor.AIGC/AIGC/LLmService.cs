@@ -28,8 +28,9 @@ public abstract class LLmService
     /// <summary>
     /// Checks whether the current model configuration is valid and ready for use.
     /// </summary>
+    /// <param name="showDialog">Indicates whether to show a dialog if the configuration is invalid.</param>
     /// <returns>True if the current model configuration is valid; otherwise, false.</returns>
-    public abstract Task<bool> CheckCurrentModelConfig();
+    public abstract Task<bool> CheckCurrentModelConfig(bool showDialog = true);
 
 
 

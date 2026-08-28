@@ -5,8 +5,19 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.Services;
 
+public enum ApplicationModes
+{
+    Desktop,
+    CLI,
+}
+
 public interface IPlatformService
 {
+    /// <summary>
+    /// Gets a value indicating the current application mode.
+    /// </summary>
+    ApplicationModes ApplicationMode { get; }
+
     /// <summary>
     /// Executes a command asynchronously.
     /// </summary>

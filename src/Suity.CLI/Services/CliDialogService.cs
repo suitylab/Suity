@@ -1,9 +1,6 @@
 ﻿using Suity.Drawing;
 using Suity.Views.Im;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace Suity.Editor.Services;
 
@@ -14,142 +11,84 @@ internal class CliDialogService : IDialogService, IDialogExService, IDialogServi
     #region IDialogService
     public void CreateTextWindow(string text, string title, ImageDef icon)
     {
-        throw new NotImplementedException();
     }
 
     public void ShowDialog(string message)
     {
-        throw new NotImplementedException();
     }
 
     public void ShowException(Exception exception)
     {
-        throw new NotImplementedException();
     }
 
-    public string ShowOpenFile(string filter, string initPath, string defaultFile = null)
-    {
-        throw new NotImplementedException();
-    }
+    public string? ShowOpenFile(string filter, string initPath, string? defaultFile = null) => null;
+    public string? ShowOpenFolder(string initDirectory) => null;
 
-    public string ShowOpenFolder(string initDirectory)
-    {
-        throw new NotImplementedException();
-    }
+    public string? ShowPasswordTextDialog(string title, string text, Predicate<string> validate) => null;
 
-    public string ShowPasswordTextDialog(string title, string text, Predicate<string> validate)
-    {
-        throw new NotImplementedException();
-    }
+    public string? ShowSaveFile(string filter, string initPath, string? defaultFile = null) => null;
 
-    public string ShowSaveFile(string filter, string initPath, string defaultFile = null)
-    {
-        throw new NotImplementedException();
-    }
+    public string? ShowSingleLineTextDialog(string title, string text, Predicate<string> validate) => null;
 
-    public string ShowSingleLineTextDialog(string title, string text, Predicate<string> validate)
-    {
-        throw new NotImplementedException();
-    }
+    public string? ShowTextBlockDialog(string title, string text, string format) => null;
 
-    public string ShowTextBlockDialog(string title, string text, string format)
-    {
-        throw new NotImplementedException();
-    }
+    public bool? ShowYesNoCancelDialog(string message) => null;
 
-    public bool? ShowYesNoCancelDialog(string message)
-    {
-        throw new NotImplementedException();
-    }
+    public bool ShowYesNoDialog(string message) => false;
 
-    public bool ShowYesNoDialog(string message)
-    {
-        throw new NotImplementedException();
-    }
     #endregion
 
     #region IDialogExService
     public Task<Color?> ShowColorSelectDialogAsync(Color initColor)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.FromResult<Color?>(initColor);
 
     public Task<string> ShowExportFileNameDialogAsync(string initName, string ext = "txt")
-    {
-        throw new NotImplementedException();
-    }
+        => Task.FromResult<string>(initName);
 
     public Task<string> ShowExportFolderDialogAsync(string initName)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.FromResult<string>(initName);
 
     public Task<object> ShowSimpleSelectDialogAsync(string title, IEnumerable<KeyValuePair<string, object>> selections)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.FromResult<object>(null);
 
     #endregion
 
     #region IDialogServiceAsync
-    public Task CreateImGuiDialog(IDrawImGui imGui, DialogOptions option)
-    {
-        throw new NotImplementedException();
-    }
+    public Task CreateImGuiDialog(IDrawImGui imGui, DialogOptions option) 
+        => Task.CompletedTask;
 
     public Task CreateTextWindowAsync(string text, string title, ImageDef icon)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.CompletedTask;
 
     public Task ShowDialogAsync(string message)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.CompletedTask;
 
     public Task ShowExceptionAsync(Exception exception)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.CompletedTask;
 
     public Task<string> ShowOpenFileAsync(string filter, string initPath, string defaultFile = null)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.FromResult<string>(null);
 
     public Task<string> ShowOpenFolderAsync(string initDirectory)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.FromResult<string>(null);
 
     public Task<string> ShowPasswordTextDialogAsync(string title, string text, Predicate<string> validate)
-    {
-        throw new NotImplementedException();
-    }
-
+        => Task.FromResult<string>(null);
+    
     public Task<string> ShowSaveFileAsync(string filter, string initPath, string defaultFile = null)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.FromResult<string>(null);
 
     public Task<string> ShowSingleLineTextDialogAsync(string title, string text, Predicate<string> validate)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.FromResult<string>(null);
 
     public Task<string> ShowTextBlockDialogAsync(string title, string text, string format)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.FromResult<string>(null);
 
     public Task<bool?> ShowYesNoCancelDialogAsync(string message)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.FromResult<bool?>(null);
 
     public Task<bool> ShowYesNoDialogAsync(string message)
-    {
-        throw new NotImplementedException();
-    } 
+        => Task.FromResult<bool>(false);
+
     #endregion
 }

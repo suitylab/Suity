@@ -66,10 +66,10 @@ public class BinaryRenderResult : RenderResult
     {
         if (File.Exists(fileName))
         {
-            uint myCrc = EditorServices.EditorSystem.ComputeCrc32(_data);
+            uint myCrc = EditorServices.EditorCommon.ComputeCrc32(_data);
 
             byte[] currentBytes = File.ReadAllBytes(fileName);
-            uint currentCrc = EditorServices.EditorSystem.ComputeCrc32(currentBytes);
+            uint currentCrc = EditorServices.EditorCommon.ComputeCrc32(currentBytes);
 
             if (_data.Length == currentBytes.Length && myCrc == currentCrc)
             {

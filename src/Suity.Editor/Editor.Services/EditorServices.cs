@@ -177,14 +177,14 @@ public static class EditorServices
 
     #endregion
 
-    #region IEditorSystemService
+    #region IEditorCommonService
 
-    private static readonly ServiceStore<IEditorSystemService> _editorSystem = new();
+    private static readonly ServiceStore<IEditorCommonService> _editorCommon = new();
 
     /// <summary>
     /// File name service
     /// </summary>
-    public static IEditorSystemService EditorSystem => _editorSystem.Get();
+    public static IEditorCommonService EditorCommon => _editorCommon.Get();
 
     #endregion
 

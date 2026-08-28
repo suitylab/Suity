@@ -8,7 +8,7 @@ namespace Suity.Editor.Services;
 /// <summary>
 /// Service interface for core editor system operations.
 /// </summary>
-public interface IEditorSystemService
+public interface IEditorCommonService
 {
     /// <summary>
     /// Creates a data input list.

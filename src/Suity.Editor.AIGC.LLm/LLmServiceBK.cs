@@ -56,7 +56,7 @@ internal class LLmServiceBK : LLmService
 
 
     /// <inheritdoc/>
-    public override async Task<bool> CheckCurrentModelConfig()
+    public override async Task<bool> CheckCurrentModelConfig(bool showDialog)
     {
         List<string> msgs = null;
         if (LLmModelPlugin.Instance.GetCurrentModelConfigValid(ref msgs))
@@ -64,14 +64,17 @@ internal class LLmServiceBK : LLmService
             return true;
         }
 
-        string msg = L("AI language model is not configured. Please configure the AI language model first.");
-        if (msgs?.Count > 0)
+        if (showDialog)
         {
-            msg += "\n\n" + string.Join("\n", msgs);
-        }
+            string msg = L("AI language model is not configured. Please configure the AI language model first.");
+            if (msgs?.Count > 0)
+            {
+                msg += "\n\n" + string.Join("\n", msgs);
+            }
 
-        await DialogUtility.ShowMessageBoxAsync(msg);
-        EditorUtility.ShowProjectSetting();
+            await DialogUtility.ShowMessageBoxAsync(msg);
+            EditorUtility.ShowProjectSetting();
+        }
 
         return false;
     }
