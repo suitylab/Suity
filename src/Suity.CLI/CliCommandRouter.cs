@@ -52,6 +52,7 @@ public class CliCommandRouter
 
         string commandKey = args[0];
         var commandArgs = new CliArguments(commandKey, args.Length > 1 ? args[1..] : Array.Empty<string>());
+        string? sid = commandArgs.GetOption("sid");
 
         if (_commands.TryGetValue(commandKey, out var command))
         {
@@ -60,8 +61,6 @@ public class CliCommandRouter
                 command.ShowHelp();
                 return 0;
             }
-
-            string? sid = commandArgs.GetOption("sid");
 
             var stopwatch = Stopwatch.StartNew();
             try
@@ -124,6 +123,12 @@ public class CliCommandRouter
         Console.ResetColor();
         Console.Error.WriteLine();
         ShowHelp();
+
+        if (!string.IsNullOrWhiteSpace(sid))
+        {
+            Console.WriteLine(GetMagicCode(new CliException($"Unknown command: '{commandKey}'"), sid));
+        }
+
         return 1;
     }
 
