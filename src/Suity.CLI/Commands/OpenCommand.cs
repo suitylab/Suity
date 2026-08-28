@@ -46,9 +46,16 @@ public class OpenCommand : CliCommand
             cts.Cancel();
         };
 
+        Console.WriteLine($"Project '{fileName}' opened.");
+
+        if (args.GetOption("sid") is { } sid && !string.IsNullOrWhiteSpace(sid))
+        {
+            Console.WriteLine(CliCommandRouter.GetMagicCode($"Project '{fileName}' opened.", sid));
+        }
+
         var repl = new CliReplInterface();
         repl.StartInteractiveLoopAsync(cts.Token).GetAwaiter().GetResult();
 
-        return $"Project '{fileName}' opened.";
+        return null;
     }
 }

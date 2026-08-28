@@ -15,7 +15,7 @@ public class NewCommand : CliCommand
         }
 
         string? folderPath = args[0];
-        string? templateFile = args.Options["template"];
+        string? templateFile = args.GetOption("template");
 
         if (string.IsNullOrWhiteSpace(folderPath))
         {

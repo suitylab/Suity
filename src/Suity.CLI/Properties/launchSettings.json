@@ -2,7 +2,7 @@
   "profiles": {
     "Suity.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "open D:\\Core\\Test\\TestCoding025"
+      "commandLineArgs": "open D:\\Core\\Test\\TestCoding025 -sid aa"
     }
   }
 }
