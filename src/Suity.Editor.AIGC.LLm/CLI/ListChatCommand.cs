@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 
 namespace Suity.Editor.AIGC.LLm.CLI;
 
@@ -12,13 +12,12 @@ public class ListChatCommand : CliCommand
     public override object DoCommand(ICliArguments args)
     {
         var providers = AssetManager.Instance.GetAssets<ILLmChatProvider>();
-        foreach (var provider in providers)
-        {
-            if (provider is Asset asset) 
-            {
-                Console.WriteLine(asset.AssetKey);
-            }
-        }
-        return null;
+
+        string[] assetKeys = providers
+            .OfType<Asset>()
+            .Select(o => o.AssetKey)
+            .ToArray();
+
+        return new CliStringArray { Strings = assetKeys };
     }
 }

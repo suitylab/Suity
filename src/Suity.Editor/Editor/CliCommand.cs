@@ -53,3 +53,23 @@ public class CliException : Exception
     public CliException(string message) : base(message) { }
     public CliException(string message, Exception innerException) : base(message, innerException) { }
 }
+
+public class CliStringArray : IDataWritable
+{
+    public string[] Strings { get; init; }
+
+    public void WriteData(IDataWriter writer)
+    {
+        var aryWriter = writer.Nodes("Strings", Strings.Length);
+        foreach (var str in Strings)
+        {
+            var strWriter = aryWriter.Item();
+            strWriter.WriteString(str);
+        }
+    }
+
+    public override string ToString()
+    {
+        return string.Join("\r\n", Strings);
+    }
+}

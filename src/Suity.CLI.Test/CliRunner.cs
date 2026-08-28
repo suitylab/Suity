@@ -8,6 +8,7 @@ public class CliRunner : IDisposable
     private const string MagicPrefix = "[SUITY_CMD]->";
 
     private readonly Dictionary<string, Action<JsonDataReader>> _callbacks = new();
+    private readonly Dictionary<string, TaskCompletionSource<JsonDataReader>> _asyncCallbacks = new();
     private readonly object _lock = new();
     private Process? _process;
     private CancellationTokenSource? _cts;
@@ -57,6 +58,41 @@ public class CliRunner : IDisposable
         _readTask = Task.Run(() => Running(cts.Token));
     }
 
+    public async Task<JsonDataReader> StartAsync(string args)
+    {
+        if (_process != null)
+        {
+            throw new InvalidOperationException("Process is already started.");
+        }
+
+        var cts = new CancellationTokenSource();
+        _cts = cts;
+
+        string sid = IdGenerator.GenerateId(10);
+        var tcs = new TaskCompletionSource<JsonDataReader>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        lock (_lock)
+        {
+            _asyncCallbacks[sid] = tcs;
+        }
+
+        var process = new Process();
+        process.StartInfo.FileName = CliPath;
+        process.StartInfo.Arguments = $"{args} --sid {sid}";
+        process.StartInfo.UseShellExecute = false;
+        process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.RedirectStandardError = true;
+        process.StartInfo.RedirectStandardInput = true;
+        process.StartInfo.CreateNoWindow = true;
+
+        process.Start();
+        _process = process;
+
+        _readTask = Task.Run(() => Running(cts.Token));
+
+        return await tcs.Task;
+    }
+
     public void SendCommand(string args, Action<JsonDataReader> response)
     {
         string sid = IdGenerator.GenerateId(10);
@@ -67,6 +103,20 @@ public class CliRunner : IDisposable
         }
 
         SendCommandInternal(args, sid);
+    }
+
+    public Task<JsonDataReader> SendCommandAsync(string args)
+    {
+        string sid = IdGenerator.GenerateId(10);
+        var tcs = new TaskCompletionSource<JsonDataReader>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        lock (_lock)
+        {
+            _asyncCallbacks[sid] = tcs;
+        }
+
+        SendCommandInternal(args, sid);
+        return tcs.Task;
     }
 
     private void SendCommandInternal(string args, string sid)
@@ -116,17 +166,19 @@ public class CliRunner : IDisposable
             if (string.IsNullOrEmpty(sid))
                 return;
 
-            Action<JsonDataReader>? callback = null;
-
             lock (_lock)
             {
-                if (_callbacks.Remove(sid, out var found))
+                if (_asyncCallbacks.Remove(sid, out var tcs))
                 {
-                    callback = found;
+                    tcs.TrySetResult(reader);
+                    return;
+                }
+
+                if (_callbacks.Remove(sid, out var callback))
+                {
+                    callback.Invoke(reader);
                 }
             }
-
-            callback?.Invoke(reader);
         }
         catch
         {

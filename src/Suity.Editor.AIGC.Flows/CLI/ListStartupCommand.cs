@@ -1,5 +1,6 @@
 ﻿using Suity.Editor.AIGC;
 using System;
+using System.Linq;
 
 namespace Suity.Editor.CLI;
 
@@ -13,13 +14,13 @@ public class ListStartupCommand : CliCommand
     public override object DoCommand(ICliArguments args)
     {
         var startups = AssetManager.Instance.GetAssets<IAigcStartup>();
-        foreach (var startup in startups)
-        {
-            if (startup is Asset asset && StartupPageFilter.Instance.FilterAsset(asset))
-            {
-                Console.WriteLine(asset.AssetKey);
-            }
-        }
-        return null;
+
+        string[] assetKeys = startups
+            .OfType<Asset>()
+            .Where(o => StartupPageFilter.Instance.FilterAsset(o))
+            .Select(o => o.AssetKey)
+            .ToArray();
+
+        return new CliStringArray { Strings = assetKeys };
     }
 }
