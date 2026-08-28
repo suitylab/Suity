@@ -11,7 +11,7 @@ public class StartChatCommand : CliCommand
 
     public override string Usage => "start-chat (<asset-key>)";
 
-    public override void DoCommand(ICliArguments args)
+    public override string? DoCommand(ICliArguments args)
     {
         string assetKey = args[0];
         if (!string.IsNullOrEmpty(assetKey))
@@ -19,24 +19,21 @@ public class StartChatCommand : CliCommand
             var provider = AssetManager.Instance.GetAsset<ILLmChatProvider>(assetKey);
             if (provider is null)
             {
-                Console.WriteLine("chat asset is not found");
-                return;
+                throw new CliException("chat asset is not found");
             }
 
             AigcChatToolWindow.Instance.SelectedChatProvider = provider;
-            Console.WriteLine("chat is set to " + assetKey);
         }
 
         if (AigcChatToolWindow.Instance.SelectedChatProvider is null)
         {
-            Console.WriteLine("chat is not set");
-            return;
+            throw new CliException("chat is not set");
         }
 
         AigcChatToolWindow.Instance.HandleStartChat();
-        Console.WriteLine("Chat started, enter /exit or /quit to exit chat, Esc to stop.");
 
         RunChatLoopAsync().GetAwaiter().GetResult();
+        return null;
     }
 
     private async Task RunChatLoopAsync()

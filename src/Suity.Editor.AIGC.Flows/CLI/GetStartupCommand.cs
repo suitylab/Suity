@@ -10,7 +10,7 @@ public class GetStartupCommand : CliCommand
 
     public override string Usage => "get-startup";
 
-    public override void DoCommand(ICliArguments args)
+    public override string? DoCommand(ICliArguments args)
     {
         AigcStartupWindow.Instance.AutoSelectDefaultStartup();
 
@@ -18,11 +18,11 @@ public class GetStartupCommand : CliCommand
         var asset = AssetManager.Instance.GetAsset(assetId);
         if (asset != null)
         {
-            Console.WriteLine(asset.AssetKey);
+            return asset.AssetKey;
         }
         else
         {
-            Console.WriteLine("No chat selected");
+            throw new CliException("No chat selected");
         }
     }
 }

@@ -7,21 +7,18 @@ public class OpenCommand : CliCommand
 
     public override string Usage => "open <project-file>";
 
-    public override void DoCommand(ICliArguments args)
+    public override string? DoCommand(ICliArguments args)
     {
         if (Project.Current != null)
         {
-            Console.Error.WriteLine("Error: a project is already open.");
-            return;
+            throw new CliException("a project is already open.");
         }
 
         string? fileName = args[0];
 
         if (string.IsNullOrWhiteSpace(fileName))
         {
-            Console.Error.WriteLine("Error: project path is required.");
-            Console.Error.WriteLine($"Usage: {Usage}");
-            return;
+            throw new CliException("project path is required.");
         }
 
         if (Directory.Exists(fileName))
@@ -32,21 +29,15 @@ public class OpenCommand : CliCommand
 
         if (!fileName.EndsWith(".suity", StringComparison.OrdinalIgnoreCase))
         {
-            Console.Error.WriteLine("Error: project file must be a .suity file.");
-            return;
+            throw new CliException("project file must be a .suity file.");
         }
 
         if (!File.Exists(fileName))
         {
-            Console.Error.WriteLine($"Error: file '{fileName}' does not exist.");
-            return;
+            throw new CliException($"file '{fileName}' does not exist.");
         }
 
-        Console.WriteLine($"Opening project '{fileName}'...");
-
         SuityCLI.Instance.OpenProject(fileName).Wait();
-
-        Console.WriteLine($"Project '{fileName}' opened.");
 
         using var cts = new CancellationTokenSource();
         Console.CancelKeyPress += (_, e) =>
@@ -57,7 +48,7 @@ public class OpenCommand : CliCommand
 
         var repl = new CliReplInterface();
         repl.StartInteractiveLoopAsync(cts.Token).GetAwaiter().GetResult();
+
+        return $"Project '{fileName}' opened.";
     }
 }
-
-

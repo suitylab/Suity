@@ -15,12 +15,11 @@ public class BuildCommand : CliCommand
         "  --clean      Clean before building\n" +
         "  --verbose    Show detailed build output";
 
-    public override void DoCommand(ICliArguments args)
+    public override string? DoCommand(ICliArguments args)
     {
         if (Project.Current == null)
         {
-            Console.Error.WriteLine("Error: no project is open. Use 'open' command first.");
-            return;
+            throw new CliException("no project is open. Use 'open' command first.");
         }
 
         bool release = args.HasFlag("release");
@@ -29,20 +28,22 @@ public class BuildCommand : CliCommand
 
         string config = release ? "Release" : "Debug";
 
-        Console.WriteLine($"Building project '{Project.Current.ProjectName}' in {config} mode...");
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine($"Building project '{Project.Current.ProjectName}' in {config} mode...");
 
         if (clean)
         {
-            Console.WriteLine("Cleaning build artifacts...");
-            CleanProject(verbose);
+            sb.AppendLine("Cleaning build artifacts...");
+            CleanProject(verbose, sb);
         }
 
-        BuildProject(config, verbose);
+        BuildProject(config, verbose, sb);
 
-        Console.WriteLine("Build completed successfully.");
+        sb.AppendLine("Build completed successfully.");
+        return sb.ToString().TrimEnd();
     }
 
-    private void CleanProject(bool verbose)
+    private void CleanProject(bool verbose, System.Text.StringBuilder sb)
     {
         if (Project.Current == null) return;
 
@@ -50,14 +51,14 @@ public class BuildCommand : CliCommand
         if (Directory.Exists(publishDir))
         {
             if (verbose)
-                Console.WriteLine($"  Cleaning: {publishDir}");
+                sb.AppendLine($"  Cleaning: {publishDir}");
 
             Directory.Delete(publishDir, true);
-            Console.WriteLine("  Cleaned publish directory.");
+            sb.AppendLine("  Cleaned publish directory.");
         }
     }
 
-    private void BuildProject(string configuration, bool verbose)
+    private void BuildProject(string configuration, bool verbose, System.Text.StringBuilder sb)
     {
         if (Project.Current == null) return;
 
@@ -65,18 +66,17 @@ public class BuildCommand : CliCommand
 
         if (!File.Exists(solutionFile))
         {
-            Console.Error.WriteLine($"  Error: solution file not found: {solutionFile}");
-            return;
+            throw new CliException($"solution file not found: {solutionFile}");
         }
 
         if (verbose)
-            Console.WriteLine($"  Solution: {solutionFile}");
+            sb.AppendLine($"  Solution: {solutionFile}");
 
-        Console.WriteLine($"  Configuration: {configuration}");
-        Console.WriteLine("  Building...");
+        sb.AppendLine($"  Configuration: {configuration}");
+        sb.AppendLine("  Building...");
 
         // TODO: Implement actual build logic using MSBuild or dotnet build
         // For now, show what would be built
-        Console.WriteLine("  [Build not yet implemented - placeholder]");
+        sb.AppendLine("  [Build not yet implemented - placeholder]");
     }
 }

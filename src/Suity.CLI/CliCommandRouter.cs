@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Suity.Editor;
@@ -53,16 +54,42 @@ public class CliCommandRouter
                 return 0;
             }
 
+            var stopwatch = Stopwatch.StartNew();
             try
             {
-                command.DoCommand(commandArgs);
+                string? result = command.DoCommand(commandArgs);
+                stopwatch.Stop();
+
+                if (result != null)
+                    Console.WriteLine(result);
+
+                //Console.ForegroundColor = ConsoleColor.DarkGray;
+                //Console.WriteLine($"[Done in {stopwatch.ElapsedMilliseconds}ms]");
+                //Console.ResetColor();
                 return 0;
+            }
+            catch (CliException ex)
+            {
+                stopwatch.Stop();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Error.WriteLine(ex.Message);
+                Console.ResetColor();
+
+                //Console.ForegroundColor = ConsoleColor.DarkGray;
+                //Console.Error.WriteLine($"[Failed in {stopwatch.ElapsedMilliseconds}ms]");
+                //Console.ResetColor();
+                return 1;
             }
             catch (Exception ex)
             {
+                stopwatch.Stop();
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Error.WriteLine($"Command '{commandKey}' failed: {ex.Message}");
                 Console.ResetColor();
+
+                //Console.ForegroundColor = ConsoleColor.DarkGray;
+                //Console.Error.WriteLine($"[Failed in {stopwatch.ElapsedMilliseconds}ms]");
+                //Console.ResetColor();
                 return 1;
             }
         }

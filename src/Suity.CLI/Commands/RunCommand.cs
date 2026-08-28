@@ -14,30 +14,31 @@ public class RunCommand : CliCommand
         "  --debug      Run with debugger attached\n" +
         "  --verbose    Show detailed output";
 
-    public override void DoCommand(ICliArguments args)
+    public override string? DoCommand(ICliArguments args)
     {
         if (Project.Current == null)
         {
-            Console.Error.WriteLine("Error: no project is open. Use 'open' command first.");
-            return;
+            throw new CliException("no project is open. Use 'open' command first.");
         }
 
         bool debug = args.HasFlag("debug");
         bool verbose = args.HasFlag("verbose");
 
-        Console.WriteLine($"Running project '{Project.Current.ProjectName}'...");
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine($"Running project '{Project.Current.ProjectName}'...");
 
         if (debug)
         {
-            Console.WriteLine("Debug mode enabled.");
+            sb.AppendLine("Debug mode enabled.");
         }
 
-        RunProject(verbose);
+        RunProject(verbose, sb);
 
-        Console.WriteLine("Project execution completed.");
+        sb.AppendLine("Project execution completed.");
+        return sb.ToString().TrimEnd();
     }
 
-    private void RunProject(bool verbose)
+    private void RunProject(bool verbose, System.Text.StringBuilder sb)
     {
         if (Project.Current == null) return;
 
@@ -45,17 +46,16 @@ public class RunCommand : CliCommand
 
         if (!Directory.Exists(publishDir))
         {
-            Console.Error.WriteLine("  Error: project not built. Run 'build' first.");
-            return;
+            throw new CliException("project not built. Run 'build' first.");
         }
 
         if (verbose)
-            Console.WriteLine($"  Publish directory: {publishDir}");
+            sb.AppendLine($"  Publish directory: {publishDir}");
 
-        Console.WriteLine("  Starting project...");
+        sb.AppendLine("  Starting project...");
 
         // TODO: Implement actual run logic
         // Find and execute the main executable in publishDir
-        Console.WriteLine("  [Run not yet implemented - placeholder]");
+        sb.AppendLine("  [Run not yet implemented - placeholder]");
     }
 }

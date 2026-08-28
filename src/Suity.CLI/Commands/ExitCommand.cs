@@ -7,16 +7,18 @@ public class ExitCommand : CliCommand
 
     public override string Usage => "exit";
 
-    public override void DoCommand(ICliArguments args)
+    public override string? DoCommand(ICliArguments args)
     {
         if (Project.Current != null)
         {
-            Console.WriteLine("Closing project...");
             SuityCLI.Instance.CloseProject();
-            Console.WriteLine("Project closed.");
+            Console.WriteLine("Exiting...");
+            Environment.Exit(0);
+            return "Project closed.";
         }
 
         Console.WriteLine("Exiting...");
         Environment.Exit(0);
+        return "Exiting...";
     }
 }

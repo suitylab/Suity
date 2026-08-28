@@ -24,7 +24,7 @@ public abstract class CliCommand
 
     public virtual string DetailedHelp => string.Empty;
 
-    public abstract void DoCommand(ICliArguments args);
+    public abstract string? DoCommand(ICliArguments args);
 
     public virtual void ShowHelp()
     {
@@ -46,4 +46,10 @@ public abstract class CliCommand
 public class CliCommandKeyAttribute(string key) : Attribute
 {
     public string Key { get; } = key;
+}
+
+public class CliException : Exception
+{
+    public CliException(string message) : base(message) { }
+    public CliException(string message, Exception innerException) : base(message, innerException) { }
 }

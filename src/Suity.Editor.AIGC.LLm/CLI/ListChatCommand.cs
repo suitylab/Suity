@@ -9,15 +9,17 @@ public class ListChatCommand : CliCommand
 
     public override string Usage => "list-chat";
 
-    public override void DoCommand(ICliArguments args)
+    public override string? DoCommand(ICliArguments args)
     {
+        var sb = new System.Text.StringBuilder();
         var providers = AssetManager.Instance.GetAssets<ILLmChatProvider>();
         foreach (var provider in providers)
         {
             if (provider is Asset asset) 
             {
-                Console.WriteLine(asset.AssetKey);
+                sb.AppendLine(asset.AssetKey);
             }
         }
+        return sb.Length > 0 ? sb.ToString().TrimEnd() : null;
     }
 }

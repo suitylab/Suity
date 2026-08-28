@@ -7,12 +7,11 @@ public class NewCommand : CliCommand
 
     public override string Usage => "new <project-folder> [--template <template-file>]";
 
-    public override void DoCommand(ICliArguments args)
+    public override string? DoCommand(ICliArguments args)
     {
         if (Project.Current != null)
         {
-            Console.Error.WriteLine("Error: a project is already open.");
-            return;
+            throw new CliException("a project is already open.");
         }
 
         string? folderPath = args[0];
@@ -20,17 +19,14 @@ public class NewCommand : CliCommand
 
         if (string.IsNullOrWhiteSpace(folderPath))
         {
-            Console.Error.WriteLine("Error: project folder path is required.");
-            Console.Error.WriteLine($"Usage: {Usage}");
-            return;
+            throw new CliException("project folder path is required.");
         }
 
         if (!string.IsNullOrWhiteSpace(templateFile))
         {
             if (!File.Exists(templateFile))
             {
-                Console.Error.WriteLine($"Error: template file '{templateFile}' does not exist.");
-                return;
+                throw new CliException($"template file '{templateFile}' does not exist.");
             }
         }
 
@@ -40,8 +36,7 @@ public class NewCommand : CliCommand
         {
             if (Directory.GetFiles(folderPath).Length > 0 || Directory.GetDirectories(folderPath).Length > 0)
             {
-                Console.Error.WriteLine($"Error: folder '{folderPath}' is not empty.");
-                return;
+                throw new CliException($"folder '{folderPath}' is not empty.");
             }
         }
         else
@@ -52,15 +47,16 @@ public class NewCommand : CliCommand
         string folderName = Path.GetFileName(folderPath);
         string fileName = Path.Combine(folderPath, $"{folderName}.suity");
 
-        Console.WriteLine($"Creating project '{fileName}'...");
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine($"Creating project '{fileName}'...");
         if (!string.IsNullOrWhiteSpace(templateFile))
         {
-            Console.WriteLine($"Using template '{templateFile}'...");
+            sb.AppendLine($"Using template '{templateFile}'...");
         }
 
         SuityCLI.Instance.OpenProject(fileName, null, templateFile).Wait();
 
-        Console.WriteLine($"Project '{fileName}' created.");
+        sb.AppendLine($"Project '{fileName}' created.");
 
         using var cts = new CancellationTokenSource();
         Console.CancelKeyPress += (_, e) =>
@@ -71,5 +67,7 @@ public class NewCommand : CliCommand
 
         var repl = new CliReplInterface();
         repl.StartInteractiveLoopAsync(cts.Token).GetAwaiter().GetResult();
+
+        return sb.ToString().TrimEnd();
     }
 }

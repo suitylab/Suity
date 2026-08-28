@@ -10,23 +10,21 @@ public class SetStartupCommand : CliCommand
 
     public override string Usage => "set-startup <asset-key>";
 
-    public override void DoCommand(ICliArguments args)
+    public override string? DoCommand(ICliArguments args)
     {
         string assetKey = args[0];
         if (string.IsNullOrEmpty(assetKey))
         {
-            Console.WriteLine("asset-key is required");
-            return;
+            throw new CliException("asset-key is required");
         }
 
         var startupChat = AssetManager.Instance.GetAsset<IAigcStartup>(assetKey);
         if (startupChat is null)
         {
-            Console.WriteLine("chat asset is not found");
-            return;
+            throw new CliException("chat asset is not found");
         }
 
         AigcStartupWindow.Instance.SelectChat = startupChat;
-        Console.WriteLine("chat is set to " + assetKey);
+        return "chat is set to " + assetKey;
     }
 }

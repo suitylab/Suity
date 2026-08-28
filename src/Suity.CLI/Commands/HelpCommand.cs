@@ -7,7 +7,7 @@ public class HelpCommand : CliCommand
 
     public override string Usage => "help [command]";
 
-    public override void DoCommand(ICliArguments args)
+    public override string? DoCommand(ICliArguments args)
     {
         var router = CliCommandRouter.Instance;
 
@@ -16,26 +16,37 @@ public class HelpCommand : CliCommand
             string? specificCommand = args[0];
             if (specificCommand != null && router.Commands.TryGetValue(specificCommand, out var command))
             {
-                command.ShowHelp();
-                return;
+                var sb2 = new System.Text.StringBuilder();
+                sb2.AppendLine(command.Description);
+                if (!string.IsNullOrEmpty(command.Usage))
+                {
+                    sb2.AppendLine();
+                    sb2.AppendLine($"Usage: {command.Usage}");
+                }
+                if (!string.IsNullOrEmpty(command.DetailedHelp))
+                {
+                    sb2.AppendLine();
+                    sb2.AppendLine(command.DetailedHelp);
+                }
+                return sb2.ToString().TrimEnd();
             }
 
-            Console.Error.WriteLine($"Unknown command: '{specificCommand}'");
-            Console.Error.WriteLine();
+            throw new CliException($"Unknown command: '{specificCommand}'");
         }
 
-        Console.WriteLine("Available commands:");
-        Console.WriteLine();
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("Available commands:");
 
         var sorted = router.Commands.OrderBy(kvp => kvp.Key, StringComparer.OrdinalIgnoreCase);
         int maxKeyLength = sorted.Max(kvp => kvp.Key.Length);
 
         foreach (var (key, cmd) in sorted)
         {
-            Console.WriteLine($"  {key.PadRight(maxKeyLength + 2)}{cmd.Description}");
+            sb.AppendLine($"  {key.PadRight(maxKeyLength + 2)}{cmd.Description}");
         }
 
-        Console.WriteLine();
-        Console.WriteLine("Run '<command> --help' for command-specific help.");
+        sb.AppendLine();
+        sb.AppendLine("Run '<command> --help' for command-specific help.");
+        return sb.ToString().TrimEnd();
     }
 }

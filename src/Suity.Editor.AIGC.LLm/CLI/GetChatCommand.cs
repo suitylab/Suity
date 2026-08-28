@@ -9,17 +9,17 @@ public class GetChatCommand : CliCommand
 
     public override string Usage => "get-chat";
 
-    public override void DoCommand(ICliArguments args)
+    public override string? DoCommand(ICliArguments args)
     {
         Guid assetId = AigcChatToolWindow.Instance.SelectedChatAssetId;
         var asset = AssetManager.Instance.GetAsset(assetId);
         if (asset != null)
         {
-            Console.WriteLine(asset.AssetKey);
+            return asset.AssetKey;
         }
         else 
         {
-            Console.WriteLine("No chat selected");
+            throw new CliException("No chat selected");
         }
     }
 }
