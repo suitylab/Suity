@@ -45,18 +45,15 @@ public class NewCommand : CliCommand
         }
 
         string folderName = Path.GetFileName(folderPath);
-        string fileName = Path.Combine(folderPath, $"{folderName}.suity");
+        string fileName = Path.Combine(folderPath, $"{folderName}.sunity");
 
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"Creating project '{fileName}'...");
+        Console.WriteLine($"Creating project '{fileName}'...");
         if (!string.IsNullOrWhiteSpace(templateFile))
         {
-            sb.AppendLine($"Using template '{templateFile}'...");
+            Console.WriteLine($"Using template '{templateFile}'...");
         }
 
         SuityCLI.Instance.OpenProject(fileName, null, templateFile).Wait();
-
-        sb.AppendLine($"Project '{fileName}' created.");
 
         using var cts = new CancellationTokenSource();
         Console.CancelKeyPress += (_, e) =>
@@ -65,9 +62,16 @@ public class NewCommand : CliCommand
             cts.Cancel();
         };
 
+        Console.WriteLine($"Project '{fileName}' created.");
+
+        if (args.GetOption("sid") is { } sid && !string.IsNullOrWhiteSpace(sid))
+        {
+            Console.WriteLine(CliCommandRouter.GetMagicCode($"Project '{fileName}' created.", sid));
+        }
+
         var repl = new CliReplInterface();
         repl.StartInteractiveLoopAsync(cts.Token).GetAwaiter().GetResult();
 
-        return sb.ToString().TrimEnd();
+        return null;
     }
 }

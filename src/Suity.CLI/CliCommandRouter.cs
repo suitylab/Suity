@@ -32,6 +32,9 @@ public class CliCommandRouter
             var attr = type.GetCustomAttribute<CliCommandKeyAttribute>();
             if (attr == null) continue;
 
+            var nv = type.GetCustomAttribute<NotAvailableAttribute>();
+            if (nv != null) continue;
+
             if (Activator.CreateInstance(type) is CliCommand command)
             {
                 _commands[attr.Key] = command;

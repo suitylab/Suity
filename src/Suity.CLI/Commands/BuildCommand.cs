@@ -1,6 +1,7 @@
 namespace Suity.Editor.Commands;
 
 [CliCommandKey("build")]
+[NotAvailable]
 public class BuildCommand : CliCommand
 {
     public override string Description => "Build the current project";
@@ -28,22 +29,20 @@ public class BuildCommand : CliCommand
 
         string config = release ? "Release" : "Debug";
 
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"Building project '{Project.Current.ProjectName}' in {config} mode...");
+        Console.WriteLine($"Building project '{Project.Current.ProjectName}' in {config} mode...");
 
         if (clean)
         {
-            sb.AppendLine("Cleaning build artifacts...");
-            CleanProject(verbose, sb);
+            Console.WriteLine("Cleaning build artifacts...");
+            CleanProject(verbose);
         }
 
-        BuildProject(config, verbose, sb);
+        BuildProject(config, verbose);
 
-        sb.AppendLine("Build completed successfully.");
-        return sb.ToString().TrimEnd();
+        return "Build completed successfully.";
     }
 
-    private void CleanProject(bool verbose, System.Text.StringBuilder sb)
+    private void CleanProject(bool verbose)
     {
         if (Project.Current == null) return;
 
@@ -51,14 +50,14 @@ public class BuildCommand : CliCommand
         if (Directory.Exists(publishDir))
         {
             if (verbose)
-                sb.AppendLine($"  Cleaning: {publishDir}");
+                Console.WriteLine($"  Cleaning: {publishDir}");
 
             Directory.Delete(publishDir, true);
-            sb.AppendLine("  Cleaned publish directory.");
+            Console.WriteLine("  Cleaned publish directory.");
         }
     }
 
-    private void BuildProject(string configuration, bool verbose, System.Text.StringBuilder sb)
+    private void BuildProject(string configuration, bool verbose)
     {
         if (Project.Current == null) return;
 
@@ -70,13 +69,13 @@ public class BuildCommand : CliCommand
         }
 
         if (verbose)
-            sb.AppendLine($"  Solution: {solutionFile}");
+            Console.WriteLine($"  Solution: {solutionFile}");
 
-        sb.AppendLine($"  Configuration: {configuration}");
-        sb.AppendLine("  Building...");
+        Console.WriteLine($"  Configuration: {configuration}");
+        Console.WriteLine("  Building...");
 
         // TODO: Implement actual build logic using MSBuild or dotnet build
         // For now, show what would be built
-        sb.AppendLine("  [Build not yet implemented - placeholder]");
+        Console.WriteLine("  [Build not yet implemented - placeholder]");
     }
 }

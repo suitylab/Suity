@@ -22,25 +22,24 @@ public class StatusCommand : CliCommand
 
         bool showPaths = args.HasFlag("paths");
 
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine("Project Status:");
-        sb.AppendLine($"  Name:           {Project.Current.ProjectName}");
-        sb.AppendLine($"  Status:         {Project.Current.Status}");
-        sb.AppendLine($"  GUID:           {Project.Current.ProjectGuid}");
-        sb.AppendLine($"  Base Path:      {Project.Current.ProjectBasePath}");
+        Console.WriteLine("Project Status:");
+        Console.WriteLine($"  Name:           {Project.Current.ProjectName}");
+        Console.WriteLine($"  Status:         {Project.Current.Status}");
+        Console.WriteLine($"  GUID:           {Project.Current.ProjectGuid}");
+        Console.WriteLine($"  Base Path:      {Project.Current.ProjectBasePath}");
 
         if (showPaths)
         {
-            sb.AppendLine();
-            sb.AppendLine("Directory Paths:");
-            sb.AppendLine($"  Assets:         {Project.Current.AssetDirectory}");
-            sb.AppendLine($"  Workspaces:     {Project.Current.WorkSpaceDirectory}");
-            sb.AppendLine($"  Assemblies:     {Project.Current.AssembliesDirectory}");
-            sb.AppendLine($"  Publish:        {Project.Current.PublishDirectory}");
-            sb.AppendLine($"  System:         {Project.Current.SystemDirectory}");
-            sb.AppendLine($"  User:           {Project.Current.UserDirectory}");
+            Console.WriteLine();
+            Console.WriteLine("Directory Paths:");
+            Console.WriteLine($"  Assets:         {Project.Current.AssetDirectory}");
+            Console.WriteLine($"  Workspaces:     {Project.Current.WorkSpaceDirectory}");
+            Console.WriteLine($"  Assemblies:     {Project.Current.AssembliesDirectory}");
+            Console.WriteLine($"  Publish:        {Project.Current.PublishDirectory}");
+            Console.WriteLine($"  System:         {Project.Current.SystemDirectory}");
+            Console.WriteLine($"  User:           {Project.Current.UserDirectory}");
         }
 
-        return sb.ToString().TrimEnd();
+        return null;
     }
 }

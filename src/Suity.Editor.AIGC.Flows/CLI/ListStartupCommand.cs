@@ -12,15 +12,14 @@ public class ListStartupCommand : CliCommand
 
     public override object DoCommand(ICliArguments args)
     {
-        var sb = new System.Text.StringBuilder();
         var startups = AssetManager.Instance.GetAssets<IAigcStartup>();
         foreach (var startup in startups)
         {
             if (startup is Asset asset && StartupPageFilter.Instance.FilterAsset(asset))
             {
-                sb.AppendLine(asset.AssetKey);
+                Console.WriteLine(asset.AssetKey);
             }
         }
-        return sb.Length > 0 ? sb.ToString().TrimEnd() : null;
+        return null;
     }
 }

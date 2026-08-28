@@ -1,6 +1,7 @@
 namespace Suity.Editor.Commands;
 
 [CliCommandKey("run")]
+[NotAvailable]
 public class RunCommand : CliCommand
 {
     public override string Description => "Run the current project";
@@ -24,21 +25,19 @@ public class RunCommand : CliCommand
         bool debug = args.HasFlag("debug");
         bool verbose = args.HasFlag("verbose");
 
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"Running project '{Project.Current.ProjectName}'...");
+        Console.WriteLine($"Running project '{Project.Current.ProjectName}'...");
 
         if (debug)
         {
-            sb.AppendLine("Debug mode enabled.");
+            Console.WriteLine("Debug mode enabled.");
         }
 
-        RunProject(verbose, sb);
+        RunProject(verbose);
 
-        sb.AppendLine("Project execution completed.");
-        return sb.ToString().TrimEnd();
+        return "Project execution completed.";
     }
 
-    private void RunProject(bool verbose, System.Text.StringBuilder sb)
+    private void RunProject(bool verbose)
     {
         if (Project.Current == null) return;
 
@@ -50,12 +49,12 @@ public class RunCommand : CliCommand
         }
 
         if (verbose)
-            sb.AppendLine($"  Publish directory: {publishDir}");
+            Console.WriteLine($"  Publish directory: {publishDir}");
 
-        sb.AppendLine("  Starting project...");
+        Console.WriteLine("  Starting project...");
 
         // TODO: Implement actual run logic
         // Find and execute the main executable in publishDir
-        sb.AppendLine("  [Run not yet implemented - placeholder]");
+        Console.WriteLine("  [Run not yet implemented - placeholder]");
     }
 }
