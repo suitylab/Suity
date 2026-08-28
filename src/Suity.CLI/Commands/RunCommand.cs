@@ -14,7 +14,7 @@ public class RunCommand : CliCommand
         "  --debug      Run with debugger attached\n" +
         "  --verbose    Show detailed output";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         if (Project.Current == null)
         {

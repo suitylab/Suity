@@ -9,7 +9,7 @@ public class ListChatCommand : CliCommand
 
     public override string Usage => "list-chat";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         var sb = new System.Text.StringBuilder();
         var providers = AssetManager.Instance.GetAssets<ILLmChatProvider>();

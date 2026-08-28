@@ -10,7 +10,7 @@ public class ListStartupCommand : CliCommand
 
     public override string Usage => "list-startup";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         var sb = new System.Text.StringBuilder();
         var startups = AssetManager.Instance.GetAssets<IAigcStartup>();

@@ -7,7 +7,7 @@ public class NewCommand : CliCommand
 
     public override string Usage => "new <project-folder> [--template <template-file>]";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         if (Project.Current != null)
         {

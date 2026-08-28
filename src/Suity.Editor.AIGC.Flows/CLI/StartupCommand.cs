@@ -9,7 +9,7 @@ public class StartupCommand : CliCommand
 
     public override string Usage => "startup <user-input>";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         throw new CliException("Command not implemented");
     }

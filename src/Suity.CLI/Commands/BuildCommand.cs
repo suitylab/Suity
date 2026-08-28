@@ -15,7 +15,7 @@ public class BuildCommand : CliCommand
         "  --clean      Clean before building\n" +
         "  --verbose    Show detailed build output";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         if (Project.Current == null)
         {

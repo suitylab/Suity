@@ -10,7 +10,7 @@ public class SetStartupCommand : CliCommand
 
     public override string Usage => "set-startup <asset-key>";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         string assetKey = args[0];
         if (string.IsNullOrEmpty(assetKey))

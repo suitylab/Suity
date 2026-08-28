@@ -11,7 +11,7 @@ public class StartChatCommand : CliCommand
 
     public override string Usage => "start-chat (<asset-key>)";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         string assetKey = args[0];
         if (!string.IsNullOrEmpty(assetKey))

@@ -13,7 +13,7 @@ public class StatusCommand : CliCommand
         "Options:\n" +
         "  --paths      Show project directory paths";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         if (Project.Current == null)
         {

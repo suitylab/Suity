@@ -10,7 +10,7 @@ public class GetStartupCommand : CliCommand
 
     public override string Usage => "get-startup";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         AigcStartupWindow.Instance.AutoSelectDefaultStartup();
 

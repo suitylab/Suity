@@ -57,11 +57,12 @@ public class CliCommandRouter
             var stopwatch = Stopwatch.StartNew();
             try
             {
-                string? result = command.DoCommand(commandArgs);
+                object result = command.DoCommand(commandArgs);
                 stopwatch.Stop();
 
-                if (result != null)
-                    Console.WriteLine(result);
+                string? output = result?.ToString();
+                if (output != null)
+                    Console.WriteLine(output);
 
                 //Console.ForegroundColor = ConsoleColor.DarkGray;
                 //Console.WriteLine($"[Done in {stopwatch.ElapsedMilliseconds}ms]");

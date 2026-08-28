@@ -24,7 +24,7 @@ public abstract class CliCommand
 
     public virtual string DetailedHelp => string.Empty;
 
-    public abstract string? DoCommand(ICliArguments args);
+    public abstract object DoCommand(ICliArguments args);
 
     public virtual void ShowHelp()
     {

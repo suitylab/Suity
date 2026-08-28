@@ -7,7 +7,7 @@ public class ExitCommand : CliCommand
 
     public override string Usage => "exit";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         if (Project.Current != null)
         {

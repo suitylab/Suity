@@ -7,7 +7,7 @@ public class OpenCommand : CliCommand
 
     public override string Usage => "open <project-file>";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         if (Project.Current != null)
         {

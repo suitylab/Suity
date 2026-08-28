@@ -7,7 +7,7 @@ public class HelpCommand : CliCommand
 
     public override string Usage => "help [command]";
 
-    public override string? DoCommand(ICliArguments args)
+    public override object DoCommand(ICliArguments args)
     {
         var router = CliCommandRouter.Instance;
 
