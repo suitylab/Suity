@@ -10,4 +10,11 @@ string text = resp.Node("text").ReadString();
 Console.WriteLine(type);
 Console.WriteLine(text);
 
+var respList = await runner.SendCommandAsync("list-chat");
+foreach (var subReader in respList.Nodes("Strings"))
+{
+    string s = subReader.ReadString();
+    Console.WriteLine(s);
+}
+
 Console.ReadLine();

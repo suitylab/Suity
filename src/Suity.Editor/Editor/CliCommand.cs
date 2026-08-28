@@ -60,6 +60,7 @@ public class CliStringArray : IDataWritable
 
     public void WriteData(IDataWriter writer)
     {
+        writer.Node("@type").WriteString("StringArray");
         var aryWriter = writer.Nodes("Strings", Strings.Length);
         foreach (var str in Strings)
         {
