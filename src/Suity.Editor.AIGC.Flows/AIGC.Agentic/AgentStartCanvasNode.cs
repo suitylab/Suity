@@ -10,6 +10,7 @@ using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Views;
+using Suity.Views.Im;
 using Suity.Views.Im.Flows;
 using System.IO;
 
@@ -34,6 +35,8 @@ public class AgentStartCanvasNode : CanvasDesignNode
     {
         var output = FixedNodeConnector.CreateControlInput("In", TypeDefinition.FromNative<IAgent>(), false, description: "Out");
         _in = AddConnector(output);
+
+        base.EditorGui = DrawEditorGui;
     }
 
     public IAgent AgentNode => _agentNode;
@@ -118,6 +121,27 @@ public class AgentStartCanvasNode : CanvasDesignNode
     {
         _agentNode?.SetParentAgent(null);
         _agentNode = compute.GetValue<IAgent>(_in);
+    }
+
+    protected virtual bool DrawEditorGui(ImGui gui, EditorImGuiPipeline pipeline, IDrawContext context)
+    {
+        switch (pipeline)
+        {
+            case EditorImGuiPipeline.Preview:
+                gui.Button("#run", ImGuiIcons.Play)
+                .InitClass("configBtn")
+                .OnClick(() =>
+                {
+                    if (this.GetAsset() is AgentStartAsset start)
+                    {
+                        LLmService.Instance.InputChat(start, "/resume");
+                    }
+                });
+
+                return true;
+        }
+
+        return false;
     }
 
     private void UpdateAsset()

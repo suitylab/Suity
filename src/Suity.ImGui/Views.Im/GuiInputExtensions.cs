@@ -83,55 +83,46 @@ public static class GuiInputExtensions
     /// Gets whether the node has been clicked.
     /// </summary>
     /// <param name="node">The node to check.</param>
-    /// <param name="ignoreEnabled">Whether to ignore the disabled state.</param>
+    /// <param name="ignoreDisabled">Whether to ignore the disabled state.</param>
     /// <returns>True if the node was clicked.</returns>
-    public static bool GetIsClicked(this ImGuiNode node, bool ignoreEnabled = false)
+    public static bool GetIsClicked(this ImGuiNode node, bool ignoreDisabled = false)
     {
-        if (ignoreEnabled)
+        if (!ignoreDisabled && node.IsDisabled)
         {
-            return node.IsHover && node.MouseState == GuiMouseState.Clicked;
+            return false;
         }
-        else
-        {
-            return (!node.IsDisabled) && node.IsHover && node.MouseState == GuiMouseState.Clicked;
-        }
+
+        // Temporarily not using Hover, instead using the more lenient IsMouseInClickRect for detection.
+        // return node.IsHover && node.MouseState == GuiMouseState.Clicked;
+
+        return node.IsMouseInClickRect && node.MouseState == GuiMouseState.Clicked;
     }
 
     /// <summary>
     /// Gets whether the node has been double-clicked.
     /// </summary>
     /// <param name="node">The node to check.</param>
-    /// <param name="ignoreEnabled">Whether to ignore the disabled state.</param>
+    /// <param name="ignoreDisabled">Whether to ignore the disabled state.</param>
     /// <returns>True if the node was double-clicked.</returns>
-    public static bool GetIsDoubleClicked(this ImGuiNode node, bool ignoreEnabled = false)
+    public static bool GetIsDoubleClicked(this ImGuiNode node, bool ignoreDisabled = false)
     {
-        //if (ignoreEnabled)
-        //{
-        //    return node.IsHover && node.MouseState == GuiMouseState.Clicked && node.Gui.IsDoubleClick;
-        //}
-        //else
-        //{
-        //    return (!node.IsDisabled) && node.IsHover && node.MouseState == GuiMouseState.Clicked && node.Gui.IsDoubleClick;
-        //}
+        if (!ignoreDisabled && node.IsDisabled)
+        {
+            return false;
+        }
 
         // Temporarily not using Hover, instead using the more lenient IsMouseInClickRect for detection.
+        // return node.IsHover && node.MouseState == GuiMouseState.Clicked && node.Gui.IsDoubleClick;
 
-        if (ignoreEnabled)
-        {
-            return node.IsMouseInClickRect && node.MouseState == GuiMouseState.Clicked && node.Gui.IsDoubleClick;
-        }
-        else
-        {
-            return (!node.IsDisabled) && node.IsMouseInClickRect && node.MouseState == GuiMouseState.Clicked && node.Gui.IsDoubleClick;
-        }
+        return node.IsMouseInClickRect && node.MouseState == GuiMouseState.Clicked && node.Gui.IsDoubleClick;
     }
 
     /// <summary>
     /// Executes an action when the node is clicked.
     /// </summary>
-    public static ImGuiNode OnClick(this ImGuiNode node, Action action, bool ignoreEnabled = false)
+    public static ImGuiNode OnClick(this ImGuiNode node, Action action, bool ignoreDisabled = false)
     {
-        if (node.GetIsClicked(ignoreEnabled))
+        if (node.GetIsClicked(ignoreDisabled))
         {
             action();
         }
@@ -142,9 +133,9 @@ public static class GuiInputExtensions
     /// <summary>
     /// Executes an async action when the node is clicked.
     /// </summary>
-    public static ImGuiNode OnClick(this ImGuiNode node, Func<Task> action, bool ignoreEnabled = false)
+    public static ImGuiNode OnClick(this ImGuiNode node, Func<Task> action, bool ignoreDisabled = false)
     {
-        if (node.GetIsClicked(ignoreEnabled))
+        if (node.GetIsClicked(ignoreDisabled))
         {
             action();
         }
@@ -155,9 +146,9 @@ public static class GuiInputExtensions
     /// <summary>
     /// Executes an action with node access when the node is clicked.
     /// </summary>
-    public static ImGuiNode OnClick(this ImGuiNode node, Action<ImGuiNode> action, bool ignoreEnabled = false)
+    public static ImGuiNode OnClick(this ImGuiNode node, Action<ImGuiNode> action, bool ignoreDisabled = false)
     {
-        if (node.GetIsClicked(ignoreEnabled))
+        if (node.GetIsClicked(ignoreDisabled))
         {
             action(node);
         }
@@ -168,9 +159,9 @@ public static class GuiInputExtensions
     /// <summary>
     /// Executes an async action with node access when the node is clicked.
     /// </summary>
-    public static ImGuiNode OnClick(this ImGuiNode node, Func<ImGuiNode, Task> action, bool ignoreEnabled = false)
+    public static ImGuiNode OnClick(this ImGuiNode node, Func<ImGuiNode, Task> action, bool ignoreDisabled = false)
     {
-        if (node.GetIsClicked(ignoreEnabled))
+        if (node.GetIsClicked(ignoreDisabled))
         {
             action(node);
         }
@@ -181,9 +172,9 @@ public static class GuiInputExtensions
     /// <summary>
     /// Executes an action when the node is double-clicked.
     /// </summary>
-    public static ImGuiNode OnDoubleClick(this ImGuiNode node, Action action, bool ignoreEnabled = false)
+    public static ImGuiNode OnDoubleClick(this ImGuiNode node, Action action, bool ignoreDisabled = false)
     {
-        if (node.GetIsDoubleClicked(ignoreEnabled))
+        if (node.GetIsDoubleClicked(ignoreDisabled))
         {
             action();
         }
@@ -194,9 +185,9 @@ public static class GuiInputExtensions
     /// <summary>
     /// Executes an async action when the node is double-clicked.
     /// </summary>
-    public static ImGuiNode OnDoubleClick(this ImGuiNode node, Func<Task> action, bool ignoreEnabled = false)
+    public static ImGuiNode OnDoubleClick(this ImGuiNode node, Func<Task> action, bool ignoreDisabled = false)
     {
-        if (node.GetIsDoubleClicked(ignoreEnabled))
+        if (node.GetIsDoubleClicked(ignoreDisabled))
         {
             action();
         }
@@ -207,9 +198,9 @@ public static class GuiInputExtensions
     /// <summary>
     /// Executes an action with node access when the node is double-clicked.
     /// </summary>
-    public static ImGuiNode OnDoubleClick(this ImGuiNode node, Action<ImGuiNode> action, bool ignoreEnabled = false)
+    public static ImGuiNode OnDoubleClick(this ImGuiNode node, Action<ImGuiNode> action, bool ignoreDisabled = false)
     {
-        if (node.GetIsDoubleClicked(ignoreEnabled))
+        if (node.GetIsDoubleClicked(ignoreDisabled))
         {
             action(node);
         }
@@ -220,9 +211,9 @@ public static class GuiInputExtensions
     /// <summary>
     /// Executes an async action with node access when the node is double-clicked.
     /// </summary>
-    public static ImGuiNode OnDoubleClick(this ImGuiNode node, Func<ImGuiNode, Task> action, bool ignoreEnabled = false)
+    public static ImGuiNode OnDoubleClick(this ImGuiNode node, Func<ImGuiNode, Task> action, bool ignoreDisabled = false)
     {
-        if (node.GetIsDoubleClicked(ignoreEnabled))
+        if (node.GetIsDoubleClicked(ignoreDisabled))
         {
             action(node);
         }
@@ -233,7 +224,7 @@ public static class GuiInputExtensions
     /// <summary>
     /// Initializes click input handling with a custom action that returns an input state.
     /// </summary>
-    public static ImGuiNode InitInputClick(this ImGuiNode node, Func<ImGuiNode, GuiInputState> action, bool ignoreEnabled = false)
+    public static ImGuiNode InitInputClick(this ImGuiNode node, Func<ImGuiNode, GuiInputState> action, bool ignoreDisabled = false)
     {
         if (action == null)
         {
@@ -246,7 +237,7 @@ public static class GuiInputExtensions
             {
                 var state = baseAction(pipeline);
 
-                if (input.EventType == GuiEventTypes.MouseUp && node.GetIsClicked(ignoreEnabled))
+                if (input.EventType == GuiEventTypes.MouseUp && node.GetIsClicked(ignoreDisabled))
                 {
                     var actionState = action(n);
                     ImGui.MergeState(ref state, actionState);

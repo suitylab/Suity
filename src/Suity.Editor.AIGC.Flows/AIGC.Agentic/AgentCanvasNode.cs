@@ -228,14 +228,14 @@ public class AgentCanvasNode : ExpandedCanvasAssetNode<SubFlowPresetAsset>, IAge
                     .OnClick(() =>
                     {
                         EditorUtility.LocateInProject(loopAsset);
-                    })
-                    .OnDoubleClick(() =>
-                    {
-                        if (loopAsset is Asset asset)
-                        {
-                            asset.ShowDocumentView();
-                        }
                     });
+                    //.OnDoubleClick(() =>
+                    //{
+                    //    if (loopAsset is Asset asset)
+                    //    {
+                    //        asset.ShowDocumentView();
+                    //    }
+                    //});
                 }
                 else
                 {
