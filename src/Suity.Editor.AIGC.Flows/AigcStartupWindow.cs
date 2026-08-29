@@ -73,7 +73,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
     /// <summary>
     /// Gets or sets the selected chat asset ID.
     /// </summary>
-    public Guid SelectedChatAssetId
+    public Guid SelectedStartupAssetId
     {
         get => _startupAssetSel.Id;
         set
@@ -90,7 +90,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
     /// <summary>
     /// Gets or sets the selected chat asset.
     /// </summary>
-    public IAigcStartup SelectChat
+    public IAigcStartup SelectedStartup
     {
         get => _startupAssetSel.Target;
         set
@@ -324,13 +324,12 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
 
         try
         {
-            startupPage.HandleStartup(userInput, workspaceName);
+            await startupPage.HandleStartup(userInput, workspaceName);
         }
         catch (Exception err)
         {
             err.LogError();
         }
-        
     }
 
     public static async Task<string> ResolveWorkSpaceName(string userInput)

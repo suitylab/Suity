@@ -91,7 +91,7 @@ public static class AigcExtensions
                                 }
                             }
 
-                            LLmService.Instance.SetInput(msg, attClone);
+                            LLmService.Instance.SetChatInput(msg, attClone);
                         }
                     }
                 );

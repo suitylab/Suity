@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Suity.Editor.Flows.TaskPages;
 
@@ -607,12 +608,12 @@ public class SubFlowPresetAsset : Asset,
     /// </summary>
     public bool IsStartup { get; internal set; }
 
-    public void HandleStartup(string prompt, string workspaceName)
+    public async Task<object> HandleStartup(string prompt, string workspaceName)
     {
         workspaceName = workspaceName?.Trim();
         if (!NamingVerifier.VerifyIdentifier(workspaceName))
         {
-            return;
+            return null;
         }
 
         string assetBaseDir = Project.Current.AssetDirectory;
@@ -634,26 +635,26 @@ public class SubFlowPresetAsset : Asset,
 
         if (string.IsNullOrWhiteSpace(finalName))
         {
-            return;
+            return null;
         }
 
         var format = DocumentManager.Instance.GetDocumentFormat("AigcLoop");
         if (format is null)
         {
-            return;
+            return null;
         }
 
         string fileName = assetBaseDir.PathAppend(finalName + ".sasset");
         var docEntry = DocumentManager.Instance.NewDocument(fileName, format);
         if (docEntry is null)
         {
-            return;
+            return null;
         }
 
         var doc = docEntry.Content as AigcLoopDocument;
         if (doc is null)
         {
-            return;
+            return null;
         }
 
         var workSpace = WorkSpaceManager.Current.AddWorkSpace(finalName);
@@ -666,10 +667,16 @@ public class SubFlowPresetAsset : Asset,
         doc.MarkDirtyAndSaveDelayed(this);
 
         // Waiting for document view to be ready
-        QueuedAction.Do(() => 
+        await EditorUtility.WaitForQueuedAction();
+
+        if (view is AigcLoopDocumentView loopView)
         {
-            (view as AigcLoopDocumentView)?.Run(prompt);
-        });
+            return await loopView.Run(prompt);
+        }
+        else
+        {
+            return null;
+        }
     }
 
     #endregion

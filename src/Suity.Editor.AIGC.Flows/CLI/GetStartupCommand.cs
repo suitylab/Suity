@@ -14,7 +14,7 @@ public class GetStartupCommand : CliCommand
     {
         AigcStartupWindow.Instance.AutoSelectDefaultStartup();
 
-        Guid assetId = AigcStartupWindow.Instance.SelectedChatAssetId;
+        Guid assetId = AigcStartupWindow.Instance.SelectedStartupAssetId;
         var asset = AssetManager.Instance.GetAsset(assetId);
         if (asset != null)
         {
@@ -22,7 +22,7 @@ public class GetStartupCommand : CliCommand
         }
         else
         {
-            throw new CliException("No chat selected");
+            throw new CliException("No startup asset selected");
         }
     }
 }

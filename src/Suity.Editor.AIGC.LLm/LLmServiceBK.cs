@@ -79,6 +79,7 @@ internal class LLmServiceBK : LLmService
         return false;
     }
 
+    #region Start
     /// <inheritdoc/>
     public override Task<object> StartMainChat(object option)
         => StartChat(MainAssistantChatProvider.Instance, option);
@@ -102,7 +103,7 @@ internal class LLmServiceBK : LLmService
     }
 
     /// <inheritdoc/>
-    public override Task<object> InputMainChat(string input, object option = null) 
+    public override Task<object> InputMainChat(string input, object option = null)
         => InputChat(MainAssistantChatProvider.Instance, input, option);
 
     /// <inheritdoc/>
@@ -152,6 +153,9 @@ internal class LLmServiceBK : LLmService
         }
     }
 
+    #endregion
+
+    #region Get
     /// <inheritdoc/>
     public override ILLmModel GetLLmModel(AigcModelLevel level, LLmModelType type)
     {
@@ -193,14 +197,33 @@ internal class LLmServiceBK : LLmService
     /// <inheritdoc/>
     public override IEmbeddingModel GetEmbedding() => LLmModelPlugin.Instance.DefaultEmbedding;
 
+    #endregion
+
+    #region Chat Interaction
 
     /// <inheritdoc/>
-    public override void SetInput(string msg, IEnumerable<AttachmentSet> attachments = null)
+    public override void SetChatInput(string msg, IEnumerable<AttachmentSet> attachments = null)
     {
         AigcChatToolWindow.Instance.SetInput(msg, attachments);
     }
 
+    public override void StopChat()
+    {
+        AigcChatToolWindow.Instance.HandleStopChat();
+    }
 
+    public override Task<object> ChatButtonClick(string key)
+    {
+        return AigcChatToolWindow.Instance.HandleButtonClick(key);
+    }
+
+    public override Task<object> ChatMessageInput(string message, IEnumerable<AttachmentSet> attachments = null)
+    {
+        return AigcChatToolWindow.Instance.HandleInput(message, attachments);
+    }
+    #endregion
+
+    #region Call
     /// <inheritdoc/>
     public override Task<string> Call(ILLmCall call, LLmCallRequest callRequest)
     {
@@ -571,7 +594,7 @@ The last generation is as follows:
                 {
                     conversation?.AddWarningMessage(L("Content needs repair")).RemoveOn(3);
                 }
-                    
+
                 lastResult = repair.MergedResult ?? funcResult;
                 lastProblems = repair.Problems;
                 lastRepair = repair.RepairPrompt;
@@ -671,7 +694,9 @@ The last generation is as follows:
         }, false, r, conversation, callRequest.Cancel);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc/> 
+	#endregion
+
     public override async Task<BitmapDef> GenerateImage(string input, AigcModelLevel level = AigcModelLevel.Default, ImageAspectRatio aspectRatio = ImageAspectRatio.Default)
     {
         var option = new ImageGenOptions

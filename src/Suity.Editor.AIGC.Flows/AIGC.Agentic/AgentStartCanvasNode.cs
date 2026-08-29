@@ -13,6 +13,7 @@ using Suity.Views;
 using Suity.Views.Im;
 using Suity.Views.Im.Flows;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC.Agentic;
 
@@ -206,24 +207,24 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
 
     public bool IsStartup { get; internal set; }
 
-    public void HandleStartup(string prompt, string workspaceName)
+    public async Task<object> HandleStartup(string prompt, string workspaceName)
     {
         workspaceName = workspaceName?.Trim();
         if (!NamingVerifier.VerifyIdentifier(workspaceName))
         {
-            return;
+            return null;
         }
 
         var node = (this.GetStorageObject() as AgentStartDiagramItem)?.Node;
         if (node is null)
         {
-            return;
+            return null;
         }
 
         var doc = this.GetDocument();
         if (doc is null)
         {
-            return;
+            return null;
         }
 
         string assetBaseDir = Project.Current.AssetDirectory;
@@ -245,7 +246,7 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
 
         if (string.IsNullOrWhiteSpace(finalName))
         {
-            return;
+            return null;
         }
 
         string assetDir = assetBaseDir.PathAppend(finalName);
@@ -256,30 +257,30 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
         var newDocEntry = DocumentManager.Instance.CloneDocument(doc.FileName.PhysicFileName, assetDir.PathAppend("AgentCanvas.sasset"));
         if (newDocEntry is null)
         {
-            return;
+            return null;
         }
 
         newDocEntry = DocumentManager.Instance.OpenDocument(newDocEntry.FileName);
         if (newDocEntry is null)
         {
-            return;
+            return null;
         }
 
         newDocEntry.ShowView();
 
         if (newDocEntry.Content is not CanvasDocument canvas)
         {
-            return;
+            return null;
         }
 
         if (canvas.GetFlowNode(node.Name) is not AgentStartCanvasNode newNode)
         {
-            return;
+            return null;
         }
 
         if (newNode.GetAsset() is not AgentStartAsset newAsset)
         {
-            return;
+            return null;
         }
 
         newNode.IsTemplate = false;
@@ -288,7 +289,7 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
 
         canvas.MarkDirtyAndSaveDelayed(this);
 
-        LLmService.Instance.InputChat(newAsset, prompt);
+        return await LLmService.Instance.InputChat(newAsset, prompt);
     }
 
     #endregion

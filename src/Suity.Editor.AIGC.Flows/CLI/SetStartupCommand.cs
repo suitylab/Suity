@@ -24,7 +24,7 @@ public class SetStartupCommand : CliCommand
             throw new CliException("chat asset is not found");
         }
 
-        AigcStartupWindow.Instance.SelectChat = startupChat;
+        AigcStartupWindow.Instance.SelectedStartup = startupChat;
         return "chat is set to " + assetKey;
     }
 }

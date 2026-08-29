@@ -34,6 +34,7 @@ public abstract class LLmService
 
 
 
+    #region Start
     /// <summary>
     /// Starts a main chat session with the specified AI assistant.
     /// </summary>
@@ -137,6 +138,9 @@ public abstract class LLmService
     /// <returns>A task representing the asynchronous operation, returning the task result.</returns>
     public abstract Task<object> StartWorkflowTask(AIRequest request, IFlowRunnable runnable, IFlowView view = null, Action<IFlowComputation> config = null);
 
+    #endregion
+
+    #region Get
     /// <summary>
     /// Gets an LLM model based on the specified level and type.
     /// </summary>
@@ -166,16 +170,26 @@ public abstract class LLmService
     /// </summary>
     /// <returns>The configured embedding model instance.</returns>
     public abstract IEmbeddingModel GetEmbedding();
+    #endregion
 
+
+    #region Chat Interaction
 
     /// <summary>
-    /// Sets the input message and optional attachments for the current chat context.
+    /// Sets the chat input message and optional attachments for the current chat context.
     /// </summary>
     /// <param name="msg">The message text to set.</param>
     /// <param name="attachments">Optional collection of attachments to include.</param>
-    public abstract void SetInput(string msg, IEnumerable<AttachmentSet> attachments = null);
+    public abstract void SetChatInput(string msg, IEnumerable<AttachmentSet> attachments = null);
 
+    public abstract void StopChat();
 
+    public abstract Task<object> ChatButtonClick(string key);
+
+    public abstract Task<object> ChatMessageInput(string message, IEnumerable<AttachmentSet> attachments = null);
+
+    #endregion
+    #region Call
     /// <summary>
     /// Executes an LLM call with the specified request and returns the raw string response.
     /// </summary>
@@ -230,7 +244,7 @@ public abstract class LLmService
     /// <param name="callRequest">The request containing prompt and parameters.</param>
     /// <param name="verifier">Optional predicate to verify the deserialized result.</param>
     /// <returns>A task representing the asynchronous operation, returning the function call result.</returns>
-    public abstract Task<T> CallFunction<T>(ILLmCall call, LLmCallRequest callRequest, Predicate<T> verifier = null) 
+    public abstract Task<T> CallFunction<T>(ILLmCall call, LLmCallRequest callRequest, Predicate<T> verifier = null)
         where T : class;
 
     /// <summary>
@@ -242,8 +256,8 @@ public abstract class LLmService
     /// <param name="callRequest">The request containing prompt and parameters.</param>
     /// <param name="converter">The function to convert the intermediate result to the final type.</param>
     /// <returns>A task representing the asynchronous operation, returning the converted result.</returns>
-    public abstract Task<TConvert> CallFunctionConvert<T, TConvert>(ILLmCall call, LLmCallRequest callRequest, Func<LLmCallRequest, T, TConvert> converter) 
-        where T : class 
+    public abstract Task<TConvert> CallFunctionConvert<T, TConvert>(ILLmCall call, LLmCallRequest callRequest, Func<LLmCallRequest, T, TConvert> converter)
+        where T : class
         where TConvert : class;
 
     /// <summary>
@@ -255,6 +269,10 @@ public abstract class LLmService
     /// <param name="verifier">Optional predicate to verify the deserialized result.</param>
     /// <returns>A task representing the asynchronous operation, returning the function call result.</returns>
     public abstract Task<object> CallFunction(ILLmCall call, LLmCallRequest callRequest, Type[] types, Predicate<object> verifier = null);
+
+    #endregion
+
+
 
     /// <summary>
     /// Generates an image from the given text prompt using an image generation model.
