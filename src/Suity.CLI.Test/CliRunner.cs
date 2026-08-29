@@ -14,7 +14,7 @@ public class CliRunner : IDisposable
     private CancellationTokenSource? _cts;
     private Task? _readTask;
 
-    public event Action<object>? OnGlobalMessage;
+    public event Action<object>? NotificationMessage;
 
     public string CliPath { get; }
     public bool IsRunning => _process != null && !_process.HasExited;
@@ -168,7 +168,7 @@ public class CliRunner : IDisposable
 
             if (string.IsNullOrEmpty(sid))
             {
-                OnGlobalMessage?.Invoke(CliMagicLine.ParseReader(reader));
+                NotificationMessage?.Invoke(CliMagicLine.ParseReader(reader));
                 return;
             }
 

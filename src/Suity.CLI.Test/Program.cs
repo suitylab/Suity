@@ -6,6 +6,11 @@ const string Args = @"open D:\Core\Test\TestCoding025";
 Console.WriteLine("CLI Running Test");
 
 using var runner = new CliRunner(CliPath);
+runner.NotificationMessage += (msg) =>
+{
+    Console.WriteLine($"[Notify Message] {msg}");
+};
+
 try
 {
     var resp = await runner.StartAsync(Args);
@@ -19,6 +24,9 @@ try
             Console.WriteLine(s);
         }
     }
+
+    resp = await runner.SendCommandAsync("test-notify");
+    Console.WriteLine(resp.ToString());
 
     Console.ReadLine();
 }

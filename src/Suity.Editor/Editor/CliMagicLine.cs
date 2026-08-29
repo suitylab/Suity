@@ -121,7 +121,9 @@ public static class CliMagicLine
     public static void OutputMagicLine(object obj, string sid = null)
     {
         string line = GetMagicLine(obj, sid);
+        Console.WriteLine();
         Console.WriteLine(line);
+        Console.Out.Flush();
     }
 
     public static string GetSessionId(this ICliArguments args)

@@ -1,7 +1,5 @@
-using Suity.Json;
 using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 
 namespace Suity.Editor;
 
@@ -74,7 +72,7 @@ public class CliCommandRouter
 
                 if (!string.IsNullOrWhiteSpace(sid))
                 {
-                    Console.WriteLine(CliMagicLine.GetMagicLine(result, sid));
+                    CliMagicLine.OutputMagicLine(result, sid);
                 }
 
                 //Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -91,7 +89,7 @@ public class CliCommandRouter
 
                 if (!string.IsNullOrWhiteSpace(sid))
                 {
-                    Console.WriteLine(CliMagicLine.GetMagicLine(ex, sid));
+                    CliMagicLine.OutputMagicLine(ex, sid);
                 }
 
                 //Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -109,7 +107,8 @@ public class CliCommandRouter
 
         if (!string.IsNullOrWhiteSpace(sid))
         {
-            Console.WriteLine(CliMagicLine.GetMagicLine(new CliException($"Unknown command: '{commandKey}'"), sid));
+            var unknownEx = new CliException($"Unknown command: '{commandKey}'");
+            CliMagicLine.OutputMagicLine(unknownEx, sid);
         }
 
         return 1;
@@ -125,11 +124,11 @@ public class CliCommandRouter
 
         foreach (var (key, command) in sorted)
         {
-            System.Console.WriteLine($"  {key.PadRight(maxKeyLength + 2)}{command.Description}");
+            Console.WriteLine($"  {key.PadRight(maxKeyLength + 2)}{command.Description}");
         }
 
-        System.Console.WriteLine();
-        System.Console.WriteLine("Run '<command> --help' for command-specific help.");
+        Console.WriteLine();
+        Console.WriteLine("Run '<command> --help' for command-specific help.");
     }
 
 }
