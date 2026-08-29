@@ -82,23 +82,6 @@ public class CliCommandRouter
                 //Console.ResetColor();
                 return 0;
             }
-            catch (CliException ex)
-            {
-                stopwatch.Stop();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Error.WriteLine(ex.Message);
-                Console.ResetColor();
-
-                if (!string.IsNullOrWhiteSpace(sid))
-                {
-                    Console.WriteLine(GetMagicCode(ex, sid));
-                }
-
-                //Console.ForegroundColor = ConsoleColor.DarkGray;
-                //Console.Error.WriteLine($"[Failed in {stopwatch.ElapsedMilliseconds}ms]");
-                //Console.ResetColor();
-                return 1;
-            }
             catch (Exception ex)
             {
                 stopwatch.Stop();
@@ -156,8 +139,18 @@ public class CliCommandRouter
 
         if (obj is string str)
         {
-            writer.Node("@type").WriteString("Text");
-            writer.Node("text").WriteString(str);
+            writer.Node("@type").WriteString("String");
+            writer.Node("value").WriteString(str);
+        }
+        else if (obj is string[] strs)
+        {
+            writer.Node("@type").WriteString("StringArray");
+            var aryWriter = writer.Nodes("values", strs.Length);
+            foreach (var str2 in strs)
+            {
+                var strWriter = aryWriter.Item();
+                strWriter.WriteString(str2);
+            }
         }
         else if (obj is IDataWritable writable)
         {
@@ -173,8 +166,8 @@ public class CliCommandRouter
         }
         else
         {
-            writer.Node("@type").WriteString("Text");
-            writer.Node("text").WriteString(obj?.ToString() ?? string.Empty);
+            writer.Node("@type").WriteString("String");
+            writer.Node("value").WriteString(obj?.ToString() ?? string.Empty);
         }
 
         writer.Node("sid").WriteString(sid);

@@ -21,6 +21,6 @@ public class ListStartupCommand : CliCommand
             .Select(o => o.AssetKey)
             .ToArray();
 
-        return new CliStringArray { Strings = assetKeys };
+        return assetKeys;
     }
 }

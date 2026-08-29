@@ -7,17 +7,15 @@ using var runner = new CliRunner(@"D:\Core\Suity\src\Suity.CLI\bin\Debug\net10.0
 try
 {
     var resp = await runner.StartAsync(@"open D:\Core\Test\TestCoding025");
+    Console.WriteLine(resp.ToString());
 
-    string type = resp.Node("@type").ReadString();
-    string text = resp.Node("text").ReadString();
-    Console.WriteLine(type);
-    Console.WriteLine(text);
-
-    var respList = await runner.SendCommandAsync("list-chat");
-    foreach (var subReader in respList.Nodes("Strings"))
+    var respList = await runner.SendCommandAsync("list-chat") as string[];
+    if (respList != null)
     {
-        string s = subReader.ReadString();
-        Console.WriteLine(s);
+        foreach (var s in respList)
+        {
+            Console.WriteLine(s);
+        }
     }
 
     Console.ReadLine();

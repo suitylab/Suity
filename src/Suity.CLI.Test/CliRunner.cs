@@ -58,7 +58,7 @@ public class CliRunner : IDisposable
         _readTask = Task.Run(() => Running(cts.Token));
     }
 
-    public async Task<JsonDataReader> StartAsync(string args)
+    public async Task<object> StartAsync(string args)
     {
         if (_process != null)
         {
@@ -92,9 +92,7 @@ public class CliRunner : IDisposable
 
         var reader = await tcs.Task;
 
-        ThrowExceptionFromReader(reader);
-
-        return reader;
+        return ParseReader(reader);
     }
 
     public void SendCommand(string args, Action<JsonDataReader> response)
@@ -109,7 +107,7 @@ public class CliRunner : IDisposable
         SendCommandInternal(args, sid);
     }
 
-    public async Task<JsonDataReader> SendCommandAsync(string args)
+    public async Task<object> SendCommandAsync(string args)
     {
         string sid = IdGenerator.GenerateId(10);
         var tcs = new TaskCompletionSource<JsonDataReader>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -123,9 +121,7 @@ public class CliRunner : IDisposable
 
         var reader = await tcs.Task;
 
-        ThrowExceptionFromReader(reader);
-
-        return reader;
+        return ParseReader(reader);
     }
 
     private void SendCommandInternal(string args, string sid)
@@ -194,7 +190,7 @@ public class CliRunner : IDisposable
         }
     }
 
-    private void ThrowExceptionFromReader(JsonDataReader reader)
+    private object ParseReader(JsonDataReader reader)
     {
         if (reader is null)
         {
@@ -220,6 +216,25 @@ public class CliRunner : IDisposable
             };
 
             throw remoteException;
+        }
+
+        if (type == "String")
+        {
+            return reader.Node("value").ReadString();
+        }
+        else if (type == "StringArray")
+        {
+            var valuesNode = reader.Nodes("values");
+            List<string> values = new List<string>();
+            foreach (var valueNode in valuesNode)
+            {
+                values.Add(valueNode.ReadString());
+            }
+            return values.ToArray();
+        }
+        else
+        {
+            return reader;
         }
     }
 

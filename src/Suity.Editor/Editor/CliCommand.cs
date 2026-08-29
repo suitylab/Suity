@@ -65,24 +65,3 @@ public class RemoteCliException : Exception
     public RemoteCliException(string message) : base(message) { }
     public RemoteCliException(string message, Exception inner) : base(message, inner) { }
 }
-
-public class CliStringArray : IDataWritable
-{
-    public string[] Strings { get; init; }
-
-    public void WriteData(IDataWriter writer)
-    {
-        writer.Node("@type").WriteString("StringArray");
-        var aryWriter = writer.Nodes("Strings", Strings.Length);
-        foreach (var str in Strings)
-        {
-            var strWriter = aryWriter.Item();
-            strWriter.WriteString(str);
-        }
-    }
-
-    public override string ToString()
-    {
-        return string.Join("\r\n", Strings);
-    }
-}
