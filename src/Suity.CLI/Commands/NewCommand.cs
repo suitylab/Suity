@@ -66,7 +66,7 @@ public class NewCommand : CliCommand
 
         if (args.GetOption("sid") is { } sid && !string.IsNullOrWhiteSpace(sid))
         {
-            Console.WriteLine(CliCommandRouter.GetMagicCode($"Project '{fileName}' created.", sid));
+            CliMagicLine.OutputMagicLine($"Project '{fileName}' created.", sid);
         }
 
         var repl = new CliReplInterface();

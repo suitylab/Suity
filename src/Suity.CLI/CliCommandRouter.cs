@@ -7,7 +7,7 @@ namespace Suity.Editor;
 
 public class CliCommandRouter
 {
-    public const string MagicPrefix = "[SUITY_CMD]->";
+    
 
     private static readonly Lazy<CliCommandRouter> _instance = new(() => new CliCommandRouter());
     public static CliCommandRouter Instance => _instance.Value;
@@ -74,7 +74,7 @@ public class CliCommandRouter
 
                 if (!string.IsNullOrWhiteSpace(sid))
                 {
-                    Console.WriteLine(GetMagicCode(result, sid));
+                    Console.WriteLine(CliMagicLine.GetMagicLine(result, sid));
                 }
 
                 //Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -91,7 +91,7 @@ public class CliCommandRouter
 
                 if (!string.IsNullOrWhiteSpace(sid))
                 {
-                    Console.WriteLine(GetMagicCode(ex, sid));
+                    Console.WriteLine(CliMagicLine.GetMagicLine(ex, sid));
                 }
 
                 //Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -109,7 +109,7 @@ public class CliCommandRouter
 
         if (!string.IsNullOrWhiteSpace(sid))
         {
-            Console.WriteLine(GetMagicCode(new CliException($"Unknown command: '{commandKey}'"), sid));
+            Console.WriteLine(CliMagicLine.GetMagicLine(new CliException($"Unknown command: '{commandKey}'"), sid));
         }
 
         return 1;
@@ -130,52 +130,6 @@ public class CliCommandRouter
 
         System.Console.WriteLine();
         System.Console.WriteLine("Run '<command> --help' for command-specific help.");
-    }
-
-
-    public static string GetMagicCode(object? obj, string sid)
-    {
-        var writer = new JsonDataWriter();
-
-        if (obj is string str)
-        {
-            writer.Node("@type").WriteString("String");
-            writer.Node("value").WriteString(str);
-        }
-        else if (obj is string[] strs)
-        {
-            writer.Node("@type").WriteString("StringArray");
-            var aryWriter = writer.Nodes("values", strs.Length);
-            foreach (var str2 in strs)
-            {
-                var strWriter = aryWriter.Item();
-                strWriter.WriteString(str2);
-            }
-        }
-        else if (obj is IDataWritable writable)
-        {
-            // writer.Node("@type").WriteString(writable.GetType().FullName);
-            writable.WriteData(writer);
-        }
-        else if (obj is Exception ex)
-        {
-            writer.Node("@type").WriteString("Exception");
-            writer.Node("exception").WriteString(ex.GetType().FullName);
-            writer.Node("message").WriteString(ex.Message);
-            writer.Node("stackTrace").WriteString(ex.StackTrace);
-        }
-        else
-        {
-            writer.Node("@type").WriteString("String");
-            writer.Node("value").WriteString(obj?.ToString() ?? string.Empty);
-        }
-
-        writer.Node("sid").WriteString(sid);
-        string json = writer.ToString(false);
-        byte[] b = Encoding.UTF8.GetBytes(json);
-        string base64 = Convert.ToBase64String(b);
-
-        return MagicPrefix + base64;
     }
 
 }

@@ -65,3 +65,4 @@ public class RemoteCliException : Exception
     public RemoteCliException(string message) : base(message) { }
     public RemoteCliException(string message, Exception inner) : base(message, inner) { }
 }
+

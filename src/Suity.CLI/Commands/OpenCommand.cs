@@ -50,7 +50,7 @@ public class OpenCommand : CliCommand
 
         if (args.GetOption("sid") is { } sid && !string.IsNullOrWhiteSpace(sid))
         {
-            Console.WriteLine(CliCommandRouter.GetMagicCode($"Project '{fileName}' opened.", sid));
+            CliMagicLine.OutputMagicLine($"Project '{fileName}' opened.", sid);
         }
 
         var repl = new CliReplInterface();
