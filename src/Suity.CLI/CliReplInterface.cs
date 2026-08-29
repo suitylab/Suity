@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Suity.Editor;
 
 public class CliReplInterface
@@ -43,6 +45,54 @@ public class CliReplInterface
 
     private static string[] ParseInput(string input)
     {
-        return input.Split([' '], StringSplitOptions.RemoveEmptyEntries);
+        var tokens = new List<string>();
+        var current = new StringBuilder();
+        bool inQuote = false;
+
+        for (int i = 0; i < input.Length; i++)
+        {
+            char c = input[i];
+
+            if (inQuote)
+            {
+                if (c == '\\' && i + 1 < input.Length && input[i + 1] == '"')
+                {
+                    current.Append('"');
+                    i++;
+                }
+                else if (c == '"')
+                {
+                    inQuote = false;
+                }
+                else
+                {
+                    current.Append(c);
+                }
+            }
+            else
+            {
+                if (c == '"')
+                {
+                    inQuote = true;
+                }
+                else if (char.IsWhiteSpace(c))
+                {
+                    if (current.Length > 0)
+                    {
+                        tokens.Add(current.ToString());
+                        current.Clear();
+                    }
+                }
+                else
+                {
+                    current.Append(c);
+                }
+            }
+        }
+
+        if (current.Length > 0)
+            tokens.Add(current.ToString());
+
+        return tokens.ToArray();
     }
 }

@@ -28,6 +28,8 @@ try
     resp = await runner.SendCommandAsync("test-notify");
     Console.WriteLine(resp.ToString());
 
+    runner.Dispose();
+
     Console.ReadLine();
 }
 finally
