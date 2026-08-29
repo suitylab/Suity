@@ -90,7 +90,11 @@ public class CliRunner : IDisposable
 
         _readTask = Task.Run(() => Running(cts.Token));
 
-        return await tcs.Task;
+        var reader = await tcs.Task;
+
+        ThrowExceptionFromReader(reader);
+
+        return reader;
     }
 
     public void SendCommand(string args, Action<JsonDataReader> response)
@@ -105,7 +109,7 @@ public class CliRunner : IDisposable
         SendCommandInternal(args, sid);
     }
 
-    public Task<JsonDataReader> SendCommandAsync(string args)
+    public async Task<JsonDataReader> SendCommandAsync(string args)
     {
         string sid = IdGenerator.GenerateId(10);
         var tcs = new TaskCompletionSource<JsonDataReader>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -116,7 +120,12 @@ public class CliRunner : IDisposable
         }
 
         SendCommandInternal(args, sid);
-        return tcs.Task;
+
+        var reader = await tcs.Task;
+
+        ThrowExceptionFromReader(reader);
+
+        return reader;
     }
 
     private void SendCommandInternal(string args, string sid)
@@ -182,6 +191,35 @@ public class CliRunner : IDisposable
         }
         catch
         {
+        }
+    }
+
+    private void ThrowExceptionFromReader(JsonDataReader reader)
+    {
+        if (reader is null)
+        {
+            throw new InvalidOperationException("Failed to receive response from the CLI process. (reader is null)");
+        }
+
+        string type = reader.Node("@type").ReadString();
+        if (string.IsNullOrWhiteSpace(type))
+        {
+            throw new InvalidOperationException("Failed to receive response from the CLI process. (no type)");
+        }
+
+        if (type == "Exception")
+        {
+            string typeName = reader.Node("exception").ReadString();
+            string message = reader.Node("message").ReadString();
+            string stackTrace = reader.Node("stackTrace").ReadString();
+
+            var remoteException = new RemoteCliException(message) 
+            {
+                RemoteTypeName = typeName,
+                RemoteStackTrace = stackTrace,
+            };
+
+            throw remoteException;
         }
     }
 

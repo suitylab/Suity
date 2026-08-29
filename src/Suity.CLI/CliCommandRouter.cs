@@ -161,7 +161,7 @@ public class CliCommandRouter
         }
         else if (obj is IDataWritable writable)
         {
-            writer.Node("@type").WriteString(writable.GetType().FullName);
+            // writer.Node("@type").WriteString(writable.GetType().FullName);
             writable.WriteData(writer);
         }
         else if (obj is Exception ex)

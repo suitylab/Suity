@@ -54,6 +54,18 @@ public class CliException : Exception
     public CliException(string message, Exception innerException) : base(message, innerException) { }
 }
 
+
+[Serializable]
+public class RemoteCliException : Exception
+{
+    public string RemoteTypeName { get; init; }
+    public string RemoteStackTrace { get; init; }
+
+    public RemoteCliException() { }
+    public RemoteCliException(string message) : base(message) { }
+    public RemoteCliException(string message, Exception inner) : base(message, inner) { }
+}
+
 public class CliStringArray : IDataWritable
 {
     public string[] Strings { get; init; }
