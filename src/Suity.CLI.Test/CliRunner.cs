@@ -164,7 +164,7 @@ public class CliRunner : IDisposable
         try
         {
             var reader = CliMagicLine.ParseMagicLine(line);
-            string? sid = reader.Node("sid").ReadString();
+            string? sid = reader.GetSessionId();
 
             if (string.IsNullOrEmpty(sid))
             {

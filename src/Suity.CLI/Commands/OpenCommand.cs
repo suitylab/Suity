@@ -48,7 +48,7 @@ public class OpenCommand : CliCommand
 
         Console.WriteLine($"Project '{fileName}' opened.");
 
-        if (args.GetOption("sid") is { } sid && !string.IsNullOrWhiteSpace(sid))
+        if (args.GetSessionId() is { } sid && !string.IsNullOrWhiteSpace(sid))
         {
             CliMagicLine.OutputMagicLine($"Project '{fileName}' opened.", sid);
         }

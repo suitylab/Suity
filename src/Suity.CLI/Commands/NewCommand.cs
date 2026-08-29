@@ -64,7 +64,7 @@ public class NewCommand : CliCommand
 
         Console.WriteLine($"Project '{fileName}' created.");
 
-        if (args.GetOption("sid") is { } sid && !string.IsNullOrWhiteSpace(sid))
+        if (args.GetSessionId() is { } sid && !string.IsNullOrWhiteSpace(sid))
         {
             CliMagicLine.OutputMagicLine($"Project '{fileName}' created.", sid);
         }

@@ -52,7 +52,7 @@ public class CliCommandRouter
 
         string commandKey = args[0];
         var commandArgs = new CliArguments(commandKey, args.Length > 1 ? args[1..] : Array.Empty<string>());
-        string? sid = commandArgs.GetOption("sid");
+        string? sid = commandArgs.GetSessionId();
 
         if (_commands.TryGetValue(commandKey, out var command))
         {

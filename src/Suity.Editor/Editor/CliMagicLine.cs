@@ -8,6 +8,8 @@ namespace Suity.Editor;
 public static class CliMagicLine
 {
     public const string MagicPrefix = "[SUITY_CMD]->";
+    public const string SID = "sid";
+
     public static string GetMagicLine(object obj, string sid = null)
     {
         var writer = new JsonDataWriter();
@@ -47,7 +49,7 @@ public static class CliMagicLine
 
         if (!string.IsNullOrWhiteSpace(sid))
         {
-            writer.Node("sid").WriteString(sid);
+            writer.Node(SID).WriteString(sid);
         }
         
         string json = writer.ToString(false);
@@ -120,5 +122,15 @@ public static class CliMagicLine
     {
         string line = GetMagicLine(obj, sid);
         Console.WriteLine(line);
+    }
+
+    public static string GetSessionId(this ICliArguments args)
+    {
+        return args.GetOption(SID);
+    }
+
+    public static string GetSessionId(this IDataReader reader)
+    {
+        return reader.Node(SID).ReadString();
     }
 }
