@@ -30,12 +30,14 @@ public class StartChatCommand : CliCommand
             throw new CliException("chat is not set");
         }
 
-        AigcChatToolWindow.Instance.HandleStartChat().GetAwaiter().OnCompleted(() => 
+        var task = AigcChatToolWindow.Instance.HandleStartChat();
+
+        task.GetAwaiter().OnCompleted(() => 
         {
             //TODO: Send notification.
         });
 
-        ChatReplInterface.RunChatLoopAsync().GetAwaiter().GetResult();
+        ChatReplInterface.RunChatLoopAsync(task).GetAwaiter().GetResult();
 
         return null;
     }

@@ -70,12 +70,14 @@ public class StartupCommand : CliCommand
             }
         }
 
-        startup.HandleStartup(userInput, workSpace).GetAwaiter().OnCompleted(() => 
+        var task = startup.HandleStartup(userInput, workSpace);
+
+        task.GetAwaiter().OnCompleted(() => 
         {
             //TODO: Send notification.
         });
 
-        ChatReplInterface.RunChatLoopAsync().GetAwaiter().GetResult();
+        ChatReplInterface.RunChatLoopAsync(task).GetAwaiter().GetResult();
 
         return null;
     }

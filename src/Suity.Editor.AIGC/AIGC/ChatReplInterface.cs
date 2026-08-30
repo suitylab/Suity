@@ -6,14 +6,20 @@ namespace Suity.Editor.AIGC;
 
 public static class ChatReplInterface
 {
-    public static async Task RunChatLoopAsync()
+    public static async Task RunChatLoopAsync(Task runningTask)
     {
         while (true)
         {
+            if (runningTask.IsCompleted)
+                break;
+
             var inputBuilder = new StringBuilder();
 
             while (true)
             {
+                if (runningTask.IsCompleted)
+                    break;
+
                 if (Console.KeyAvailable)
                 {
                     var key = Console.ReadKey(intercept: true);
@@ -22,6 +28,7 @@ public static class ChatReplInterface
                     {
                         Console.WriteLine("[Cancelled]");
                         LLmService.Instance.StopChat();
+                        await runningTask;
                         return;
                     }
 
@@ -64,6 +71,7 @@ public static class ChatReplInterface
                     input.Equals("quit", StringComparison.OrdinalIgnoreCase))
                 {
                     LLmService.Instance.StopChat();
+                    await runningTask;
                     break;
                 }
                 else
