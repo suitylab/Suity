@@ -87,7 +87,7 @@ public partial class ProjectGui :
 
         _model.TreeChanged += (s, e) => _guiRef.QueueRefresh();
 
-        EditorRexes.UIStarted.AddActionListener(HandleUIStart);
+        //EditorRexes.UIStarted.AddActionListener(HandleUIStart);
         EditorRexes.ProjectOpened.AddActionListener(HandleProjectOpened);
         EditorRexes.ProjectClosing.AddActionListener(HandleProjectClosing);
         EditorServices.FileUpdateService.UpdateFinished += (s, e) => OnProjectFileUpdated();
@@ -287,17 +287,22 @@ public partial class ProjectGui :
 
     #region Project Events
 
-    private void HandleUIStart()
-    {
-        if (_project != null)
-        {
-            Populate();
-        }
-    }
+    //private void HandleUIStart()
+    //{
+    //    if (_project != null)
+    //    {
+    //        Populate();
+    //    }
+    //}
 
     private void HandleProjectOpened(Project project)
     {
         SetProject(project);
+
+        if (_project != null)
+        {
+            Populate();
+        }
     }
 
     private void HandleProjectClosing(Project project)

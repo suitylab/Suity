@@ -3,6 +3,7 @@ using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Properties;
 using Suity.Editor.Selecting;
+using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Selecting;
 using Suity.Views.Graphics;
@@ -11,6 +12,7 @@ using Suity.Views.Im;
 using Suity.Views.Im.PropertyEditing;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
@@ -404,5 +406,29 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
             EditorUtility.ShowError(err.Message, err);
             return null;
         }
+    }
+
+    public static WorkSpace CreateWorkspace(string workspaceName)
+    {
+        workspaceName = workspaceName?.Trim();
+        if (!NamingVerifier.VerifyIdentifier(workspaceName))
+        {
+            throw new InvalidOperationException("Workspace name is not valid.");
+        }
+
+        string assetBaseDir = Project.Current.AssetDirectory;
+        string finalName = KeyIncrementHelper.MakeKey(workspaceName, 2, s =>
+        {
+            if (WorkSpaceManager.Current.ContainsWorkSpace(s))
+            {
+                return false;
+            }
+
+            return true;
+        }, true);
+
+        var workSpace = WorkSpaceManager.Current.AddWorkSpace(finalName);
+
+        return workSpace;
     }
 }
