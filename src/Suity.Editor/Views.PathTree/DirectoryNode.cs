@@ -66,10 +66,10 @@ public class DirectoryNode : FsNode
     }
 
     [ThreadStatic]
-    static readonly List<PathNode> _tempNodeListDir = [];
+    static List<PathNode> _tempNodeListDir = [];
 
     [ThreadStatic]
-    static readonly List<PathNode> _tempNodeListFile = [];
+    static List<PathNode> _tempNodeListFile = [];
 
     /// <summary>
     /// Enumerates the child directories and files of this directory as path nodes.
@@ -84,6 +84,9 @@ public class DirectoryNode : FsNode
         {
             return [];
         }
+
+        _tempNodeListDir ??= [];
+        _tempNodeListFile ??= [];
 
         _tempNodeListDir.Clear();
         _tempNodeListFile.Clear();
