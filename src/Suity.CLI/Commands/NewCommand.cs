@@ -45,7 +45,7 @@ public class NewCommand : CliCommand
         }
 
         string folderName = Path.GetFileName(folderPath);
-        string fileName = Path.Combine(folderPath, $"{folderName}.sunity");
+        string fileName = Path.Combine(folderPath, $"{folderName}.suity");
 
         Console.WriteLine($"Creating project '{fileName}'...");
         if (!string.IsNullOrWhiteSpace(templateFile))

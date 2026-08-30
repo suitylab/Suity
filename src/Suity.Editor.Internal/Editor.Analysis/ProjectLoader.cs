@@ -148,7 +148,7 @@ public class ProjectLoader
 
         if (Path.GetExtension(fileName).ToLowerInvariant() != ProjectBK.ProjectFileExtension)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("The project file extension must be: " + ProjectBK.ProjectFileExtension);
         }
 
         EditorServices.SystemLog.PushIndent();

@@ -18,7 +18,7 @@ namespace Suity.Editor;
 public class SuityCLI
 {
     public const string ProductName = "Suity CLI";
-    public const string VersionCode = "2026.05.10";
+    public const string VersionCode = "2026.05.11";
     public const string GithubPage = "https://github.com/suitylab/Suity";
     public const string ConfigFileName = "EditorConfig.json";
 
