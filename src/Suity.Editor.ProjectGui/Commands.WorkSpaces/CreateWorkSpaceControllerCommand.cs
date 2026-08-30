@@ -50,7 +50,7 @@ internal class CreateWorkSpaceControllerCommand : MenuCommand
         bool success = false;
         FileUnwatchedAction.Do(() =>
         {
-            success = WorkSpaceManager.Current.AddWorkSpace(name, _ctrlInfo) != null;
+            success = WorkSpaceManager.Current.CreateWorkSpace(name, _ctrlInfo) != null;
         });
 
         // The view is already auto-listening, no need to refresh the view

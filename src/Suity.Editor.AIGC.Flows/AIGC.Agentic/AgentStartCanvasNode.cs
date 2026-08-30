@@ -207,10 +207,9 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
 
     public bool IsStartup { get; internal set; }
 
-    public async Task<object> HandleStartup(string prompt, string workspaceName)
+    public async Task<object> HandleStartup(string prompt, WorkSpace workSpace)
     {
-        workspaceName = workspaceName?.Trim();
-        if (!NamingVerifier.VerifyIdentifier(workspaceName))
+        if (workSpace is null)
         {
             return null;
         }
@@ -228,15 +227,10 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
         }
 
         string assetBaseDir = Project.Current.AssetDirectory;
-        string finalName = KeyIncrementHelper.MakeKey(workspaceName, 2, s => 
+        string finalName = KeyIncrementHelper.MakeKey(workSpace.Name, 2, s => 
         {
             string assetDir = assetBaseDir.PathAppend(s);
             if (Directory.Exists(assetDir))
-            {
-                return false;
-            }
-
-            if (WorkSpaceManager.Current.ContainsWorkSpace(s))
             {
                 return false;
             }
@@ -251,8 +245,6 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
 
         string assetDir = assetBaseDir.PathAppend(finalName);
         Directory.CreateDirectory(assetDir);
-
-        var workSpace = WorkSpaceManager.Current.AddWorkSpace(finalName);
 
         var newDocEntry = DocumentManager.Instance.CloneDocument(doc.FileName.PhysicFileName, assetDir.PathAppend("AgentCanvas.sasset"));
         if (newDocEntry is null)

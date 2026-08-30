@@ -488,7 +488,7 @@ public class AigcLoopDocument : DesignDocument<AigcLoopAssetBuilder>, IAigcLoop
             workSpaceName = KeyIncrementHelper.MakeKey(workSpaceName, 2, s => !WorkSpaceManager.Current.ContainsWorkSpace(s));
         }
 
-        var workSpace = WorkSpaceManager.Current.AddWorkSpace(workSpaceName);
+        var workSpace = WorkSpaceManager.Current.CreateWorkSpace(workSpaceName);
 
         WorkSpace = workSpace;
 

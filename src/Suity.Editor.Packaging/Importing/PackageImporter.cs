@@ -189,7 +189,7 @@ internal class PackageImporter
                         }
                         else
                         {
-                            workSpace = EditorServices.WorkSpaceManager.AddWorkSpace(workspaceName);
+                            workSpace = EditorServices.WorkSpaceManager.CreateWorkSpace(workspaceName);
                             if (workSpace is null)
                             {
                                 Logs.LogError(L("Failed to create workspace") + ": " + workspaceName);

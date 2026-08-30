@@ -204,7 +204,7 @@ public class WorkSpaceManagerBK : WorkSpaceManager
     #region WorkSpace
 
     /// <inheritdoc/>
-    public override WorkSpace AddWorkSpace(string name, WorkSpaceControllerInfo ctrlInfo = null)
+    public override WorkSpace CreateWorkSpace(string name, WorkSpaceControllerInfo ctrlInfo = null)
     {
         if (string.IsNullOrEmpty(name))
         {

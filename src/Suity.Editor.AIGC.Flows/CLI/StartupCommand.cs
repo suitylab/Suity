@@ -1,4 +1,6 @@
 ﻿using Suity.Editor.AIGC;
+using Suity.Editor.WorkSpaces;
+using Suity.Helpers;
 using System;
 using System.Text;
 
@@ -9,7 +11,7 @@ public class StartupCommand : CliCommand
 {
     public override string Description => "Start a new chat";
 
-    public override string Usage => "startup <user-input> [--base64] --workspace <name>";
+    public override string Usage => "startup <user-input> [--base64] --workspace <name> [--auto-new]";
 
     public override object DoCommand(ICliArguments args)
     {
@@ -43,7 +45,32 @@ public class StartupCommand : CliCommand
             throw new CliException("Selected startup is not a startup assistant");
         }
 
-        startup.HandleStartup(userInput, workspaceName).GetAwaiter().OnCompleted(() => 
+        var workSpace = WorkSpaceManager.Current.GetWorkSpace(workspaceName);
+        if (workSpace is null)
+        {
+            if (args.HasFlag("auto-new"))
+            {
+                if (!NamingVerifier.VerifyIdentifier(workspaceName))
+                {
+                    throw new CliException($"Invalid workspace name: {workspaceName}");
+                }
+
+                try
+                {
+                    workSpace = WorkSpaceManager.Current.CreateWorkSpace(workspaceName);
+                }
+                catch (Exception ex)
+                {
+                    throw new CliException($"Failed to create workspace: {ex.Message}");
+                }
+            }
+            else
+            {
+                throw new CliException("Workspace not found.");
+            }
+        }
+
+        startup.HandleStartup(userInput, workSpace).GetAwaiter().OnCompleted(() => 
         {
             //TODO: Send notification.
         });

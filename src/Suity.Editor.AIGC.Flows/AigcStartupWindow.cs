@@ -324,9 +324,17 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
             return;
         }
 
+        if (!NamingVerifier.VerifyIdentifier(workspaceName))
+        {
+            await DialogUtility.ShowMessageBoxAsyncL("Workspace name is invalid.");
+            return;
+        }
+
         try
         {
-            await startupPage.HandleStartup(userInput, workspaceName);
+            var workSpace = CreateWorkspace(workspaceName);
+
+            await startupPage.HandleStartup(userInput, workSpace);
         }
         catch (Exception err)
         {
@@ -427,7 +435,7 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
             return true;
         }, true);
 
-        var workSpace = WorkSpaceManager.Current.AddWorkSpace(finalName);
+        var workSpace = WorkSpaceManager.Current.CreateWorkSpace(finalName);
 
         return workSpace;
     }

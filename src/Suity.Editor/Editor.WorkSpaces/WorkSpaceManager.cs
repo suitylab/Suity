@@ -139,7 +139,7 @@ public abstract class WorkSpaceManager
     /// <param name="name">Name of the workspace</param>
     /// <param name="ctrlInfo">Optional controller info</param>
     /// <returns>The created workspace</returns>
-    public abstract WorkSpace AddWorkSpace(string name, WorkSpaceControllerInfo ctrlInfo = null);
+    public abstract WorkSpace CreateWorkSpace(string name, WorkSpaceControllerInfo ctrlInfo = null);
 
     /// <summary>
     /// Deletes a workspace by name

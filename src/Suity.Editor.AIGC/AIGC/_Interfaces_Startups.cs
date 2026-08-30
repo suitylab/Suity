@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Suity.Editor.WorkSpaces;
+using System.Threading.Tasks;
 
 namespace Suity.Editor.AIGC;
 
@@ -6,7 +7,7 @@ public interface IAigcStartup
 {
     bool IsStartup { get; }
 
-    Task<object> HandleStartup(string prompt, string workspaceName);
+    Task<object> HandleStartup(string prompt, WorkSpace workspace);
 }
 
 /// <summary>

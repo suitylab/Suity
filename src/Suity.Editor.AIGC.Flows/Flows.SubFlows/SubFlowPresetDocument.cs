@@ -608,16 +608,15 @@ public class SubFlowPresetAsset : Asset,
     /// </summary>
     public bool IsStartup { get; internal set; }
 
-    public async Task<object> HandleStartup(string prompt, string workspaceName)
+    public async Task<object> HandleStartup(string prompt, WorkSpace workSpace)
     {
-        workspaceName = workspaceName?.Trim();
-        if (!NamingVerifier.VerifyIdentifier(workspaceName))
+        if (workSpace is null)
         {
             return null;
         }
 
         string assetBaseDir = Project.Current.AssetDirectory;
-        string finalName = KeyIncrementHelper.MakeKey(workspaceName, 2, s =>
+        string finalName = KeyIncrementHelper.MakeKey(workSpace.Name, 2, s =>
         {
             string assetDir = assetBaseDir.PathAppend(s + ".sasset");
             if (File.Exists(assetDir))
@@ -656,8 +655,6 @@ public class SubFlowPresetAsset : Asset,
         {
             return null;
         }
-
-        var workSpace = WorkSpaceManager.Current.AddWorkSpace(finalName);
 
         var view = doc.ShowView();
 

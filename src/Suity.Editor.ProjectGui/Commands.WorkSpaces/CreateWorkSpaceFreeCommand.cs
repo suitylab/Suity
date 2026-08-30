@@ -37,7 +37,7 @@ internal class CreateWorkSpaceFreeCommand : MenuCommand
         bool success = false;
         FileUnwatchedAction.Do(() =>
         {
-            success = WorkSpaceManager.Current.AddWorkSpace(name) != null;
+            success = WorkSpaceManager.Current.CreateWorkSpace(name) != null;
         });
 
         if (success)

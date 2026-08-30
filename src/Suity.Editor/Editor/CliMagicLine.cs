@@ -36,10 +36,8 @@ public static class CliMagicLine
         }
         else if (obj is Exception ex)
         {
-            writer.Node("@type").WriteString("Exception");
-            writer.Node("exception").WriteString(ex.GetType().FullName);
-            writer.Node("message").WriteString(ex.Message);
-            writer.Node("stackTrace").WriteString(ex.StackTrace);
+            var exObj = new CliExceptionObject();
+            exObj.WriteData(writer);
         }
         else
         {
@@ -85,14 +83,10 @@ public static class CliMagicLine
 
         if (type == "Exception")
         {
-            string typeName = reader.Node("exception").ReadString();
-            string message = reader.Node("message").ReadString();
-            string stackTrace = reader.Node("stackTrace").ReadString();
-
-            var remoteException = new RemoteCliException(message)
+            var exObj = CliExceptionObject.Create(reader);
+            var remoteException = new RemoteCliException(exObj.Message)
             {
-                RemoteTypeName = typeName,
-                RemoteStackTrace = stackTrace,
+                RemoteException = exObj,
             };
 
             throw remoteException;
