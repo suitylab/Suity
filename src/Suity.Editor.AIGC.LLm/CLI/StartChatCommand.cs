@@ -1,8 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Suity.Editor.AIGC.LLm.CLI;
+﻿namespace Suity.Editor.AIGC.LLm.CLI;
 
 [CliCommandKey("start-chat")]
 public class StartChatCommand : CliCommand

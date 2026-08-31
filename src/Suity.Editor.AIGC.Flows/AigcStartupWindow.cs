@@ -12,7 +12,6 @@ using Suity.Views.Im;
 using Suity.Views.Im.PropertyEditing;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;

@@ -21,5 +21,6 @@
   <Project Path="Suity.ImGui.BuildIn/Suity.ImGui.BuildIn.csproj" />
   <Project Path="Suity.ImGui/Suity.ImGui.csproj" />
   <Project Path="Suity.Rex/Suity.Rex.csproj" />
+  <Project Path="Suity.Wasm/Suity.Wasm.csproj" />
   <Project Path="Suity/Suity.csproj" />
 </Solution>
