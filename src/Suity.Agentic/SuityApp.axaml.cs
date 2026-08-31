@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Suity.Editor.AIGC;
 using Suity.Editor.Analysis;
 using Suity.Editor.DataModel;
+using Suity.Editor.Documents;
 using Suity.Editor.Documents.TypeEdit;
 using Suity.Editor.Flows;
 using Suity.Editor.Packaging;
@@ -229,7 +230,7 @@ namespace Suity.Editor
                 documentDockImpl.DocumentFactory = () =>
                 {
                     var index = documentDock.VisibleDockables?.Count ?? 0;
-                    return new Document
+                    return new Dock.Model.Avalonia.Controls.Document
                     {
                         Id = $"Doc{index + 1}",
                         Title = $"Document {index + 1}"
@@ -638,7 +639,8 @@ namespace Suity.Editor
                 typeof(PropertyTarget).Assembly,  // Suity.Editor.ImGui
                 typeof(ProjectViewPlugin).Assembly,
                 typeof(VirtualNode).Assembly,
-                typeof(TypeDesignDocument).Assembly,
+                typeof(TypeDesignDocument).Assembly, // Suity.Editor.Documents
+                typeof(PdfTextAsset).Assembly, // Suity.Editor.Documents
                 typeof(CorePlugin).Assembly,
                 typeof(PackagerPlugin).Assembly,
                 typeof(FlowPlugin).Assembly, // Suity.Editor.Flows

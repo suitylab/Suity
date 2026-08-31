@@ -1,9 +1,10 @@
 using NPOI.XWPF.UserModel;
+using Suity;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Suity.Editor.Documents.External;
+namespace Suity.Editor.Documents;
 
 /// <summary>
 /// Provides methods to convert Word (.docx) documents to Markdown format.

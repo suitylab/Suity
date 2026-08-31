@@ -1,6 +1,6 @@
 using System;
 
-namespace Suity.Editor.Documents.External;
+namespace Suity.Editor.Documents;
 
 /// <summary>
 /// Represents a Word document asset that extracts text content from .doc and .docx files.

@@ -9,8 +9,9 @@ using PdfSharp.Pdf.Advanced;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using Suity;
 
-namespace Suity.Helpers;
+namespace Suity.Editor.Documents;
 
 /// <summary>
 /// Single Threaded pdf text extractor, use multiple instances for multi-threaded app

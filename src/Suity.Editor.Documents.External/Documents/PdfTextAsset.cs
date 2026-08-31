@@ -4,7 +4,7 @@ using System;
 using System.Text;
 using Suity.Helpers;
 
-namespace Suity.Editor.Documents.External;
+namespace Suity.Editor.Documents;
 
 /// <summary>
 /// Represents a PDF document asset that extracts text content from .pdf files.

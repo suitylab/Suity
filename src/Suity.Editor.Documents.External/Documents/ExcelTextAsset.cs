@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Suity.Editor.Documents.External;
+namespace Suity.Editor.Documents;
 
 /// <summary>
 /// Represents an Excel document asset that extracts text content from .xls and .xlsx files.
