@@ -2,7 +2,6 @@ using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using System;
 using System.Text;
-using Suity.Helpers;
 
 namespace Suity.Editor.Documents;
 

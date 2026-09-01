@@ -10,6 +10,8 @@ public class CliPlatformService : IPlatformService
 
     public ApplicationModes ApplicationMode => ApplicationModes.CLI;
 
+    public bool IsLocalDbEnabled => true;
+
     public Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token)
         => ShellCommandHelper.ExecuteCommandAsync(command, workingDirectory, onOutput, token);
 

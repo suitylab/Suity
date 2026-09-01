@@ -9,6 +9,7 @@ public enum ApplicationModes
 {
     Desktop,
     CLI,
+    Wasm,
 }
 
 public interface IPlatformService
@@ -17,6 +18,11 @@ public interface IPlatformService
     /// Gets a value indicating the current application mode.
     /// </summary>
     ApplicationModes ApplicationMode { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether the local database is enabled.
+    /// </summary>
+    bool IsLocalDbEnabled { get; }
 
     /// <summary>
     /// Executes a command asynchronously.

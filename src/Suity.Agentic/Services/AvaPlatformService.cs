@@ -13,6 +13,8 @@ public class AvaPlatformService : IPlatformService
 
     public ApplicationModes ApplicationMode => ApplicationModes.Desktop;
 
+    public bool IsLocalDbEnabled => true;
+
     public Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token) 
         => ShellCommandHelper.ExecuteCommandAsync(command, workingDirectory, onOutput, token);
 

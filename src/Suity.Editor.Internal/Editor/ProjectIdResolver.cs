@@ -642,51 +642,54 @@ internal class ProjectIdResolver : IObjectIdResolver
             Save(true);
         }
 
-        try
+        if (EditorServices.PlatformService?.IsLocalDbEnabled == true)
         {
-            string dbFileName = _project.UserDirectory.PathAppend(DbFileName);
-            bool fileExist = File.Exists(dbFileName);
-
-            if (_db is null)
+            try
             {
-                var conn = new ConnectionString
-                {
-                    Filename = dbFileName,
-                    Connection = ConnectionType.Shared,
-                    //Password = "{83E7D916-C2B8-4CE1-B335-7B96B61873DC}"
-                };
-                _db = new LiteDatabase(dbFileName);
-                _record = _db.GetCollection<ObjectIdRecord>("ObjectIdRecord");
-                _record.EnsureIndex(o => o.Path, true);
-                _record.EnsureIndex(o => o.Record, false);
-            }
+                string dbFileName = _project.UserDirectory.PathAppend(DbFileName);
+                bool fileExist = File.Exists(dbFileName);
 
-            _db.BeginTrans();
-            foreach (var pair in _dic)
-            {
-                var record = _record.FindOne(x => x.Path == pair.Key) ?? new ObjectIdRecord { Path = pair.Key };
-                if (record.Record != pair.Value)
+                if (_db is null)
                 {
-                    record.Record = pair.Value;
+                    var conn = new ConnectionString
+                    {
+                        Filename = dbFileName,
+                        Connection = ConnectionType.Shared,
+                        //Password = "{83E7D916-C2B8-4CE1-B335-7B96B61873DC}"
+                    };
+                    _db = new LiteDatabase(dbFileName);
+                    _record = _db.GetCollection<ObjectIdRecord>("ObjectIdRecord");
+                    _record.EnsureIndex(o => o.Path, true);
+                    _record.EnsureIndex(o => o.Record, false);
+                }
 
-                    EditorServices.SystemLog.AddLog($"Record transfer id : {pair.Key}");
-                    try
+                _db.BeginTrans();
+                foreach (var pair in _dic)
+                {
+                    var record = _record.FindOne(x => x.Path == pair.Key) ?? new ObjectIdRecord { Path = pair.Key };
+                    if (record.Record != pair.Value)
                     {
-                        _record.Upsert(record);
-                    }
-                    catch (Exception err)
-                    {
-                        err.LogWarning($"Ignore record Id:{pair.Key}");
+                        record.Record = pair.Value;
+
+                        EditorServices.SystemLog.AddLog($"Record transfer id : {pair.Key}");
+                        try
+                        {
+                            _record.Upsert(record);
+                        }
+                        catch (Exception err)
+                        {
+                            err.LogWarning($"Ignore record Id:{pair.Key}");
+                        }
                     }
                 }
-            }
-            _db.Commit();
+                _db.Commit();
 
-            _db.Checkpoint();
-        }
-        catch (Exception err)
-        {
-            err.LogError("Failed to initialize id database.");
+                _db.Checkpoint();
+            }
+            catch (Exception err)
+            {
+                err.LogError("Failed to initialize id database.");
+            }
         }
     }
 
