@@ -2,6 +2,7 @@
 using Suity.Editor.Documents;
 using Suity.Helpers;
 using System;
+using System.IO;
 
 namespace Suity.Editor;
 
@@ -39,6 +40,11 @@ public abstract class FileAssetManager
         }
 
         DirectoryBasePath = basePath.NormalizeDirectoryName();
+
+        if (!Directory.Exists(DirectoryBasePath))
+        {
+            Directory.CreateDirectory(DirectoryBasePath);
+        }
     }
 
     /// <summary>

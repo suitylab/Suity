@@ -116,7 +116,7 @@ namespace Suity.Editor
 
             ProductVersion = typeof(SuityApp).Assembly?.GetName()?.Version?.ToString();
 
-            SetupSystemLog();
+            SetupFileSystemLog();
 
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -550,7 +550,7 @@ namespace Suity.Editor
 
         #region Static
 
-        private static void SetupSystemLog()
+        private static void SetupFileSystemLog()
         {
             try
             {

@@ -49,7 +49,7 @@ public class SuityCLI
 
         ProductVersion = typeof(SuityCLI).Assembly?.GetName()?.Version?.ToString();
 
-        SetupSystemLog();
+        SetupFileSystemLog();
 
         AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -237,7 +237,7 @@ public class SuityCLI
 
     #region Static
 
-    private static void SetupSystemLog()
+    private static void SetupFileSystemLog()
     {
         try
         {
@@ -305,7 +305,7 @@ public class SuityCLI
     }
 
 
-    private static ICollection<Assembly> CollectCoreAssemblies()
+    private static HashSet<Assembly> CollectCoreAssemblies()
     {
         HashSet<Assembly> asms =
         [
