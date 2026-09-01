@@ -20,9 +20,14 @@ public interface IPlatformService
     ApplicationModes ApplicationMode { get; }
 
     /// <summary>
-    /// Gets a value indicating whether the local database is enabled.
+    /// Gets a value indicating whether the local database is supported.
     /// </summary>
-    bool IsLocalDbEnabled { get; }
+    bool IsLocalDbSupported { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether the file system watcher is supported.
+    /// </summary>
+    bool IsFileSystemWatcherSupported { get; }
 
     /// <summary>
     /// Executes a command asynchronously.

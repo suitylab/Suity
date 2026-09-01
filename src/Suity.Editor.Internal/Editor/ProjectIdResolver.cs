@@ -362,7 +362,7 @@ internal class ProjectIdResolver : IObjectIdResolver
         }
         else
         {
-            Logs.LogError("Project Id database is not initialized.");
+            // Logs.LogError("Project Id database is not initialized.");
         }
 
         // Guid parse cache
@@ -418,16 +418,19 @@ internal class ProjectIdResolver : IObjectIdResolver
             // Search library
             try
             {
-                id = _record.FindOne(x => x.Path == key)?.Record ?? Guid.Empty;
-                // Id found in library cannot conflict with existing Id
-                if (id != Guid.Empty)
+                if (_record != null)
                 {
-                    _ids.Add(id);
-                    _dic[key] = id;
-                    RecordRevert(id, key);
+                    id = _record.FindOne(x => x.Path == key)?.Record ?? Guid.Empty;
+                    // Id found in library cannot conflict with existing Id
+                    if (id != Guid.Empty)
+                    {
+                        _ids.Add(id);
+                        _dic[key] = id;
+                        RecordRevert(id, key);
 
-                    EditorServices.SystemLog.AddLog($"Recover resolved id : {key}");
-                    return true;
+                        EditorServices.SystemLog.AddLog($"Recover resolved id : {key}");
+                        return true;
+                    }
                 }
             }
             catch (Exception err)
@@ -463,10 +466,13 @@ internal class ProjectIdResolver : IObjectIdResolver
 
             try
             {
-                result = _record.FindOne(x => x.Record == id)?.Path;
-                if (!string.IsNullOrEmpty(result))
+                if (_record != null)
                 {
-                    _dicRevert[id] = result;
+                    result = _record.FindOne(x => x.Record == id)?.Path;
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        _dicRevert[id] = result;
+                    }
                 }
             }
             catch (Exception)
@@ -507,12 +513,15 @@ internal class ProjectIdResolver : IObjectIdResolver
                     }
                     _ids.Add(id);
 
-                    var record = _record.FindOne(x => x.Path == key) ?? new ObjectIdRecord { Path = key };
-                    if (record.Record != id)
+                    if (_record != null)
                     {
-                        record.Record = id;
-                        _record.Upsert(record);
-                        dbUpdated = true;
+                        var record = _record.FindOne(x => x.Path == key) ?? new ObjectIdRecord { Path = key };
+                        if (record.Record != id)
+                        {
+                            record.Record = id;
+                            _record.Upsert(record);
+                            dbUpdated = true;
+                        }
                     }
 
                     if (EditorPlugin.RuntimeLogging)
@@ -564,14 +573,17 @@ internal class ProjectIdResolver : IObjectIdResolver
 
                 try
                 {
-                    _record.DeleteMany(x => x.Path == key);
+                    if (_record != null)
+                    {
+                        _record.DeleteMany(x => x.Path == key);
 
-                    var record = _record.FindOne(x => x.Path == newKey) ?? new ObjectIdRecord { Path = newKey };
-                    record.Record = id;
-                    _record.Upsert(record);
-                    dbUpdated = true;
+                        var record = _record.FindOne(x => x.Path == newKey) ?? new ObjectIdRecord { Path = newKey };
+                        record.Record = id;
+                        _record.Upsert(record);
+                        dbUpdated = true;
 
-                    EditorServices.SystemLog.AddLog($"Record rename id : {newKey}");
+                        EditorServices.SystemLog.AddLog($"Record rename id : {newKey}");
+                    }
                 }
                 catch (Exception err)
                 {
@@ -642,7 +654,7 @@ internal class ProjectIdResolver : IObjectIdResolver
             Save(true);
         }
 
-        if (EditorServices.PlatformService?.IsLocalDbEnabled == true)
+        if (EditorServices.PlatformService?.IsLocalDbSupported == true)
         {
             try
             {

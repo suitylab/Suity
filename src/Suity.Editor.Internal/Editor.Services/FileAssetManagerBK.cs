@@ -424,6 +424,12 @@ internal sealed class FileAssetManagerBK : FileAssetManager
     /// <returns>A list of file groups ordered by iteration.</returns>
     private List<IGrouping<LoadingIterations, FileUpdateItem>> GroupProjectFilesByIteration()
     {
+        Logs.LogInfo($"Grouping project files: {DirectoryBasePath}");
+        if (!Directory.Exists(DirectoryBasePath))
+        {
+            Directory.CreateDirectory(DirectoryBasePath);
+        }
+
         List<FileUpdateItem> files = DirectoryUtility.GetAllFiles(DirectoryBasePath)
             .Where(o => !o.GetIsMetaFile())
             .Select(o => new FileUpdateItem(o))

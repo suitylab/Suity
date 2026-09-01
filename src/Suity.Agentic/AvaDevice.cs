@@ -117,7 +117,6 @@ sealed class AvaDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateV
         EditorServices.SystemLog.AddLog("Initialize ImGuiServices...");
         ImGuiServices.Initialize();
 
-
         EditorServices.SystemLog.PopIndent();
         EditorServices.SystemLog.AddLog("Device initialized.");
     }

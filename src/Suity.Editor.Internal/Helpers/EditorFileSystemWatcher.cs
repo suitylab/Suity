@@ -50,15 +50,8 @@ public class EditorFileSystemWatcher : IEditorFileSystemWatcher, IDisposable
     /// <inheritdoc/>
     public string Path
     {
-        get => _watcher?.Path ?? _path;
-        set
-        {
-            _path = value;
-            if (_watcher != null)
-            {
-                _watcher.Path = value;
-            }
-        }
+        get => _watcher?.Path ?? _path; 
+        set => _watcher?.Path = _path = value;
     }
 
     /// <inheritdoc/>
@@ -132,6 +125,11 @@ public class EditorFileSystemWatcher : IEditorFileSystemWatcher, IDisposable
     private void CreateWatcher()
     {
         if (_watcher != null)
+        {
+            return;
+        }
+
+        if (!EditorServices.PlatformService.IsFileSystemWatcherSupported)
         {
             return;
         }
@@ -234,7 +232,7 @@ public class EditorFileSystemWatcher : IEditorFileSystemWatcher, IDisposable
 
     private void ExitUnwatched()
     {
-        if (_watcher == null)
+        if (_watcher is null)
         {
             _pausing = false;
 

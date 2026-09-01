@@ -75,14 +75,27 @@ internal class ProjectBK : Project
 
         EnsureAllSystemDirectories();
 
-        _idResolver = new ProjectIdResolver(this, _projectBasePath.PathAppend(_setting.AssetDirectory));
+        string assetDir = AssetDirectory;
+        string workspaceDir = WorkSpaceDirectory;
+
+        if (!Directory.Exists(assetDir))
+        {
+            Directory.CreateDirectory(assetDir);
+        }
+
+        if (!Directory.Exists(workspaceDir))
+        {
+            Directory.CreateDirectory(workspaceDir);
+        }
+
+        _idResolver = new ProjectIdResolver(this, _projectBasePath.PathAppend(assetDir));
         _idResolver.Start();
         GlobalIdResolver.Current = _idResolver;
 
         EditorObjectManager.Instance.DoUnwatchedAction(() =>
         {
-            _fileLibrary = new FileAssetManagerBK(this, AssetDirectory);
-            _workSpaceMngr = new WorkSpaceManagerBK(this, _projectBasePath.PathAppend(_setting.WorkSpaceDirectory));
+            _fileLibrary = new FileAssetManagerBK(this, assetDir);
+            _workSpaceMngr = new WorkSpaceManagerBK(this, workspaceDir);
         });
 
         EditorServices.SystemLog.PopIndent();
