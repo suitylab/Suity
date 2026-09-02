@@ -231,13 +231,13 @@ public class ProjectLoader
         EditorServices.SystemLog.AddLog($"ProjectBuilder (6) Setup project...");
         EditorServices.SystemLog.PushIndent();
 
+
         await EditorUtility.WaitForQueuedAction();
 
         // 4) Finally open the project
         await StartProject(_project);
 
         await EditorUtility.WaitForQueuedAction();
-        
 
         PostStartProject(_project);
 
@@ -340,7 +340,9 @@ public class ProjectLoader
         {
             EditorServices.SystemLog.AddLog($"Importing template file...");
             EditorServices.SystemLog.PushIndent();
+
             await EditorUtility.ImportPackage(templateFileName);
+
             EditorServices.SystemLog.PopIndent();
             EditorServices.SystemLog.AddLog($"Finish importing template file.");
         }

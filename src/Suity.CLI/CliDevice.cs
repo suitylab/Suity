@@ -117,29 +117,31 @@ sealed class CliDevice : Device, IRexResolver, ISystemLog
     public override float Time => (float)(DateTime.Now - _startTime).TotalSeconds;
     public override void AddLog(LogMessageType type, object message)
     {
+        var c = type == LogMessageType.Error ? Console.Error : Console.Out;
+
         if (message is ExceptionLogItem ex)
         {
-            Console.WriteLine($"[{type}] {ex.Message}");
+            c.WriteLine($"[{type}] {ex.Message}");
             if (ex.Exception != null)
             {
-                Console.WriteLine($"[{type}] {ex.Exception}");
+                c.WriteLine($"[{type}] {ex.Exception}");
             }
             if (ex.Object != null)
             {
-                Console.WriteLine($"[{type}] {ex.Object}");
+                c.WriteLine($"[{type}] {ex.Object}");
             }
         }
         else if (message is ObjectLogItem logItem)
         {
-            Console.WriteLine($"[{type}] {logItem.Message}");
+            c.WriteLine($"[{type}] {logItem.Message}");
             if (logItem.Object != null)
             {
-                Console.WriteLine($"[{type}] {logItem.Object}");
+                c.WriteLine($"[{type}] {logItem.Object}");
             }
         }
         else
         {
-            Console.WriteLine($"[{type}] {message}");
+            c.WriteLine($"[{type}] {message}");
         }
     }
     public override void AddNetworkLog(LogMessageType type, NetworkDirection direction, string sessionId, string channelId, object message)

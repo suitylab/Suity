@@ -53,7 +53,7 @@ public class NewCommand : CliCommand
             Console.WriteLine($"Using template '{templateFile}'...");
         }
 
-        SuityCLI.Instance.OpenProject(fileName, null, templateFile).Wait();
+        SuityCliApp.Instance.OpenProject(fileName, null, templateFile).Wait();
 
         using var cts = new CancellationTokenSource();
         Console.CancelKeyPress += (_, e) =>

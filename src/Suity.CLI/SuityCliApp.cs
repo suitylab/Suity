@@ -15,14 +15,14 @@ using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor;
 
-public class SuityCLI
+public class SuityCliApp
 {
     public const string ProductName = "Suity CLI";
     public const string VersionCode = "2026.05.11";
     public const string GithubPage = "https://github.com/suitylab/Suity";
     public const string ConfigFileName = "EditorConfig.json";
 
-    public static SuityCLI Instance { get; } = new();
+    public static SuityCliApp Instance { get; } = new();
 
 
     public DateTime StartTime { get; private set; }
@@ -47,7 +47,7 @@ public class SuityCLI
         StartTime = DateTime.UtcNow;
         MainThread = Thread.CurrentThread;
 
-        ProductVersion = typeof(SuityCLI).Assembly?.GetName()?.Version?.ToString();
+        ProductVersion = typeof(SuityCliApp).Assembly?.GetName()?.Version?.ToString();
 
         SetupFileSystemLog();
 
@@ -310,7 +310,7 @@ public class SuityCLI
         HashSet<Assembly> asms =
         [
             typeof(Asset).Assembly, // Suity.Editor
-            typeof(SuityCLI).Assembly, // Suity.CLI
+            typeof(SuityCliApp).Assembly, // Suity.CLI
             typeof(PropertyTarget).Assembly,  // Suity.Editor.ImGui
             typeof(ProjectViewPlugin).Assembly,
             typeof(VirtualNode).Assembly,

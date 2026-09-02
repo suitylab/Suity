@@ -227,8 +227,8 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
     public async Task ImportPackage(string fileName, string packageFullName = null)
     {
         var importer = new PackageImporter();
-        await QueuedAction.DoSuspendedAction(() => importer.Import(fileName, null, packageFullName));
 
+        await QueuedAction.DoSuspendedAction(() => importer.Import(fileName, null, packageFullName));
         await EditorUtility.WaitForQueuedAction();
     }
 }

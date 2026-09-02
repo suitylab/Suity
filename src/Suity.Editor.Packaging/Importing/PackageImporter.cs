@@ -71,7 +71,7 @@ internal class PackageImporter
 
         Project project = Project.Current;
 
-        EditorUtility.DoProgress(L("Importing..."), p =>
+        EditorUtility.DoProgress(L("Importing..."), async p =>
         {
             // Do not monitor any disk operations during the entire import process
             FileUnwatchedAction.Do(() =>
@@ -137,7 +137,6 @@ internal class PackageImporter
                     }
 
                     p.UpdateProgess(0, L("Please wait..."), string.Empty);
-
 
                     // Open all documents and create assets in the project.
                     foreach (var assetFileNameItr in _assetFileNames)
@@ -226,33 +225,32 @@ internal class PackageImporter
             string[] assetFileNames = [];
             assetFileNames = _assetFileNames.SelectMany(o => o).ToArray();
 
-            QueuedAction.Do(() =>
+            await EditorUtility.WaitForQueuedAction();
+
+            // Close all documents without saving as references have not been fully established yet
+            foreach (var assetFileName in assetFileNames)
             {
-                // Close all documents without saving as references have not been fully established yet
-                foreach (var assetFileName in assetFileNames)
+                var doc = DocumentManager.Instance.OpenDocument(assetFileName, DocumentLoadingIntent.Import);
+                if (doc != null)
                 {
-                    var doc = DocumentManager.Instance.OpenDocument(assetFileName, DocumentLoadingIntent.Import);
-                    if (doc != null)
-                    {
-                        DocumentManager.Instance.CloseDocument(assetFileName);
-                    }
+                    DocumentManager.Instance.CloseDocument(assetFileName);
                 }
+            }
 
-                foreach (var assetFileName in assetFileNames)
+            foreach (var assetFileName in assetFileNames)
+            {
+                // Reopen all the documents with normal intent and force save to ensure all references are correctly resolved and saved in Guid format.
+                var doc = DocumentManager.Instance.OpenDocument(assetFileName, DocumentLoadingIntent.Normal);
+                if (doc != null)
                 {
-                    // Reopen all the documents with normal intent and force save to ensure all references are correctly resolved and saved in Guid format.
-                    var doc = DocumentManager.Instance.OpenDocument(assetFileName, DocumentLoadingIntent.Normal);
-                    if (doc != null)
-                    {
-                        // Force save once using Guid format
-                        doc.ForceSave();
+                    // Force save once using Guid format
+                    doc.ForceSave();
 
-                        DocumentManager.Instance.CloseDocument(assetFileName);
-                    }
+                    DocumentManager.Instance.CloseDocument(assetFileName);
                 }
+            }
 
-                EditorUtility.RefreshProjectView();
-            });
+            EditorUtility.RefreshProjectView();
         }, () =>
         {
             source.SetResult(true);

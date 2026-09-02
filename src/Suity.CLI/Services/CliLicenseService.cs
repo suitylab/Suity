@@ -7,9 +7,9 @@ class CliLicenseService : LicenseService
     private CliLicenseService()
     { }
 
-    public override string ProductName => SuityCLI.ProductName;
+    public override string ProductName => SuityCliApp.ProductName;
 
-    public override string ProductVersion => SuityCLI.VersionCode;
+    public override string ProductVersion => SuityCliApp.VersionCode;
 
     public override string UserId => string.Empty;
 

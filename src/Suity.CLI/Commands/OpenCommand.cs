@@ -37,7 +37,7 @@ public class OpenCommand : CliCommand
             throw new CliException($"file '{fileName}' does not exist.");
         }
 
-        SuityCLI.Instance.OpenProject(fileName).Wait();
+        SuityCliApp.Instance.OpenProject(fileName).Wait();
 
         using var cts = new CancellationTokenSource();
         Console.CancelKeyPress += (_, e) =>

@@ -11,7 +11,7 @@ public class ExitCommand : CliCommand
     {
         if (Project.Current != null)
         {
-            SuityCLI.Instance.CloseProject();
+            SuityCliApp.Instance.CloseProject();
             Console.WriteLine("Exiting...");
             Environment.Exit(0);
             return "Project closed.";

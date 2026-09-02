@@ -27,17 +27,15 @@ public static class PathUtility
             return path;
         }
 
-        if (!basePath.EndsWith("/") && !basePath.EndsWith("\\"))
-        {
-            basePath += '/';
-        }
-
-        if (!Uri.TryCreate(path, UriKind.Absolute, out Uri pathUri))
+        if (!Uri.TryCreate(ToFilePathUri(path), UriKind.Absolute, out Uri pathUri))
         {
             return string.Empty;
         }
 
-        var baseUri = new Uri(basePath);
+        if (!Uri.TryCreate(ToFilePathUri(basePath), UriKind.Absolute, out Uri baseUri))
+        {
+            return string.Empty;
+        }
 
         // You cannot use IsBaseOf because it resolves to ../
         try
@@ -49,6 +47,18 @@ public static class PathUtility
         {
             return string.Empty;
         }
+    }
+
+    private static string ToFilePathUri(string path)
+    {
+        path = path.Replace('\\', '/');
+
+        if (path.StartsWith("/"))
+        {
+            return "file://" + path;
+        }
+
+        return "file:///" + path;
     }
 
     public static string MakeFullPath(this string path, string basePath)
@@ -75,7 +85,11 @@ public static class PathUtility
             basePath += '/';
         }
 
-        var baseUri = new Uri(basePath);
+        if (!Uri.TryCreate(ToFilePathUri(basePath), UriKind.Absolute, out Uri baseUri))
+        {
+            return path;
+        }
+
         var resultUri = new Uri(baseUri, path);
         string result = Uri.UnescapeDataString(resultUri.ToString());
 
