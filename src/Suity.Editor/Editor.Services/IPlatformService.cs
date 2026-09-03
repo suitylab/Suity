@@ -30,6 +30,11 @@ public interface IPlatformService
     bool IsFileSystemWatcherSupported { get; }
 
     /// <summary>
+    /// Gets a value indicating whether the console color is supported.
+    /// </summary>
+    bool IsConsoleColorSupported { get; }
+
+    /// <summary>
     /// Executes a command asynchronously.
     /// </summary>
     /// <param name="command">The command to execute.</param>

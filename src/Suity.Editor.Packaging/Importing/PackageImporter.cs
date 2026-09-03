@@ -227,6 +227,7 @@ internal class PackageImporter
 
             await EditorUtility.WaitForQueuedAction();
 
+
             // Close all documents without saving as references have not been fully established yet
             foreach (var assetFileName in assetFileNames)
             {

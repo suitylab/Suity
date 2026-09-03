@@ -38,6 +38,8 @@ public class ProjectLoader
     /// </summary>
     public const bool PrevalidateDocument = false;
 
+    private static bool TaskYield = false;
+
     private ProjectAnalysis _projectAnalysis;
     private ProjectBK _project;
 
@@ -158,6 +160,8 @@ public class ProjectLoader
         _project = new ProjectBK(basePath, name, projectGuid);
         EditorServices.SystemLog.PopIndent();
 
+        if (TaskYield) await Task.Yield();
+
         // 1) Initialize internal resources ** BackendProject must be created first, which includes creating ProjectIdResolver.
         // Only with ProjectIdResolver can objects with Id be generated.
         EditorServices.SystemLog.AddLog($"ProjectBuilder (1) Initialize native types...");
@@ -168,11 +172,15 @@ public class ProjectLoader
             NativeTypeExternalBK.Instance.Initialize();
         });
 
+        if (TaskYield) await Task.Yield();
+
         EditorServices.SystemLog.AddLog($"ProjectBuilder (1) Register core icon...");
         EditorObjectManager.Instance.DoUnwatchedAction(() =>
         {
             new ResourceImageGroupAsset(CoreIcon.ResourceManager, "*CoreIcon");
         });
+
+        if (TaskYield) await Task.Yield();
 
         // Before ProjectOpen, the project folder needs to be analyzed and plugins loaded,
         // because AssetLibrary construction automatically scans Assemblies and GetDerivedTypes.
@@ -182,6 +190,8 @@ public class ProjectLoader
         LoadPlugins(_projectAnalysis);
         EditorServices.SystemLog.PopIndent();
         EditorServices.SystemLog.AddLog($"ProjectBuilder (2) Finish load plugins.");
+
+        if (TaskYield) await Task.Yield();
 
         EditorServices.SystemLog.AddLog($"ProjectBuilder (2) Initialize asset type bindings...");
         EditorObjectManager.Instance.DoUnwatchedAction(() =>
@@ -208,11 +218,15 @@ public class ProjectLoader
         EditorServices.SystemLog.PopIndent();
         EditorServices.SystemLog.AddLog($"ProjectBuilder (3) Finish start plugins.");
 
+        if (TaskYield) await Task.Yield();
+
         EditorServices.SystemLog.AddLog($"ProjectBuilder (4) Start plugins...");
         EditorServices.SystemLog.PushIndent();
         StartPlugins(_projectAnalysis);
         EditorServices.SystemLog.PopIndent();
         EditorServices.SystemLog.AddLog($"ProjectBuilder (4) Finish start plugins.");
+
+        if (TaskYield) await Task.Yield();
 
         EditorServices.SystemLog.AddLog($"ProjectBuilder (4) Loading settings...");
         EditorServices.SystemLog.PushIndent();
@@ -223,6 +237,8 @@ public class ProjectLoader
         EditorServices.SystemLog.AddLog($"ProjectBuilder (5) Start editor...");
         EditorServices.SystemLog.PushIndent();
 
+        if (TaskYield) await Task.Yield();
+
         // 3) Start UI before project startup
         EditorStart?.Invoke(this, EventArgs.Empty);
         EditorServices.SystemLog.PopIndent();
@@ -231,6 +247,7 @@ public class ProjectLoader
         EditorServices.SystemLog.AddLog($"ProjectBuilder (6) Setup project...");
         EditorServices.SystemLog.PushIndent();
 
+        if (TaskYield) await Task.Yield();
 
         await EditorUtility.WaitForQueuedAction();
 
@@ -239,7 +256,11 @@ public class ProjectLoader
 
         await EditorUtility.WaitForQueuedAction();
 
+        if (TaskYield) await Task.Yield();
+
         PostStartProject(_project);
+
+        if (TaskYield) await Task.Yield();
 
         ProjectStart?.Invoke(this, EventArgs.Empty);
 
@@ -309,11 +330,15 @@ public class ProjectLoader
             err.LogError("Failed to read user file");
         }
 
+        if (TaskYield) await Task.Yield();
+
         //EditorRexes.PushQueuedActions.Invoke();
         await EditorUtility.WaitForQueuedAction();
 
         Project.Current = project;
         EditorRexes.ProjectOpened?.Invoke(project);
+
+        if (TaskYield) await Task.Yield();
 
         var plugins = EditorServices.PluginService.Plugins.Select(o => o.Plugin).ToArray();
 
@@ -332,6 +357,8 @@ public class ProjectLoader
             EditorServices.SystemLog.PopIndent();
         }
 
+        if (TaskYield) await Task.Yield();
+
         // Disable reference management to prevent cross-updates during loading
         EditorRexes.ReferenceManagerDisabled.Value = true;
 
@@ -347,8 +374,12 @@ public class ProjectLoader
             EditorServices.SystemLog.AddLog($"Finish importing template file.");
         }
 
+        if (TaskYield) await Task.Yield();
+
         // Open all documents
         await project.ScanProjectDirectory();
+
+        if (TaskYield) await Task.Yield();
 
         //await Task.Delay(100);
         await EditorUtility.WaitForQueuedAction();
@@ -357,6 +388,8 @@ public class ProjectLoader
         {
             workSpace.Controller?.TryWriteProjectFile();
         }
+
+        if (TaskYield) await Task.Yield();
 
         List<Task> postTasks = null;
 
@@ -378,6 +411,8 @@ public class ProjectLoader
             }
             EditorServices.SystemLog.PopIndent();
         }
+
+        if (TaskYield) await Task.Yield();
 
         if (postTasks != null)
         {

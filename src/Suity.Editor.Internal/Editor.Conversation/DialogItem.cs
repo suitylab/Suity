@@ -217,8 +217,15 @@ public class DialogItem : IDialogMessage
     public void WriteConsole()
     {
         var color = EditorServices.ColorConfig.GetStatusColor(Status);
-        var prevColor = Console.ForegroundColor;
-        Console.ForegroundColor = ToConsoleColor(color);
+
+        ConsoleColor prevColor = default;
+
+        if (EditorServices.PlatformService.IsConsoleColorSupported)
+        {
+            prevColor = Console.ForegroundColor;
+            Console.ForegroundColor = ToConsoleColor(color);
+        }
+
         Console.WriteLine(Message);
 
         if (_elements != null)
@@ -230,7 +237,10 @@ public class DialogItem : IDialogMessage
             }
         }
 
-        Console.ForegroundColor = prevColor;
+        if (EditorServices.PlatformService.IsConsoleColorSupported)
+        {
+            Console.ForegroundColor = prevColor;
+        }
     }
 
     public void WriteData(IDataWriter writer)

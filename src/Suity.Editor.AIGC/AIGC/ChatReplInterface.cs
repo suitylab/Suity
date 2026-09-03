@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Suity.Editor.Services;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -82,7 +83,11 @@ public static class ChatReplInterface
                     }
                     catch (Exception ex)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        if (EditorServices.PlatformService.IsConsoleColorSupported)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        }
+
                         Console.Error.WriteLine($"Error: {ex.Message}");
                         Console.ResetColor();
                     }
@@ -96,7 +101,11 @@ public static class ChatReplInterface
                 }
                 catch (Exception ex)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    if (EditorServices.PlatformService.IsConsoleColorSupported)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+
                     Console.Error.WriteLine($"Error: {ex.Message}");
                     Console.ResetColor();
                 }

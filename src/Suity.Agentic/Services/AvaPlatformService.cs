@@ -17,6 +17,8 @@ public class AvaPlatformService : IPlatformService
 
     public bool IsFileSystemWatcherSupported => true;
 
+    public bool IsConsoleColorSupported => false;
+
     public Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token) 
         => ShellCommandHelper.ExecuteCommandAsync(command, workingDirectory, onOutput, token);
 
