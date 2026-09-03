@@ -1,5 +1,4 @@
 ﻿using Suity.Editor.AIGC;
-using System;
 using System.Linq;
 
 namespace Suity.Editor.CLI;
@@ -17,7 +16,7 @@ public class ListStartupCommand : CliCommand
 
         string[] assetKeys = startups
             .OfType<Asset>()
-            .Where(o => StartupPageFilter.Instance.FilterAsset(o))
+            .Where(StartupPageFilter.Instance.FilterAsset)
             .Select(o => o.AssetKey)
             .ToArray();
 
