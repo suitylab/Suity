@@ -225,33 +225,35 @@ internal class PackageImporter
             string[] assetFileNames = [];
             assetFileNames = _assetFileNames.SelectMany(o => o).ToArray();
 
-            await EditorUtility.WaitForQueuedAction();
-
-
-            // Close all documents without saving as references have not been fully established yet
-            foreach (var assetFileName in assetFileNames)
+            //await EditorUtility.WaitForQueuedAction();
+            QueuedAction.Do(() => 
             {
-                var doc = DocumentManager.Instance.OpenDocument(assetFileName, DocumentLoadingIntent.Import);
-                if (doc != null)
+                // Close all documents without saving as references have not been fully established yet
+                foreach (var assetFileName in assetFileNames)
                 {
-                    DocumentManager.Instance.CloseDocument(assetFileName);
+                    var doc = DocumentManager.Instance.OpenDocument(assetFileName, DocumentLoadingIntent.Import);
+                    if (doc != null)
+                    {
+                        DocumentManager.Instance.CloseDocument(assetFileName);
+                    }
                 }
-            }
 
-            foreach (var assetFileName in assetFileNames)
-            {
-                // Reopen all the documents with normal intent and force save to ensure all references are correctly resolved and saved in Guid format.
-                var doc = DocumentManager.Instance.OpenDocument(assetFileName, DocumentLoadingIntent.Normal);
-                if (doc != null)
+                foreach (var assetFileName in assetFileNames)
                 {
-                    // Force save once using Guid format
-                    doc.ForceSave();
+                    // Reopen all the documents with normal intent and force save to ensure all references are correctly resolved and saved in Guid format.
+                    var doc = DocumentManager.Instance.OpenDocument(assetFileName, DocumentLoadingIntent.Normal);
+                    if (doc != null)
+                    {
+                        // Force save once using Guid format
+                        doc.ForceSave();
 
-                    DocumentManager.Instance.CloseDocument(assetFileName);
+                        DocumentManager.Instance.CloseDocument(assetFileName);
+                    }
                 }
-            }
 
-            EditorUtility.RefreshProjectView();
+                EditorUtility.RefreshProjectView();
+            });
+
         }, () =>
         {
             source.SetResult(true);

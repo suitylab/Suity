@@ -512,6 +512,7 @@ internal class ProjectIdResolver : IObjectIdResolver
                         RecordRevert(id, key);
                     }
                     _ids.Add(id);
+                    dbUpdated = true;
 
                     if (_record != null)
                     {
@@ -520,7 +521,6 @@ internal class ProjectIdResolver : IObjectIdResolver
                         {
                             record.Record = id;
                             _record.Upsert(record);
-                            dbUpdated = true;
                         }
                     }
 
@@ -568,8 +568,8 @@ internal class ProjectIdResolver : IObjectIdResolver
             if (_dic.TryRemoveAndGet(key, out Guid id))
             {
                 _dic[newKey] = id;
-
                 RecordRevert(id, newKey);
+                dbUpdated = true;
 
                 try
                 {
@@ -580,7 +580,6 @@ internal class ProjectIdResolver : IObjectIdResolver
                         var record = _record.FindOne(x => x.Path == newKey) ?? new ObjectIdRecord { Path = newKey };
                         record.Record = id;
                         _record.Upsert(record);
-                        dbUpdated = true;
 
                         EditorServices.SystemLog.AddLog($"Record rename id : {newKey}");
                     }
@@ -767,7 +766,7 @@ internal class ProjectIdResolver : IObjectIdResolver
     /// Saves ID mappings to XML files and triggers plugin save operations.
     /// </summary>
     /// <param name="forceSave">If <c>true</c>, saves even when no changes are pending.</param>
-    private void Save(bool forceSave = false)
+    public void Save(bool forceSave = false)
     {
         foreach (var plugin in EditorServices.PluginService.Plugins.Select(o => o.Plugin))
         {

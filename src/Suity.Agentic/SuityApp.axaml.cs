@@ -427,6 +427,9 @@ namespace Suity.Editor
             // Save project open record
             AppConfig.AddProjectRecord(_projectLoader.ActiveProject.ProjectSettingFile);
             SaveAppConfig();
+
+            QueuedAction.FlushQueuedActions();
+            GlobalIdResolver.Current.Save();
         }
 
         private void HandleEditorStart()

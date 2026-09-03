@@ -60,6 +60,12 @@ public interface IObjectIdResolver
     /// <param name="key">The existing key.</param>
     /// <param name="newKey">The new key name.</param>
     void Rename(string key, string newKey);
+
+    /// <summary>
+    /// Saves the current state of the resolver to persistent storage.
+    /// </summary>
+    /// <param name="forceSave">Whether to force a save even if the state has not changed.</param>
+    void Save(bool forceSave = false);
 }
 
 /// <summary>
@@ -179,5 +185,10 @@ public class DefaultObjectIdResolver : IObjectIdResolver
         id = Guid.Empty;
 
         return false;
+    }
+
+    public void Save(bool forceSave = false)
+    {
+        throw new NotImplementedException();
     }
 }

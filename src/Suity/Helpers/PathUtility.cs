@@ -27,6 +27,11 @@ public static class PathUtility
             return path;
         }
 
+        if  (!basePath.EndsWith("/") && !basePath.EndsWith("\\"))
+        {
+            basePath += '/';
+        }
+
         if (!Uri.TryCreate(ToFilePathUri(path), UriKind.Absolute, out Uri pathUri))
         {
             return string.Empty;
@@ -41,7 +46,9 @@ public static class PathUtility
         try
         {
             var resultUri = baseUri.MakeRelativeUri(pathUri);
-            return Uri.UnescapeDataString(resultUri.ToString());
+            string result = Uri.UnescapeDataString(resultUri.ToString());
+
+            return result;
         }
         catch (Exception)
         {
