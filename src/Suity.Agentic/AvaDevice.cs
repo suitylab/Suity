@@ -108,7 +108,7 @@ sealed class AvaDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateV
         AddService<ILocalizationService>(LocalizeManager.Instance);
         AddService<IAssemblyNameService>(AssemblyNameService.Instance);
 
-        AddService<LicenseService>(EmptyLicenseService.Empty);
+        AddService<LicenseService>(AvaLicenseService.Instance);
 
         AddFallBackService<ICodeRenderInfoService>(EmptyCodeRenderInfoService.Empty);
         AddFallBackService<IMonitorService>(EmptyMonitorService.Empty);
@@ -259,6 +259,8 @@ sealed class AvaDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateV
     }
 
     public override bool IsQueueSuspended => _actionQueueSuspended > 0;
+
+    public override int QueuedActionCount => _actionQueue.Count;
 
     #endregion
 

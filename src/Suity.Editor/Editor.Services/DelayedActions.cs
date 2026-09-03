@@ -23,6 +23,11 @@ public interface IRunDelayed
     /// Processes all pending delayed actions.
     /// </summary>
     void ProccessActions();
+
+    /// <summary>
+    /// Gets the count of currently pending delayed actions.
+    /// </summary>
+    int DelayedActionCount { get; }
 }
 
 

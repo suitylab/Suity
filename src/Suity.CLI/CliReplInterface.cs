@@ -14,6 +14,8 @@ public class CliReplInterface
         {
             Console.Write("> ");
 
+            QueuedAction.FlushQueuedActions();
+
             string? input;
             try
             {

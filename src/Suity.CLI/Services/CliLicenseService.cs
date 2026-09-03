@@ -2,7 +2,7 @@
 
 class CliLicenseService : LicenseService
 {
-    public static readonly CliLicenseService Instance = new();
+    public static CliLicenseService Instance { get; } = new();
 
     private CliLicenseService()
     { }

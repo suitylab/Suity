@@ -38,7 +38,7 @@ public class ProjectLoader
     /// </summary>
     public const bool PrevalidateDocument = false;
 
-    private static bool TaskYield = false;
+    private static bool TaskYield = true;
 
     private ProjectAnalysis _projectAnalysis;
     private ProjectBK _project;

@@ -17,6 +17,8 @@ internal class RunDelayed : IRunDelayed
 
     private readonly DelayedActionQueue _queue;
 
+    public int DelayedActionCount => _queue.Count;
+
     /// <summary>
     /// Creates a new RunDelayed instance with a default 800ms delay.
     /// </summary>
@@ -26,22 +28,13 @@ internal class RunDelayed : IRunDelayed
     }
 
     /// <inheritdoc/>
-    public void AddAction(DelayedAction action)
-    {
-        _queue.AddAction(action);
-    }
+    public void AddAction(DelayedAction action) => _queue.AddAction(action);
 
     /// <inheritdoc/>
-    public void RemoveAction(DelayedAction action)
-    {
-        _queue.RemoveAction(action);
-    }
+    public void RemoveAction(DelayedAction action) => _queue.RemoveAction(action);
 
     /// <inheritdoc/>
-    public void ProccessActions()
-    {
-        _queue.DoEventsAtOnce();
-    }
+    public void ProccessActions() => _queue.DoEventsAtOnce();
 }
 
 /// <summary>
@@ -186,4 +179,6 @@ internal class DelayedActionQueue
             _timer.Dispose();
         }
     }
+
+    public int Count => _actionQueue.Count;
 }

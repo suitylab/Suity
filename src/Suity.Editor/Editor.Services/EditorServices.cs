@@ -1,5 +1,6 @@
 ﻿using Suity.Editor.Documents;
 using Suity.Editor.WorkSpaces;
+using System;
 
 namespace Suity.Editor.Services;
 
@@ -386,4 +387,48 @@ public static class EditorServices
     public static ILocalizationService LocalizationService => _localization.Get();
 
     #endregion
+
+
+    public static void LogStatus()
+    {
+        Logs.LogInfo("--- Platform Status ---");
+        Logs.LogInfo($"Platform: {Environment.OSVersion.Platform.ToString()}");
+        Logs.LogInfo($"ApplicationMode: {PlatformService?.ApplicationMode.ToString() ?? "Unknown"}");
+        Logs.LogInfo($"IsLocalDbSupported: {PlatformService?.IsLocalDbSupported ?? false}");
+        Logs.LogInfo($"IsFileSystemWatcherSupported: {PlatformService?.IsFileSystemWatcherSupported ?? false}");
+        Logs.LogInfo($"IsConsoleColorSupported: {PlatformService?.IsConsoleColorSupported ?? false}");
+
+        Logs.LogInfo("--- License Service Status ---");
+        Logs.LogInfo($"Product Name: {LicenseService?.ProductName ?? "Unknown"}");
+        Logs.LogInfo($"Product Version: {LicenseService?.ProductVersion ?? "Unknown"}");
+        Logs.LogInfo($"User Id: {LicenseService?.UserId ?? "Unknown"}");
+        Logs.LogInfo($"License Type: {LicenseService?.LicenseType.ToString() ?? "Unknown"}");
+
+        //Logs.LogInfo("--- Editor Services Status ---");
+        //Logs.LogInfo($"Editor Object Manager: {(EditorObjectManager != null ? "Available" : "Not Available")}");
+        //Logs.LogInfo($"Asset Manager: {(AssetManager != null ? "Available" : "Not Available")}");
+        //Logs.LogInfo($"Value Manager: {(ValueManager != null ? "Available" : "Not Available")}");
+        //Logs.LogInfo($"Document Manager: {(DocumentManager != null ? "Available" : "Not Available")}");
+        //Logs.LogInfo($"Document View Manager: {(DocumentViewManager != null ? "Available" : "Not Available")}");
+        //Logs.LogInfo($"Storage Manager: {(StorageManager != null ? "Available" : "Not Available")}");
+        //Logs.LogInfo($"File Asset Manager: {(FileAssetManager != null ? "Available" : "Not Available")}");
+        //Logs.LogInfo($"Reference Manager: {(ReferenceManager != null ? "Available" : "Not Available")}");
+        //Logs.LogInfo($"Workspace Manager: {(WorkSpaceManager != null ? "Available" : "Not Available")}");
+        //Logs.LogInfo($"Analysis Service: {(AnalysisService != null ? "Available" : "Not Available")}");
+        //Logs.LogInfo($"License Service: {(LicenseService != null ? "Available" : "Not Available")}");
+        //Logs.LogInfo($"File Update Service: {(FileUpdateService != null ? "Available" : "Not Available")}");
+        //Logs.LogInfo($"Navigation Service: {(NavigationService != null ? "Available" : "Not Available")}");
+
+        Logs.LogInfo("--- Suity Status ---");
+        Logs.LogInfo($"Location: {Device.Current?.Location ?? "Unknown"}");
+        Logs.LogInfo($"IsQueueSuspended: {Device.Current?.IsQueueSuspended ?? false}");
+        Logs.LogInfo($"QueuedActionCount: {Device.Current?.QueuedActionCount ?? 0}");
+        Logs.LogInfo($"DelayedActionCount: {RunDelayed?.DelayedActionCount ?? 0}");
+
+        Logs.LogInfo("--- Project Status ---");
+        Logs.LogInfo($"Project Name: {CurrentProject?.ProjectName ?? "None"}");
+        Logs.LogInfo($"Project Status: {CurrentProject?.Status.ToString() ?? "None"}");
+        Logs.LogInfo($"Project GUID: {CurrentProject?.ProjectGuid.ToString() ?? "None"}");
+        Logs.LogInfo($"Project Base Path: {CurrentProject?.ProjectBasePath ?? "None"}");
+    }
 }

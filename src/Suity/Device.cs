@@ -96,6 +96,11 @@ public abstract class Device : IServiceProvider
     public abstract bool IsQueueSuspended { get; }
 
     /// <summary>
+    /// Gets the count of queued actions.
+    /// </summary>
+    public abstract int QueuedActionCount { get; }
+
+    /// <summary>
     /// Adds a log message.
     /// </summary>
     /// <param name="type">The type of log message.</param>
@@ -213,6 +218,9 @@ internal sealed class DefaultDevice : Device
 
     /// <inheritdoc />
     public override bool IsQueueSuspended => false;
+
+    /// <inheritdoc />
+    public override int QueuedActionCount => 0;
 
     /// <inheritdoc />
     public override void AddLog(LogMessageType type, object message)

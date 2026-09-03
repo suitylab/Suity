@@ -98,7 +98,7 @@ sealed class CliDevice : Device, IRexResolver, ISystemLog
         AddService<ILocalizationService>(LocalizeManager.Instance);
         AddService<IAssemblyNameService>(AssemblyNameService.Instance);
 
-        AddService<LicenseService>(EmptyLicenseService.Empty);
+        AddService<LicenseService>(CliLicenseService.Instance);
 
         AddFallBackService<ICodeRenderInfoService>(EmptyCodeRenderInfoService.Empty);
         AddFallBackService<IMonitorService>(EmptyMonitorService.Empty);
@@ -273,6 +273,8 @@ sealed class CliDevice : Device, IRexResolver, ISystemLog
     }
 
     public override bool IsQueueSuspended => _actionQueueSuspended > 0;
+
+    public override int QueuedActionCount => _actionQueue.Count;
 
     #endregion
 
