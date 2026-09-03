@@ -44,6 +44,8 @@ public class ConversationHost :
 
     public ConversationLevels Level { get; set; } = ConversationLevels.Main;
 
+    public IDialogMessage[] GetMessages() => [.. _items];
+
     /// <summary>
     /// Advances the current coroutine and returns its current yield value.
     /// </summary>

@@ -62,6 +62,11 @@ public class DialogItem : IDialogMessage
     public string Id { get; set; }
 
     /// <summary>
+    /// Gets the read-only list of elements in this dialog item.
+    /// </summary>
+    public IReadOnlyList<DialogElement>? Elements => _elements;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="DialogItem"/> class.
     /// </summary>
     public DialogItem()
@@ -473,6 +478,15 @@ public class DialogElement_ButtonGroup : DialogElement
     private readonly ConversationButton[] _buttons;
 
     /// <summary>
+    /// Gets the title of the button group.
+    /// </summary>
+    public string Title => _title;
+    /// <summary>
+    /// Gets the array of buttons in the group.
+    /// </summary>
+    public ConversationButton[] Buttons => _buttons;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="DialogElement_ButtonGroup"/> class.
     /// </summary>
     /// <param name="title">The title displayed alongside the button group.</param>
@@ -577,6 +591,15 @@ public class DialogElement_ProgressBar : DialogElement
 {
     private readonly float _progress;
     private readonly float _max;
+
+    /// <summary>
+    /// Gets the current progress value.
+    /// </summary>
+    public float Progress => _progress;
+    /// <summary>
+    /// Gets the maximum progress value.
+    /// </summary>
+    public float Max => _max;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DialogElement_ProgressBar"/> class.
