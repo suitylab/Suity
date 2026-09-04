@@ -2,6 +2,7 @@ using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.Editor.WorkSpaces;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -64,11 +65,11 @@ public class CreateNewFile : ToolCommand<CreateNewFile.Output>
     public override Task<Output> Run(ToolCallContext context)
     {
         var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+        var workSpace = context.WorkSpace;
 
-        string workspaceDir = context.RootDirectory;
-        if (string.IsNullOrWhiteSpace(workspaceDir))
+        if (workSpace == null)
         {
-            throw new NullReferenceException("Workspace directory is not set");
+            throw new NullReferenceException("Workspace is not set");
         }
 
         if (string.IsNullOrWhiteSpace(FilePath))
@@ -77,12 +78,7 @@ public class CreateNewFile : ToolCommand<CreateNewFile.Output>
         }
 
         string relativePath = FilePath.TrimStart('/', '\\');
-        string fullPath = relativePath;
-
-        if (!Path.IsPathRooted(relativePath))
-        {
-            fullPath = Path.Combine(workspaceDir, relativePath);
-        }
+        string fullPath = Path.Combine(workSpace.MasterDirectory, relativePath);
 
         if (File.Exists(fullPath))
         {
@@ -100,7 +96,7 @@ public class CreateNewFile : ToolCommand<CreateNewFile.Output>
             msg.AddCode(relativePath);
         });
 
-        File.WriteAllText(fullPath, Content);
+        workSpace.WriteAllText(relativePath, Content);
         parentPage?.SetScratchPad(ScratchPadTypes.FileFullContent, relativePath, null, "created");
 
         return Task.FromResult(new Output

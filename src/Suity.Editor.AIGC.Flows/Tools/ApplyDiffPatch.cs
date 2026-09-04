@@ -1,6 +1,7 @@
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
+using Suity.Editor.WorkSpaces;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -71,11 +72,11 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
     public override Task<Output> Run(ToolCallContext context)
     {
         var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+        var workSpace = context.WorkSpace;
 
-        string workspaceDir = context.RootDirectory;
-        if (string.IsNullOrWhiteSpace(workspaceDir))
+        if (workSpace == null)
         {
-            throw new NullReferenceException("Workspace directory is not set");
+            throw new NullReferenceException("Workspace is not set");
         }
 
         if (string.IsNullOrWhiteSpace(FilePath))
@@ -89,12 +90,7 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
         }
 
         string relativePath = FilePath.TrimStart('/', '\\');
-        string fullPath = relativePath;
-
-        if (!Path.IsPathRooted(relativePath))
-        {
-            fullPath = Path.Combine(workspaceDir, relativePath);
-        }
+        string fullPath = Path.Combine(workSpace.MasterDirectory, relativePath);
 
         if (!File.Exists(fullPath))
         {
@@ -142,7 +138,7 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
             msg.AddCode(relativePath);
         });
 
-        File.WriteAllLines(fullPath, lines);
+        workSpace.WriteAllLines(relativePath, lines);
 
         string diffSummary = $"---------------- Before ----------------\n{DiffContent}\n---------------- After ----------------\n(Applied {hunksApplied} hunk(s))";
         parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, relativePath, diffSummary, $"applied {hunksApplied} hunk(s), use ReadFile to get full content");

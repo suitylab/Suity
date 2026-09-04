@@ -2,6 +2,7 @@ using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.Editor.WorkSpaces;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -137,11 +138,11 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
     public override Task<Output> Run(ToolCallContext context)
     {
         var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+        var workSpace = context.WorkSpace;
 
-        string workspaceDir = context.RootDirectory;
-        if (string.IsNullOrWhiteSpace(workspaceDir))
+        if (workSpace == null)
         {
-            throw new NullReferenceException("Workspace directory is not set");
+            throw new NullReferenceException("Workspace is not set");
         }
 
         var output = new Output();
@@ -155,12 +156,7 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
         {
             string filePath = group.Key;
             string relativePath = filePath.TrimStart('/', '\\');
-            string fullPath = relativePath;
-
-            if (!Path.IsPathRooted(relativePath))
-            {
-                fullPath = Path.Combine(workspaceDir, relativePath);
-            }
+            string fullPath = Path.Combine(workSpace.MasterDirectory, relativePath);
 
             if (!File.Exists(fullPath))
             {
@@ -264,7 +260,7 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 
         foreach (var file in fileResults)
         {
-            File.WriteAllText(file.FullPath, file.NewContent);
+            workSpace.WriteAllText(file.RelativePath, file.NewContent);
             parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, file.RelativePath, $"replaced {file.Replacements} place(s)", $"replaced {file.Replacements} place(s), use ReadFile to get full content");
         }
 

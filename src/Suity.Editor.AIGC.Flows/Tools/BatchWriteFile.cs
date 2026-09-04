@@ -2,6 +2,7 @@ using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.Editor.WorkSpaces;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -124,11 +125,11 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
     public override Task<Output> Run(ToolCallContext context)
     {
         var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+        var workSpace = context.WorkSpace;
 
-        string workspaceDir = context.RootDirectory;
-        if (string.IsNullOrWhiteSpace(workspaceDir))
+        if (workSpace == null)
         {
-            throw new NullReferenceException("Workspace directory is not set");
+            throw new NullReferenceException("Workspace is not set");
         }
 
         var output = new Output();
@@ -148,12 +149,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
             try
             {
                 string relativePath = item.FilePath.TrimStart('/', '\\');
-                string fullPath = relativePath;
-
-                if (!Path.IsPathRooted(relativePath))
-                {
-                    fullPath = Path.Combine(workspaceDir, relativePath);
-                }
+                string fullPath = Path.Combine(workSpace.MasterDirectory, relativePath);
 
                 result.FilePath = relativePath;
 
@@ -167,7 +163,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
                             Directory.CreateDirectory(dir);
                         }
 
-                        File.WriteAllText(fullPath, item.Content);
+                        workSpace.WriteAllText(relativePath, item.Content);
                         parentPage?.SetScratchPad(ScratchPadTypes.FileFullContent, relativePath, null, "overwritten");
                         result.Status = "Overwritten";
                         successCount++;
@@ -187,7 +183,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
                         Directory.CreateDirectory(dir);
                     }
 
-                    File.WriteAllText(fullPath, item.Content);
+                    workSpace.WriteAllText(relativePath, item.Content);
                     parentPage?.SetScratchPad(ScratchPadTypes.FileFullContent, relativePath, null, "created");
                     result.Status = "Created";
                     successCount++;

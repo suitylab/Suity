@@ -2,6 +2,7 @@ using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Flows.SubFlows.Running;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
+using Suity.Editor.WorkSpaces;
 using Suity.Synchonizing;
 using Suity.Views;
 using System;
@@ -125,11 +126,11 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
     public override Task<Output> Run(ToolCallContext context)
     {
         var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
+        var workSpace = context.WorkSpace;
 
-        string workspaceDir = context.RootDirectory;
-        if (string.IsNullOrWhiteSpace(workspaceDir))
+        if (workSpace == null)
         {
-            throw new NullReferenceException("Workspace directory is not set");
+            throw new NullReferenceException("Workspace is not set");
         }
 
         var output = new Output();
@@ -150,12 +151,7 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
             try
             {
                 string relativePath = patchItem.FilePath.TrimStart('/', '\\');
-                string fullPath = relativePath;
-
-                if (!Path.IsPathRooted(relativePath))
-                {
-                    fullPath = Path.Combine(workspaceDir, relativePath);
-                }
+                string fullPath = Path.Combine(workSpace.MasterDirectory, relativePath);
 
                 result.FilePath = relativePath;
 
@@ -184,7 +180,7 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
                 var patches = ParseUnifiedDiff(diffLines);
                 hunksApplied = ApplyPatchesToLines(lines, patches);
 
-                File.WriteAllLines(fullPath, lines);
+                workSpace.WriteAllLines(relativePath, lines);
 
                 string diffSummary = $"---------------- Before ----------------\n{patchItem.DiffContent}\n---------------- After ----------------\n(Applied {hunksApplied} hunk(s))";
                 parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, relativePath, diffSummary, $"applied {hunksApplied} hunk(s), use ReadFile to get full content");
