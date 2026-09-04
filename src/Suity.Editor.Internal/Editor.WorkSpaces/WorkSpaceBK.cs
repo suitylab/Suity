@@ -36,7 +36,7 @@ public class WorkSpaceBK : WorkSpace,
     public static bool LogDebug = false;
     private static readonly HashSet<Guid> ValidateIgnoreIds = [];
 
-    private readonly WorkSpaceManager _manager;
+    private readonly WorkSpaceManagerBK _manager;
     private bool _analyzed;
     private string _baseNameSpace = string.Empty;
     private string _externalRPath = null;
@@ -74,7 +74,7 @@ public class WorkSpaceBK : WorkSpace,
     /// </summary>
     /// <param name="manager">The owning workspace manager.</param>
     /// <param name="name">The name of the workspace.</param>
-    internal WorkSpaceBK(WorkSpaceManager manager, string name)
+    internal WorkSpaceBK(WorkSpaceManagerBK manager, string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -1809,6 +1809,11 @@ public class WorkSpaceBK : WorkSpace,
         RequestAnalyze();
         //_analyzed = false;
         //EditorUtility.AddDelayedAction(new RaiseUpdateAction(this));
+    }
+
+    public override void NotifyFileUpdated(string relativePath)
+    {
+        this._manager.NotifyWorkSpaceFileUpdated(this, relativePath);
     }
 
     #endregion

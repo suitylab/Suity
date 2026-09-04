@@ -432,6 +432,36 @@ public class WorkSpaceEventArgs : EventArgs
 
 #endregion
 
+#region WorkSpaceFileFileArgs
+
+/// <summary>
+/// Event arguments for workspace file events.
+/// </summary>
+public class WorkSpaceFileEventArgs : EventArgs
+{
+    /// <summary>
+    /// Gets the workspace associated with the event.
+    /// </summary>
+    public WorkSpace WorkSpace { get; }
+
+    /// <summary>
+    /// Gets the relative path of the file associated with the event.
+    /// </summary>
+    public string RelativePath { get; }
+
+    /// <summary>
+    /// Creates a new WorkSpaceEventArgs instance.
+    /// </summary>
+    /// <param name="workSpace">The workspace associated with the event.</param>
+    public WorkSpaceFileEventArgs(WorkSpace workSpace, string relativePath)
+    {
+        WorkSpace = workSpace;
+        RelativePath = relativePath;
+    }
+}
+
+#endregion
+
 #region WorkSpaceRenameEventArgs
 
 /// <summary>

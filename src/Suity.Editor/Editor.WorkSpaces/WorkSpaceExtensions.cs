@@ -21,6 +21,8 @@ public static class WorkSpaceExtensions
         string rootDir = workSpace.MasterDirectory;
         string fullPath = Path.Combine(rootDir, relativePath);
         File.WriteAllText(fullPath, content);
+
+        workSpace.NotifyFileUpdated(relativePath);
     }
 
     public static void WriteAllLines(this WorkSpace workSpace, string relativePath, IEnumerable<string> lines)
@@ -38,6 +40,8 @@ public static class WorkSpaceExtensions
         string rootDir = workSpace.MasterDirectory;
         string fullPath = Path.Combine(rootDir, relativePath);
         File.WriteAllLines(fullPath, lines);
+
+        workSpace.NotifyFileUpdated(relativePath);
     }
 
 }

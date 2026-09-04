@@ -94,6 +94,11 @@ public abstract class WorkSpaceManager
     public event EventHandler<WorkSpaceEventArgs> WorkSpaceRenderTargetUpdated;
 
     /// <summary>
+    /// Event raised when a workspace file is updated
+    /// </summary>
+    public event EventHandler<WorkSpaceFileEventArgs> WorkSpaceFileUpdated;
+
+    /// <summary>
     /// Raises the WorkSpaceAdded event
     /// </summary>
     /// <param name="args">Event arguments</param>
@@ -229,6 +234,15 @@ public abstract class WorkSpaceManager
 
     #endregion
 
+    #region Misc
+
+    internal protected void NotifyWorkSpaceFileUpdated(WorkSpace workSpace, string relativePath)
+    {
+        WorkSpaceFileUpdated?.Invoke(this, new WorkSpaceFileEventArgs(workSpace, relativePath));
+    }
+
+
+    #endregion
 
     /// <summary>
     /// Updates the plugin with a delay

@@ -841,6 +841,8 @@ public abstract class WorkSpace : IRenderHost, IHasId
         return fileName.MakeRelativePath(fileName);
     }
 
+    public abstract void NotifyFileUpdated(string relativePath);
+
     #endregion
 
     #region Path
