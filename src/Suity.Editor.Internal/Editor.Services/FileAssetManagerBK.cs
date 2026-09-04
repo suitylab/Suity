@@ -1,3 +1,4 @@
+using MarkedNet;
 using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Documents;
@@ -424,12 +425,24 @@ internal sealed class FileAssetManagerBK : FileAssetManager
     /// <returns>A list of file groups ordered by iteration.</returns>
     private List<IGrouping<LoadingIterations, FileUpdateItem>> GroupProjectFilesByIteration()
     {
-        List<FileUpdateItem> files = DirectoryUtility.GetAllFiles(DirectoryBasePath)
+        try
+        {
+            string dir = DirectoryBasePath.Replace('\\', '/');
+
+            var fileInfos = DirectoryUtility.GetAllFiles(dir, true);
+
+            List<FileUpdateItem> files = fileInfos
             .Where(o => !o.GetIsMetaFile())
             .Select(o => new FileUpdateItem(o))
             .ToList();
 
-        return GroupFileByIteration(files);
+            return GroupFileByIteration(files);
+        }
+        catch (Exception err)
+        {
+            err.LogError("[FileAssetManagerBK] Error grouping files by iteration");
+            return [];
+        }
     }
 
     /// <summary>

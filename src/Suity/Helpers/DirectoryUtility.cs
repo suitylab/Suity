@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Suity.Helpers;
@@ -9,26 +8,13 @@ namespace Suity.Helpers;
 /// </summary>
 public static class DirectoryUtility
 {
-    public static IEnumerable<FileInfo> GetAllFiles(this DirectoryInfo dirInfo, bool recursive = true)
+    public static FileInfo[] GetAllFiles(this DirectoryInfo dirInfo, bool recursive = true)
     {
-        foreach (FileInfo fileInfo in dirInfo.GetFiles())
-        {
-            yield return fileInfo;
-        }
-
-        if (recursive)
-        {
-            foreach (DirectoryInfo subDirInfo in dirInfo.GetDirectories())
-            {
-                foreach (FileInfo subFileInfo in GetAllFiles(subDirInfo))
-                {
-                    yield return subFileInfo;
-                }
-            }
-        }
+        SearchOption option = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+        return dirInfo.GetFiles("*", option);
     }
 
-    public static IEnumerable<FileInfo> GetAllFiles(string dir, bool recursive = true)
+    public static FileInfo[] GetAllFiles(string dir, bool recursive = true)
     {
         return GetAllFiles(new DirectoryInfo(dir), recursive);
     }
