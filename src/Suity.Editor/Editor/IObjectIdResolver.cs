@@ -10,6 +10,11 @@ namespace Suity.Editor;
 public interface IObjectIdResolver
 {
     /// <summary>
+    /// Occurs when a setting file is saved, providing the path of the saved file.
+    /// </summary>
+    event Action<string> SettingFileSaved;
+
+    /// <summary>
     /// Generates a new unique GUID.
     /// </summary>
     /// <returns>A new <see cref="Guid"/>.</returns>
@@ -81,6 +86,8 @@ public class DefaultObjectIdResolver : IObjectIdResolver
     private readonly object _syncRoot = new object();
     private readonly Dictionary<string, Guid> _nameResolvers = new Dictionary<string, Guid>();
     private readonly Dictionary<Guid, string> _revertResolvers = new Dictionary<Guid, string>();
+
+    public event Action<string> SettingFileSaved;
 
     /// <summary>
     /// Generates a new unique GUID.

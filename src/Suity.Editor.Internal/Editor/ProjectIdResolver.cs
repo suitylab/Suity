@@ -86,6 +86,9 @@ internal class ProjectIdResolver : IObjectIdResolver
 
     private readonly DbCheckPointDelayedAction _checkPointAction;
 
+
+    public event Action<string> SettingFileSaved;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ProjectIdResolver"/> class.
     /// </summary>
@@ -830,6 +833,8 @@ internal class ProjectIdResolver : IObjectIdResolver
                 writer.SaveToFile(fileName);
                 _dirty = false;
                 EditorServices.SystemLog.AddLog($"{fileName} saved.");
+
+                SettingFileSaved?.Invoke(fileName);
             }
             catch (Exception err)
             {

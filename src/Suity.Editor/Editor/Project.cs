@@ -20,6 +20,8 @@ public enum ProjectStatus
 /// </summary>
 public abstract class Project
 {
+    public const string SettingFileName = "ProjectSetting.xml";
+
     /// <summary>
     /// Current project
     /// </summary>
@@ -130,6 +132,11 @@ public abstract class Project
 
     #region Setting
 
+    /// <summary>
+    /// Occurs when a setting is saved.
+    /// </summary>
+    public event Action<string> SettingFileSaved;
+
 
     /// <summary>
     /// Loads plugin settings from the project settings XML file.
@@ -178,6 +185,11 @@ public abstract class Project
     /// Gets the plugin folder GUID.
     /// </summary>
     public abstract Guid PluginFolderGuid { get; }
+
+    protected void RaiseSettingSaved(string settingName)
+    {
+        SettingFileSaved?.Invoke(settingName);
+    }
 
     #endregion
 

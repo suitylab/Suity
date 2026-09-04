@@ -89,6 +89,8 @@ internal class ProjectBK : Project
         }
 
         _idResolver = new ProjectIdResolver(this, _projectBasePath.PathAppend(assetDir));
+        _idResolver.SettingFileSaved += RaiseSettingSaved;
+
         _idResolver.Start();
         GlobalIdResolver.Current = _idResolver;
 
@@ -102,8 +104,6 @@ internal class ProjectBK : Project
         EditorServices.SystemLog.AddLog("Project created.");
     }
 
-
-    
 
     /// <inheritdoc/>
     public override string ProjectBasePath => _projectBasePath;
@@ -287,7 +287,7 @@ internal class ProjectBK : Project
     /// <inheritdoc/>
     internal override void LoadSetting()
     {
-        string fileName = SystemDirectory.PathAppend("ProjectSetting.xml");
+        string fileName = SystemDirectory.PathAppend(SettingFileName);
         if (!File.Exists(fileName))
         {
             return;
@@ -371,9 +371,11 @@ internal class ProjectBK : Project
                 });
             }
 
-            string fileName = SystemDirectory.PathAppend("ProjectSetting.xml");
+            string fileName = SystemDirectory.PathAppend(SettingFileName);
 
             writer.SaveToFile(fileName);
+
+            RaiseSettingSaved(fileName);
         }
         catch (Exception err)
         {
