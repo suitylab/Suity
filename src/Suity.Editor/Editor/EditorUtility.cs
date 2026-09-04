@@ -156,6 +156,24 @@ public static class EditorUtility
     }
 
     /// <summary>
+    /// Converts an absolute file path to a path relative to the current project's asset directory.
+    /// </summary>
+    /// <param name="fullPath">The absolute file path to convert. This value should be a fully qualified path.</param>
+    /// <returns>A path relative to the current project's asset directory if a project is loaded; otherwise, returns the original absolute path.</returns>
+    public static string MakeAssetRelativePath(this string fullPath)
+    {
+        var project = Project.Current;
+        if (project != null)
+        {
+            return fullPath.MakeRelativePath(project.AssetDirectory);
+        }
+        else
+        {
+            return fullPath;
+        }
+    }
+
+    /// <summary>
     /// Refresh the project view.
     /// </summary>
     public static void RefreshProjectView()

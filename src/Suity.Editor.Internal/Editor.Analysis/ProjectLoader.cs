@@ -123,7 +123,7 @@ public class ProjectLoader
     /// <param name="projectGuid">Optional GUID for the project.</param>
     /// <exception cref="InvalidOperationException">Thrown when a project is already open or the file extension is invalid.</exception>
     /// <exception cref="ArgumentNullException">Thrown when the file name is null or empty.</exception>
-    public async Task OpenProject(string fileName, Guid? projectGuid)
+    public async Task OpenProject(string fileName, Guid? projectGuid = null, string projectName = null)
     {
         if (_project != null)
         {
@@ -140,7 +140,7 @@ public class ProjectLoader
         }
 
         string basePath = Path.GetDirectoryName(fileName);
-        string name = Path.GetFileNameWithoutExtension(fileName);
+        projectName ??= Path.GetFileNameWithoutExtension(fileName);
 
         if (!Directory.Exists(basePath))
         {
@@ -154,10 +154,10 @@ public class ProjectLoader
         }
 
         EditorServices.SystemLog.PushIndent();
-        _projectAnalysis = new ProjectAnalysis(basePath, name);
+        _projectAnalysis = new ProjectAnalysis(basePath, projectName);
         _projectAnalysis.Analyze(true);
 
-        _project = new ProjectBK(basePath, name, projectGuid);
+        _project = new ProjectBK(basePath, projectName, projectGuid);
         EditorServices.SystemLog.PopIndent();
 
         if (TaskYield) await Task.Yield();
