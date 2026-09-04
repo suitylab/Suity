@@ -85,6 +85,7 @@ internal class ProjectIdResolver : IObjectIdResolver
     public bool IsDirty => _dirty;
 
     private readonly DbCheckPointDelayedAction _checkPointAction;
+    private readonly SaveIdDelayedAction _saveIdAction;
 
 
     public event Action<string> SettingFileSaved;
@@ -99,6 +100,7 @@ internal class ProjectIdResolver : IObjectIdResolver
         _project = project ?? throw new ArgumentNullException(nameof(project));
 
         _checkPointAction = new DbCheckPointDelayedAction(this);
+        _saveIdAction = new SaveIdDelayedAction(this);
 
         AddFix("*RenderType|Class", "*RenderType|Struct");
         AddFix("*RenderType|Side", "*RenderType|Abstract");
@@ -535,7 +537,7 @@ internal class ProjectIdResolver : IObjectIdResolver
 
                 if (dbUpdated)
                 {
-                    _dirty = true;
+                    MarkDirty();
                 }
             }
             catch (Exception err)
@@ -595,7 +597,7 @@ internal class ProjectIdResolver : IObjectIdResolver
 
             if (dbUpdated)
             {
-                _dirty = true;
+                MarkDirty();
             }
         }
 
@@ -746,7 +748,7 @@ internal class ProjectIdResolver : IObjectIdResolver
             {
                 string nameFix = "*Design" + name[7..];
                 name = nameFix;
-                _dirty = true;
+                MarkDirty();
             }
 
             if (!Guid.TryParseExact(idStr, "D", out Guid id))
@@ -793,6 +795,8 @@ internal class ProjectIdResolver : IObjectIdResolver
 
         string objFileName = _project.SystemDirectory.PathAppend(ObjectIdXmlFileName);
         SaveIdXml(objFileName, o => !o.FullName?.StartsWith("*") == true);
+
+        _dirty = false;
     }
 
     /// <summary>
@@ -858,6 +862,17 @@ internal class ProjectIdResolver : IObjectIdResolver
             }
         }
         _dicRevert[id] = key;
+    }
+
+    private void MarkDirty()
+    {
+        if (_dirty)
+        {
+            return;
+        }
+
+        _dirty = true;
+        EditorUtility.AddDelayedAction(_saveIdAction);
     }
 
     #region Watcher
@@ -1063,6 +1078,14 @@ internal class ProjectIdResolver : IObjectIdResolver
         {
             Logs.LogInfo("Reload ObjectId...");
             FileUnwatchedAction.Do(Value.Load);
+        }
+    }
+
+    private class SaveIdDelayedAction(ProjectIdResolver value) : DelayedAction<ProjectIdResolver>(value)
+    {
+        public override void DoAction()
+        {
+            Value.Save();
         }
     }
 }
