@@ -260,7 +260,7 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
         });
     }
 
-    internal Task HandleStartChat()
+    public Task HandleStartChat()
     {
         //if (!ServiceInternals._license.GetCapability(EditorCapabilities.AigcWorkflow))
         //{
@@ -277,7 +277,7 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
         return StartCurrentChat();
     }
 
-    internal void HandleStopChat()
+    public void HandleStopChat()
     {
         try
         {
