@@ -20,6 +20,13 @@ public static class WorkSpaceExtensions
 
         string rootDir = workSpace.MasterDirectory;
         string fullPath = Path.Combine(rootDir, relativePath);
+
+        string directory = Path.GetDirectoryName(fullPath);
+        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
         File.WriteAllText(fullPath, content);
 
         workSpace.NotifyFileUpdated(relativePath);
@@ -39,6 +46,13 @@ public static class WorkSpaceExtensions
 
         string rootDir = workSpace.MasterDirectory;
         string fullPath = Path.Combine(rootDir, relativePath);
+
+        string directory = Path.GetDirectoryName(fullPath);
+        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
         File.WriteAllLines(fullPath, lines);
 
         workSpace.NotifyFileUpdated(relativePath);
