@@ -1,4 +1,3 @@
-using MarkedNet;
 using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Selecting;
 using Suity.Editor.Services;
@@ -7,17 +6,16 @@ using Suity.Views.Im;
 using Suity.Views.Im.PropertyEditing;
 using System;
 using System.Linq;
-using System.Net.Mail;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.AIGC.Flows;
 
 /// <summary>
-/// Main chat implementation that manages workflow-based LLM conversations.
+/// MainChat chat implementation that manages workflow-based LLM conversations.
 /// Acts as a proxy to the selected workflow chat provider.
 /// </summary>
-internal class MainChat : ILLmChat
+internal class LLmMainChat : ILLmChat
 {
     /// <summary>
     /// Selection type for choosing an LLM chat provider asset.
@@ -77,25 +75,25 @@ internal class MainChat : ILLmChat
     public ILLmChat Inner => _innerChat;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="MainChat"/> class with a default conversation.
+    /// Initializes a new instance of the <see cref="LLmMainChat"/> class with a default conversation.
     /// </summary>
-    public MainChat()
+    public LLmMainChat()
         : this(null)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="MainChat"/> class with the specified conversation.
+    /// Initializes a new instance of the <see cref="LLmMainChat"/> class with the specified conversation.
     /// </summary>
     /// <param name="conversation">The conversation UI handler. If null, a default one is created.</param>
-    public MainChat(IConversation conversation)
+    public LLmMainChat(IConversation conversation)
     {
         var cOption = new ConversationOptions
         {
             DisableOldMessage = false,
             Level = ConversationLevels.Main,
         };
-        conversation ??= EditorServices.PlatformService.CreateConversation(nameof(MainChat), cOption);
+        conversation ??= EditorServices.PlatformService.CreateConversation(nameof(LLmMainChat), cOption);
 
         _conversation = conversation; // ?? throw new ArgumentNullException(nameof(conversation));
 
@@ -156,7 +154,7 @@ internal class MainChat : ILLmChat
             }
 
             _chatAssetTarget.ReadOnly = true;
-            _state = LLmChatStates.Started;
+            _state = LLmChatStates.Running;
 
             return await chat.Start(msg, attachments, option);
         }
@@ -177,7 +175,7 @@ internal class MainChat : ILLmChat
     /// </summary>
     public virtual void Stop()
     {
-        if (_state != LLmChatStates.Started)
+        if (_state != LLmChatStates.Running)
         {
             return;
         }
@@ -258,7 +256,7 @@ internal class MainChat : ILLmChat
             return null;
         }
 
-        if (_state != LLmChatStates.Started)
+        if (_state != LLmChatStates.Running)
         {
             return await Start(msg, attachments, option);
             //throw new InvalidOperationException($"Conversation is not started.");
@@ -294,7 +292,7 @@ internal class MainChat : ILLmChat
 
     public virtual async Task<object> HandleButtonClick(string key)
     {
-        if (_state != LLmChatStates.Started)
+        if (_state != LLmChatStates.Running)
         {
             throw new InvalidOperationException($"Conversation is not started.");
         }

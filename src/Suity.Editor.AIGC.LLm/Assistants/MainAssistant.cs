@@ -11,7 +11,7 @@ namespace Suity.Editor.AIGC.Assistants;
 
 #region MainAssistant
 /// <summary>
-/// Main entry point AI assistant that routes requests to appropriate sub-assistants
+/// MainChat entry point AI assistant that routes requests to appropriate sub-assistants
 /// based on the canvas context and request type.
 /// </summary>
 [DisplayText("AI Assistant", "*CoreIcon|Assistant")]

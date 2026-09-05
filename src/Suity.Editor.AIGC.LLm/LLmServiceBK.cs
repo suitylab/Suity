@@ -52,7 +52,7 @@ internal class LLmServiceBK : LLmService
     }
 
     /// <inheritdoc/>
-    public override ILLmChat CurrentChat => AigcChatToolWindow.Instance.Main.Inner;
+    public override ILLmChat CurrentChat => AigcChatToolWindow.Instance.MainChat.Inner;
 
 
     /// <inheritdoc/>

@@ -681,7 +681,7 @@ namespace Suity.Editor
             }
             EditorServices.SystemLog.PopIndent();
 
-            //EditorUtility.LogCore.LogDebug($"Types in Main Assembly:");
+            //EditorUtility.LogCore.LogDebug($"Types in MainChat Assembly:");
             //EditorUtility.LogCore.PushIndent();
             //foreach (var type in typeof(SuityApp).Assembly.GetExportedTypes())
             //{

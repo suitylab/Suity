@@ -96,7 +96,7 @@ public abstract class BaseLLmChat : ILLmChat,
 
             await OnStart(_cancelSource.Token);
 
-            _state = LLmChatStates.Started;
+            _state = LLmChatStates.Running;
 
             if (!string.IsNullOrWhiteSpace(msg))
             {
@@ -177,7 +177,7 @@ public abstract class BaseLLmChat : ILLmChat,
     /// </summary>
     public void Stop()
     {
-        if (_state != LLmChatStates.Started)
+        if (_state != LLmChatStates.Running)
         {
             return;
         }
@@ -227,7 +227,7 @@ public abstract class BaseLLmChat : ILLmChat,
 
         if (_cancelSource is null)
         {
-            if (_state != LLmChatStates.Started)
+            if (_state != LLmChatStates.Running)
             {
                 throw new InvalidOperationException($"Conversation is not started.");
             }

@@ -5,7 +5,7 @@ using Suity.Views.Menu;
 namespace Suity.Editor.Controls;
 
 
-//[InsertInto(":Main/Tool")]
+//[InsertInto(":MainChat/Tool")]
 //public class DockDebugCommand : MenuCommand
 //{
 //    /// <summary>

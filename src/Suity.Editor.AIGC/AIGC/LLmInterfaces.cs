@@ -246,9 +246,9 @@ public enum LLmChatStates
     /// </summary>
     Starting,
     /// <summary>
-    /// The chat is started.
+    /// The chat is running.
     /// </summary>
-    Started,
+    Running,
 }
 
 /// <summary>

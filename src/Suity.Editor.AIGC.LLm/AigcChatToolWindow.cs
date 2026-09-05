@@ -36,7 +36,7 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
 
     private readonly GuiDropDownValue _modelSelect;
 
-    private readonly MainChat _mainChat = new();
+    private readonly LLmMainChat _mainChat = new();
     private ILLmChat _currentChat;
 
     private string _msgInput = string.Empty;
@@ -88,7 +88,9 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
         set => _mainChat.SelectedChatAssetId = value;
     }
 
-    internal MainChat Main => _mainChat;
+    public ILLmChat CurrentChat => _currentChat;
+
+    internal LLmMainChat MainChat => _mainChat;
 
     #region Config
 
@@ -161,7 +163,7 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
             {
                 if (_currentChat != null)
                 {
-                    if (_currentChat.State == LLmChatStates.Started)
+                    if (_currentChat.State == LLmChatStates.Running)
                     {
                         gui.Button("stop", CoreIconCache.Stop)
                         .InitClass("toolBtn")
@@ -198,7 +200,7 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
                 _currentChat?.OnNodeGui(gui);
             });
 
-            bool started = _currentChat?.State == LLmChatStates.Started;
+            bool started = _currentChat?.State == LLmChatStates.Running;
 
             gui.VerticalResizer(30, null)
             .InitFullWidth()
@@ -279,6 +281,11 @@ public class AigcChatToolWindow : IToolWindow, IDrawImGui
 
     public void HandleStopChat()
     {
+        if (_currentChat is null)
+        {
+            return;
+        }
+
         try
         {
             _currentChat.Stop();
