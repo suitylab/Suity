@@ -872,7 +872,10 @@ internal class ProjectIdResolver : IObjectIdResolver
         }
 
         _dirty = true;
-        EditorUtility.AddDelayedAction(_saveIdAction);
+        if (EditorServices.PlatformService.AutoSaveObjectId)
+        {
+            EditorUtility.AddDelayedAction(_saveIdAction);
+        }
     }
 
     #region Watcher

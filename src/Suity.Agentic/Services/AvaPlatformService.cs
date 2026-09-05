@@ -19,6 +19,8 @@ public class AvaPlatformService : IPlatformService
 
     public bool IsConsoleColorSupported => false;
 
+    public bool AutoSaveObjectId => false;
+
     public Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token) 
         => ShellCommandHelper.ExecuteCommandAsync(command, workingDirectory, onOutput, token);
 
