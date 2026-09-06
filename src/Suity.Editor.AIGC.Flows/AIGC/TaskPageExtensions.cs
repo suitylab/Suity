@@ -1,5 +1,6 @@
 ﻿using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Services;
 using Suity.Views;
 using System;
 using System.Collections.Generic;
@@ -18,12 +19,14 @@ public static class TaskPageExtensions
         return new ToolCallDialogMessage(context, content, status, config);
     }
 
-    public static DisposableDialogItem AddRunningMessage(this AigcWorkflowPage page, AIRequest request, string content)
+    public static DisposableDialogItem AddWorkflowMessage(this AigcWorkflowPage page, AIRequest request, string content)
     {
         return request.Conversation.AddSystemMessage(content, msg =>
         {
-            msg.AddButtons(string.Empty, [
-                new()
+            if (EditorServices.PlatformService.IsConversationButtonSupported)
+            {
+                msg.AddButtons(string.Empty, [
+                    new()
                 {
                     Key = "Feedback",
                     Text = "Feedback",
@@ -36,6 +39,7 @@ public static class TaskPageExtensions
                     CallBack = () => page.SelectTaskInView()
                 },
             ]);
+            }
         });
     }
 
@@ -73,12 +77,12 @@ class ToolCallDialogMessage : IDialogMessage, IDisposable
         Message = content;
         _config = config;
 
-        string toolContent = "Run tool: " + content;
+        string toolContent = "Tool: " + content;
 
         _localMessage = context.ToolInstance?.Conversation?.AddSystemMessage(toolContent, Status, _config);
         _globalMessage = context.Conversation?.AddSystemMessage(toolContent, Status, msg =>
         {
-            if (context.ToolInstance?.Owner is AigcTaskPage taskPage)
+            if (context.ToolInstance?.Owner is AigcTaskPage taskPage && EditorServices.PlatformService.IsConversationButtonSupported)
             {
                 msg.AddButton("Open", "Open", () =>
                 {

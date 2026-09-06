@@ -16,7 +16,9 @@ public class CliPlatformService : IPlatformService
 
     public bool IsConsoleColorSupported => true;
 
-    public bool AutoSaveObjectId => false
+    public bool IsConversationButtonSupported => false;
+
+    public bool AutoSaveObjectId => false;
 
     public Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token)
         => ShellCommandHelper.ExecuteCommandAsync(command, workingDirectory, onOutput, token);

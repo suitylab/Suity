@@ -276,7 +276,7 @@ public class AigcWorkflowPlugin : EditorPlugin, IAigcWorkflowRunner, IViewObject
             return null;
         }
 
-        // conversation.AddRunningMessage("Workflow: " + starterNode.ToDisplayTextL());
+        // conversation.AddWorkflowMessage("Workflow: " + starterNode.ToDisplayTextL());
 
         bool errPausing = true;
 

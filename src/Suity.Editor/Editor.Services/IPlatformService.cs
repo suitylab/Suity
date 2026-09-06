@@ -35,6 +35,11 @@ public interface IPlatformService
     bool IsConsoleColorSupported { get; }
 
     /// <summary>
+    /// Gets a value indicating whether the conversation button is supported.
+    /// </summary>
+    bool IsConversationButtonSupported { get; }
+
+    /// <summary>
     /// Gets a value indicating whether the object id is auto saved.
     /// </summary>
     bool AutoSaveObjectId { get; }

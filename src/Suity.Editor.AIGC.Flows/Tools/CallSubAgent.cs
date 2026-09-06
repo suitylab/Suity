@@ -4,6 +4,7 @@ using Suity.Editor.Design;
 using Suity.Editor.Documents;
 using Suity.Editor.Flows;
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
@@ -217,11 +218,14 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
                 {
                     var location = loopDoc.FileName;
 
-                    msg.AddButton("OpenTarget", "Open Target", () =>
+                    if (EditorServices.PlatformService.IsConversationButtonSupported)
                     {
-                        var reOpen = DocumentManager.Instance.OpenDocument(location);
-                        reOpen.ShowView();
-                    });
+                        msg.AddButton("OpenTarget", "Open Target", () =>
+                        {
+                            var reOpen = DocumentManager.Instance.OpenDocument(location);
+                            reOpen.ShowView();
+                        });
+                    }
                 }
             });
 

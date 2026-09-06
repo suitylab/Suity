@@ -289,13 +289,13 @@ public class AigcWorkflowPage : AigcTaskPage,
             if (eventType == TaskEventTypes.TaskBegin)
             {
                 msgItem?.Dispose();
-                msgItem = this.AddRunningMessage(request, $"Run workflow ({begin.Name}): {DisplayText}");
+                msgItem = this.AddWorkflowMessage(request, $"Workflow: {DisplayText}");
             }
 
             if (parentDefPage.GetIsDone().IsTrueOrEmpty())
             {
                 msgItem?.Dispose();
-                msgItem = this.AddRunningMessage(request, "Run workflow: " + DisplayText);
+                msgItem = this.AddWorkflowMessage(request, $"Workflow: {DisplayText}");
                 continue;
             }
 
@@ -305,7 +305,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
         // Update task title
         //msgItem?.Dispose();
-        //msgItem = this.AddRunningMessage(request, "Run workflow: " + DisplayText);
+        //msgItem = this.AddWorkflowMessage(request, "Run workflow: " + DisplayText);
 
         return true;
     }

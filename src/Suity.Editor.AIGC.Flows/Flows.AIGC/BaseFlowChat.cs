@@ -125,7 +125,7 @@ public abstract class BaseFlowChat : BaseLLmChat
             return null;
         }
 
-        //_conversation.AddRunningMessage("Workflow: " + starterNode.ToDisplayTextL());
+        //_conversation.AddWorkflowMessage("Workflow: " + starterNode.ToDisplayTextL());
 
         bool errPausing = true;
 
