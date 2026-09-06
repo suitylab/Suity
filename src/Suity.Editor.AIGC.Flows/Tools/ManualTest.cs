@@ -75,12 +75,12 @@ public class ManualTest : ToolCommand<ManualTest.Output>
             throw new NullReferenceException("ShellCommand is not set");
         }
 
-        context?.AddToolMessage("Manual test", msg =>
+        context?.AddToolMessage("Manual Test", msg =>
         {
             msg.AddCode(testContent);
             msg.AddText("Test command:");
             msg.AddCode(shellCommand);
-            msg.AddButton("RunTest", "Run Test");
+            msg.AddButton("TestPassed", "Test Passed");
         });
 
         IConversation conversation = context?.Conversation;
@@ -93,7 +93,11 @@ public class ManualTest : ToolCommand<ManualTest.Output>
             throw new NullReferenceException("Conversation is not found");
         }
 
-        conversation.AddInfoMessage("Please enter your test result in the input field at the bottom.");
+        EditorServices.PlatformService?.ExecuteWorkSpaceCommand(workSpace, shellCommand, context.Cancellation);
+
+        conversation.AddInfoMessage("Please enter your test result in the input field at the bottom, or press 'Test Passed' button.");
+
+
         while (true)
         {
             await conversation.WaitForInput(context.Cancellation);
@@ -104,9 +108,12 @@ public class ManualTest : ToolCommand<ManualTest.Output>
                     Result = result,
                 };
             }
-            else if (conversation.InputButton == "RunTest")
+            else if (conversation.InputButton == "TestPassed")
             {
-                EditorServices.PlatformService?.ExecuteWorkSpaceCommand(workSpace, shellCommand, context.Cancellation);
+                return new Output
+                {
+                    Result = "Test passed",
+                };
             }
         }
     }
