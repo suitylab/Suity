@@ -1,4 +1,5 @@
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
@@ -56,6 +57,12 @@ public class ManualTest : ToolCommand<ManualTest.Output>
 
     public override async Task<Output> Run(ToolCallContext context)
     {
+        var workSpace = context.WorkSpace;
+        if (workSpace is null)
+        {
+            throw new NullReferenceException("WorkSpace is not set");
+        }
+
         string testContent = this.TestContent;
         if (string.IsNullOrWhiteSpace(testContent))
         {
@@ -99,31 +106,8 @@ public class ManualTest : ToolCommand<ManualTest.Output>
             }
             else if (conversation.InputButton == "RunTest")
             {
-                RunTest(context, shellCommand);
+                EditorServices.PlatformService?.ExecuteWorkSpaceCommand(workSpace, shellCommand, context.Cancellation);
             }
         }
-    }
-
-    void RunTest(ToolCallContext context, string command)
-    {
-        string directory = context?.RootDirectory;
-        if (string.IsNullOrWhiteSpace(directory))
-        {
-            throw new NullReferenceException("Workspace directory is not set");
-        }
-
-        bool isWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
-        string shell = isWindows ? "cmd.exe" : "/bin/bash";
-        string arguments = isWindows ? $"/K {command}" : $"-c \"{command.Replace("\"", "\\\"")}\"";
-
-        var startInfo = new ProcessStartInfo
-        {
-            FileName = shell,
-            Arguments = arguments,
-            WorkingDirectory = directory,
-            UseShellExecute = true,
-        };
-
-        Process.Start(startInfo);
     }
 }

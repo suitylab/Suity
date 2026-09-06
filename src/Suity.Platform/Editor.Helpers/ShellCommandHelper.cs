@@ -20,7 +20,7 @@ public static class ShellCommandHelper
         }
     }
 
-    public static async Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token)
+    public static async Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken cancellation)
     {
         bool isWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
         string shell = isWindows ? "cmd.exe" : "/bin/bash";
@@ -91,8 +91,8 @@ public static class ShellCommandHelper
 
         try
         {
-            // Asynchronously wait for process to exit, binding cancellation token (including timeout)
-            await process.WaitForExitAsync(token);
+            // Asynchronously wait for process to exit, binding cancellation cancellation (including timeout)
+            await process.WaitForExitAsync(cancellation);
         }
         catch (OperationCanceledException)
         {
@@ -111,6 +111,28 @@ public static class ShellCommandHelper
         }
 
         return result.ToString();
+    }
+
+    public static void ExecuteExternalCommand(string command, string directory, CancellationToken cancellation)
+    {
+        if (string.IsNullOrWhiteSpace(directory))
+        {
+            throw new NullReferenceException("Working directory is not set");
+        }
+
+        bool isWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
+        string shell = isWindows ? "cmd.exe" : "/bin/bash";
+        string arguments = isWindows ? $"/K {command}" : $"-c \"{command.Replace("\"", "\\\"")}\"";
+
+        var startInfo = new ProcessStartInfo
+        {
+            FileName = shell,
+            Arguments = arguments,
+            WorkingDirectory = directory,
+            UseShellExecute = true,
+        };
+
+        Process.Start(startInfo);
     }
 
     private static readonly Regex AnsiRegex = new(@"\x1b\[[0-9;]*[a-zA-Z]|\x1b[()][a-zA-Z0-9]|\x1b\][^\x07]*\x07|\x1b\[[0-9;]*[A-Z]", RegexOptions.Compiled);

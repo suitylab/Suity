@@ -1,5 +1,6 @@
 ﻿using Suity.Editor.Conversation;
 using Suity.Editor.Helpers;
+using Suity.Editor.WorkSpaces;
 using Suity.Views;
 using System;
 using System.Threading;
@@ -23,8 +24,11 @@ public class AvaPlatformService : IPlatformService
 
     public bool AutoSaveObjectId => false;
 
-    public Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken token) 
-        => ShellCommandHelper.ExecuteCommandAsync(command, workingDirectory, onOutput, token);
+    public Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken cancellation) 
+        => ShellCommandHelper.ExecuteCommandAsync(command, workingDirectory, onOutput, cancellation);
+
+    public void ExecuteWorkSpaceCommand(WorkSpace workSpace, string command, CancellationToken cancellation)
+        => ShellCommandHelper.ExecuteExternalCommand(command, workSpace.MasterDirectory, cancellation);
 
     public IConversationHost CreateConversation(string id, ConversationOptions option)
     {

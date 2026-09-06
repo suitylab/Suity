@@ -1,4 +1,5 @@
-﻿using Suity.Views;
+﻿using Suity.Editor.WorkSpaces;
+using Suity.Views;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,9 +51,11 @@ public interface IPlatformService
     /// <param name="command">The command to execute.</param>
     /// <param name="workingDirectory">The working directory.</param>
     /// <param name="onOutput">The output callback.</param>
-    /// <param name="token">The cancellation token.</param>
+    /// <param name="cancellation">The cancellation token.</param>
     /// <returns>The command output.</returns>
-    Task<string> ExecuteCommandAsync(string command, string workingDirectory, Action<string> onOutput, CancellationToken token);
+    Task<string> ExecuteCommandAsync(string command, string workingDirectory, Action<string> onOutput, CancellationToken cancellation);
+
+    void ExecuteWorkSpaceCommand(WorkSpace workSpace, string command, CancellationToken cancellation);
 
     /// <summary>
     /// Creates a conversation instance base on the current running environment.
