@@ -9,6 +9,7 @@ using Suity.Networking;
 using Suity.Rex;
 using Suity.Rex.Mapping;
 using Suity.Synchonizing.Core;
+using Suity.Views;
 using Suity.Views.Graphics;
 using Suity.Views.Named;
 using System;
@@ -61,6 +62,8 @@ sealed class AvaDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateV
             o => o is Color c ? ColorTranslators.ToHtml(c) : string.Empty);
 
         NamedExternalBK.Instance._globalResolver = EditorSyncTypeResolver.Instance;
+
+        ConversationExtensions.ShowExceptionRequested += (err, msg) => DialogUtility.ShowExceptionAsync(err, msg);
 
         EditorRexes.EnsureInMainThread.AddActionListener(EnsureInMainThread);
         EditorRexes.PushQueuedActions.AddActionListener(PushAsyncQueue);

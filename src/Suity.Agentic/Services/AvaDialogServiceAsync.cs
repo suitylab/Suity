@@ -205,13 +205,13 @@ internal class AvaDialogServiceAsync : IDialogServiceAsync
         };
     }
 
-    public async Task ShowExceptionAsync(Exception exception)
+    public async Task ShowExceptionAsync(Exception exception, string message = null)
     {
         var box = MessageBoxManager.GetMessageBoxCustom(new MessageBoxCustomParams
         {
             ContentTitle = "Program Exception",
             ContentHeader = exception.GetType().Name, // Display exception type, e.g. NullReferenceException
-            ContentMessage = exception.Message,
+            ContentMessage = message != null ? $"{message}\r\n{exception.Message}" : exception.Message,
             // Put detailed stack trace below, MsBox will handle long text automatically
             ButtonDefinitions =
             [

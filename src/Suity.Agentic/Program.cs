@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Suity.Editor.AIGC;
 using Suity.Editor.Services;
 using System;
 

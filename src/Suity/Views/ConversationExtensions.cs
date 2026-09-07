@@ -12,6 +12,8 @@ namespace Suity.Views;
 /// </summary>
 public static class ConversationExtensions
 {
+    public static event Action<Exception, string> ShowExceptionRequested;
+
     public static DisposableDialogItem AddRemoteMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
     {
         var msg = handler.AddMessage(content, ConversationRole.Remote, TextStatus.Info, config);
@@ -130,7 +132,17 @@ public static class ConversationExtensions
                 }
             }
 
-            m.AddButton("ShowError", L("Show Error"), () => err.LogError(message));
+            m.AddButton("ShowError", L("Show Error"), () => 
+            {
+                if (ShowExceptionRequested is { } show)
+                {
+                    show(err, message);
+                }
+                else
+                {
+                    err.LogError(message);
+                }
+            });
         });
 
         //if (addLog)

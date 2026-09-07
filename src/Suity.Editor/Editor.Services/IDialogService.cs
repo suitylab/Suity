@@ -188,8 +188,9 @@ public interface IDialogServiceAsync
     /// Shows an exception dialog asynchronously.
     /// </summary>
     /// <param name="exception">The exception to display.</param>
+    /// <param name="message">Optional message.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    Task ShowExceptionAsync(Exception exception);
+    Task ShowExceptionAsync(Exception exception, string message = null);
 
     /// <summary>
     /// Creates a dialog with the specified ImGui content.

@@ -63,7 +63,7 @@ internal class CliDialogService : IDialogService, IDialogExService, IDialogServi
     public Task ShowDialogAsync(string message)
         => Task.CompletedTask;
 
-    public Task ShowExceptionAsync(Exception exception)
+    public Task ShowExceptionAsync(Exception exception, string message = null)
         => Task.CompletedTask;
 
     public Task<string> ShowOpenFileAsync(string filter, string initPath, string defaultFile = null)

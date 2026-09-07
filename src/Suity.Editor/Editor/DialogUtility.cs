@@ -533,8 +533,8 @@ public static class DialogUtility
     /// Displays an exception dialog showing the exception details
     /// </summary>
     /// <param name="exception">The exception to display</param>
-    public static Task ShowExceptionAsync(Exception exception)
-        => EditorServices.DialogServiceAsync.ShowExceptionAsync(exception);
+    public static Task ShowExceptionAsync(Exception exception, string message = null)
+        => EditorServices.DialogServiceAsync.ShowExceptionAsync(exception, message);
     #endregion
 
     #region Selection Async
