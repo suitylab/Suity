@@ -218,7 +218,7 @@ public class CallSubAgent : ToolCommand<CallSubAgent.Output>
                 {
                     var location = loopDoc.FileName;
 
-                    if (EditorServices.PlatformService.IsConversationButtonSupported)
+                    if (EditorServices.PlatformService.IsConversationExtraButtonEnabled)
                     {
                         msg.AddButton("OpenTarget", "Open Target", () =>
                         {

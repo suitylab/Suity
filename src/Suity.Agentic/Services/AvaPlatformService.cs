@@ -20,7 +20,7 @@ public class AvaPlatformService : IPlatformService
 
     public bool IsConsoleColorSupported => false;
 
-    public bool IsConversationButtonSupported => true;
+    public bool IsConversationExtraButtonEnabled => true;
 
     public bool AutoSaveObjectId => false;
 

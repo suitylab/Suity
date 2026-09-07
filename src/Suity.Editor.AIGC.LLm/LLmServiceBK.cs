@@ -201,6 +201,13 @@ internal class LLmServiceBK : LLmService, IModelProviderService
 
     #region Chat Interaction
 
+
+    public override ILLmChatProvider SelectedChatProvider
+    {
+        get => AigcChatToolWindow.Instance?.SelectedChatProvider;
+        set => AigcChatToolWindow.Instance?.SelectedChatProvider = value;
+    }
+
     /// <inheritdoc/>
     public override void SetChatInput(string msg, IEnumerable<AttachmentSet> attachments = null)
     {

@@ -662,6 +662,8 @@ public class SubFlowPresetAsset : Asset,
         // Waiting for document view to be ready
         await EditorUtility.WaitForQueuedAction();
 
+        LLmService.Instance.SelectedChatProvider = doc.GetAsset() as ILLmChatProvider;
+
         if (view is AigcLoopDocumentView loopView)
         {
             return await loopView.Run(prompt);

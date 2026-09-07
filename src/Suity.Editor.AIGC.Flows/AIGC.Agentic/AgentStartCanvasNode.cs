@@ -273,6 +273,8 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
 
         canvas.MarkDirtyAndSaveDelayed(this);
 
+        // LLmService.Instance.SelectedChatProvider = newAsset;
+
         return await LLmService.Instance.InputChat(newAsset, prompt);
     }
 

@@ -4,6 +4,7 @@ using Markdig.Syntax.Inlines;
 using MarkedNet;
 using Suity.Collections;
 using Suity.Editor.Documents;
+using Suity.Editor.Services;
 using Suity.Editor.Transferring;
 using Suity.Helpers;
 using Suity.Json;
@@ -71,31 +72,34 @@ public static class AigcExtensions
         {
             handler.AddMyMessage(msg, config =>
             {
-                config.AddButtons
-                (
-                    string.Empty,
-                    new ConversationButton { Text = "Copy", CallBack = CreateTextCopyButton(fullMsg ?? msg) },
-                    new ConversationButton
-                    {
-                        Text = "Re-edit",
-                        CallBack = () =>
+                if (EditorServices.PlatformService.IsConversationExtraButtonEnabled)
+                {
+                    config.AddButtons
+                    (
+                        string.Empty,
+                        new ConversationButton { Text = "Copy", CallBack = CreateTextCopyButton(fullMsg ?? msg) },
+                        new ConversationButton
                         {
-                            AttachmentSet[] attClone = null;
-
-                            if (attachments != null)
+                            Text = "Re-edit",
+                            CallBack = () =>
                             {
-                                attClone = new AttachmentSet[attachments.Length];
+                                AttachmentSet[] attClone = null;
 
-                                for (int i = 0; i < attachments.Length; i++)
+                                if (attachments != null)
                                 {
-                                    attClone[i] = attachments[i].Clone();
-                                }
-                            }
+                                    attClone = new AttachmentSet[attachments.Length];
 
-                            LLmService.Instance.SetChatInput(msg, attClone);
+                                    for (int i = 0; i < attachments.Length; i++)
+                                    {
+                                        attClone[i] = attachments[i].Clone();
+                                    }
+                                }
+
+                                LLmService.Instance.SetChatInput(msg, attClone);
+                            }
                         }
-                    }
-                );
+                    );
+                }
             });
         }
 

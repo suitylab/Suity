@@ -142,6 +142,9 @@ public abstract class LLmService
 
     #region Chat Interaction
 
+    public abstract ILLmChatProvider SelectedChatProvider { get; set; }
+
+
     /// <summary>
     /// Sets the chat input message and optional attachments for the current chat context.
     /// </summary>

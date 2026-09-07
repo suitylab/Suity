@@ -38,7 +38,7 @@ public interface IPlatformService
     /// <summary>
     /// Gets a value indicating whether the conversation button is supported.
     /// </summary>
-    bool IsConversationButtonSupported { get; }
+    bool IsConversationExtraButtonEnabled { get; }
 
     /// <summary>
     /// Gets a value indicating whether the object id is auto saved.

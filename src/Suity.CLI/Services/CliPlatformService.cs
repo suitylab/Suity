@@ -17,7 +17,7 @@ public class CliPlatformService : IPlatformService
 
     public bool IsConsoleColorSupported => true;
 
-    public bool IsConversationButtonSupported => false;
+    public bool IsConversationExtraButtonEnabled => false;
 
     public bool AutoSaveObjectId => false;
 

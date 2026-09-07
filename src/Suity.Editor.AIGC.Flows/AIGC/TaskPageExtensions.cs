@@ -23,7 +23,7 @@ public static class TaskPageExtensions
     {
         return request.Conversation.AddSystemMessage(content, msg =>
         {
-            if (EditorServices.PlatformService.IsConversationButtonSupported)
+            if (EditorServices.PlatformService.IsConversationExtraButtonEnabled)
             {
                 msg.AddButtons(string.Empty, [
                     new()
@@ -82,7 +82,7 @@ class ToolCallDialogMessage : IDialogMessage, IDisposable
         _localMessage = context.ToolInstance?.Conversation?.AddSystemMessage(toolContent, Status, _config);
         _globalMessage = context.Conversation?.AddSystemMessage(toolContent, Status, msg =>
         {
-            if (context.ToolInstance?.Owner is AigcTaskPage taskPage && EditorServices.PlatformService.IsConversationButtonSupported)
+            if (context.ToolInstance?.Owner is AigcTaskPage taskPage && EditorServices.PlatformService.IsConversationExtraButtonEnabled)
             {
                 msg.AddButton("Open", "Open", () =>
                 {
