@@ -122,6 +122,7 @@ public class AssistantChat : BaseLLmChat
 /// <summary>
 /// Provides a basic chat assistant implementation with auto-creation support.
 /// </summary>
+[NonPreferred]
 public class BasicChatProvider : AssistantChatProvider<BasicChatAssistant>
 {
 }

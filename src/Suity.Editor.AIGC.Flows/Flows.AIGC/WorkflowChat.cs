@@ -10,6 +10,7 @@ namespace Suity.Editor.Flows.AIGC;
 /// </summary>
 [DisplayText("AIGC Workflow", "*CoreIcon|Workflow")]
 [ToolTipsText("Run AIGC workflow.")]
+[NonPreferred]
 public class WorkflowChatProvider : StandaloneAsset<ILLmChatProvider>, ILLmChatProvider
 {
     /// <summary>
