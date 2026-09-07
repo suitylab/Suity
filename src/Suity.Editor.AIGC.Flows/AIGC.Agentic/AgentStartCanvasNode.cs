@@ -190,6 +190,8 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
 
     #region ILLmChatProvider
 
+    public bool GetChatAvailable() => !IsStartup;
+
     public ILLmChat CreateChat(FunctionContext context)
     {
         var node = (this.GetStorageObject(true) as AgentStartDiagramItem)?.Node;

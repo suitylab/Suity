@@ -25,6 +25,8 @@ public abstract class AssistantChatProvider<T> : StandaloneAsset<ILLmChatProvide
     /// </summary>
     public Type AssistantType => typeof(T);
 
+    public bool GetChatAvailable() => true;
+
     /// <summary>
     /// Creates a new LLM chat session using the configured assistant.
     /// </summary>

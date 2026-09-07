@@ -168,6 +168,8 @@ public class WorkflowAsset : Asset, ILLmChatProvider
 
     #region ILLmChatProvider
 
+    public bool GetChatAvailable() => true;
+
     /// <summary>
     /// Creates a chat instance for this workflow.
     /// </summary>

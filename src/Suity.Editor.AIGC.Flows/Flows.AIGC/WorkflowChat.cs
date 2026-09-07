@@ -26,6 +26,8 @@ public class WorkflowChatProvider : StandaloneAsset<ILLmChatProvider>, ILLmChatP
         Instance ??= this;
     }
 
+    public bool GetChatAvailable() => true;
+
     /// <inheritdoc/>
     public ILLmChat CreateChat(FunctionContext context)
     {

@@ -330,6 +330,12 @@ public interface ILLmChat : IDrawImGuiNode, IDisposable
 public interface ILLmChatProvider
 {
     /// <summary>
+    /// Get whether the chat is available.
+    /// </summary>
+    /// <returns></returns>
+    bool GetChatAvailable();
+
+    /// <summary>
     /// Creates a new chat session.
     /// </summary>
     /// <param name="context">The function context. Can be null.</param>
