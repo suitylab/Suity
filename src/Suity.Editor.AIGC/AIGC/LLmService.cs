@@ -172,7 +172,6 @@ public abstract class LLmService
     public abstract IEmbeddingModel GetEmbedding();
     #endregion
 
-
     #region Chat Interaction
 
     /// <summary>
@@ -189,6 +188,7 @@ public abstract class LLmService
     public abstract Task<object> ChatMessageInput(string message, IEnumerable<AttachmentSet> attachments = null);
 
     #endregion
+
     #region Call
     /// <summary>
     /// Executes an LLM call with the specified request and returns the raw string response.
