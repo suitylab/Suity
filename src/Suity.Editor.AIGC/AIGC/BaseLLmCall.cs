@@ -54,7 +54,7 @@ Export pure json code using the function schema without any '//' comments.
     private readonly string _text;
 
     private readonly FunctionContext _context;
-    private readonly LLmModelParameter _config;
+    private readonly LLmModelParameter _parameter;
 
     private Dictionary<string, LLmFunctionItem> _functions;
     private string _functionCall;
@@ -66,27 +66,27 @@ Export pure json code using the function schema without any '//' comments.
     /// <summary>
     /// Gets the temperature setting for LLM generation.
     /// </summary>
-    public virtual double? Temperature => _config?.Temperature ?? DefaultLLmConfig.Temperature;
+    public virtual double? Temperature => _parameter?.Temperature ?? DefaultLLmConfig.Temperature;
 
     /// <summary>
     /// Gets the top-p (nucleus sampling) setting for LLM generation.
     /// </summary>
-    public virtual double? TopP => _config?.TopP ?? DefaultLLmConfig.TopP;
+    public virtual double? TopP => _parameter?.TopP ?? DefaultLLmConfig.TopP;
 
     /// <summary>
     /// Gets the presence penalty setting for LLM generation.
     /// </summary>
-    public virtual double? PresencePenalty => _config?.PresencePenalty ?? DefaultLLmConfig.PresencePenalty;
+    public virtual double? PresencePenalty => _parameter?.PresencePenalty ?? DefaultLLmConfig.PresencePenalty;
 
     /// <summary>
     /// Gets the frequency penalty setting for LLM generation.
     /// </summary>
-    public virtual double? FrequencyPenalty => _config?.FrequencyPenalty ?? DefaultLLmConfig.FrequencyPenalty;
+    public virtual double? FrequencyPenalty => _parameter?.FrequencyPenalty ?? DefaultLLmConfig.FrequencyPenalty;
 
     /// <summary>
     /// Gets the maximum number of tokens for LLM generation.
     /// </summary>
-    public virtual int? MaxTokens => _config?.MaxTokens ?? DefaultLLmConfig.MaxTokens;
+    public virtual int? MaxTokens => _parameter?.MaxTokens ?? DefaultLLmConfig.MaxTokens;
 
     /// <summary>
     /// Gets the function context associated with this LLM call.
@@ -96,7 +96,7 @@ Export pure json code using the function schema without any '//' comments.
     /// <summary>
     /// Gets the LLM model parameter configuration.
     /// </summary>
-    public LLmModelParameter Config => _config;
+    public LLmModelParameter Config => _parameter;
 
     /// <summary>
     /// Gets the number of registered functions.
@@ -147,14 +147,14 @@ Export pure json code using the function schema without any '//' comments.
     /// Initializes a new instance of the <see cref="BaseLLmCall"/> class.
     /// </summary>
     /// <param name="model">The LLM model to use for calls.</param>
-    /// <param name="config">Optional model parameter configuration.</param>
+    /// <param name="parameter">Optional model parameter configuration.</param>
     /// <param name="context">Optional function context for resolving dependencies.</param>
     /// <param name="text">Optional display text for this call.</param>
-    protected BaseLLmCall(ILLmModel model, LLmModelParameter config = null, FunctionContext context = null, string text = null)
+    protected BaseLLmCall(ILLmModel model, LLmModelParameter parameter = null, FunctionContext context = null, string text = null)
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
         _name = _model.ModelId ?? string.Empty;
-        _config = config;
+        _parameter = parameter;
         _context = context ?? new();
         _text = text;
     }

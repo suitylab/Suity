@@ -2,7 +2,6 @@ using OpenAI_API;
 using OpenAI_API.Chat;
 using OpenAI_API.ChatFunctions;
 using OpenAI_API.Models;
-using Suity.Editor.AIGC.API;
 using Suity.Views;
 using System;
 using System.Linq;
@@ -17,7 +16,7 @@ namespace Suity.Editor.AIGC;
 /// </summary>
 public abstract class BaseOpenAICall : BaseLLmCall
 {
-    private readonly BaseOpenAIPlugin _plugin;
+    private readonly ILLmManufacturer _manufacturer;
     private readonly Model? _model;
     private OpenAIAPI? _api;
 
@@ -26,14 +25,14 @@ public abstract class BaseOpenAICall : BaseLLmCall
     /// <summary>
     /// Initializes a new instance of the <see cref="BaseOpenAICall"/> class.
     /// </summary>
-    /// <param name="plugin">The OpenAI plugin instance.</param>
+    /// <param name="manufacturer">The OpenAI manufacturer instance.</param>
     /// <param name="model">The LLM model to use.</param>
-    /// <param name="config">Optional model configuration parameters.</param>
+    /// <param name="parameter">Optional model configuration parameters.</param>
     /// <param name="context">Optional function context.</param>
-    protected BaseOpenAICall(BaseOpenAIPlugin plugin, ILLmModel model, LLmModelParameter? config = null, FunctionContext? context = null)
-        : base(model, config, context)
+    protected BaseOpenAICall(ILLmManufacturer manufacturer, ILLmModel model, LLmModelParameter? parameter = null, FunctionContext? context = null)
+        : base(model, parameter, context)
     {
-        _plugin = plugin ?? throw new System.ArgumentNullException(nameof(plugin));
+        _manufacturer = manufacturer ?? throw new System.ArgumentNullException(nameof(manufacturer));
         _model = null;
 
         if (string.IsNullOrWhiteSpace(BaseUrl))
@@ -55,17 +54,17 @@ public abstract class BaseOpenAICall : BaseLLmCall
     /// <summary>
     /// Gets the API key used for authentication.
     /// </summary>
-    public virtual string ApiKey => _plugin.ApiKey;
+    public virtual string ApiKey => _manufacturer.ApiKey;
 
     /// <summary>
     /// Gets the base URL for API requests.
     /// </summary>
-    public virtual string BaseUrl => _plugin.BaseUrl;
+    public virtual string BaseUrl => _manufacturer.ApiUrl;
 
     /// <summary>
     /// Gets the log path identifier for this call, based on the manufacturer ID.
     /// </summary>
-    public override string LogPath => _plugin.ManufacturerId;
+    public override string LogPath => _manufacturer.ProviderId;
 
     /// <summary>
     /// Initializes a new message conversation and sets up the API client.

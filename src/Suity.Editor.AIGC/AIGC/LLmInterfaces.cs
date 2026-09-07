@@ -9,6 +9,19 @@ using static Suity.Helpers.GlobalLocalizer;
 namespace Suity.Editor.AIGC;
 
 
+#region ILLmManufacturer
+
+public interface ILLmManufacturer
+{
+    public string ProviderId { get; }
+
+    public string ApiUrl { get; }
+
+    public string ApiKey { get; }
+}
+
+#endregion
+
 #region ILLmModel
 
 /// <summary>

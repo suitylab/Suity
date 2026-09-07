@@ -11,7 +11,7 @@ namespace Suity.Editor.AIGC.API;
 /// <summary>
 /// Abstract base class for OpenAI-compatible API plugins.
 /// </summary>
-public abstract class BaseOpenAIPlugin : ApiPlugin
+public abstract class BaseOpenAIPlugin : ApiPlugin, ILLmManufacturer
 {
     /// <summary>
     /// Gets the default base URL for the API endpoint.
@@ -21,7 +21,7 @@ public abstract class BaseOpenAIPlugin : ApiPlugin
     /// <summary>
     /// Gets the unique identifier for the AI manufacturer/provider.
     /// </summary>
-    public string ManufacturerId { get; }
+    public string ProviderId { get; }
 
     /// <summary>
     /// Gets the icon image representing the manufacturer.
@@ -37,7 +37,7 @@ public abstract class BaseOpenAIPlugin : ApiPlugin
     protected BaseOpenAIPlugin(string defaultUrl, string manufacturerId, ImageDef? manufactureIcon = null)
     {
         DefaultBaseUrl = defaultUrl;
-        ManufacturerId = manufacturerId;
+        ProviderId = manufacturerId;
         ManufactureIcon = manufactureIcon;
     }
 
@@ -49,7 +49,7 @@ public abstract class BaseOpenAIPlugin : ApiPlugin
     /// <summary>
     /// Gets the base URL for API requests.
     /// </summary>
-    public abstract string BaseUrl { get; }
+    public abstract string ApiUrl { get; }
 
     /// <summary>
     /// Gets the official website URL for the AI provider, or null if not applicable.
@@ -78,10 +78,10 @@ public abstract class BaseOpenAIPlugin<TLLm, TImage> : BaseOpenAIPlugin, IViewOb
         : base(defaultUrl, manufacturerId, manufactureIcon)
     {
         ApiKeyProperty = new(nameof(ApiKey), "Api Key", toolTips: "Api Key configured in the backend.");
-        BaseUrlProperty = new(nameof(BaseUrl), "Api Url", DefaultBaseUrl, toolTips: "Default Api address. Use the original address if not filled in.", true);
+        BaseUrlProperty = new(nameof(ApiUrl), "Api Url", DefaultBaseUrl, toolTips: "Default Api address. Use the original address if not filled in.", true);
 
-        _llmGroup = new(ManufacturerId + "LLm", Description, ManufactureIcon);
-        _imageGenGroup = new(ManufacturerId + "Image", Description, ManufactureIcon);
+        _llmGroup = new(ProviderId + "LLm", Description, ManufactureIcon);
+        _imageGenGroup = new(ProviderId + "Image", Description, ManufactureIcon);
     }
 
     /// <summary>
@@ -102,12 +102,12 @@ public abstract class BaseOpenAIPlugin<TLLm, TImage> : BaseOpenAIPlugin, IViewOb
     /// <summary>
     /// Gets the current base URL value from the property.
     /// </summary>
-    public override string BaseUrl => BaseUrlProperty.Text;
+    public override string ApiUrl => BaseUrlProperty.Text;
 
     /// <summary>
     /// Gets the description of the plugin, defaults to the manufacturer ID.
     /// </summary>
-    public override string Description => ManufacturerId;
+    public override string Description => ProviderId;
 
     /// <summary>
     /// Gets the icon image for the plugin.
@@ -121,7 +121,7 @@ public abstract class BaseOpenAIPlugin<TLLm, TImage> : BaseOpenAIPlugin, IViewOb
     {
         base.AwakeProject();
 
-        var list = OkGoDoItHelper.LoadModelList(ManufacturerId);
+        var list = OkGoDoItHelper.LoadModelList(ProviderId);
         if (list != null)
         {
             UpdateModelList(list);
@@ -132,7 +132,7 @@ public abstract class BaseOpenAIPlugin<TLLm, TImage> : BaseOpenAIPlugin, IViewOb
     {
         base.UpdateProject();
 
-        var list = OkGoDoItHelper.LoadModelList(ManufacturerId);
+        var list = OkGoDoItHelper.LoadModelList(ProviderId);
         if (list != null)
         {
             UpdateModelList(list);
@@ -237,7 +237,7 @@ public abstract class BaseOpenAIPlugin<TLLm, TImage> : BaseOpenAIPlugin, IViewOb
     /// </summary>
     public async void DownloadModelList(ISyncContext context)
     {
-        var modelList = await OkGoDoItHelper.DownloadModelList(BaseUrl, ApiKeyProperty.Text);
+        var modelList = await OkGoDoItHelper.DownloadModelList(ApiUrl, ApiKeyProperty.Text);
         if (modelList is null || modelList.Count == 0)
         {
             await DialogUtility.ShowMessageBoxAsync("Model list download failed.");
@@ -247,7 +247,7 @@ public abstract class BaseOpenAIPlugin<TLLm, TImage> : BaseOpenAIPlugin, IViewOb
         QueuedAction.Do(() =>
         {
             UpdateModelList(modelList);
-            OkGoDoItHelper.SaveModelList(ManufacturerId, modelList);
+            OkGoDoItHelper.SaveModelList(ProviderId, modelList);
 
             DialogUtility.ShowMessageBoxAsync("Model list update successful.");
 
