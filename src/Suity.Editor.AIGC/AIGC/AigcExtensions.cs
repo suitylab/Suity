@@ -5,7 +5,6 @@ using MarkedNet;
 using Suity.Collections;
 using Suity.Editor.Documents;
 using Suity.Editor.Transferring;
-using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Json;
 using Suity.UndoRedos;
@@ -20,6 +19,8 @@ namespace Suity.Editor.AIGC;
 
 public static class AigcExtensions
 {
+    public const string AgentDirectory = "Agents";
+
     /// <summary>
     /// Adds a user message to the conversation with optional attachments and export type instructions.
     /// </summary>
@@ -527,5 +528,28 @@ public static class AigcExtensions
         string message = $"<Task id='{task.TaskId}'>{eol}{text}{eol}</Task>";
 
         return new LLmMessage { Role = role, Message = message };
+    }
+
+    /// <summary>
+    /// Allocates a new agent directory and returns the directory path and agent ID.
+    /// </summary>
+    /// <param name="agentName">The name of the agent to allocate.</param>
+    /// <param name="agentId">The ID of the allocated agent.</param>
+    /// <returns>The path to the allocated agent directory.</returns>
+    public static string AllocateAgentDirectory(string agentName, out string agentId)
+    {
+        string assetBaseDir = Project.Current.AssetDirectory;
+        string agentBaseDir = assetBaseDir.PathAppend(AgentDirectory);
+
+        while (true)
+        {
+            agentId = $"{agentName}_{IdGenerator.GenerateId(8)}";
+            string agentDir = agentBaseDir.PathAppend(agentId);
+            if (!Directory.Exists(agentDir))
+            {
+                Directory.CreateDirectory(agentDir);
+                return agentDir;
+            }
+        }
     }
 }

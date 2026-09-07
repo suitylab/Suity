@@ -226,25 +226,17 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
             return null;
         }
 
-        string assetBaseDir = Project.Current.AssetDirectory;
-        string finalName = KeyIncrementHelper.MakeKey(workSpace.Name, 2, s => 
-        {
-            string assetDir = assetBaseDir.PathAppend(s);
-            if (Directory.Exists(assetDir))
-            {
-                return false;
-            }
-
-            return true;
-        }, true);
-
-        if (string.IsNullOrWhiteSpace(finalName))
+        string agentName = this.LocalName;
+        if (string.IsNullOrWhiteSpace(agentName))
         {
             return null;
         }
 
-        string assetDir = assetBaseDir.PathAppend(finalName);
-        Directory.CreateDirectory(assetDir);
+        string assetDir = AigcExtensions.AllocateAgentDirectory(agentName, out var agentId);
+        if (string.IsNullOrWhiteSpace(assetDir) || string.IsNullOrWhiteSpace(agentId))
+        {
+            return null;
+        }
 
         var newDocEntry = DocumentManager.Instance.CloneDocument(doc.FileName.PhysicFileName, assetDir.PathAppend("AgentCanvas.sasset"));
         if (newDocEntry is null)
@@ -276,7 +268,7 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
         }
 
         newNode.IsTemplate = false;
-        newNode.Description = finalName;
+        newNode.Description = agentId;
         newNode.WorkSpace = workSpace;
 
         canvas.MarkDirtyAndSaveDelayed(this);

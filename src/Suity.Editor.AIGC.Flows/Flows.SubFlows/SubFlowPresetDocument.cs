@@ -615,24 +615,19 @@ public class SubFlowPresetAsset : Asset,
             return null;
         }
 
-        string assetBaseDir = Project.Current.AssetDirectory;
-        string finalName = KeyIncrementHelper.MakeKey(workSpace.Name, 2, s =>
+        string agentName = this.LocalName;
+        if (string.IsNullOrWhiteSpace(agentName))
         {
-            string assetDir = assetBaseDir.PathAppend(s + ".sasset");
-            if (File.Exists(assetDir))
-            {
-                return false;
-            }
+            return null;
+        }
 
-            if (WorkSpaceManager.Current.ContainsWorkSpace(s))
-            {
-                return false;
-            }
+        string assetDir = AigcExtensions.AllocateAgentDirectory(agentName, out var agentId);
+        if (string.IsNullOrWhiteSpace(assetDir) || string.IsNullOrWhiteSpace(agentId))
+        {
+            return null;
+        }
 
-            return true;
-        }, true);
-
-        if (string.IsNullOrWhiteSpace(finalName))
+        if (string.IsNullOrWhiteSpace(agentId))
         {
             return null;
         }
@@ -643,7 +638,7 @@ public class SubFlowPresetAsset : Asset,
             return null;
         }
 
-        string fileName = assetBaseDir.PathAppend(finalName + ".sasset");
+        string fileName = assetDir.PathAppend(agentId + ".sasset");
         var docEntry = DocumentManager.Instance.NewDocument(fileName, format);
         if (docEntry is null)
         {
@@ -661,6 +656,7 @@ public class SubFlowPresetAsset : Asset,
         doc.StartupPage = this;
         doc.InitialTaskPrompt = prompt;
         doc.WorkSpace = workSpace;
+        doc.Description = agentId;
         doc.MarkDirtyAndSaveDelayed(this);
 
         // Waiting for document view to be ready

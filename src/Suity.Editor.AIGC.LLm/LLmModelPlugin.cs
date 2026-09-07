@@ -330,7 +330,7 @@ public class LLmModelPlugin : EditorPlugin, IViewObject
     {
         if (serviceType == typeof(IModelProviderService))
         {
-            return this;
+            return LLmServiceBK.Instance;
         }
 
         return base.GetService(serviceType);
