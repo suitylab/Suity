@@ -29,6 +29,8 @@ namespace Suity.Editor.Flows.AIGC;
 [NativeAlias("Suity.Editor.AIGC.Flows.GetGlobalLLmModel")]
 public class GetGlobalLLmModel : AigcFlowNode
 {
+    private static readonly ServiceStore<IModelProviderService> _modelProvider = new();
+
     private readonly ConnectorValueProperty<AigcModelLevel> _level = new("Level", "Level", AigcModelLevel.Default, "The level of the LLM model. Uses global setting when 'Default' is selected.");
     private readonly ConnectorValueProperty<LLmModelType> _type = new("Type", "Type", LLmModelType.Default, "The type of the LLM model usage configured in the settings.");
 
@@ -74,8 +76,8 @@ public class GetGlobalLLmModel : AigcFlowNode
         var level = _level.GetValue(compute, this);
         var type = _type.GetValue(compute, this);
 
-        var model = LLmService.Instance.GetLLmModel(level, type);
-        var parameter = LLmService.Instance.GetLLmModelParameter(level, type);
+        var model = _modelProvider.Get()?.GetLLmModel(level, type);
+        var parameter = _modelProvider.Get()?.GetLLmModelParameter(level, type);
 
         compute.SetValue(_llmModel, model);
         compute.SetValue(_parameter, parameter);
@@ -498,6 +500,7 @@ public class CallLLm : AigcFlowNode
         }
     }
 
+    private static readonly ServiceStore<IModelProviderService> _modelProvider = new();
 
     /// <summary>
     /// Selects the appropriate LLM model based on priority: node model, caller, agent, team, workflow, or global config.
@@ -538,7 +541,7 @@ public class CallLLm : AigcFlowNode
                 break;
             }
 
-            model = LLmService.Instance.GetLLmModel(AigcModelLevel.Default, LLmModelType.Default);
+            model = _modelProvider.Get()?.GetLLmModel(AigcModelLevel.Default, LLmModelType.Default);
             if (model != null)
             {
                 sourceMsg = "(From global config)";

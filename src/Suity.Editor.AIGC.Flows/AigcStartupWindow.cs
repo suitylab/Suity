@@ -3,6 +3,7 @@ using Suity.Editor.AIGC.Assistants;
 using Suity.Editor.Flows.SubFlows;
 using Suity.Editor.Properties;
 using Suity.Editor.Selecting;
+using Suity.Editor.Services;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Selecting;
@@ -341,6 +342,8 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
         }
     }
 
+    private static readonly ServiceStore<IModelProviderService> _modelProvider = new();
+
     public static async Task<string> ResolveWorkSpaceName(string userInput)
     {
         string fixedName = AigcWorkflowPlugin.Instance.FixedWorkSpaceName?.Trim();
@@ -367,14 +370,14 @@ public class AigcStartupWindow : IToolWindow, IDrawImGui, IDrawContext
             return null;
         }
 
-        var model = LLmService.Instance.GetLLmModel(AigcModelLevel.Default, LLmModelType.Lightweight);
+        var model = _modelProvider.Get()?.GetLLmModel(AigcModelLevel.Default, LLmModelType.Lightweight);
         if (model is null)
         {
             await DialogUtility.ShowMessageBoxAsyncL("Please configure LLm model first.");
             return null;
         }
 
-        var parameter = LLmService.Instance.GetLLmModelParameter(AigcModelLevel.Default, LLmModelType.Lightweight);
+        var parameter = _modelProvider.Get()?.GetLLmModelParameter(AigcModelLevel.Default, LLmModelType.Lightweight);
 
         var promptBuilder = new PromptBuilder(workspacePrompt);
         promptBuilder.Replace("{{INPUT}}", userInput);

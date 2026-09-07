@@ -20,7 +20,7 @@ namespace Suity.Editor.AIGC;
 /// <summary>
 /// Backend implementation of the LLM service that handles chat operations, model retrieval, and LLM calls.
 /// </summary>
-internal class LLmServiceBK : LLmService
+internal class LLmServiceBK : LLmService, IModelProviderService
 {
     /// <summary>
     /// Gets the singleton instance of the backend LLM service.
@@ -155,9 +155,9 @@ internal class LLmServiceBK : LLmService
 
     #endregion
 
-    #region Get
+    #region IModelProviderService
     /// <inheritdoc/>
-    public override ILLmModel GetLLmModel(AigcModelLevel level, LLmModelType type)
+    public ILLmModel GetLLmModel(AigcModelLevel level, LLmModelType type)
     {
         if (level != AigcModelLevel.Default)
         {
@@ -169,7 +169,7 @@ internal class LLmServiceBK : LLmService
         }
     }
 
-    public override LLmModelParameter GetLLmModelParameter(AigcModelLevel level, LLmModelType type)
+    public LLmModelParameter GetLLmModelParameter(AigcModelLevel level, LLmModelType type)
     {
         if (level != AigcModelLevel.Default)
         {
@@ -182,7 +182,7 @@ internal class LLmServiceBK : LLmService
     }
 
     /// <inheritdoc/>
-    public override IImageGenModel GetImageGenModel(AigcModelLevel level)
+    public IImageGenModel GetImageGenModel(AigcModelLevel level)
     {
         if (level != AigcModelLevel.Default)
         {
@@ -195,7 +195,7 @@ internal class LLmServiceBK : LLmService
     }
 
     /// <inheritdoc/>
-    public override IEmbeddingModel GetEmbedding() => LLmModelPlugin.Instance.DefaultEmbedding;
+    public IEmbeddingModel GetEmbedding() => LLmModelPlugin.Instance.DefaultEmbedding;
 
     #endregion
 

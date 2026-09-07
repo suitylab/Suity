@@ -11,12 +11,14 @@ namespace Suity.Editor.AIGC.Assistants;
 [DisplayText("Image Generation Assistant")]
 public class ImageGenAssistant : AIAssistant
 {
+    private static readonly ServiceStore<IModelProviderService> _modelProvider = new();
+
     /// <inheritdoc/>
     public override async Task<AICallResult> HandleRequest(AIRequest request)
     {
         var option = (request.Option as AIAssistantOption)?.Option as ImageGenOptions;
 
-        var imgModel = LLmService.Instance.GetImageGenModel(option?.ModelLevel ?? AigcModelLevel.Default);
+        var imgModel = _modelProvider.Get()?.GetImageGenModel(option?.ModelLevel ?? AigcModelLevel.Default);
         if (imgModel is null)
         {
             return AICallResult.FromFailed(L("Image generation model is not configured."));

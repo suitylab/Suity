@@ -779,6 +779,8 @@ public class LLmCallRequest
 /// </summary>
 public class CustomLLmModelSetting : IViewObject, IViewOptional
 {
+    private static readonly ServiceStore<IModelProviderService> _modelProvider = new();
+
     /// <summary>
     /// Gets or sets whether a specific model is explicitly chosen instead of using a model type.
     /// </summary>
@@ -826,7 +828,7 @@ public class CustomLLmModelSetting : IViewObject, IViewOptional
         }
         else
         {
-            return LLmService.Instance.GetLLmModel(AigcModelLevel.Default, ModelType.Value);
+            return _modelProvider.Get()?.GetLLmModel(AigcModelLevel.Default, ModelType.Value);
         }
     }
 

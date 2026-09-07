@@ -326,6 +326,17 @@ public class LLmModelPlugin : EditorPlugin, IViewObject
         }
     }
 
+    public override object GetService(Type serviceType)
+    {
+        if (serviceType == typeof(IModelProviderService))
+        {
+            return this;
+        }
+
+        return base.GetService(serviceType);
+    }
+
+
     /// <summary>
     /// Synchronizes plugin properties with the specified sync context.
     /// </summary>
