@@ -1,3 +1,4 @@
+using Suity.Editor.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +69,8 @@ public abstract class WorkSpaceManager
     /// Gets the workspace manager asset
     /// </summary>
     public abstract WorkSpaceManagerAsset Asset { get; }
+
+    public abstract IPlatformFileSystem WorkSpaceRootFileSystem { get; }
 
     #endregion
 

@@ -30,8 +30,9 @@ internal class ProjectBK : Project
 
     private ProjectSetting _setting;
     private ProjectIdResolver _idResolver;
+    private IPlatformFileSystem _fileSystem;
     private FileAssetManagerBK _fileLibrary;
-    private WorkSpaceManagerBK _workSpaceMngr;
+    private WorkSpaceManagerBK _workSpaceManager;
 
     private ProjectStatus _status;
 
@@ -94,10 +95,12 @@ internal class ProjectBK : Project
         _idResolver.Start();
         GlobalIdResolver.Current = _idResolver;
 
+        _fileSystem = EditorServices.PlatformService.CreateFileSystem(this);
+
         EditorObjectManager.Instance.DoUnwatchedAction(() =>
         {
             _fileLibrary = new FileAssetManagerBK(this, assetDir);
-            _workSpaceMngr = new WorkSpaceManagerBK(this, workspaceDir);
+            _workSpaceManager = new WorkSpaceManagerBK(this, workspaceDir);
         });
 
         EditorServices.SystemLog.PopIndent();
@@ -113,9 +116,12 @@ internal class ProjectBK : Project
     public override ProjectStatus Status => _status;
 
     /// <inheritdoc/>
+    public override IPlatformFileSystem FileSystem => _fileSystem;
+
+    /// <inheritdoc/>
     public override FileAssetManager FileAssetManager => _fileLibrary;
     /// <inheritdoc/>
-    public override WorkSpaceManager WorkSpaceManager => _workSpaceMngr;
+    public override WorkSpaceManager WorkSpaceManager => _workSpaceManager;
 
     #region Directory Settings
 
@@ -123,18 +129,31 @@ internal class ProjectBK : Project
     public override string ProjectSettingFile => Path.Combine(_projectBasePath, _projectName) + ProjectFileExtension;
     /// <inheritdoc/>
     public override string SolutionFile => Path.Combine(_projectBasePath, _projectName) + ".sln";
-    /// <inheritdoc/>
-    public override string AssetDirectory => GetSubDirectory(_setting.AssetDirectory);
-    /// <inheritdoc/>
-    public override string UserDirectory => GetSubDirectory(_setting.UserDirectory);
-    /// <inheritdoc/>
-    public override string WorkSpaceDirectory => GetSubDirectory(_setting.WorkSpaceDirectory);
-    /// <inheritdoc/>
-    public override string SystemDirectory => GetSubDirectory(_setting.SystemDirectory);
-    /// <inheritdoc/>
-    public override string PublishDirectory => GetSubDirectory(_setting.PublishDirectory);
-    /// <inheritdoc/>
-    public override string AssembliesDirectory => GetSubDirectory(_setting.AssembliesDirectory);
+
+
+    public override string GetProjectDirectoryName(ProjectDirectories directory) => directory switch
+    {
+        ProjectDirectories.Root => _projectBasePath,
+        ProjectDirectories.Asset => _setting.AssetDirectory,
+        ProjectDirectories.User => _setting.UserDirectory,
+        ProjectDirectories.WorkSpace => _setting.WorkSpaceDirectory,
+        ProjectDirectories.System => _setting.SystemDirectory,
+        ProjectDirectories.Publish => _setting.PublishDirectory,
+        ProjectDirectories.Assemblies => _setting.AssembliesDirectory,
+        _ => null,
+    };
+
+    public override string GetProjectDirectory(ProjectDirectories directory) => directory switch
+    {
+        ProjectDirectories.Root => _projectBasePath,
+        ProjectDirectories.Asset => GetSubDirectory(_setting.AssetDirectory),
+        ProjectDirectories.User => GetSubDirectory(_setting.UserDirectory),
+        ProjectDirectories.WorkSpace => GetSubDirectory(_setting.WorkSpaceDirectory),
+        ProjectDirectories.System => GetSubDirectory(_setting.SystemDirectory),
+        ProjectDirectories.Publish => GetSubDirectory(_setting.PublishDirectory),
+        ProjectDirectories.Assemblies => GetSubDirectory(_setting.AssembliesDirectory),
+        _ => null,
+    };
 
     #endregion
 
@@ -687,7 +706,7 @@ internal class ProjectBK : Project
         EditorServices.SystemLog.AddLog("Ensure all system directories and system assemblies...");
         EnsureAllSystemDirectories();
 
-        _workSpaceMngr.Start(_setting);
+        _workSpaceManager.Start(_setting);
         _fileLibrary.Start();
 
         EditorServices.SystemLog.PopIndent();
@@ -731,7 +750,7 @@ internal class ProjectBK : Project
 
         SaveSetting();
 
-        _workSpaceMngr.SaveSetting(_setting);
+        _workSpaceManager.SaveSetting(_setting);
         _setting.Version = ServiceInternals._license.ProductVersion;
 
         string settingFileName = ProjectSettingFile;
@@ -743,10 +762,10 @@ internal class ProjectBK : Project
         _status = ProjectStatus.Closed;
 
         _idResolver?.Release();
-        _workSpaceMngr?.Release();
+        _workSpaceManager?.Release();
 
         _idResolver = null;
-        _workSpaceMngr = null;
+        _workSpaceManager = null;
 
         EditorServices.SystemLog.PopIndent();
         EditorServices.SystemLog.AddLog("Project closed.");

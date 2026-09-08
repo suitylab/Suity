@@ -1,3 +1,4 @@
+using Suity.Editor.Services;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using System;
@@ -13,6 +14,17 @@ public enum ProjectStatus
     Starting,
     Opened,
     Closed,
+}
+
+public enum ProjectDirectories
+{
+    Root,
+    Asset,
+    User,
+    WorkSpace,
+    System,
+    Publish,
+    Assemblies
 }
 
 /// <summary>
@@ -43,6 +55,11 @@ public abstract class Project
     public abstract ProjectStatus Status { get; }
 
     /// <summary>
+    /// Gets the file system for the project.
+    /// </summary>
+    public abstract IPlatformFileSystem FileSystem { get; }
+
+    /// <summary>
     /// Gets the file asset manager for the project.
     /// </summary>
     public abstract FileAssetManager FileAssetManager { get; }
@@ -65,36 +82,52 @@ public abstract class Project
     public abstract string SolutionFile { get; }
 
     /// <summary>
+    /// Gets the directory name for the specified project directory type.
+    /// </summary>
+    /// <param name="directory">The project directory type.</param>
+    /// <returns>The directory name.</returns>
+    public abstract string GetProjectDirectoryName(ProjectDirectories directory);
+
+    /// <summary>
+    /// Gets the path for the specified project directory type.
+    /// </summary>
+    /// <param name="directory">The project directory type.</param>
+    /// <returns>The directory path.</returns>
+    public abstract string GetProjectDirectory(ProjectDirectories directory);
+
+
+    /// <summary>
     /// Gets the path to the assets directory.
     /// </summary>
-    public abstract string AssetDirectory { get; }
+    public string AssetDirectory => GetProjectDirectory(ProjectDirectories.Asset);
 
     /// <summary>
     /// Gets the path to the user directory.
     /// </summary>
-    public abstract string UserDirectory { get; }
+    public string UserDirectory => GetProjectDirectory(ProjectDirectories.User);
 
     /// <summary>
     /// Gets the path to the workspace directory.
     /// </summary>
-    public abstract string WorkSpaceDirectory { get; }
+    public string WorkSpaceDirectory => GetProjectDirectory(ProjectDirectories.WorkSpace);
 
     /// <summary>
     /// Gets the path to the system directory.
     /// </summary>
-    public abstract string SystemDirectory { get; }
+    public string SystemDirectory => GetProjectDirectory(ProjectDirectories.System);
 
     /// <summary>
     /// Gets the path to the publish directory.
     /// </summary>
-    public abstract string PublishDirectory { get; }
+    public string PublishDirectory => GetProjectDirectory(ProjectDirectories.Publish);
 
     /// <summary>
     /// Gets the path to the assemblies directory.
     /// </summary>
-    public abstract string AssembliesDirectory { get; }
+    public string AssembliesDirectory => GetProjectDirectory(ProjectDirectories.Assemblies);
 
     #endregion
+
 
     #region State
 

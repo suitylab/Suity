@@ -1,5 +1,6 @@
 using Suity.Drawing;
 using Suity.Editor.CodeRender;
+using Suity.Editor.Services;
 using Suity.Helpers;
 using Suity.Reflecting;
 using System;
@@ -70,6 +71,9 @@ public abstract class WorkSpace : IRenderHost, IHasId
     /// </summary>
     public abstract bool Debug { get; set; }
 
+    public abstract IPlatformFileSystem WorkSpaceFileSystem { get; }
+    public abstract IPlatformFileSystem MasterFileSystem { get; }
+
     /// <summary>
     /// Gets the master directory path
     /// </summary>
@@ -135,7 +139,7 @@ public abstract class WorkSpace : IRenderHost, IHasId
     /// </summary>
     public int Order => _controller?.Order ?? 0;
 
-/// <summary>
+    /// <summary>
     /// Disables Id, not currently used
     /// </summary>
     public bool DisableId { get; set; }

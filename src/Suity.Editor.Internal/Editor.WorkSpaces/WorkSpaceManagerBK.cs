@@ -26,6 +26,8 @@ public class WorkSpaceManagerBK : WorkSpaceManager
     private bool _isReleased;
     private DisposeCollector _listeners;
 
+    private IPlatformFileSystem _fileSystem;
+
     /// <summary>
     /// Initializes a new instance of <see cref="WorkSpaceManagerBK"/> for the specified project.
     /// </summary>
@@ -33,15 +35,20 @@ public class WorkSpaceManagerBK : WorkSpaceManager
     /// <param name="basePath">The base directory path for all workspaces.</param>
     internal WorkSpaceManagerBK(Project project, string basePath)
     {
+        if (project is null)
+        {
+            throw new ArgumentNullException(nameof(project));
+        }
+
         EditorServices.SystemLog.AddLog($"WorkSpaceManager creating : {basePath}...");
         EditorServices.SystemLog.PushIndent();
 
-        Debug.Assert(project != null);
         Debug.Assert(!string.IsNullOrEmpty(basePath));
 
         _ownerProject = project;
         _basePath = basePath;
 
+        _fileSystem = new ScopedFileSystem(project.FileSystem, () => project.GetProjectDirectoryName(ProjectDirectories.WorkSpace));
         _asset = new WorkSpaceManagerAsset(this);
 
         EditorServices.SystemLog.PopIndent();
@@ -153,6 +160,8 @@ public class WorkSpaceManagerBK : WorkSpaceManager
 
     /// <inheritdoc/>
     public override WorkSpaceManagerAsset Asset => _asset;
+
+    public override IPlatformFileSystem WorkSpaceRootFileSystem => _fileSystem;
 
     #endregion
 

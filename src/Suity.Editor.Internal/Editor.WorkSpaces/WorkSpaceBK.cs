@@ -46,6 +46,11 @@ public class WorkSpaceBK : WorkSpace,
     private bool _debug;
 
 
+    private ScopedFileSystem _workSpaceFileSystem;
+    private ScopedFileSystem _internalMasterFileSystem;
+    private PlatformFileSystem _externalMasterFileSystem;
+
+
     private readonly WatchableList<WorkSpaceRefItem> _references = [];
     private readonly List<IAssemblyReferenceItem> _assemblyRefs = [];
     private readonly WatchableList<string> _conditions = [];
@@ -86,6 +91,10 @@ public class WorkSpaceBK : WorkSpace,
         _manager = manager;
         Name = name;
         _baseNameSpace = name;
+
+        _workSpaceFileSystem = new ScopedFileSystem(manager.WorkSpaceRootFileSystem, () => Name);
+        _internalMasterFileSystem = new ScopedFileSystem(_workSpaceFileSystem, () => DefaultMasterDirectory);
+        _externalMasterFileSystem = new PlatformFileSystem(() => MasterDirectory);
 
         _references.Updated += (mode, index, old) =>
         {
@@ -220,6 +229,12 @@ public class WorkSpaceBK : WorkSpace,
             _debug = value;
         }
     }
+
+    public override IPlatformFileSystem WorkSpaceFileSystem => _workSpaceFileSystem;
+
+    public override IPlatformFileSystem MasterFileSystem
+        => !string.IsNullOrEmpty(_externalRPath) ? _externalMasterFileSystem : _internalMasterFileSystem;
+
 
     /// <inheritdoc/>
     public override string MasterDirectory

@@ -46,7 +46,7 @@ public interface IPlatformService
     bool AutoSaveObjectId { get; }
 
 
-    IPlatformFileSystem FileSystem { get; }
+    IPlatformFileSystem CreateFileSystem(Project project);
 
     /// <summary>
     /// Executes a command asynchronously.
