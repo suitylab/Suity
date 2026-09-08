@@ -944,10 +944,10 @@ public class WorkSpaceBK : WorkSpace,
             return;
         }
 
-        if (Controller is null)
-        {
-            return;
-        }
+        //if (Controller is null)
+        //{
+        //    return;
+        //}
 
         try
         {
@@ -967,10 +967,10 @@ public class WorkSpaceBK : WorkSpace,
     /// <inheritdoc/>
     public override void ExportConfig(string fileName)
     {
-        if (Controller is null)
-        {
-            return;
-        }
+        //if (Controller is null)
+        //{
+        //    return;
+        //}
 
         try
         {

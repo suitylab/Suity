@@ -235,10 +235,9 @@ public class WorkSpaceManagerBK : WorkSpaceManager
             try
             {
                 workSpace.NewController(ctrlInfo);
-                workSpace.SaveConfig(true);
                 workSpace.UpdateController();
-
                 workSpace.Controller?.TryWriteProjectFile();
+                workSpace.SaveConfig(true);
 
                 WriteSolution();
 
