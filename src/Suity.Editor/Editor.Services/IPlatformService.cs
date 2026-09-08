@@ -45,6 +45,9 @@ public interface IPlatformService
     /// </summary>
     bool AutoSaveObjectId { get; }
 
+
+    IPlatformFileSystem FileSystem { get; }
+
     /// <summary>
     /// Executes a command asynchronously.
     /// </summary>
@@ -65,3 +68,4 @@ public interface IPlatformService
     /// <returns>A conversation host instance.</returns>
     IConversationHost CreateConversation(string id, ConversationOptions option);
 }
+

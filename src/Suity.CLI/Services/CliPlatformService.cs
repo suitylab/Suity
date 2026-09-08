@@ -21,6 +21,8 @@ public class CliPlatformService : IPlatformService
 
     public bool AutoSaveObjectId => false;
 
+    public IPlatformFileSystem FileSystem => ProjectFileSystem.Current;
+
     public Task<string> ExecuteCommandAsync(string command, string? workingDirectory, Action<string>? onOutput, CancellationToken cancellation)
         => ShellCommandHelper.ExecuteCommandAsync(command, workingDirectory, onOutput, cancellation);
 
