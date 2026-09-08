@@ -8,7 +8,7 @@ public interface IPlatformFileSystem
 {
     object Owner { get; }
 
-    event EventHandler<PlatformFileUpdateEventArgs> FileWrite;
+    event EventHandler<PlatformFileUpdateEventArgs> FileUpdated;
 
     void WriteAllText(string relativePath, string content);
 
@@ -17,6 +17,8 @@ public interface IPlatformFileSystem
     void WriteAllBytes(string relativePath, byte[] bytes);
 
     void WriteStreamWriter(string relativePath, Action<Stream> writer);
+
+    void MoveFile(string relativePath, string newName);
 }
 
 public class PlatformFileUpdateEventArgs : EventArgs
@@ -38,7 +40,7 @@ public class PlatformFileSystem : IPlatformFileSystem
 
     public object Owner { get; }
 
-    public event EventHandler<PlatformFileUpdateEventArgs> FileWrite;
+    public event EventHandler<PlatformFileUpdateEventArgs> FileUpdated;
 
     public PlatformFileSystem(string basePath, object owner = null)
     {
@@ -57,7 +59,7 @@ public class PlatformFileSystem : IPlatformFileSystem
         string fullPath = GetFullPath(relativePath);
         EnsureDirectory(fullPath);
         File.WriteAllBytes(fullPath, bytes);
-        OnFileWrite(relativePath, fullPath);
+        OnFileUpdted(relativePath, fullPath);
     }
 
     public virtual void WriteAllLines(string relativePath, IEnumerable<string> lines)
@@ -65,7 +67,7 @@ public class PlatformFileSystem : IPlatformFileSystem
         string fullPath = GetFullPath(relativePath);
         EnsureDirectory(fullPath);
         File.WriteAllLines(fullPath, lines);
-        OnFileWrite(relativePath, fullPath);
+        OnFileUpdted(relativePath, fullPath);
     }
 
     public virtual void WriteAllText(string relativePath, string content)
@@ -73,7 +75,7 @@ public class PlatformFileSystem : IPlatformFileSystem
         string fullPath = GetFullPath(relativePath);
         EnsureDirectory(fullPath);
         File.WriteAllText(fullPath, content);
-        OnFileWrite(relativePath, fullPath);
+        OnFileUpdted(relativePath, fullPath);
     }
 
     public virtual void WriteStreamWriter(string relativePath, Action<Stream> writer)
@@ -86,9 +88,21 @@ public class PlatformFileSystem : IPlatformFileSystem
             writer(stream);
         }
 
-        OnFileWrite(relativePath, fullPath);
+        OnFileUpdted(relativePath, fullPath);
     }
 
+    public virtual void MoveFile(string relativePath, string newName)
+    {
+        string fullPath = GetFullPath(relativePath);
+        string newFullPath = GetFullPath(newName);
+        EnsureDirectory(newFullPath);
+
+
+        File.Move(fullPath, newFullPath);
+
+        OnFileUpdted(relativePath, newFullPath);
+        OnFileUpdted(newName, newFullPath);
+    }
 
     protected string GetBasePath() => _basePathGetter?.Invoke() ?? _basePath;
 
@@ -98,9 +112,9 @@ public class PlatformFileSystem : IPlatformFileSystem
         return Path.Combine(basePath, relativePath);
     }
 
-    protected virtual void OnFileWrite(string relativePath, string fullPath)
+    protected virtual void OnFileUpdted(string relativePath, string fullPath)
     {
-        FileWrite?.Invoke(this, new PlatformFileUpdateEventArgs(relativePath, fullPath));
+        FileUpdated?.Invoke(this, new PlatformFileUpdateEventArgs(relativePath, fullPath));
     }
 
     public static void EnsureDirectory(string fullPath)
@@ -111,7 +125,6 @@ public class PlatformFileSystem : IPlatformFileSystem
             Directory.CreateDirectory(directory);
         }
     }
-
 
 }
 
@@ -136,7 +149,7 @@ public class ScopedFileSystem : IPlatformFileSystem
 
     public object Owner { get; }
 
-    public event EventHandler<PlatformFileUpdateEventArgs> FileWrite;
+    public event EventHandler<PlatformFileUpdateEventArgs> FileUpdated;
 
 
     public ScopedFileSystem(IPlatformFileSystem parent, string subDirectory, object owner = null)
@@ -157,28 +170,37 @@ public class ScopedFileSystem : IPlatformFileSystem
     {
         string scopedPath = MakeScopedPath(relativePath);
         _parent.WriteAllBytes(scopedPath, bytes);
-        OnFileWrite(relativePath, scopedPath);
+        OnFileUpdated(relativePath, scopedPath);
     }
 
     public virtual void WriteAllLines(string relativePath, IEnumerable<string> lines)
     {
         string scopedPath = MakeScopedPath(relativePath);
         _parent.WriteAllLines(scopedPath, lines);
-        OnFileWrite(relativePath, scopedPath);
+        OnFileUpdated(relativePath, scopedPath);
     }
 
     public virtual void WriteAllText(string relativePath, string content)
     {
         string scopedPath = MakeScopedPath(relativePath);
         _parent.WriteAllText(scopedPath, content);
-        OnFileWrite(relativePath, scopedPath);
+        OnFileUpdated(relativePath, scopedPath);
     }
 
     public virtual void WriteStreamWriter(string relativePath, Action<Stream> writer)
     {
         string scopedPath = MakeScopedPath(relativePath);
         _parent.WriteStreamWriter(scopedPath, writer);
-        OnFileWrite(relativePath, scopedPath);
+        OnFileUpdated(relativePath, scopedPath);
+    }
+
+    public virtual void MoveFile(string relativePath, string newName)
+    {
+        string scopedPath = MakeScopedPath(relativePath);
+        string newScopedPath = MakeScopedPath(newName);
+        _parent.MoveFile(scopedPath, newScopedPath);
+        OnFileUpdated(relativePath, scopedPath);
+        OnFileUpdated(newName, newScopedPath);
     }
 
     protected string GetSubDirectory() => _subDirectoryGetter?.Invoke() ?? _subDirectory;
@@ -189,8 +211,10 @@ public class ScopedFileSystem : IPlatformFileSystem
         return Path.Combine(subDir, relativePath);
     }
 
-    protected virtual void OnFileWrite(string relativePath, string scopedPath)
+    protected virtual void OnFileUpdated(string relativePath, string scopedPath)
     {
-        FileWrite?.Invoke(this, new PlatformFileUpdateEventArgs(relativePath, scopedPath));
+        FileUpdated?.Invoke(this, new PlatformFileUpdateEventArgs(relativePath, scopedPath));
     }
+
+
 }

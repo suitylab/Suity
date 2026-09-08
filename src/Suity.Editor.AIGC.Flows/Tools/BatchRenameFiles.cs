@@ -112,11 +112,17 @@ public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
     {
         var parentPage = context.ToolInstance.GetParentTask() as IAigcWorkflowPage;
 
-        string workspaceDir = context.RootDirectory;
-        if (string.IsNullOrWhiteSpace(workspaceDir))
+        var workSpace = context.WorkSpace;
+        if (workSpace is null)
         {
-            throw new NullReferenceException("Workspace directory is not set");
+            throw new NullReferenceException("WorkSpace is not set");
         }
+
+        //string workspaceDir = context.RootDirectory;
+        //if (string.IsNullOrWhiteSpace(workspaceDir))
+        //{
+        //    throw new NullReferenceException("Workspace directory is not set");
+        //}
 
         var output = new Output();
 
@@ -135,41 +141,43 @@ public class BatchRenameFiles : ToolCommand<BatchRenameFiles.Output>
                 string relativeSourcePath = item.SourcePath.TrimStart('/', '\\');
                 string relativeTargetPath = item.TargetPath.TrimStart('/', '\\');
 
-                string fullSourcePath = relativeSourcePath;
-                string fullTargetPath = relativeTargetPath;
+                //string fullSourcePath = relativeSourcePath;
+                //string fullTargetPath = relativeTargetPath;
 
-                if (!Path.IsPathRooted(relativeSourcePath))
-                {
-                    fullSourcePath = Path.Combine(workspaceDir, relativeSourcePath);
-                }
+                //if (!Path.IsPathRooted(relativeSourcePath))
+                //{
+                //    fullSourcePath = Path.Combine(workSpace.MasterDirectory, relativeSourcePath);
+                //}
 
-                if (!Path.IsPathRooted(relativeTargetPath))
-                {
-                    fullTargetPath = Path.Combine(workspaceDir, relativeTargetPath);
-                }
+                //if (!Path.IsPathRooted(relativeTargetPath))
+                //{
+                //    fullTargetPath = Path.Combine(workSpace.MasterDirectory, relativeTargetPath);
+                //}
 
                 result.SourcePath = relativeSourcePath;
                 result.TargetPath = relativeTargetPath;
 
-                if (!File.Exists(fullSourcePath))
-                {
-                    result.Error = "Source file not found";
-                }
-                else if (File.Exists(fullTargetPath))
-                {
-                    result.Error = "Target file already exists";
-                }
-                else
-                {
-                    string targetDir = Path.GetDirectoryName(fullTargetPath);
-                    if (!string.IsNullOrEmpty(targetDir) && !Directory.Exists(targetDir))
-                    {
-                        Directory.CreateDirectory(targetDir);
-                    }
+                //if (!File.Exists(fullSourcePath))
+                //{
+                //    result.Error = "Source file not found";
+                //}
+                //else if (File.Exists(fullTargetPath))
+                //{
+                //    result.Error = "Target file already exists";
+                //}
+                //else
+                //{
+                //    string targetDir = Path.GetDirectoryName(fullTargetPath);
+                //    if (!string.IsNullOrEmpty(targetDir) && !Directory.Exists(targetDir))
+                //    {
+                //        Directory.CreateDirectory(targetDir);
+                //    }
 
-                    File.Move(fullSourcePath, fullTargetPath);
-                    parentPage?.RemoveScratchPad(relativeSourcePath);
-                }
+                //    File.Move(fullSourcePath, fullTargetPath);
+                //    parentPage?.RemoveScratchPad(relativeSourcePath);
+                //}
+
+                workSpace.MasterFileSystem.MoveFile(relativeSourcePath, relativeTargetPath);
             }
             catch (Exception ex)
             {
