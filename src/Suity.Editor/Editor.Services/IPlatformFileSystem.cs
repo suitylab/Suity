@@ -32,21 +32,21 @@ public class PlatformFileSystem : IPlatformFileSystem
     {
         string fullPath = GetFullPath(relativePath);
         File.WriteAllBytes(fullPath, bytes);
-        OnFileWrite(relativePath);
+        OnFileWrite(relativePath, fullPath);
     }
 
     public virtual void WriteAllLines(string relativePath, IEnumerable<string> lines)
     {
         string fullPath = GetFullPath(relativePath);
         File.WriteAllLines(fullPath, lines);
-        OnFileWrite(relativePath);
+        OnFileWrite(relativePath, fullPath);
     }
 
     public virtual void WriteAllText(string relativePath, string content)
     {
         string fullPath = GetFullPath(relativePath);
         File.WriteAllText(fullPath, content);
-        OnFileWrite(relativePath);
+        OnFileWrite(relativePath, fullPath);
     }
 
 
@@ -58,45 +58,21 @@ public class PlatformFileSystem : IPlatformFileSystem
         return Path.Combine(basePath, relativePath);
     }
 
-    protected virtual void OnFileWrite(string relativePath)
+    protected virtual void OnFileWrite(string relativePath, string fullPath)
     {
     }
 }
 
-public class ProjectFileSystem : IPlatformFileSystem
+public class ProjectFileSystem : PlatformFileSystem
 {
     private readonly Project _project;
 
     public Project Project => _project;
 
     public ProjectFileSystem(Project project)
+        : base(() => project.ProjectBasePath)
     {
         _project = project ?? throw new ArgumentNullException(nameof(project));
-    }
-
-    public virtual void WriteAllBytes(string relativePath, byte[] bytes)
-    {
-        string fullPath = Path.Combine(_project.ProjectBasePath, relativePath);
-        File.WriteAllBytes(fullPath, bytes);
-        OnFileWrite(relativePath);
-    }
-
-    public virtual void WriteAllLines(string relativePath, IEnumerable<string> lines)
-    {
-        string fullPath = Path.Combine(_project.ProjectBasePath, relativePath);
-        File.WriteAllLines(fullPath, lines);
-        OnFileWrite(relativePath);
-    }
-
-    public virtual void WriteAllText(string relativePath, string content)
-    {
-        string fullPath = Path.Combine(_project.ProjectBasePath, relativePath);
-        File.WriteAllText(fullPath, content);
-        OnFileWrite(relativePath);
-    }
-
-    protected virtual void OnFileWrite(string relativePath)
-    {
     }
 }
 
@@ -122,21 +98,21 @@ public class ScopedFileSystem : IPlatformFileSystem
     {
         string scopedPath = MakeScopedPath(relativePath);
         _parent.WriteAllBytes(scopedPath, bytes);
-        OnFileWrite(relativePath);
+        OnFileWrite(relativePath, scopedPath);
     }
 
     public virtual void WriteAllLines(string relativePath, IEnumerable<string> lines)
     {
         string scopedPath = MakeScopedPath(relativePath);
         _parent.WriteAllLines(scopedPath, lines);
-        OnFileWrite(relativePath);
+        OnFileWrite(relativePath, scopedPath);
     }
 
     public virtual void WriteAllText(string relativePath, string content)
     {
         string scopedPath = MakeScopedPath(relativePath);
         _parent.WriteAllText(scopedPath, content);
-        OnFileWrite(relativePath);
+        OnFileWrite(relativePath, scopedPath);
     }
 
 
@@ -148,7 +124,7 @@ public class ScopedFileSystem : IPlatformFileSystem
         return Path.Combine(subDir, relativePath);
     }
 
-    protected virtual void OnFileWrite(string relativePath)
+    protected virtual void OnFileWrite(string relativePath, string scopedPath)
     {
     }
 }
