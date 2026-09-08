@@ -92,13 +92,12 @@ internal class ProjectBK : Project
             Directory.CreateDirectory(workspaceDir);
         }
 
-        _idResolver = new ProjectIdResolver(this, _projectBasePath.PathAppend(assetDir));
-
-        _idResolver.Start();
-        GlobalIdResolver.Current = _idResolver;
-
         _rootFileSystem = EditorServices.PlatformService.CreateFileSystem(this);
         _systemFileSystem = new ScopedFileSystem(_rootFileSystem, () => GetProjectDirectoryName(ProjectDirectories.System), this);
+
+        _idResolver = new ProjectIdResolver(this, _projectBasePath.PathAppend(assetDir));
+        _idResolver.Start();
+        GlobalIdResolver.Current = _idResolver;
 
         EditorObjectManager.Instance.DoUnwatchedAction(() =>
         {
