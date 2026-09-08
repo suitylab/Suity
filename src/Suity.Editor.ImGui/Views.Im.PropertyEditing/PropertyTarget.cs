@@ -37,7 +37,7 @@ public abstract class PropertyTarget : IValueTarget, ISupportStyle, IDrawContext
     public virtual bool IsRoot => false;
 
     /// <summary>
-    /// Parent property target
+    /// Owner property target
     /// </summary>
     public abstract PropertyTarget? Parent { get; set; }
 
@@ -161,7 +161,7 @@ public abstract class PropertyTarget : IValueTarget, ISupportStyle, IDrawContext
 
     /// <summary>
     /// Readonly
-    /// Since the child nodes in <see cref="PropertyGrid"/> are not real Parent relationships, ReadOnly needs to be inherited from <see cref="PropertyTarget"/>.
+    /// Since the child nodes in <see cref="PropertyGrid"/> are not real Owner relationships, ReadOnly needs to be inherited from <see cref="PropertyTarget"/>.
     /// </summary>
     public bool ReadOnly
     {

@@ -55,9 +55,14 @@ public abstract class Project
     public abstract ProjectStatus Status { get; }
 
     /// <summary>
-    /// Gets the file system for the project.
+    /// Gets the root file system for the project.
     /// </summary>
-    public abstract IPlatformFileSystem FileSystem { get; }
+    public abstract IPlatformFileSystem RootFileSystem { get; }
+
+    /// <summary>
+    /// Gets the system folder file system for the project.
+    /// </summary>
+    public abstract IPlatformFileSystem SystemFileSystem { get; }
 
     /// <summary>
     /// Gets the file asset manager for the project.
@@ -166,12 +171,6 @@ public abstract class Project
     #region Setting
 
     /// <summary>
-    /// Occurs when a setting is saved.
-    /// </summary>
-    public event Action<string> SettingFileSaved;
-
-
-    /// <summary>
     /// Loads plugin settings from the project settings XML file.
     /// </summary>
     internal abstract void LoadSetting();
@@ -218,11 +217,6 @@ public abstract class Project
     /// Gets the plugin folder GUID.
     /// </summary>
     public abstract Guid PluginFolderGuid { get; }
-
-    protected void RaiseSettingSaved(string settingName)
-    {
-        SettingFileSaved?.Invoke(settingName);
-    }
 
     #endregion
 

@@ -155,7 +155,7 @@ public abstract class Asset : EditorObject,
     }
 
     /// <summary>
-    /// Parent asset
+    /// Owner asset
     /// </summary>
     public Asset ParentAsset
     {
@@ -169,7 +169,7 @@ public abstract class Asset : EditorObject,
     public LibraryAsset Library { get; internal set; }
 
     /// <summary>
-    /// Parent object in hierarchy
+    /// Owner object in hierarchy
     /// </summary>
     public override EditorObject Parent => _ex.ParentAsset;
 

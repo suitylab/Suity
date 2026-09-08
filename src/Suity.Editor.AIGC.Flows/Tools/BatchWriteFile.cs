@@ -163,7 +163,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
                             Directory.CreateDirectory(dir);
                         }
 
-                        workSpace.WriteAllText(relativePath, item.Content);
+                        workSpace.MasterFileSystem.WriteAllText(relativePath, item.Content);
                         parentPage?.SetScratchPad(ScratchPadTypes.FileFullContent, relativePath, null, "overwritten");
                         result.Status = "Overwritten";
                         successCount++;
@@ -183,7 +183,7 @@ public class BatchWriteFile : ToolCommand<BatchWriteFile.Output>
                         Directory.CreateDirectory(dir);
                     }
 
-                    workSpace.WriteAllText(relativePath, item.Content);
+                    workSpace.MasterFileSystem.WriteAllText(relativePath, item.Content);
                     parentPage?.SetScratchPad(ScratchPadTypes.FileFullContent, relativePath, null, "created");
                     result.Status = "Created";
                     successCount++;

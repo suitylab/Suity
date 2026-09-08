@@ -43,7 +43,7 @@ public class DirectoryNode : FsNode
             return false;
         }
 
-        //This operation can be executed without a Parent
+        //This operation can be executed without a Owner
         //Therefore, describer may not be found
 
         var root = FindMeOrParent<RootDirectoryNode>();

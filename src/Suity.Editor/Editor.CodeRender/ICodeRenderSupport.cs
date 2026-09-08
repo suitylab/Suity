@@ -236,12 +236,12 @@ public abstract class CodeRenderProperty
     public static CodeRenderProperty<ICodeRenderElement, string> ChildNodeProperty = new(nameof(ChildNode));
 
     /// <summary>
-    /// Parent property name.
+    /// Owner property name.
     /// </summary>
     public const string Parent = nameof(Parent);
 
     /// <summary>
-    /// Parent property.
+    /// Owner property.
     /// </summary>
     public static CodeRenderProperty<ICodeRenderElement> ParentProperty = new(nameof(Parent));
 

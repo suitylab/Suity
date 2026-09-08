@@ -1180,7 +1180,7 @@ public class AigcWorkflowPage : AigcTaskPage,
 
     private IAigcTaskPage GetParentLastSubTask()
     {
-        // Parent is maybe a task page, or root collection.
+        // Owner is maybe a task page, or root collection.
         var node = ParentNode;
         if (node is null)
         {

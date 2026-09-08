@@ -368,7 +368,7 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
 
                     if (pipeline.HasFlag(GuiPipeline.Main) && column == PropertyGridColumn.Option && !isReadOnly)
                     {
-                        // bool mouseIn = gui.CurrentNode?.Parent?.IsMouseIn == true;
+                        // bool mouseIn = gui.CurrentNode?.Owner?.IsMouseIn == true;
                         if (n.Parent?.GetIsPropertyFieldSelected() == true)
                         {
                             gui.Button("delete", ImGuiIcons.Delete)
@@ -584,7 +584,7 @@ internal class PropertyFieldExternalBK : PropertyFieldExternal
                 }
                 else if (c == PropertyGridColumn.Option && !n.IsReadOnly && !target.ValueMultiple && state == CheckState.Checked)
                 {
-                    // bool mouseIn = gui.CurrentNode?.Parent?.IsMouseIn == true;
+                    // bool mouseIn = gui.CurrentNode?.Owner?.IsMouseIn == true;
                     if (n.Parent?.GetIsPropertyFieldSelected() == true)
                     {
                         gui.Button("edit", ImGuiIcons.Open)

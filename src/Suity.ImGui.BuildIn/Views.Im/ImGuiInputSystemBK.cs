@@ -1595,7 +1595,7 @@ public class ImGuiInputSystemBK : ImGuiInputSystem
                         {
                             value.Tree.ToggleSelection(value);
                             GuiTreeViewExtensions.UpdateTreeNodeSelection(node, value);
-                            //node.Parent?.MarkRenderDirty();
+                            //node.Owner?.MarkRenderDirty();
                         }
                     }
                     else if (input.ShiftKey)
@@ -1610,7 +1610,7 @@ public class ImGuiInputSystemBK : ImGuiInputSystem
                             }
                             value.Tree.SetSelections(lastIndex, index);
                             GuiTreeViewExtensions.UpdateTreeNodeSelections(node.Parent);
-                            //node.Parent?.MarkRenderDirty();
+                            //node.Owner?.MarkRenderDirty();
                         }
                     }
                     else
@@ -1619,7 +1619,7 @@ public class ImGuiInputSystemBK : ImGuiInputSystem
                         {
                             value.Tree.SetSelection(value);
                             GuiTreeViewExtensions.UpdateTreeNodeSelections(node.Parent);
-                            //node.Parent?.MarkRenderDirty();
+                            //node.Owner?.MarkRenderDirty();
                         }
                     }
 
@@ -1654,14 +1654,14 @@ public class ImGuiInputSystemBK : ImGuiInputSystem
                     {
                         value.Tree.SetSelection(value);
                         GuiTreeViewExtensions.UpdateTreeNodeSelections(node.Parent);
-                        //node.Parent?.MarkRenderDirty();
+                        //node.Owner?.MarkRenderDirty();
                     }
                 }
 
                 node.SetIsControlling(false);
                 value.MouseDown = false;
                 value.Tree.ClearDroppingNode();
-                //node.Parent?.MarkRenderDirty();
+                //node.Owner?.MarkRenderDirty();
                 ImGui.MergeState(ref state, GuiInputState.Render);
 
                 break;

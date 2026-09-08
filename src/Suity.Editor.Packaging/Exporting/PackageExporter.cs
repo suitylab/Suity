@@ -354,7 +354,7 @@ internal class PackageExporter
             Directory.CreateDirectory(dir);
         }
 
-        if (string.Equals(localFileName, WorkSpace.DefaultWorkSpaceConfigFileName, StringComparison.OrdinalIgnoreCase) && !file.InMaster)
+        if (string.Equals(localFileName, WorkSpace.DefaultConfigFileName, StringComparison.OrdinalIgnoreCase) && !file.InMaster)
         {
             workSpace.ExportConfig(targetFileName);
         }

@@ -30,7 +30,10 @@ internal class ProjectBK : Project
 
     private ProjectSetting _setting;
     private ProjectIdResolver _idResolver;
-    private IPlatformFileSystem _fileSystem;
+
+    private IPlatformFileSystem _rootFileSystem;
+    private IPlatformFileSystem _systemFileSystem;
+
     private FileAssetManagerBK _fileLibrary;
     private WorkSpaceManagerBK _workSpaceManager;
 
@@ -90,12 +93,12 @@ internal class ProjectBK : Project
         }
 
         _idResolver = new ProjectIdResolver(this, _projectBasePath.PathAppend(assetDir));
-        _idResolver.SettingFileSaved += RaiseSettingSaved;
 
         _idResolver.Start();
         GlobalIdResolver.Current = _idResolver;
 
-        _fileSystem = EditorServices.PlatformService.CreateFileSystem(this);
+        _rootFileSystem = EditorServices.PlatformService.CreateFileSystem(this);
+        _systemFileSystem = new ScopedFileSystem(_rootFileSystem, () => GetProjectDirectoryName(ProjectDirectories.System), this);
 
         EditorObjectManager.Instance.DoUnwatchedAction(() =>
         {
@@ -116,7 +119,10 @@ internal class ProjectBK : Project
     public override ProjectStatus Status => _status;
 
     /// <inheritdoc/>
-    public override IPlatformFileSystem FileSystem => _fileSystem;
+    public override IPlatformFileSystem RootFileSystem => _rootFileSystem;
+
+    /// <inheritdoc/>
+    public override IPlatformFileSystem SystemFileSystem => _systemFileSystem;
 
     /// <inheritdoc/>
     public override FileAssetManager FileAssetManager => _fileLibrary;
@@ -390,11 +396,7 @@ internal class ProjectBK : Project
                 });
             }
 
-            string fileName = SystemDirectory.PathAppend(SettingFileName);
-
-            writer.SaveToFile(fileName);
-
-            RaiseSettingSaved(fileName);
+            SystemFileSystem.WriteStreamWriter(SettingFileName, writer.SaveToStream);
         }
         catch (Exception err)
         {

@@ -82,7 +82,7 @@ sealed class CliDevice : Device, IRexResolver, ISystemLog
         AddService<DocumentViewManager>(CliDocumentViewManager.Instance);
         AddService<IDrawingService>(CliDrawingService.Instance);
 
-        AddService<IDialogService>(CliDialogService.Instance);
+        AddService<IDialogServiceSync>(CliDialogService.Instance);
         AddService<IDialogExService>(CliDialogService.Instance);
         AddService<IDialogServiceAsync>(CliDialogService.Instance);
         AddService<IFileNameService>(FileNameServiceBK.Instance);

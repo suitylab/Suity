@@ -129,7 +129,7 @@ public class EditInFile : ToolCommand<EditInFile.Output>
             msg.AddCode(relativePath);
         });
 
-        workSpace.WriteAllText(relativePath, content);
+        workSpace.MasterFileSystem.WriteAllText(relativePath, content);
 
         string replacementSummary = $"---------------- Before ----------------\n{OldExactString}\n---------------- After ----------------\n{NewString}";
         parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, relativePath, replacementSummary, "replaced, use ReadFile to get full content");

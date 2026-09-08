@@ -40,7 +40,7 @@ public static class DockExtensions
     {
         if (control == null) return;
 
-        // 1. 检查逻辑树父级 (Logical Parent)
+        // 1. 检查逻辑树父级 (Logical Owner)
         if (control.Parent is Panel panelParent)
         {
             panelParent.Children.Remove(control);
@@ -53,7 +53,7 @@ public static class DockExtensions
         {
             decoratorParent.Child = null;
         }
-        // 2. 针对特殊情况，如果逻辑树没断，但视觉树有 Parent 的兜底处理
+        // 2. 针对特殊情况，如果逻辑树没断，但视觉树有 Owner 的兜底处理
         else if (control.GetVisualParent() is Panel visualPanel)
         {
             visualPanel.Children.Remove(control);

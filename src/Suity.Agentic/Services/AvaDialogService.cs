@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.Services;
 
-internal class AvaDialogService : IDialogService, IDialogExService
+internal class AvaDialogService : IDialogServiceSync, IDialogExService
 {
     public static AvaDialogService Instance { get; } = new();
 

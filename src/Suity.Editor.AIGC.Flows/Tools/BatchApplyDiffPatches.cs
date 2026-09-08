@@ -180,7 +180,7 @@ public class BatchApplyDiffPatches : ToolCommand<BatchApplyDiffPatches.Output>
                 var patches = ParseUnifiedDiff(diffLines);
                 hunksApplied = ApplyPatchesToLines(lines, patches);
 
-                workSpace.WriteAllLines(relativePath, lines);
+                workSpace.MasterFileSystem.WriteAllLines(relativePath, lines);
 
                 string diffSummary = $"---------------- Before ----------------\n{patchItem.DiffContent}\n---------------- After ----------------\n(Applied {hunksApplied} hunk(s))";
                 parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, relativePath, diffSummary, $"applied {hunksApplied} hunk(s), use ReadFile to get full content");

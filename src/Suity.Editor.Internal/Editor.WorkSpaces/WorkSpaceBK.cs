@@ -92,9 +92,9 @@ public class WorkSpaceBK : WorkSpace,
         Name = name;
         _baseNameSpace = name;
 
-        _workSpaceFileSystem = new ScopedFileSystem(manager.WorkSpaceRootFileSystem, () => Name);
-        _internalMasterFileSystem = new ScopedFileSystem(_workSpaceFileSystem, () => DefaultMasterDirectory);
-        _externalMasterFileSystem = new PlatformFileSystem(() => MasterDirectory);
+        _workSpaceFileSystem = new ScopedFileSystem(manager.WorkSpaceRootFileSystem, () => Name, this);
+        _internalMasterFileSystem = new ScopedFileSystem(_workSpaceFileSystem, () => DefaultMasterDirectory, this);
+        _externalMasterFileSystem = new PlatformFileSystem(() => MasterDirectory, this);
 
         _references.Updated += (mode, index, old) =>
         {
@@ -138,7 +138,7 @@ public class WorkSpaceBK : WorkSpace,
 
         _configWatcher = new EditorFileSystemWatcher(BaseDirectory, this)
         {
-            Filter = DefaultWorkSpaceConfigFileName,
+            Filter = DefaultConfigFileName,
             IncludeSubdirectories = false,
             EnableRaisingEvents = true
         };
@@ -263,7 +263,7 @@ public class WorkSpaceBK : WorkSpace,
     public override string TempDirectory => _manager.BasePath.PathAppend(Name).PathAppend(Temp);
 
     /// <inheritdoc/>
-    public override string ConfigFileName => BaseDirectory.PathAppend(DefaultWorkSpaceConfigFileName);
+    public override string ConfigFileName => BaseDirectory.PathAppend(DefaultConfigFileName);
 
     /// <inheritdoc/>
     public override string DbFileName => BaseDirectory.PathAppend(DefaultWorkSpaceDbFileName);
@@ -939,47 +939,63 @@ public class WorkSpaceBK : WorkSpace,
     /// <param name="force">Whether to force saving regardless of dirty state.</param>
     public void SaveConfig(bool force = false)
     {
-        if (_configDirty || force)
+        if (!_configDirty && !force)
         {
-            SaveConfig(ConfigFileName, false);
+            return;
+        }
+
+        if (Controller is null)
+        {
+            return;
+        }
+
+        try
+        {
+            EnsureWorkSpaceDirectory();
+            PrepareSaveConfig();
+
+            FileUnwatchedAction.Do(() => WorkSpaceFileSystem.WriteStreamWriter(DefaultConfigFileName, 
+                stream => XmlSerializer.SerializeToStream(this, stream, SyncIntent.Serialize)
+                ));
+        }
+        catch (Exception err)
+        {
+            err.LogError();
         }
     }
 
     /// <inheritdoc/>
     public override void ExportConfig(string fileName)
     {
-        SaveConfig(fileName, true);
-    }
-
-    private void SaveConfig(string fileName, bool export)
-    {
         if (Controller is null)
         {
             return;
         }
 
-        EnsureWorkSpaceDirectory();
-
-        SyncIntent intent = export ? SyncIntent.DataExport : SyncIntent.Serialize;
-
         try
         {
-            _renderedFilesConfig.Clear();
-            _renderedFilesConfig.AddRange(_renderRecord.RenderedFiles.Select(o => new RenderFileRecordBK(o.RelativeFileName, o.LastUpdateTime)));
+            EnsureWorkSpaceDirectory();
+            PrepareSaveConfig();
 
-            foreach (var item in _renderedFilesConfig)
-            {
-                if (_renderRecord.GetIsDirtyByRelativePath(_renderPage, item.RelativeFileName))
-                {
-                    item._dirty = true;
-                }
-            }
-
-            FileUnwatchedAction.Do(() => XmlSerializer.SerializeToFile(this, fileName, intent));
+            FileUnwatchedAction.Do(() => XmlSerializer.SerializeToFile(this, fileName, SyncIntent.DataExport));
         }
         catch (Exception err)
         {
             err.LogError();
+        }
+    }
+
+    private void PrepareSaveConfig()
+    {
+        _renderedFilesConfig.Clear();
+        _renderedFilesConfig.AddRange(_renderRecord.RenderedFiles.Select(o => new RenderFileRecordBK(o.RelativeFileName, o.LastUpdateTime)));
+
+        foreach (var item in _renderedFilesConfig)
+        {
+            if (_renderRecord.GetIsDirtyByRelativePath(_renderPage, item.RelativeFileName))
+            {
+                item._dirty = true;
+            }
         }
 
         _configDirty = false;
@@ -1003,7 +1019,7 @@ public class WorkSpaceBK : WorkSpace,
     public bool ConfigFileExists()
     {
         string workSpacePath = _manager.BasePath.PathAppend(Name);
-        string configFile = workSpacePath.PathAppend(WorkSpaceBK.DefaultWorkSpaceConfigFileName);
+        string configFile = workSpacePath.PathAppend(WorkSpaceBK.DefaultConfigFileName);
         return File.Exists(configFile);
     }
 
@@ -1824,11 +1840,6 @@ public class WorkSpaceBK : WorkSpace,
         RequestAnalyze();
         //_analyzed = false;
         //EditorUtility.AddDelayedAction(new RaiseUpdateAction(this));
-    }
-
-    public override void NotifyFileUpdated(string relativePath)
-    {
-        this._manager.NotifyWorkSpaceFileUpdated(this, relativePath);
     }
 
     #endregion

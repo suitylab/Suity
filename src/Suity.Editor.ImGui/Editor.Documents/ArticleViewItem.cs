@@ -374,7 +374,7 @@ public abstract class ArticleViewItem : IViewObject, IDrawEditorImGui
     /// <inheritdoc/>
     public virtual bool OnEditorGui(ImGui gui, EditorImGuiPipeline pipeline, IDrawContext context)
     {
-        // Parent check is required here, otherwise it is impossible to accurately determine if it is selected.
+        // Owner check is required here, otherwise it is impossible to accurately determine if it is selected.
         if (pipeline == EditorImGuiPipeline.Option && gui.CurrentNode?.Parent?.GetIsPropertyFieldSelected() == true)
         {
             OnButtonGui(gui);

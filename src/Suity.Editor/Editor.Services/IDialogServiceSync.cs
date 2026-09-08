@@ -8,7 +8,7 @@ namespace Suity.Editor.Services;
 /// <summary>
 /// Synchronous service interface for displaying dialogs.
 /// </summary>
-public interface IDialogService
+public interface IDialogServiceSync
 {
     /// <summary>
     /// Creates a text window.

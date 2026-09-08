@@ -10,11 +10,6 @@ namespace Suity.Editor;
 public interface IObjectIdResolver
 {
     /// <summary>
-    /// Occurs when a setting file is saved, providing the path of the saved file.
-    /// </summary>
-    event Action<string> SettingFileSaved;
-
-    /// <summary>
     /// Generates a new unique GUID.
     /// </summary>
     /// <returns>A new <see cref="Guid"/>.</returns>

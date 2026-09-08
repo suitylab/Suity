@@ -90,7 +90,7 @@ public abstract class DField : FieldObject,
             }
             else
             {
-                //parentText = Parent?.Name;
+                //parentText = Owner?.Name;
                 // text = Name;
                 return Name;
 

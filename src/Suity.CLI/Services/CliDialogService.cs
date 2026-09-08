@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Suity.Editor.Services;
 
-internal class CliDialogService : IDialogService, IDialogExService, IDialogServiceAsync
+internal class CliDialogService : IDialogServiceSync, IDialogExService, IDialogServiceAsync
 {
     public static CliDialogService Instance { get; } = new();
 

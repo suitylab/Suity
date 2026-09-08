@@ -88,8 +88,6 @@ internal class ProjectIdResolver : IObjectIdResolver
     private readonly SaveIdDelayedAction _saveIdAction;
 
 
-    public event Action<string> SettingFileSaved;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="ProjectIdResolver"/> class.
     /// </summary>
@@ -713,9 +711,12 @@ internal class ProjectIdResolver : IObjectIdResolver
     /// Loads ID mappings from a single XML file into the in-memory dictionaries.
     /// </summary>
     /// <param name="fileName">The path to the XML file to load.</param>
-    private void LoadIdXml(string fileName)
+    private void LoadIdXml(string xmlFile)
     {
-        EditorServices.SystemLog.AddLog($"Start loading id file : {fileName}");
+        EditorServices.SystemLog.AddLog($"Start loading id file : {xmlFile}");
+
+        string fileName = _project.SystemDirectory.PathAppend(xmlFile);
+
         int count = 0;
 
         INodeReader reader = XmlNodeReader.FromFile(fileName, false);
@@ -790,11 +791,8 @@ internal class ProjectIdResolver : IObjectIdResolver
             return;
         }
 
-        string sysFileName = _project.SystemDirectory.PathAppend(SystemIdXmlFileName);
-        SaveIdXml(sysFileName, o => o.FullName?.StartsWith("*") == true);
-
-        string objFileName = _project.SystemDirectory.PathAppend(ObjectIdXmlFileName);
-        SaveIdXml(objFileName, o => !o.FullName?.StartsWith("*") == true);
+        SaveIdXml(SystemIdXmlFileName, o => o.FullName?.StartsWith("*") == true);
+        SaveIdXml(ObjectIdXmlFileName, o => !o.FullName?.StartsWith("*") == true);
 
         _dirty = false;
     }
@@ -802,11 +800,11 @@ internal class ProjectIdResolver : IObjectIdResolver
     /// <summary>
     /// Saves ID mappings to a specific XML file, filtering objects by the given predicate.
     /// </summary>
-    /// <param name="fileName">The path to the XML file to save.</param>
+    /// <param name="xmlFile">The path to the XML file to save.</param>
     /// <param name="predicate">A predicate to determine which editor objects to include.</param>
-    private void SaveIdXml(string fileName, Predicate<EditorObject> predicate)
+    private void SaveIdXml(string xmlFile, Predicate<EditorObject> predicate)
     {
-        EditorServices.SystemLog.AddLog($"Start saving id file : {fileName}");
+        EditorServices.SystemLog.AddLog($"Start saving id file : {xmlFile}");
 
         var writer = new XmlNodeWriter("ObjectId");
 
@@ -834,11 +832,10 @@ internal class ProjectIdResolver : IObjectIdResolver
         {
             try
             {
-                writer.SaveToFile(fileName);
-                _dirty = false;
-                EditorServices.SystemLog.AddLog($"{fileName} saved.");
+                _project.SystemFileSystem.WriteStreamWriter(xmlFile, writer.SaveToStream);
 
-                SettingFileSaved?.Invoke(fileName);
+                _dirty = false;
+                EditorServices.SystemLog.AddLog($"{xmlFile} saved.");
             }
             catch (Exception err)
             {

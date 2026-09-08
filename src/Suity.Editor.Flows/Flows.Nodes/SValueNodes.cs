@@ -381,7 +381,7 @@ public class GetProperty : SValueFlowNode, ITextDisplay, INavigable
         //    }
         //    else
         //    {
-        //        sobj = sitem?.Parent as SObject;
+        //        sobj = sitem?.Owner as SObject;
         //    }
         //}
 

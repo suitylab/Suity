@@ -96,7 +96,7 @@ public class CreateNewFile : ToolCommand<CreateNewFile.Output>
             msg.AddCode(relativePath);
         });
 
-        workSpace.WriteAllText(relativePath, Content);
+        workSpace.MasterFileSystem.WriteAllText(relativePath, Content);
         parentPage?.SetScratchPad(ScratchPadTypes.FileFullContent, relativePath, null, "created");
 
         return Task.FromResult(new Output

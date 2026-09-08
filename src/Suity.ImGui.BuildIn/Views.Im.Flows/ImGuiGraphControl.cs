@@ -214,7 +214,7 @@ public class ImGuiGraphControl : GraphControl, IDrawContext
                     _tempNodeList.Clear();
                 }
 
-                //Debug.WriteLine($"sync all, controlling={gui.ControllingNode?.FullPath}");
+                //Debug.WriteLine($"sync all, controlling={gui.ControllingNode?.ScopedPath}");
             }
         });
 

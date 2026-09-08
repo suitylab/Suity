@@ -34,7 +34,7 @@ public class WorkSpaceAnalysis : ISyncObject
     /// <summary>
     /// Gets the full path to the workspace configuration file.
     /// </summary>
-    public string ConfigFileName => BaseDirectory.PathAppend(WorkSpace.DefaultWorkSpaceConfigFileName);
+    public string ConfigFileName => BaseDirectory.PathAppend(WorkSpace.DefaultConfigFileName);
 
     /// <summary>
     /// Gets a value indicating whether the workspace configuration has been successfully loaded and is valid.

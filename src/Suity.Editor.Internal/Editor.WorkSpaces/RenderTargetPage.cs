@@ -47,7 +47,7 @@ internal class RenderTargetPage
     public readonly Dictionary<string, RenderDirectoryInfo> RenderDirectories = [];
 
     /// <summary>
-    /// Parent-child directory relationships indexed by parent directory ID.
+    /// Owner-child directory relationships indexed by parent directory ID.
     /// </summary>
     public readonly UniqueMultiDictionary<string, string> RenderDirsByDir = new();
 

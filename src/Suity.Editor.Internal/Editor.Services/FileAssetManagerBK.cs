@@ -231,7 +231,7 @@ internal sealed class FileAssetManagerBK : FileAssetManager
         {
             if (tryLoadStorage)
             {
-                //Logs.LogInfo($"ThreadId={Thread.CurrentThread.ManagedThreadId} OpenDocument by EditorObject : {fileName.FullPath}");
+                //Logs.LogInfo($"ThreadId={Thread.CurrentThread.ManagedThreadId} OpenDocument by EditorObject : {fileName.ScopedPath}");
 
                 DocumentEntry docEntry = DocumentManager.Instance.OpenDocument(location);
 

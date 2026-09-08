@@ -185,7 +185,7 @@ public class FindAndReplaceInFile : ToolCommand<FindAndReplaceInFile.Output>
             msg.AddCode(relativePath);
         });
 
-        workSpace.WriteAllText(relativePath, content);
+        workSpace.MasterFileSystem.WriteAllText(relativePath, content);
 
         var replacementSummary = string.Join("\n", ReplaceItems
             .Where(r => !string.IsNullOrWhiteSpace(r.OldString))

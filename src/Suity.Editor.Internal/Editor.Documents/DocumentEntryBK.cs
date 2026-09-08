@@ -429,7 +429,7 @@ internal sealed class DocumentEntryBK : DocumentEntry, IViewListener
             {
             //if (DebugLog)
             //{
-            //    AppService.Log.LogError("Failed to read file:" + FullPath, err);
+            //    AppService.Log.LogError("Failed to read file:" + ScopedPath, err);
                 //}
                 //else
                 //{

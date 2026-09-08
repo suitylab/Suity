@@ -138,7 +138,7 @@ public class ApplyDiffPatch : ToolCommand<ApplyDiffPatch.Output>
             msg.AddCode(relativePath);
         });
 
-        workSpace.WriteAllLines(relativePath, lines);
+        workSpace.MasterFileSystem.WriteAllLines(relativePath, lines);
 
         string diffSummary = $"---------------- Before ----------------\n{DiffContent}\n---------------- After ----------------\n(Applied {hunksApplied} hunk(s))";
         parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, relativePath, diffSummary, $"applied {hunksApplied} hunk(s), use ReadFile to get full content");

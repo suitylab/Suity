@@ -271,7 +271,7 @@ public class WorkSpaceRootNode : RootDirectoryNode, IWorkSpaceRootNode, IDropTar
     protected override bool CanPopulateFile(FileInfo file)
     {
         // Hide workspace config and database files
-        if (string.Compare(file.Name, WorkSpace.DefaultWorkSpaceConfigFileName, true) == 0)
+        if (string.Compare(file.Name, WorkSpace.DefaultConfigFileName, true) == 0)
         {
             return false;
         }

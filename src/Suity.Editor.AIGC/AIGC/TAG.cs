@@ -47,7 +47,7 @@ public static class TAG
     public const string THINK = "{{THINK}}";
 
     /// <summary>
-    /// Parent
+    /// Owner
     /// </summary>
     public const string PARENT = "{{PARENT}}";
 

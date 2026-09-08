@@ -112,7 +112,7 @@ public class RenderFileName : ISelectionItem
     /// <summary>
     /// Creates a render file name from a parent and relative path.
     /// </summary>
-    /// <param name="parent">Parent render file name.</param>
+    /// <param name="parent">Owner render file name.</param>
     /// <param name="relativePath">Relative path.</param>
     public RenderFileName(RenderFileName parent, string relativePath)
         : this(parent.BasePath, parent.DefaultNameSpace, Path.Combine(parent.ProjectRelativePath, relativePath))

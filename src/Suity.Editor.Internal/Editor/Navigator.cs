@@ -365,7 +365,7 @@ public static class Navigator
             {
                 return false;
             }
-            //return EditorUtility.LocateInProject(document.FullPath);
+            //return EditorUtility.LocateInProject(document.ScopedPath);
         }
     }
 

@@ -131,8 +131,8 @@ public static class EditorServices
 
     #region IDialogService
 
-    private static readonly ServiceStore<IDialogService> _dialog = new();
-    public static IDialogService DialogService => _dialog.Get();
+    private static readonly ServiceStore<IDialogServiceSync> _dialog = new();
+    public static IDialogServiceSync DialogService => _dialog.Get();
 
     #endregion
 

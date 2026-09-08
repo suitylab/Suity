@@ -48,7 +48,7 @@ public class WorkSpaceManagerBK : WorkSpaceManager
         _ownerProject = project;
         _basePath = basePath;
 
-        _fileSystem = new ScopedFileSystem(project.FileSystem, () => project.GetProjectDirectoryName(ProjectDirectories.WorkSpace));
+        _fileSystem = new ScopedFileSystem(project.RootFileSystem, () => project.GetProjectDirectoryName(ProjectDirectories.WorkSpace));
         _asset = new WorkSpaceManagerAsset(this);
 
         EditorServices.SystemLog.PopIndent();

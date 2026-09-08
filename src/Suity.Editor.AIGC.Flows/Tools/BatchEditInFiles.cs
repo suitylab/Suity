@@ -260,7 +260,7 @@ public class BatchEditInFiles : ToolCommand<BatchEditInFiles.Output>
 
         foreach (var file in fileResults)
         {
-            workSpace.WriteAllText(file.RelativePath, file.NewContent);
+            workSpace.MasterFileSystem.WriteAllText(file.RelativePath, file.NewContent);
             parentPage?.SetScratchPad(ScratchPadTypes.FileEdit, file.RelativePath, $"replaced {file.Replacements} place(s)", $"replaced {file.Replacements} place(s), use ReadFile to get full content");
         }
 

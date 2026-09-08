@@ -208,7 +208,7 @@ public class WriteWorkSpaceFile : WorkSpaceNode
         string filePath = _filePath.GetValue(compute, this) ?? string.Empty;
         string content = _content.GetText(compute, this);
 
-        workSpace.WriteAllText(filePath, content);
+        workSpace.MasterFileSystem.WriteAllText(filePath, content);
 
         return Task.FromResult<object>(_out);
     }

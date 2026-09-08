@@ -93,7 +93,7 @@ sealed class AvaDevice : Device, IRexResolver, ISystemLog, IRexHandler<NavigateV
         AddService<DocumentViewManager>(AvaDocumentViewManager.Instance);
         AddService<IDrawingService>(AvaDrawingService.Instance);
 
-        AddService<IDialogService>(AvaDialogService.Instance);
+        AddService<IDialogServiceSync>(AvaDialogService.Instance);
         AddService<IDialogExService>(AvaDialogService.Instance);
         AddService<IDialogServiceAsync>(AvaDialogServiceAsync.Instance);
         AddService<IFileNameService>(FileNameServiceBK.Instance);

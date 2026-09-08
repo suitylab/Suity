@@ -2489,7 +2489,7 @@ internal class ImGuiNodeBK : ImGuiNode
         {
             //if (_lastPos != PointF.Empty && len > 0)
             //{
-            //    Debug.WriteLine($"Last layout pos is zero : {this.FullPath}");
+            //    Debug.WriteLine($"Last layout pos is zero : {this.ScopedPath}");
             //}
         }
 

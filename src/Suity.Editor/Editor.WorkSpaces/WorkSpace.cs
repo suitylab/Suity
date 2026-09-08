@@ -21,7 +21,7 @@ public abstract class WorkSpace : IRenderHost, IHasId
     /// <summary>
     /// Default workspace configuration file name
     /// </summary>
-    public const string DefaultWorkSpaceConfigFileName = "WorkSpace.config";
+    public const string DefaultConfigFileName = "WorkSpace.config";
     /// <summary>
     /// Default workspace database file name
     /// </summary>
@@ -844,8 +844,6 @@ public abstract class WorkSpace : IRenderHost, IHasId
     {
         return fileName.MakeRelativePath(fileName);
     }
-
-    public abstract void NotifyFileUpdated(string relativePath);
 
     #endregion
 
