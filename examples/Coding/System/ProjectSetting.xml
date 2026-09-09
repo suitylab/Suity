@@ -117,41 +117,41 @@
   <Plugin name="AIHubMixPlugin">
     <ApiKey>
     </ApiKey>
-    <BaseUrl>https://aihubmix.com</BaseUrl>
+    <ApiUrl>https://aihubmix.com</ApiUrl>
   </Plugin>
   <Plugin name="DashScopePlugin">
     <ApiKey>
     </ApiKey>
-    <BaseUrl>https://dashscope.aliyuncs.com/compatible-mode</BaseUrl>
+    <ApiUrl>https://dashscope.aliyuncs.com/compatible-mode</ApiUrl>
   </Plugin>
   <Plugin name="DeepSeekPlugin">
     <ApiKey>
     </ApiKey>
-    <BaseUrl>https://api.deepseek.com</BaseUrl>
+    <ApiUrl>https://api.deepseek.com</ApiUrl>
   </Plugin>
   <Plugin name="LmStudioPlugin">
     <ApiKey>
     </ApiKey>
-    <BaseUrl>http://127.0.0.1:1234</BaseUrl>
+    <ApiUrl>http://127.0.0.1:1234</ApiUrl>
   </Plugin>
   <Plugin name="MiMoPlugin">
     <ApiKey>
     </ApiKey>
-    <BaseUrl>https://api.xiaomimimo.com</BaseUrl>
+    <ApiUrl>https://api.xiaomimimo.com</ApiUrl>
   </Plugin>
   <Plugin name="OpenAIPlugin">
     <ApiKey>
     </ApiKey>
-    <BaseUrl>https://api.openai.com</BaseUrl>
+    <ApiUrl>https://api.openai.com</ApiUrl>
   </Plugin>
   <Plugin name="OpenRouterPlugin">
     <ApiKey>
     </ApiKey>
-    <BaseUrl>https://openrouter.ai/api</BaseUrl>
+    <ApiUrl>https://openrouter.ai/api</ApiUrl>
   </Plugin>
   <Plugin name="SiliconFlowPlugin">
     <ApiKey>
     </ApiKey>
-    <BaseUrl>https://api.siliconflow.cn</BaseUrl>
+    <ApiUrl>https://api.siliconflow.cn</ApiUrl>
   </Plugin>
 </ProjectSetting>
