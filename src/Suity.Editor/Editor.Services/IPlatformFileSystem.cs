@@ -19,6 +19,8 @@ public interface IPlatformFileSystem
     void WriteStreamWriter(string relativePath, Action<Stream> writer);
 
     void MoveFile(string relativePath, string newName);
+
+    void DeleteFile(string relativePath);
 }
 
 public class PlatformFileUpdateEventArgs : EventArgs
@@ -102,6 +104,18 @@ public class PlatformFileSystem : IPlatformFileSystem
 
         OnFileUpdted(relativePath, newFullPath);
         OnFileUpdted(newName, newFullPath);
+    }
+
+    public virtual void DeleteFile(string relativePath)
+    {
+        string fullPath = GetFullPath(relativePath);
+        if (!File.Exists(fullPath))
+        {
+            return;
+        }
+
+        File.Delete(fullPath);
+        OnFileUpdted(relativePath, fullPath);
     }
 
     protected string GetBasePath() => _basePathGetter?.Invoke() ?? _basePath;
@@ -201,6 +215,13 @@ public class ScopedFileSystem : IPlatformFileSystem
         _parent.MoveFile(scopedPath, newScopedPath);
         OnFileUpdated(relativePath, scopedPath);
         OnFileUpdated(newName, newScopedPath);
+    }
+
+    public virtual void DeleteFile(string relativePath)
+    {
+        string scopedPath = MakeScopedPath(relativePath);
+        _parent.DeleteFile(scopedPath);
+        OnFileUpdated(relativePath, scopedPath);
     }
 
     protected string GetSubDirectory() => _subDirectoryGetter?.Invoke() ?? _subDirectory;
