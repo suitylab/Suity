@@ -1,3 +1,4 @@
+using ICSharpCode.SharpZipLib.Zip;
 using Suity;
 using Suity.Collections;
 using Suity.Drawing;
@@ -8,10 +9,10 @@ using Suity.Helpers;
 using Suity.Synchonizing;
 using Suity.Synchonizing.Core;
 using Suity.Views;
-using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using static Suity.Helpers.GlobalLocalizer;
 
@@ -1538,8 +1539,8 @@ public class WorkSpaceBK : WorkSpace,
             }
         }
 
-        string backupDir = baseDir.PathAppend("Backup");
-        Directory.CreateDirectory(backupDir);
+        var backupFileSystem = new ScopedFileSystem(this.WorkSpaceFileSystem, "Backup");
+
 
         string id = IdGenerator.GenerateId(12);
         string backupFileName = $"Backup_{DateTime.Now:yyyyMMdd_HHmmss}_{id}";
@@ -1549,19 +1550,21 @@ public class WorkSpaceBK : WorkSpace,
             backupFileName = backupFileName + "_" + trimmedName;
         }
 
-        string backupPath = backupDir.PathAppend(backupFileName + ".zip");
-        if (File.Exists(backupPath))
-        {
-            throw new IOException($"Backup file already exists: {backupPath}");
-        }
+        string backupFile = backupFileName + ".zip";
+        //if (File.Exists(backupFile))
+        //{
+        //    throw new IOException($"Backup file already exists: {backupFile}");
+        //}
 
-        int fileCount;
-        using (var fileStream = File.Create(backupPath))
+        int fileCount = 0;
+
+        backupFileSystem.WriteStreamWriter(backupFile, (fileStream) => 
         {
             using var zipStream = new ZipOutputStream(fileStream);
             zipStream.SetLevel(6);
             fileCount = AddDirectoryToZip(zipStream, MasterDirectory, string.Empty, ignoreSet);
-        }
+            zipStream.Flush();
+        });
 
         Logs.LogInfo($"Backup completed: {backupFileName}.zip ({fileCount} files).");
     }
