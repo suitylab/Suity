@@ -10,6 +10,15 @@
             "InitialOpenDocument": ""
         },
         {
+            "Id": "TypeScriptH5_WebDev",
+            "Name": "TS+Vite Web Development",
+            "TemplateUsage": "Example",
+            "Description": "Agent for TS+Vite web development, with multiple vertical slices.",
+            "DownloadUrl": "https://storage.suitylab.com/SuityAgentic/Templates/WebDev-1.0.suitypackage",
+            "CustomImageFileName": "",
+            "InitialOpenDocument": ""
+        },
+        {
             "Id": "TypeScriptH5_MultiAgent",
             "Name": "Coding",
             "TemplateUsage": "Example",

@@ -8,6 +8,7 @@
   - `vite.config.ts`
   - `.gitignore`
   - `index.html`
+- **Vite Version Requirement:** `package.json` MUST declare **Vite 6.0.0 or newer** (e.g. `"vite": "^6.0.0"`). The web platform's sandbox runtime requires Vite 6+; older Vite versions are incompatible.
 
 ## 2. Directory Structure Guidelines
 - Place all application source code exclusively inside the `src/` directory.
