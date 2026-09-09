@@ -127,10 +127,18 @@ public abstract class BaseLLmChat : ILLmChat,
         //    DialogUtility.ShowMessageBoxAsync(errMsg);
         //    return null;
         //}
-        catch (OperationCanceledException)
+        catch (OperationCanceledException cancelEx)
         {
             _state = LLmChatStates.Stopped;
-            _conversation.AddSystemMessage("Operation cancelled");
+            bool warning = cancelEx.InnerException != null;
+            if (warning)
+            {
+                _conversation.AddWarningMessage(cancelEx.Message ?? "Operation cancelled");
+            }
+            else
+            {
+                _conversation.AddSystemMessage(cancelEx.Message ?? "Operation cancelled");
+            }
             return null;
         }
         catch (AigcException llmErr)

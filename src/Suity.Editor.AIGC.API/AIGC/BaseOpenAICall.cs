@@ -5,9 +5,11 @@ using OpenAI_API.Models;
 using Suity.Views;
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using static Suity.Helpers.GlobalLocalizer;
+using static System.Net.WebRequestMethods;
 
 namespace Suity.Editor.AIGC;
 
@@ -284,9 +286,24 @@ public abstract class BaseOpenAICall : BaseLLmCall
 
             ProcessManualFunctionCall(request.MostRecentApiResult);
         }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (HttpRequestException httpEx)
+        {
+            if (httpEx.Data["message"] is string message)
+            {
+                throw new OperationCanceledException(message, httpEx);
+            }
+            else
+            {
+                throw new OperationCanceledException(httpEx.Message, httpEx);
+            }
+        }
         catch (Exception ex)
         {
-            throw ex;
+            throw new OperationCanceledException(ex.Message, ex);
         }
         finally
         {
