@@ -15,6 +15,7 @@ public enum ConversationRole
 {
     Debug,
     System,
+    Secondary,
     Remote,
     User,
 }

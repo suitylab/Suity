@@ -21,7 +21,7 @@ public static class TaskPageExtensions
 
     public static DisposableDialogItem AddWorkflowMessage(this AigcWorkflowPage page, AIRequest request, string content)
     {
-        return request.Conversation.AddSystemMessage(content, msg =>
+        return request.Conversation.AddSecondaryMessage(content, msg =>
         {
             if (EditorServices.PlatformService.IsConversationExtraButtonEnabled)
             {

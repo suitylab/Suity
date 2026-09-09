@@ -32,6 +32,11 @@ public static class ConversationExtensions
         return new DisposableDialogItem(handler, msg);
     }
 
+    public static DisposableDialogItem AddSecondaryMessage(this IConversation handler, string content, Action<IDialogMessage> config = null)
+    {
+        var msg = handler.AddMessage(content, ConversationRole.Secondary, TextStatus.Normal, config);
+        return new DisposableDialogItem(handler, msg);
+    }
 
     public static DisposableDialogItem AddSystemMessage(this IConversation handler, string content, TextStatus status, Action<IDialogMessage> config = null)
     {
