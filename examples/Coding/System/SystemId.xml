@@ -170,13 +170,13 @@
   <Object id="6e2fae59-c509-4559-9e8b-9a4380f9c172" name="*AssetLink|Suity.Editor.Documents.ArticleAsset" />
   <Object id="281a40a7-1835-4b99-b556-4337fe2e2987" name="*AssetLink|Suity.Editor.Documents.ArticleContainerAsset" />
   <Object id="fc906e72-b3af-4bef-8979-1c402a9104d0" name="*AssetLink|Suity.Editor.Documents.Canvas.CanvasAsset" />
-  <Object id="a8882e3d-b241-44df-a6f9-0f13fc608eaf" name="*AssetLink|Suity.Editor.Documents.External.ExcelTextAsset" />
-  <Object id="036b4b52-c5d7-4c1d-826c-336aabc4aa5f" name="*AssetLink|Suity.Editor.Documents.External.PdfTextAsset" />
-  <Object id="c8cb8026-1b10-4715-a27e-bf5a8200f3e6" name="*AssetLink|Suity.Editor.Documents.External.WordTextAsset" />
+  <Object id="490e0680-6837-49a0-a113-23da49800d35" name="*AssetLink|Suity.Editor.Documents.ExcelTextAsset" />
   <Object id="a0c8d972-d680-4b7b-b77d-e16b6e8a8e15" name="*AssetLink|Suity.Editor.Documents.IArticle" />
   <Object id="f5064946-0263-4a31-bfca-df4166373552" name="*AssetLink|Suity.Editor.Documents.IArticleAsset" />
+  <Object id="6b6ffc28-c1e2-4f6b-a34a-409b83913029" name="*AssetLink|Suity.Editor.Documents.PdfTextAsset" />
   <Object id="7df44f97-87a7-44f7-a994-1cf3ecb92614" name="*AssetLink|Suity.Editor.Documents.TextDocumentAsset" />
   <Object id="d6528035-2ea2-483b-89ad-66ad134c1695" name="*AssetLink|Suity.Editor.Documents.TypeEdit.DEnumToStruct" />
+  <Object id="b0b9974c-efdf-42a7-81aa-1839886c7187" name="*AssetLink|Suity.Editor.Documents.WordTextAsset" />
   <Object id="dc28c0fe-c19d-4901-8e8f-565067fa3730" name="*AssetLink|Suity.Editor.FixedDataTableAsset" />
   <Object id="8a971ea6-e6ca-4a47-816d-d4184e7f3434" name="*AssetLink|Suity.Editor.Flows.AIGC.AigcDiagramAsset" />
   <Object id="d1c49547-aa83-417e-9436-5f9fe905bf04" name="*AssetLink|Suity.Editor.Flows.AIGC.WorkflowAsset" />
