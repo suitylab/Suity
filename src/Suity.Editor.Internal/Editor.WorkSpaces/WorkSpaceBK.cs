@@ -12,7 +12,6 @@ using Suity.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Pipes;
 using System.Linq;
 using static Suity.Helpers.GlobalLocalizer;
 
@@ -1497,7 +1496,7 @@ public class WorkSpaceBK : WorkSpace,
         set => _backupIgnorePatterns.Text = value;
     }
 
-    public override void BackupWorkspace(string backupName = null, string ignorePatterns = null)
+    public override string BackupWorkspace(string backupName = null, string ignorePatterns = null)
     {
         string basePatterns = BackupIgnorePatterns;
         List<string> patterns;
@@ -1567,6 +1566,8 @@ public class WorkSpaceBK : WorkSpace,
         });
 
         Logs.LogInfo($"Backup completed: {backupFileName}.zip ({fileCount} files).");
+
+        return Path.GetFileNameWithoutExtension(backupFileName);
     }
 
     private static List<string> SplitBackupPatterns(string value)
@@ -1679,6 +1680,8 @@ public class WorkSpaceBK : WorkSpace,
         bool restored = false;
         FileUnwatchedAction.Do(() =>
         {
+            var masterFileSystem = MasterFileSystem;
+
             foreach (var dir in Directory.GetDirectories(workspaceDir))
             {
                 var dirInfo = new DirectoryInfo(dir);
@@ -1686,7 +1689,7 @@ public class WorkSpaceBK : WorkSpace,
                 {
                     continue;
                 }
-                Directory.Delete(dir, true);
+                masterFileSystem.DeleteDirectory(MakeMasterRelativePath(dir));
             }
 
             foreach (var file in Directory.GetFiles(workspaceDir))
@@ -1696,7 +1699,7 @@ public class WorkSpaceBK : WorkSpace,
                 {
                     continue;
                 }
-                fileInfo.Delete();
+                masterFileSystem.DeleteFile(MakeMasterRelativePath(file));
             }
 
             using (Stream fs = File.OpenRead(backupPath))
@@ -1716,21 +1719,14 @@ public class WorkSpaceBK : WorkSpace,
                         continue;
                     }
 
-                    string directoryName = Path.GetDirectoryName(fullPath);
-                    if (!string.IsNullOrEmpty(directoryName))
-                    {
-                        Directory.CreateDirectory(directoryName);
-                    }
-
                     using (var input = zf.GetInputStream(zipEntry))
-                    using (var output = File.Create(fullPath))
                     {
-                        input.CopyTo(output);
+                        masterFileSystem.WriteStreamWriter(zipEntry.Name, output => input.CopyTo(output));
                     }
                 }
-            }
 
-            restored = true;
+                restored = true;
+            }
         });
 
         if (restored)
@@ -1739,6 +1735,54 @@ public class WorkSpaceBK : WorkSpace,
         }
 
         return restored;
+    }
+
+    public override string GetBackupFileName(string backupName)
+    {
+        if (string.IsNullOrWhiteSpace(backupName))
+        {
+            return null;
+        }
+
+        string baseDir = BaseDirectory;
+        if (string.IsNullOrWhiteSpace(baseDir))
+        {
+            return null;
+        }
+
+        string backupDir = baseDir.PathAppend("Backup");
+        if (!Directory.Exists(backupDir))
+        {
+            return null;
+        }
+
+        string targetName = backupName.Trim();
+
+        string backupPath = Directory.GetFiles(backupDir, "*.zip", SearchOption.TopDirectoryOnly)
+            .FirstOrDefault(f =>
+                Path.GetFileNameWithoutExtension(f).Equals(targetName, StringComparison.OrdinalIgnoreCase)
+                || Path.GetFileName(f).Equals(targetName, StringComparison.OrdinalIgnoreCase)
+                || Path.GetFileName(f).EndsWith("_" + targetName + ".zip", StringComparison.OrdinalIgnoreCase));
+
+        return backupPath;
+    }
+
+    public override bool DeleteBackup(string backupName)
+    {
+        string backupFilePath = GetBackupFileName(backupName);
+        if (string.IsNullOrEmpty(backupFilePath))
+        {
+            Logs.LogWarning($"No backup file found for '{backupName}'.");
+            return false;
+        }
+
+        string backupFileName = Path.GetFileName(backupFilePath);
+
+        var backupFileSystem = new ScopedFileSystem(this.WorkSpaceFileSystem, "Backup");
+        backupFileSystem.DeleteFile(backupFileName);
+        Logs.LogInfo($"Backup deleted: {backupFileName}");
+
+        return true;
     }
 
     public override string[] GetBackupNames()
