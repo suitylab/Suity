@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Suity.Helpers;
 
 namespace Suity.Editor.Services;
 
@@ -21,6 +22,10 @@ public interface IPlatformFileSystem
     void MoveFile(string relativePath, string newName);
 
     void DeleteFile(string relativePath);
+
+    void MoveDirectory(string relativePath, string newName);
+
+    void DeleteDirectory(string relativePath);
 }
 
 public class PlatformFileUpdateEventArgs : EventArgs
@@ -116,6 +121,74 @@ public class PlatformFileSystem : IPlatformFileSystem
 
         File.Delete(fullPath);
         OnFileUpdted(relativePath, fullPath);
+    }
+
+    public virtual void MoveDirectory(string relativePath, string newName)
+    {
+        string fullPath = GetFullPath(relativePath);
+        string newFullPath = GetFullPath(newName);
+        EnsureDirectory(newFullPath);
+
+        string basePath = GetBasePath();
+
+        // Collect the events for every file in the directory before the move.
+        var beforeEvents = new List<PlatformFileUpdateEventArgs>();
+        if (Directory.Exists(fullPath))
+        {
+            foreach (var file in Directory.GetFiles(fullPath, "*", SearchOption.AllDirectories))
+            {
+                beforeEvents.Add(new PlatformFileUpdateEventArgs(file.MakeRelativePath(basePath), file));
+            }
+        }
+
+        Directory.Move(fullPath, newFullPath);
+
+        // Collect the events for every file in the moved directory.
+        var afterEvents = new List<PlatformFileUpdateEventArgs>();
+        if (Directory.Exists(newFullPath))
+        {
+            foreach (var file in Directory.GetFiles(newFullPath, "*", SearchOption.AllDirectories))
+            {
+                afterEvents.Add(new PlatformFileUpdateEventArgs(file.MakeRelativePath(basePath), file));
+            }
+        }
+
+        // Send all the events after the move is completed, so the old paths read as deleted.
+        foreach (var e in beforeEvents)
+        {
+            OnFileUpdted(e.RelativePath, e.ScopedPath);
+        }
+
+        foreach (var e in afterEvents)
+        {
+            OnFileUpdted(e.RelativePath, e.ScopedPath);
+        }
+    }
+
+    public virtual void DeleteDirectory(string relativePath)
+    {
+        string fullPath = GetFullPath(relativePath);
+        if (!Directory.Exists(fullPath))
+        {
+            return;
+        }
+
+        string basePath = GetBasePath();
+
+        // Collect the events for every file in the directory before deleting it.
+        var events = new List<PlatformFileUpdateEventArgs>();
+        foreach (var file in Directory.GetFiles(fullPath, "*", SearchOption.AllDirectories))
+        {
+            events.Add(new PlatformFileUpdateEventArgs(file.MakeRelativePath(basePath), file));
+        }
+
+        Directory.Delete(fullPath, true);
+
+        // Send all the collected events after the directory and its contents are removed.
+        foreach (var e in events)
+        {
+            OnFileUpdted(e.RelativePath, e.ScopedPath);
+        }
     }
 
     protected string GetBasePath() => _basePathGetter?.Invoke() ?? _basePath;
@@ -222,6 +295,95 @@ public class ScopedFileSystem : IPlatformFileSystem
         string scopedPath = MakeScopedPath(relativePath);
         _parent.DeleteFile(scopedPath);
         OnFileUpdated(relativePath, scopedPath);
+    }
+
+    public virtual void MoveDirectory(string relativePath, string newName)
+    {
+        string scopedPath = MakeScopedPath(relativePath);
+        string newScopedPath = MakeScopedPath(newName);
+
+        // Collect the parent events for every affected file, split into the
+        // before-move (old paths) and after-move (new paths) lists.
+        var beforeEvents = new List<PlatformFileUpdateEventArgs>();
+        var afterEvents = new List<PlatformFileUpdateEventArgs>();
+
+        EventHandler<PlatformFileUpdateEventArgs> collector = (s, e) =>
+        {
+            if (IsUnderPath(e.RelativePath, newScopedPath))
+            {
+                afterEvents.Add(e);
+            }
+            else
+            {
+                beforeEvents.Add(e);
+            }
+        };
+
+        _parent.FileUpdated += collector;
+        try
+        {
+            _parent.MoveDirectory(scopedPath, newScopedPath);
+        }
+        finally
+        {
+            _parent.FileUpdated -= collector;
+        }
+
+        string subDir = GetSubDirectory();
+
+        foreach (var e in beforeEvents)
+        {
+            RaiseScopedEvent(subDir, e);
+        }
+
+        foreach (var e in afterEvents)
+        {
+            RaiseScopedEvent(subDir, e);
+        }
+    }
+
+    public virtual void DeleteDirectory(string relativePath)
+    {
+        string scopedPath = MakeScopedPath(relativePath);
+
+        // Collect the parent events for every file in the directory.
+        var events = new List<PlatformFileUpdateEventArgs>();
+        EventHandler<PlatformFileUpdateEventArgs> collector = (s, e) => events.Add(e);
+
+        _parent.FileUpdated += collector;
+        try
+        {
+            _parent.DeleteDirectory(scopedPath);
+        }
+        finally
+        {
+            _parent.FileUpdated -= collector;
+        }
+
+        string subDir = GetSubDirectory();
+        foreach (var e in events)
+        {
+            RaiseScopedEvent(subDir, e);
+        }
+    }
+
+    private void RaiseScopedEvent(string subDir, PlatformFileUpdateEventArgs e)
+    {
+        string scopedRelative = e.RelativePath.MakeRelativePath(subDir);
+        OnFileUpdated(scopedRelative, e.RelativePath);
+    }
+
+    private static bool IsUnderPath(string path, string prefix)
+    {
+        if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(prefix))
+        {
+            return false;
+        }
+
+        string normalizedPath = path.Replace('\\', '/').TrimEnd('/');
+        string normalizedPrefix = prefix.Replace('\\', '/').TrimEnd('/');
+
+        return normalizedPath.StartsWith(normalizedPrefix + "/", StringComparison.OrdinalIgnoreCase);
     }
 
     protected string GetSubDirectory() => _subDirectoryGetter?.Invoke() ?? _subDirectory;
