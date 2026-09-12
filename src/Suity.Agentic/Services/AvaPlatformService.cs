@@ -41,11 +41,12 @@ public class AvaPlatformService : IPlatformService
         };
     }
 
-    public string BackupWorkspace(WorkSpace workspace, string? backupName = null, string? ignorePatterns = null)
+    public Task<string> BackupWorkspace(WorkSpace workspace, string? backupName = null, string? ignorePatterns = null)
     {
         if (workspace is null)
             throw new ArgumentNullException(nameof(workspace));
 
-        return workspace.Backup(backupName, ignorePatterns);
+        string result = workspace.Backup(backupName, ignorePatterns);
+        return Task.FromResult(result);
     }
 }

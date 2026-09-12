@@ -75,6 +75,6 @@ public interface IPlatformService
     /// <param name="backupName">The name of the backup.</param>
     /// <param name="ignorePatterns">The patterns to ignore during the backup.</param>
     /// <returns>The path to the backup location.</returns>
-    string BackupWorkspace(WorkSpace workspace, string backupName = null, string ignorePatterns = null);
+    Task<string> BackupWorkspace(WorkSpace workspace, string backupName = null, string ignorePatterns = null);
 }
 

@@ -1,4 +1,5 @@
 using Suity.Editor.Flows.SubFlows;
+using Suity.Editor.Services;
 using Suity.Editor.Types;
 using Suity.Editor.Values;
 using Suity.Synchonizing;
@@ -55,7 +56,7 @@ public class BackupWorkspace : ToolCommand<BackupWorkspace.Output>
         _ignorePatterns.InspectorField(setup);
     }
 
-    public override Task<Output> Run(ToolCallContext context)
+    public override async Task<Output> Run(ToolCallContext context)
     {
         var workspace = context.WorkSpace;
         if (workspace is null)
@@ -64,21 +65,26 @@ public class BackupWorkspace : ToolCommand<BackupWorkspace.Output>
         }
 
         string backupName = BackupName?.Trim();
+        if (string.IsNullOrWhiteSpace(backupName))
+        {
+            backupName = null;
+        }
+
         try
         {
-            workspace.Backup(string.IsNullOrWhiteSpace(backupName) ? null : backupName, IgnorePatterns);
+            string? backupResult = await EditorServices.PlatformService.BackupWorkspace(workspace, backupName, IgnorePatterns);
+
+            return new Output
+            {
+                Message = "Backup completed. backup name: " + backupResult,
+            };
         }
         catch (Exception ex)
         {
-            return Task.FromResult(new Output
+            return new Output
             {
                 Message = $"Backup failed: {ex.Message}",
-            });
+            };
         }
-
-        return Task.FromResult(new Output
-        {
-            Message = "Backup completed.",
-        });
     }
 }
