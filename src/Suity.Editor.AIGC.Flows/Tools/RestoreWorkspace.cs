@@ -74,7 +74,7 @@ public class RestoreWorkspace : ToolCommand<RestoreWorkspace.Output>
         string backupName = BackupName?.Trim();
         try
         {
-            bool success = workspace.RestoreWorkspace(string.IsNullOrWhiteSpace(backupName) ? null : backupName);
+            bool success = workspace.Restore(string.IsNullOrWhiteSpace(backupName) ? null : backupName);
 
             return Task.FromResult(new Output
             {

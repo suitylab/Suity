@@ -67,5 +67,14 @@ public interface IPlatformService
     /// <param name="disableOldMessage">Whether to disable old messages.</param>
     /// <returns>A conversation host instance.</returns>
     IConversationHost CreateConversation(string id, ConversationOptions option);
+
+    /// <summary>
+    /// Backups the workspace to a specified location with an optional backup name and ignore patterns.
+    /// </summary>
+    /// <param name="workspace">The workspace to backup.</param>
+    /// <param name="backupName">The name of the backup.</param>
+    /// <param name="ignorePatterns">The patterns to ignore during the backup.</param>
+    /// <returns>The path to the backup location.</returns>
+    string BackupWorkspace(WorkSpace workspace, string backupName = null, string ignorePatterns = null);
 }
 

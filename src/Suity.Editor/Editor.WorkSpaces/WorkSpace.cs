@@ -775,14 +775,14 @@ public abstract class WorkSpace : IRenderHost, IHasId
     /// </summary>
     /// <param name="backupName">Optional backup name in standard folder naming format. Leave empty to use a default generated name.</param>
     /// <param name="ignorePatterns">Optional ignore patterns that append to the workspace backup ignore patterns</param>
-    public abstract string BackupWorkspace(string backupName = null, string ignorePatterns = null);
+    public abstract string Backup(string backupName = null, string ignorePatterns = null);
 
     /// <summary>
     /// Restores the workspace from a backup file.
     /// </summary>
     /// <param name="backupName">Optional backup name. Leave empty to use the latest backup file.</param>
     /// <returns>True if the backup was found and restored successfully, otherwise false.</returns>
-    public abstract bool RestoreWorkspace(string backupName = null);
+    public abstract bool Restore(string backupName = null);
 
     public abstract string GetBackupFileName(string backupName);
 

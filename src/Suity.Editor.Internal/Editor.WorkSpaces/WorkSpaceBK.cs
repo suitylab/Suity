@@ -1496,7 +1496,7 @@ public class WorkSpaceBK : WorkSpace,
         set => _backupIgnorePatterns.Text = value;
     }
 
-    public override string BackupWorkspace(string backupName = null, string ignorePatterns = null)
+    public override string Backup(string backupName = null, string ignorePatterns = null)
     {
         string basePatterns = BackupIgnorePatterns;
         List<string> patterns;
@@ -1622,7 +1622,7 @@ public class WorkSpaceBK : WorkSpace,
         return fileCount;
     }
 
-    public override bool RestoreWorkspace(string backupName = null)
+    public override bool Restore(string backupName = null)
     {
         string baseDir = BaseDirectory;
         string workspaceDir = MasterDirectory;

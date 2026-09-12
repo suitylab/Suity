@@ -84,7 +84,7 @@ internal class BackupWorkSpaceCommand : MenuCommand
         {
             try
             {
-                workSpace.BackupWorkspace(name);
+                workSpace.Backup(name);
             }
             catch (Exception err)
             {
@@ -158,7 +158,7 @@ internal class RestoreWorkSpaceCommand : MenuCommand
 
         try
         {
-            workSpace.RestoreWorkspace(backupName);
+            workSpace.Restore(backupName);
         }
         catch (Exception err)
         {

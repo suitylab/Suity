@@ -40,4 +40,12 @@ public class AvaPlatformService : IPlatformService
             Level = option.Level,
         };
     }
+
+    public string BackupWorkspace(WorkSpace workspace, string? backupName = null, string? ignorePatterns = null)
+    {
+        if (workspace is null)
+            throw new ArgumentNullException(nameof(workspace));
+
+        return workspace.Backup(backupName, ignorePatterns);
+    }
 }
