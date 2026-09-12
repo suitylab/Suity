@@ -1,6 +1,7 @@
 ﻿using Suity.Collections;
 using Suity.Editor;
 using Suity.Editor.ProjectGui.Nodes;
+using Suity.Editor.Services;
 using Suity.Editor.WorkSpaces;
 using Suity.Helpers;
 using Suity.Selecting;
@@ -80,11 +81,13 @@ internal class BackupWorkSpaceCommand : MenuCommand
 
         name = name.Trim();
 
+        var platformService = EditorServices.PlatformService;
+
         foreach (var workSpace in workSpaces)
         {
             try
             {
-                workSpace.Backup(name);
+                await platformService.BackupWorkspace(workSpace, name);
             }
             catch (Exception err)
             {
