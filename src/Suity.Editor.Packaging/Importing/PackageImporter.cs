@@ -306,6 +306,24 @@ internal class PackageImporter
     /// <param name="options">The import options.</param>
     private void ImportFile(ZipFile zf, ZipEntry zipEntry, LoadingIterations itr, ImportOptions options)
     {
+        bool isAssetFile = zipEntry.Name.StartsWith("Assets/");
+        bool isWorkSpaceFile = zipEntry.Name.StartsWith("WorkSpaces/");
+        bool isSystemFile = zipEntry.Name.StartsWith("System/");
+
+        // Only entries selected by the import options are written. Skipped entries
+        // must not touch existing project files: the delete below used to run
+        // unconditionally, so importing with e.g. ImportOptions.Asset deleted
+        // Workspaces/System files without rewriting them.
+        bool willImport =
+            (isAssetFile && options.HasFlag(ImportOptions.Asset))
+            || (isWorkSpaceFile && options.HasFlag(ImportOptions.Workspace))
+            || (isSystemFile && options.HasFlag(ImportOptions.System));
+
+        if (!willImport)
+        {
+            return;
+        }
+
         string targetFileName = _project.ProjectBasePath.PathAppend(zipEntry.Name);
 
         var directoryName = Path.GetDirectoryName(targetFileName);
@@ -323,10 +341,6 @@ internal class PackageImporter
                 DocumentManager.Instance.CloseDocument(targetFileName);
             });
         }
-
-        bool isAssetFile = zipEntry.Name.StartsWith("Assets/");
-        bool isWorkSpaceFile = zipEntry.Name.StartsWith("WorkSpaces/");
-        bool isSystemFile = zipEntry.Name.StartsWith("System/");
 
         string workSpaceName = null;
         WorkSpace workSpace = null;
