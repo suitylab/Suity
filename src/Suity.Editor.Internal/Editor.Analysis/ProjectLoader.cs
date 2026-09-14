@@ -60,9 +60,9 @@ public class ProjectLoader
     public ICollection<Assembly> PluginAssemblies { get; set; }
 
     /// <summary>
-    /// The full path to the template files (.suitypackage).
+    /// The full path to the extension files (.suitypackage).
     /// </summary>
-    public string[] TemplateFileNames { get; set; } = [];
+    public string[] ExtensionFileNames { get; set; } = [];
 
     /// <summary>
     /// Occurs when the editor UI is starting.
@@ -362,16 +362,16 @@ public class ProjectLoader
         // Disable reference management to prevent cross-updates during loading
         EditorRexes.ReferenceManagerDisabled.Value = true;
 
-        var templateFileNames = TemplateFileNames ?? [];
+        var extensionFileNames = ExtensionFileNames ?? [];
 
-        foreach (var templateFileName in templateFileNames)
+        foreach (var extensionFileName in extensionFileNames)
         {
-            if (!string.IsNullOrWhiteSpace(templateFileName) && File.Exists(templateFileName))
+            if (!string.IsNullOrWhiteSpace(extensionFileName) && File.Exists(extensionFileName))
             {
-                EditorServices.SystemLog.AddLog($"Importing template file: {templateFileName}");
+                EditorServices.SystemLog.AddLog($"Importing template file: {extensionFileName}");
                 EditorServices.SystemLog.PushIndent();
 
-                await EditorUtility.ImportPackage(templateFileName);
+                await EditorUtility.ImportPackage(extensionFileName);
 
                 EditorServices.SystemLog.PopIndent();
                 EditorServices.SystemLog.AddLog($"Finish importing template file.");
