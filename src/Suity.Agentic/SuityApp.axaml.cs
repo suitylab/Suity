@@ -407,7 +407,7 @@ namespace Suity.Editor
             _projectLoader = new ProjectLoader
             {
                 PluginAssemblies = asms,
-                TemplateFileName = templateFileName,
+                TemplateFileNames = !string.IsNullOrWhiteSpace(templateFileName) ? [templateFileName] : [],
             };
 
             _projectLoader.EditorStart += (s, e) => HandleEditorStart();

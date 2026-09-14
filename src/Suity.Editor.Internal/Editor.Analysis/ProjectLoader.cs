@@ -60,9 +60,9 @@ public class ProjectLoader
     public ICollection<Assembly> PluginAssemblies { get; set; }
 
     /// <summary>
-    /// The full path to the template file (.suitypackage).
+    /// The full path to the template files (.suitypackage).
     /// </summary>
-    public string TemplateFileName { get; set; }
+    public string[] TemplateFileNames { get; set; } = [];
 
     /// <summary>
     /// Occurs when the editor UI is starting.
@@ -362,19 +362,23 @@ public class ProjectLoader
         // Disable reference management to prevent cross-updates during loading
         EditorRexes.ReferenceManagerDisabled.Value = true;
 
-        var templateFileName = TemplateFileName;
-        if (!string.IsNullOrWhiteSpace(templateFileName) && File.Exists(templateFileName))
+        var templateFileNames = TemplateFileNames ?? [];
+
+        foreach (var templateFileName in templateFileNames)
         {
-            EditorServices.SystemLog.AddLog($"Importing template file...");
-            EditorServices.SystemLog.PushIndent();
+            if (!string.IsNullOrWhiteSpace(templateFileName) && File.Exists(templateFileName))
+            {
+                EditorServices.SystemLog.AddLog($"Importing template file: {templateFileName}");
+                EditorServices.SystemLog.PushIndent();
 
-            await EditorUtility.ImportPackage(templateFileName);
+                await EditorUtility.ImportPackage(templateFileName);
 
-            EditorServices.SystemLog.PopIndent();
-            EditorServices.SystemLog.AddLog($"Finish importing template file.");
+                EditorServices.SystemLog.PopIndent();
+                EditorServices.SystemLog.AddLog($"Finish importing template file.");
+
+                if (TaskYield) await Task.Yield();
+            }
         }
-
-        if (TaskYield) await Task.Yield();
 
         // Open all documents
         await project.ScanProjectDirectory();
