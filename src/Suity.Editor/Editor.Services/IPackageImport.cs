@@ -3,6 +3,17 @@ using System.Threading.Tasks;
 
 namespace Suity.Editor.Services;
 
+
+[Flags]
+public enum ImportOptions
+{
+    None = 0,
+    Asset = 1,
+    Workspace = 2,
+    System = 4,
+    All = Asset | Workspace | System
+}
+
 /// <summary>
 /// Service interface for importing packages.
 /// </summary>
@@ -22,5 +33,5 @@ public interface IPackageImport
     /// <param name="fileName">The file name to import.</param>
     /// <param name="packageFullName">The full package name.</param>
     /// <param name="onComplete">Optional callback when import completes.</param>
-    Task ImportPackage(string fileName, string packageFullName = null);
+    Task ImportPackage(string fileName, string packageFullName = null, ImportOptions options = ImportOptions.All);
 }

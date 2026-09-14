@@ -224,11 +224,12 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
     /// </summary>
     /// <param name="fileName">The path to the package file to import.</param>
     /// <param name="packageFullName">An optional full package identifier for metadata tracking.</param>
-    public async Task ImportPackage(string fileName, string packageFullName = null)
+    /// <param name="options">The import options.</param>
+    public async Task ImportPackage(string fileName, string packageFullName = null, ImportOptions options = ImportOptions.All)
     {
         var importer = new PackageImporter();
 
-        await QueuedAction.DoSuspendedAction(() => importer.Import(fileName, null, packageFullName));
+        await QueuedAction.DoSuspendedAction(() => importer.Import(fileName, null, packageFullName, options));
         await EditorUtility.WaitForQueuedAction();
     }
 }

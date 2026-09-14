@@ -22,7 +22,7 @@ internal sealed class NativeTypeReflector
     private readonly Dictionary<string, NativeTypeLibrary> _libraries = [];
     private readonly Dictionary<Type, DType> _nativeTypes = [];
 
-    // Interfaces need special handling because they can be used to get Assets
+    // Interfaces need special handling because they can be used to get Asset
     private readonly HashSet<Type> _interfaces = [];
 
     internal NativeTypeReflector()

@@ -242,7 +242,7 @@ public static class EditorUtility
     /// <summary>
     /// Retrieves an icon based on the provided icon object.
     /// The method handles various types of icon objects including direct Image references,
-    /// Assets, GUIDs, objects with IDs, and strings that can be resolved to IDs.
+    /// Asset, GUIDs, objects with IDs, and strings that can be resolved to IDs.
     /// </summary>
     /// <param name="iconObject">The object from which to retrieve the icon. Can be of various types.</param>
     /// <returns>
@@ -1498,11 +1498,13 @@ public static class EditorUtility
     /// <param name="fileName">The path to the package file to be imported.</param>
     /// <param name="packageFullName">Optional full name of the package.</param>
     /// <param name="onComplete">Optional callback action to be executed when the import operation completes.</param>
-    public static Task ImportPackage(string fileName, string packageFullName = null)
+    /// <param name="options">The import options determining what types of content to import.</param>
+    /// <returns>A Task representing the import operation.</returns>
+    public static Task ImportPackage(string fileName, string packageFullName = null, ImportOptions options = ImportOptions.All)
     {
         if (Device.Current.GetService<IPackageImport>() is { } importer)
         {
-            return importer.ImportPackage(fileName, packageFullName);
+            return importer.ImportPackage(fileName, packageFullName, options);
         }
         else
         {

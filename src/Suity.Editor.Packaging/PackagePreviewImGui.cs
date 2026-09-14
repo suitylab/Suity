@@ -468,7 +468,7 @@ internal class PackagePreviewImGui : IDrawImGui
     /// <summary>
     /// Gets a suggested asset path derived from the enabled items in the root asset node.
     /// </summary>
-    /// <returns>A suggested asset path string with the "Assets" prefix removed.</returns>
+    /// <returns>A suggested asset path string with the "Asset" prefix removed.</returns>
     public string GetSuggestedAssetPath()
     {
         if (_rootAssetNode is null)

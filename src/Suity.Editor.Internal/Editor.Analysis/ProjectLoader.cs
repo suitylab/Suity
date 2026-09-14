@@ -65,6 +65,12 @@ public class ProjectLoader
     public string[] ExtensionFileNames { get; set; } = [];
 
     /// <summary>
+    /// Gets or sets the import options for extension files, determining what types of content to import.
+    /// </summary>
+    public ImportOptions ExtensionImportOptions { get; set; } = ImportOptions.All;
+
+
+    /// <summary>
     /// Occurs when the editor UI is starting.
     /// </summary>
     public event EventHandler EditorStart;
@@ -363,6 +369,7 @@ public class ProjectLoader
         EditorRexes.ReferenceManagerDisabled.Value = true;
 
         var extensionFileNames = ExtensionFileNames ?? [];
+        var importOptions = ExtensionImportOptions;
 
         foreach (var extensionFileName in extensionFileNames)
         {
@@ -371,7 +378,7 @@ public class ProjectLoader
                 EditorServices.SystemLog.AddLog($"Importing template file: {extensionFileName}");
                 EditorServices.SystemLog.PushIndent();
 
-                await EditorUtility.ImportPackage(extensionFileName);
+                await EditorUtility.ImportPackage(extensionFileName, null, importOptions);
 
                 EditorServices.SystemLog.PopIndent();
                 EditorServices.SystemLog.AddLog($"Finish importing template file.");

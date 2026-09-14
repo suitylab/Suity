@@ -57,7 +57,7 @@ internal class PackageImporter
     /// <param name="packageFullName">An optional full package identifier for metadata tracking.</param>
     /// <param name="onComplete">An optional callback invoked when import completes.</param>
     /// <returns>A task representing the asynchronous import operation.</returns>
-    public Task Import(string packageFileName, IEnumerable<string> entryNames = null, string packageFullName = null, Action onComplete = null)
+    public Task Import(string packageFileName, IEnumerable<string> entryNames = null, string packageFullName = null, ImportOptions options = ImportOptions.All, Action onComplete = null)
     {
         CleanUp();
 
@@ -124,7 +124,7 @@ internal class PackageImporter
 
                                 try
                                 {
-                                    ImportFile(zf, zipEntry, iteration.Key);
+                                    ImportFile(zf, zipEntry, iteration.Key, options);
                                 }
                                 catch (Exception err)
                                 {
@@ -146,7 +146,7 @@ internal class PackageImporter
                             DocumentManager.Instance.OpenDocument(assetFileName, DocumentLoadingIntent.Import);
                         }
                     }
-
+                    
                     // Write package metadata to asset meta files
                     if (!string.IsNullOrEmpty(packageFullName))
                     {
@@ -179,6 +179,7 @@ internal class PackageImporter
                     }
 
                     // Update or create workspaces referenced in the package
+
                     foreach (string workspaceName in _workspaceNames)
                     {
                         WorkSpace workSpace = EditorServices.WorkSpaceManager.GetWorkSpace(workspaceName);
@@ -302,7 +303,8 @@ internal class PackageImporter
     /// <param name="zf">The zip file containing the entry.</param>
     /// <param name="zipEntry">The specific zip entry to import.</param>
     /// <param name="itr">The loading iteration this entry belongs to.</param>
-    private void ImportFile(ZipFile zf, ZipEntry zipEntry, LoadingIterations itr)
+    /// <param name="options">The import options.</param>
+    private void ImportFile(ZipFile zf, ZipEntry zipEntry, LoadingIterations itr, ImportOptions options)
     {
         string targetFileName = _project.ProjectBasePath.PathAppend(zipEntry.Name);
 
@@ -334,12 +336,12 @@ internal class PackageImporter
         // The "using" will close the stream even if an exception occurs.
         using (var zipStream = zf.GetInputStream(zipEntry))
         {
-            if (isAssetFile)
+            if (isAssetFile && options.HasFlag(ImportOptions.Asset))
             {
                 using Stream fsOutput = File.Create(targetFileName);
                 StreamUtils.Copy(zipStream, fsOutput, _buffer);
             }
-            else if (isWorkSpaceFile)
+            else if (isWorkSpaceFile && options.HasFlag(ImportOptions.Workspace))
             {
                 if (zipEntry.Name == WorkSpaceExportSettingFileName)
                 {
@@ -372,7 +374,7 @@ internal class PackageImporter
                     StreamUtils.Copy(zipStream, fsOutput, _buffer);
                 }
             }
-            else if (isSystemFile)
+            else if (isSystemFile && options.HasFlag(ImportOptions.System))
             {
                 using Stream fsOutput = File.Create(targetFileName);
                 StreamUtils.Copy(zipStream, fsOutput, _buffer);
@@ -380,18 +382,18 @@ internal class PackageImporter
         }
 
         // Update Workspace Config file
-        if (isWorkSpaceFile)
+        if (isWorkSpaceFile && options.HasFlag(ImportOptions.Workspace))
         {
             workSpaceName = zipEntry.Name.RemoveFromFirst(11).FindAndGetBefore('/', true);
             _workspaceNames.Add(workSpaceName);
         }
-        else if (isAssetFile)
+        else if (isAssetFile && options.HasFlag(ImportOptions.Asset))
         {
             int index = (int)itr;
             _assetFileNames.EnsureListSize(index + 1, () => []);
             _assetFileNames[index].Add(targetFileName);
         }
-        else if (isSystemFile)
+        else if (isSystemFile && options.HasFlag(ImportOptions.System))
         {
             _systemFileNames.Add(targetFileName);
         }
