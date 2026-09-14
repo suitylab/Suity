@@ -33,6 +33,7 @@ internal class ProjectBK : Project
 
     private IPlatformFileSystem _rootFileSystem;
     private IPlatformFileSystem _systemFileSystem;
+    private IPlatformFileSystem _extensionsFileSystem;
 
     private FileAssetManagerBK _fileLibrary;
     private WorkSpaceManagerBK _workSpaceManager;
@@ -94,6 +95,7 @@ internal class ProjectBK : Project
 
         _rootFileSystem = EditorServices.PlatformService.CreateFileSystem(this);
         _systemFileSystem = new ScopedFileSystem(_rootFileSystem, () => GetProjectDirectoryName(ProjectDirectories.System), this);
+        _extensionsFileSystem = new ScopedFileSystem(_rootFileSystem, () => GetProjectDirectoryName(ProjectDirectories.Extensions), this);
 
         _idResolver = new ProjectIdResolver(this, _projectBasePath.PathAppend(assetDir));
         _idResolver.Start();
@@ -124,6 +126,9 @@ internal class ProjectBK : Project
     public override IPlatformFileSystem SystemFileSystem => _systemFileSystem;
 
     /// <inheritdoc/>
+    public override IPlatformFileSystem ExtensionsFileSystem => _extensionsFileSystem;
+
+    /// <inheritdoc/>
     public override FileAssetManager FileAssetManager => _fileLibrary;
     /// <inheritdoc/>
     public override WorkSpaceManager WorkSpaceManager => _workSpaceManager;
@@ -145,6 +150,7 @@ internal class ProjectBK : Project
         ProjectDirectories.System => _setting.SystemDirectory,
         ProjectDirectories.Publish => _setting.PublishDirectory,
         ProjectDirectories.Assemblies => _setting.AssembliesDirectory,
+        ProjectDirectories.Extensions => _setting.ExtensionsDirectory,
         _ => null,
     };
 
@@ -157,6 +163,7 @@ internal class ProjectBK : Project
         ProjectDirectories.System => GetSubDirectory(_setting.SystemDirectory),
         ProjectDirectories.Publish => GetSubDirectory(_setting.PublishDirectory),
         ProjectDirectories.Assemblies => GetSubDirectory(_setting.AssembliesDirectory),
+        ProjectDirectories.Extensions => GetSubDirectory(_setting.ExtensionsDirectory),
         _ => null,
     };
 

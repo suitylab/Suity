@@ -24,7 +24,8 @@ public enum ProjectDirectories
     WorkSpace,
     System,
     Publish,
-    Assemblies
+    Assemblies,
+    Extensions,
 }
 
 /// <summary>
@@ -55,6 +56,19 @@ public abstract class Project
     public abstract ProjectStatus Status { get; }
 
     /// <summary>
+    /// Gets the file asset manager for the project.
+    /// </summary>
+    public abstract FileAssetManager FileAssetManager { get; }
+
+    /// <summary>
+    /// Gets the workspace manager for the project.
+    /// </summary>
+    public abstract WorkSpaceManager WorkSpaceManager { get; }
+
+    #region FileSystem
+
+
+    /// <summary>
     /// Gets the root file system for the project.
     /// </summary>
     public abstract IPlatformFileSystem RootFileSystem { get; }
@@ -64,15 +78,9 @@ public abstract class Project
     /// </summary>
     public abstract IPlatformFileSystem SystemFileSystem { get; }
 
-    /// <summary>
-    /// Gets the file asset manager for the project.
-    /// </summary>
-    public abstract FileAssetManager FileAssetManager { get; }
+    public abstract IPlatformFileSystem ExtensionsFileSystem { get; }
 
-    /// <summary>
-    /// Gets the workspace manager for the project.
-    /// </summary>
-    public abstract WorkSpaceManager WorkSpaceManager { get; }
+    #endregion
 
     #region File
 
@@ -130,6 +138,11 @@ public abstract class Project
     /// Gets the path to the assemblies directory.
     /// </summary>
     public string AssembliesDirectory => GetProjectDirectory(ProjectDirectories.Assemblies);
+
+    /// <summary>
+    /// Gets the path to the extensions directory.
+    /// </summary>
+    public string ExtensionsDirectory => GetProjectDirectory(ProjectDirectories.Extensions);
 
     #endregion
 
