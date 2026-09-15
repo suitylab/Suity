@@ -332,9 +332,63 @@ internal class PackageImporter
             Directory.CreateDirectory(directoryName);
         }
 
+        string rFileName = null;
+        string workSpaceName = null;
+        WorkSpace workSpace = null;
+        IPlatformFileSystem targetFileSystem = null;
+        string relativeWritePath = null;
+
+        // Resolve the destination file system and the path relative to its scope
+        // before deleting, so hosts that observe file-system writes (e.g. WASM)
+        // also see removals. File-system paths are always relative to their scope:
+        // Master files relative to the master directory, other workspace files
+        // relative to the workspace directory, system files relative to System.
+        if (isWorkSpaceFile && zipEntry.Name != WorkSpaceExportSettingFileName)
+        {
+            rFileName = zipEntry.Name.RemoveFromFirst(11);
+            workSpaceName = rFileName.FindAndGetBefore('/', true);
+            workSpace = WorkSpaceManager.Current.GetWorkSpace(workSpaceName);
+
+            string localFileName = rFileName.RemoveFromFirst(workSpaceName.Length + 1);
+            bool inMaster = localFileName.StartsWith(WorkSpace.DefaultMasterDirectory);
+            if (inMaster)
+            {
+                localFileName = localFileName.RemoveFromFirst(WorkSpace.DefaultMasterDirectory.Length + 1);
+            }
+
+            if (workSpace != null)
+            {
+                targetFileSystem = inMaster ? workSpace.MasterFileSystem : workSpace.WorkSpaceFileSystem;
+                relativeWritePath = localFileName;
+
+                if (inMaster)
+                {
+                    targetFileName = workSpace.MakeMasterFullPath(localFileName);
+                }
+            }
+        }
+        else if (isSystemFile && options.HasFlag(ImportOptions.System))
+        {
+            string systemRelativePath = targetFileName.MakeRelativePath(_project.SystemDirectory);
+            var systemFileSystem = _project.SystemFileSystem;
+            if (systemFileSystem is not null && !string.IsNullOrEmpty(systemRelativePath))
+            {
+                targetFileSystem = systemFileSystem;
+                relativeWritePath = systemRelativePath;
+            }
+        }
+
         if (File.Exists(targetFileName))
         {
-            File.Delete(targetFileName);
+            if (targetFileSystem is not null && !string.IsNullOrEmpty(relativeWritePath))
+            {
+                targetFileSystem.DeleteFile(relativeWritePath);
+            }
+            else
+            {
+                File.Delete(targetFileName);
+            }
+
             QueuedAction.Do(() => 
             {
                 DocumentManager.Instance?.GetDocument(targetFileName)?.MarkDelete();
@@ -342,8 +396,6 @@ internal class PackageImporter
             });
         }
 
-        string workSpaceName = null;
-        WorkSpace workSpace = null;
 
         // Unzip file in buffered chunks. This is just as fast as unpacking
         // to a buffer the full size of the file, but does not waste memory.
@@ -362,25 +414,13 @@ internal class PackageImporter
                     return;
                 }
 
-                string rFileName = zipEntry.Name.RemoveFromFirst(11);
-                workSpaceName = rFileName.FindAndGetBefore('/', true);
-                workSpace = WorkSpaceManager.Current.GetWorkSpace(workSpaceName);
-
-                string localFileName = rFileName.RemoveFromFirst(workSpaceName.Length + 1);
-                bool inMaster = localFileName.StartsWith(WorkSpace.DefaultMasterDirectory);
-                if (inMaster)
-                {
-                    localFileName = localFileName.RemoveFromFirst(WorkSpace.DefaultMasterDirectory.Length + 1);
-                }
-
-                if (workSpace != null && inMaster)
-                {
-                    targetFileName = workSpace.MakeMasterFullPath(localFileName);
-                }
-
                 if (_renderFiles.GetValueSafe(rFileName) is RenderFile renderFile)
                 {
-                    ImportRenderFile(zipStream, renderFile, targetFileName);
+                    ImportRenderFile(zipStream, renderFile, targetFileSystem, relativeWritePath, targetFileName);
+                }
+                else if (targetFileSystem is not null && !string.IsNullOrEmpty(relativeWritePath))
+                {
+                    targetFileSystem.WriteStreamWriter(relativeWritePath, stream => StreamUtils.Copy(zipStream, stream, _buffer));
                 }
                 else
                 {
@@ -390,15 +430,9 @@ internal class PackageImporter
             }
             else if (isSystemFile && options.HasFlag(ImportOptions.System))
             {
-                // Write System files through the platform file system so that a
-                // WASM host can observe the change (dirty tracking / IndexedDB
-                // sync). The file system uses paths relative to the System
-                // directory, while targetFileName is an absolute path.
-                string systemRelativePath = targetFileName.MakeRelativePath(_project.SystemDirectory);
-                var systemFileSystem = _project.SystemFileSystem;
-                if (systemFileSystem is not null && !string.IsNullOrEmpty(systemRelativePath))
+                if (targetFileSystem is not null && !string.IsNullOrEmpty(relativeWritePath))
                 {
-                    systemFileSystem.WriteStreamWriter(systemRelativePath, stream => StreamUtils.Copy(zipStream, stream, _buffer));
+                    targetFileSystem.WriteStreamWriter(relativeWritePath, stream => StreamUtils.Copy(zipStream, stream, _buffer));
                 }
                 else
                 {
@@ -431,8 +465,10 @@ internal class PackageImporter
     /// </summary>
     /// <param name="stream">The input stream containing the source file content.</param>
     /// <param name="renderFile">The render file metadata specifying the language.</param>
-    /// <param name="targetFileName">The destination file path.</param>
-    private void ImportRenderFile(Stream stream, RenderFile renderFile, string targetFileName)
+    /// <param name="fileSystem">The destination file system, or null to fall back to a direct file write.</param>
+    /// <param name="relativePath">The destination path relative to <paramref name="fileSystem"/>.</param>
+    /// <param name="targetFileName">The absolute destination file path (fallback).</param>
+    private void ImportRenderFile(Stream stream, RenderFile renderFile, IPlatformFileSystem fileSystem, string relativePath, string targetFileName)
     {
         string source = string.Empty;
 
@@ -460,7 +496,14 @@ internal class PackageImporter
 
         string result = doc.GenerateCode();
 
-        TextFileHelper.WriteFile(targetFileName, result);
+        if (fileSystem is not null && !string.IsNullOrEmpty(relativePath))
+        {
+            fileSystem.WriteAllText(relativePath, result);
+        }
+        else
+        {
+            TextFileHelper.WriteFile(targetFileName, result);
+        }
     }
 
     /// <summary>
