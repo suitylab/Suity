@@ -36,7 +36,11 @@ public class EditorAssetRef : EditorObjectRef<Asset>, IHasAsset
     {
     }
 
-    public Asset TargetAsset => base.Target;
+    public Asset TargetAsset
+    {
+        get => base.Target;
+        set => base.Target = value;
+    }
 
     public override string ToString()
     {
