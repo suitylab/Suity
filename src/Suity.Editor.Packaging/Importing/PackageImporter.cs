@@ -390,8 +390,21 @@ internal class PackageImporter
             }
             else if (isSystemFile && options.HasFlag(ImportOptions.System))
             {
-                using Stream fsOutput = File.Create(targetFileName);
-                StreamUtils.Copy(zipStream, fsOutput, _buffer);
+                // Write System files through the platform file system so that a
+                // WASM host can observe the change (dirty tracking / IndexedDB
+                // sync). The file system uses paths relative to the System
+                // directory, while targetFileName is an absolute path.
+                string systemRelativePath = targetFileName.MakeRelativePath(_project.SystemDirectory);
+                var systemFileSystem = _project.SystemFileSystem;
+                if (systemFileSystem is not null && !string.IsNullOrEmpty(systemRelativePath))
+                {
+                    systemFileSystem.WriteStreamWriter(systemRelativePath, stream => StreamUtils.Copy(zipStream, stream, _buffer));
+                }
+                else
+                {
+                    using Stream fsOutput = File.Create(targetFileName);
+                    StreamUtils.Copy(zipStream, fsOutput, _buffer);
+                }
             }
         }
 
