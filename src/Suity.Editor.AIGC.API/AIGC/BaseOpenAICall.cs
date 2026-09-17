@@ -18,6 +18,13 @@ namespace Suity.Editor.AIGC;
 /// </summary>
 public abstract class BaseOpenAICall : BaseLLmCall
 {
+    /// <summary>
+    /// Optional hook to configure the underlying <see cref="OpenAIAPI"/> instance right
+    /// after it is created (e.g. inject an <c>HttpClientFactory</c> that attaches platform
+    /// authentication for the built-in provider). Desktop leaves this null.
+    /// </summary>
+    public static Action<OpenAIAPI>? ConfigureApi { get; set; }
+
     private readonly ILLmManufacturer _manufacturer;
     private readonly Model? _model;
     private OpenAIAPI? _api;
@@ -75,10 +82,14 @@ public abstract class BaseOpenAICall : BaseLLmCall
     {
         base.NewMessage();
 
-        _api ??= new(ApiKey)
+        if (_api is null)
         {
-            ApiUrlFormat = OkGoDoItHelper.ResolveApiUrlFormat(BaseUrl),
-        };
+            _api = new(ApiKey)
+            {
+                ApiUrlFormat = OkGoDoItHelper.ResolveApiUrlFormat(BaseUrl),
+            };
+            ConfigureApi?.Invoke(_api);
+        }
 
         _request.Set(_api.Chat.CreateConversation());
     }
