@@ -413,14 +413,20 @@ public class GetSpeechLanguage : AigcFlowNode
     /// <inheritdoc/>
     public override void Compute(IFlowComputation compute)
     {
-        string lang = LLmService.Instance.LocalizedSpeechLanguage;
+        var modelProviderService = Device.Current.GetService<IModelProviderService>();
+
+        string lang = modelProviderService?.GetSpeechLanguage()
+            ?? LLmService.Instance.LocalizedSpeechLanguage;
         
         compute.SetValue(_out, lang);
     }
 
     private ImGuiNode OnGui(ImGui gui, IDrawNodeContext context)
     {
-        string lang = LLmService.Instance.LocalizedSpeechLanguage;
+        var modelProviderService = Device.Current.GetService<IModelProviderService>();
+
+        string lang = modelProviderService?.GetSpeechLanguage()
+            ?? LLmService.Instance.LocalizedSpeechLanguage;
 
         return gui.FlowSingleConnectorFrame(_out, context, lang);
     }

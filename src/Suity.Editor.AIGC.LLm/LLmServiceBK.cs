@@ -197,6 +197,10 @@ internal class LLmServiceBK : LLmService, IModelProviderService
     /// <inheritdoc/>
     public IEmbeddingModel GetEmbedding() => LLmModelPlugin.Instance.DefaultEmbedding;
 
+
+    /// <inheritdoc/>
+    public string GetSpeechLanguage() => this.LocalizedSpeechLanguage;
+
     #endregion
 
     #region Chat Interaction
