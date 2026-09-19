@@ -261,11 +261,6 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
 
         _presetName.Sync(sync);
 
-        if (sync.IsSetterOf(_isTemplate.Property.Name))
-        {
-            AssetBuilder.SetIsStartupPage(_isTemplate.Value);
-        }
-
         _baseWorkflow.Sync(sync);
         _tools.Sync(sync);
         _isTemplate.Sync(sync);
@@ -286,6 +281,11 @@ public class SubFlowPresetDocument : SAssetDocument<SubFlowPresetAssetBuilder>, 
         if (sync.IsSetter() && sync.Intent != SyncIntent.Serialize)
         {
             this.MarkDirtyAndSaveDelayed(this);
+        }
+
+        if (sync.IsSetterOf(_isTemplate.Property.Name))
+        {
+            AssetBuilder.SetIsStartupPage(_isTemplate.Value);
         }
     }
 

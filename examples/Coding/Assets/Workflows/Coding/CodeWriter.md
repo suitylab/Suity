@@ -48,11 +48,11 @@ Output format:
 Output multiple code file based on the File Specification, and within `<code>` tags, as follows:
 <code path='file path 1'>
 ...
-<code>
+</code>
 
 <code path='file path 2'>
 ...
-<code>
+</code>
 ...
 
 **Output file path inside the `path` attribute.**

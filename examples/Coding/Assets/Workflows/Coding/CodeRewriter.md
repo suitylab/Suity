@@ -44,7 +44,7 @@ Output the fully refactored file within a `<code>` tag as follows:
 
 <code path='target/file/path.ext'>
 // Full source code here...
-<code>
+</code>
 
 # OUTPUT FORMAT RULES
 - Output **pure executable source code only** inside the `<code>` tag.

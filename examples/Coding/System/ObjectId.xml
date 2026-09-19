@@ -57,6 +57,7 @@
   <Object id="38ca77a8-d9d2-44e3-b77d-ad8d6baf80bd" name="Workflows/Rules/Html_Simple.md" />
   <Object id="b5af5156-628d-43bb-9b7f-13bcb5026008" name="Workflows/Rules/Html_TypeScript.md" />
   <Object id="b9c82a0f-1e17-40c5-8efd-0f4a56ee8f9c" name="Workflows/Rules/Integration.md" />
+  <Object id="a3738238-7954-45c3-8f7c-dbc022ecfa81" name="Workflows/SoloAgent/SoloCoder.md" />
   <Object id="c9d07914-4cf5-4828-8f98-4885848d8d09" name="Workflows/TypeScript/TypeScriptCreator.md" />
   <Object id="dfb27678-d6d0-4ed5-b780-ad7a12f24358" name="Workflows/Workers/Analyzer.md" />
   <Object id="bc29d645-a31e-45f1-9837-44a439f29f1e" name="Workflows/Workers/Builder.md" />

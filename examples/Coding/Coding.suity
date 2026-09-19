@@ -6,6 +6,7 @@
   "PublishDirectory": "Publish",
   "WorkSpaceDirectory": "WorkSpaces",
   "AssembliesDirectory": "Assemblies",
+  "ExtensionsDirectory": "Extensions",
   "ProjectGuid": "00000000-0000-0000-0000-000000000000",
   "PlanetFolderGuid": "9e2bae47-83a1-4b2e-99a2-952049ab7b06",
   "SateliteFolderGuid": "f307f990-3458-4dd1-9787-ae156968627f",
