@@ -32,6 +32,9 @@ public interface IModelProviderService
     /// <returns>The configured embedding model instance.</returns>
     IEmbeddingModel GetEmbedding();
 
-
-    string GetSpeechLanguage();
+    /// <summary>
+    /// Gets the localized language setting for the model provider service.
+    /// </summary>
+    /// <returns>The localized language setting.</returns>
+    string GetLocalizedLanguage();
 }

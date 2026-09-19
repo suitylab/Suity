@@ -199,7 +199,7 @@ internal class LLmServiceBK : LLmService, IModelProviderService
 
 
     /// <inheritdoc/>
-    public string GetSpeechLanguage() => this.LocalizedSpeechLanguage;
+    public string GetLocalizedLanguage() => this.LocalizedSpeechLanguage;
 
     #endregion
 

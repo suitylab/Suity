@@ -415,7 +415,7 @@ public class GetSpeechLanguage : AigcFlowNode
     {
         var modelProviderService = Device.Current.GetService<IModelProviderService>();
 
-        string lang = modelProviderService?.GetSpeechLanguage()
+        string lang = modelProviderService?.GetLocalizedLanguage()
             ?? LLmService.Instance.LocalizedSpeechLanguage;
         
         compute.SetValue(_out, lang);
@@ -425,7 +425,7 @@ public class GetSpeechLanguage : AigcFlowNode
     {
         var modelProviderService = Device.Current.GetService<IModelProviderService>();
 
-        string lang = modelProviderService?.GetSpeechLanguage()
+        string lang = modelProviderService?.GetLocalizedLanguage()
             ?? LLmService.Instance.LocalizedSpeechLanguage;
 
         return gui.FlowSingleConnectorFrame(_out, context, lang);
