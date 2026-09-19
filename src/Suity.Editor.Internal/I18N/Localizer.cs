@@ -123,6 +123,49 @@ namespace I18N.DotNet
             LoadXML( assembly, resourceName, merge, false );
         }
 
+        /// <inheritdoc/>
+        public void LoadJson( string filepath, string language )
+        {
+            Language = new Language( language );
+
+            LoadJson( filepath, false );
+        }
+
+        /// <inheritdoc/>
+        public void LoadJson( string filepath, bool merge )
+        {
+            using var stream = File.OpenRead( filepath );
+
+            LoadJson( stream, merge );
+        }
+
+        /// <inheritdoc/>
+        public void LoadJson( Stream stream, string language )
+        {
+            Language = new Language( language );
+
+            LoadJson( stream, false );
+        }
+
+        /// <inheritdoc/>
+        public void LoadJson( Stream stream, bool merge )
+        {
+            if( !merge )
+            {
+                Clear();
+            }
+
+            JsonLocalizationLoader.Load( stream, AddLocalization );
+        }
+
+        /// <inheritdoc/>
+        public void LoadJson( Assembly assembly, string resourceName, string language )
+        {
+            Language = new Language( language );
+
+            LoadJson( assembly, resourceName, false );
+        }
+
         //===========================================================================
         //                            INTERNAL METHODS
         //===========================================================================
@@ -154,6 +197,30 @@ namespace I18N.DotNet
             }
 
             LoadXML( stream, merge );
+        }
+
+        internal void LoadJson( Assembly assembly, string resourceName, bool merge )
+        {
+            var assemblyName = assembly.GetName().Name;
+            string usedResourceName;
+
+            if( ( assemblyName != null ) && !resourceName.StartsWith( assemblyName ) )
+            {
+                usedResourceName = assemblyName + "." + resourceName;
+            }
+            else
+            {
+                usedResourceName = resourceName;
+            }
+
+            using var stream = assembly.GetManifestResourceStream( usedResourceName );
+
+            if( stream == null )
+            {
+                throw new InvalidOperationException( $"Cannot find resource '{usedResourceName}'" );
+            }
+
+            LoadJson( stream, merge );
         }
     }
 }

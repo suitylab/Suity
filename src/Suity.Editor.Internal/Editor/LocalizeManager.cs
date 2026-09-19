@@ -1,5 +1,6 @@
 using I18N.DotNet;
 using Suity.Helpers;
+using System.Collections.Generic;
 using System.IO;
 using System;
 using Suity.Editor.Services;
@@ -23,6 +24,14 @@ namespace Suity.Editor
         readonly QueueOnceAction _updateLanguageAction;
         // The currently active language code (e.g., "en", "zh-cn").
         string _languageCode;
+
+        // Short aliases used by JSON localization files when they do not use the full language code.
+        private static readonly Dictionary<string, string> JsonLanguageAliases = new(StringComparer.OrdinalIgnoreCase)
+        {
+            { "zh-cn", "cn" },
+            { "zh-tw", "tw" },
+            { "jp", "ja" },
+        };
 
         /// <summary>
         /// Gets the current active language code.
@@ -117,6 +126,29 @@ namespace Suity.Editor
             }
 
             bool merge = false;
+
+            // JSON localization (one file per language) is loaded first, as a flat key/value table.
+            var jsonFile = FindLocalizationJson(localizeDir, _languageCode);
+            if (jsonFile != null)
+            {
+                try
+                {
+                    EditorServices.SystemLog.AddLog($"Load localization file: {jsonFile.Name}...");
+                    EditorServices.SystemLog.PushIndent();
+                    _localizer.LoadJson(jsonFile.FullName, _languageCode);
+                    merge = true;
+                }
+                catch (Exception err)
+                {
+                    err.LogError("Load localization file failed: " + jsonFile.Name);
+                    EditorServices.SystemLog.AddLog($"Load localization file failed: {jsonFile.Name} - {err.Message}");
+                }
+                finally
+                {
+                    EditorServices.SystemLog.PopIndent();
+                }
+            }
+
             EditorServices.SystemLog.AddLog($"Load localization files from: {localizeDir.FullName}...");
             EditorServices.SystemLog.PushIndent();
             foreach (var file in localizeDir.GetFiles("*.xml"))
@@ -148,6 +180,48 @@ namespace Suity.Editor
             EditorServices.SystemLog.AddLog($"Load localization files from: {localizeDir.FullName} done.");
 
             EditorRexes.Language.Value = _languageCode;
+        }
+
+        /// <summary>
+        /// Finds the JSON localization file matching the given language code.
+        /// </summary>
+        /// <remarks>
+        /// Tries the exact code, then a short alias (e.g. <c>zh-cn</c> to <c>cn</c>) and finally the primary
+        /// language code (e.g. <c>zh</c>), so that files named with either convention are picked up.
+        /// </remarks>
+        private static FileInfo FindLocalizationJson(DirectoryInfo directory, string languageCode)
+        {
+            if (string.IsNullOrWhiteSpace(languageCode))
+            {
+                return null;
+            }
+
+            var candidates = new List<string> { languageCode };
+
+            if (JsonLanguageAliases.TryGetValue(languageCode, out var alias) && !candidates.Contains(alias))
+            {
+                candidates.Add(alias);
+            }
+
+            string primary = languageCode.Split('-')[0];
+            if (!candidates.Contains(primary))
+            {
+                candidates.Add(primary);
+            }
+
+            var jsonFiles = directory.GetFiles("*.json");
+            foreach (var candidate in candidates)
+            {
+                foreach (var file in jsonFiles)
+                {
+                    if (string.Equals(Path.GetFileNameWithoutExtension(file.Name), candidate, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return file;
+                    }
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

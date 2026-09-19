@@ -60,7 +60,7 @@ namespace I18N.DotNet
         {
             if( m_localizations.TryGetValue( format, out var localizedFormat ) )
             {
-                return String.Format( Language.Culture, localizedFormat, args );
+                return String.Format( Language.Culture, NormalizePlaceholders( localizedFormat ), args );
             }
             else if( m_parentContext != null )
             {
@@ -68,7 +68,7 @@ namespace I18N.DotNet
             }
             else
             {
-                return String.Format( Language.Culture, format, args );
+                return String.Format( Language.Culture, NormalizePlaceholders( format ), args );
             }
         }
 
@@ -147,6 +147,14 @@ namespace I18N.DotNet
             {
                 context.m_language = m_language;
                 context.Clear();
+            }
+        }
+
+        private protected void AddLocalization( string key, string value )
+        {
+            if( !string.IsNullOrEmpty( key ) && ( value != null ) )
+            {
+                m_localizations[key] = value;
             }
         }
 
@@ -323,6 +331,29 @@ namespace I18N.DotNet
             } );
         }
 
+        private static string NormalizePlaceholders( string text )
+        {
+            if( string.IsNullOrEmpty( text ) || ( text.IndexOf( "{{", StringComparison.Ordinal ) < 0 ) )
+            {
+                return text;
+            }
+
+            var indices = new Dictionary<string, int>( StringComparer.Ordinal );
+
+            return PLACEHOLDER_PATTERN.Replace( text, m =>
+            {
+                string name = m.Groups[ 1 ].Value;
+
+                if( !indices.TryGetValue( name, out int index ) )
+                {
+                    index = indices.Count;
+                    indices[name] = index;
+                }
+
+                return "{" + index.ToString( CultureInfo.InvariantCulture ) + "}";
+            } );
+        }
+
         private void LoadContext( XElement element )
         {
             string? contextId = element.Attribute( "id" )?.Value;
@@ -367,6 +398,8 @@ namespace I18N.DotNet
         //===========================================================================
         //                           PRIVATE CONSTANTS
         //===========================================================================
+
+        private static readonly Regex PLACEHOLDER_PATTERN = new Regex( @"\{\{\s*([A-Za-z0-9_]+)\s*\}\}", RegexOptions.Compiled );
 
         private static readonly Dictionary<string, string> ESCAPE_CODES = new Dictionary<string, string>
         {

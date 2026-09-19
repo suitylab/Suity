@@ -164,6 +164,41 @@ namespace I18N.DotNet
             m_internalLocalizer.LoadXML( assembly, resourceName, merge );
         }
 
+        /// <inheritdoc/>
+        public void LoadJson( string filepath, string language )
+        {
+            m_internalLocalizer ??= new Localizer();
+            m_internalLocalizer.LoadJson( filepath, language );
+        }
+
+        /// <inheritdoc/>
+        public void LoadJson( string filepath, bool merge )
+        {
+            m_internalLocalizer ??= new Localizer();
+            m_internalLocalizer.LoadJson( filepath, merge );
+        }
+
+        /// <inheritdoc/>
+        public void LoadJson( Stream stream, string language )
+        {
+            m_internalLocalizer ??= new Localizer();
+            m_internalLocalizer.LoadJson( stream, language );
+        }
+
+        /// <inheritdoc/>
+        public void LoadJson( Stream stream, bool merge )
+        {
+            m_internalLocalizer ??= new Localizer();
+            m_internalLocalizer.LoadJson( stream, merge );
+        }
+
+        /// <inheritdoc/>
+        public void LoadJson( Assembly assembly, string resourceName, string language )
+        {
+            m_internalLocalizer ??= new Localizer();
+            m_internalLocalizer.LoadJson( assembly, resourceName, language );
+        }
+
         /// <summary>
         /// Loads translations for the given <paramref name="culture"/> from the embedded resource specified when creating the instance.
         /// </summary>

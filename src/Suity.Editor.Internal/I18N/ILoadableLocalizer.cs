@@ -177,5 +177,61 @@ namespace I18N.DotNet
         /// <exception cref="ParseException">Thrown when the stream contents cannot be parsed properly.</exception>
         /// <exception cref="InvalidOperationException">Thrown when the embedded resource could not be found in the given assembly.</exception>
         void LoadXML( Assembly assembly, string resourceName, bool merge );
+
+        /// <summary>
+        /// Loads translations for the given <paramref name="language"/> from a localization configuration file in JSON format.
+        /// </summary>
+        /// <remarks>
+        /// <para>All the translations loaded previously in the localizer are discarded and replaced with the new ones.</para>
+        /// <para>The JSON file is a nested object whose leaf values are the localized strings for a single language;
+        /// keys are flattened to dot-separated paths (e.g. <c>{ "nav": { "home": "Home" } }</c> becomes <c>nav.home</c>).</para>
+        /// </remarks>
+        /// <param name="filepath">Path to the localization configuration file.</param>
+        /// <param name="language">Name, code or identifier for the target language of translations.</param>
+        /// <exception cref="ParseException">Thrown when the input file cannot be parsed properly.</exception>
+        void LoadJson( string filepath, string language );
+
+        /// <summary>
+        /// Loads translations for the current localizer language from a localization configuration file in JSON format.
+        /// </summary>
+        /// <param name="filepath">Path to the localization configuration file.</param>
+        /// <param name="merge">Replaces the current translations with the loaded ones when <c>false</c>,
+        ///                     otherwise merges both (existing translations are overridden with loaded ones).</param>
+        /// <exception cref="ParseException">Thrown when the input file cannot be parsed properly.</exception>
+        void LoadJson( string filepath, bool merge );
+
+        /// <summary>
+        /// Loads translations for the given <paramref name="language"/> from a localization configuration in JSON format obtained from a stream.
+        /// </summary>
+        /// <remarks>
+        /// All the translations loaded previously in the localizer are discarded and replaced with the new ones.
+        /// </remarks>
+        /// <param name="stream">Stream with the localization configuration.</param>
+        /// <param name="language">Name, code or identifier for the target language of translations.</param>
+        /// <exception cref="ParseException">Thrown when the stream contents cannot be parsed properly.</exception>
+        void LoadJson( Stream stream, string language );
+
+        /// <summary>
+        /// Loads translations for the current localizer language from a localization configuration in JSON format obtained from a stream.
+        /// </summary>
+        /// <param name="stream">Stream with the localization configuration.</param>
+        /// <param name="merge">Replaces the current translations with the loaded ones when <c>false</c>,
+        ///                     otherwise merges both (existing translations are overridden with loaded ones).</param>
+        /// <exception cref="ParseException">Thrown when the stream contents cannot be parsed properly.</exception>
+        void LoadJson( Stream stream, bool merge );
+
+        /// <summary>
+        /// Loads translations for the given <paramref name="language"/> from a localization configuration in JSON format
+        /// obtained from an embedded resource in the given assembly.
+        /// </summary>
+        /// <remarks>
+        /// All the translations loaded previously in the localizer are discarded and replaced with the new ones.
+        /// </remarks>
+        /// <param name="assembly">Assembly that contains the embedded JSON file.</param>
+        /// <param name="resourceName">Name of the embedded resource for the JSON file.</param>
+        /// <param name="language">Name, code or identifier for the target language of translations.</param>
+        /// <exception cref="ParseException">Thrown when the embedded resource contents cannot be parsed properly.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the embedded resource could not be found in the given assembly.</exception>
+        void LoadJson( Assembly assembly, string resourceName, string language );
     }
 }
