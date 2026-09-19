@@ -113,6 +113,26 @@ namespace Suity.Editor
         }
 
         /// <summary>
+        /// Loads JSON localization entries for the given language from a stream and applies them globally.
+        /// </summary>
+        /// <remarks>
+        /// Used by platforms (e.g. WebAssembly) that provide localization files at runtime instead of
+        /// alongside the application. Replaces any previously loaded entries.
+        /// </remarks>
+        public void LoadJson(Stream stream, string language)
+        {
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+
+            _languageCode = language;
+            _localizer.LoadJson(stream, language);
+            GlobalLocalizer.Localizer = _localizer;
+            EditorRexes.Language.Value = _languageCode;
+        }
+
+        /// <summary>
         /// Performs the actual language update by loading all XML localization files from the Localization directory and applying them to the global localizer.
         /// </summary>
         private void _UpdateLanguage()
