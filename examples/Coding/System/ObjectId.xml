@@ -36,7 +36,6 @@
   <Object id="8e300a0f-7053-4903-9e5a-8c6b857cf146" name="Workflows/Game/GameDesign.md" />
   <Object id="e934f168-b446-474a-8dc8-db4d23157c3e" name="Workflows/Game/GamePlanner.md" />
   <Object id="e4d73fc0-7421-4a78-abf9-8cb857a34b92" name="Workflows/Game/IntegrationEngineer.md" />
-  <Object id="60315976-23b6-49a5-8fe8-98d4adccbd52" name="Workflows/MultiAgent/AdditionalRule.md" />
   <Object id="c65c4898-7698-425e-9d38-8c297a8df603" name="Workflows/MultiAgent/Coder.md" />
   <Object id="958f77ff-8afd-4e8c-9802-cec35bc4440e" name="Workflows/MultiAgent/CoderManager_Integration.md" />
   <Object id="aba9f6d8-c3a8-4f2b-b321-33229896d5dc" name="Workflows/MultiAgent/CoderManager.md" />
@@ -46,18 +45,19 @@
   <Object id="f8edf2d9-077a-435d-9569-d5a6f1d88980" name="Workflows/MultiAgent/Manager.md" />
   <Object id="9c17ca55-f195-4e0f-88b4-008fff0a7011" name="Workflows/MultiAgent/Planner.md" />
   <Object id="4641d488-5c1e-486f-ae8c-900cb01f3705" name="Workflows/MultiAgent/Verifier.md" />
-  <Object id="761413e7-1693-4eee-b8f7-7a0498239d4e" name="Workflows/MultiAgent/WebDevRule.md" />
-  <Object id="1e4260d9-1787-43f1-b3c4-ad4a1f9f8510" name="Workflows/MultiAgent/WebDevTemplateRule.md" />
   <Object id="2d044f93-d625-48e3-84b8-627c2b0c9edd" name="Workflows/Novel/NovelCreator.md" />
   <Object id="f1612cae-c531-4945-a1f0-a130e5a1e542" name="Workflows/Novel/PlotDocument.md" />
   <Object id="37d7c15a-04b9-4b71-9eac-a8a558b87711" name="Workflows/Novel/ScriptWriter.md" />
   <Object id="2126a46d-a00b-40b8-9bfa-61701ca90ef5" name="Workflows/Overview/OverviewTask.md" />
   <Object id="e6f667fc-d29e-4294-b8c2-b4065d74a84f" name="Workflows/Planning/Plan.md" />
   <Object id="c06335a2-3588-4390-8865-5524557f2237" name="Workflows/Planning/QuestionAsk.md" />
+  <Object id="60315976-23b6-49a5-8fe8-98d4adccbd52" name="Workflows/Rules/AdditionalRule.md" />
   <Object id="dfe46840-4a9b-425e-b959-f2dfa8de8999" name="Workflows/Rules/Html_JavaScript.md" />
   <Object id="38ca77a8-d9d2-44e3-b77d-ad8d6baf80bd" name="Workflows/Rules/Html_Simple.md" />
   <Object id="b5af5156-628d-43bb-9b7f-13bcb5026008" name="Workflows/Rules/Html_TypeScript.md" />
   <Object id="b9c82a0f-1e17-40c5-8efd-0f4a56ee8f9c" name="Workflows/Rules/Integration.md" />
+  <Object id="761413e7-1693-4eee-b8f7-7a0498239d4e" name="Workflows/Rules/WebDevRule.md" />
+  <Object id="1e4260d9-1787-43f1-b3c4-ad4a1f9f8510" name="Workflows/Rules/WebDevTemplateRule.md" />
   <Object id="a3738238-7954-45c3-8f7c-dbc022ecfa81" name="Workflows/SoloAgent/SoloCoder.md" />
   <Object id="c9d07914-4cf5-4828-8f98-4885848d8d09" name="Workflows/TypeScript/TypeScriptCreator.md" />
   <Object id="dfb27678-d6d0-4ed5-b780-ad7a12f24358" name="Workflows/Workers/Analyzer.md" />
