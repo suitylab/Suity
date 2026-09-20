@@ -1,4 +1,3 @@
-using MarkedNet;
 using Suity.Drawing;
 using Suity.Editor.CodeRender;
 using Suity.Editor.Documents;
@@ -8,7 +7,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -96,6 +94,8 @@ internal sealed class FileAssetManagerBK : FileAssetManager
 
         DocumentManager.Instance.DocumentLoaded += documentManager_DocumentCreated;
         DocumentManager.Instance.DocumentChangedExternal += documentManager_DocumentChangedExternal;
+        DocumentManager.Instance.DocumentDeleted += documentManager_DocumentDeleted
+            ;
 
         _listeners += EditorRexes.Mapper.Provide<FileAssetManager>(this);
 
@@ -542,6 +542,15 @@ internal sealed class FileAssetManagerBK : FileAssetManager
             _updatingFileQueue.Enqueue(new FileUpdateItem(FileUpdateType.Changed, documentEntry.FileName.PhysicFileName));
             EditorServices.FileUpdateService.UpdateFileDelayed();
         }
+    }
+
+    /// <summary>
+    /// Handles document deletion events from the document manager.
+    /// </summary>
+    /// <param name="entry">The deleted document entry.</param>
+    private void documentManager_DocumentDeleted(DocumentEntry entry)
+    {
+        DoFileUpdate_Deleted(entry.FileName.FullPath);
     }
 
     #endregion

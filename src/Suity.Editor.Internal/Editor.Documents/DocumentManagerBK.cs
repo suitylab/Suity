@@ -937,7 +937,7 @@ internal sealed class DocumentManagerBK : DocumentManager
 
     #endregion
 
-    #region Save/Rename
+    #region Save/Rename/Delete
 
     /// <inheritdoc/>
     public override void SaveAllDocuments()
@@ -1032,6 +1032,49 @@ internal sealed class DocumentManagerBK : DocumentManager
 
     /// <inheritdoc/>
     public override DocumentEntry[] ViewingDocuments => _allDocuments.Where(doc => doc.View != null).ToArray();
+
+    public override bool DeleteDocument(string path)
+    {
+        if (GetDocument(path) is DocumentEntryBK document)
+        {
+            return DeleteDocument(document);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public override bool DeleteDocument(DocumentEntry entry)
+    {
+        if (!CloseDocument(entry))
+        {
+            return false;
+        }
+
+        if (entry is not DocumentEntryBK documentEntry)
+        {
+            return false;
+        }
+
+        bool fileExist = File.Exists(entry.FileName.FullPath);
+        if (fileExist && documentEntry.CheckIsInUsage())
+        {
+            return false;
+        }
+
+        try
+        {
+            File.Delete(entry.FileName.FullPath);
+            RaiseDocumentDeleted(documentEntry);
+            return true;
+        }
+        catch (Exception err)
+        {
+            err.LogError($"Delete document failed: {entry.FileName.FullPath}");
+            return false;
+        }
+    }
 
     #endregion
 

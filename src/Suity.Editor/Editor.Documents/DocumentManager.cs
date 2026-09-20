@@ -63,6 +63,11 @@ public abstract class DocumentManager
     /// Event raised when a document is changed externally.
     /// </summary>
     public event Action<DocumentEntry> DocumentChangedExternal;
+    
+    /// <summary>
+    /// Event raised when a document is deleted.
+    /// </summary>
+    public event Action<DocumentEntry> DocumentDeleted;
 
     /// <summary>
     /// Event raised when all documents are saved.
@@ -210,6 +215,20 @@ public abstract class DocumentManager
     public abstract void CloseAllDocuments();
 
     /// <summary>
+    /// Deletes a document by path.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <returns>True if deleted successfully.</returns>
+    public abstract bool DeleteDocument(string path);
+
+    /// <summary>
+    /// Deletes a document by entry.
+    /// </summary>
+    /// <param name="documentEntry">The document entry.</param>
+    /// <returns>True if deleted successfully.</returns>
+    public abstract bool DeleteDocument(DocumentEntry documentEntry);
+
+    /// <summary>
     /// Shows a document, creating it if necessary.
     /// </summary>
     /// <param name="path">The file path.</param>
@@ -287,6 +306,11 @@ public abstract class DocumentManager
     protected void RaiseDocumentClosed(DocumentEntry documentEntry)
     {
         DocumentClosed?.Invoke(documentEntry);
+    }
+
+    protected void RaiseDocumentDeleted(DocumentEntry documentEntry)
+    {
+        DocumentDeleted?.Invoke(documentEntry);
     }
 
     /// <summary>
