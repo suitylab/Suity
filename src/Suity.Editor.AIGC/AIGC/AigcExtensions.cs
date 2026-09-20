@@ -536,9 +536,11 @@ public static class AigcExtensions
 
     /// <summary>
     /// Allocates a new agent directory and returns the directory path and agent ID.
+    /// The directory is named <c>Agent_{yyyy-MM-dd_HH-mm-ss}_{agentName}_{id}</c> so that
+    /// sorting by directory name yields creation-time order.
     /// </summary>
     /// <param name="agentName">The name of the agent to allocate.</param>
-    /// <param name="agentId">The ID of the allocated agent.</param>
+    /// <param name="agentId">The ID of the allocated agent, formatted as <c>{agentName}_{id}</c>.</param>
     /// <returns>The path to the allocated agent directory.</returns>
     public static string AllocateAgentDirectory(string agentName, out string agentId)
     {
@@ -548,7 +550,8 @@ public static class AigcExtensions
         while (true)
         {
             agentId = $"{agentName}_{IdGenerator.GenerateId(8)}";
-            string agentDir = agentBaseDir.PathAppend(agentId);
+            string folderName = $"Agent_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{agentId}";
+            string agentDir = agentBaseDir.PathAppend(folderName);
             if (!Directory.Exists(agentDir))
             {
                 Directory.CreateDirectory(agentDir);
