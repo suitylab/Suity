@@ -548,9 +548,9 @@ internal sealed class FileAssetManagerBK : FileAssetManager
     /// Handles document deletion events from the document manager.
     /// </summary>
     /// <param name="entry">The deleted document entry.</param>
-    private void documentManager_DocumentDeleted(DocumentEntry entry)
+    private void documentManager_DocumentDeleted(string fullPath)
     {
-        DoFileUpdate_Deleted(entry.FileName.FullPath);
+        DoFileUpdate_Deleted(fullPath);
     }
 
     #endregion

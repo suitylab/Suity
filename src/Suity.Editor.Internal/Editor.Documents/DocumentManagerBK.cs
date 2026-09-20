@@ -423,9 +423,9 @@ internal sealed class DocumentManagerBK : DocumentManager
     }
 
     /// <summary>
-    /// Opens a document with the specified path and format.
+    /// Opens a document with the specified fullPath and format.
     /// </summary>
-    /// <param name="path">The document file path.</param>
+    /// <param name="path">The document file fullPath.</param>
     /// <param name="format">The document format.</param>
     /// <param name="loaderObject">Optional loader object for custom loading.</param>
     /// <returns>The opened document entry, or null if opening failed.</returns>
@@ -857,9 +857,9 @@ internal sealed class DocumentManagerBK : DocumentManager
     }
 
     /// <summary>
-    /// Shows a document view for the specified path and format.
+    /// Shows a document view for the specified fullPath and format.
     /// </summary>
-    /// <param name="path">The document file path.</param>
+    /// <param name="path">The document file fullPath.</param>
     /// <param name="format">The document format.</param>
     /// <param name="loaderObject">Optional loader object for custom loading.</param>
     /// <returns>The document view, or null if showing failed.</returns>
@@ -905,9 +905,9 @@ internal sealed class DocumentManagerBK : DocumentManager
     }
 
     /// <summary>
-    /// Shows the document property inspector for the specified path.
+    /// Shows the document property inspector for the specified fullPath.
     /// </summary>
-    /// <param name="path">The document file path.</param>
+    /// <param name="path">The document file fullPath.</param>
     /// <param name="format">The document format.</param>
     /// <param name="loaderObject">Optional loader object for custom loading.</param>
     /// <returns>True if the property inspector was shown; otherwise, false.</returns>
@@ -990,10 +990,10 @@ internal sealed class DocumentManagerBK : DocumentManager
     }
 
     /// <summary>
-    /// Renames a document entry from the old path to the new path.
+    /// Renames a document entry from the old fullPath to the new fullPath.
     /// </summary>
-    /// <param name="path">The current document path.</param>
-    /// <param name="newPath">The new document path.</param>
+    /// <param name="path">The current document fullPath.</param>
+    /// <param name="newPath">The new document fullPath.</param>
     /// <returns>True if the document was successfully renamed; otherwise, false.</returns>
     internal bool RenameDocument(string path, string newPath)
     {
@@ -1033,14 +1033,25 @@ internal sealed class DocumentManagerBK : DocumentManager
     /// <inheritdoc/>
     public override DocumentEntry[] ViewingDocuments => _allDocuments.Where(doc => doc.View != null).ToArray();
 
-    public override bool DeleteDocument(string path)
+    public override bool DeleteDocument(string fullPath)
     {
-        if (GetDocument(path) is DocumentEntryBK document)
+        if (GetDocument(fullPath) is DocumentEntryBK entry)
         {
-            return DeleteDocument(document);
+            if (!CloseDocument(entry))
+            {
+                return false;
+            }
         }
-        else
+
+        try
         {
+            File.Delete(fullPath);
+            RaiseDocumentDeleted(fullPath);
+            return true;
+        }
+        catch (Exception err)
+        {
+            err.LogError($"Delete document failed: {fullPath}");
             return false;
         }
     }
@@ -1052,21 +1063,10 @@ internal sealed class DocumentManagerBK : DocumentManager
             return false;
         }
 
-        if (entry is not DocumentEntryBK documentEntry)
-        {
-            return false;
-        }
-
-        bool fileExist = File.Exists(entry.FileName.FullPath);
-        if (fileExist && documentEntry.CheckIsInUsage())
-        {
-            return false;
-        }
-
         try
         {
             File.Delete(entry.FileName.FullPath);
-            RaiseDocumentDeleted(documentEntry);
+            RaiseDocumentDeleted(entry.FileName.FullPath);
             return true;
         }
         catch (Exception err)

@@ -67,7 +67,7 @@ public abstract class DocumentManager
     /// <summary>
     /// Event raised when a document is deleted.
     /// </summary>
-    public event Action<DocumentEntry> DocumentDeleted;
+    public event Action<string> DocumentDeleted;
 
     /// <summary>
     /// Event raised when all documents are saved.
@@ -90,18 +90,18 @@ public abstract class DocumentManager
     public abstract DocumentFormat GetDocumentFormatByExtension(string ext);
 
     /// <summary>
-    /// Gets a document format by file path. Will not resolve the `sasset` potential format, only the actual file extension is used to determine the format.
+    /// Gets a document format by file fullPath. Will not resolve the `sasset` potential format, only the actual file extension is used to determine the format.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="fullPath">The file fullPath.</param>
     /// <returns>The document format, or null if not found.</returns>
-    public abstract DocumentFormat GetDocumentFormatByPath(string path);
+    public abstract DocumentFormat GetDocumentFormatByPath(string fullPath);
 
     /// <summary>
-    /// Resolves the document format from a file path. Will resolve the `sasset` potential format if applicable, otherwise the actual file extension is used to determine the format.
+    /// Resolves the document format from a file fullPath. Will resolve the `sasset` potential format if applicable, otherwise the actual file extension is used to determine the format.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="fullPath">The file fullPath.</param>
     /// <returns>The resolved document format.</returns>
-    public abstract DocumentFormat ResolveDocumentFormatByPath(string path);
+    public abstract DocumentFormat ResolveDocumentFormatByPath(string fullPath);
 
     /// <summary>
     /// Resolves the document format from a stream based on extension.
@@ -112,11 +112,11 @@ public abstract class DocumentManager
     public abstract IDocumentResolveResult ResolveInFileFormat(string ext, Stream stream);
 
     /// <summary>
-    /// Resolves the document format from a file path.
+    /// Resolves the document format from a file fullPath.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="fullPath">The file fullPath.</param>
     /// <returns>The resolve result.</returns>
-    public abstract IDocumentResolveResult ResolveInFileFormat(string path);
+    public abstract IDocumentResolveResult ResolveInFileFormat(string fullPath);
 
     /// <summary>
     /// Gets all document formats that support a given extension.
@@ -139,68 +139,68 @@ public abstract class DocumentManager
     /// <summary>
     /// Opens a document from a storage location.
     /// </summary>
-    /// <param name="path">The storage location.</param>
+    /// <param name="location">The storage location.</param>
     /// <returns>The document entry.</returns>
-    public abstract DocumentEntry OpenDocument(StorageLocation path, DocumentLoadingIntent intent = DocumentLoadingIntent.Normal);
+    public abstract DocumentEntry OpenDocument(StorageLocation location, DocumentLoadingIntent intent = DocumentLoadingIntent.Normal);
 
     /// <summary>
-    /// Opens a document from a path.
+    /// Opens a document from a fullPath.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="fullPath">The file fullPath.</param>
     /// <returns>The document entry.</returns>
-    public abstract DocumentEntry OpenDocument(string path, DocumentLoadingIntent intent = DocumentLoadingIntent.Normal);
+    public abstract DocumentEntry OpenDocument(string fullPath, DocumentLoadingIntent intent = DocumentLoadingIntent.Normal);
 
     /// <summary>
-    /// Reloads a document from a path.
+    /// Reloads a document from a fullPath.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="fullPath">The file fullPath.</param>
     /// <returns>The document entry.</returns>
-    public abstract DocumentEntry ReloadDocument(string path);
+    public abstract DocumentEntry ReloadDocument(string fullPath);
 
     /// <summary>
     /// Creates a new document.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="fullPath">The file fullPath.</param>
     /// <param name="format">The document format.</param>
     /// <returns>The document entry.</returns>
-    public abstract DocumentEntry NewDocument(string path, DocumentFormat format);
+    public abstract DocumentEntry NewDocument(string fullPath, DocumentFormat format);
 
     /// <summary>
     /// Gets a document by storage location.
     /// </summary>
-    /// <param name="path">The storage location.</param>
+    /// <param name="location">The storage location.</param>
     /// <returns>The document entry, or null if not found.</returns>
-    public abstract DocumentEntry GetDocument(StorageLocation path);
+    public abstract DocumentEntry GetDocument(StorageLocation location);
 
     /// <summary>
-    /// Gets a document by path.
+    /// Gets a document by fullPath.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="fullPath">The file fullPath.</param>
     /// <returns>The document entry, or null if not found.</returns>
-    public abstract DocumentEntry GetDocument(string path);
+    public abstract DocumentEntry GetDocument(string fullPath);
 
     /// <summary>
     /// Clones a document to a new location.
     /// </summary>
-    /// <param name="path">Original path.</param>
-    /// <param name="pathClone">Clone path.</param>
+    /// <param name="fullPath">Original fullPath.</param>
+    /// <param name="pathClone">Clone fullPath.</param>
     /// <returns>The cloned document entry.</returns>
-    public abstract DocumentEntry CloneDocument(string path, string pathClone);
+    public abstract DocumentEntry CloneDocument(string fullPath, string pathClone);
 
     /// <summary>
     /// Clones a collection of documents to new locations.
     /// </summary>
-    /// <param name="paths">Original paths.</param>
-    /// <param name="pathsClone">Clone paths.</param>
+    /// <param name="fullPaths">Original fullPaths.</param>
+    /// <param name="pathsClone">Clone fullPaths.</param>
     /// <returns>The cloned document entries, element null if document cloning failed.</returns>
-    public abstract DocumentEntry[] CloneDocuments(string[] paths, string[] pathsClone);
+    public abstract DocumentEntry[] CloneDocuments(string[] fullPaths, string[] pathsClone);
 
     /// <summary>
-    /// Closes a document by path.
+    /// Closes a document by fullPath.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="fullPath">The file fullPath.</param>
     /// <returns>True if closed successfully.</returns>
-    public abstract bool CloseDocument(string path);
+    public abstract bool CloseDocument(string fullPath);
 
     /// <summary>
     /// Closes a document by entry.
@@ -215,11 +215,11 @@ public abstract class DocumentManager
     public abstract void CloseAllDocuments();
 
     /// <summary>
-    /// Deletes a document by path.
+    /// Deletes a document by fullPath.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="fullPath">The file fullPath.</param>
     /// <returns>True if deleted successfully.</returns>
-    public abstract bool DeleteDocument(string path);
+    public abstract bool DeleteDocument(string fullPath);
 
     /// <summary>
     /// Deletes a document by entry.
@@ -231,24 +231,24 @@ public abstract class DocumentManager
     /// <summary>
     /// Shows a document, creating it if necessary.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="fullPath">The file fullPath.</param>
     /// <returns>The document view.</returns>
-    public abstract IDocumentView ShowDocument(string path);
+    public abstract IDocumentView ShowDocument(string fullPath);
 
     /// <summary>
     /// Shows a document with a specific format.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="fullPath">The file fullPath.</param>
     /// <param name="format">The document format.</param>
     /// <returns>The document view.</returns>
-    public abstract IDocumentView ShowDocument(string path, DocumentFormat format);
+    public abstract IDocumentView ShowDocument(string fullPath, DocumentFormat format);
 
     /// <summary>
     /// Shows a document in the property editor.
     /// </summary>
-    /// <param name="path">The file path.</param>
+    /// <param name="fullPath">The file fullPath.</param>
     /// <returns>True if shown successfully.</returns>
-    public abstract bool ShowProperty(string path);
+    public abstract bool ShowProperty(string fullPath);
 
     /// <summary>
     /// Saves all open documents.
@@ -308,9 +308,9 @@ public abstract class DocumentManager
         DocumentClosed?.Invoke(documentEntry);
     }
 
-    protected void RaiseDocumentDeleted(DocumentEntry documentEntry)
+    protected void RaiseDocumentDeleted(string fullPah)
     {
-        DocumentDeleted?.Invoke(documentEntry);
+        DocumentDeleted?.Invoke(fullPah);
     }
 
     /// <summary>
