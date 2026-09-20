@@ -23,6 +23,12 @@ public static class AigcExtensions
     public const string AgentDirectory = "Agents";
 
     /// <summary>
+    /// Maximum number of timestamped folder-name candidates tried before agent
+    /// directory allocation is considered failed.
+    /// </summary>
+    private const int MaxAllocateAgentAttempts = 100;
+
+    /// <summary>
     /// Adds a user message to the conversation with optional attachments and export type instructions.
     /// </summary>
     /// <param name="handler">The conversation handler.</param>
@@ -536,21 +542,24 @@ public static class AigcExtensions
 
     /// <summary>
     /// Allocates a new agent directory and returns the directory path and agent ID.
-    /// The directory is named <c>Agent_{yyyy-MM-dd_HH-mm-ss}_{agentName}_{id}</c> so that
-    /// sorting by directory name yields creation-time order.
+    /// The directory is named <c>Agent_{yyyy-MM-dd_HH-mm-ss}</c> so that sorting by
+    /// directory name yields creation-time order. When that name already exists, a
+    /// numeric suffix (<c>-2</c>, <c>-3</c>, ...) is appended to avoid collisions.
     /// </summary>
     /// <param name="agentName">The name of the agent to allocate.</param>
     /// <param name="agentId">The ID of the allocated agent, formatted as <c>{agentName}_{id}</c>.</param>
-    /// <returns>The path to the allocated agent directory.</returns>
+    /// <returns>The path to the allocated agent directory, or <c>null</c> when allocation failed.</returns>
     public static string AllocateAgentDirectory(string agentName, out string agentId)
     {
         string assetBaseDir = Project.Current.AssetDirectory;
         string agentBaseDir = assetBaseDir.PathAppend(AgentDirectory);
 
-        while (true)
+        agentId = $"{agentName}_{IdGenerator.GenerateId(8)}";
+
+        string baseName = $"Agent_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}";
+        for (int i = 0; i < MaxAllocateAgentAttempts; i++)
         {
-            agentId = $"{agentName}_{IdGenerator.GenerateId(8)}";
-            string folderName = $"Agent_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{agentId}";
+            string folderName = i == 0 ? baseName : $"{baseName}-{i + 1}";
             string agentDir = agentBaseDir.PathAppend(folderName);
             if (!Directory.Exists(agentDir))
             {
@@ -558,5 +567,9 @@ public static class AigcExtensions
                 return agentDir;
             }
         }
+
+        Logs.LogError($"[AllocateAgentDirectory] Failed to allocate agent directory, all candidate names already exist: {baseName}");
+        agentId = null;
+        return null;
     }
 }
