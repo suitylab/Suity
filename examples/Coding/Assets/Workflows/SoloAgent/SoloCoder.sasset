@@ -62,7 +62,6 @@
       <Id>89a21ecc-39b4-44dc-90c5-27bfd6e68c51</Id>
     </Item>
   </Tools>
-  <IsTemplate>True</IsTemplate>
   <Overview>
     <Text>Responsible for implementing concrete code based on the technical specifications and performing self-review during the coding process.</Text>
   </Overview>

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SuityAsset version="1.0" format="Canvas">
+  <AssetId>e4906aea-3975-418a-b977-6eed3e4a6efc</AssetId>
+  <NameSpace>TestRelease010</NameSpace>
+  <Description>
+  </Description>
+  <Icon />
+  <Nodes>
+    <Item type="Suity.Editor.Flows.CanvasAssetDiagramItem" X="-80" Y="-250" Width="202" Height="79">
+      <Name>###AgentCanvasNode01</Name>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentCanvasNode">
+        <Expand>True</Expand>
+        <AssetRef>
+          <Id>4d9279ed-9175-46f0-a2c3-f6a148acfaeb</Id>
+        </AssetRef>
+        <AgentName>SoloCoder</AgentName>
+        <Overview />
+        <Rule>
+          <Id>1e4260d9-1787-43f1-b3c4-ad4a1f9f8510</Id>
+        </Rule>
+        <Loops type="Suity.Synchonizing.Preset.FactorySyncList`1[[Suity.Editor.AIGC.Agentic.AgentLoopItem]]" />
+      </Node>
+    </Item>
+    <Item type="Suity.Editor.AIGC.Agentic.AgentStartDiagramItem" X="-60" Y="-340" Width="130" Height="38">
+      <Name>CodingAgent</Name>
+      <AssetId>4f3f594f-fa87-47d6-bd01-1e544953dcee</AssetId>
+      <Node type="Suity.Editor.AIGC.Agentic.AgentStartCanvasNode">
+        <Name>CodingAgent</Name>
+        <Description>Coding Agent</Description>
+        <Icon>
+          <Id>21cb8223-3635-4954-a2d8-e30d0e3ebd8d</Id>
+        </Icon>
+        <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+        <EntryTaskName>Entry</EntryTaskName>
+        <WorkSpace />
+        <IsTemplate>True</IsTemplate>
+      </Node>
+    </Item>
+  </Nodes>
+  <Attributes base="438f92d9-bfef-496c-b0b0-439bb7cb9b62[]" />
+  <Links>
+    <Item>
+      <FromNode>###AgentCanvasNode01</FromNode>
+      <FromConnector>Out</FromConnector>
+      <ToNode>CodingAgent</ToNode>
+      <ToConnector>In</ToConnector>
+    </Item>
+  </Links>
+</SuityAsset>
