@@ -232,4 +232,18 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
         await QueuedAction.DoSuspendedAction(() => importer.Import(fileName, null, packageFullName, options));
         await EditorUtility.WaitForQueuedAction();
     }
+
+    /// <summary>
+    /// Removes the asset files that were previously imported from the package.
+    /// Workspace and system files are never touched.
+    /// </summary>
+    /// <param name="fileName">The path to the package file to clean up.</param>
+    /// <param name="options">The package content kinds to remove.</param>
+    public async Task CleanUpPackage(string fileName, ImportOptions options = ImportOptions.Asset)
+    {
+        var importer = new PackageImporter();
+
+        await QueuedAction.DoSuspendedAction(() => importer.CleanUp(fileName, options));
+        await EditorUtility.WaitForQueuedAction();
+    }
 }

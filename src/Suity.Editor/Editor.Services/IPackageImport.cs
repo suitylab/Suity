@@ -34,4 +34,13 @@ public interface IPackageImport
     /// <param name="packageFullName">The full package name.</param>
     /// <param name="onComplete">Optional callback when import completes.</param>
     Task ImportPackage(string fileName, string packageFullName = null, ImportOptions options = ImportOptions.All);
+
+    /// <summary>
+    /// Removes the files that were written into the project by a previously
+    /// imported package. Only asset files are removed; workspace and system
+    /// files are left untouched.
+    /// </summary>
+    /// <param name="fileName">The path to the package file to clean up.</param>
+    /// <param name="options">The package content kinds to remove.</param>
+    Task CleanUpPackage(string fileName, ImportOptions options = ImportOptions.Asset);
 }

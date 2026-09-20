@@ -1512,6 +1512,26 @@ public static class EditorUtility
         }
     }
 
+    /// <summary>
+    /// Removes the files that were written into the project by a previously
+    /// imported package. Only asset files are removed by default; workspace and
+    /// system files are left untouched.
+    /// </summary>
+    /// <param name="fileName">The path to the package file to clean up.</param>
+    /// <param name="options">The package content kinds to remove.</param>
+    /// <returns>A Task representing the cleanup operation.</returns>
+    public static Task CleanUpPackage(string fileName, ImportOptions options = ImportOptions.Asset)
+    {
+        if (Device.Current.GetService<IPackageImport>() is { } importer)
+        {
+            return importer.CleanUpPackage(fileName, options);
+        }
+        else
+        {
+            return Task.CompletedTask;
+        }
+    }
+
     #endregion
 
     #region Build task

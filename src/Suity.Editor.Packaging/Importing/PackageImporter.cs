@@ -59,7 +59,7 @@ internal class PackageImporter
     /// <returns>A task representing the asynchronous import operation.</returns>
     public Task Import(string packageFileName, IEnumerable<string> entryNames = null, string packageFullName = null, ImportOptions options = ImportOptions.All, Action onComplete = null)
     {
-        CleanUp();
+        ResetState();
 
         var source = new TaskCompletionSource<bool>();
 
@@ -264,9 +264,156 @@ internal class PackageImporter
     }
 
     /// <summary>
+    /// Removes the files that were written into the project by a previously
+    /// imported package. Only asset entries are removed; workspace and system
+    /// files are left untouched. Directories left empty are pruned.
+    /// </summary>
+    /// <param name="packageFileName">The path to the package zip file.</param>
+    /// <param name="options">The package content kinds to remove.</param>
+    /// <returns>A task representing the asynchronous cleanup operation.</returns>
+    public Task CleanUp(string packageFileName, ImportOptions options = ImportOptions.Asset)
+    {
+        ResetState();
+
+        var source = new TaskCompletionSource<bool>();
+
+        if (!options.HasFlag(ImportOptions.Asset))
+        {
+            source.SetResult(true);
+            return source.Task;
+        }
+
+        EditorUtility.DoProgress(L("Cleaning..."), p =>
+        {
+            // Do not monitor disk operations during the entire cleanup process.
+            FileUnwatchedAction.Do(() =>
+            {
+                try
+                {
+                    using (Stream fs = File.OpenRead(packageFileName))
+                    using (var zf = new ZipFile(fs))
+                    {
+                        foreach (var zipEntry in zf.OfType<ZipEntry>())
+                        {
+                            // Ignore directories, the workspace manifest and any
+                            // entry that is not an asset file.
+                            if (!zipEntry.IsFile || !zipEntry.Name.StartsWith("Assets/"))
+                            {
+                                continue;
+                            }
+
+                            p.UpdateProgess(0, L($"Cleaning {zipEntry.Name}..."), string.Empty);
+
+                            string targetFileName = _project.ProjectBasePath.PathAppend(zipEntry.Name);
+
+                            try
+                            {
+                                DeleteAssetFile(targetFileName);
+                            }
+                            catch (Exception err)
+                            {
+                                err.LogError(L($"Failed to clean {zipEntry.Name}."));
+                            }
+                        }
+                    }
+
+                    EditorUtility.RefreshProjectView();
+                }
+                catch (Exception err)
+                {
+                    err.LogError();
+                }
+                finally
+                {
+                    p.CompleteProgess();
+                }
+            });
+        }, () =>
+        {
+            source.SetResult(true);
+        });
+
+        return source.Task;
+    }
+
+    /// <summary>
+    /// Deletes a single asset file and its meta sidecar, then prunes any
+    /// directories left empty by the deletion.
+    /// </summary>
+    /// <param name="targetFileName">The absolute path of the asset file.</param>
+    private void DeleteAssetFile(string targetFileName)
+    {
+        if (string.IsNullOrEmpty(targetFileName))
+        {
+            return;
+        }
+
+        // Prefer the document manager: it also raises DocumentDeleted so hosts
+        // such as WASM can drop their IndexedDB records. Fall back to a raw file
+        // delete when the file is not registered as a document.
+        if (!DocumentManager.Instance.DeleteDocument(targetFileName))
+        {
+            if (File.Exists(targetFileName))
+            {
+                File.Delete(targetFileName);
+            }
+        }
+
+        string metaFileName = targetFileName + Asset.MetaExtension;
+        if (File.Exists(metaFileName))
+        {
+            File.Delete(metaFileName);
+        }
+
+        PruneEmptyDirectories(Path.GetDirectoryName(targetFileName));
+    }
+
+    /// <summary>
+    /// Deletes empty directories upward from <paramref name="directoryName"/>,
+    /// stopping before (and never deleting) the project's asset directory.
+    /// </summary>
+    /// <param name="directoryName">The directory to start pruning from.</param>
+    private void PruneEmptyDirectories(string directoryName)
+    {
+        string assetRoot = NormalizePath(_project.AssetDirectory);
+
+        while (!string.IsNullOrEmpty(directoryName))
+        {
+            string normalized = NormalizePath(directoryName);
+
+            if (!string.IsNullOrEmpty(assetRoot) && string.Equals(normalized, assetRoot, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            if (!Directory.Exists(directoryName) || Directory.EnumerateFileSystemEntries(directoryName).Any())
+            {
+                return;
+            }
+
+            try
+            {
+                Directory.Delete(directoryName);
+            }
+            catch (Exception err)
+            {
+                err.LogError(L("Failed to remove empty directory") + ": " + directoryName);
+                return;
+            }
+
+            directoryName = Path.GetDirectoryName(directoryName);
+        }
+    }
+
+    private static string NormalizePath(string path)
+    {
+        return string.IsNullOrEmpty(path) ? path : path.Replace('\\', '/').TrimEnd('/');
+    }
+
+    /// <summary>
     /// Clears all internal state collected during a previous import operation.
     /// </summary>
-    private void CleanUp()
+    private void ResetState()
     {
         _renderFiles.Clear();
         _assetFileNames.Clear();
