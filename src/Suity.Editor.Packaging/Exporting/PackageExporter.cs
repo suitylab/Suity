@@ -19,6 +19,15 @@ using static Suity.Helpers.GlobalLocalizer;
 
 namespace Suity.Editor.Packaging.Exporting;
 
+internal record PackageExportOptions
+{
+    public string PackageFileName { get; init; }
+    public string[] AseetFiles { get; init; }
+    public WorkSpaceFile[] WorkSpaceFiles { get; init; }
+    public string[] SystemFiles { get; init; }
+    public string[] LibraryFiles { get; init; }
+}
+
 /// <summary>
 /// Handles the export of project files and workspace files into package archives or library archives.
 /// </summary>
@@ -51,7 +60,7 @@ internal class PackageExporter
     /// <param name="workSpaceFiles">The workspace file entries to export.</param>
     /// <param name="packageFileName">The destination path for the package archive.</param>
     /// <returns>A task representing the asynchronous export operation.</returns>
-    public Task ExportPackage(string packageFileName, string[] assetFiles, WorkSpaceFile[] workSpaceFiles, string[] systemFiles)
+    public Task ExportPackage(PackageExportOptions option)
     {
         //if (!ServiceInternals._license.GetCapability(EditorCapabilities.Export))
         //{
@@ -94,19 +103,19 @@ internal class PackageExporter
                     Directory.CreateDirectory(tempSystemDir);
                 }
 
-                foreach (var fileName in assetFiles)
+                foreach (var fileName in option.AseetFiles)
                 {
                     p.UpdateProgess(0, L($"Exporting {fileName}..."), string.Empty);
                     ExportAssetFile(fileName, tempAssetDir, PackageTypes.Package);
                 }
 
-                foreach (var workspaceFile in workSpaceFiles)
+                foreach (var workspaceFile in option.WorkSpaceFiles)
                 {
                     p.UpdateProgess(0, L($"Exporting: {workspaceFile.FileName}..."), string.Empty);
                     ExportWorkspaceFile(workspaceFile, tempWorkspaceDir);
                 }
 
-                foreach (var fileName in systemFiles)
+                foreach (var fileName in option.SystemFiles)
                 {
                     p.UpdateProgess(0, L($"Exporting {fileName}..."), string.Empty);
                     ExportSystemFile(fileName, tempSystemDir, PackageTypes.Package);
@@ -117,13 +126,13 @@ internal class PackageExporter
                 ExportWorkSpaceSetting(manifestFileName);
 
                 p.UpdateProgess(0, L("Compressing..."), string.Empty);
-                if (File.Exists(packageFileName))
+                if (File.Exists(option.PackageFileName))
                 {
-                    File.Delete(packageFileName);
+                    File.Delete(option.PackageFileName);
                 }
 
                 var fastZip = new FastZip();
-                fastZip.CreateZip(packageFileName, tempDir, true, null);
+                fastZip.CreateZip(option.PackageFileName, tempDir, true, null);
             }
             catch (Exception err)
             {

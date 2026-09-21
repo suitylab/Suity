@@ -116,12 +116,21 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
         switch (exportForm.PackageType)
         {
             case PackageTypes.Package:
-                await exporter.ExportPackage(packageFileName, exportAssetFiles, exportWorkspaceFiles, exportSystemFiles);
-                QueuedAction.Do(() =>
                 {
-                    EditorUtility.LocateInPublishView(packageFileName);
-                    onComplete?.Invoke();
-                });
+                    var option = new PackageExportOptions
+                    {
+                        PackageFileName = packageFileName,
+                        AseetFiles = exportAssetFiles,
+                        WorkSpaceFiles = exportWorkspaceFiles,
+                        SystemFiles = exportSystemFiles,
+                    };
+                    await exporter.ExportPackage(option);
+                    QueuedAction.Do(() =>
+                    {
+                        EditorUtility.LocateInPublishView(packageFileName);
+                        onComplete?.Invoke();
+                    });
+                }
                 break;
 
             case PackageTypes.Library:
