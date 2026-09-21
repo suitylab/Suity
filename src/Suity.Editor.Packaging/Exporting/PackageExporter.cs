@@ -22,10 +22,10 @@ namespace Suity.Editor.Packaging.Exporting;
 internal record PackageExportOptions
 {
     public string PackageFileName { get; init; }
-    public string[] AseetFiles { get; init; }
-    public WorkSpaceFile[] WorkSpaceFiles { get; init; }
-    public string[] SystemFiles { get; init; }
-    public string[] LibraryFiles { get; init; }
+    public string[] AseetFiles { get; init; } = [];
+    public WorkSpaceFile[] WorkSpaceFiles { get; init; } = [];
+    public string[] SystemFiles { get; init; } = [];
+    public string[] LibraryFiles { get; init; } = [];
 }
 
 /// <summary>
@@ -103,6 +103,12 @@ internal class PackageExporter
                     Directory.CreateDirectory(tempSystemDir);
                 }
 
+                string tempLibraryDir = tempDir.PathAppend("Library");
+                if (!Directory.Exists(tempLibraryDir))
+                {
+                    Directory.CreateDirectory(tempLibraryDir);
+                }
+
                 foreach (var fileName in option.AseetFiles)
                 {
                     p.UpdateProgess(0, L($"Exporting {fileName}..."), string.Empty);
@@ -119,6 +125,12 @@ internal class PackageExporter
                 {
                     p.UpdateProgess(0, L($"Exporting {fileName}..."), string.Empty);
                     ExportSystemFile(fileName, tempSystemDir, PackageTypes.Package);
+                }
+
+                foreach (var fileName in option.LibraryFiles)
+                {
+                    p.UpdateProgess(0, L($"Exporting {fileName}..."), string.Empty);
+                    ExportLibraryFile(fileName, tempLibraryDir, PackageTypes.Package);
                 }
 
                 p.UpdateProgess(0, L("Exporting configuration..."), string.Empty);
@@ -422,6 +434,32 @@ internal class PackageExporter
         {
             File.Copy(fileName, exportFileName);
         }
+
+        return true;
+    }
+
+    private bool ExportLibraryFile(string fileName, string tempLibraryDir, PackageTypes packageType)
+    {
+        var file = new FileInfo(fileName);
+        if (!file.Exists)
+        {
+            Logs.LogWarning(L("File does not exist") + ": " + file.FullName);
+            return false;
+        }
+        string rFileName = fileName.MakeRelativePath(Project.Current.LibraryDirectory);
+        if (string.IsNullOrEmpty(rFileName))
+        {
+            Logs.LogWarning(L("File is not in the library directory") + ": " + file.FullName);
+            return false;
+        }
+        string exportFileName = tempLibraryDir.PathAppend(rFileName);
+        string exportDir = Path.GetDirectoryName(exportFileName);
+        if (!Directory.Exists(exportDir))
+        {
+            Directory.CreateDirectory(exportDir);
+        }
+
+        File.Copy(fileName, exportFileName);
 
         return true;
     }

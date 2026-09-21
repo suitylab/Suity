@@ -25,6 +25,7 @@ internal class PackagePreviewImGui : IDrawImGui
     private PackagePreviewDirectoryNode _rootAssetNode;
     private PackagePreviewDirectoryNode _rootWorkspaceNode;
     private PackagePreviewDirectoryNode _systemDirNode;
+    private PackagePreviewDirectoryNode _libraryDirNode;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PackagePreviewImGui"/> class with a configured tree view.
@@ -157,6 +158,7 @@ internal class PackagePreviewImGui : IDrawImGui
             _rootAssetNode?.PackageType = _packageType;
             _rootWorkspaceNode?.PackageType = _packageType;
             _systemDirNode?.PackageType = _packageType;
+            _libraryDirNode?.PackageType = _packageType;
 
             _treeView.QueueRefresh();
         }
@@ -195,6 +197,12 @@ internal class PackagePreviewImGui : IDrawImGui
             PackageType = _packageType,
         };
         _model.Add(_systemDirNode);
+
+        _libraryDirNode = new PackagePreviewDirectoryNode(Project.Current.LibraryDirectory, direction, FileLocations.Library)
+        {
+            PackageType = _packageType,
+        };
+        _model.Add(_libraryDirNode);
     }
 
     /// <summary>
@@ -256,6 +264,26 @@ internal class PackagePreviewImGui : IDrawImGui
         }
 
         //TODO: treeViewAdv1.ExpandAll(_workspaceManagerNode);
+    }
+
+    /// <summary>
+    /// Adds all library directory files to the preview tree.
+    /// </summary>
+    /// <param name="enabled">Whether the files should be initially enabled.</param>
+    public void AddLibraryDirectory(bool enabled)
+    {
+        var dir = new DirectoryInfo(Project.Current.LibraryDirectory);
+        if (!dir.Exists)
+        {
+            return;
+        }
+
+        foreach (var file in dir.EnumerateFiles("*.*", SearchOption.AllDirectories))
+        {
+            string rFileName = file.FullName.MakeRelativePath(Project.Current.LibraryDirectory);
+
+            _libraryDirNode.AddItem(rFileName, enabled);
+        }
     }
 
     /// <summary>
@@ -386,6 +414,11 @@ internal class PackagePreviewImGui : IDrawImGui
         _systemDirNode.AddItem(rFileName, enabled);
     }
 
+    public void AddLibraryFile(string rFileName, bool enabled)
+    {
+        _libraryDirNode.AddItem(rFileName, enabled);
+    }
+
     /// <summary>
     /// Adds a workspace master file to the preview tree with explicit master status.
     /// </summary>
@@ -455,14 +488,17 @@ internal class PackagePreviewImGui : IDrawImGui
         _rootAssetNode.PopulateUpdateDeep();
         _rootWorkspaceNode.PopulateUpdateDeep();
         _systemDirNode.PopulateUpdateDeep();
+        _libraryDirNode.PopulateUpdateDeep();
 
         _rootAssetNode.UpdateEnableStateDeep();
         _rootWorkspaceNode.UpdateEnableStateDeep();
         _systemDirNode.UpdateEnableStateDeep();
+        _libraryDirNode.UpdateEnableStateDeep();
 
         _rootAssetNode.ExpandDeep();
         _rootWorkspaceNode.ExpandDeep();
         _systemDirNode.ExpandDeep();
+        _libraryDirNode.ExpandDeep();
     }
 
     /// <summary>
@@ -496,6 +532,11 @@ internal class PackagePreviewImGui : IDrawImGui
         }
 
         if (_systemDirNode?.ContainsError() == true)
+        {
+            return true;
+        }
+
+        if (_libraryDirNode?.ContainsError() == true)
         {
             return true;
         }
@@ -585,6 +626,18 @@ internal class PackagePreviewImGui : IDrawImGui
 
         List<PackagePreviewItemNode> list = [];
         _systemDirNode.CollectEnabledItemsDeep(list);
+        return list.Select(o => o.NodePath);
+    }
+
+    public IEnumerable<string> GetLibraryFiles()
+    {
+        if (_libraryDirNode is null)
+        {
+            return [];
+        }
+
+        List<PackagePreviewItemNode> list = [];
+        _libraryDirNode.CollectEnabledItemsDeep(list);
         return list.Select(o => o.NodePath);
     }
 

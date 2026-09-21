@@ -79,6 +79,15 @@ internal class ExportImGui : IDrawImGui
     }
 
     /// <summary>
+    /// Adds the library directory to the preview tree.
+    /// </summary>
+    /// <param name="enabled">Whether the library directory should be initially enabled.</param>
+    public void AddLibraryDirectory(bool enabled)
+    {
+        _previewGui.AddLibraryDirectory(enabled);
+    }
+
+    /// <summary>
     /// Adds multiple asset files to the preview tree.
     /// </summary>
     /// <param name="fileNames">The file paths to add.</param>
@@ -191,6 +200,12 @@ internal class ExportImGui : IDrawImGui
     /// </summary>
     /// <returns>A collection of system file paths.</returns>
     public IEnumerable<string> GetSystemFiles() => _previewGui.GetSystemFiles();
+
+    /// <summary>
+    /// Gets the paths of all library files.
+    /// </summary>
+    /// <returns>A collection of library file paths.</returns>
+    public IEnumerable<string> GetLibraryFiles() => _previewGui.GetLibraryFiles();
 
     /// <summary>
     /// Recursively collects all dependency files for a given asset file, including transitive dependencies, meta files, and user code files.

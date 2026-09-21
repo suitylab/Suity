@@ -26,6 +26,8 @@ public enum ProjectDirectories
     Publish,
     Assemblies,
     Extensions,
+
+    Library,
 }
 
 /// <summary>
@@ -143,6 +145,11 @@ public abstract class Project
     /// Gets the path to the extensions directory.
     /// </summary>
     public string ExtensionsDirectory => GetProjectDirectory(ProjectDirectories.Extensions);
+
+    /// <summary>
+    /// Gets the path to the library directory.
+    /// </summary>
+    public string LibraryDirectory => GetProjectDirectory(ProjectDirectories.Library);
 
     #endregion
 

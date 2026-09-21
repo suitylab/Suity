@@ -151,6 +151,7 @@ internal class ProjectBK : Project
         ProjectDirectories.Publish => _setting.PublishDirectory,
         ProjectDirectories.Assemblies => _setting.AssembliesDirectory,
         ProjectDirectories.Extensions => _setting.ExtensionsDirectory,
+        ProjectDirectories.Library => _setting.LibraryDirectory,
         _ => null,
     };
 
@@ -164,6 +165,7 @@ internal class ProjectBK : Project
         ProjectDirectories.Publish => GetSubDirectory(_setting.PublishDirectory),
         ProjectDirectories.Assemblies => GetSubDirectory(_setting.AssembliesDirectory),
         ProjectDirectories.Extensions => GetSubDirectory(_setting.ExtensionsDirectory),
+        ProjectDirectories.Library => GetSubDirectory(_setting.LibraryDirectory),
         _ => null,
     };
 

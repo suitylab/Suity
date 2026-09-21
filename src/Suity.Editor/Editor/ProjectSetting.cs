@@ -18,6 +18,7 @@ public class ProjectSetting : ISyncObject
     public string WorkSpaceDirectory = "WorkSpaces";
     public string AssembliesDirectory = "Assemblies";
     public string ExtensionsDirectory = "Extensions";
+    public string LibraryDirectory = "Library";
 
     public Guid ProjectGuid;
     public Guid PlanetFolderGuid;

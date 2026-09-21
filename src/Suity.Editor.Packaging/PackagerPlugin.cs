@@ -70,6 +70,7 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
         }
 
         exportForm.AddSystemDirectory(false);
+        exportForm.AddLibraryDirectory(false);
 
         await DialogUtility.CreateImGuiDialog(exportForm, "Export", 883, 827);
 
@@ -81,8 +82,9 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
         string[] exportAssetFiles = [.. exportForm.GetAssetFiles()];
         WorkSpaceFile[] exportWorkspaceFiles = [.. exportForm.GetWorkspaceFiles()];
         string[] exportSystemFiles = [.. exportForm.GetSystemFiles()];
+        string[] exportLibraryFiles = [.. exportForm.GetLibraryFiles()];
 
-        if (exportAssetFiles.Length == 0 && exportWorkspaceFiles.Length == 0 && exportSystemFiles.Length == 0)
+        if (exportAssetFiles.Length == 0 && exportWorkspaceFiles.Length == 0 && exportSystemFiles.Length == 0 && exportLibraryFiles.Length == 0)
         {
             await DialogUtility.ShowMessageBoxAsyncL("No files selected");
 
@@ -123,6 +125,7 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
                         AseetFiles = exportAssetFiles,
                         WorkSpaceFiles = exportWorkspaceFiles,
                         SystemFiles = exportSystemFiles,
+                        LibraryFiles = exportLibraryFiles,
                     };
                     await exporter.ExportPackage(option);
                     QueuedAction.Do(() =>

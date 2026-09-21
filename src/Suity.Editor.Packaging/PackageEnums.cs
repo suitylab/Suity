@@ -51,4 +51,9 @@ public enum FileLocations
     /// File resides in the system directory.
     /// </summary>
     System,
+
+    /// <summary>
+    /// File resides in the library directory.
+    /// </summary>
+    Library,
 }
