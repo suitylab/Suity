@@ -144,7 +144,8 @@ public abstract class BaseLLmChat : ILLmChat,
             {
                 _conversation.AddSystemMessage(cancelEx.Message ?? "Operation cancelled");
             }
-            return null;
+            // Cancelled (resumable pause), not a completion.
+            return AgentRunCancelled.Instance;
         }
         catch (AigcException llmErr)
         {

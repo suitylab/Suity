@@ -81,6 +81,12 @@ public class AgentGraphRunner : BaseLLmChat, IAgentGraphRunner
                 _conversation.AddSystemMessage(resultMsg ?? "Agent Graph Finished.");
             }
 
+            // Cancelled (e.g. the user stopped the run): report a resumable pause, not a result.
+            if (cancelSource?.IsCancellationRequested == true)
+            {
+                return AgentRunCancelled.Instance;
+            }
+
             return result?.Result;
         }
         finally
