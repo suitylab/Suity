@@ -72,6 +72,11 @@ public abstract class BaseLLmChat : ILLmChat,
     /// </summary>
     public LLmChatStates State => _state;
 
+    /// <summary>
+    /// Gets the conversation host backing this chat.
+    /// </summary>
+    public IConversationHost Conversation => _conversation;
+
 
     /// <summary>
     /// Starts a new chat session with an optional message.

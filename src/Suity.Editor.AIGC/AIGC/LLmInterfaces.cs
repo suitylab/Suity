@@ -1,5 +1,6 @@
 using Suity.Drawing;
 using Suity.Editor.Types;
+using Suity.Views;
 using Suity.Views.Im;
 using System;
 using System.Threading;
@@ -273,6 +274,12 @@ public interface ILLmChat : IDrawImGuiNode, IDisposable
     /// Gets the current state of the chat.
     /// </summary>
     LLmChatStates State { get; }
+
+    /// <summary>
+    /// Gets the conversation host backing this chat (exposes the produced messages).
+    /// Enables headless/embedding callers (e.g. the OpenCode bridge) to observe a run.
+    /// </summary>
+    IConversationHost Conversation { get; }
 
     /// <summary>
     /// Starts the chat session.

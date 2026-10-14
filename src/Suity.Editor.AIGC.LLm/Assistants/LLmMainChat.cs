@@ -119,6 +119,11 @@ internal class LLmMainChat : ILLmChat
     public LLmChatStates State => _state;
 
     /// <summary>
+    /// Gets the conversation host backing this chat (delegates to the inner chat when running).
+    /// </summary>
+    public IConversationHost Conversation => _innerChat?.Conversation ?? _conversation as IConversationHost;
+
+    /// <summary>
     /// Starts a new conversation with the specified message.
     /// </summary>
     /// <param name="msg">The initial message to send.</param>
