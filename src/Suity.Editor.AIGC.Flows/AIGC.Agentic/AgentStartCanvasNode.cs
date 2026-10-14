@@ -207,38 +207,6 @@ public class AgentStartAsset : Asset, ILLmChatProvider, IAigcStartup
 
     #endregion
 
-    /// <summary>
-    /// Persisted chat history of this agent instance, aggregated from its loop/task documents
-    /// (the live conversation is in-memory only). Used to seed the agent chat panel.
-    /// </summary>
-    public LLmMessage[] GetPersistedChatHistory()
-    {
-        try
-        {
-            var node = (this.GetStorageObject(true) as AgentStartDiagramItem)?.Node;
-            var agent = node?.AgentNode;
-            if (agent is null) return Array.Empty<LLmMessage>();
-
-            var result = new List<LLmMessage>();
-            foreach (var loop in agent.GetLoops())
-            {
-                if (loop?.LoopAsset?.GetLoop() is IAigcLoop aigcLoop)
-                {
-                    foreach (var task in aigcLoop.GetSubTasks())
-                    {
-                        result.AddRange(task.GetChatMessages(true, true));
-                    }
-                }
-            }
-
-            return result.ToArray();
-        }
-        catch
-        {
-            return Array.Empty<LLmMessage>();
-        }
-    }
-
     #region IAigcStartup
 
     public bool IsStartup { get; internal set; }
