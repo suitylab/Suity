@@ -1,3 +1,4 @@
+using Suity.Editor;
 using Suity.Editor.Packaging.Exporting;
 using Suity.Editor.Packaging.Importing;
 using Suity.Editor.Services;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Suity.Editor.Packaging;
@@ -144,6 +146,133 @@ public class PackagerPlugin : EditorPlugin, IPackageExport, IPackageImport
                     onComplete?.Invoke();
                 });
                 break;
+        }
+    }
+
+    /// <summary>
+    /// Headless export (no UI): writes a <c>.suitypackage</c> for the current project using the
+    /// selected content kinds. Mirrors the export dialog's default selection (render-target
+    /// workspace files and system id files are excluded). Returns the path, or null.
+    /// </summary>
+    public async Task<string> ExportPackage(string packageFileName, PackageExportSelection selection, CancellationToken token = default)
+    {
+        if (string.IsNullOrEmpty(packageFileName))
+        {
+            return null;
+        }
+
+        var assetFiles = new List<string>();
+        var workSpaceFiles = new List<WorkSpaceFile>();
+        var systemFiles = new List<string>();
+
+        if ((selection & PackageExportSelection.Asset) != 0)
+        {
+            var assetDir = new DirectoryInfo(FileAssetManager.Current.DirectoryBasePath);
+            if (assetDir.Exists)
+            {
+                foreach (var file in assetDir.EnumerateFiles("*.*", SearchOption.AllDirectories))
+                {
+                    token.ThrowIfCancellationRequested();
+                    assetFiles.Add(file.FullName);
+                }
+            }
+        }
+
+        if ((selection & PackageExportSelection.WorkSpace) != 0)
+        {
+            foreach (var workSpace in WorkSpaceManager.Current.WorkSpaces)
+            {
+                token.ThrowIfCancellationRequested();
+                workSpaceFiles.Add(new WorkSpaceFile
+                {
+                    FileName = workSpace.ConfigFileName,
+                    LocalFileName = WorkSpace.DefaultConfigFileName,
+                    WorkSpace = workSpace.Name,
+                    InMaster = false,
+                });
+                CollectWorkSpaceMasterFiles(workSpace, new DirectoryInfo(workSpace.MasterDirectory), workSpaceFiles, token);
+            }
+        }
+
+        if ((selection & PackageExportSelection.System) != 0)
+        {
+            var systemDir = new DirectoryInfo(Project.Current.SystemDirectory);
+            if (systemDir.Exists)
+            {
+                foreach (var file in systemDir.EnumerateFiles("*.*", SearchOption.AllDirectories))
+                {
+                    token.ThrowIfCancellationRequested();
+                    var r = file.FullName.MakeRelativePath(Project.Current.SystemDirectory);
+                    if (string.Equals(r, "ObjectId.xml", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(r, "SystemId.xml", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    systemFiles.Add(file.FullName);
+                }
+            }
+        }
+
+        if (assetFiles.Count == 0 && workSpaceFiles.Count == 0 && systemFiles.Count == 0)
+        {
+            return null;
+        }
+
+        var option = new PackageExportOptions
+        {
+            PackageFileName = packageFileName,
+            AseetFiles = assetFiles.ToArray(),
+            WorkSpaceFiles = workSpaceFiles.ToArray(),
+            SystemFiles = systemFiles.ToArray(),
+            LibraryFiles = [],
+        };
+
+        await new PackageExporter().ExportPackage(option);
+        return File.Exists(packageFileName) ? packageFileName : null;
+    }
+
+    /// <summary>Recursively collects a workspace's master-directory files (mirrors the export dialog).</summary>
+    private static void CollectWorkSpaceMasterFiles(WorkSpace workSpace, DirectoryInfo dir, List<WorkSpaceFile> list, CancellationToken token)
+    {
+        if (!dir.Exists)
+        {
+            return;
+        }
+
+        if (workSpace.Controller?.CanExport(dir.FullName) == false)
+        {
+            return;
+        }
+
+        foreach (var file in dir.EnumerateFiles())
+        {
+            token.ThrowIfCancellationRequested();
+
+            if (workSpace.Controller?.CanExport(file.FullName) == false)
+            {
+                continue;
+            }
+
+            var rPath = file.FullName.MakeRelativePath(workSpace.MasterDirectory);
+            if (workSpace.GetRenderTargets(rPath).Any())
+            {
+                // Render-target files are disabled by default in the export dialog.
+                continue;
+            }
+
+            list.Add(new WorkSpaceFile
+            {
+                FileName = file.FullName,
+                LocalFileName = rPath,
+                WorkSpace = workSpace.Name,
+                InMaster = true,
+            });
+        }
+
+        foreach (var subDir in dir.EnumerateDirectories())
+        {
+            CollectWorkSpaceMasterFiles(workSpace, subDir, list, token);
         }
     }
 

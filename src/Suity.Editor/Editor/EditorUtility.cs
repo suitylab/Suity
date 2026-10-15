@@ -1482,6 +1482,20 @@ public static class EditorUtility
     }
 
     /// <summary>
+    /// Exports the current project to a <c>.suitypackage</c> without showing any UI.
+    /// Returns the package path, or null when nothing was written.
+    /// </summary>
+    public static async Task<string> ExportPackage(string packageFileName, PackageExportSelection selection, System.Threading.CancellationToken token = default)
+    {
+        if (Device.Current.GetService<IPackageExport>() is { } exporter)
+        {
+            return await exporter.ExportPackage(packageFileName, selection, token);
+        }
+
+        return null;
+    }
+
+    /// <summary>
     /// Displays the import package GUI dialog for importing a package.
     /// </summary>
     /// <param name="fileName">The path to the package file to be imported.</param>
