@@ -1713,6 +1713,14 @@ public class WorkSpaceBK : WorkSpace,
                         continue;
                     }
 
+                    // Reserved package metadata (e.g. .suity/registry.json) lives in
+                    // the version zip but must not be materialized into the workspace.
+                    if (zipEntry.Name.StartsWith(".suity/", StringComparison.Ordinal)
+                        || string.Equals(zipEntry.Name, ".suity", StringComparison.Ordinal))
+                    {
+                        continue;
+                    }
+
                     string fullPath = Path.GetFullPath(Path.Combine(workspaceDir, zipEntry.Name));
                     if (!fullPath.StartsWith(fullWorkspacePath, StringComparison.OrdinalIgnoreCase))
                     {
