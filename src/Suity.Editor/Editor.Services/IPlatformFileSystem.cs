@@ -107,7 +107,9 @@ public class PlatformFileSystem : IPlatformFileSystem
 
         File.Move(fullPath, newFullPath);
 
-        OnFileUpdted(relativePath, newFullPath);
+        // The old path no longer exists after the move; emitting it lets
+        // listeners (e.g. the IndexedDB sync) mark the old location deleted.
+        OnFileUpdted(relativePath, fullPath);
         OnFileUpdted(newName, newFullPath);
     }
 
