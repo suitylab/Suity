@@ -82,6 +82,38 @@ public static class KeyIncrementHelper
         return string.Format(format, prefix, digiValue);
     }
 
+    /// <summary>
+    /// Increments the trailing numeric suffix of a key and returns the resulting key.
+    /// For example, "item003" becomes "item004" and "file999" becomes "file1000".
+    /// If the key contains no trailing digits, a numeric suffix starting from 1 is appended,
+    /// zero-padded to <paramref name="defaultDigiLen"/> digits (e.g., "name" becomes "name01" when
+    /// defaultDigiLen is 2).
+    /// </summary>
+    /// <param name="key">The key string whose numeric suffix should be incremented (e.g., "item001", "name").</param>
+    /// <param name="defaultDigiLen">The number of digits to use when the key has no numeric suffix, including leading zeros.</param>
+    /// <returns>A new key with the incremented numeric suffix.</returns>
+    public static string IncrementKey(string key, int defaultDigiLen = 1)
+    {
+        if (key is null)
+        {
+            throw new ArgumentNullException(nameof(key));
+        }
+
+        if (defaultDigiLen < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(defaultDigiLen), "The digit length must be at least 1.");
+        }
+
+        string digiCode = GetLastDigiCode(key);
+        if (digiCode.Length == 0)
+        {
+            return MakeKey(key, defaultDigiLen, 1);
+        }
+
+        string prefix = key[..^digiCode.Length];
+        return MakeKey(prefix, digiCode.Length, ulong.Parse(digiCode) + 1);
+    }
+
     private static string GetLastDigiCode(string str)
     {
         int index = str.Length - 1;
